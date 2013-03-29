@@ -1,0 +1,17 @@
+{% block datasource_field %}
+    {% spaceless %}
+        {% if field.hasAttribute('form') is not empty %}
+            {% for child in field.getAttribute('form').children %}
+                {% for subchild in child.children %}
+                <div class="control-group">
+                    <div class="controls">
+                    {{ form_label(subchild) }}
+                    {{ form_errors(subchild) }}
+                    {{ form_widget(subchild) }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}

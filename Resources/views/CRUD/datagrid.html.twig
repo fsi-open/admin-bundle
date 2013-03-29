@@ -1,0 +1,111 @@
+{% block datagrid %}
+    {% spaceless %}
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+            {{ datagrid_header_widget(datagrid) }}
+            </thead>
+            <tbody>
+            {{ datagrid_rowset_widget(datagrid) }}
+            </tbody>
+        </table>
+    {% endspaceless %}
+{% endblock %}
+
+{% block datagrid_column_cell %}
+    {% spaceless %}
+        <td class="cell">
+            <div class="cell-value" id="{{ datagrid_name }}_{{ cell.name }}">
+                {{ cell.value|raw }}
+                {% if cell.hasAttribute('form') == true %}
+                    &nbsp;<a class="cell-edit" href="#" data-target="{{ datagrid_name }}_{{ row_index }}_{{ cell.name }}_edit" style="display:none;"><span><i class="icon-edit">&nbsp;</i>&nbsp;{{ 'crud.list.datagrid.editable.edit'|trans({}, 'FSiAdminBundle') }}</span></a>
+                {% endif %}
+            </div>
+            {% if cell.hasAttribute('form') == true %}
+                <div class="cell-edit-form" id="{{ datagrid_name }}_{{ row_index }}_{{ cell.name }}_edit" style="display:none;">
+                    {{ datagrid_column_cell_form_widget(cell) }}
+                </div>
+            {% endif %}
+        </td>
+    {% endspaceless %}
+{% endblock %}
+
+{% block datagrid_column_header %}
+    {% spaceless %}
+        <th>
+            <span>{{ header.label|trans({}, translation_domain) }}</span>
+            {% if (vars.datasource.hasField(header.name)) %}
+                {% set filter = vars.datasource.getField(header.name) %}
+                {% if filter.getAttribute('sortable') == true %}
+                    &nbsp;{{ datasource_sort_widget(filter, {'additional_parameters' : vars.router_paramters }) }}
+                {% endif %}
+            {% endif %}
+        </th>
+    {% endspaceless %}
+{% endblock %}
+
+{# pattern: datagrid_column_cell_form #}
+{% block datagrid_column_cell_form %}
+    {% spaceless %}
+        <form method="POST" action="{{ path('fsi_admin_crud_list', vars.datasource.getAllParameters()|merge(vars.router_paramters)) }}">
+            <div>
+                {% for child in form.children %}
+                    {% for subchild in child.children %}
+                        {{ form_label(subchild) }}
+                        {{ form_errors(subchild) }}
+                        {{ form_widget(subchild) }}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <input type="submit" name="submit" value="{{ 'crud.list.datagrid.editable.save'|trans({}, 'FSiAdminBundle') }}" class="btn btn-small">
+        </form>
+    {% endspaceless %}
+{% endblock %}
+
+{# datagrid_column_type_{column_type}_cell #}
+{% block datagrid_column_type_gedmo_tree_cell %}
+    <td>
+        <div>
+            {% spaceless %}
+            <div
+                {% if cell.getAttribute('parent') is not null %} data-parent="{{ cell.getAttribute('parent') }}"{% endif %}
+                {% if cell.getAttribute('root') is not null %} data-root="{{ cell.getAttribute('root') }}"{% endif %}
+                {% if cell.getAttribute('level') is not null %} data-level="{{ cell.getAttribute('level') }}" class="tree-level-{{ cell.getAttribute('level') }}"{% endif %}
+                data-children="{{ cell.getAttribute('children') }}"
+            >
+            {% endspaceless %}
+            {{ cell.value|raw }}
+            </div>
+            {{ datagrid_column_cell_form_widget(cell) }}
+        </div>
+    </td>
+{% endblock %}
+
+{# pattern: datagrid_{grid_name}_column_name_{column_name}_cell #}
+{% block datagrid_column_type_action_cell %}
+    {% spaceless %}
+        <td>
+            <div class="text-right">
+                {% for action_name, action in cell.value %}
+                    {% if action_name == 'edit' %}
+                        <a class="btn btn-warning btn-small-horizontal" href="{{ action.url }}" title="{{ 'crud.list.datagrid.action.edit'|trans({}, translation_domain)|raw }}">
+                            <span class="icon-eject icon-white"></span>
+                        </a>&nbsp;
+                    {% elseif action_name == 'delete' %}
+                        <a class="btn btn-danger btn-small-horizontal" href="{{ action.url }}" title="{{ 'crud.list.datagrid.action.delete'|trans({}, translation_domain)|raw }}">
+                            <span class="icon-trash icon-white"></span>
+                        </a>&nbsp;
+                    {% elseif action_name == 'moveup' %}
+                        <a class="btn btn-small-horizontal" href="{{ action.url }}" title="{{ 'crud.list.datagrid.action.moveup'|trans({}, translation_domain)|raw }}">
+                            <span class="icon-trash icon-arrow-up"></span>
+                        </a>&nbsp;
+                    {% elseif action_name == 'movedown' %}
+                        <a class="btn btn-small-horizontal" href="{{ action.url }}" title="{{ 'crud.list.datagrid.action.movedown'|trans({}, translation_domain)|raw }}">
+                            <span class="icon-trash icon-arrow-down"></span>
+                        </a>&nbsp;
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </td>
+    {% endspaceless %}
+{% endblock %}
+

@@ -1,0 +1,23 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href="{{ path('fsi_admin') }}">{{ 'admin.title'|trans({}, 'FSiAdminBundle')  }}</a>
+            <ul class="nav" role="navigation">
+            {% for group in manager.groups %}
+                <li class="dropdown">
+                    <a id="drop{{ loop.index }}" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">{{ group.name|trans }} <b class="caret"></b></a>
+                    {% if group.elements|length %}
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop{{ loop.index }}">
+                        {% for element in group.elements %}
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{{ path(element.baseRouteName, {element : element.id}) }}">{{ element.name|trans }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

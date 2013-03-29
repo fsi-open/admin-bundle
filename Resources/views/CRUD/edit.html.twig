@@ -1,0 +1,16 @@
+{% form_theme form '@FSiAdmin/CRUD/form.html.twig' %}
+
+{% extends "@FSiAdmin/base.html.twig" %}
+
+{% block content %}
+    <div class="span10">
+        <form action="{{ path('fsi_admin_crud_edit', {element: element.id, id: id}) }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
+            {{ form_widget(form) }}
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn">{{ 'crud.edit.button.save'|trans({}, 'FSiAdminBundle')  }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

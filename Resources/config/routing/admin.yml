@@ -1,0 +1,45 @@
+fsi_admin:
+    path: /
+    defaults:
+        _controller: FSiAdminBundle:Admin:index
+
+fsi_admin_crud_list:
+    path: /{element}/list
+    defaults:
+        _controller: FSiAdminBundle:CRUD:list
+
+fsi_admin_crud_create:
+    path: /{element}/create
+    defaults:
+        _controller: FSiAdminBundle:CRUD:create
+
+fsi_admin_crud_edit:
+    path: /{element}/edit/{id}
+    defaults:
+        _controller: FSiAdminBundle:CRUD:edit
+
+fsi_admin_crud_delete:
+    path: /{element}/delete/{id}
+    defaults:
+        _controller: FSiAdminBundle:CRUD:delete
+
+fsi_admin_data_io_export:
+    path: /{element}/export/{type}
+    defaults:
+        _controller: FSiAdminBundle:DataIO:export
+    requirements:
+        type: csv|csvexcel|excel|excel2003|excel2007
+
+fsi_admin_tree_move_up:
+    path: /{element}/moveup/{id}/{number}
+    defaults:
+        _controller: FSiAdminBundle:Tree:moveup
+    requirements:
+        number: \d+
+
+fsi_admin_tree_move_down:
+    path: /{element}/movedown/{id}/{number}
+    defaults:
+        _controller: FSiAdminBundle:Tree:movedown
+    requirements:
+        number: \d+

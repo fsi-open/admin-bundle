@@ -1,0 +1,32 @@
+body {
+    position: relative;
+    padding-top: 60px;
+}
+
+.tree-level-0 {
+    padding-left: 0;
+}
+
+.tree-level-1 {
+    padding-left: 20px;
+}
+
+.tree-level-2 {
+    padding-left: 40px;
+}
+
+.tree-level-3 {
+    padding-left: 60px;
+}
+
+.tree-level-4 {
+    padding-left: 80px;
+}
+
+.tree-level-5 {
+    padding-left: 100px;
+}
+
+.tree-level-6 {
+    padding-left: 110px;
+}

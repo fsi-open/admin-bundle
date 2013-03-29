@@ -1,0 +1,33 @@
+admin:
+    title: Panel Adminstracyjny
+crud:
+    list:
+        datagrid:
+            editable:
+                save: Zapisz
+                edit: Edytuj
+            result_count: Liczba znalezionych rekordów:
+            export:
+                export_to: Eksportuj dane:
+                csv: CSV
+                excel_csv: CSV Excel
+                excel_95: Excel 95-2003
+                excel_2003: Excel 2003
+                excel_2007: Excel 2007
+            action:
+                moveup: Przenieś do góry
+                movedown: Przenieś w dół
+                edit: Edytuj
+                delete: Usuń
+        datasource:
+            search: Szukaj
+            clear: Wyczyść
+        button:
+            create: Dodaj Nowy
+    create:
+        button:
+            save: Zapisz
+    delete:
+    edit:
+        button:
+            save: Zapisz

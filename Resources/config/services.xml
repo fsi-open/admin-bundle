@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="admin.group.class">FSi\Bundle\AdminBundle\Structure\Group</parameter>
+        <parameter key="admin.group.manager.class">FSi\Bundle\AdminBundle\Structure\GroupManager</parameter>
+    </parameters>
+
+    <services>
+        <service id="admin.group.manager" class="%admin.group.manager.class%">
+            <argument type="collection"/>
+        </service>
+
+        <service id="admin.structure.element.param.converter"
+                 class="FSi\Bundle\AdminBundle\Request\ParamConverter\StructureElementParamConverter">
+            <argument type="service" id="admin.group.manager" />
+
+            <tag name="request.param_converter" converter="structure.element" priority="10" />
+        </service>
+
+        <service id="admin.structure.admin_element.param.converter"
+                 class="FSi\Bundle\AdminBundle\Request\ParamConverter\StructureAdminElementParamConverter">
+            <argument type="service" id="admin.group.manager" />
+
+            <tag name="request.param_converter" converter="structure.admin_element" priority="10" />
+        </service>
+
+        <service id="admin.structure.doctrine_admin_element.param.converter"
+                 class="FSi\Bundle\AdminBundle\Request\ParamConverter\StructureDoctrineAdminElementParamConverter">
+            <argument type="service" id="admin.group.manager" />
+
+            <tag name="request.param_converter" converter="structure.doctrine_admin_element" priority="10" />
+        </service>
+    </services>
+
+</container>
