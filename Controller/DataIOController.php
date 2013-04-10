@@ -37,20 +37,22 @@ class DataIOController extends BaseController
 
         switch ($type) {
             case 'csv':
-                return new HttpFoundation\CSVExport($datagrid->createView(), date('Y_m_d_His'));
+                $response = new HttpFoundation\CSVExport($datagrid->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
                 break;
             case 'csvexcel':
-                return new HttpFoundation\CSVExcelExport($datagrid->createView(), date('Y_m_d_His'));
+                $response =  new HttpFoundation\CSVExcelExport($datagrid->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
                 break;
             case 'excel':
-                return new HttpFoundation\ExcelExport($datagrid->createView(), date('Y_m_d_His'));
+                $response =  new HttpFoundation\ExcelExport($datagrid->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
                 break;
             case 'excel2003':
-                return new HttpFoundation\Excel2003Export($datagrid->createView(), date('Y_m_d_His'));
+                $response =  new HttpFoundation\Excel2003Export($datagrid->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
                 break;
             case 'excel2007':
-                return new HttpFoundation\Excel2007Export($datagrid->createView(), date('Y_m_d_His'));
+                $response =  new HttpFoundation\Excel2007Export($datagrid->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
                 break;
         }
+
+        return $response;
     }
 }

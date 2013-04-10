@@ -80,29 +80,17 @@
     </td>
 {% endblock %}
 
-{# pattern: datagrid_{grid_name}_column_name_{column_name}_cell #}
+{#  pattern: datagrid_{grid_name}_column_name_{column_name}_cell #}
 {% block datagrid_column_type_action_cell %}
     {% spaceless %}
         <td>
             <div class="text-right">
                 {% for action_name, action in cell.value %}
-                    {% if action_name == 'edit' %}
-                        <a class="btn btn-warning btn-small-horizontal" href="{{ action.url }}" title="{{ 'crud.list.datagrid.action.edit'|trans({}, translation_domain)|raw }}">
-                            <span class="icon-eject icon-white"></span>
+                    {% spaceless %}
+                        <a {% for attrname, attrvalue in action.url_attr %}{% if attrname == 'title' %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}>
+                        {{ action.content|trans({}, translation_domain)|raw }}
                         </a>&nbsp;
-                    {% elseif action_name == 'delete' %}
-                        <a class="btn btn-danger btn-small-horizontal" href="{{ action.url }}" title="{{ 'crud.list.datagrid.action.delete'|trans({}, translation_domain)|raw }}">
-                            <span class="icon-trash icon-white"></span>
-                        </a>&nbsp;
-                    {% elseif action_name == 'moveup' %}
-                        <a class="btn btn-small-horizontal" href="{{ action.url }}" title="{{ 'crud.list.datagrid.action.moveup'|trans({}, translation_domain)|raw }}">
-                            <span class="icon-trash icon-arrow-up"></span>
-                        </a>&nbsp;
-                    {% elseif action_name == 'movedown' %}
-                        <a class="btn btn-small-horizontal" href="{{ action.url }}" title="{{ 'crud.list.datagrid.action.movedown'|trans({}, translation_domain)|raw }}">
-                            <span class="icon-trash icon-arrow-down"></span>
-                        </a>&nbsp;
-                    {% endif %}
+                    {% endspaceless %}
                 {% endfor %}
             </div>
         </td>

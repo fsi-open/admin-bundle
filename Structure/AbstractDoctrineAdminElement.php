@@ -137,6 +137,11 @@ abstract class AbstractDoctrineAdminElement extends AbstractAdminElement impleme
 
         if ($datagrid->hasColumnType('gedmo_tree')) {
             $options['actions']['moveup'] = array(
+                'url_attr' => array(
+                    'class' => 'btn btn-small-horizontal',
+                    'title' => 'crud.list.datagrid.action.moveup'
+                ),
+                'content' => '<span class="icon-trash icon-arrow-up"></span>',
                 'route_name' => 'fsi_admin_tree_move_up',
                 'parameters_field_mapping' => array(
                     'id' => function($values, $index) {
@@ -149,6 +154,11 @@ abstract class AbstractDoctrineAdminElement extends AbstractAdminElement impleme
                 )
             );
             $options['actions']['movedown'] = array(
+                'url_attr' => array(
+                    'class' => 'btn btn-small-horizontal',
+                    'title' => 'crud.list.datagrid.action.movedown'
+                ),
+                'content' => '<span class="icon-trash icon-arrow-down"></span>',
                 'route_name' => 'fsi_admin_tree_move_down',
                 'parameters_field_mapping' => array(
                     'id' => function($values, $index) {
@@ -164,6 +174,11 @@ abstract class AbstractDoctrineAdminElement extends AbstractAdminElement impleme
 
         if ($this->hasEditForm()) {
             $options['actions']['edit'] = array(
+                'url_attr' => array(
+                    'class' => 'btn btn-warning btn-small-horizontal',
+                    'title' => 'crud.list.datagrid.action.edit'
+                ),
+                'content' => '<span class="icon-eject icon-white"></span>',
                 'route_name' => 'fsi_admin_crud_edit',
                 'parameters_field_mapping' => array(
                     'id' => function($values, $index) {
@@ -177,6 +192,11 @@ abstract class AbstractDoctrineAdminElement extends AbstractAdminElement impleme
         }
 
         $options['actions']['delete'] = array(
+            'url_attr' => array(
+                'class' => 'btn btn-danger btn-small-horizontal',
+                'title' => 'crud.list.datagrid.action.delete'
+            ),
+            'content' => '<span class="icon-trash icon-white"></span>',
             'route_name' => 'fsi_admin_crud_delete',
             'parameters_field_mapping' => array(
                 'id' => function($values, $index) {
