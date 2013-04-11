@@ -8,20 +8,28 @@ $(document).ready(function() {
             self.css({"width" : width + "px"});
 
             if (button.length) {
-                if (button.is(":visible")) {
-                    button.hide();
-                } else {
-                    button.show();
-                }
+                button.show();
+            }
+        },
+        function(event) {
+            var self = $(this),
+                width = self.width(),
+                button = self.find('.cell-edit');
+
+            self.css({"width" : width + "px"});
+
+            if (button.length) {
+                button.hide();
             }
         }
     );
 
-    $('.cell-edit').click(function(event) {
+    $('.cell-editable').click(function(event) {
         event.preventDefault();
 
         var self = $(this),
-            target = $("#" + self.data('target'));
+            editAnchor = self.find('.cell-edit'),
+            target = $("#" + editAnchor.data('target'))
 
         if (target.length) {
             target.toggle();

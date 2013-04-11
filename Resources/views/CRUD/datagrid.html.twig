@@ -14,13 +14,16 @@
 {% block datagrid_column_cell %}
     {% spaceless %}
         <td class="cell">
-            <div class="cell-value" id="{{ datagrid_name }}_{{ cell.name }}">
+            <div class="cell-value {% if cell.hasAttribute('form')%}cell-editable{% endif %}" id="{{ datagrid_name }}_{{ cell.name }}">
                 {{ cell.value|raw }}
                 {% if cell.hasAttribute('form') == true %}
-                    &nbsp;<a class="cell-edit" href="#" data-target="{{ datagrid_name }}_{{ row_index }}_{{ cell.name }}_edit" style="display:none;"><span><i class="icon-edit">&nbsp;</i>&nbsp;{{ 'crud.list.datagrid.editable.edit'|trans({}, 'FSiAdminBundle') }}</span></a>
+                    &nbsp;
+                    <a class="cell-edit" href="#" data-target="{{ datagrid_name }}_{{ row_index }}_{{ cell.name }}_edit" style="display:none;" title="{{ 'crud.list.datagrid.editable.edit'|trans({}, 'FSiAdminBundle') }}">
+                        <i class="icon-edit">&nbsp;</i>
+                    </a>
                 {% endif %}
             </div>
-            {% if cell.hasAttribute('form') == true %}
+            {% if cell.hasAttribute('form')%}
                 <div class="cell-edit-form" id="{{ datagrid_name }}_{{ row_index }}_{{ cell.name }}_edit" style="display:none;">
                     {{ datagrid_column_cell_form_widget(cell) }}
                 </div>

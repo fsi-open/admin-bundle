@@ -3,6 +3,10 @@ body {
     padding-top: 60px;
 }
 
+.cell-editable {
+    cursor: pointer;
+}
+
 .tree-level-0 {
     padding-left: 0;
 }
