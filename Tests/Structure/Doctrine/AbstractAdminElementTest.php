@@ -7,18 +7,18 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Tests\Structure;
+namespace FSi\Bundle\AdminBundle\Tests\Structure\Doctrine;
 
-use FSi\Bundle\AdminBundle\Structure\AbstractDoctrineAdminElement;
+use FSi\Bundle\AdminBundle\Structure\Doctrine\AbstractAdminElement as DoctrineAbstractAdminElement;
 use FSi\Component\DataGrid\DataGridInterface;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class AbstractDoctrineAdminElementTest extends \PHPUnit_Framework_TestCase
+class AbstractAdminElementTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var AbstractDoctrineAdminElement
+     * @var DoctrineAbstractAdminElement
      */
     protected $element;
 
@@ -135,7 +135,7 @@ class AbstractDoctrineAdminElementTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class FooDoctrineElement extends AbstractDoctrineAdminElement
+class FooDoctrineElement extends DoctrineAbstractAdminElement
 {
     public function getId()
     {

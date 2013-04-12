@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Structure\AbstractDoctrineAdminElement;
+use FSi\Bundle\AdminBundle\Structure\Doctrine\AbstractAdminElement as AbstractDoctrineAdminElement;
 use FSi\Bundle\AdminBundle\Structure\AdminElementInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;

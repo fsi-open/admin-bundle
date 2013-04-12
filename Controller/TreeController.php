@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Structure\DoctrineAdminElementInterface;
+use FSi\Bundle\AdminBundle\Structure\Doctrine\AdminElementInterface as DoctrineAdminElementInterface;
 use FSi\Bundle\DataGridBundle\HttpFoundation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -47,7 +47,7 @@ $ php app/console assets:install
 This is basic element class. In this example we create only one admin element but you can
 define as many of them as you need.
 Currently you can choose admin object type from:
-* ``AbstractDoctrineAdminElement``
+* ``Doctrine\AbstractAdminElement``
 
 ```php
 <?php
@@ -55,9 +55,9 @@ Currently you can choose admin object type from:
 
 namespace FSi\DemoBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Structure\AbstractDoctrineAdminElement;
+use FSi\Bundle\AdminBundle\Structure\Doctrine\AbstractAdminElement;
 
-class News extends AbstractDoctrineAdminElement
+class News extends AbstractAdminElement
 {
     public function getName()
     {

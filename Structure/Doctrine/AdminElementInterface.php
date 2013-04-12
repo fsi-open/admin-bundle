@@ -7,14 +7,15 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Structure;
+namespace FSi\Bundle\AdminBundle\Structure\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use FSi\Bundle\AdminBundle\Structure\ElementInterface;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-interface DoctrineAdminElementInterface extends ElementInterface
+interface AdminElementInterface extends ElementInterface
 {
     /**
      * @param ManagerRegistry $registry

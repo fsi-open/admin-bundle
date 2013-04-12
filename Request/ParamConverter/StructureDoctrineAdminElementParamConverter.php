@@ -2,7 +2,7 @@
 
 namespace FSi\Bundle\AdminBundle\Request\ParamConverter;
 
-use FSi\Bundle\AdminBundle\Structure\DoctrineAdminElementInterface;
+use FSi\Bundle\AdminBundle\Structure\Doctrine\AdminElementInterface;
 use FSi\Bundle\AdminBundle\Structure\GroupManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
@@ -38,7 +38,7 @@ class StructureDoctrineAdminElementParamConverter implements ParamConverterInter
         $param = $configuration->getName();
         $element = $this->manager->findElementById($request->attributes->get($param, ''));
 
-        if (!isset($element) || !$element instanceof DoctrineAdminElementInterface) {
+        if (!isset($element) || !$element instanceof AdminElementInterface) {
             throw new NotFoundHttpException();
         }
 
@@ -53,6 +53,6 @@ class StructureDoctrineAdminElementParamConverter implements ParamConverterInter
      */
     public function supports(ConfigurationInterface $configuration)
     {
-        return "FSi\Bundle\AdminBundle\Structure\DoctrineAdminElementInterface" === $configuration->getClass();
+        return "FSi\Bundle\AdminBundle\Structure\Doctrine\AdminElementInterface" === $configuration->getClass();
     }
 }

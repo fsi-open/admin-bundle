@@ -39,7 +39,7 @@ class StructurePass implements CompilerPassInterface
                     $element->addMethodCall('setDataGridFactory', array($container->findDefinition('datagrid.factory')));
                 }
 
-                if (in_array('FSi\Bundle\AdminBundle\Structure\DoctrineAdminElementInterface', $implements)) {
+                if (in_array('FSi\Bundle\AdminBundle\Structure\Doctrine\AdminElementInterface', $implements)) {
                     $element->addMethodCall('setManagerRegistry', array($container->findDefinition('doctrine')));
                 }
 

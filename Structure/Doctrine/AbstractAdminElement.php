@@ -7,17 +7,18 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Structure;
+namespace FSi\Bundle\AdminBundle\Structure\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Bundle\AdminBundle\Structure\AbstractAdminElement as BaseAbstractElement;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-abstract class AbstractDoctrineAdminElement extends AbstractAdminElement implements DoctrineAdminElementInterface
+abstract class AbstractAdminElement extends BaseAbstractElement implements AdminElementInterface
 {
     /**
      * @var \Doctrine\Common\Persistence\ManagerRegistry

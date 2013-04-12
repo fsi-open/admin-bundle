@@ -79,7 +79,7 @@ First we need to create new action in our overrided CRUDController.
 namespace FSi\AdminDemoBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Controller\CRUDController as BaseController;
-use FSi\Bundle\AdminBundle\Structure\DoctrineAdminElementInterface;
+use FSi\Bundle\AdminBundle\Structure\Doctrine\AdminElementInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,13 +88,13 @@ class CRUDController extends BaseController
 {
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \FSi\Bundle\AdminBundle\Structure\DoctrineAdminElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Structure\Doctrine\AdminElementInterface $element
      * @param $id
      * @return mixed
      *
      * @Route("/admin/{element}/activation/{id}", name="fsi_admin_crud_activation")
      */
-    public function activationAction(Request $request, DoctrineAdminElementInterface $element, $id)
+    public function activationAction(Request $request, Doctrine\AdminElementInterface $element, $id)
     {
         $entity = $element->getDataIndexer()->getData($id);
 
@@ -138,9 +138,9 @@ just a button in cell at list.
 <?php
 namespace FSi\DemoBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Structure\AbstractDoctrineAdminElement;
+use FSi\Bundle\AdminBundle\Structure\Doctrine\AbstractAdminElement;
 
-class News extends AbstractDoctrineAdminElement
+class News extends AbstractAdminElement
 {
     /**
      * @var \Symfony\Bundle\FrameworkBundle\Routing\Router
