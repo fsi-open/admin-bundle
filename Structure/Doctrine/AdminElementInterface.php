@@ -15,7 +15,7 @@ use FSi\Bundle\AdminBundle\Structure\ElementInterface;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-interface AdminElementInterface extends ElementInterface
+interface AdminElementInterface
 {
     /**
      * @param ManagerRegistry $registry

@@ -9,6 +9,8 @@
 
 namespace FSi\Bundle\AdminBundle\Structure;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
@@ -37,4 +39,40 @@ interface ElementInterface
      * @return string
      */
     public function getBaseRouteName();
+
+    /**
+     * Initialize options.
+     *
+     * @param array $options
+     */
+    public function initOptions($options = array());
+
+    /**
+     * @param OptionsResolverInterface $resolver
+     * @return mixed
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver);
+
+    /**
+     * Get option by name.
+     *
+     * @param $name
+     * @return mixed
+     */
+    public function getOption($name);
+
+    /**
+     * Get options array.
+     *
+     * @return array
+     */
+    public function getOptions();
+
+    /**
+     * Check if option exists.
+     *
+     * @param $name
+     * @return boolean
+     */
+    public function hasOption($name);
 }

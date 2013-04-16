@@ -28,11 +28,31 @@ class FSIAdminExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+
+
+        $this->setGroupElementOptions($container, $config['groups']);
         $this->setTemplateParameters($container, $config['templates']);
 
-        $container->setParameter('admin.groups', $config['groups']);
+
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param array $config
+     */
+    protected function setGroupElementOptions(ContainerBuilder $container, $config = array())
+    {
+        $groups = array();
+        foreach ($config as $groupid => $group) {
+            $groups[$groupid] = array();
+            foreach ($group['elements'] as $elementid => $element) {
+                $groups[$groupid][$elementid] = $element['options'];
+            }
+        }
+
+        $container->setParameter('admin.groups', $groups);
     }
 
     /**

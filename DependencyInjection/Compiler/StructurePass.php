@@ -29,9 +29,11 @@ class StructurePass implements CompilerPassInterface
             $group = $container->findDefinition($groupId);
 
             $groupElements = array();
-            foreach ($groupConfiguration['elements'] as $elementId) {
+            foreach ($groupConfiguration as $elementId => $elementOptions) {
                 $element = $container->findDefinition($elementId);
                 $implements = class_implements($element->getClass());
+
+                $element->addMethodCall('initOptions', array($elementOptions));
 
                 if (in_array('FSi\Bundle\AdminBundle\Structure\AdminElementInterface', $implements)) {
                     $element->addMethodCall('setFormFactory', array($container->findDefinition('form.factory')));

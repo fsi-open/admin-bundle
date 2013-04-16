@@ -15,6 +15,7 @@
         "twig/twig": ">=1.2,<2.0-dev",
         "symfony/framework-bundle" : "2.2.*",
         "symfony/form" : "2.2.*",
+        "symfony/options-resolver": "2.2.*",
         "sensio/framework-extra-bundle": "2.2.*@dev",
         "fsi/datagrid-bundle" : "1.0.*",
         "fsi/datasource-bundle" : "1.0.*",

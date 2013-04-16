@@ -14,11 +14,12 @@ use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-abstract class AbstractAdminElement implements AdminElementInterface
+abstract class AbstractAdminElement extends AbstractElement implements AdminElementInterface
 {
     /**
      * @var \Symfony\Component\Form\FormFactoryInterface
@@ -76,6 +77,26 @@ abstract class AbstractAdminElement implements AdminElementInterface
     public function getBaseRouteName()
     {
         return 'fsi_admin_crud_list';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'allow_delete' => true,
+            'template_crud_list' => null,
+            'template_crud_create' => null,
+            'template_crud_edit' => null
+        ));
+
+        $resolver->setAllowedTypes(array(
+            'allow_delete' => 'bool',
+            'template_crud_list' => array('null', 'string'),
+            'template_crud_create' => array('null', 'string'),
+            'template_crud_edit' => array('null', 'string'),
+        ));
     }
 
     /**

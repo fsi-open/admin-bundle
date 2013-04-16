@@ -47,7 +47,10 @@ class CRUDController extends BaseController
             $datagrid->setData($data);
         }
 
-        $template = $this->container->getParameter('admin.templates.crud_list');
+        $template = $element->hasOption('template_crud_list')
+            ? $element->getOption('template_crud_list')
+            : $this->container->getParameter('admin.templates.crud_list');
+
         return $this->render($template, array(
             'elements_count' => count($data),
             'element' => $element,
@@ -84,7 +87,10 @@ class CRUDController extends BaseController
             }
         }
 
-        $template = $this->container->getParameter('admin.templates.crud_create');
+        $template = $element->hasOption('template_crud_create')
+            ? $element->getOption('template_crud_create')
+            : $this->container->getParameter('admin.templates.crud_create');
+
         return $this->render($template, array(
             'element' => $element,
             'form' => $form->createView()
@@ -127,7 +133,10 @@ class CRUDController extends BaseController
             }
         }
 
-        $template = $this->container->getParameter('admin.templates.crud_edit');
+        $template = $element->hasOption('template_crud_edit')
+            ? $element->getOption('template_crud_edit')
+            : $this->container->getParameter('admin.templates.crud_edit');
+
         return $this->render($template, array(
             'element' => $element,
             'form' => $form->createView(),
@@ -138,10 +147,15 @@ class CRUDController extends BaseController
     /**
      * @param AdminElementInterface $element
      * @param $id
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function deleteAction(AdminElementInterface $element, $id)
     {
+        if (!$element->getOption('allow_delete')) {
+            throw $this->createNotFoundException();
+        }
+
         $indexer = $element->getDataIndexer();
         $entity = $indexer->getData($id);
 

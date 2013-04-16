@@ -304,6 +304,43 @@ Add created groups to configuration.
 # FSi Admin Bundle Configuration
 fsi_admin:
     groups:
-        admin.group.basic.elements :
-            elements: [admin.element.news]
+        admin.group.basic_elements :
+            elements:
+                admin.element.news: ~
+```
+
+You can also pass some additional options to each admin element object.
+Example:
+
+```yaml
+# app/config/config.yml
+
+# FSi Admin Bundle Configuration
+fsi_admin:
+    groups:
+        admin.group.basic_elements :
+            elements:
+                admin.element.news:
+                    options:
+                        allow_delete: false
+```
+
+### 7. Configuration Options
+
+``\FSi\Bundle\AdminBundle\Structure\Doctrine\AbstractAdminElement``
+
+```yaml
+# app/config/config.yml
+
+# FSi Admin Bundle Configuration
+fsi_admin:
+    groups:
+        admin.group.basic_elements :
+            elements:
+                admin.element.news: #
+                    options:
+                        allow_delete: true
+                        template_crud_list: "@FSiDemo/Crud/list.html.twig"
+                        template_crud_create: "@FSiDemo/Crud/create.html.twig"
+                        template_crud_edit: "@FSiDemo/Crud/edit.html.twig"
 ```

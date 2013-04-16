@@ -39,19 +39,25 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->arrayNode('groups')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
                     ->prototype('array')
                         ->children()
                             ->arrayNode('elements')
-                            ->isRequired()
-                            ->prototype('scalar')->end()
+                                ->isRequired()
+                                ->requiresAtLeastOneElement()
+                                ->prototype('array')
+                                    ->children()
+                                        ->arrayNode('options')
+                                            ->prototype('scalar')->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
             ->end();
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
 
         return $treeBuilder;
     }
