@@ -1,0 +1,8 @@
+{% trans_default_domain 'FSiAdminBundle' %}
+
+<div class="pagination pagination-centered">
+    {{ datasource_pagination_widget(datasource_view, {
+    max_pages: 10,
+    additional_parameters : {'element' : element.id}
+    }) }}
+</div>

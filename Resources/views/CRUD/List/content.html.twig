@@ -1,0 +1,12 @@
+{% trans_default_domain 'FSiAdminBundle' %}
+
+{% block datagrid %}
+    <div class="span10">
+    {% include '@FSiAdmin/CRUD/List/datagrid_content.html.twig' %}
+    </div>
+{% endblock datagrid %}
+{% block filter %}
+    <div class="span2">
+    {% include '@FSiAdmin/CRUD/List/filter_content.html.twig' %}
+    </div>
+{% endblock filter %}

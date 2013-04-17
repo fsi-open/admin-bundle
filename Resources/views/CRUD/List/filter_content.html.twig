@@ -1,0 +1,9 @@
+{% trans_default_domain 'FSiAdminBundle' %}
+
+{% if datasource_view.getFields()|length > 0 %}
+    <form class="form" method="GET" action="{{ path('fsi_admin_crud_list', {element : element.id}) }}">
+        {{ datasource_filter_widget(datasource_view) }}
+        <button type="submit" class="btn">{{ 'crud.list.datasource.search'|trans }}</button>
+        <a href="{{ path('fsi_admin_crud_list', {element : element.id}) }}" class="btn btn-primary">{{ 'crud.list.datasource.clear'|trans }}</a>
+    </form>
+{% endif %}

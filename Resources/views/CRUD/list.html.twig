@@ -16,47 +16,26 @@
 {% endif %}
 
 {% block content %}
-    {% block list_datagrid %}
     <div class="span8">
-        {{ datagrid_widget(datagrid_view) }}
-        <strong>{{ 'crud.list.datagrid.result_count'|trans({}, 'FSiAdminBundle') }} {{ elements_count }}</strong>
+        {% block datagrid %}
+            {% include '@FSiAdmin/CRUD/List/datagrid_content.html.twig' %}
+        {% endblock datagrid %}
+        {% block info %}
+            {% include '@FSiAdmin/CRUD/List/info_content.html.twig' %}
+        {% endblock info %}
         {% block export %}
-            {% if element.hasExportDataSource() == true and element.hasExportDataGrid() == true %}
-                <div class="btn-group pull-right">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                        {{ 'crud.list.datagrid.export.export_to'|trans({}, 'FSiAdminBundle') }}
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                        <li><a href="{{ path('fsi_admin_data_io_export', {element: element.id, type : 'csv'}) }}" target="_blank">{{ 'crud.list.datagrid.export.csv'|trans({}, 'FSiAdminBundle') }}</a></li>
-                        <li><a href="{{ path('fsi_admin_data_io_export', {element: element.id, type : 'csvexcel'}) }}" target="_blank">{{ 'crud.list.datagrid.export.excel_csv'|trans({}, 'FSiAdminBundle') }}</a></li>
-                        <li><a href="{{ path('fsi_admin_data_io_export', {element: element.id, type : 'excel'}) }}" target="_blank">{{ 'crud.list.datagrid.export.excel_95'|trans({}, 'FSiAdminBundle') }}</a></li>
-                        <li><a href="{{ path('fsi_admin_data_io_export', {element: element.id, type : 'excel2003'}) }}" target="_blank">{{ 'crud.list.datagrid.export.excel_2003'|trans({}, 'FSiAdminBundle') }}</a></li>
-                        <li><a href="{{ path('fsi_admin_data_io_export', {element: element.id, type : 'excel2007'}) }}" target="_blank">{{ 'crud.list.datagrid.export.excel_2007'|trans({}, 'FSiAdminBundle') }}</a></li>
-                    </ul>
-                </div>
-            {% endif %}
+            {% include '@FSiAdmin/CRUD/List/export_content.html.twig' %}
         {% endblock export %}
-        <div class="pagination pagination-centered">
-            {{ datasource_pagination_widget(datasource_view, {
-                max_pages: 10,
-                additional_parameters : {'element' : element.id}
-            }) }}
+        {% block pagination %}
+            {% include '@FSiAdmin/CRUD/List/pagination_content.html.twig' %}
+        {% endblock pagination %}
+        {% block buttons %}
+            {% include '@FSiAdmin/CRUD/List/buttons_content.html.twig' %}
+        {% endblock buttons %}
+    </div>
+    {% block filter %}
+        <div class="span2">
+            {% include '@FSiAdmin/CRUD/List/filter_content.html.twig' %}
         </div>
-        {% if element.hasCreateForm == true %}
-            <a href="{{ path('fsi_admin_crud_create', {element : element.id}) }}" class="btn btn-success">{{ 'crud.list.button.create'|trans({}, 'FSiAdminBundle')  }}</a>
-        {% endif %}
-    </div>
-    {% endblock list_datagrid %}
-    {% block list_filter %}
-    <div class="span2">
-        {% if datasource_view.getFields()|length > 0 %}
-        <form class="form" method="GET" action="{{ path('fsi_admin_crud_list', {element : element.id}) }}">
-            {{ datasource_filter_widget(datasource_view) }}
-            <button type="submit" class="btn">{{ 'crud.list.datasource.search'|trans({}, 'FSiAdminBundle') }}</button>
-            <a href="{{ path('fsi_admin_crud_list', {element : element.id}) }}" class="btn btn-primary">{{ 'crud.list.datasource.clear'|trans({}, 'FSiAdminBundle') }}</a>
-        </form>
-        {% endif %}
-    </div>
-    {% endblock list_filter %}
+    {% endblock filter %}
 {% endblock content %}

@@ -1,0 +1,5 @@
+{% trans_default_domain 'FSiAdminBundle' %}
+
+{% if element.hasCreateForm == true %}
+    <a href="{{ path('fsi_admin_crud_create', {element : element.id}) }}" class="btn btn-success">{{ 'crud.list.button.create'|trans  }}</a>
+{% endif %}
