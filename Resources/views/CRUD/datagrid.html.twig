@@ -1,6 +1,6 @@
 {% block datagrid %}
     {% spaceless %}
-        <table class="table table-hover table-striped table-bordered">
+        <table class="table table-hover table-striped table-bordered" id="{{ datagrid.name }}">
             <thead>
             {{ datagrid_header_widget(datagrid) }}
             </thead>
@@ -84,7 +84,7 @@
 {% endblock %}
 
 {#  pattern: datagrid_{grid_name}_column_name_{column_name}_cell #}
-{% block datagrid_column_type_action_cell %}
+{% block datagrid_column_name_actions_cell %}
     {% spaceless %}
         <td>
             <div class="text-right">

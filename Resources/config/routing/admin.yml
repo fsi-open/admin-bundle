@@ -19,9 +19,11 @@ fsi_admin_crud_edit:
         _controller: FSiAdminBundle:CRUD:edit
 
 fsi_admin_crud_delete:
-    path: /{element}/delete/{id}
+    path: /{element}/delete
     defaults:
         _controller: FSiAdminBundle:CRUD:delete
+    requirements:
+        _method:  POST
 
 fsi_admin_data_io_export:
     path: /{element}/export/{type}

@@ -192,25 +192,6 @@ abstract class AbstractAdminElement extends BaseAbstractElement implements Admin
             );
         }
 
-        if ($this->getOption('allow_delete')) {
-            $options['actions']['delete'] = array(
-                'url_attr' => array(
-                    'class' => 'btn btn-danger btn-small-horizontal',
-                    'title' => 'crud.list.datagrid.action.delete'
-                ),
-                'content' => '<span class="icon-trash icon-white"></span>',
-                'route_name' => 'fsi_admin_crud_delete',
-                'parameters_field_mapping' => array(
-                    'id' => function($values, $index) {
-                        return $index;
-                    }
-                ),
-                'additional_parameters' => array(
-                    'element' => $this->getId()
-                )
-            );
-        }
-
         return $options;
     }
 }

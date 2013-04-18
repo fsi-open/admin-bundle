@@ -20,18 +20,21 @@
         {% block datagrid %}
             {% include '@FSiAdmin/CRUD/List/datagrid_content.html.twig' %}
         {% endblock datagrid %}
-        {% block info %}
-            {% include '@FSiAdmin/CRUD/List/info_content.html.twig' %}
-        {% endblock info %}
+        {% block batch_action %}
+            {% include '@FSiAdmin/CRUD/List/batch_action_content.html.twig' %}
+        {% endblock batch_action %}
+        {% block batch_form %}
+            {% include '@FSiAdmin/CRUD/List/batch_form_content.html.twig' %}
+        {% endblock batch_form %}
+        {% block buttons %}
+            {% include '@FSiAdmin/CRUD/List/buttons_content.html.twig' %}
+        {% endblock buttons %}
         {% block export %}
             {% include '@FSiAdmin/CRUD/List/export_content.html.twig' %}
         {% endblock export %}
         {% block pagination %}
             {% include '@FSiAdmin/CRUD/List/pagination_content.html.twig' %}
         {% endblock pagination %}
-        {% block buttons %}
-            {% include '@FSiAdmin/CRUD/List/buttons_content.html.twig' %}
-        {% endblock buttons %}
     </div>
     {% block filter %}
         <div class="span2">
@@ -39,3 +42,28 @@
         </div>
     {% endblock filter %}
 {% endblock content %}
+
+{% block javascripts %}
+{{ parent() }}
+{% if element.option('allow_delete') == true and datagrid_view.hasColumnType('batch') == true %}
+<script>
+    $(document).ready(function() {
+        $('#batch_form').submit(function(event) {
+            var self = $(this),
+                action = $('#batch_action'),
+                elements = $('.{{ datagrid_view.name }}_batch'),
+                i = 0;
+
+            if (action[0].selectedIndex && $('.{{ datagrid_view.name }}_batch:checked').length) {
+                self.attr('action', action.val());
+                for (i; i < elements.length; i++) {
+                    $('#index_' + $(elements[i]).val()).prop('checked', $(elements[i]).prop('checked'));
+                }
+            } else {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+{% endif %}
+{% endblock javascripts %}

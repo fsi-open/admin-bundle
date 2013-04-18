@@ -1,8 +1,10 @@
 # Custom Actions
 
+## Single row action
+
 As you start to implement FSiAdminBundle in your application, you will probably find that you need to expand default actions.
 First example that illustrates the problem is how to add custom action to DataGrid.
-By default DataGrid has edit/delete/moveup/movedown action but sometimes its important to add something specific like
+By default DataGrid has edit/moveup/movedown action but sometimes its important to add something specific like
 disable action.
 
 This can be done by [overriding bundle](Resources/doc/installation.md) and expading CRUDController.
@@ -143,19 +145,6 @@ use FSi\Bundle\AdminBundle\Structure\Doctrine\AbstractAdminElement;
 class News extends AbstractAdminElement
 {
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\Routing\Router
-     */
-    protected $router;
-
-    /**
-     * @param Router $router
-     */
-    public function __construct(Router $router)
-    {
-        $this->router = $router;
-    }
-
-    /**
      * {@inheritDoc}
      */
     protected function initDataGrid()
@@ -163,15 +152,130 @@ class News extends AbstractAdminElement
         $datagrid = $this->getDataGridFactory()->createDataGrid('news_grid');
         $router = $this->router;
         $element = $this->getId();
-        $datagrid->addColumn('active', 'number', array(
+        $datagrid->addColumn('active', 'action', array(
             'label' => 'news.datagrid.active.label',
             'field_mapping' => array('id', 'active'),
-            'value_format' => function($data) use ($router, $element) {
-                $url = $router->generate('fsi_admin_crud_activation', array('element' => $element, 'id' => $data['id']));
-                $icon = ($data['active']) ? 'icon-ok' : 'icon-off';
-
-                return sprintf('<a href="%s"><i class="%s"></i></a>', $url, $icon);
-            },
+            'translation_domain' => 'messages',
+            'actions' => array(
+                'active' => array(
+                    'url_attr' => function($values, $index) {
+                        return array(
+                            'class' => !$values['active']
+                                ? 'btn btn-small-horizontal'
+                                : 'btn btn-success btn-small-horizontal',
+                            'title' => $values['active']
+                                ? 'crud.list.datagrid.action.disable'
+                                : 'crud.list.datagrid.action.active'
+                        );
+                    },
+                    'content' => function($values, $index) {
+                        return !$values['active']
+                            ? '<span class="icon-off"></span>'
+                            : '<span class="icon-ok icon-white"></span>';
+                    },
+                    'route_name' => 'fsi_admin_crud_activation',
+                    'parameters_field_mapping' => array(
+                        'id' => function($values, $index) {
+                            return $index;
+                        }
+                    ),
+                    'additional_parameters' => array(
+                        'element' => $this->getId()
+                    )
+                )
+            )
         ));
     }
 }
+```
+
+## Multiple rows action
+
+You also might want to add action that can be called for multiple rows in one time, just like delete action.
+
+1. modify news admin object configuration:
+
+```yaml
+# app/config/config.yml
+
+fsi_admin:
+    groups:
+        admin.group.basic_elements :
+            elements:
+                admin.element.news:
+                    options:
+                        template_crud_list: "@FSiAdminDemo/CRUD/list.html.twig"
+```
+
+2. Create custom list view with overrided batch_action block
+
+```
+{# src/FSi/AdminDemoBundle/Resources/views/CRUD/list.html.twig #}
+{% extends "@FSiAdmin/CRUD/list.html.twig" %}
+
+{% block batch_action %}
+    {% if element.option('allow_delete') == true and datagrid_view.hasColumnType('batch') == true %}
+        <select id="batch_action" class="pull-left">
+            <option>{{ 'crud.list.batch.empty_choice'|trans({}, 'FSiAdminBundle') }}</option>
+            <option value="{{ path('fsi_admin_crud_multi_activation', {element : element.id}) }}">{{ 'crud.list.batch.activation'|trans }}</option>
+            <option value="{{ path('fsi_admin_crud_delete', {element : element.id}) }}">{{ 'crud.list.batch.delete'|trans({}, 'FSiAdminBundle') }}</option>
+        </select>
+    {% endif %}
+{% endblock batch_action %}
+```
+
+3. Create action ``fsi_admin_crud_multi_activation`` in controller
+
+```php
+// src/FSi/AdminDemoBundle/Controller/CRUDController.php
+<?php
+
+/**
+ * (c) Fabryka Stron Internetowych sp. z o.o <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace FSi\AdminDemoBundle\Controller;
+
+use FSi\Bundle\AdminBundle\Controller\CRUDController as BaseController;
+use FSi\Bundle\AdminBundle\Structure\Doctrine\AdminElementInterface as DoctrineAdminElementInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * @author Norbert Orzechowicz <norbert@fsi.pl>
+ */
+class CRUDController extends BaseController
+{
+    /**
+     * @param Request $request
+     * @param DoctrineAdminElementInterface $element
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     *
+     * @Route("/admin/{element}/multiactivation", name="fsi_admin_crud_multi_activation", requirements={"_method": "POST"})
+     */
+    public function multiActivationAction(Request $request, DoctrineAdminElementInterface $element)
+    {
+        //indexes shoule be always passed as array under ``indexes`` key in request. 
+        $indexes = $request->request->get('indexes', array());
+        $indexer = $element->getDataIndexer();
+        if (count($indexes)) {
+            foreach ($indexes as $index) {
+                $entity = $indexer->getData($index);
+                if (!isset($entity)) {
+                    return $this->createNotFoundException();
+                }
+
+                $entity->setActive(true);
+                $element->getObjectManager()->persist($entity);
+                $element->getObjectManager()->flush();
+            }
+        }
+
+        return $this->redirect($this->generateUrl('fsi_admin_crud_list', array('element' => $element->getId())));
+    }
+}
+```

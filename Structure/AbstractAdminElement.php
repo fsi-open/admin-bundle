@@ -86,6 +86,7 @@ abstract class AbstractAdminElement extends AbstractElement implements AdminElem
     {
         $resolver->setDefaults(array(
             'allow_delete' => true,
+            'allow_multi_delete' => true,
             'template_crud_list' => null,
             'template_crud_create' => null,
             'template_crud_edit' => null
@@ -93,6 +94,7 @@ abstract class AbstractAdminElement extends AbstractElement implements AdminElem
 
         $resolver->setAllowedTypes(array(
             'allow_delete' => 'bool',
+            'allow_multi_delete' => 'bool',
             'template_crud_list' => array('null', 'string'),
             'template_crud_create' => array('null', 'string'),
             'template_crud_edit' => array('null', 'string'),
@@ -118,6 +120,9 @@ abstract class AbstractAdminElement extends AbstractElement implements AdminElem
     {
         if (!isset($this->datagrid)) {
             $this->datagrid = $this->initDataGrid();
+            if (!$this->datagrid->hasColumnType('batch') && $this->options['allow_delete']) {
+                $this->datagrid->addColumn('batch', 'batch', array('display_order' => -1000));
+            }
         }
 
         return isset($this->datagrid);

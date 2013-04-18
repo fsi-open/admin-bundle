@@ -2,6 +2,10 @@ admin:
     title: Admin Panel
 crud:
     list:
+        batch:
+            empty_choice: Select action
+            delete: Delete
+            confirm: OK
         datagrid:
             editable:
                 save: Save

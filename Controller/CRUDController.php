@@ -145,25 +145,29 @@ class CRUDController extends BaseController
     }
 
     /**
+     * @param Request $request
      * @param AdminElementInterface $element
-     * @param $id
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @return \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function deleteAction(AdminElementInterface $element, $id)
+    public function deleteAction(Request $request, AdminElementInterface $element)
     {
         if (!$element->getOption('allow_delete')) {
             throw $this->createNotFoundException();
         }
 
+        $indexes = $request->request->get('indexes', array());
         $indexer = $element->getDataIndexer();
-        $entity = $indexer->getData($id);
+        if (count($indexes)) {
+            foreach ($indexes as $index) {
+                $entity = $indexer->getData($index);
+                if (!isset($entity)) {
+                    return $this->createNotFoundException();
+                }
 
-        if (!isset($entity)) {
-            return $this->createNotFoundException();
+                $element->delete($entity);
+            }
         }
-
-        $element->delete($entity);
 
         return $this->redirect($this->generateUrl('fsi_admin_crud_list', array('element' => $element->getId())));
     }

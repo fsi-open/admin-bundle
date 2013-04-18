@@ -3,6 +3,14 @@ body {
     padding-top: 60px;
 }
 
+#batch_action {
+    margin-right: 5px;
+}
+
+#batch_form {
+    margin-right: 5px;
+}
+
 .cell-editable {
     cursor: pointer;
 }

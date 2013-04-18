@@ -129,7 +129,6 @@ class AbstractAdminElementTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($options['field_mapping'], array('id'));
         $this->assertSame($options['translation_domain'], 'FSiAdminBundle');
         $this->assertTrue(array_key_exists('edit', $options['actions']));
-        $this->assertTrue(array_key_exists('delete', $options['actions']));
         $this->assertTrue(array_key_exists('moveup', $options['actions']));
         $this->assertTrue(array_key_exists('movedown', $options['actions']));
     }
