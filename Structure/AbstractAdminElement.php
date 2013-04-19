@@ -89,7 +89,8 @@ abstract class AbstractAdminElement extends AbstractElement implements AdminElem
             'allow_multi_delete' => true,
             'template_crud_list' => null,
             'template_crud_create' => null,
-            'template_crud_edit' => null
+            'template_crud_edit' => null,
+            'template_crud_delete' => null
         ));
 
         $resolver->setAllowedTypes(array(
@@ -98,6 +99,7 @@ abstract class AbstractAdminElement extends AbstractElement implements AdminElem
             'template_crud_list' => array('null', 'string'),
             'template_crud_create' => array('null', 'string'),
             'template_crud_edit' => array('null', 'string'),
+            'template_crud_delete' => array('null', 'string'),
         ));
     }
 

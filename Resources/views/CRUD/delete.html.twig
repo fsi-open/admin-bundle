@@ -1,0 +1,23 @@
+{% form_theme form '@FSiAdmin/CRUD/form.html.twig' %}
+
+{% extends "@FSiAdmin/base.html.twig" %}
+
+{% block content %}
+    <div class="span10">
+        {% block message %}
+        <div>
+            <p>{{ 'crud.delete.message'|trans({"%count%" : indexes|length}, 'FSiAdminBundle') }}</p>
+        </div>
+        {% endblock message %}
+        {% block form %}
+        <form action="{{ path('fsi_admin_crud_delete', {element: element.id}) }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
+            {% for index in indexes %}
+            <input type="hidden" value="{{ index }}" name="indexes[]" checked="checked"/>
+            {% endfor %}
+            {{ form_rest(form) }}
+            <input type="submit" class="btn btn-success" name="confirm" value="{{ 'crud.delete.form.confirm.label'|trans({}, 'FSiAdminBundle') }}">
+            <input type="submit" class="btn btn-danger" name="cancel" value="{{ 'crud.delete.form.cancel.label'|trans({}, 'FSiAdminBundle') }}">
+        </form>
+        {% endblock form %}
+    </div>
+{% endblock %}

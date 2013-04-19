@@ -36,6 +36,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('crud_list')->defaultValue('@FSiAdmin/CRUD/list.html.twig')->end()
                         ->scalarNode('crud_create')->defaultValue('@FSiAdmin/CRUD/create.html.twig')->end()
                         ->scalarNode('crud_edit')->defaultValue('@FSiAdmin/CRUD/edit.html.twig')->end()
+                        ->scalarNode('crud_delete')->defaultValue('@FSiAdmin/CRUD/delete.html.twig')->end()
                     ->end()
                 ->end()
                 ->arrayNode('groups')

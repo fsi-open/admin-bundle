@@ -32,6 +32,12 @@ crud:
         button:
             save: Zapisz
     delete:
+        message: Czy na pewno chcesz usunąc %count% z zaznaczonych elementów?
+        form:
+            confirm:
+                label: Tak
+            cancel:
+                label: Nie
     edit:
         button:
             save: Zapisz

@@ -9,9 +9,9 @@
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
+use FSi\Bundle\AdminBundle\Form\Type\DeleteType;
 use FSi\Bundle\AdminBundle\Structure\Doctrine\AbstractAdminElement as AbstractDoctrineAdminElement;
 use FSi\Bundle\AdminBundle\Structure\AdminElementInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -158,17 +158,42 @@ class CRUDController extends BaseController
 
         $indexes = $request->request->get('indexes', array());
         $indexer = $element->getDataIndexer();
-        if (count($indexes)) {
-            foreach ($indexes as $index) {
-                $entity = $indexer->getData($index);
-                if (!isset($entity)) {
-                    return $this->createNotFoundException();
-                }
+        $form = $this->createForm(new DeleteType());
+        $entities = array();
 
-                $element->delete($entity);
+        foreach ($indexes as $index) {
+            $entity = $indexer->getData($index);
+            if (!isset($entity)) {
+                return $this->createNotFoundException();
             }
+
+            $entities[] = $entity;
         }
 
-        return $this->redirect($this->generateUrl('fsi_admin_crud_list', array('element' => $element->getId())));
+        if ($request->request->has('confirm')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                foreach ($entities as $entity) {
+                    $element->delete($entity);
+                }
+            }
+
+            return $this->redirect($this->generateUrl('fsi_admin_crud_list', array('element' => $element->getId())));
+        }
+
+        if ($request->request->has('cancel')) {
+            return $this->redirect($this->generateUrl('fsi_admin_crud_list', array('element' => $element->getId())));
+        }
+
+        $template = $element->hasOption('template_crud_delete')
+            ? $element->getOption('template_crud_delete')
+            : $this->container->getParameter('admin.templates.crud_delete');
+
+        return $this->render($template, array(
+            'indexes' => $indexes,
+            'entities' => $entities,
+            'element' => $element,
+            'form' => $form->createView(),
+        ));
     }
 }

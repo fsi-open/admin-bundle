@@ -28,11 +28,8 @@ class FSIAdminExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-
-
         $this->setGroupElementOptions($container, $config['groups']);
         $this->setTemplateParameters($container, $config['templates']);
-
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
@@ -67,5 +64,6 @@ class FSIAdminExtension extends Extension
         $container->setParameter('admin.templates.crud_list', $config['crud_list']);
         $container->setParameter('admin.templates.crud_create', $config['crud_create']);
         $container->setParameter('admin.templates.crud_edit', $config['crud_edit']);
+        $container->setParameter('admin.templates.crud_delete', $config['crud_delete']);
     }
 }

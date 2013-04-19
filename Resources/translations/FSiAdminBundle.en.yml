@@ -32,6 +32,12 @@ crud:
         button:
             save: Save
     delete:
+        message: Are you sure you want to delete %count% from selected elements?
+        form:
+            confirm:
+                label: Yes
+            cancel:
+                label: No
     edit:
         button:
             save: Save
