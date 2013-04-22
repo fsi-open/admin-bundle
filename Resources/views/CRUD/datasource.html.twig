@@ -15,3 +15,19 @@
         {% endif %}
     {% endspaceless %}
 {% endblock %}
+
+{% block datasource_max_results %}
+<div class="btn-group">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        {{ 'crud.list.datasource.results_per_page'|trans({}, 'FSiAdminBundle') }}: {{ max_results }}
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    {% for result_num, result_url in results %}
+        <li><a href="{{ result_url }}">{{ result_num }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+
+

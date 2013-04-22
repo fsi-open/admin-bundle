@@ -24,6 +24,7 @@ crud:
                 edit: Edytuj
                 delete: Usuń
         datasource:
+            results_per_page: Wyników na stronie
             search: Szukaj
             clear: Wyczyść
         button:

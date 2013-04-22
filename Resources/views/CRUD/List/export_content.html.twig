@@ -2,9 +2,9 @@
 
 <div class="pull-right">
     <strong>{{ 'crud.list.datagrid.result_count'|trans }} {{ elements_count }}</strong>
+    {{ datasource_max_results_widget(datasource_view, {additional_parameters : {'element' : element.id}}) }}
     {% if element.hasExportDataSource() == true and element.hasExportDataGrid() == true %}
         <div class="btn-group">
-
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                 {{ 'crud.list.datagrid.export.export_to'|trans}}
                 <span class="caret"></span>
