@@ -10,7 +10,7 @@ Add to composer.json
 }
 ```
 
-## 2. Register bundel in application
+## 2. Register bundle in application
 
 ```php
 <?php
@@ -35,14 +35,7 @@ admin:
     prefix: /admin
 ```
 
-## 4. Execute commands
-
-```
-$ php app/console cache:clear
-$ php app/console assets:install
-```
-
-## 5. Create admin elements
+## 4. Create admin elements
 
 This is basic element class. In this example we create only one admin element but you can
 define as many of them as you need.
@@ -114,7 +107,7 @@ class News extends AbstractAdminElement
          * options for action column. It will add edit/delete buttons in column.
          */
         $datagrid->addColumn('actions', 'action', array_merge(
-            $this->getDataGridActionColumnOptions(),
+            $this->getDataGridActionColumnOptions($datagrid),
             array(
                 'label' => "Actions"
             )
@@ -243,7 +236,7 @@ Available methods are:
 * ``protected function initCreateForm($data = null)``
 * ``protected function initEditForm($data = null)``
 
-### 5. Register admin elements as services
+## 5. Register admin elements as services
 
 ```xml
 <!-- src/FSi/DemoBundle/Resources/config/services.xml -->
@@ -325,7 +318,7 @@ fsi_admin:
                         allow_delete: false
 ```
 
-### 7. Configuration Options
+## 7. Configuration Options
 
 ``\FSi\Bundle\AdminBundle\Structure\Doctrine\AbstractAdminElement``
 
@@ -343,4 +336,11 @@ fsi_admin:
                         template_crud_list: "@FSiDemo/Crud/list.html.twig"
                         template_crud_create: "@FSiDemo/Crud/create.html.twig"
                         template_crud_edit: "@FSiDemo/Crud/edit.html.twig"
+```
+
+## 8. Execute commands
+
+```
+$ php app/console cache:clear
+$ php app/console assets:install
 ```
