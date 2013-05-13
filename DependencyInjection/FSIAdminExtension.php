@@ -58,6 +58,8 @@ class FSIAdminExtension extends Extension
      */
     protected function setTemplateParameters(ContainerBuilder $container, $config = array())
     {
+        $container->setParameter('admin.templates.base', $config['base']);
+
         $container->setParameter('admin.templates.admin_navigationtop', $config['admin_navigationtop']);
         $container->setParameter('admin.templates.admin_navigationleft', $config['admin_navigationleft']);
 
