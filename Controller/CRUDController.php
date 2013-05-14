@@ -61,7 +61,7 @@ class CRUDController extends BaseController
                 : $this->container->getParameter('admin.templates.crud_list'),
             array(
                 'context' => $context,
-                'elements_count' => count($context->getData()),
+                'elements_count' => count($data),
                 'element' => $element,
                 'datasource_view' => $context->getDataSource()->createView(),
                 'datagrid_view' => $context->getDataGrid()->createView()
