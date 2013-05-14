@@ -34,6 +34,12 @@
 
             <tag name="request.param_converter" converter="structure.doctrine_admin_element" priority="10" />
         </service>
+
+         <service id="admin.twig.extension" class="FSi\Bundle\AdminBundle\Twig\Extension\AdminExtension" public="false">
+            <tag name="twig.extension" />
+            <argument>%admin.templates.base%</argument>
+        </service>
+
     </services>
 
 </container>
