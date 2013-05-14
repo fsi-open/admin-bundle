@@ -141,11 +141,6 @@ class FooElement extends AbstractAdminElement
         return 'foo.admin.element.name';
     }
 
-    protected function getDataGridActionColumnOptions(DataGridInterface $datagrid)
-    {
-        return array();
-    }
-
     public function delete($entity)
     {
     }
@@ -156,6 +151,15 @@ class FooElement extends AbstractAdminElement
 
     public function saveGrid()
     {
+    }
+
+    public function getDataIndexer()
+    {
+    }
+
+    protected function getDataGridActionColumnOptions(DataGridInterface $datagrid)
+    {
+        return array();
     }
 
     protected function initDataGrid()

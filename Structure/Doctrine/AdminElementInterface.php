@@ -10,12 +10,12 @@
 namespace FSi\Bundle\AdminBundle\Structure\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use FSi\Bundle\AdminBundle\Structure\ElementInterface;
+use FSi\Bundle\AdminBundle\Structure\AdminElementInterface as BaseElementInterface;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-interface AdminElementInterface
+interface AdminElementInterface extends BaseElementInterface
 {
     /**
      * @param ManagerRegistry $registry

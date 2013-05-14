@@ -9,7 +9,10 @@
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Form\Type\DeleteType;
+use FSi\Bundle\AdminBundle\Context\Crud\Doctrine\CrudCreateContextBuilder;
+use FSi\Bundle\AdminBundle\Context\Crud\Doctrine\CrudDeleteContextBuilder;
+use FSi\Bundle\AdminBundle\Context\Crud\Doctrine\CrudEditContextBuilder;
+use FSi\Bundle\AdminBundle\Context\Crud\Doctrine\CrudListContextBuilder;
 use FSi\Bundle\AdminBundle\Structure\Doctrine\AbstractAdminElement as AbstractDoctrineAdminElement;
 use FSi\Bundle\AdminBundle\Structure\AdminElementInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,35 +31,42 @@ class CRUDController extends BaseController
      */
     public function listAction(Request $request, AdminElementInterface $element)
     {
-        if (!$element->hasDataGrid() || !$element->hasDataSource()) {
-            throw $this->createNotFoundException();
+        $context = null;
+
+        if (CrudListContextBuilder::supports($element)) {
+            $contextBuilder = new CrudListContextBuilder($element);
+            $context = $contextBuilder->buildContext();
         }
 
-        $datasource = $element->getDataSource();
-        $datagrid = $element->getDataGrid();
-        $datasource->bindParameters($request);
-        $data = $datasource->getResult();
-        $datagrid->setData($data);
+        if (!isset($context)) {
+            throw $this->createNotFoundException(sprintf('Cant create context for element with id "%s" in List action', $element->getId()));
+        }
+
+        $context->getDataSource()->bindParameters($request);
+        $data = $context->getDataSource()->getResult();
+        $context->getDataGrid()->setData($data);
 
         if ($request->isMethod('POST'))  {
-            $datagrid->bindData($request);
+            $context->getDataGrid()->bindData($request);
             $element->saveGrid();
 
-            $datasource->bindParameters($request);
-            $data = $datasource->getResult();
-            $datagrid->setData($data);
+            $context->getDataSource()->bindParameters($request);
+            $data = $context->getDataSource()->getResult();
+            $context->getDataGrid()->setData($data);
         }
 
-        $template = $element->hasOption('template_crud_list')
-            ? $element->getOption('template_crud_list')
-            : $this->container->getParameter('admin.templates.crud_list');
-
-        return $this->render($template, array(
-            'elements_count' => count($data),
-            'element' => $element,
-            'datasource_view' => $datasource->createView(),
-            'datagrid_view' => $datagrid->createView()
-        ));
+        return $this->render(
+            $context->hasTemplateName()
+                ? $context->getTemplateName()
+                : $this->container->getParameter('admin.templates.crud_list'),
+            array(
+                'context' => $context,
+                'elements_count' => count($context->getData()),
+                'element' => $element,
+                'datasource_view' => $context->getDataSource()->createView(),
+                'datagrid_view' => $context->getDataGrid()->createView()
+            )
+        );
     }
 
     /**
@@ -67,34 +77,38 @@ class CRUDController extends BaseController
      */
     public function createAction(Request $request, AdminElementInterface $element)
     {
-        if (!$element->hasCreateForm()) {
-            throw $this->createNotFoundException();
+        $context = null;
+
+        if (CrudCreateContextBuilder::supports($element)) {
+            $contextBuilder = new CrudCreateContextBuilder($element);
+            $context = $contextBuilder->buildContext();
         }
 
-        $form = $element->getCreateForm();
+        if (!isset($context)) {
+            throw $this->createNotFoundException(sprintf('Cant create context for element with id "%s" in List action', $element->getId()));
+        }
 
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $context->getForm()->bind($request);
 
-            if ($form->isValid()) {
-                if ($element instanceof AbstractDoctrineAdminElement) {
-                    /* @var $element AbstractDoctrineAdminElement */
-                    $entity = $form->getData();
-                    $element->save($entity);
+            if ($context->getForm()->isValid()) {
+                /* @var $element AbstractDoctrineAdminElement */
+                $element->save($context->getForm()->getData());
 
-                    return $this->redirect($this->generateUrl('fsi_admin_crud_list', array('element' => $element->getId())));
-                }
+                return $this->redirect($this->generateUrl('fsi_admin_crud_list', array('element' => $element->getId())));
             }
         }
 
-        $template = $element->hasOption('template_crud_create')
-            ? $element->getOption('template_crud_create')
-            : $this->container->getParameter('admin.templates.crud_create');
-
-        return $this->render($template, array(
-            'element' => $element,
-            'form' => $form->createView()
-        ));
+        return $this->render(
+            $context->hasTemplateName()
+                ? $context->getTemplateName()
+                : $this->container->getParameter('admin.templates.crud_create'),
+            array(
+                'context' => $context,
+                'element' => $element,
+                'form' => $context->getForm()->createView()
+            )
+        );
     }
 
     /**
@@ -106,42 +120,37 @@ class CRUDController extends BaseController
      */
     public function editAction(Request $request, AdminElementInterface $element, $id)
     {
-        if (!$element->hasEditForm()) {
-            throw $this->createNotFoundException();
+        $context = null;
+
+        if (CrudEditContextBuilder::supports($element)) {
+            $contextBuilder = new CrudEditContextBuilder($element, $id);
+            $context = $contextBuilder->buildContext();
         }
 
-        $indexer = $element->getDataIndexer();
-        $entity = $indexer->getData($id);
-
-        if (!isset($entity)) {
-            return $this->createNotFoundException();
+        if (!isset($context)) {
+            throw $this->createNotFoundException(sprintf('Cant create context for element with id "%s" in Edit action', $element->getId()));
         }
-
-        /* @var $form Form */
-        $form = $element->getEditForm($entity);
 
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $context->getForm()->bind($request);
 
-            if ($form->isValid()) {
-                if ($element instanceof AbstractDoctrineAdminElement) {
-                    /* @var $element AbstractDoctrineAdminElement */
-                    $entity = $form->getData();
-                    $element->save($entity);
-                    return $this->redirect($this->generateUrl('fsi_admin_crud_list', array('element' => $element->getId())));
-                }
+            if ($context->getForm()->isValid()) {
+                $element->save($context->getForm()->getData());
+                return $this->redirect($this->generateUrl('fsi_admin_crud_list', array('element' => $element->getId())));
             }
         }
 
-        $template = $element->hasOption('template_crud_edit')
-            ? $element->getOption('template_crud_edit')
-            : $this->container->getParameter('admin.templates.crud_edit');
-
-        return $this->render($template, array(
-            'element' => $element,
-            'form' => $form->createView(),
-            'id' => $id
-        ));
+        return $this->render(
+            $context->hasTemplateName()
+                ? $context->getTemplateName()
+                : $this->container->getParameter('admin.templates.crud_edit'),
+            array(
+                'context' => $context,
+                'element' => $element,
+                'form' => $context->getForm()->createView(),
+                'id' => $context->getEntityId()
+            )
+        );
     }
 
     /**
@@ -152,28 +161,25 @@ class CRUDController extends BaseController
      */
     public function deleteAction(Request $request, AdminElementInterface $element)
     {
-        if (!$element->getOption('allow_delete')) {
-            throw $this->createNotFoundException();
+        $context = null;
+
+        if (CrudDeleteContextBuilder::supports($element)) {
+            $contextBuilder = new CrudDeleteContextBuilder(
+                $element,
+                $this->get('form.factory'),
+                $request->request->get('indexes', array())
+            );
+            $context = $contextBuilder->buildContext();
         }
 
-        $indexes = $request->request->get('indexes', array());
-        $indexer = $element->getDataIndexer();
-        $form = $this->createForm(new DeleteType());
-        $entities = array();
-
-        foreach ($indexes as $index) {
-            $entity = $indexer->getData($index);
-            if (!isset($entity)) {
-                return $this->createNotFoundException();
-            }
-
-            $entities[] = $entity;
+        if (!isset($context)) {
+            throw $this->createNotFoundException(sprintf('Cant create context for element with id "%s" in Edit action', $element->getId()));
         }
 
         if ($request->request->has('confirm')) {
-            $form->bind($request);
-            if ($form->isValid()) {
-                foreach ($entities as $entity) {
+            $context->getForm()->bind($request);
+            if ($context->getForm()->isValid()) {
+                foreach ($context->getEntities() as $entity) {
                     $element->delete($entity);
                 }
             }
@@ -185,15 +191,17 @@ class CRUDController extends BaseController
             return $this->redirect($this->generateUrl('fsi_admin_crud_list', array('element' => $element->getId())));
         }
 
-        $template = $element->hasOption('template_crud_delete')
-            ? $element->getOption('template_crud_delete')
-            : $this->container->getParameter('admin.templates.crud_delete');
-
-        return $this->render($template, array(
-            'indexes' => $indexes,
-            'entities' => $entities,
-            'element' => $element,
-            'form' => $form->createView(),
-        ));
+        return $this->render(
+            $context->hasTemplateName()
+                ? $context->getTemplateName()
+                : $this->container->getParameter('admin.templates.crud_delete'),
+            array(
+                'context' => $context,
+                'indexes' => $context->getIndexes(),
+                'entities' => $context->getEntities(),
+                'element' => $element,
+                'form' => $context->getForm()->createView(),
+            )
+        );
     }
 }

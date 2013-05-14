@@ -41,7 +41,7 @@ class AbstractAdminElementTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @@expectedException FSi\Bundle\AdminBundle\Exception\RuntimeException
+     * @@expectedException \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function testHasObjectManagerWithoutManager()
     {

@@ -10,6 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Structure;
 
 use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -129,6 +130,13 @@ interface AdminElementInterface extends ElementInterface
      * @throws RuntimeException thrown when FormFactoryInterface is not set.
      */
     public function getFormFactory();
+
+    /**
+     * This method should be used inside of admin objects to retrieve DataIndexerInterface.
+     *
+     * @return \FSi\Component\DataIndexer\DataIndexerInterface
+     */
+    public function getDataIndexer();
 
     /**
      * This method is called from CRUDController after form validation is passed in edit and create action.

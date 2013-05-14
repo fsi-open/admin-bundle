@@ -87,9 +87,7 @@ abstract class AbstractAdminElement extends BaseAbstractElement implements Admin
     }
 
     /**
-     * This method should be used inside of admin objects to retrieve DoctrineDataIndexer.
-     *
-     * @return \FSi\Component\DataIndexer\DoctrineDataIndexer
+     * {@inheritdoc}
      */
     public function getDataIndexer()
     {

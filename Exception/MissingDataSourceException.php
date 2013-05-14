@@ -10,10 +10,8 @@
 namespace FSi\Bundle\AdminBundle\Exception;
 
 /**
- * Thrown when option does't exists.
- *
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class MissingOptionException extends \InvalidArgumentException implements ExceptionInterface
+class MissingDataSourceException extends \RuntimeException implements ContextExceptionInterface
 {
 }

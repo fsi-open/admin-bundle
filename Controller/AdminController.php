@@ -30,6 +30,7 @@ class AdminController extends BaseController
     public function navigationtopAction()
     {
         $template = $this->container->getParameter('admin.templates.admin_navigationtop');
+
         return $this->render($template, array(
             'manager' => $this->getGroupManager()
         ));
@@ -41,6 +42,7 @@ class AdminController extends BaseController
     public function navigationleftAction()
     {
         $template = $this->container->getParameter('admin.templates.admin_navigationleft');
+
         return $this->render($template, array(
             'manager' => $this->getGroupManager()
         ));

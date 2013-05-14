@@ -12,7 +12,7 @@
         {% block form %}
         <form action="{{ path('fsi_admin_crud_delete', {element: element.id}) }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
             {% for index in indexes %}
-            <input type="hidden" value="{{ index }}" name="indexes[]" checked="checked"/>
+            <input type="hidden" value="{{ index }}" name="indexes[]"/>
             {% endfor %}
             {{ form_rest(form) }}
             <input type="submit" class="btn btn-success" name="confirm" value="{{ 'crud.delete.form.confirm.label'|trans({}, 'FSiAdminBundle') }}">

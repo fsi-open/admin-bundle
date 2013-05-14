@@ -9,6 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
+use FSi\Bundle\AdminBundle\Context\DataIO\ExportContextBuilder;
 use FSi\Bundle\DataGridBundle\HttpFoundation;
 use FSi\Bundle\AdminBundle\Structure\AdminElementInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,30 +27,35 @@ class DataIOController extends BaseController
      */
     public function exportAction(AdminElementInterface $element, $type)
     {
-        if (!$element->hasExportDataGrid() || !$element->hasExportDataSource()) {
-            throw $this->createNotFoundException();
+        $context = null;
+
+        if (ExportContextBuilder::supports($element)) {
+            $contextBuilder = new ExportContextBuilder($element);
+            $context = $contextBuilder->buildContext();
         }
 
-        $datasource = $element->getExportDataSource();
-        $datagrid = $element->getExportDataGrid();
-        $data = $datasource->getResult();
-        $datagrid->setData($data);
+        if (!isset($context)) {
+            throw $this->createNotFoundException(sprintf('Cant create context for element with id "%s" in export action', $element->getId()));
+        }
+
+        $data = $context->getDatasource()->getResult();
+        $context->getDatagrid()->setData($data);
 
         switch ($type) {
             case 'csv':
-                $response = new HttpFoundation\CSVExport($datagrid->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
+                $response = new HttpFoundation\CSVExport($context->getDatagrid()->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
                 break;
             case 'csvexcel':
-                $response =  new HttpFoundation\CSVExcelExport($datagrid->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
+                $response =  new HttpFoundation\CSVExcelExport($context->getDatagrid()->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
                 break;
             case 'excel':
-                $response =  new HttpFoundation\ExcelExport($datagrid->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
+                $response =  new HttpFoundation\ExcelExport($context->getDatagrid()->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
                 break;
             case 'excel2003':
-                $response =  new HttpFoundation\Excel2003Export($datagrid->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
+                $response =  new HttpFoundation\Excel2003Export($context->getDatagrid()->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
                 break;
             case 'excel2007':
-                $response =  new HttpFoundation\Excel2007Export($datagrid->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
+                $response =  new HttpFoundation\Excel2007Export($context->getDatagrid()->createView(), date('Y_m_d_His'), 200, array(), $this->get('translator'));
                 break;
         }
 
