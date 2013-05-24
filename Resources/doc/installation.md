@@ -6,7 +6,7 @@ Add to composer.json
 
 ```
 "require": {
-    "fsi/admin-bundle": "1.0.*@dev"
+    "fsi/admin-bundle": "1.0.x-dev"
 }
 ```
 
