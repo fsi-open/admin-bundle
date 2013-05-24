@@ -20,6 +20,8 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
+        new FSi\Bundle\DataSourceBundle\DataSourceBundle(),
+        new FSi\Bundle\DataGridBundle\DataGridBundle(),
         new FSi\Bundle\AdminBundle\FSiAdminBundle(),
     );
 }
@@ -293,6 +295,14 @@ Add created groups to configuration.
 
 ```yaml
 # app/config/config.yml
+
+# FSi DataGrid Bundle Configuration
+fsi_data_grid:
+    twig: ~
+
+# FSi DataSource Bundle Configuration
+fsi_data_source:
+    twig: ~
 
 # FSi Admin Bundle Configuration
 fsi_admin:
