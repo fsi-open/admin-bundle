@@ -18,7 +18,7 @@ final class AdminEvents
 
     const CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND = 'admin.crud.list.datasource.request.pre_bind';
 
-    const CRUD_LIST_DATASOURCE_REQUEST_POST_BIND = 'admin.crud.list.datasource.request.pre_bind';
+    const CRUD_LIST_DATASOURCE_REQUEST_POST_BIND = 'admin.crud.list.datasource.request.post_bind';
 
     const CRUD_LIST_DATAGRID_DATA_PRE_BIND = 'admin.crud.list.datagrid.data.pre_bind';
 
