@@ -17,6 +17,9 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
  */
 class StructurePass implements CompilerPassInterface
 {
+    /**
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition('admin.group.manager')) {
