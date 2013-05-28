@@ -59,7 +59,13 @@ class FSIAdminExtension extends Extension
     protected function setTemplateParameters(ContainerBuilder $container, $config = array())
     {
         $container->setParameter('admin.templates.base', $config['base']);
+        $container->setParameter('admin.templates.datagrid_theme', $config['datagrid_theme']);
+        $container->setParameter('admin.templates.datasource_theme', $config['datasource_theme']);
+        $container->setParameter('admin.templates.create_form_theme', $config['create_form_theme']);
+        $container->setParameter('admin.templates.edit_form_theme', $config['edit_form_theme']);
+        $container->setParameter('admin.templates.delete_form_theme', $config['delete_form_theme']);
 
+        $container->setParameter('admin.templates.index_page', $config['index_page']);
         $container->setParameter('admin.templates.admin_navigationtop', $config['admin_navigationtop']);
         $container->setParameter('admin.templates.admin_navigationleft', $config['admin_navigationleft']);
 

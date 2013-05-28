@@ -9,32 +9,36 @@
 
 namespace FSi\Bundle\AdminBundle\Twig\Extension;
 
-use FSi\Bundle\AdminBundle\FSiAdminBundle;
-
 /**
  * @author Bartosz Bialek <bartosz.bialek@fsi.pl>
+ * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
 class AdminExtension extends \Twig_Extension
 {
-    protected $baseTemplate;
+    /**
+     * Array of templates that will be registered as twig globals.
+     * @var array
+     */
+    protected $templates;
 
     /**
-     * @param string $baseTemplate
+     * @param array $templates
      */
-    function __construct($baseTemplate)
+    function __construct($templates = array())
     {
-        $this->baseTemplate = $baseTemplate;
+        $this->templates = $templates;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getGlobals()
     {
-        return array(
-            'base_template' => $this->baseTemplate,
-        );
+        return $this->templates;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     function getName()
     {
