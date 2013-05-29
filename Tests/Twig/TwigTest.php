@@ -13,6 +13,7 @@ use FSi\Bundle\AdminBundle\Twig\Extension\AdminExtension;
 
 /**
  * @author Bartosz Bialek <bartosz.bialek@fsi.pl>
+ * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
 class TwigTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,13 +24,15 @@ class TwigTest extends \PHPUnit_Framework_TestCase
         $loader = new \Twig_Loader_String();
         $twig = new \Twig_Environment($loader);
 
-        $twig->addExtension(new AdminExtension('testBaseTemplate.html.twig'));
+        $twig->addExtension(new AdminExtension(array(
+            'admin_templates_base' => 'testBaseTemplate.html.twig'
+        )));
 
         $this->twig = $twig;
     }
 
     public function testGlobals()
     {
-        $this->assertEquals('testBaseTemplate.html.twig', $this->twig->render('{{ base_template }}'));
+        $this->assertEquals('testBaseTemplate.html.twig', $this->twig->render('{{ admin_templates_base }}'));
     }
 }
