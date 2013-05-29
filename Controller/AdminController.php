@@ -21,7 +21,9 @@ class AdminController extends BaseController
      */
     public function indexAction()
     {
-        return $this->render('@FSiAdmin/Admin/index.html.twig');
+        $template = $this->container->getParameter('admin.templates.index_page');
+
+        return $this->render($template);
     }
 
     /**

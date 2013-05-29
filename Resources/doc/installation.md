@@ -348,6 +348,8 @@ fsi_admin:
                         template_crud_edit: "@FSiDemo/Crud/edit.html.twig"
 ```
 
+Example of full configuration ca be found [here](configuration.md)
+
 ## 8. Execute commands
 
 ```

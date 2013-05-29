@@ -1,6 +1,8 @@
-{% form_theme form '@FSiAdmin/CRUD/form.html.twig' %}
+{% extends admin_templates_base %}
 
-{% extends base_template %}
+{% block themes %}
+    {% form_theme form admin_templates_delete_form_theme %}
+{% endblock themes %}
 
 {% block content %}
     <div class="span10">
