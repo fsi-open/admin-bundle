@@ -33,6 +33,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         return array(
             'templates' => array(
                 'base' => '@FSiAdmin/base.html.twig',
+                'index_page' => '@FSiAdmin/Admin/index.html.twig',
                 'admin_navigationtop' => '@FSiAdmin/Admin/navigationtop.html.twig',
                 'admin_navigationleft' => '@FSiAdmin/Admin/navigationleft.html.twig',
                 'crud_list' => '@FSiAdmin/CRUD/list.html.twig',
