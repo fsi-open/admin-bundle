@@ -441,13 +441,4 @@ abstract class AbstractAdminElement extends AbstractElement implements AdminElem
     {
         return $this->initForm($data);
     }
-
-    /**
-     * This method will create edit and delete action options and return them as
-     * array ready to use in DataGridColumn.
-     *
-     * @param \FSi\Component\DataGrid\DataGridInterface $datagrid
-     * @return array
-     */
-    abstract protected function getDataGridActionColumnOptions(DataGridInterface $datagrid);
 }
