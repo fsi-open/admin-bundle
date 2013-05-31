@@ -89,14 +89,34 @@
         <td>
             <div class="text-right">
                 {% for action_name, action in cell.value %}
-                    {% spaceless %}
-                        <a {% for attrname, attrvalue in action.url_attr %}{% if attrname == 'title' %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}>
-                        {{ action.content|trans({}, translation_domain)|raw }}
-                        </a>&nbsp;
-                    {% endspaceless %}
+                    {{ datagrid_column_type_action_cell_action_widget(cell, action_name, action.content, action.url_attr|merge({'href' : action.url})) }}&nbsp;
                 {% endfor %}
             </div>
         </td>
     {% endspaceless %}
 {% endblock %}
 
+{#  pattern: datagrid_column_type_action_cell_action_{action_name} #}
+{% block datagrid_column_type_action_cell_action_edit %}
+    {% spaceless %}
+        <a href="{{ attr.href }}" title="{{ 'crud.list.datagrid.action.edit'|trans({}, 'FSiAdminBundle')  }}" class="btn btn-warning btn-small-horizontal">
+            <span class="icon-eject icon-white"></span>
+        </a>
+    {% endspaceless %}
+{% endblock %}
+
+{% block datagrid_column_type_action_cell_action_move_up %}
+    {% spaceless %}
+        <a href="{{ attr.href }}" title="{{ 'crud.list.datagrid.action.moveup'|trans({}, 'FSiAdminBundle')  }}" class="btn btn-small-horizontal">
+            <span class="icon-trash icon-arrow-up"></span>
+        </a>
+    {% endspaceless %}
+{% endblock %}
+
+{% block datagrid_column_type_action_cell_action_move_down %}
+    {% spaceless %}
+        <a href="{{ attr.href }}" title="{{ 'crud.list.datagrid.action.movedown'|trans({}, 'FSiAdminBundle')  }}" class="btn btn-small-horizontal">
+            <span class="icon-trash icon-arrow-down"></span>
+        </a>
+    {% endspaceless %}
+{% endblock %}

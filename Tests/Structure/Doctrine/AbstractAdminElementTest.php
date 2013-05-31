@@ -10,7 +10,6 @@
 namespace FSi\Bundle\AdminBundle\Tests\Structure\Doctrine;
 
 use FSi\Bundle\AdminBundle\Structure\Doctrine\AbstractAdminElement as DoctrineAbstractAdminElement;
-use FSi\Component\DataGrid\DataGridInterface;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -91,47 +90,6 @@ class AbstractAdminElementTest extends \PHPUnit_Framework_TestCase
         $this->element->setManagerRegistry($this->registry);
         $this->element->delete(new FooEntity());
     }
-
-    public function testGetDataGridColumnActionOptions()
-    {
-        $self = $this;
-        $this->registry
-            ->expects($this->any())
-            ->method('getManagerForClass')
-            ->with('FooEntity')
-            ->will($this->returnCallback(function() use ($self){
-                $om = $self->getMock('Doctrine\Common\Persistence\ObjectManager');
-
-                $om->expects($this->at(0))
-                    ->method('getClassMetadata')
-                    ->with('FooEntity')
-                    ->will($this->returnCallback(function() use($self) {
-                        $metadata = $self->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
-                        $metadata->expects($this->at(0))
-                            ->method('getIdentifierFieldNames')
-                            ->will($self->returnValue(array('id')));
-
-                        return $metadata;
-                    }));
-
-                return $om;
-            }));
-
-        $this->element->setManagerRegistry($this->registry);
-        $datagrid = $this->getMock('FSi\Component\DataGrid\DataGridInterface');
-        $datagrid->expects($this->at(0))
-            ->method('hasColumnType')
-            ->with('gedmo_tree')
-            ->will($this->returnValue(true));
-
-        $options = $this->element->getOptionsGridAction($datagrid);
-
-        $this->assertSame($options['field_mapping'], array('id'));
-        $this->assertSame($options['translation_domain'], 'FSiAdminBundle');
-        $this->assertTrue(array_key_exists('edit', $options['actions']));
-        $this->assertTrue(array_key_exists('moveup', $options['actions']));
-        $this->assertTrue(array_key_exists('movedown', $options['actions']));
-    }
 }
 
 class FooDoctrineElement extends DoctrineAbstractAdminElement
@@ -154,11 +112,6 @@ class FooDoctrineElement extends DoctrineAbstractAdminElement
     public function hasEditForm($data = null)
     {
         return true;
-    }
-
-    public function getOptionsGridAction(DataGridInterface $datagrid)
-    {
-        return $this->getDataGridActionColumnOptions($datagrid);
     }
 }
 
