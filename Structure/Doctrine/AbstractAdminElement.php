@@ -46,14 +46,6 @@ abstract class AbstractAdminElement extends BaseAbstractElement implements Admin
     }
 
     /**
-     * Return repository name bound to this admin object.
-     * Repository will be used to create/updated/delete entities.
-     *
-     * @return string
-     */
-    abstract public function getClassName();
-
-    /**
      * This function should be used inside of admin objects to retrieve ObjectManager
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
@@ -122,74 +114,5 @@ abstract class AbstractAdminElement extends BaseAbstractElement implements Admin
     {
         $this->getObjectManager()->remove($entity);
         $this->getObjectManager()->flush();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDataGridActionColumnOptions(DataGridInterface $datagrid)
-    {
-        $options = array('actions' => array());
-        $classMetadata = $this->getObjectManager()->getClassMetadata($this->getClassName());
-        $options['field_mapping'] = $classMetadata->getIdentifierFieldNames();
-        $options['translation_domain'] = 'FSiAdminBundle';
-
-        if ($datagrid->hasColumnType('gedmo_tree')) {
-            $options['actions']['moveup'] = array(
-                'url_attr' => array(
-                    'class' => 'btn btn-small-horizontal',
-                    'title' => 'crud.list.datagrid.action.moveup'
-                ),
-                'content' => '<span class="icon-trash icon-arrow-up"></span>',
-                'route_name' => 'fsi_admin_tree_move_up',
-                'parameters_field_mapping' => array(
-                    'id' => function($values, $index) {
-                        return $index;
-                    }
-                ),
-                'additional_parameters' => array(
-                    'element' => $this->getId(),
-                    'number' => 1
-                )
-            );
-            $options['actions']['movedown'] = array(
-                'url_attr' => array(
-                    'class' => 'btn btn-small-horizontal',
-                    'title' => 'crud.list.datagrid.action.movedown'
-                ),
-                'content' => '<span class="icon-trash icon-arrow-down"></span>',
-                'route_name' => 'fsi_admin_tree_move_down',
-                'parameters_field_mapping' => array(
-                    'id' => function($values, $index) {
-                        return $index;
-                    }
-                ),
-                'additional_parameters' => array(
-                    'element' => $this->getId(),
-                    'number' => 1
-                )
-            );
-        }
-
-        if ($this->hasEditForm()) {
-            $options['actions']['edit'] = array(
-                'url_attr' => array(
-                    'class' => 'btn btn-warning btn-small-horizontal',
-                    'title' => 'crud.list.datagrid.action.edit'
-                ),
-                'content' => '<span class="icon-eject icon-white"></span>',
-                'route_name' => 'fsi_admin_crud_edit',
-                'parameters_field_mapping' => array(
-                    'id' => function($values, $index) {
-                        return $index;
-                    }
-                ),
-                'additional_parameters' => array(
-                    'element' => $this->getId()
-                )
-            );
-        }
-
-        return $options;
     }
 }

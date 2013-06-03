@@ -22,4 +22,12 @@ interface AdminElementInterface extends BaseElementInterface
      * @return $this
      */
     public function setManagerRegistry(ManagerRegistry $registry);
+
+    /**
+     * Return repository name bound to this admin object.
+     * Repository will be used to create/updated/delete entities.
+     *
+     * @return string
+     */
+    public function getClassName();
 }
