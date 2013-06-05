@@ -1,5 +1,5 @@
 admin:
-    title: Panel Adminstracyjny
+    title: Panel adminstracyjny
 crud:
     list:
         batch:
@@ -28,7 +28,7 @@ crud:
             search: Szukaj
             clear: Wyczyść
         button:
-            create: Dodaj Nowy
+            create: Dodaj nowy
     create:
         button:
             save: Zapisz
