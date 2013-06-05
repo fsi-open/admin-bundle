@@ -42,3 +42,7 @@ body {
 .tree-level-6 {
     padding-left: 110px;
 }
+
+.cell-value {
+    display: inline;
+}
