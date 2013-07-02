@@ -5,7 +5,7 @@ crud:
         batch:
             empty_choice: Select action
             delete: Delete
-            confirm: OK
+            confirm: Ok
         datagrid:
             editable:
                 save: Save
