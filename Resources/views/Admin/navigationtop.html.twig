@@ -3,7 +3,7 @@
         <div class="container-fluid">
             {% block admin_brand %}
                 <a class="brand" href="{{ path('fsi_admin') }}">{{ 'admin.title'|trans({}, 'FSiAdminBundle')  }}</a>
-            {% endblcok admin_brand %}
+            {% endblock admin_brand %}
             {% block menu_content %}
                 <ul class="nav" role="navigation">
                 {% for group in manager.groups %}
