@@ -1,20 +1,22 @@
 <div id="sidebar" class="span2">
     <div class="sidebar-nav well">
-        <ul class="nav">
-        {% for group in manager.groups %}
-            <li class="first">
-                <span class="nav-header">{{ group.name|trans }}</span>
-                {% if group.elements|length %}
-                    <ul class="nav nav-list menu_level_1">
-                    {% for element in group.elements %}
-                        <li{% if loop.last == true %} class="last"{% endif %}>
-                            <a href="{{ path(element.baseRouteName, {element : element.id}) }}">{{ element.name|trans }}</a>
-                        </li>
-                    {% endfor %}
-                    </ul>
-                {% endif %}
-            </li>
-        {% endfor %}
-        </ul>
+        {% block menu_content %}
+            <ul class="nav">
+            {% for group in manager.groups %}
+                <li class="first">
+                    <span class="nav-header">{{ group.name|trans }}</span>
+                    {% if group.elements|length %}
+                        <ul class="nav nav-list menu_level_1">
+                        {% for element in group.elements %}
+                            <li{% if loop.last == true %} class="last"{% endif %}>
+                                <a href="{{ path(element.baseRouteName, {element : element.id}) }}">{{ element.name|trans }}</a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endblock menu_content %}
     </div>
 </div>
