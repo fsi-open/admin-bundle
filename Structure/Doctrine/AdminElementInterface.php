@@ -24,6 +24,19 @@ interface AdminElementInterface extends BaseElementInterface
     public function setManagerRegistry(ManagerRegistry $registry);
 
     /**
+     * This function should be used inside of admin objects to retrieve ObjectManager
+     *
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
+     */
+    public function getObjectManager();
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    public function getRepository();
+
+    /**
      * Return repository name bound to this admin object.
      * Repository will be used to create/updated/delete entities.
      *
