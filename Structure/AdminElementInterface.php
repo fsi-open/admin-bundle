@@ -9,6 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Structure;
 
+use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
