@@ -12,7 +12,6 @@ namespace FSi\Bundle\AdminBundle\Structure\Doctrine;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\AdminBundle\Structure\AbstractAdminElement as BaseAbstractElement;
-use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 /**
@@ -46,10 +45,7 @@ abstract class AbstractAdminElement extends BaseAbstractElement implements Admin
     }
 
     /**
-     * This function should be used inside of admin objects to retrieve ObjectManager
-     *
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
+     * {@inheritdoc}
      */
     public function getObjectManager()
     {
@@ -69,7 +65,7 @@ abstract class AbstractAdminElement extends BaseAbstractElement implements Admin
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * {@inheritdoc}
      */
     public function getRepository()
     {
@@ -84,7 +80,7 @@ abstract class AbstractAdminElement extends BaseAbstractElement implements Admin
     public function getDataIndexer()
     {
         if (!isset($this->indexer)) {
-            $this->indexer = new DoctrineDataIndexer($this->registry, $this->getClassName());
+            $this->indexer = new DoctrineDataIndexer($this->registry, $this->getRepository()->getClassName());
         }
 
         return $this->indexer;
