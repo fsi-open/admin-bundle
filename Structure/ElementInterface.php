@@ -41,6 +41,14 @@ interface ElementInterface
     public function getBaseRouteName();
 
     /**
+     * Return array of parameters.
+     * Element id always exists in this array under element key
+     *
+     * @return mixed
+     */
+    public function getBaseRouteParameters();
+
+    /**
      * Initialize options.
      *
      * @param array $options

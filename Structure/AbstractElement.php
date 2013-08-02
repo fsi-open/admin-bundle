@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Structure;
 
-use FSi\Bundle\AdminBundle\Exception\MissingOptionExteption;
+use FSi\Bundle\AdminBundle\Exception\MissingOptionException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -34,6 +34,22 @@ abstract class AbstractElement implements ElementInterface
     }
 
     /**
+     * Return array of parameters.
+     * Element id always exists in this array.
+     *
+     * @return mixed
+     */
+    final public function getBaseRouteParameters()
+    {
+        return array_merge(
+            $this->getRouteParameters(),
+            array(
+                'element' => $this->getId()
+            )
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -46,7 +62,7 @@ abstract class AbstractElement implements ElementInterface
     public function getOption($name)
     {
         if (!$this->hasOption($name)) {
-            throw new MissingOptionExteption(sprintf('Option with name: "%s" does\'t exists.', $name));
+            throw new MissingOptionException(sprintf('Option with name: "%s" does\'t exists.', $name));
         }
 
         return $this->options[$name];
@@ -66,5 +82,13 @@ abstract class AbstractElement implements ElementInterface
     public function hasOption($name)
     {
         return isset($this->options[$name]);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getRouteParameters()
+    {
+        return array();
     }
 }
