@@ -235,7 +235,7 @@ Available methods are:
 * ``protected function initDataSource()``
 * ``protected function initExportDataSource()``
 * ``protected function initForm($data = null)``
-* ``protected function initCreateForm($data = null)``
+* ``protected function initCreateForm()``
 * ``protected function initEditForm($data = null)``
 
 ## 5. Register admin elements as services

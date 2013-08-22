@@ -24,24 +24,3 @@ fsi_admin_crud_delete:
         _controller: FSiAdminBundle:CRUD:delete
     requirements:
         _method:  POST
-
-fsi_admin_data_io_export:
-    path: /{element}/export/{type}
-    defaults:
-        _controller: FSiAdminBundle:DataIO:export
-    requirements:
-        type: csv|csvexcel|excel|excel2003|excel2007
-
-fsi_admin_tree_move_up:
-    path: /{element}/moveup/{id}/{number}
-    defaults:
-        _controller: FSiAdminBundle:Tree:moveup
-    requirements:
-        number: \d+
-
-fsi_admin_tree_move_down:
-    path: /{element}/movedown/{id}/{number}
-    defaults:
-        _controller: FSiAdminBundle:Tree:movedown
-    requirements:
-        number: \d+

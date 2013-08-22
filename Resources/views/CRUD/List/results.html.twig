@@ -1,0 +1,6 @@
+{% trans_default_domain 'FSiAdminBundle' %}
+
+<div class="pull-right">
+    <strong>{{ 'crud.list.datagrid.result_count'|trans }} {{ datasource_view.result|length }}</strong>
+    {{ datasource_max_results_widget(datasource_view, {additional_parameters : {'element' : element.id}}) }}
+</div>

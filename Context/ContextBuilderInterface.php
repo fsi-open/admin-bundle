@@ -9,21 +9,23 @@
 
 namespace FSi\Bundle\AdminBundle\Context;
 
-use FSi\Bundle\AdminBundle\Structure\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 
+/**
+ * @author Norbert Orzechowicz <norbert@fsi.pl>
+ */
 interface ContextBuilderInterface
 {
     /**
-     * @return ContextInterface
+     * @param string $route
+     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @return boolean
      */
-    public function buildContext();
+    public function supports($route, ElementInterface $element);
 
     /**
-     * Check if element interface is supported by ContextBuilder.
-     * Method is static so it can be used before initializing ContextBuilderObject
-     *
-     * @param ElementInterface $element
-     * @return mixed
+     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @return \FSi\Bundle\AdminBundle\Context\ContextInterface
      */
-    public static function supports(ElementInterface $element);
+    public function buildContext(ElementInterface $element);
 }

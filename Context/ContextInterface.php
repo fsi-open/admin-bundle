@@ -9,17 +9,31 @@
 
 namespace FSi\Bundle\AdminBundle\Context;
 
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * @author Norbert Orzechowicz <norbert@fsi.pl>
+ */
 interface ContextInterface
 {
     /**
-     * Return template name that will be used to render context.
-     *
-     * @return string
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getTemplateName();
+    public function handleRequest(Request $request);
 
     /**
      * @return boolean
      */
     public function hasTemplateName();
+
+    /**
+     * @return string
+     */
+    public function getTemplateName();
+
+    /**
+     * @return array
+     */
+    public function getData();
 }
