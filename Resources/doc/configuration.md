@@ -1,6 +1,9 @@
-# AdminBundle Configuration Reference
+# FSiAdminBundle configuration
 
-```
+There are some things that can be configured globally for all admin elements.
+This is reference for admin bundle configuration with all default options.
+
+```yml
 # app/config/config.yml
 
 fsi_admin:
@@ -18,10 +21,4 @@ fsi_admin:
         edit_form_theme: @FSiAdmin/CRUD/form.html.twig')
         create_form_theme: @FSiAdmin/CRUD/form.html.twig')
         delete_form_theme: @FSiAdmin/CRUD/form.html.twig')
-    groups: # array of groups
-        admin.group.basic_elements : # admin group object id
-            elements: # array of elements
-                admin.element.news: # admin oject element id
-                    options: # array of options
-                        allow_delete: true # option key and value
 ```

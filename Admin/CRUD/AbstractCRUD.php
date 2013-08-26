@@ -169,7 +169,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
      */
     public function getCreateForm()
     {
-        if (!$this->hasCreateForm($data)) {
+        if (!$this->hasCreateForm()) {
             return null;
         }
 
