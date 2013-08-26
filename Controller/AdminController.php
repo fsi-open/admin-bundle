@@ -26,28 +26,4 @@ class AdminController extends Controller
 
         return $this->render($template);
     }
-
-    /**
-     * @return Response
-     */
-    public function navigationtopAction()
-    {
-        $template = $this->container->getParameter('admin.templates.admin_navigationtop');
-
-        return $this->render($template, array(
-            'manager' => $this->get('admin.manager')
-        ));
-    }
-
-    /**
-     * @return Response
-     */
-    public function navigationleftAction()
-    {
-        $template = $this->container->getParameter('admin.templates.admin_navigationleft');
-
-        return $this->render($template, array(
-            'manager' => $this->get('admin.manager')
-        ));
-    }
 }

@@ -5,8 +5,9 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="admin.manager.class" >FSi\Bundle\AdminBundle\Admin\Manager</parameter>
-        <parameter key="admin.context.manager.class" >FSi\Bundle\AdminBundle\Context\ContextManager</parameter>
+        <parameter key="admin.manager.class">FSi\Bundle\AdminBundle\Admin\Manager</parameter>
+        <parameter key="admin.menu.builder.class">FSi\Bundle\AdminBundle\Menu\MenuBuilder</parameter>
+        <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Context\ContextManager</parameter>
         <parameter key="admin.context_builder.doctrine.list.class">FSi\Bundle\AdminBundle\Context\Doctrine\ListContextBuilder</parameter>
         <parameter key="admin.context_builder.doctrine.create.class">FSi\Bundle\AdminBundle\Context\Doctrine\CreateContextBuilder</parameter>
         <parameter key="admin.context_builder.doctrine.edit.class">FSi\Bundle\AdminBundle\Context\Doctrine\EditContextBuilder</parameter>
@@ -53,6 +54,7 @@
             </call>
         </service>
 
+         <!-- Twig-->
          <service id="admin.twig.extension" class="FSi\Bundle\AdminBundle\Twig\Extension\AdminExtension" public="false">
             <tag name="twig.extension" />
             <argument type="collection">
@@ -65,6 +67,26 @@
             </argument>
         </service>
 
+        <!-- Menu -->
+        <service id="admin.menu.builder" class="%admin.menu.builder.class%">
+            <argument type="service" id="knp_menu.factory"/>
+            <argument type="service" id="admin.manager" />
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="null" strict="false" />
+            </call>
+        </service>
+        
+        <service id="admin.menu.left" class="FSi\Bundle\AdminBundle\Menu\MenuItem"
+                factory-service="admin.menu.builder"
+                factory-method="createLeftMenu">
+            <tag name="knp_menu.menu" alias="left"/>
+        </service>
+
+        <service id="admin.menu.top" class="FSi\Bundle\AdminBundle\Menu\MenuItem"
+                 factory-service="admin.menu.builder"
+                 factory-method="createTopMenu">
+            <tag name="knp_menu.menu" alias="top"/>
+        </service>
     </services>
 
 </container>

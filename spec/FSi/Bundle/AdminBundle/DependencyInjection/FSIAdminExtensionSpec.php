@@ -26,8 +26,6 @@ class FSIAdminExtensionSpec extends ObjectBehavior
 
         $builder->setParameter('admin.templates.base', '@FSiAdmin/base.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.index_page', '@FSiAdmin/Admin/index.html.twig')->shouldBeCalled();
-        $builder->setParameter('admin.templates.admin_navigationtop', '@FSiAdmin/Admin/navigationtop.html.twig')->shouldBeCalled();
-        $builder->setParameter('admin.templates.admin_navigationleft', '@FSiAdmin/Admin/navigationleft.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.crud_list', '@FSiAdmin/CRUD/list.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.crud_create', '@FSiAdmin/CRUD/create.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.crud_edit', '@FSiAdmin/CRUD/edit.html.twig')->shouldBeCalled();

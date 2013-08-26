@@ -20,6 +20,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
+        new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         new FSi\Bundle\DataSourceBundle\DataSourceBundle(),
         new FSi\Bundle\DataGridBundle\DataGridBundle(),
         new FSi\Bundle\AdminBundle\FSiAdminBundle(),
