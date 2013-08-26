@@ -35,10 +35,9 @@ interface CRUDInterface
     public function hasDataSource();
 
     /**
-     * @param null $data
      * @return \Symfony\Component\Form\For|null
      */
-    public function getCreateForm($data = null);
+    public function getCreateForm();
 
     /**
      * @return boolean
@@ -56,7 +55,6 @@ interface CRUDInterface
      * @return boolean
      */
     public function hasEditForm($data = null);
-
 
     /**
      * This method should be used inside of admin objects to retrieve DataIndexerInterface.

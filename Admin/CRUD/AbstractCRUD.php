@@ -47,7 +47,6 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
      */
     protected $datasource;
 
-
     /**
      * @var \Symfony\Component\Form\FormInterface
      */
@@ -89,8 +88,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
     }
 
     /**
-     * @param \FSi\Component\DataGrid\DataGridFactoryInterface $factory
-     * @return mixed
+     * {@inheritdoc}
      */
     public function setDataGridFactory(DataGridFactoryInterface $factory)
     {
@@ -98,8 +96,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
     }
 
     /**
-     * @param \FSi\Component\DataSource\DataSourceFactoryInterface $factory
-     * @return mixed
+     * {@inheritdoc}
      */
     public function setDataSourceFactory(DataSourceFactoryInterface $factory)
     {
@@ -107,8 +104,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
     }
 
     /**
-     * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     * @return mixed
+     * {@inheritdoc}
      */
     public function setFormFactory(FormFactoryInterface $factory)
     {
@@ -116,7 +112,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
     }
 
     /**
-     * @return \FSi\Component\DataGrid\DataGridInterface|null
+     * {@inheritdoc}
      */
     public function getDataGrid()
     {
@@ -128,7 +124,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasDataGrid()
     {
@@ -145,7 +141,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
     }
 
     /**
-     * @return \FSi\Component\DataSource\DataSourceInterface|null
+     * {@inheritdoc}
      */
     public function getDataSource()
     {
@@ -157,7 +153,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasDataSource()
     {
@@ -169,10 +165,9 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
     }
 
     /**
-     * @param null $data
-     * @return null|\Symfony\Component\Form\FormInterface
+     * {@inheritdoc}
      */
-    public function getCreateForm($data = null)
+    public function getCreateForm()
     {
         if (!$this->hasCreateForm($data)) {
             return null;
@@ -182,7 +177,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasCreateForm()
     {
@@ -219,8 +214,6 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
 
     /**
      * Initialize DataGrid.
-     * DataGrid must be created by DataGridFactory.
-     * To access DataGridFactory you can use method $this->getDataGridFactory();
      *
      * @param \FSi\Component\DataGrid\DataGridFactoryInterface $factory
      * @return null|\FSi\Component\DataGrid\DataGridInterface
@@ -232,8 +225,6 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
 
     /**
      * Initialize DataSource.
-     * DataGrid must be created by DataSourceFactory.
-     * To access DataSourceFactory you can use method $this->getDataSourceFactory();
      *
      * @param \FSi\Component\DataSource\DataSourceFactoryInterface $factory
      * @return null|\FSi\Component\DataSource\DataSourceInterface
@@ -245,8 +236,6 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
 
     /**
      * Initialize create Form. This form will be used in createAction in CRUDController.
-     * Form be created by FormFactory.
-     * To access FormFactory you can use method $this->getFormFactory();
      *
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
      * @return null|\Symfony\Component\Form\FormInterface
@@ -258,8 +247,6 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
 
     /**
      * Initialize edit Form. This form will be used in editAction in CRUDController.
-     * Form be created by FormFactory.
-     * To access FormFactory you can use method $this->getFormFactory();
      *
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
      * @param mixed $data
