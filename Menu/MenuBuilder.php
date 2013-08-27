@@ -51,10 +51,10 @@ class MenuBuilder
     /**
      * @return \Knp\Menu\ItemInterface
      */
-    public function createLeftMenu()
+    public function createTopMenu()
     {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttribute('class', 'nav nav-list');
+        $menu->setChildrenAttribute('class', 'nav navbar-nav');
 
         if (isset($this->request)) {
             $menu->setCurrentUri($this->request->getRequestUri());
@@ -65,22 +65,6 @@ class MenuBuilder
                 'route' => $element->getRoute(),
                 'routeParameters' => $element->getRouteParameters(),
             ));
-        }
-
-        return $menu;
-    }
-
-
-    /**
-     * @return \Knp\Menu\ItemInterface
-     */
-    public function createTopMenu()
-    {
-        $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttribute('class', 'nav');
-
-        if (isset($this->request)) {
-            $menu->setCurrentUri($this->request->getRequestUri());
         }
 
         foreach ($this->manager->getGroups() as $group) {

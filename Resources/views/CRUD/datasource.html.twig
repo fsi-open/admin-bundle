@@ -2,15 +2,8 @@
     {% spaceless %}
         {% if field.hasAttribute('form') is not empty %}
             {% for child in field.getAttribute('form').children %}
-                {% for subchild in child.children %}
-                <div class="control-group">
-                    <div class="controls">
-                    {{ form_label(subchild) }}
-                    {{ form_errors(subchild) }}
-                    {{ form_widget(subchild) }}
-                    </div>
-                </div>
-                {% endfor %}
+                {% form_theme child _self %}
+                {{ form_widget(child) }}
             {% endfor %}
         {% endif %}
     {% endspaceless %}
@@ -18,7 +11,7 @@
 
 {% block datasource_max_results %}
 <div class="btn-group">
-    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
         {{ 'crud.list.datasource.results_per_page'|trans({}, 'FSiAdminBundle') }}: {{ max_results }}
         <span class="caret"></span>
     </a>
@@ -29,5 +22,22 @@
     </ul>
 </div>
 {% endblock %}
+
+{% block form_widget_compound %}
+{% spaceless %}
+    {{ block('form_rows') }}
+    {{ form_rest(form) }}
+{% endspaceless %}
+{% endblock form_widget_compound %}
+
+{% block form_row %}
+{% spaceless %}
+    <div class="form-group{% if errors|length > 0 %} has-error{% endif %}">
+        {{ form_label(form, label|default(null), {'label_attr' : {'class' : 'control-label'} }) }}
+        {{ form_widget(form, {'attr' : {'class' : 'form-control'} }) }}
+        {{ form_errors(form) }}
+    </div>
+{% endspaceless %}
+{% endblock form_row %}
 
 

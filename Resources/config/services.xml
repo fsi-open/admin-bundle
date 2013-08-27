@@ -7,11 +7,11 @@
     <parameters>
         <parameter key="admin.manager.class">FSi\Bundle\AdminBundle\Admin\Manager</parameter>
         <parameter key="admin.menu.builder.class">FSi\Bundle\AdminBundle\Menu\MenuBuilder</parameter>
-        <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Context\ContextManager</parameter>
-        <parameter key="admin.context_builder.doctrine.list.class">FSi\Bundle\AdminBundle\Context\Doctrine\ListContextBuilder</parameter>
-        <parameter key="admin.context_builder.doctrine.create.class">FSi\Bundle\AdminBundle\Context\Doctrine\CreateContextBuilder</parameter>
-        <parameter key="admin.context_builder.doctrine.edit.class">FSi\Bundle\AdminBundle\Context\Doctrine\EditContextBuilder</parameter>
-        <parameter key="admin.context_builder.doctrine.delete.class">FSi\Bundle\AdminBundle\Context\Doctrine\DeleteContextBuilder</parameter>
+        <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Admin\Context\ContextManager</parameter>
+        <parameter key="admin.context_builder.doctrine.list.class">FSi\Bundle\AdminBundle\Admin\Context\Doctrine\ListContextBuilder</parameter>
+        <parameter key="admin.context_builder.doctrine.create.class">FSi\Bundle\AdminBundle\Admin\Context\Doctrine\CreateContextBuilder</parameter>
+        <parameter key="admin.context_builder.doctrine.edit.class">FSi\Bundle\AdminBundle\Admin\Context\Doctrine\EditContextBuilder</parameter>
+        <parameter key="admin.context_builder.doctrine.delete.class">FSi\Bundle\AdminBundle\Admin\Context\Doctrine\DeleteContextBuilder</parameter>
         <parameter key="admin.element.param.converter.class">FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter</parameter>
     </parameters>
 
@@ -74,12 +74,6 @@
             <call method="setRequest">
                 <argument type="service" id="request" on-invalid="null" strict="false" />
             </call>
-        </service>
-        
-        <service id="admin.menu.left" class="FSi\Bundle\AdminBundle\Menu\MenuItem"
-                factory-service="admin.menu.builder"
-                factory-method="createLeftMenu">
-            <tag name="knp_menu.menu" alias="left"/>
         </service>
 
         <service id="admin.menu.top" class="FSi\Bundle\AdminBundle\Menu\MenuItem"

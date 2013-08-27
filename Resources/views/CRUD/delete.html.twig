@@ -5,7 +5,7 @@
 {% endblock themes %}
 
 {% block content %}
-    <div class="span10">
+    <div class="col-lg-12">
         {% block message %}
         <div>
             <p>{{ 'crud.delete.message'|trans({"%count%" : indexes|length}, 'FSiAdminBundle') }}</p>

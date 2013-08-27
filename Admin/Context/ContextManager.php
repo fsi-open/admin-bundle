@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Context;
+namespace FSi\Bundle\AdminBundle\Admin\Context;
 
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 
@@ -17,12 +17,12 @@ use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 class ContextManager
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Context\ContextBuilderInterface[]
+     * @var \FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface[]
      */
     protected $builders;
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Context\ContextBuilderInterface[] $builders
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface[] $builders
      */
     public function __construct($builders = array())
     {
@@ -41,7 +41,7 @@ class ContextManager
     /**
      * @param string $route
      * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
-     * @return \FSi\Bundle\AdminBundle\Context\ContextInterface|null
+     * @return \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface|null
      */
     public function createContext($route, ElementInterface $element)
     {

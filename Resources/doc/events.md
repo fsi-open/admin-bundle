@@ -13,8 +13,8 @@ First you need to create event event listener
 
 namespace FSi\Bundle\DemoBundle\EventListener;
 
-use Brynow\Bundle\WebBundle\Entity\News;
-use Brynow\Bundle\WebBundle\Entity\Tag;
+use FSi\Bundle\DemoBundle\Entity\News;
+use FSi\Bundle\DemoBundle\Entity\Tag;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 

@@ -7,33 +7,34 @@
     {% block head_meta %}{% endblock %}
     {% block head_css %}
         <link rel="stylesheet" href="{{ asset('bundles/fsiadmin/css/bootstrap.min.css') }}" type="text/css" media="all" />
-        <link rel="stylesheet" href="{{ asset('bundles/fsiadmin/css/bootstrap-responsive.min.css') }}" type="text/css" media="all" />
         <link rel="stylesheet" href="{{ asset('bundles/fsiadmin/css/style.css') }}" type="text/css" media="all" />
     {% endblock %}
 </head>
 <body>
 {% block themes %}{% endblock %}
 <div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container-fluid">
-            <a class="brand" href="{{ path('fsi_admin') }}">{{ 'admin.title'|trans({}, 'FSiAdminBundle')  }}</a>
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".admin-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('fsi_admin') }}">{{ 'admin.title'|trans({}, 'FSiAdminBundle')  }}</a>
+        </div>
+        <div class="collapse navbar-collapse admin-navbar-collapse">
             {% block navigation_top %}
-            {{ knp_menu_render('top', {'template': '@FSiAdmin/Admin/knp_menu.html.twig', 'currentClass' : 'active'}) }}
+                {{ knp_menu_render('top', {'template': '@FSiAdmin/Admin/knp_menu.html.twig', 'currentClass' : 'active'}) }}
             {% endblock %}
         </div>
     </div>
 </div>
-<div class="container-fluid">
-    <div class="row-fluid">
-        {% block navigation_left %}
-            <div id="sidebar" class="span2">
-                <div class="well">
-                    {{ knp_menu_render('left', {'template': '@FSiAdmin/Admin/knp_menu.html.twig', 'currentClass' : 'active'}) }}
-                </div>
-            </div>
-        {% endblock %}
-        {% block content %}
-        {% endblock %}
+<div class="container">
+    <div class="row">
+        {% block above_content %}{% endblock above_content %}
+        {% block content %}{% endblock content %}
+        {% block under_content %}{% endblock under_content %}
     </div>
 </div>
 {% block javascripts %}

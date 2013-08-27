@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Context\Doctrine;
+namespace FSi\Bundle\AdminBundle\Admin\Context\Doctrine;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
-use FSi\Bundle\AdminBundle\Context\ContextInterface;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use Symfony\Component\EventDispatcher\EventDispatcher;

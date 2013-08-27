@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Context;
+namespace FSi\Bundle\AdminBundle\Admin\Context;
 
 use Symfony\Component\HttpFoundation\Request;
 

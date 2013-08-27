@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Context\Doctrine;
+namespace FSi\Bundle\AdminBundle\Admin\Context\Doctrine;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
-use FSi\Bundle\AdminBundle\Context\ContextBuilderInterface;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Routing\Router;

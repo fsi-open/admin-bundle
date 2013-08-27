@@ -18,7 +18,15 @@
 {% endblock themes %}
 
 {% block content %}
-    <div class="span8">
+<div class="row" id="filter">
+    <div class="col-lg-12">
+        {% block filter %}
+        {% include '@FSiAdmin/CRUD/List/filter_content.html.twig' %}
+        {% endblock filter %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
         {% block datagrid %}
             {% include '@FSiAdmin/CRUD/List/datagrid_content.html.twig' %}
         {% endblock datagrid %}
@@ -38,11 +46,7 @@
             {% include '@FSiAdmin/CRUD/List/pagination_content.html.twig' %}
         {% endblock pagination %}
     </div>
-    {% block filter %}
-        <div class="span2">
-            {% include '@FSiAdmin/CRUD/List/filter_content.html.twig' %}
-        </div>
-    {% endblock filter %}
+</div>
 {% endblock content %}
 
 {% block javascripts %}

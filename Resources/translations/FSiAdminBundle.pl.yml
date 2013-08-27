@@ -1,5 +1,5 @@
 admin:
-    title: Panel adminstracyjny
+    title: Admin
     menu:
         header: Menu
 crud:

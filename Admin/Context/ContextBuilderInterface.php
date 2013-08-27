@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Context;
+namespace FSi\Bundle\AdminBundle\Admin\Context;
 
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 
@@ -25,7 +25,7 @@ interface ContextBuilderInterface
 
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
-     * @return \FSi\Bundle\AdminBundle\Context\ContextInterface
+     * @return \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface
      */
     public function buildContext(ElementInterface $element);
 }
