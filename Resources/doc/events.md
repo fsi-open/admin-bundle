@@ -1,33 +1,84 @@
 #Events 
 
-Admin bundle provide several events that can handled in application. 
-
+Admin bundle provide several events that can be handled in application.
 List of available events can be found in [AdminEvents](Event/AdminEvents.php)
+Following example will show you how to handle dynamically added relation elements for doctrine entity.
+Just like in http://symfony.com/doc/current/cookbook/form/form_collections.html#allowing-tags-to-be-removed
 
-## Event listener registration
-
-First you need to create EventListener class. 
+First you need to create event event listener
 
 ```php
 
+<?php
+
 namespace FSi\Bundle\DemoBundle\EventListener;
 
-use FSi\Bundle\AdminBundle\Admin\Article;
+use FSi\Bundle\DemoBundle\Entity\News;
+use FSi\Bundle\DemoBundle\Entity\Tag;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class CRUDEventListener
 {
-    public function crudEditFormRequestPreBind(AdminEvent $event)
-    {
-        $request = $event->getRequest();
-        $context = $event->getContext(); 
-        $element = $context->getElement(); 
+    /**
+     * @var \Symfony\Bridge\Doctrine\ManagerRegistry
+     */
+    protected $registry;
 
-        if ($element instanceof Article) { 
-          // Do whatever you need with context and admin element. 
+    /**
+     * @var array
+     */
+    protected $tags;
+
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        $this->tags = array();
+        $this->registry = $registry;
+    }
+
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
+     */
+    public function crudEditEntityPreBind(AdminEvent $event)
+    {
+        /* @var $element \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement */
+        $element = $event->getElement();
+        $entity = $element->getEditForm()->getData();
+
+        if ($entity instanceof News) {
+            $this->tags[$entity->getId()] = array();
+
+            foreach ($entity->getTags() as $tag) {
+                $this->tags[$entity->getId()][] = $tag;
+            }
+        }
+    }
+
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
+     */
+    public function crudEditEntityPostSave(AdminEvent $event)
+    {
+        /* @var $element \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement */
+        $element = $event->getElement();
+        $entity = $element->getEditForm()->getData();
+
+        if ($entity instanceof News) {
+            foreach ($entity->getTags() as $tag) {
+                foreach ($this->tags[$entity->getId()] as $key => $toDel) {
+                    if ($toDel->getId() === $tag->getId()) {
+                        unset($this->tags[$entity->getId()][$key]);
+                    }
+                }
+            }
+
+            foreach ($this->tags[$entity->getId()] as $tag) {
+                $this->registry->getManager()->remove($tag);
+                $this->registry->getManager()->flush();
+            }
         }
     }
 }
@@ -47,8 +98,10 @@ Next and last step is event listener registration
 
     <services>
         <!-- Event Listeners -->
-        <service id="admin.listener.crud" class="FSi\Bundle\CompanySiteBundle\EventListener\CRUDEventListener">
-            <tag name="kernel.event_listener" event="admin.crud.create.form.request.pre_bind" method="crudEditFormRequestPreBind" />
+        <service id="fsi_demo_bundle.admin.listener.crud" class="FSi\Bundle\DemoBundle\EventListener\CRUDEventListener">
+            <argument type="service" id="doctrine" />
+            <tag name="kernel.event_listener" event="admin.crud.edit.form.request.pre_bind" method="crudEditEntityPreBind" />
+            <tag name="kernel.event_listener" event="admin.crud.edit.entity.post_save" method="crudEditEntityPostSave" />
         </service>
     </services>
 </container>

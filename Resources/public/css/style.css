@@ -1,48 +1,23 @@
-body {
-    position: relative;
-    padding-top: 60px;
+body {position: relative;padding-top: 60px;}
+
+#batch_action {margin-right: 5px;width: 155px;}
+#batch_form {margin-right: 5px;}
+
+#filter {margin-bottom:15px;}
+#filter input[type="text"],
+#filter input[type="email"],
+#filter select {width:190px; margin-right:5px;margin-left:5px;margin-bottom:5px;}
+#filter .submit-buttons {float:left; margin-right:5px;margin-left:5px;margin-bottom:5px;}
+#list-results {float:right;}
+#delete-wrapper {text-align: center;}
+#pagination-centered {text-align: center;}
+
+@media (max-width: 768px) {
+    #list-results {margin-top:10px;text-align: center;float:none;}
+    #datagrid-wrapper {overflow-x: scroll;margin-bottom:20px;padding-bottom:5px;}
+    #datagrid-wrapper table {margin-bottom:0px;}
+    #batch_action {margin-left:5px;}
 }
 
-#batch_action {
-    margin-right: 5px;
-}
-
-#batch_form {
-    margin-right: 5px;
-}
-
-.cell-editable {
-    cursor: pointer;
-}
-
-.tree-level-0 {
-    padding-left: 0;
-}
-
-.tree-level-1 {
-    padding-left: 20px;
-}
-
-.tree-level-2 {
-    padding-left: 40px;
-}
-
-.tree-level-3 {
-    padding-left: 60px;
-}
-
-.tree-level-4 {
-    padding-left: 80px;
-}
-
-.tree-level-5 {
-    padding-left: 100px;
-}
-
-.tree-level-6 {
-    padding-left: 110px;
-}
-
-.cell-value {
-    display: inline;
-}
+.cell-editable {cursor: pointer;}
+.cell-value {display: inline;}

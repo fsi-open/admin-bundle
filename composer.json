@@ -13,13 +13,19 @@
     "require": {
         "php": ">=5.3.3",
         "twig/twig": "~1.2",
-        "symfony/framework-bundle" : "~2.2",
-        "symfony/form" : "~2.2",
-        "symfony/options-resolver": "~2.2",
-        "sensio/framework-extra-bundle": "~2.2",
+        "symfony/framework-bundle" : "~2.3",
+        "symfony/form" : "~2.3",
+        "symfony/options-resolver": "~2.3",
+        "sensio/framework-extra-bundle": "~2.3",
         "fsi/datagrid-bundle" : "1.0.*",
         "fsi/datasource-bundle" : "1.0.*",
         "fsi/data-indexer" : "0.9.*"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "2.0.*@dev"
+    },
+    "config": {
+        "bin-dir": "bin"
     },
     "autoload": {
         "psr-0": { "FSi\\Bundle\\AdminBundle\\": "" }
@@ -27,7 +33,7 @@
     "target-dir" : "FSi/Bundle/AdminBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "1.1-dev"
         }
     }
 }
