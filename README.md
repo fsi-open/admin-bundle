@@ -1,12 +1,13 @@
 # FSi Admin Bundle
 
-FSi Admin Bundle is complete solution that provides mechanisms to generate admini panel for any Symfony2 project.
+FSi Admin Bundle is complete solution that provides mechanisms to generate admin panel for any Symfony2 based application.
 
-> **Important!** At the moment FSiAdminBundle is in development stage and its not safe to use it at production. You should
-> wait until stable version 1.0 will be out.
-
+*Heads up* - admin bundle is not integrated with Symfony security component. By default route /admin is not protected
+and you need to add security on your own.
 
 Documentation:
 
 - [Installation](Resources/doc/installation.md)
-- [Overriding Controllers](Resources/doc/overriding_controllers.md)
+- [Admin Elements](Resources/doc/admin_element.md)
+- [Events](Resources/doc/events.md)
+- [Bundle Configuration](Resources/doc/configuration.md)

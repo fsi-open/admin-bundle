@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    /*
     $('.cell').hover(
         function(event) {
             var self = $(this),
@@ -35,4 +36,6 @@ $(document).ready(function() {
             target.toggle();
         }
     });
+    */
+
 });

@@ -9,6 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Event;
 
+use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Context\ContextInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,9 +21,9 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminEvent extends Event
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Context\ContextInterface
+     * @var \FSi\Bundle\AdminBundle\Admin\ElementInterface
      */
-    protected $context;
+    protected $element;
 
     /**
      * @var \Symfony\Component\HttpFoundation\Request
@@ -30,21 +31,27 @@ class AdminEvent extends Event
     protected $request;
 
     /**
-     * @param ContextInterface $context
+     * @var \Symfony\Component\HttpFoundation\Response
+     */
+    protected $response;
+
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
      * @param Request $request
      */
-    public function __construct(ContextInterface $context, Request $request)
+    public function __construct(ElementInterface $element, Request $request)
     {
-        $this->context = $context;
+        $this->element = $element;
         $this->request = $request;
+        $this->response = null;
     }
 
     /**
-     * @return \FSi\Bundle\AdminBundle\Context\ContextInterface
+     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface
      */
-    public function getContext()
+    public function getElement()
     {
-        return $this->context;
+        return $this->element;
     }
 
     /**
@@ -53,5 +60,32 @@ class AdminEvent extends Event
     public function getRequest()
     {
         return $this->request;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasResponse()
+    {
+        return isset($this->response);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @return AdminEvent
+     */
+    public function setResponse(Response $response)
+    {
+        $this->response = $response;
+
+        return $this;
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getResponse()
+    {
+        return $this->response;
     }
 }

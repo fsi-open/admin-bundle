@@ -9,12 +9,13 @@
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author: Norbert Orzechowicz <norbert@fsi.pl>
  */
-class AdminController extends BaseController
+class AdminController extends Controller
 {
     /**
      * @return Response
@@ -24,29 +25,5 @@ class AdminController extends BaseController
         $template = $this->container->getParameter('admin.templates.index_page');
 
         return $this->render($template);
-    }
-
-    /**
-     * @return Response
-     */
-    public function navigationtopAction()
-    {
-        $template = $this->container->getParameter('admin.templates.admin_navigationtop');
-
-        return $this->render($template, array(
-            'manager' => $this->getGroupManager()
-        ));
-    }
-
-    /**
-     * @return Response
-     */
-    public function navigationleftAction()
-    {
-        $template = $this->container->getParameter('admin.templates.admin_navigationleft');
-
-        return $this->render($template, array(
-            'manager' => $this->getGroupManager()
-        ));
     }
 }
