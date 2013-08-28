@@ -40,4 +40,28 @@
 {% endspaceless %}
 {% endblock form_row %}
 
+{% block datasource_pagination %}
+{% spaceless %}
+    <ul class="pagination">
+        <li{% if current == first %} class="{{ disabled_class }}"{% endif %}>
+            <a href="{% if current != first %}{{ first_url }}{% else %}#{% endif %}">{{ 'datasource.pagination.first'|trans({}, translation_domain) }}</a>
+        </li>
+        <li{% if current == first %} class="{{ disabled_class }}"{% endif %}>
+            <a href="{% if current != first %}{{ prev_url }}{% else %}#{% endif %}">{{ 'datasource.pagination.prev'|trans({}, translation_domain) }}</a>
+        </li>
+        {% for page, url in pages_urls %}
+            <li{% if current == page %} class="{{ active_class }}"{% endif %}>
+                <a href="{% if current != page %}{{ url }}{% else %}#{% endif %}">{{ page }}</a>
+            </li>
+        {% endfor %}
+        <li{% if current == last %} class="{{ disabled_class }}"{% endif %}>
+            <a href="{% if current != last %}{{ next_url }}{% else %}#{% endif %}">{{ 'datasource.pagination.next'|trans({}, translation_domain) }}</a>
+        </li>
+        <li{% if current == last %} class="{{ disabled_class }}"{% endif %}>
+            <a href="{% if current != last %}{{ last_url }}{% else %}#{% endif %}">{{ 'datasource.pagination.last'|trans({}, translation_domain) }}</a>
+        </li>
+    </ul>
+{% endspaceless %}
+{% endblock %}
+
 

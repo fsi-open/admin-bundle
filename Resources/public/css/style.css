@@ -10,6 +10,7 @@ body {position: relative;padding-top: 60px;}
 #filter .submit-buttons {float:left; margin-right:5px;margin-left:5px;margin-bottom:5px;}
 #list-results {float:right;}
 #delete-wrapper {text-align: center;}
+#pagination-centered {text-align: center;}
 
 @media (max-width: 768px) {
     #list-results {margin-top:10px;text-align: center;float:none;}

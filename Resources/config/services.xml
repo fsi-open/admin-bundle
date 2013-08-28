@@ -78,8 +78,8 @@
 
         <service id="admin.menu.top" class="FSi\Bundle\AdminBundle\Menu\MenuItem"
                  factory-service="admin.menu.builder"
-                 factory-method="createTopMenu">
-            <tag name="knp_menu.menu" alias="top"/>
+                 factory-method="createMenu">
+            <tag name="knp_menu.menu" alias="menu"/>
         </service>
     </services>
 

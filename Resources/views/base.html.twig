@@ -24,8 +24,8 @@
             <a class="navbar-brand" href="{{ path('fsi_admin') }}">{{ 'admin.title'|trans({}, 'FSiAdminBundle')  }}</a>
         </div>
         <div class="collapse navbar-collapse admin-navbar-collapse">
-            {% block navigation_top %}
-                {{ knp_menu_render('top', {'template': '@FSiAdmin/Admin/knp_menu.html.twig', 'currentClass' : 'active'}) }}
+            {% block navigation %}
+                {{ knp_menu_render('menu', {'template': '@FSiAdmin/Admin/knp_menu.html.twig', 'currentClass' : 'active'}) }}
             {% endblock %}
         </div>
     </div>
