@@ -51,7 +51,7 @@ class MenuBuilder
     /**
      * @return \Knp\Menu\ItemInterface
      */
-    public function createTopMenu()
+    public function createMenu()
     {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav navbar-nav');

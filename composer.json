@@ -19,7 +19,8 @@
         "sensio/framework-extra-bundle": "~2.3",
         "fsi/datagrid-bundle" : "1.0.*",
         "fsi/datasource-bundle" : "1.0.*",
-        "fsi/data-indexer" : "0.9.*"
+        "fsi/data-indexer" : "0.9.*",
+        "knplabs/knp-menu-bundle": "1.1.*"
     },
     "require-dev": {
         "phpspec/phpspec": "2.0.*@dev"
