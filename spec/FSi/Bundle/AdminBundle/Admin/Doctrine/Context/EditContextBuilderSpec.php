@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\FSi\Bundle\AdminBundle\Admin\Context\Doctrine;
+namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
@@ -23,7 +23,7 @@ class EditContextBuilderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Doctrine\EditContextBuilder');
+        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\EditContextBuilder');
     }
 
     function it_is_context_builder()
@@ -71,6 +71,6 @@ class EditContextBuilderSpec extends ObjectBehavior
         $element->getDataIndexer()->willReturn($indexer);
         $indexer->getData(1)->shouldBeCalled()->willReturn($entity);
 
-        $this->buildContext($element)->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\Doctrine\EditContext');
+        $this->buildContext($element)->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\EditContext');
     }
 }

@@ -4,8 +4,8 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
-use FSi\Bundle\AdminBundle\Admin\Context\Doctrine\CreateContext;
-use FSi\Bundle\AdminBundle\Admin\Context\Doctrine\ListContext;
+use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\CreateContext;
+use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ListContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\FSi\Bundle\AdminBundle\Context\Doctrine;
+namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvents;
@@ -22,12 +22,12 @@ class ListContextSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Context\Doctrine\ListContext');
+        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ListContext');
     }
 
     function it_is_context()
     {
-        $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Context\ContextInterface');
+        $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
     function it_have_datagrid_in_data()

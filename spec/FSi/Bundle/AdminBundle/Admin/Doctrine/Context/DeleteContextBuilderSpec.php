@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\FSi\Bundle\AdminBundle\Context\Doctrine;
+namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
@@ -26,12 +26,12 @@ class DeleteContextBuilderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Context\Doctrine\DeleteContextBuilder');
+        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\DeleteContextBuilder');
     }
 
     function it_is_context_builder()
     {
-        $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Context\ContextBuilderInterface');
+        $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface');
     }
 
     function it_supports_doctrine_crud_element(CRUDElement $element, Router $router, DoctrineDataIndexer $indexer)
@@ -74,6 +74,6 @@ class DeleteContextBuilderSpec extends ObjectBehavior
         $indexer->getData(1)->shouldBeCalled()->willReturn($entity);
         $indexer->getData(2)->shouldBeCalled()->willReturn($entity);
 
-        $this->buildContext($element)->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Context\Doctrine\DeleteContext');
+        $this->buildContext($element)->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\DeleteContext');
     }
 }

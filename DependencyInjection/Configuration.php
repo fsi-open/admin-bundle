@@ -38,9 +38,10 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('crud_delete')->defaultValue('@FSiAdmin/CRUD/delete.html.twig')->end()
                         ->scalarNode('datagrid_theme')->defaultValue('@FSiAdmin/CRUD/datagrid.html.twig')->end()
                         ->scalarNode('datasource_theme')->defaultValue('@FSiAdmin/CRUD/datasource.html.twig')->end()
-                        ->scalarNode('edit_form_theme')->defaultValue('@FSiAdmin/CRUD/form.html.twig')->end()
-                        ->scalarNode('create_form_theme')->defaultValue('@FSiAdmin/CRUD/form.html.twig')->end()
-                        ->scalarNode('delete_form_theme')->defaultValue('@FSiAdmin/CRUD/form.html.twig')->end()
+                        ->scalarNode('edit_form_theme')->defaultValue('@FSiAdmin/Form/form_div_layout.html.twig')->end()
+                        ->scalarNode('create_form_theme')->defaultValue('@FSiAdmin/Form/form_div_layout.html.twig')->end()
+                        ->scalarNode('delete_form_theme')->defaultValue('@FSiAdmin/Form/form_div_layout.html.twig')->end()
+                        ->scalarNode('resource_form_theme')->defaultValue('@FSiAdmin/Form/form_div_layout.html.twig')->end()
                     ->end()
                 ->end()
             ->end();

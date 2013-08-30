@@ -2,6 +2,9 @@ admin:
     title: Admin
     menu:
         header: Menu
+resource:
+    button:
+        save: Save
 crud:
     list:
         batch:

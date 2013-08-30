@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\FSi\Bundle\AdminBundle\Admin\Context\Doctrine;
+namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
@@ -18,7 +18,7 @@ class CreateContextBuilderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Doctrine\CreateContextBuilder');
+        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\CreateContextBuilder');
     }
 
     function it_is_context_builder()
@@ -45,6 +45,6 @@ class CreateContextBuilderSpec extends ObjectBehavior
 
     function it_build_context(CRUDElement $element)
     {
-        $this->buildContext($element)->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\Doctrine\CreateContext');
+        $this->buildContext($element)->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\CreateContext');
     }
 }

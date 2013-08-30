@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\FSi\Bundle\AdminBundle\Admin\Context\Doctrine;
+namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvents;
@@ -32,7 +32,7 @@ class DeleteContextSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Doctrine\DeleteContext');
+        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\DeleteContext');
     }
 
     function it_is_context()
@@ -108,7 +108,7 @@ class DeleteContextSpec extends ObjectBehavior
             Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
         )->shouldBeCalled();
 
-        $element->delete(Argument::type('spec\FSi\Bundle\AdminBundle\Admin\Context\Doctrine\Entity'))->shouldBeCalledTimes(2);
+        $element->delete(Argument::type('spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Entity'))->shouldBeCalledTimes(2);
 
         $dispatcher->dispatch(
             AdminEvents::CRUD_DELETE_ENTITIES_POST_DELETE,
