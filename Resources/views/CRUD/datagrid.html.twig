@@ -68,12 +68,12 @@
 {% endblock %}
 
 {#  pattern: datagrid_{grid_name}_column_name_{column_name}_cell #}
-{% block datagrid_column_name_actions_cell %}
+{% block datagrid_column_type_action_cell %}
 {% spaceless %}
     <td class="cell">
         <div class="text-right">
             {% for action_name, action in cell.value %}
-                {{ datagrid_column_type_action_cell_action_widget(cell, action_name, action.content, action.url_attr|merge({'href' : action.url})) }}&nbsp;
+                {{ datagrid_column_type_action_cell_action_widget(cell, action_name, action.content, action.url_attr|merge({'href' : action.url})) }}
             {% endfor %}
         </div>
     </td>

@@ -24,3 +24,8 @@ fsi_admin_crud_delete:
         _controller: FSiAdminBundle:CRUD:delete
     requirements:
         _method:  POST
+
+fsi_admin_resource:
+    path: /resource/{element}
+    defaults:
+        _controller: FSiAdminBundle:Resource:resource

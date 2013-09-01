@@ -14,10 +14,12 @@ body {position: relative;padding-top: 60px;}
 
 @media (max-width: 768px) {
     #list-results {margin-top:10px;text-align: center;float:none;}
-    #datagrid-wrapper {overflow-x: scroll;margin-bottom:20px;padding-bottom:5px;}
+    #datagrid-wrapper {margin-bottom:20px;}
     #datagrid-wrapper table {margin-bottom:0px;}
     #batch_action {margin-left:5px;}
 }
 
 .cell-editable {cursor: pointer;}
 .cell-value {display: inline;}
+
+.sort-asc {margin-right: 5px;}
