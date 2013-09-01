@@ -211,10 +211,12 @@ collection argument.
 </services>
 ```
 
-![Preview of list](Resources/preview/crud_list.png)
+## Demo
 
-![Preview of create form](Resources/preview/crud_create.png)
+![Preview of list](../preview/crud_list.png)
 
-![Preview of edit form](Resources/preview/crud_edit.png)
+![Preview of create form](../preview/crud_create.png)
 
-![Preview of delete](Resources/preview/crud_delete.png)
+![Preview of edit form](../preview/crud_edit.png)
+
+![Preview of delete](../preview/crud_delete.png)
