@@ -42,4 +42,4 @@ admin:
     prefix: /admin
 ```
 
-Now you should read something about [admin elements](Resources/doc/admin_element.md)
+Now you should read something about [admin elements](admin_element.md)

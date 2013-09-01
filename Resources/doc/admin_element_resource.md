@@ -107,4 +107,4 @@ collection argument.
 </services>
 ```
 
-![Preview of resource](Resources/preview/resource.png)
+![Preview of resource](../preview/resource.png)
