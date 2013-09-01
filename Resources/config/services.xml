@@ -8,10 +8,11 @@
         <parameter key="admin.manager.class">FSi\Bundle\AdminBundle\Admin\Manager</parameter>
         <parameter key="admin.menu.builder.class">FSi\Bundle\AdminBundle\Menu\MenuBuilder</parameter>
         <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Admin\Context\ContextManager</parameter>
-        <parameter key="admin.context_builder.doctrine.list.class">FSi\Bundle\AdminBundle\Admin\Context\Doctrine\ListContextBuilder</parameter>
-        <parameter key="admin.context_builder.doctrine.create.class">FSi\Bundle\AdminBundle\Admin\Context\Doctrine\CreateContextBuilder</parameter>
-        <parameter key="admin.context_builder.doctrine.edit.class">FSi\Bundle\AdminBundle\Admin\Context\Doctrine\EditContextBuilder</parameter>
-        <parameter key="admin.context_builder.doctrine.delete.class">FSi\Bundle\AdminBundle\Admin\Context\Doctrine\DeleteContextBuilder</parameter>
+        <parameter key="admin.context_builder.doctrine.list.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ListContextBuilder</parameter>
+        <parameter key="admin.context_builder.doctrine.create.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\CreateContextBuilder</parameter>
+        <parameter key="admin.context_builder.doctrine.edit.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\EditContextBuilder</parameter>
+        <parameter key="admin.context_builder.doctrine.delete.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\DeleteContextBuilder</parameter>
+        <parameter key="admin.context_builder.doctrine.resource.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ResourceContextBuilder</parameter>
         <parameter key="admin.element.param.converter.class">FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter</parameter>
     </parameters>
 
@@ -53,6 +54,13 @@
                 <argument type="service" id="request" on-invalid="null" strict="false" />
             </call>
         </service>
+        <service id="admin.context_builder.doctrine.resource" class="%admin.context_builder.doctrine.resource.class%">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="fsi_resource_repository.map_builder"/>
+            <argument type="service" id="form.factory"/>
+            <argument type="service" id="router"/>
+            <tag name="admin.context.builder" />
+        </service>
 
          <!-- Twig-->
          <service id="admin.twig.extension" class="FSi\Bundle\AdminBundle\Twig\Extension\AdminExtension" public="false">
@@ -64,6 +72,7 @@
                 <argument key="admin_templates_edit_form_theme">%admin.templates.edit_form_theme%</argument>
                 <argument key="admin_templates_create_form_theme">%admin.templates.create_form_theme%</argument>
                 <argument key="admin_templates_delete_form_theme">%admin.templates.delete_form_theme%</argument>
+                <argument key="admin_templates_resource_form_theme">%admin.templates.resource_form_theme%</argument>
             </argument>
         </service>
 

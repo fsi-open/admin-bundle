@@ -21,6 +21,10 @@ public function registerBundles()
     $bundles = array(
         // ...
         new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+        /* Resource Repository */
+        new FSi\Bundle\ResourceRepositoryBundle\FSiResourceRepositoryBundle(),
+
+        /* CRUD */
         new FSi\Bundle\DataSourceBundle\DataSourceBundle(),
         new FSi\Bundle\DataGridBundle\DataGridBundle(),
         new FSi\Bundle\AdminBundle\FSiAdminBundle(),
@@ -38,4 +42,4 @@ admin:
     prefix: /admin
 ```
 
-Now you should read something about [admin elements](Resources/doc/admin_element.md)
+Now you should read something about [admin elements](admin_element.md)

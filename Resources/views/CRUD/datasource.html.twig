@@ -64,4 +64,23 @@
 {% endspaceless %}
 {% endblock %}
 
+{% block datasource_sort %}
+    {% spaceless %}
+        {% if (field.getAttribute('sorted_ascending')) %}
+            <button type="button" class="btn btn-default btn-xs sort-asc" disabled="disabled">
+                <span class="glyphicon glyphicon-sort-by-alphabet"></span>
+            </button>
+        {% else %}
+            <a href="{{ ascending_url }}" class="btn btn-default btn-xs sort-asc"><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+        {% endif %}
+        {% if (field.getAttribute('sorted_descending')) %}
+            <button type="button" class="btn btn-default btn-xs sort-desc" disabled="disabled">
+                <span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
+            </button>
+        {% else %}
+            <a href="{{ descending_url }}" class="btn btn-default btn-xs sort-desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
+
 
