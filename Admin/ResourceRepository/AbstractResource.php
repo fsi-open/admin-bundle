@@ -49,6 +49,9 @@ abstract class AbstractResource extends AbstractElement implements ResourceInter
         return array();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(

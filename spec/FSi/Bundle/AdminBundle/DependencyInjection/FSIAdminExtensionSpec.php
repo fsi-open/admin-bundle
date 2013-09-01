@@ -30,6 +30,7 @@ class FSIAdminExtensionSpec extends ObjectBehavior
         $builder->setParameter('admin.templates.crud_create', '@FSiAdmin/CRUD/create.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.crud_edit', '@FSiAdmin/CRUD/edit.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.crud_delete', '@FSiAdmin/CRUD/delete.html.twig')->shouldBeCalled();
+        $builder->setParameter('admin.templates.resource', '@FSiAdmin/Resource/resource.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.datagrid_theme', '@FSiAdmin/CRUD/datagrid.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.datasource_theme', '@FSiAdmin/CRUD/datasource.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.edit_form_theme', '@FSiAdmin/Form/form_div_layout.html.twig')->shouldBeCalled();

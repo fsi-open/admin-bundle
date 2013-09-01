@@ -28,6 +28,13 @@
 {% endspaceless %}
 {% endblock form_widget_simple %}
 
+{% block textarea_widget %}
+{% spaceless %}
+    {% set attr = attr|merge({'class' : 'form-control'}) %}
+    <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+{% endspaceless %}
+{% endblock %}
+
 {% block choice_widget %}
 {% spaceless %}
     {% if expanded %}

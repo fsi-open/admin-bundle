@@ -5,6 +5,7 @@ admin:
 resource:
     button:
         save: Zapisz
+        reset: Wyczyść
 crud:
     list:
         batch:
@@ -28,6 +29,8 @@ crud:
     create:
         button:
             save: Zapisz
+            reset: Wyczyść
+            back_to_list: Powróŧ do listy
     delete:
         message: Czy na pewno chcesz usunąc %count% z zaznaczonych elementów?
         form:
@@ -38,3 +41,5 @@ crud:
     edit:
         button:
             save: Zapisz
+            reset: Wyczyść
+            back_to_list: Powróŧ do listy

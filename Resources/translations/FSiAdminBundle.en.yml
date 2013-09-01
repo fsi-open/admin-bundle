@@ -5,6 +5,7 @@ admin:
 resource:
     button:
         save: Save
+        reset: Reset
 crud:
     list:
         batch:
@@ -28,6 +29,8 @@ crud:
     create:
         button:
             save: Save
+            reset: Reset
+            back_to_list: Back to list
     delete:
         message: Are you sure you want to delete %count% from selected elements?
         form:
@@ -38,3 +41,5 @@ crud:
     edit:
         button:
             save: Save
+            reset: Reset
+            back_to_list: Back to list
