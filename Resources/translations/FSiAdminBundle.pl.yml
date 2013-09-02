@@ -30,7 +30,7 @@ crud:
         button:
             save: Zapisz
             reset: Wyczyść
-            back_to_list: Powróŧ do listy
+            back_to_list: Powrót do listy
     delete:
         message: Czy na pewno chcesz usunąc %count% z zaznaczonych elementów?
         form:
@@ -42,4 +42,4 @@ crud:
         button:
             save: Zapisz
             reset: Wyczyść
-            back_to_list: Powróŧ do listy
+            back_to_list: Powrót do listy
