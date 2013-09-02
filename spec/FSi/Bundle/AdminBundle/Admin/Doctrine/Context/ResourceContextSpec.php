@@ -96,11 +96,11 @@ class ResourceContextSpec extends ObjectBehavior
             array()
         )->shouldBeCalled()->willReturn($formBuilder);
 
-        $formBuilder->add($textFormBuilder, 'resource', array(
-            'resource_key' => 'resources.resource_text'
+        $formBuilder->add('resources_resource_text', 'resource', array(
+            'resource_key' => 'resources.resource_text',
         ))->shouldBeCalled();
-        $formBuilder->add($emailFormBuilder, 'resource', array(
-            'resource_key' => 'resources.resource_email'
+        $formBuilder->add('resources_resource_email', 'resource', array(
+            'resource_key' => 'resources.resource_email',
         ))->shouldBeCalled();
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
