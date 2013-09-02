@@ -227,8 +227,8 @@ class ResourceContext implements ContextInterface
     {
         foreach ($resources as $resource) {
             if ($resource instanceof ResourceInterface) {
-                $builder->add($resource->getFormBuilder($this->formFactory), 'resource', array(
-                    'resource_key' => $resource->getName()
+                $builder->add($this->normalizeKey($resource->getName()), 'resource', array(
+                    'resource_key' => $resource->getName(),
                 ));
             }
         }
@@ -239,7 +239,7 @@ class ResourceContext implements ContextInterface
      * @param $key
      * @return mixed
      */
-    private function normalizeKey($key)
+    protected function normalizeKey($key)
     {
         return str_replace('.', '_', $key);
     }

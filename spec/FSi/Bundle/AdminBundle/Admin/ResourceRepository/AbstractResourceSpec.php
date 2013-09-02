@@ -46,11 +46,10 @@ class AbstractResourceSpec extends ObjectBehavior
         $this->getName()->shouldReturn('admin.main_page');
     }
 
-    function it_have_key_in_router_parameters()
+    function it_have_element_in_router_parameters()
     {
         $this->getRouteParameters()->shouldReturn(array(
             'element' => 'main_page',
-            'key' => 'resources.main_page'
         ));
     }
 

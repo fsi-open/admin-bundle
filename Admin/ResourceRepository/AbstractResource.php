@@ -32,7 +32,6 @@ abstract class AbstractResource extends AbstractElement implements ResourceInter
     {
         return array(
             'element' => $this->getId(),
-            'key' => $this->getKey()
         );
     }
 

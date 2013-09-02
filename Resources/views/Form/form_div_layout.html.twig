@@ -14,7 +14,7 @@
     {% spaceless %}
         {% if errors|length > 0 %}
             {% for error in errors %}
-                <span class="help-inline">{{ error.message }}</span>
+                <span class="help-block">{{ error.message }}</span>
             {% endfor %}
         {% endif %}
     {% endspaceless %}
