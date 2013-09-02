@@ -229,7 +229,6 @@ class ResourceContext implements ContextInterface
             if ($resource instanceof ResourceInterface) {
                 $builder->add($this->normalizeKey($resource->getName()), 'resource', array(
                     'resource_key' => $resource->getName(),
-                    'label' => false
                 ));
             }
         }
