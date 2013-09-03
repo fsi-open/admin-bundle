@@ -66,7 +66,6 @@ class CreateContextBuilder implements ContextBuilderInterface
      */
     public function buildContext(ElementInterface $element)
     {
-        /* @var $element \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement */
         $context = new CreateContext($this->dispatcher, $element, $this->router);
 
         return $context;

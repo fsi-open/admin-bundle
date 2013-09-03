@@ -45,7 +45,7 @@ class DeleteContextBuilder implements ContextBuilderInterface
     protected $request;
 
     /**
-     * @param EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
      * @param \Symfony\Component\Routing\Router $router
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
      */
@@ -57,7 +57,7 @@ class DeleteContextBuilder implements ContextBuilderInterface
     }
 
     /**
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      */
     public function setRequest(Request $request = null)
     {
@@ -105,6 +105,11 @@ class DeleteContextBuilder implements ContextBuilderInterface
         return 'fsi_admin_crud_delete';
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @return array
+     * @throws \FSi\Bundle\AdminBundle\Exception\InvalidEntityIdException
+     */
     protected function getData(ElementInterface $element)
     {
         $data = array();

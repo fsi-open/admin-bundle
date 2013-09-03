@@ -57,9 +57,7 @@ class ResourceContextBuilder implements ContextBuilderInterface
     }
 
     /**
-     * @param string $route
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
-     * @return boolean
+     * {@inheritdoc}
      */
     public function supports($route, ElementInterface $element)
     {
@@ -75,8 +73,7 @@ class ResourceContextBuilder implements ContextBuilderInterface
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
-     * @return \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface
+     * {@inheritdoc}
      */
     public function buildContext(ElementInterface $element)
     {

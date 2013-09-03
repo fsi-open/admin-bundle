@@ -17,8 +17,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 interface FormAwareInterface
 {
     /**
-     * @param FormFactoryInterface $factory
-     * @return mixed
+     * @param \Symfony\Component\Form\FormFactoryInterface $factory
      */
     public function setFormFactory(FormFactoryInterface $factory);
 }

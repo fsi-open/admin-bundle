@@ -7,7 +7,18 @@ Add to composer.json
 ```
 "require": {
     "fsi/admin-bundle": "1.0.*"
-}
+},
+"minimum-stability" : "dev"
+```
+
+or if you want to stay with ``"minimum-stability" : "stable"``
+
+```
+"require": {
+    "doctrine/doctrine-bundle": "1.2.*@dev",
+    "fsi/resource-repository-bundle" : "1.0.*@dev",
+    "fsi/admin-bundle": "1.0.*@dev"
+},
 ```
 
 ## 2. Register bundles
@@ -23,7 +34,6 @@ public function registerBundles()
         new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         /* Resource Repository */
         new FSi\Bundle\ResourceRepositoryBundle\FSiResourceRepositoryBundle(),
-
         /* CRUD */
         new FSi\Bundle\DataSourceBundle\DataSourceBundle(),
         new FSi\Bundle\DataGridBundle\DataGridBundle(),

@@ -39,7 +39,7 @@ class EditContextBuilder implements ContextBuilderInterface
     protected $request;
 
     /**
-     * @param EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
      * @param \Symfony\Component\Routing\Router $router
      */
     public function __construct(EventDispatcher $dispatcher, Router $router)
@@ -49,7 +49,7 @@ class EditContextBuilder implements ContextBuilderInterface
     }
 
     /**
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      */
     public function setRequest(Request $request = null)
     {

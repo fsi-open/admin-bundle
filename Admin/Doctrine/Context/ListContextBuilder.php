@@ -26,7 +26,7 @@ class ListContextBuilder implements ContextBuilderInterface
     protected $dispatcher;
 
     /**
-     * @param EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
      */
     public function __construct(EventDispatcher $dispatcher)
     {

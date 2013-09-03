@@ -12,7 +12,7 @@ namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
-use FSi\Bundle\AdminBundle\Event\AdminEvents;
+use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -55,11 +55,11 @@ class DeleteContext implements ContextInterface
     protected $form;
 
     /**
-     * @param EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
      * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
      * @param \Symfony\Component\Routing\Router $router
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     * @param $data mixed
+     * @param $data array
      * @internal param \Symfony\Component\Form\FormFactoryInterface $form
      */
     public function __construct(EventDispatcher $dispatcher, CRUDElement $element, Router $router,
@@ -80,26 +80,26 @@ class DeleteContext implements ContextInterface
     {
         $event = new AdminEvent($this->element, $request);
 
-        $this->dispatcher->dispatch(AdminEvents::CRUD_DELETE_CONTEXT_POST_CREATE, $event);
+        $this->dispatcher->dispatch(CRUDEvents::CRUD_DELETE_CONTEXT_POST_CREATE, $event);
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
 
         if ($request->request->has('confirm')) {
-            $this->dispatcher->dispatch(AdminEvents::CRUD_DELETE_FORM_PRE_BIND, $event);
+            $this->dispatcher->dispatch(CRUDEvents::CRUD_DELETE_FORM_PRE_SUBMIT, $event);
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
 
             $this->form->submit($request);
 
-            $this->dispatcher->dispatch(AdminEvents::CRUD_DELETE_FORM_POST_BIND, $event);
+            $this->dispatcher->dispatch(CRUDEvents::CRUD_DELETE_FORM_POST_SUBMIT, $event);
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
 
             if ($this->form->isValid()) {
-                $this->dispatcher->dispatch(AdminEvents::CRUD_DELETE_ENTITIES_PRE_DELETE, $event);
+                $this->dispatcher->dispatch(CRUDEvents::CRUD_DELETE_ENTITIES_PRE_DELETE, $event);
                 if ($event->hasResponse()) {
                     return $event->getResponse();
                 }
@@ -108,7 +108,7 @@ class DeleteContext implements ContextInterface
                     $this->element->delete($entity);
                 }
 
-                $this->dispatcher->dispatch(AdminEvents::CRUD_DELETE_ENTITIES_POST_DELETE, $event);
+                $this->dispatcher->dispatch(CRUDEvents::CRUD_DELETE_ENTITIES_POST_DELETE, $event);
                 if ($event->hasResponse()) {
                     return $event->getResponse();
                 }
