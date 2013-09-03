@@ -55,11 +55,11 @@ class DeleteContext implements ContextInterface
     protected $form;
 
     /**
-     * @param EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
      * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
      * @param \Symfony\Component\Routing\Router $router
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     * @param $data mixed
+     * @param $data array
      * @internal param \Symfony\Component\Form\FormFactoryInterface $form
      */
     public function __construct(EventDispatcher $dispatcher, CRUDElement $element, Router $router,

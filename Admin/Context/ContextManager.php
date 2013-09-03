@@ -33,6 +33,9 @@ class ContextManager
         }
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface $builder
+     */
     public function addContextBuilder(ContextBuilderInterface $builder)
     {
         $this->builders[] = $builder;

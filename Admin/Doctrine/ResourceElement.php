@@ -38,13 +38,17 @@ abstract class ResourceElement extends AbstractResource implements DoctrineAware
      */
     abstract public function getClassName();
 
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
     public function getRepository()
     {
         return $this->registry->getRepository($this->getClassName());
     }
 
     /**
-     * {@inheritdoc}
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function getObjectManager()
     {

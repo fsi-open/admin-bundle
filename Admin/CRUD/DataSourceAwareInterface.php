@@ -18,7 +18,6 @@ interface DataSourceAwareInterface
 {
     /**
      * @param \FSi\Component\DataSource\DataSourceFactoryInterface $factory
-     * @return mixed
      */
     public function setDataSourceFactory(DataSourceFactoryInterface $factory);
 }
