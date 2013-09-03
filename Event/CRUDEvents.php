@@ -12,7 +12,7 @@ namespace FSi\Bundle\AdminBundle\Event;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-final class AdminEvents
+final class CRUDEvents
 {
     const CRUD_LIST_CONTEXT_POST_CREATE = 'admin.crud.list.context.post_create';
 
@@ -33,9 +33,9 @@ final class AdminEvents
 
     const CRUD_CREATE_CONTEXT_POST_CREATE = 'admin.crud.create.context.post_create';
 
-    const CRUD_CREATE_FORM_REQUEST_PRE_BIND = 'admin.crud.create.form.request.pre_bind';
+    const CRUD_CREATE_FORM_REQUEST_PRE_SUBMIT = 'admin.crud.create.form.request.pre_submit';
 
-    const CRUD_CREATE_FORM_REQUEST_POST_BIND = 'admin.crud.create.form.request.post_bind';
+    const CRUD_CREATE_FORM_REQUEST_POST_SUBMIT = 'admin.crud.create.form.request.post_submit';
 
     const CRUD_CREATE_ENTITY_PRE_SAVE = 'admin.crud.create.entity.pre_save';
 
@@ -46,9 +46,9 @@ final class AdminEvents
 
     const CRUD_EDIT_CONTEXT_POST_CREATE = 'admin.crud.edit.context.post_create';
 
-    const CRUD_EDIT_FORM_REQUEST_PRE_BIND = 'admin.crud.edit.form.request.pre_bind';
+    const CRUD_EDIT_FORM_REQUEST_PRE_SUBMIT = 'admin.crud.edit.form.request.pre_submit';
 
-    const CRUD_EDIT_FORM_REQUEST_POST_BIND = 'admin.crud.edit.form.request.post_bind';
+    const CRUD_EDIT_FORM_REQUEST_POST_SUBMIT = 'admin.crud.edit.form.request.post_submit';
 
     const CRUD_EDIT_ENTITY_PRE_SAVE = 'admin.crud.edit.entity.pre_save';
 
@@ -59,9 +59,9 @@ final class AdminEvents
 
     const CRUD_DELETE_CONTEXT_POST_CREATE = 'admin.crud.delete.context.post_create';
 
-    const CRUD_DELETE_FORM_PRE_BIND = 'admin.crud.delete.form.pre_bind';
+    const CRUD_DELETE_FORM_PRE_SUBMIT = 'admin.crud.delete.form.pre_submit';
 
-    const CRUD_DELETE_FORM_POST_BIND = 'admin.crud.delete.form.post_bind';
+    const CRUD_DELETE_FORM_POST_SUBMIT = 'admin.crud.delete.form.post_submit';
 
     const CRUD_DELETE_ENTITIES_PRE_DELETE = 'admin.crud.delete.entities.pre_delete';
 

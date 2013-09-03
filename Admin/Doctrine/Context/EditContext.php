@@ -12,7 +12,7 @@ namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
-use FSi\Bundle\AdminBundle\Event\AdminEvents;
+use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,26 +64,26 @@ class EditContext implements ContextInterface
     {
         $event = new AdminEvent($this->element, $request);
 
-        $this->dispatcher->dispatch(AdminEvents::CRUD_EDIT_CONTEXT_POST_CREATE, $event);
+        $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_CONTEXT_POST_CREATE, $event);
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
 
         if ($request->isMethod('POST')) {
-            $this->dispatcher->dispatch(AdminEvents::CRUD_EDIT_FORM_REQUEST_PRE_BIND, $event);
+            $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_FORM_REQUEST_PRE_SUBMIT, $event);
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
 
             $this->element->getEditForm($this->data)->submit($request);
 
-            $this->dispatcher->dispatch(AdminEvents::CRUD_EDIT_FORM_REQUEST_POST_BIND, $event);
+            $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_FORM_REQUEST_POST_SUBMIT, $event);
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
 
             if ($this->element->getEditForm($this->data)->isValid()) {
-                $this->dispatcher->dispatch(AdminEvents::CRUD_EDIT_ENTITY_PRE_SAVE, $event);
+                $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_ENTITY_PRE_SAVE, $event);
                 if ($event->hasResponse()) {
                     return $event->getResponse();
                 }
@@ -91,7 +91,7 @@ class EditContext implements ContextInterface
 
             $this->element->save($this->element->getEditForm($this->data)->getData());
 
-            $this->dispatcher->dispatch(AdminEvents::CRUD_EDIT_ENTITY_POST_SAVE, $event);
+            $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_ENTITY_POST_SAVE, $event);
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
@@ -102,7 +102,7 @@ class EditContext implements ContextInterface
         }
 
 
-        $this->dispatcher->dispatch(AdminEvents::CRUD_EDIT_RESPONSE_PRE_RENDER, $event);
+        $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_RESPONSE_PRE_RENDER, $event);
         if ($event->hasResponse()) {
             return $event->getResponse();
         }

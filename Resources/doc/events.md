@@ -2,7 +2,7 @@
 
 Admin bundle provide several events that can be handled in application.
 List of available events can be found in [AdminEvents](Event/AdminEvents.php)
-Following example will show you how to handle dynamically added relation elements for doctrine entity.
+Following example will show you how to handle dynamically added/removed relation elements for doctrine entity.
 Just like in http://symfony.com/doc/current/cookbook/form/form_collections.html#allowing-tags-to-be-removed
 
 First you need to create event event listener
@@ -42,7 +42,7 @@ class CRUDEventListener
     /**
      * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
      */
-    public function crudEditEntityPreBind(AdminEvent $event)
+    public function crudEditEntityPreSubmit(AdminEvent $event)
     {
         /* @var $element \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement */
         $element = $event->getElement();
@@ -100,7 +100,7 @@ Next and last step is event listener registration
         <!-- Event Listeners -->
         <service id="fsi_demo_bundle.admin.listener.crud" class="FSi\Bundle\DemoBundle\EventListener\CRUDEventListener">
             <argument type="service" id="doctrine" />
-            <tag name="kernel.event_listener" event="admin.crud.edit.form.request.pre_bind" method="crudEditEntityPreBind" />
+            <tag name="kernel.event_listener" event="admin.crud.edit.form.request.pre_submit" method="crudEditEntityPreSubmit" />
             <tag name="kernel.event_listener" event="admin.crud.edit.entity.post_save" method="crudEditEntityPostSave" />
         </service>
     </services>
