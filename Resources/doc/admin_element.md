@@ -7,7 +7,7 @@ Admin elements have different types, at the moment you can choose from
 
 * [Doctrine CRUD (Create Read Update Delete)](admin_element_crud.md)
 * [Doctrine Resource](admin_element_resource.md)
-
+* *Dashboards* (not implemented yet)
 
 If default element types are not enough you can use [event system](events.md) to modify admin elements
 behavior.

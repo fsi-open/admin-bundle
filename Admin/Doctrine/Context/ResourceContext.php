@@ -79,9 +79,7 @@ class ResourceContext implements ContextInterface
     }
 
     /**
-     * @param Request $request
-     * @throws \FSi\Bundle\AdminBundle\Exception\ContextBuilderException
-     * @return \Symfony\Component\HttpFoundation\Response
+     * {@inheritdoc}
      */
     public function handleRequest(Request $request)
     {

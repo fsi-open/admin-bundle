@@ -14,15 +14,15 @@ namespace FSi\Bundle\AdminBundle\Event;
  */
 final class ResourceEvents
 {
-    const RESOURCE_CONTEXT_POST_CREATE = 'resource.context.post_create';
+    const RESOURCE_CONTEXT_POST_CREATE = 'admin.resource.context.post_create';
 
-    const RESOURCE_FORM_REQUEST_PRE_SUBMIT = 'resource.form.request.pre_submit';
+    const RESOURCE_FORM_REQUEST_PRE_SUBMIT = 'admin,resource.form.request.pre_submit';
 
-    const RESOURCE_FORM_REQUEST_POST_SUBMIT = 'resource.form.request.post_submit';
+    const RESOURCE_FORM_REQUEST_POST_SUBMIT = 'admin.resource.form.request.post_submit';
 
-    const RESOURCE_PRE_SAVE = 'resource.pre_save';
+    const RESOURCE_PRE_SAVE = 'admin.resource.pre_save';
 
-    const RESOURCE_POST_SAVE = 'resource.post_save';
+    const RESOURCE_POST_SAVE = 'admin.resource.post_save';
 
-    const RESOURCE_RESPONSE_PRE_RENDER = 'resource.response.pre_render';
+    const RESOURCE_RESPONSE_PRE_RENDER = 'admin.resource.response.pre_render';
 }

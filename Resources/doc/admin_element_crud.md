@@ -199,7 +199,7 @@ collection argument.
 
     <service id="fsi_demo_bundle.admin.news" class="FSi\Bundle\DemoBundle\Admin\News">
         <argument type="collection">
-            <argument key="allow_delete">1</argument> <!-- 1 = true | 0 = false -->
+            <argument key="allow_delete">true</argument>
             <argument key="template_crud_list">@FSiDemo/Admin/news_edit.html.twig</argument>
             <argument key="template_crud_create">@FSiDemo/Admin/news_create.html.twig</argument>
             <argument key="template_crud_edit">@FSiDemo/Admin/news_edit.html.twig</argument>

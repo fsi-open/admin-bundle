@@ -3,7 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
-use FSi\Bundle\AdminBundle\Event\AdminEvents;
+use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -65,28 +65,28 @@ class EditContextSpec extends ObjectBehavior
           Request $request, Form $form, ParameterBag $bag, FormData $data, Router $router)
     {
         $dispatcher->dispatch(
-            AdminEvents::CRUD_EDIT_CONTEXT_POST_CREATE,
+            CRUDEvents::CRUD_EDIT_CONTEXT_POST_CREATE,
             Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
         )->shouldBeCalled();
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
 
         $dispatcher->dispatch(
-            AdminEvents::CRUD_EDIT_FORM_REQUEST_PRE_BIND,
+            CRUDEvents::CRUD_EDIT_FORM_REQUEST_PRE_SUBMIT,
             Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
         )->shouldBeCalled();
 
         $form->submit($request)->shouldBeCalled();
 
         $dispatcher->dispatch(
-            AdminEvents::CRUD_EDIT_FORM_REQUEST_POST_BIND,
+            CRUDEvents::CRUD_EDIT_FORM_REQUEST_POST_SUBMIT,
             Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
         )->shouldBeCalled();
 
         $form->isValid()->willReturn(true);
 
         $dispatcher->dispatch(
-            AdminEvents::CRUD_EDIT_ENTITY_PRE_SAVE,
+            CRUDEvents::CRUD_EDIT_ENTITY_PRE_SAVE,
             Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
         )->shouldBeCalled();
 
@@ -94,7 +94,7 @@ class EditContextSpec extends ObjectBehavior
         $element->save(Argument::any())->shouldBeCalled();
 
         $dispatcher->dispatch(
-            AdminEvents::CRUD_EDIT_ENTITY_POST_SAVE,
+            CRUDEvents::CRUD_EDIT_ENTITY_POST_SAVE,
             Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
         )->shouldBeCalled();
 
@@ -110,12 +110,12 @@ class EditContextSpec extends ObjectBehavior
     function it_handle_request_without_POST_and_return_response(EventDispatcher $dispatcher, Request $request)
     {
         $dispatcher->dispatch(
-            AdminEvents::CRUD_EDIT_CONTEXT_POST_CREATE,
+            CRUDEvents::CRUD_EDIT_CONTEXT_POST_CREATE,
             Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
         )->shouldBeCalled();
 
         $dispatcher->dispatch(
-            AdminEvents::CRUD_EDIT_RESPONSE_PRE_RENDER,
+            CRUDEvents::CRUD_EDIT_RESPONSE_PRE_RENDER,
             Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
         )->shouldBeCalled();
 

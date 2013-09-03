@@ -17,8 +17,7 @@ use FSi\Component\DataGrid\DataGridFactoryInterface;
 interface DataGridAwareInterface
 {
     /**
-     * @param DataGridFactoryInterface $factory
-     * @return mixed
+     * @param \FSi\Component\DataGrid\DataGridFactoryInterface $factory
      */
     public function setDataGridFactory(DataGridFactoryInterface $factory);
 }

@@ -10,7 +10,6 @@
 namespace FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
-use FSi\Bundle\AdminBundle\Context\ContextInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
