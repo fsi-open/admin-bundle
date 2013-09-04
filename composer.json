@@ -2,7 +2,7 @@
     "name": "fsi/admin-bundle",
     "type": "symfony-bundle",
     "description": "FSi Admin Bundle. Admin generator for Symfony2.",
-    "keywords": ["fsi", "symfony", "datagrid", "datagrid-bundle", "bundle"],
+    "keywords": ["admin", "panel", "symfony2", "bundle", "fsi"],
     "license": "MIT",
     "authors": [
         {
