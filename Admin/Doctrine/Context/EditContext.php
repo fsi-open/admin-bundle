@@ -87,18 +87,18 @@ class EditContext implements ContextInterface
                 if ($event->hasResponse()) {
                     return $event->getResponse();
                 }
+
+                $this->element->save($this->element->getEditForm($this->data)->getData());
+
+                $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_ENTITY_POST_SAVE, $event);
+                if ($event->hasResponse()) {
+                    return $event->getResponse();
+                }
+
+                return new RedirectResponse($this->router->generate('fsi_admin_crud_list', array(
+                    'element' => $this->element->getId(),
+                )));
             }
-
-            $this->element->save($this->element->getEditForm($this->data)->getData());
-
-            $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_ENTITY_POST_SAVE, $event);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            return new RedirectResponse($this->router->generate('fsi_admin_crud_list', array(
-                'element' => $this->element->getId(),
-            )));
         }
 
 
