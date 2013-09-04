@@ -14,23 +14,17 @@
 {% block datagrid_column_cell %}
 {% spaceless %}
     <td class="cell">
-        <div{% if cell.hasAttribute('form')%} class="cell-editable" {% endif %}id="{{ datagrid_name }}_{{ cell.name }}">
-            {% endspaceless %}<div class="cell-value">{{ cell.value|raw }}</div>{% spaceless %}
-            {% if cell.hasAttribute('form') == true %}
-                &nbsp;
-                <a class="cell-edit" href="#" data-target="{{ datagrid_name }}_{{ row_index }}_{{ cell.name }}_edit" style="display:none;" title="{{ 'crud.list.datagrid.editable.edit'|trans({}, 'FSiAdminBundle') }}">
-                    <i class="glyphicon glyphicon-edit">&nbsp;</i>
-                </a>
+        <div id="{{ datagrid_name }}_{{ cell.name }}">
+            {% if cell.hasAttribute('form') %}
+            {% set class = 'editable' %}
+            {% if cell.getAttribute('form').vars.valid == false %}
+                {% set class = class ~ ' has-error' %}
             {% endif %}
-        </div>{% endspaceless %}
-        {% if cell.hasAttribute('form')%}
-        {% spaceless %}
-            <div class="cell-edit-form" id="{{ datagrid_name }}_{{ row_index }}_{{ cell.name }}_edit" style="display:none;">
-                {% endspaceless %}{{ datagrid_column_cell_form_widget(cell) }}{% spaceless %}
-            </div>
-        {% endspaceless %}
-        {% endif %}
-        {% spaceless %}
+            <a href="#" class="{{ class }}" data-toggle="popover" data-html="true" data-content="{{ datagrid_column_cell_form_widget(cell)|escape }}">{{ cell.value|raw }}</a>
+            {% else %}
+            {{ cell.value|raw }}
+            {% endif %}
+        </div>
     </td>
 {% endspaceless %}
 {% endblock %}
@@ -52,17 +46,21 @@
 {# pattern: datagrid_column_cell_form #}
 {% block datagrid_column_cell_form %}
 {% spaceless %}
+    {% form_theme form _self %}
     <form method="POST" action="{{ path('fsi_admin_crud_list', vars.datasource.getAllParameters()|merge(vars.router_paramters)) }}">
-        <div>
-            {% for child in form.children %}
-                {% for subchild in child.children %}
-                    {{ form_label(subchild) }}
-                    {{ form_errors(subchild) }}
-                    {{ form_widget(subchild) }}
-                {% endfor %}
+        {% for child in form.children %}
+            {% for subchild in child.children %}
+            <div class="form-group{% if subchild.vars.errors|length %} has-error{% endif %}">
+                {{ form_label(subchild, subchild.vars.label|default(null), { 'label_attr': { 'class': 'sr-only' } }) }}
+                {{ form_widget(subchild, {'attr' : {'class' : 'form-control'} }) }}
+                {{ form_errors(subchild) }}
+            </div>
             {% endfor %}
+        {% endfor %}
+        <div class="form-group editable-buttons">
+            <input type="submit" name="submit" value="{{ 'crud.list.datagrid.editable.save'|trans({}, 'FSiAdminBundle') }}" class="btn btn-sm">
+            <input type="reset" name="reset" value="{{ 'crud.list.datagrid.editable.reset'|trans({}, 'FSiAdminBundle') }}" class="btn btn-primary btn-sm">
         </div>
-        <input type="submit" name="submit" value="{{ 'crud.list.datagrid.editable.save'|trans({}, 'FSiAdminBundle') }}" class="btn btn-sm">
     </form>
 {% endspaceless %}
 {% endblock %}
@@ -88,3 +86,13 @@
     </a>
 {% endspaceless %}
 {% endblock %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% for error in errors %}
+                <span class="help-block">{{ error.message }}</span>
+            {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
