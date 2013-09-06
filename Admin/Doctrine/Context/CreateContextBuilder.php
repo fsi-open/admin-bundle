@@ -54,6 +54,8 @@ class CreateContextBuilder implements ContextBuilderInterface
             if ($element->getOption('allow_add')) {
                 return true;
             }
+
+            throw new ContextBuilderException(sprintf("%s does not allow to create objects", $element->getName()));
         }
 
         return false;

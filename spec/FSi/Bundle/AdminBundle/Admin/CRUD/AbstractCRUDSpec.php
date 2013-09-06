@@ -201,6 +201,7 @@ class AbstractCRUDSpec extends ObjectBehavior
         $this->getOptions()->shouldReturn(array(
             'allow_delete' => true,
             'allow_add' => true,
+            'allow_edit' => true,
             'crud_list_title' => 'crud.list.title',
             'crud_create_title' => 'crud.create.title',
             'crud_edit_title' => 'crud.edit.title',

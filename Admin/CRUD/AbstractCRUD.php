@@ -73,6 +73,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
         $resolver->setDefaults(array(
             'allow_delete' => true,
             'allow_add' => true,
+            'allow_edit' => true,
             'crud_list_title' => 'crud.list.title',
             'crud_create_title' => 'crud.create.title',
             'crud_edit_title' => 'crud.edit.title',
@@ -85,6 +86,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
         $resolver->setAllowedTypes(array(
             'allow_delete' => 'bool',
             'allow_add' => 'bool',
+            'allow_edit' => 'bool',
             'template_crud_list' => array('null', 'string'),
             'template_crud_create' => array('null', 'string'),
             'template_crud_edit' => array('null', 'string'),

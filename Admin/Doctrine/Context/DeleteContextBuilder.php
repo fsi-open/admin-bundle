@@ -13,7 +13,6 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
-use FSi\Bundle\AdminBundle\Exception\InvalidEntityIdException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,6 +73,10 @@ class DeleteContextBuilder implements ContextBuilderInterface
         }
 
         if ($element instanceof CRUDElement) {
+            if (!$element->getOption('allow_delete')) {
+                throw new ContextBuilderException(sprintf("%s does not allow to delete objects", $element->getName()));
+            }
+
             $data = $this->getData($element);
 
             if (!count($data)) {
@@ -106,9 +109,9 @@ class DeleteContextBuilder implements ContextBuilderInterface
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @param ElementInterface $element
      * @return array
-     * @throws \FSi\Bundle\AdminBundle\Exception\InvalidEntityIdException
+     * @throws \FSi\Bundle\AdminBundle\Exception\ContextBuilderException
      */
     protected function getData(ElementInterface $element)
     {
@@ -118,7 +121,7 @@ class DeleteContextBuilder implements ContextBuilderInterface
             $entity = $element->getDataIndexer()->getData($index);
 
             if (!isset($entity)) {
-                throw new InvalidEntityIdException(sprintf('Cant find entity with id %s', $index));
+                throw new ContextBuilderException(sprintf('Cant find object with id %s', $index));
             }
 
             $data[] = $entity;
