@@ -35,14 +35,14 @@ class CreateContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_form__in_data()
+    function it_have_array_data(CRUDElement $element)
     {
-        $this->getData()->shouldHaveKeyInArray('form');
-    }
+        $element->getOption('crud_list_title')->shouldBeCalled();
 
-    function it_have_element__in_data()
-    {
+        $this->getData()->shouldBeArray();
+        $this->getData()->shouldHaveKeyInArray('form');
         $this->getData()->shouldHaveKeyInArray('element');
+        $this->getData()->shouldHaveKeyInArray('title');
     }
 
     function it_has_template(CRUDElement $element)

@@ -38,19 +38,15 @@ class EditContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_form_in_data()
+    function it_have_array_data(CRUDElement $element)
     {
+        $element->getOption('crud_edit_title')->shouldBeCalled();
+
+        $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('form');
-    }
-
-    function it_have_element_in_data()
-    {
         $this->getData()->shouldHaveKeyInArray('element');
-    }
-
-    function it_have_id_in_data()
-    {
         $this->getData()->shouldHaveKeyInArray('id');
+        $this->getData()->shouldHaveKeyInArray('title');
     }
 
     function it_has_template(CRUDElement $element)

@@ -134,7 +134,8 @@ class EditContext implements ContextInterface
         return array(
             'element' => $this->element,
             'form' => $this->element->getEditForm($this->data)->createView(),
-            'id' => $this->element->getDataIndexer()->getIndex($this->data)
+            'id' => $this->element->getDataIndexer()->getIndex($this->data),
+            'title' => $this->element->getOption('crud_edit_title')
         );
     }
 }

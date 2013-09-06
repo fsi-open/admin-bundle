@@ -158,7 +158,8 @@ class ResourceContext implements ContextInterface
     {
         return array(
             'form' => $this->form->createView(),
-            'element' => $this->element
+            'element' => $this->element,
+            'title' => $this->element->getOption('title')
         );
     }
 

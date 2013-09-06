@@ -200,10 +200,13 @@ class AbstractCRUDSpec extends ObjectBehavior
     {
         $this->getOptions()->shouldReturn(array(
             'allow_delete' => true,
+            'crud_list_title' => 'crud.list.title',
+            'crud_create_title' => 'crud.create.title',
+            'crud_edit_title' => 'crud.edit.title',
             'template_crud_list' => null,
             'template_crud_create' => null,
             'template_crud_edit' => null,
-            'template_crud_delete' => null
+            'template_crud_delete' => null,
         ));
     }
 }
