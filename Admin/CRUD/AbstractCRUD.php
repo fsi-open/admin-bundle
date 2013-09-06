@@ -10,10 +10,13 @@
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
-use FSi\Component\DataGrid\DataGridFactory;
+use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -36,26 +39,6 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
      * @var \Symfony\Component\Form\FormFactoryInterface
      */
     protected $formFactory;
-
-    /**
-     * @var \FSi\Component\DataGrid\DataGridInterface
-     */
-    protected $datagrid;
-
-    /**
-     * @var \FSi\Component\DataSource\DataSourceInterface
-     */
-    protected $datasource;
-
-    /**
-     * @var \Symfony\Component\Form\FormInterface
-     */
-    protected $editForm;
-
-    /**
-     * @var \Symfony\Component\Form\FormInterface
-     */
-    protected $createForm;
 
     /**
      * {@inheritdoc}
@@ -123,28 +106,19 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
      */
     public function getDataGrid()
     {
-        if (!$this->hasDataGrid()) {
-            return null;
+        $datagrid = $this->initDataGrid($this->datagridFactory);
+
+        if (!is_object($datagrid) || !$datagrid instanceof DataGridInterface) {
+            throw new RuntimeException('initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface');
         }
 
-        return $this->datagrid;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasDataGrid()
-    {
-        if (!isset($this->datagrid)) {
-            $this->datagrid = $this->initDataGrid($this->datagridFactory);
-            if ($this->options['allow_delete']) {
-                if (!$this->datagrid->hasColumnType('batch')) {
-                    $this->datagrid->addColumn('batch', 'batch', array('display_order' => -1000));
-                }
+        if ($this->options['allow_delete']) {
+            if (!$datagrid->hasColumnType('batch')) {
+                $datagrid->addColumn('batch', 'batch', array('display_order' => -1000));
             }
         }
 
-        return isset($this->datagrid);
+        return $datagrid;
     }
 
     /**
@@ -152,115 +126,51 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
      */
     public function getDataSource()
     {
-        if (!$this->hasDataSource()) {
-            return null;
+        $datasource = $this->initDataSource($this->datasourceFactory);
+
+        if (!is_object($datasource) || !$datasource instanceof DataSourceInterface) {
+            throw new RuntimeException('initDataSource should return instanceof FSi\\Component\\DataSource\\DataSourceInterface');
         }
 
-        return $this->datasource;
+        return $datasource;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasDataSource()
+    public function getForm($data = null)
     {
-        if (!isset($this->datasource)) {
-            $this->datasource = $this->initDataSource($this->datasourceFactory);
+        $form = $this->initForm($this->formFactory, $data);
+
+        if (!is_object($form) || !$form instanceof FormInterface) {
+            throw new RuntimeException('initForm should return instanceof Symfony\\Component\\Form\\FormInterface');
         }
 
-        return isset($this->datasource);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCreateForm()
-    {
-        if (!$this->hasCreateForm()) {
-            return null;
-        }
-
-        return $this->createForm;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasCreateForm()
-    {
-        if (!isset($this->createForm)) {
-            $this->createForm = $this->initCreateForm($this->formFactory);
-        }
-
-        return isset($this->createForm);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEditForm($data = null)
-    {
-        if (!$this->hasEditForm($data)) {
-            return null;
-        }
-
-        return $this->editForm;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasEditForm($data = null)
-    {
-        if (!isset($this->editForm)) {
-            $this->editForm = $this->initEditForm($this->formFactory, $data);
-        }
-
-        return isset($this->editForm);
+        return $form;
     }
 
     /**
      * Initialize DataGrid.
      *
      * @param \FSi\Component\DataGrid\DataGridFactoryInterface $factory
-     * @return null|\FSi\Component\DataGrid\DataGridInterface
+     * @return \FSi\Component\DataGrid\DataGridInterface
      */
-    protected function initDataGrid(DataGridFactoryInterface $factory)
-    {
-        return null;
-    }
+    abstract protected function initDataGrid(DataGridFactoryInterface $factory);
 
     /**
      * Initialize DataSource.
      *
      * @param \FSi\Component\DataSource\DataSourceFactoryInterface $factory
-     * @return null|\FSi\Component\DataSource\DataSourceInterface
+     * @return \FSi\Component\DataSource\DataSourceInterface
      */
-    protected function initDataSource(DataSourceFactoryInterface $factory)
-    {
-        return null;
-    }
+    abstract protected function initDataSource(DataSourceFactoryInterface $factory);
 
     /**
      * Initialize create Form. This form will be used in createAction in CRUDController.
      *
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     * @return null|\Symfony\Component\Form\FormInterface
+     * @param null $data
+     * @return \Symfony\Component\Form\FormInterface
      */
-    protected function initCreateForm(FormFactoryInterface $factory)
-    {
-        return null;
-    }
-
-    /**
-     * Initialize edit Form. This form will be used in editAction in CRUDController.
-     *
-     * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     * @param mixed $data
-     * @return null|\Symfony\Component\Form\FormInterface
-     */
-    protected function initEditForm(FormFactoryInterface $factory, $data = null)
-    {
-        return null;
-    }
+    abstract protected function initForm(FormFactoryInterface $factory, $data = null);
 }

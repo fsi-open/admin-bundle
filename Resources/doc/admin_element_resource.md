@@ -99,6 +99,7 @@ collection argument.
 
     <service id="fsi_demo_bundle.admin.news" class="FSi\Bundle\DemoBundle\Admin\MainPage">
         <argument type="collection">
+            <argument key="title">resource.title</argument>
             <argument key="template">@FSiDemo/Resource/resource.html.twig</argument>
         </argument>
         <tag name="admin.element"/>

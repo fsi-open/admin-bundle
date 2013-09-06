@@ -46,7 +46,7 @@ class CRUDEventListener
     {
         /* @var $element \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement */
         $element = $event->getElement();
-        $entity = $element->getEditForm()->getData();
+        $entity = $element->getEdit()->getData();
 
         if ($entity instanceof News) {
             $this->tags[$entity->getId()] = array();
@@ -64,7 +64,7 @@ class CRUDEventListener
     {
         /* @var $element \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement */
         $element = $event->getElement();
-        $entity = $element->getEditForm()->getData();
+        $entity = $element->getForm()->getData();
 
         if ($entity instanceof News) {
             foreach ($entity->getTags() as $tag) {

@@ -12,7 +12,6 @@ namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
-use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -43,11 +42,7 @@ class ListContextBuilder implements ContextBuilderInterface
         }
 
         if ($element instanceof CRUDElement) {
-            if ($element->hasDataGrid() && $element->hasDataSource()) {
-                return true;
-            }
-
-            throw new ContextBuilderException(sprintf("%s does not have any datagrid and datasource", $element->getName()));
+            return true;
         }
 
         return false;
