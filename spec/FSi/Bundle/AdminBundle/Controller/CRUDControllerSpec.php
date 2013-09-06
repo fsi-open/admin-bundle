@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CRUDControllerSpec extends ObjectBehavior
 {
@@ -35,6 +36,21 @@ class CRUDControllerSpec extends ObjectBehavior
     function it_is_controller()
     {
         $this->shouldBeAnInstanceOf('Symfony\Bundle\FrameworkBundle\Controller\Controller');
+    }
+
+    function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(AbstractCRUD $element, ContextManager $manager)
+    {
+        $element->getName()->willReturn('My Awesome Element');
+        $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
+
+        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
+            ->during('listAction', array($element));
+        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
+            ->during('createAction', array($element));
+        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
+            ->during('editAction', array($element));
+        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
+            ->during('deleteAction', array($element));
     }
 
     function it_render_default_template_in_list_action(Request $request, Response $response, AbstractCRUD $element,
