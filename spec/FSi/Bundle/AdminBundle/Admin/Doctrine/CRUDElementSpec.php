@@ -7,8 +7,11 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
+use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataSource\DataSourceFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class MyCrudElement extends CRUDElement
 {
@@ -34,6 +37,21 @@ class MyCrudElement extends CRUDElement
     public function getName()
     {
         return 'admin.my_entity.name';
+    }
+
+    protected function initDataGrid(DataGridFactoryInterface $factory)
+    {
+        // TODO: Implement initDataGrid() method.
+    }
+
+    protected function initDataSource(DataSourceFactoryInterface $factory)
+    {
+        // TODO: Implement initDataSource() method.
+    }
+
+    protected function initForm(FormFactoryInterface $factory, $data = null)
+    {
+        // TODO: Implement initForm() method.
     }
 }
 

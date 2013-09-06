@@ -7,6 +7,9 @@
 namespace FSi\Bundle\DemoBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
+use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataSource\DataSourceFactoryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class User extends CRUDElement
 {
@@ -106,43 +109,17 @@ class User extends CRUDElement
         return $datagrid;
     }
 
-    protected function initCreateForm(FormFactoryInterface $factory)
-    {
-        $data = new \FSi\Bundle\DemoBundle\Entity\News();
-        $builder = $factory->createNamedBuilder('news', 'form', $data);
-
-        $this->buildForm($builder);
-
-        // Here you should add some fields into form
-        // To get more information about Symfony form you should visit http://symfony.com/doc/current/book/forms.html
-
-        return $builder->getForm();
-    }
-
     /**
      * {@inheritdoc}
      */
-    protected function initEditForm(FormFactoryInterface $factory, $data = null)
+    protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        $builder = $factory->createNamedBuilder('news', 'form', $data);
+        $builder = $factory->create('form', $data);
 
         $this->buildForm($builder);
 
-        // Here you should add some fields into form
-        // To get more information about Symfony form you should visit http://symfony.com/doc/current/book/forms.html
-
-        return $builder->getForm();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function buildForm(FormBuilderInterface $builder)
-    {
-        $builder->add('email', 'email', array(
-        ));
-        $builder->add('username', 'text', array(
-        ));
+        $builder->add('email', 'email');
+        $builder->add('username', 'text');
         $builder->add('enabled', 'choice', array(
             'choices' => array(
                 0 => 'No',
@@ -155,6 +132,11 @@ class User extends CRUDElement
                 1 => 'Yes',
             )
         ));
+
+        // Here you should add some fields into form
+        // To get more information about Symfony form you should visit http://symfony.com/doc/current/book/forms.html
+
+        return $builder->getForm();
     }
 }
 ```
@@ -200,6 +182,11 @@ collection argument.
     <service id="fsi_demo_bundle.admin.news" class="FSi\Bundle\DemoBundle\Admin\News">
         <argument type="collection">
             <argument key="allow_delete">true</argument>
+            <argument key="allow_add">true</argument>
+            <argument key="allow_edit">true</argument>
+            <argument key="crud_list_title">crud.list.title</argument>
+            <argument key="crud_create_title">crud.create.title</argument>
+            <argument key="crud_edit_title">crud.edit.title</argument>
             <argument key="template_crud_list">@FSiDemo/Admin/news_edit.html.twig</argument>
             <argument key="template_crud_create">@FSiDemo/Admin/news_create.html.twig</argument>
             <argument key="template_crud_edit">@FSiDemo/Admin/news_edit.html.twig</argument>

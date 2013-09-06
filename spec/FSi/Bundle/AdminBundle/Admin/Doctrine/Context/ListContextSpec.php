@@ -30,19 +30,15 @@ class ListContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_datagrid_in_data()
+    function it_have_array_data(CRUDElement $element)
     {
+        $element->getOption('crud_list_title')->shouldBeCalled();
+
+        $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('datagrid_view');
-    }
-
-    function it_have_datasource_in_data()
-    {
         $this->getData()->shouldHaveKeyInArray('datasource_view');
-    }
-
-    function it_have_element_in_data()
-    {
         $this->getData()->shouldHaveKeyInArray('element');
+        $this->getData()->shouldHaveKeyInArray('title');
     }
 
     function it_has_template(CRUDElement $element)

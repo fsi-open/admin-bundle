@@ -3,7 +3,6 @@ body {position: relative;padding-top: 60px;}
 #batch_action {margin-right: 5px;width: 155px;}
 #batch_form {margin-right: 5px;}
 
-#filter {margin-bottom:15px;}
 #filter input[type="text"],
 #filter input[type="email"],
 #filter select {width:190px; margin-right:5px;margin-left:5px;margin-bottom:5px;}

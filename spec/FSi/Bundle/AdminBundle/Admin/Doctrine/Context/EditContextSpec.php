@@ -10,7 +10,6 @@ use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
 class Entity
@@ -19,13 +18,15 @@ class Entity
 
 class EditContextSpec extends ObjectBehavior
 {
+    private $data;
+
     function let(EventDispatcher $dispatcher, CRUDElement $element, Form $form, Router $router, DoctrineDataIndexer $indexer)
     {
-        $entity = new Entity();
-        $this->beConstructedWith($dispatcher, $element, $router, $entity);
-        $element->getEditForm($entity)->willReturn($form);
+        $this->data = new Entity();
+        $this->beConstructedWith($dispatcher, $element, $router, $this->data);
+        $element->getForm($this->data)->willReturn($form);
         $element->getDataIndexer()->willReturn($indexer);
-        $indexer->getIndex($entity)->willReturn(1);
+        $indexer->getIndex($this->data)->willReturn(1);
     }
 
     function it_is_initializable()
@@ -38,19 +39,15 @@ class EditContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_form_in_data()
+    function it_have_array_data(CRUDElement $element)
     {
+        $element->getOption('crud_edit_title')->shouldBeCalled();
+
+        $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('form');
-    }
-
-    function it_have_element_in_data()
-    {
         $this->getData()->shouldHaveKeyInArray('element');
-    }
-
-    function it_have_id_in_data()
-    {
         $this->getData()->shouldHaveKeyInArray('id');
+        $this->getData()->shouldHaveKeyInArray('title');
     }
 
     function it_has_template(CRUDElement $element)
@@ -62,7 +59,7 @@ class EditContextSpec extends ObjectBehavior
     }
 
     function it_handle_request_with_POST_and_return_redirect_response(EventDispatcher $dispatcher, CRUDElement $element,
-          Request $request, Form $form, ParameterBag $bag, FormData $data, Router $router)
+          Request $request, Form $form, Router $router)
     {
         $dispatcher->dispatch(
             CRUDEvents::CRUD_EDIT_CONTEXT_POST_CREATE,
@@ -90,7 +87,7 @@ class EditContextSpec extends ObjectBehavior
             Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
         )->shouldBeCalled();
 
-        $form->getData()->willReturn($data);
+        $form->getData()->willReturn($this->data);
         $element->save(Argument::any())->shouldBeCalled();
 
         $dispatcher->dispatch(

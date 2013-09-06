@@ -8,6 +8,11 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
+                {% if form.vars.data.__toString() is defined %}
+                <h3>{{ title|trans({'%element%': form.vars.data}) }}</h3>
+                {% else %}
+                <h3>{{ title|trans }}t</h3>
+                {% endif %}
                 <form action="{{ path('fsi_admin_crud_edit', {element: element.id, id: id}) }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
                     {{ form_widget(form) }}
                     <div class="form-group">

@@ -26,21 +26,19 @@ class CreateContextBuilderSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface');
     }
 
-    function it_supports_doctrine_crud_element(CRUDElement $element, Router $router)
+    function it_supports_doctrine_crud_element_that_allows_adding_new_objects(CRUDElement $element)
     {
-        $element->hasCreateForm()->shouldBeCalled()->willReturn(true);
-        $this->supports('fsi_admin_crud_create', $element, $router)->shouldReturn(true);
+        $element->getOption('allow_add')->shouldBeCalleD()->willReturn(true);
+        $this->supports('fsi_admin_crud_create', $element)->shouldReturn(true);
     }
 
-
-    function it_throws_exception_when_doctrine_crud_element_does_not_have_create_form(CRUDElement $element,
-        Router $router)
+    function it_throws_exception_when_element_does_not_allow_to_create_objects(CRUDElement $element)
     {
-        $element->getName()->shouldBeCalled()->willReturn('My Element');
-        $element->hasCreateForm()->shouldBeCalled()->willReturn(false);
+        $element->getName()->willReturn('My Element');
+        $element->getOption('allow_add')->shouldBeCalled()->willReturn(false);
 
-        $this->shouldThrow(new ContextBuilderException("My Element does not have create form"))
-            ->during('supports', array('fsi_admin_crud_create', $element, $router));
+        $this->shouldThrow(new ContextBuilderException("My Element does not allow to create objects"))
+            ->during('supports', array('fsi_admin_crud_create', $element));
     }
 
     function it_build_context(CRUDElement $element)

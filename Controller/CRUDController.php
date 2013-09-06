@@ -13,6 +13,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -63,7 +64,12 @@ class CRUDController extends Controller
      */
     protected function action(AbstractCRUD $element, $route, $defaultTemplate)
     {
-        $context= $this->get('admin.context.manager')->createContext($route, $element);
+        $context = $this->get('admin.context.manager')->createContext($route, $element);
+
+        if (!isset($context)) {
+            throw new NotFoundHttpException(sprintf('Cant find context builder that supports %s', $element->getName()));
+        }
+
         if (($response = $context->handleRequest($this->getRequest())) !== null) {
             return $response;
         }
