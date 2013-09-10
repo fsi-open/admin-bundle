@@ -68,20 +68,20 @@ class CreateContext implements ContextInterface
                 return $event->getResponse();
             }
 
-            $this->element->getCreateForm()->submit($request);
+            $this->element->getForm()->submit($request);
 
             $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_FORM_REQUEST_POST_SUBMIT, $event);
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
 
-            if ($this->element->getCreateForm()->isValid()) {
+            if ($this->element->getForm()->isValid()) {
                 $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_ENTITY_PRE_SAVE, $event);
                 if ($event->hasResponse()) {
                     return $event->getResponse();
                 }
 
-                $this->element->save($this->element->getCreateForm()->getData());
+                $this->element->save($this->element->getForm()->getData());
 
                 $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_ENTITY_POST_SAVE, $event);
                 if ($event->hasResponse()) {
@@ -126,7 +126,8 @@ class CreateContext implements ContextInterface
     {
         return array(
             'element' => $this->element,
-            'form' => $this->element->getCreateForm()->createView()
+            'form' => $this->element->getForm()->createView(),
+            'title' => $this->element->getOption('crud_list_title')
         );
     }
 }

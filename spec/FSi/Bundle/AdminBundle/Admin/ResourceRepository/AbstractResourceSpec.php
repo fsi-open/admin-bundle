@@ -57,4 +57,12 @@ class AbstractResourceSpec extends ObjectBehavior
     {
         return $this->getRoute()->shouldReturn('fsi_admin_resource');
     }
+
+    function it_has_default_options_values()
+    {
+        $this->getOptions()->shouldReturn(array(
+            'template' => null,
+            'title' => 'resource.title'
+        ));
+    }
 }

@@ -130,7 +130,8 @@ class ListContext implements ContextInterface
         return array(
             'datagrid_view' => $this->element->getDataGrid()->createView(),
             'datasource_view' => $this->element->getDataSource()->createView(),
-            'element' => $this->element
+            'element' => $this->element,
+            'title' => $this->element->getOption('crud_list_title')
         );
     }
 }

@@ -3,11 +3,13 @@ admin:
     menu:
         header: Menu
 resource:
+    title: Edytuj zasoby
     button:
         save: Zapisz
         reset: Wyczyść
 crud:
     list:
+        title: Lista elementów
         batch:
             empty_choice: Wybierz akcję
             delete: Usuń
@@ -27,6 +29,7 @@ crud:
         button:
             create: Dodaj nowy
     create:
+        title: Nowy element
         button:
             save: Zapisz
             reset: Wyczyść
@@ -39,6 +42,7 @@ crud:
             cancel:
                 label: Nie
     edit:
+        title: Edytuj element
         button:
             save: Zapisz
             reset: Wyczyść

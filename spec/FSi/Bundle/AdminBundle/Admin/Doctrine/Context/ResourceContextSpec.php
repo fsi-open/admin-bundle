@@ -54,13 +54,13 @@ class ResourceContextSpec extends ObjectBehavior
             ->during('__construct', array($dispatcher, $ResElement, $MapBuilder, $formFactory, $router));
     }
 
-    function it_have_form_in_data()
+    function it_have_array_data(ResourceElement $element)
     {
-        $this->getData()->shouldHaveKeyInArray('form');
-    }
+        $element->getOption('title')->shouldBeCalled();
 
-    function it_have_element_in_data()
-    {
+        $this->getData()->shouldBeArray();
+        $this->getData()->shouldHaveKeyInArray('form');
+        $this->getData()->shouldHaveKeyInArray('title');
         $this->getData()->shouldHaveKeyInArray('element');
     }
 

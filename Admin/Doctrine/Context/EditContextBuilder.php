@@ -66,11 +66,15 @@ class EditContextBuilder implements ContextBuilderInterface
         }
 
         if ($element instanceof CRUDElement) {
-            if ($element->hasEditForm($this->getData($element))) {
-                return true;
+            if (!$element->getOption('allow_edit')) {
+                throw new ContextBuilderException(sprintf("%s does not allow to edit objects", $element->getName()));
             }
 
-            throw new ContextBuilderException(sprintf("%s does not have edit form", $element->getName()));
+            if (!$this->hasObject($element)) {
+                throw new ContextBuilderException(sprintf("Cant find object with id %s", $this->getObjectId()));
+            }
+
+            return true;
         }
 
         return false;
@@ -82,7 +86,7 @@ class EditContextBuilder implements ContextBuilderInterface
     public function buildContext(ElementInterface $element)
     {
         /* @var $element \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement */
-        $context = new EditContext($this->dispatcher, $element, $this->router, $this->getData($element));
+        $context = new EditContext($this->dispatcher, $element, $this->router, $this->getObject($element));
 
         return $context;
     }
@@ -96,19 +100,33 @@ class EditContextBuilder implements ContextBuilderInterface
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @param ElementInterface $element
+     * @return bool
      * @throws \FSi\Bundle\AdminBundle\Exception\InvalidEntityIdException
+     */
+    protected function hasObject(ElementInterface $element)
+    {
+        $data = $element->getDataIndexer()->getData($this->getObjectId());
+
+        return isset($data);
+    }
+
+    /**
+     * @param ElementInterface $element
      * @return mixed
      */
-    protected function getData(ElementInterface $element)
+    protected function getObject(ElementInterface $element)
     {
-        $id = $this->request->get('id', null);
-        $data = $element->getDataIndexer()->getData($id);
-
-        if (!isset($data)) {
-            throw new InvalidEntityIdException("Cant find entity with id 1");
-        }
+        $data = $element->getDataIndexer()->getData($this->getObjectId());
 
         return $data;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getObjectId()
+    {
+        return $this->request->get('id', null);
     }
 }

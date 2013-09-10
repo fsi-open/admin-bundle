@@ -51,11 +51,11 @@ class CreateContextBuilder implements ContextBuilderInterface
         }
 
         if ($element instanceof CRUDElement) {
-            if ($element->hasCreateForm()) {
+            if ($element->getOption('allow_add')) {
                 return true;
             }
 
-            throw new ContextBuilderException(sprintf("%s does not have create form", $element->getName()));
+            throw new ContextBuilderException(sprintf("%s does not allow to create objects", $element->getName()));
         }
 
         return false;

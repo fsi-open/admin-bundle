@@ -20,41 +20,15 @@ interface CRUDInterface
     public function getDataGrid();
 
     /**
-     * @return boolean
-     */
-    public function hasDataGrid();
-
-    /**
      * @return \FSi\Component\DataSource\DataSource|null
      */
     public function getDataSource();
 
     /**
-     * @return boolean
-     */
-    public function hasDataSource();
-
-    /**
-     * @return \Symfony\Component\Form\For|null
-     */
-    public function getCreateForm();
-
-    /**
-     * @return boolean
-     */
-    public function hasCreateForm();
-
-    /**
      * @param null $data
-     * @return \Symfony\Component\Form\For|null
+     * @return \Symfony\Component\Form\Form|null
      */
-    public function getEditForm($data = null);
-
-    /**
-     * @param null $data
-     * @return boolean
-     */
-    public function hasEditForm($data = null);
+    public function getForm($data = null);
 
     /**
      * This method should be used inside of admin objects to retrieve DataIndexerInterface.

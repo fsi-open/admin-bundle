@@ -22,7 +22,7 @@ class CreateContextSpec extends ObjectBehavior
     function let(EventDispatcher $dispatcher, CRUDElement $element, Form $form, Router $router)
     {
         $this->beConstructedWith($dispatcher, $element, $router);
-        $element->getCreateForm()->willReturn($form);
+        $element->getForm(Argument::any())->willReturn($form);
     }
 
     function it_is_initializable()
@@ -35,14 +35,14 @@ class CreateContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_form__in_data()
+    function it_have_array_data(CRUDElement $element)
     {
-        $this->getData()->shouldHaveKeyInArray('form');
-    }
+        $element->getOption('crud_list_title')->shouldBeCalled();
 
-    function it_have_element__in_data()
-    {
+        $this->getData()->shouldBeArray();
+        $this->getData()->shouldHaveKeyInArray('form');
         $this->getData()->shouldHaveKeyInArray('element');
+        $this->getData()->shouldHaveKeyInArray('title');
     }
 
     function it_has_template(CRUDElement $element)
@@ -54,7 +54,7 @@ class CreateContextSpec extends ObjectBehavior
     }
 
     function it_handle_request_with_POST_and_return_redirect_response(EventDispatcher $dispatcher, CRUDElement $element,
-         Request $request, Form $form, ParameterBag $bag, FormData $data, Router $router)
+         Request $request, Form $form, FormData $data, Router $router)
     {
         $dispatcher->dispatch(
             CRUDEvents::CRUD_CREATE_CONTEXT_POST_CREATE,
