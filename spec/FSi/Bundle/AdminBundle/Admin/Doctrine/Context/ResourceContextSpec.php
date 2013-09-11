@@ -114,27 +114,27 @@ class ResourceContextSpec extends ObjectBehavior
 
         $dispatcher->dispatch(
             ResourceEvents::RESOURCE_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
         $dispatcher->dispatch(
             ResourceEvents::RESOURCE_FORM_REQUEST_PRE_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
         $dispatcher->dispatch(
             ResourceEvents::RESOURCE_FORM_REQUEST_POST_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
         $dispatcher->dispatch(
             ResourceEvents::RESOURCE_PRE_SAVE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
         $dispatcher->dispatch(
             ResourceEvents::RESOURCE_POST_SAVE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
         $dispatcher->dispatch(
             ResourceEvents::RESOURCE_RESPONSE_PRE_RENDER,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldNotBeCalled();
 
         $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');

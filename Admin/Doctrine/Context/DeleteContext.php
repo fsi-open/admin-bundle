@@ -13,6 +13,7 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -70,7 +71,7 @@ class DeleteContext implements ContextInterface
         $this->router = $router;
         $this->factory = $factory;
         $this->data = $data;
-        $this->form =  $this->factory->createNamed('delete', 'form');
+        $this->form = $this->factory->createNamed('delete', 'form');
     }
 
     /**
@@ -78,7 +79,7 @@ class DeleteContext implements ContextInterface
      */
     public function handleRequest(Request $request)
     {
-        $event = new AdminEvent($this->element, $request);
+        $event = new FormEvent($this->element, $request, $this->form);
 
         $this->dispatcher->dispatch(CRUDEvents::CRUD_DELETE_CONTEXT_POST_CREATE, $event);
         if ($event->hasResponse()) {

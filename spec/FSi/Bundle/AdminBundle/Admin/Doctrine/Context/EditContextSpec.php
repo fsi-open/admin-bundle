@@ -23,8 +23,8 @@ class EditContextSpec extends ObjectBehavior
     function let(EventDispatcher $dispatcher, CRUDElement $element, Form $form, Router $router, DoctrineDataIndexer $indexer)
     {
         $this->data = new Entity();
+        $element->createForm($this->data)->willReturn($form);
         $this->beConstructedWith($dispatcher, $element, $router, $this->data);
-        $element->getForm($this->data)->willReturn($form);
         $element->getDataIndexer()->willReturn($indexer);
         $indexer->getIndex($this->data)->willReturn(1);
     }
@@ -63,28 +63,28 @@ class EditContextSpec extends ObjectBehavior
     {
         $dispatcher->dispatch(
             CRUDEvents::CRUD_EDIT_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_EDIT_FORM_REQUEST_PRE_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $form->submit($request)->shouldBeCalled();
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_EDIT_FORM_REQUEST_POST_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $form->isValid()->willReturn(true);
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_EDIT_ENTITY_PRE_SAVE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $form->getData()->willReturn($this->data);
@@ -92,7 +92,7 @@ class EditContextSpec extends ObjectBehavior
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_EDIT_ENTITY_POST_SAVE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $element->getId()->willReturn('element_id');
@@ -108,12 +108,12 @@ class EditContextSpec extends ObjectBehavior
     {
         $dispatcher->dispatch(
             CRUDEvents::CRUD_EDIT_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_EDIT_RESPONSE_PRE_RENDER,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(false);

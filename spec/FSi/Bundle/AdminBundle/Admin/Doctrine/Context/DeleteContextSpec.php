@@ -82,7 +82,7 @@ class DeleteContextSpec extends ObjectBehavior
     {
         $dispatcher->dispatch(
             CRUDEvents::CRUD_DELETE_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $bag->has('confirm')->willReturn(true);
@@ -91,28 +91,28 @@ class DeleteContextSpec extends ObjectBehavior
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_DELETE_FORM_PRE_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $form->submit($request)->shouldBeCalled();
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_DELETE_FORM_POST_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $form->isValid()->shouldBeCalled()->willReturn(true);
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_DELETE_ENTITIES_PRE_DELETE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $element->delete(Argument::type('spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Entity'))->shouldBeCalledTimes(2);
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_DELETE_ENTITIES_POST_DELETE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $element->getId()->willReturn('element_id');
@@ -129,7 +129,7 @@ class DeleteContextSpec extends ObjectBehavior
     {
         $dispatcher->dispatch(
             CRUDEvents::CRUD_DELETE_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $bag->has('confirm')->willReturn(false);
@@ -138,7 +138,7 @@ class DeleteContextSpec extends ObjectBehavior
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_DELETE_FORM_PRE_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldNotBeCalled();
 
         $element->getId()->willReturn('element_id');

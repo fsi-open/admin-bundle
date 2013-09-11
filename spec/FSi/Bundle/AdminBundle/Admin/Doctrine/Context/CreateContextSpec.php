@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
 class FormData
@@ -22,7 +23,7 @@ class CreateContextSpec extends ObjectBehavior
     function let(EventDispatcher $dispatcher, CRUDElement $element, Form $form, Router $router)
     {
         $this->beConstructedWith($dispatcher, $element, $router);
-        $element->getForm(Argument::any())->willReturn($form);
+        $element->createForm(Argument::any())->willReturn($form);
     }
 
     function it_is_initializable()
@@ -58,28 +59,28 @@ class CreateContextSpec extends ObjectBehavior
     {
         $dispatcher->dispatch(
             CRUDEvents::CRUD_CREATE_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_CREATE_FORM_REQUEST_PRE_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $form->submit($request)->shouldBeCalled();
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_CREATE_FORM_REQUEST_POST_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $form->isValid()->willReturn(true);
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_CREATE_ENTITY_PRE_SAVE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $form->getData()->willReturn($data);
@@ -87,7 +88,7 @@ class CreateContextSpec extends ObjectBehavior
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_CREATE_ENTITY_POST_SAVE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $element->getId()->willReturn('element_id');
@@ -103,12 +104,12 @@ class CreateContextSpec extends ObjectBehavior
     {
         $dispatcher->dispatch(
             CRUDEvents::CRUD_CREATE_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_CREATE_RESPONSE_PRE_RENDER,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(false);
