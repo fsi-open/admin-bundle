@@ -11,8 +11,8 @@ namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,6 +39,11 @@ class CreateContext implements ContextInterface
     protected $router;
 
     /**
+     * @var \Symfony\Component\Form\Form
+     */
+    protected $form;
+
+    /**
      * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
      * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
      * @param \Symfony\Component\Routing\Router $router
@@ -48,6 +53,7 @@ class CreateContext implements ContextInterface
         $this->dispatcher = $dispatcher;
         $this->element = $element;
         $this->router = $router;
+        $this->form = $this->element->createForm();
     }
 
     /**
@@ -55,7 +61,7 @@ class CreateContext implements ContextInterface
      */
     public function handleRequest(Request $request)
     {
-        $event = new AdminEvent($this->element, $request);
+        $event = new FormEvent($this->element, $request, $this->form);
 
         $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_CONTEXT_POST_CREATE, $event);
         if ($event->hasResponse()) {
@@ -68,20 +74,20 @@ class CreateContext implements ContextInterface
                 return $event->getResponse();
             }
 
-            $this->element->getForm()->submit($request);
+            $this->form->submit($request);
 
             $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_FORM_REQUEST_POST_SUBMIT, $event);
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
 
-            if ($this->element->getForm()->isValid()) {
+            if ($this->form->isValid()) {
                 $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_ENTITY_PRE_SAVE, $event);
                 if ($event->hasResponse()) {
                     return $event->getResponse();
                 }
 
-                $this->element->save($this->element->getForm()->getData());
+                $this->element->save($this->form->getData());
 
                 $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_ENTITY_POST_SAVE, $event);
                 if ($event->hasResponse()) {
@@ -98,7 +104,6 @@ class CreateContext implements ContextInterface
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
-
 
         return null;
     }
@@ -126,7 +131,7 @@ class CreateContext implements ContextInterface
     {
         return array(
             'element' => $this->element,
-            'form' => $this->element->getForm()->createView(),
+            'form' => $this->form->createView(),
             'title' => $this->element->getOption('crud_create_title')
         );
     }

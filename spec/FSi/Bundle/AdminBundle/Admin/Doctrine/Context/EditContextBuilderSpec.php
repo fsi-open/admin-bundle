@@ -65,6 +65,7 @@ class EditContextBuilderSpec extends ObjectBehavior
     {
         $entity = new Entity();
         $element->getDataIndexer()->willReturn($indexer);
+        $element->createForm($entity)->shouldBeCalled();
         $indexer->getData(1)->shouldBeCalled()->willReturn($entity);
 
         $this->buildContext($element)->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\EditContext');

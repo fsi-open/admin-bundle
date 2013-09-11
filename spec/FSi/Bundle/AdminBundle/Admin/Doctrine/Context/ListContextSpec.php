@@ -16,8 +16,8 @@ class ListContextSpec extends ObjectBehavior
     function let(EventDispatcher $dispatcher, CRUDElement $element, DataSource $datasource, DataGrid $datagrid)
     {
         $this->beConstructedWith($dispatcher, $element);
-        $element->getDataGrid()->willReturn($datagrid);
-        $element->getDataSource()->willReturn($datasource);
+        $element->createDataGrid()->willReturn($datagrid);
+        $element->createDataSource()->willReturn($datasource);
     }
 
     function it_is_initializable()
@@ -54,47 +54,47 @@ class ListContextSpec extends ObjectBehavior
     {
         $dispatcher->dispatch(
             CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
         )->shouldBeCalled();
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
         )->shouldBeCalled();
 
         $datasource->bindParameters($request)->shouldBeCalled();
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
         )->shouldBeCalled();
 
         $datasource->getResult()->shouldBeCalled()->willReturn(array());
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
         )->shouldBeCalled();
 
         $datagrid->setData(array())->shouldBeCalled();
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_LIST_DATAGRID_DATA_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
         )->shouldBeCalled();
 
         $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_LIST_DATAGRID_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
         )->shouldBeCalled();
 
         $datagrid->bindData($request)->shouldBeCalled();
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_LIST_DATAGRID_REQUEST_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
         )->shouldBeCalled();
 
         $element->saveDataGrid()->shouldBeCAlled();
@@ -103,7 +103,7 @@ class ListContextSpec extends ObjectBehavior
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_LIST_RESPONSE_PRE_RENDER,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
         )->shouldBeCalled();
 
         $this->handleRequest($request)->shouldReturn(null);
