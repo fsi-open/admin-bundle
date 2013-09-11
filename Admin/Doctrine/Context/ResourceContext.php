@@ -11,7 +11,7 @@ namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\ResourceEvents;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
@@ -83,7 +83,7 @@ class ResourceContext implements ContextInterface
      */
     public function handleRequest(Request $request)
     {
-        $event = new AdminEvent($this->element, $request);
+        $event = new FormEvent($this->element, $request, $this->form);
         $this->dispatcher->dispatch(ResourceEvents::RESOURCE_CONTEXT_POST_CREATE, $event);
         if ($event->hasResponse()) {
             return $event->getResponse();

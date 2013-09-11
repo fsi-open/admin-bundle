@@ -108,7 +108,7 @@ class AbstractCRUDSpec extends ObjectBehavior
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
 
         $this->shouldThrow(new RuntimeException("initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface"))
-            ->during('getDataGrid');
+            ->during('createDataGrid');
     }
 
     function it_add_batch_column_to_datagrid_when_element_allow_delete_objects(DataGridFactory $factory, DataGrid $datagrid)
@@ -119,7 +119,7 @@ class AbstractCRUDSpec extends ObjectBehavior
 
         $this->setDataGridFactory($factory);
 
-        $this->getDataGrid()->shouldReturn($datagrid);
+        $this->createDataGrid()->shouldReturn($datagrid);
     }
 
     function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource(DataSourceFactory $factory)
@@ -128,7 +128,7 @@ class AbstractCRUDSpec extends ObjectBehavior
         $factory->createDataSource(Argument::cetera())->willReturn(null);
 
         $this->shouldThrow(new RuntimeException("initDataSource should return instanceof FSi\\Component\\DataSource\\DataSourceInterface"))
-            ->during('getDataSource');
+            ->during('createDataSource');
     }
 
     function it_throw_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory)
@@ -137,7 +137,7 @@ class AbstractCRUDSpec extends ObjectBehavior
         $factory->create(Argument::cetera())->willReturn(null);
 
         $this->shouldThrow(new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface"))
-            ->during('getForm', array(null));
+            ->during('createForm', array(null));
     }
 
     function it_has_default_options_values()

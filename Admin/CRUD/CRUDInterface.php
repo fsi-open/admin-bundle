@@ -17,18 +17,18 @@ interface CRUDInterface
     /**
      * @return \FSi\Component\DataGrid\DataGrid|null
      */
-    public function getDataGrid();
+    public function createDataGrid();
 
     /**
      * @return \FSi\Component\DataSource\DataSource|null
      */
-    public function getDataSource();
+    public function createDataSource();
 
     /**
      * @param null $data
      * @return \Symfony\Component\Form\Form|null
      */
-    public function getForm($data = null);
+    public function createForm($data = null);
 
     /**
      * This method should be used inside of admin objects to retrieve DataIndexerInterface.
