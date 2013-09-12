@@ -1,7 +1,11 @@
 #Events 
 
 Admin bundle provide several events that can be handled in application.
-List of available events can be found in [AdminEvents](Event/AdminEvents.php)
+List of available events can be found in [AdminEvents](Event/AdminEvents.php) and
+[ResourceEvents](Event/ResourceEvents.php). Listeners of ``CRUD_LIST_*`` events will receive one argument of
+``FSi\Bundle\AdminBundle\Event\ListEvent`` class. Listeners of all the other events will receive one argument of
+``FSi\Bundle\AdminBundle\Event\FormEvent`` class.
+
 Following example will show you how to handle dynamically added/removed relation elements for doctrine entity.
 Just like in http://symfony.com/doc/current/cookbook/form/form_collections.html#allowing-tags-to-be-removed
 
@@ -15,7 +19,7 @@ namespace FSi\Bundle\DemoBundle\EventListener;
 
 use FSi\Bundle\DemoBundle\Entity\News;
 use FSi\Bundle\DemoBundle\Entity\Tag;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class CRUDEventListener
@@ -40,13 +44,11 @@ class CRUDEventListener
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
      */
-    public function crudEditEntityPreSubmit(AdminEvent $event)
+    public function crudEditEntityPreSubmit(FormEvent $event)
     {
-        /* @var $element \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement */
-        $element = $event->getElement();
-        $entity = $element->getEdit()->getData();
+        $entity = $event->getForm()->getData();
 
         if ($entity instanceof News) {
             $this->tags[$entity->getId()] = array();
@@ -58,13 +60,11 @@ class CRUDEventListener
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
      */
-    public function crudEditEntityPostSave(AdminEvent $event)
+    public function crudEditEntityPostSave(FormEvent $event)
     {
-        /* @var $element \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement */
-        $element = $event->getElement();
-        $entity = $element->getForm()->getData();
+        $entity = $event->getForm()->getData();
 
         if ($entity instanceof News) {
             foreach ($entity->getTags() as $tag) {
