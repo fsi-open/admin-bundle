@@ -11,8 +11,6 @@ namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -22,7 +20,8 @@ class ResourceController extends Controller
 {
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource $element
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function resourceAction(AbstractResource $element)
     {
@@ -37,9 +36,7 @@ class ResourceController extends Controller
         }
 
         return $this->render(
-            $context->hasTemplateName()
-                ? $context->getTemplateName()
-                : $this->container->getParameter('admin.templates.resource'),
+            $context->hasTemplateName() ? $context->getTemplateName() : $this->container->getParameter('admin.templates.resource'),
             $context->getData()
         );
     }

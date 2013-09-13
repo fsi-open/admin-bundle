@@ -32,7 +32,7 @@ class CreateContextBuilder implements ContextBuilderInterface
     protected $router;
 
     /**
-     * @param EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
      * @param \Symfony\Component\Routing\Router $router
      */
     public function __construct(EventDispatcher $dispatcher, Router $router)

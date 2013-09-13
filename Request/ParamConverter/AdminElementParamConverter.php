@@ -21,7 +21,7 @@ class AdminElementParamConverter implements ParamConverterInterface
     private $manager;
 
     /**
-     * @param Manager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
      */
     public function __construct(Manager $manager)
     {
@@ -29,8 +29,8 @@ class AdminElementParamConverter implements ParamConverterInterface
     }
 
     /**
-     * @param Request $request
-     * @param ConfigurationInterface $configuration
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface $configuration
      * @return bool
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
@@ -49,7 +49,7 @@ class AdminElementParamConverter implements ParamConverterInterface
     }
 
     /**
-     * @param ConfigurationInterface $configuration
+     * @param \Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface $configuration
      * @return bool
      */
     public function supports(ConfigurationInterface $configuration)
@@ -61,7 +61,7 @@ class AdminElementParamConverter implements ParamConverterInterface
 
         $implements = class_implements($configuration->getClass());
 
-        if (in_array("FSi\\Bundle\\AdminBundle\\Admin\\ElementInterface", $implements)) {
+        if (in_array('FSi\\Bundle\\AdminBundle\\Admin\\ElementInterface', $implements)) {
             return true;
         }
 

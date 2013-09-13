@@ -16,17 +16,20 @@ interface CRUDInterface
 {
     /**
      * @return \FSi\Component\DataGrid\DataGrid|null
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createDataGrid();
 
     /**
      * @return \FSi\Component\DataSource\DataSource|null
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createDataSource();
 
     /**
-     * @param null $data
+     * @param mixed $data
      * @return \Symfony\Component\Form\Form|null
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createForm($data = null);
 

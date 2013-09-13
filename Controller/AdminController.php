@@ -10,15 +10,14 @@
 namespace FSi\Bundle\AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @author: Norbert Orzechowicz <norbert@fsi.pl>
+ * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
 class AdminController extends Controller
 {
     /**
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {

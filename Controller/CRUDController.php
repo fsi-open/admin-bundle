@@ -21,8 +21,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CRUDController extends Controller
 {
     /**
-     * @param AbstractCRUD $element
-     * @return Response
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD $element
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAction(AbstractCRUD $element)
     {
@@ -30,8 +30,8 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param AbstractCRUD $element
-     * @return Response
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD $element
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction(AbstractCRUD $element)
     {
@@ -39,8 +39,8 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param AbstractCRUD $element
-     * @return Response
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD $element
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(AbstractCRUD $element)
     {
@@ -48,8 +48,8 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param AbstractCRUD $element
-     * @return Response
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD $element
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction(AbstractCRUD $element)
     {
@@ -57,10 +57,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param AbstractCRUD $element
-     * @param $route
-     * @param $defaultTemplate
-     * @return Response
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD $element
+     * @param string $route
+     * @param string $defaultTemplate
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function action(AbstractCRUD $element, $route, $defaultTemplate)
     {
@@ -75,9 +76,7 @@ class CRUDController extends Controller
         }
 
         return $this->render(
-            $context->hasTemplateName()
-                ? $context->getTemplateName()
-                : $this->container->getParameter($defaultTemplate),
+            $context->hasTemplateName() ? $context->getTemplateName() : $this->container->getParameter($defaultTemplate),
             $context->getData()
         );
     }

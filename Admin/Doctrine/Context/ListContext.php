@@ -42,7 +42,7 @@ class ListContext implements ContextInterface
     protected $dataGrid;
 
     /**
-     * @param EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
      * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
      */
     public function __construct(EventDispatcher $dispatcher, CRUDElement $element)
@@ -143,7 +143,7 @@ class ListContext implements ContextInterface
             'datagrid_view' => $this->dataGrid->createView(),
             'datasource_view' => $this->dataSource->createView(),
             'element' => $this->element,
-            'title' => $this->element->getOption('crud_list_title')
+            'title' => $this->element->getOption('crud_list_title'),
         );
     }
 }

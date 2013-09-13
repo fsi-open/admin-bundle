@@ -142,7 +142,7 @@ class EditContext implements ContextInterface
             'element' => $this->element,
             'form' => $this->form->createView(),
             'id' => $this->element->getDataIndexer()->getIndex($this->data),
-            'title' => $this->element->getOption('crud_edit_title')
+            'title' => $this->element->getOption('crud_edit_title'),
         );
 
         return $data;

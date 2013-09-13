@@ -63,9 +63,13 @@ class DeleteContext implements ContextInterface
      * @param $data array
      * @internal param \Symfony\Component\Form\FormFactoryInterface $form
      */
-    public function __construct(EventDispatcher $dispatcher, CRUDElement $element, Router $router,
-        FormFactoryInterface $factory, array $data)
-    {
+    public function __construct(
+        EventDispatcher $dispatcher,
+        CRUDElement $element,
+        Router $router,
+        FormFactoryInterface $factory,
+        array $data
+    ) {
         $this->dispatcher = $dispatcher;
         $this->element = $element;
         $this->router = $router;
@@ -154,7 +158,7 @@ class DeleteContext implements ContextInterface
         return array(
             'element' => $this->element,
             'indexes' => $indexes,
-            'form' => $this->form->createView()
+            'form' => $this->form->createView(),
         );
     }
 }

@@ -109,7 +109,7 @@ class DeleteContextBuilder implements ContextBuilderInterface
     }
 
     /**
-     * @param ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
      * @return array
      * @throws \FSi\Bundle\AdminBundle\Exception\ContextBuilderException
      */

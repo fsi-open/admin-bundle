@@ -18,7 +18,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
@@ -45,7 +45,8 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('resource_form_theme')->defaultValue('@FSiAdmin/Form/form_div_layout.html.twig')->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
 
         return $treeBuilder;
     }

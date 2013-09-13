@@ -39,7 +39,7 @@ abstract class AbstractElement implements ElementInterface
     public function getRouteParameters()
     {
         return array(
-            'element' => $this->getId()
+            'element' => $this->getId(),
         );
     }
 

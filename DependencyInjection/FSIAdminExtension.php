@@ -11,7 +11,6 @@ namespace FSi\Bundle\AdminBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -21,7 +20,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class FSIAdminExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -35,7 +34,7 @@ class FSIAdminExtension extends Extension
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @param array $config
      */
     protected function setTemplateParameters(ContainerBuilder $container, $config = array())
