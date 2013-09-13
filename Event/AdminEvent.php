@@ -36,13 +36,12 @@ class AdminEvent extends Event
 
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      */
     public function __construct(ElementInterface $element, Request $request)
     {
         $this->element = $element;
         $this->request = $request;
-        $this->response = null;
     }
 
     /**
@@ -71,7 +70,7 @@ class AdminEvent extends Event
 
     /**
      * @param \Symfony\Component\HttpFoundation\Response $response
-     * @return AdminEvent
+     * @return \FSi\Bundle\AdminBundle\Event\AdminEvent
      */
     public function setResponse(Response $response)
     {

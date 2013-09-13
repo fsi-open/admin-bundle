@@ -78,6 +78,7 @@ class ResourceContextBuilder implements ContextBuilderInterface
     public function buildContext(ElementInterface $element)
     {
         $context = new ResourceContext($this->dispatcher, $element, $this->mapBuilder, $this->formFactory, $this->router);
+
         return $context;
     }
 

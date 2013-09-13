@@ -13,7 +13,6 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
-use FSi\Bundle\AdminBundle\Exception\InvalidEntityIdException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
@@ -100,9 +99,8 @@ class EditContextBuilder implements ContextBuilderInterface
     }
 
     /**
-     * @param ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
      * @return bool
-     * @throws \FSi\Bundle\AdminBundle\Exception\InvalidEntityIdException
      */
     protected function hasObject(ElementInterface $element)
     {
@@ -112,7 +110,7 @@ class EditContextBuilder implements ContextBuilderInterface
     }
 
     /**
-     * @param ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
      * @return mixed
      */
     protected function getObject(ElementInterface $element)

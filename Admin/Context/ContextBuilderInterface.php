@@ -20,6 +20,7 @@ interface ContextBuilderInterface
      * @param string $route
      * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
      * @return boolean
+     * @throws \FSi\Bundle\AdminBundle\Exception\ContextBuilderException
      */
     public function supports($route, ElementInterface $element);
 

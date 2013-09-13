@@ -23,6 +23,9 @@ abstract class ResourceElement extends AbstractResource implements DoctrineAware
      */
     protected $registry;
 
+    /**
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
     protected $om;
 
     /**

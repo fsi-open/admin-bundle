@@ -132,7 +132,7 @@ class CreateContext implements ContextInterface
         return array(
             'element' => $this->element,
             'form' => $this->form->createView(),
-            'title' => $this->element->getOption('crud_create_title')
+            'title' => $this->element->getOption('crud_create_title'),
         );
     }
 }

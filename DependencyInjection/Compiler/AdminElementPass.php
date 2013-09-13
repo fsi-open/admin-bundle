@@ -48,7 +48,7 @@ class AdminElementPass implements CompilerPassInterface
 
             $container->findDefinition('admin.manager')->addMethodCall('addElement', array(
                 $element,
-                $group
+                $group,
             ));
         }
     }

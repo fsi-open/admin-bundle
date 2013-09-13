@@ -55,7 +55,7 @@ abstract class AbstractResource extends AbstractElement implements ResourceInter
     {
         $resolver->setDefaults(array(
             'template' => null,
-            'title' => 'resource.title'
+            'title' => 'resource.title',
         ));
 
         $resolver->setAllowedTypes(array(

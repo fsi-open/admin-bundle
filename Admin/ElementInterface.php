@@ -20,7 +20,7 @@ interface ElementInterface
      * ID will appear in routes:
      * - http://example.com/admin/{name}/list
      * - http://example.com/admin/{name}/edit
-     * etd.
+     * etc.
      *
      * @return string
      */
@@ -34,7 +34,7 @@ interface ElementInterface
     public function getName();
 
     /**
-     * Return route name that will be used to generate element url in menu..
+     * Return route name that will be used to generate element url in menu.
      *
      * @return string
      */
@@ -42,15 +42,14 @@ interface ElementInterface
 
     /**
      * Return array of parameters.
-     * Element id always exists in this array under element key
+     * Element id always exists in this array under element key.
      *
      * @return mixed
      */
     public function getRouteParameters();
 
-
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver
      * @return mixed
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver);
@@ -60,6 +59,7 @@ interface ElementInterface
      *
      * @param $name
      * @return mixed
+     * @throws \FSi\Bundle\AdminBundle\Exception\MissingOptionException
      */
     public function getOption($name);
 
@@ -73,7 +73,7 @@ interface ElementInterface
     /**
      * Check if option exists.
      *
-     * @param $name
+     * @param string $name
      * @return boolean
      */
     public function hasOption($name);
