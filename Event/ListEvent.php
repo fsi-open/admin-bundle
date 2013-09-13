@@ -12,7 +12,6 @@ namespace FSi\Bundle\AdminBundle\Event;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Component\DataGrid\DataGrid;
 use FSi\Component\DataSource\DataSource;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class ListEvent extends AdminEvent
@@ -30,7 +29,8 @@ class ListEvent extends AdminEvent
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\Form\Form $form
+     * @param \FSi\Component\DataSource\DataSource $dataSource
+     * @param \FSi\Component\DataGrid\DataGrid $dataGrid
      */
     public function __construct(ElementInterface $element, Request $request, DataSource $dataSource, DataGrid $dataGrid)
     {

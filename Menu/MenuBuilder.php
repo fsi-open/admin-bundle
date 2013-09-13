@@ -31,7 +31,7 @@ class MenuBuilder
     private $request;
 
     /**
-     * @param FactoryInterface $factory
+     * @param \Knp\Menu\FactoryInterface $factory
      * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
      */
     public function __construct(FactoryInterface $factory, Manager $manager)
@@ -68,8 +68,10 @@ class MenuBuilder
         }
 
         foreach ($this->manager->getGroups() as $group) {
-            $menu->addChild($group, array('uri' => '#'))
-                ->setAttribute('dropdown', true);
+            $menu
+                ->addChild($group, array('uri' => '#'))
+                ->setAttribute('dropdown', true)
+            ;
 
             foreach ($this->manager->getElementsByGroup($group) as $element) {
                 $menu[$group]->addChild($element->getName(), array(

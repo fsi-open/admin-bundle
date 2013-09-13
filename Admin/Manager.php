@@ -31,7 +31,7 @@ class Manager
     }
 
     /**
-     * @param ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
      * @param string|null $group
      * @return \FSi\Bundle\AdminBundle\Admin\Manager
      */
@@ -50,7 +50,7 @@ class Manager
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @return bool
      */
     public function hasElement($id)
@@ -59,7 +59,7 @@ class Manager
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface
      */
     public function getElement($id)
@@ -116,9 +116,9 @@ class Manager
     }
 
     /**
-     * Check if element is assigned into group
+     * Check if element is assigned into group.
      *
-     * @param $id
+     * @param string $id
      * @return bool
      */
     private function hasGroup($id)

@@ -25,7 +25,7 @@ interface CRUDInterface
     public function createDataSource();
 
     /**
-     * @param null $data
+     * @param mixed $data
      * @return \Symfony\Component\Form\Form|null
      */
     public function createForm($data = null);

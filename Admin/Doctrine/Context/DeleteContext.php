@@ -63,9 +63,13 @@ class DeleteContext implements ContextInterface
      * @param $data array
      * @internal param \Symfony\Component\Form\FormFactoryInterface $form
      */
-    public function __construct(EventDispatcher $dispatcher, CRUDElement $element, Router $router,
-        FormFactoryInterface $factory, array $data)
-    {
+    public function __construct(
+        EventDispatcher $dispatcher,
+        CRUDElement $element,
+        Router $router,
+        FormFactoryInterface $factory,
+        array $data
+    ) {
         $this->dispatcher = $dispatcher;
         $this->element = $element;
         $this->router = $router;
@@ -121,8 +125,6 @@ class DeleteContext implements ContextInterface
         if ($request->request->has('cancel')) {
             return new RedirectResponse($this->router->generate('fsi_admin_crud_list', array('element' => $this->element->getId())));
         }
-
-        return null;
     }
 
     /**
@@ -154,7 +156,7 @@ class DeleteContext implements ContextInterface
         return array(
             'element' => $this->element,
             'indexes' => $indexes,
-            'form' => $this->form->createView()
+            'form' => $this->form->createView(),
         );
     }
 }

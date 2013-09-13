@@ -32,7 +32,7 @@ class CreateContextBuilder implements ContextBuilderInterface
     protected $router;
 
     /**
-     * @param EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
      * @param \Symfony\Component\Routing\Router $router
      */
     public function __construct(EventDispatcher $dispatcher, Router $router)
@@ -43,6 +43,7 @@ class CreateContextBuilder implements ContextBuilderInterface
 
     /**
      * {@inheritdoc}
+     * @throws \FSi\Bundle\AdminBundle\Exception\ContextBuilderException
      */
     public function supports($route, ElementInterface $element)
     {

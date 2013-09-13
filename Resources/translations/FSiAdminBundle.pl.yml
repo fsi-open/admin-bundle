@@ -18,6 +18,7 @@ crud:
             editable:
                 save: Zapisz
                 edit: Edytuj
+                reset: Zresetuj
             result_count: Liczba znalezionych rekordów:
             action:
                 edit: Edytuj

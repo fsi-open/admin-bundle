@@ -43,6 +43,7 @@ abstract class CRUDElement extends AbstractCRUD implements DoctrineAwareInterfac
 
     /**
      * {@inheritdoc}
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function getObjectManager()
     {

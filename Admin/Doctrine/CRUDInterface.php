@@ -17,7 +17,7 @@ interface CRUDInterface
     /**
      * Class name that represent entity. It might be returned in Symfony2 style:
      * FSiDemoBundle:News
-     * or as fully class name
+     * or as a full class name
      * \FSi\Bundle\DemoBundle\Entity\News
      *
      * @return string

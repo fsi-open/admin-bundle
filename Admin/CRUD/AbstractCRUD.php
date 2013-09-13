@@ -22,7 +22,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,DataGridAwareInterface, DataSourceAwareInterface,
+abstract class AbstractCRUD extends AbstractElement implements
+    CRUDInterface,
+    DataGridAwareInterface,
+    DataSourceAwareInterface,
     FormAwareInterface
 {
     /**
@@ -63,7 +66,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
             'template_crud_list' => null,
             'template_crud_create' => null,
             'template_crud_edit' => null,
-            'template_crud_delete' => null
+            'template_crud_delete' => null,
         ));
 
         $resolver->setAllowedTypes(array(
@@ -103,6 +106,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
 
     /**
      * {@inheritdoc}
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createDataGrid()
     {
@@ -123,6 +127,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
 
     /**
      * {@inheritdoc}
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createDataSource()
     {
@@ -137,6 +142,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
 
     /**
      * {@inheritdoc}
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createForm($data = null)
     {
@@ -169,7 +175,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDInterface ,Da
      * Initialize create Form. This form will be used in createAction in CRUDController.
      *
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     * @param null $data
+     * @param mixed $data
      * @return \Symfony\Component\Form\FormInterface
      */
     abstract protected function initForm(FormFactoryInterface $factory, $data = null);

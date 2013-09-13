@@ -17,7 +17,6 @@ use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -67,9 +66,13 @@ class ResourceContext implements ContextInterface
      * @param \Symfony\Component\Form\FormFactory $formFactory
      * @param \Symfony\Component\Routing\Router $router
      */
-    public function __construct(EventDispatcher $dispatcher, ResourceElement $element, MapBuilder $builder,
-        FormFactory $formFactory, Router $router)
-    {
+    public function __construct(
+        EventDispatcher $dispatcher,
+        ResourceElement $element,
+        MapBuilder $builder,
+        FormFactory $formFactory,
+        Router $router
+    ) {
         $this->dispatcher = $dispatcher;
         $this->element = $element;
         $this->builder = $builder;
@@ -131,8 +134,6 @@ class ResourceContext implements ContextInterface
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
-
-        return null;
     }
 
     /**
@@ -163,6 +164,9 @@ class ResourceContext implements ContextInterface
         );
     }
 
+    /**
+     * @throws \FSi\Bundle\AdminBundle\Exception\ContextBuilderException
+     */
     protected function createForm()
     {
         $resources = $this->getResourceGroup($this->element);
@@ -182,7 +186,7 @@ class ResourceContext implements ContextInterface
     }
 
     /**
-     * @param ResourceElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement $element
      * @return mixed
      */
     protected function getResourceGroup(ResourceElement $element)
@@ -231,12 +235,11 @@ class ResourceContext implements ContextInterface
                 ));
             }
         }
-
     }
 
     /**
-     * @param $key
-     * @return mixed
+     * @param string $key
+     * @return string
      */
     protected function normalizeKey($key)
     {

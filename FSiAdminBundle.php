@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class FSiAdminBundle extends Bundle
 {
     /**
-     * @param ContainerBuilder $container
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
     public function build(ContainerBuilder $container)
     {
@@ -32,7 +32,7 @@ class FSiAdminBundle extends Bundle
     }
 
     /**
-     * @return FSIAdminExtension|null|\Symfony\Component\DependencyInjection\Extension\ExtensionInterface
+     * @return \FSi\Bundle\AdminBundle\DependencyInjection\FSIAdminExtension
      */
     public function getContainerExtension()
     {
