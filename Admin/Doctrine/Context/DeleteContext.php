@@ -125,6 +125,8 @@ class DeleteContext implements ContextInterface
         if ($request->request->has('cancel')) {
             return new RedirectResponse($this->router->generate('fsi_admin_crud_list', array('element' => $this->element->getId())));
         }
+
+        return null;
     }
 
     /**

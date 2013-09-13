@@ -53,5 +53,7 @@ class ContextManager
                 return $builder->buildContext($element);
             }
         }
+
+        return null;
     }
 }

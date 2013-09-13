@@ -52,7 +52,6 @@ abstract class AbstractElement implements ElementInterface
 
     /**
      * {@inheritdoc}
-     * @throws \FSi\Bundle\AdminBundle\Exception\MissingOptionException
      */
     public function getOption($name)
     {

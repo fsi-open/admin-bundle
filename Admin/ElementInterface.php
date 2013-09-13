@@ -59,6 +59,7 @@ interface ElementInterface
      *
      * @param $name
      * @return mixed
+     * @throws \FSi\Bundle\AdminBundle\Exception\MissingOptionException
      */
     public function getOption($name);
 

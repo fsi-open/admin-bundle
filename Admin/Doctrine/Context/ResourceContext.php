@@ -134,6 +134,8 @@ class ResourceContext implements ContextInterface
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
+
+        return null;
     }
 
     /**

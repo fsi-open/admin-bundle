@@ -57,7 +57,6 @@ class EditContextBuilder implements ContextBuilderInterface
 
     /**
      * {@inheritdoc}
-     * @throws \FSi\Bundle\AdminBundle\Exception\ContextBuilderException
      */
     public function supports($route, ElementInterface $element)
     {

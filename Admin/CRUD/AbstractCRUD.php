@@ -106,7 +106,6 @@ abstract class AbstractCRUD extends AbstractElement implements
 
     /**
      * {@inheritdoc}
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createDataGrid()
     {
@@ -127,7 +126,6 @@ abstract class AbstractCRUD extends AbstractElement implements
 
     /**
      * {@inheritdoc}
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createDataSource()
     {
@@ -142,7 +140,6 @@ abstract class AbstractCRUD extends AbstractElement implements
 
     /**
      * {@inheritdoc}
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createForm($data = null)
     {
