@@ -42,7 +42,7 @@ class User extends CRUDElement
      */
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
-        /* @Var $datasource \FSi\Component\DataSource\DataSource */
+        /* @var $datasource \FSi\Component\DataSource\DataSource */
         $datasource = $factory->createDataSource('doctrine', array(
             'entity' => $this->getClassName()
         ), 'datasource');
@@ -50,7 +50,7 @@ class User extends CRUDElement
         $datasource->addField('email', 'text', 'like');
         $datasource->addField('username', 'text', 'like');
 
-        // Here you can add some fields into datasource
+        // Here you can add some fields or filters into datasource
         // To get more information about datasource you should visit https://github.com/fsi-open/datasource
 
         return $datasource;
@@ -68,7 +68,8 @@ class User extends CRUDElement
             'label' => 'Eamil'
         ));
         $datagrid->addColumn('username', 'text', array(
-            'label' => 'Username'
+            'label' => 'Username',
+            'editabe' => true,
         ));
         $datagrid->addColumn('enabled', 'boolean', array(
             'label' => 'Enabled'
@@ -103,8 +104,8 @@ class User extends CRUDElement
             )
         ));
 
-        // Here you should add some columns into datagrid
-        // To get more information about datasource you should visit https://github.com/fsi-open/datagrid
+        // Here you can add some columns into datagrid
+        // To get more information about datagrid you should visit https://github.com/fsi-open/datagrid
 
         return $datagrid;
     }
@@ -114,7 +115,9 @@ class User extends CRUDElement
      */
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        $form = $factory->create('form', $data);
+        $form = $factory->create('form', $data, array(
+            'data_class' => 'FSi/Bundle/DemoBundle/Entity/User' // this option is important for create form 
+        ));
 
         $form->add('email', 'email');
         $form->add('username', 'text');
@@ -143,7 +146,7 @@ class User extends CRUDElement
 
 Every single admin element must be registered as a service with ``admin.element`` tag.
 Optionally you can also use tag ``alias`` attribute to assign element into group.
-Group name as element name is translated so you can use translation key as a group name (alias)
+Group name same as element name is translated so you can use translation key as a group name (alias)
 
 ```xml
 
@@ -154,7 +157,7 @@ Group name as element name is translated so you can use translation key as a gro
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 <services>
 
-    <service id="fsi_demo_bundle.admin.news" class="FSi\Bundle\DemoBundle\Admin\News">
+    <service id="fsi_demo_bundle.admin.user" class="FSi\Bundle\DemoBundle\Admin\User">
         <tag name="admin.element"/>
     </service>
 
@@ -177,7 +180,7 @@ collection argument.
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 <services>
 
-    <service id="fsi_demo_bundle.admin.news" class="FSi\Bundle\DemoBundle\Admin\News">
+    <service id="fsi_demo_bundle.admin.user" class="FSi\Bundle\DemoBundle\Admin\User">
         <argument type="collection">
             <argument key="allow_delete">true</argument>
             <argument key="allow_add">true</argument>
@@ -185,10 +188,10 @@ collection argument.
             <argument key="crud_list_title">crud.list.title</argument>
             <argument key="crud_create_title">crud.create.title</argument>
             <argument key="crud_edit_title">crud.edit.title</argument>
-            <argument key="template_crud_list">@FSiDemo/Admin/news_edit.html.twig</argument>
-            <argument key="template_crud_create">@FSiDemo/Admin/news_create.html.twig</argument>
-            <argument key="template_crud_edit">@FSiDemo/Admin/news_edit.html.twig</argument>
-            <argument key="template_crud_delete">@FSiDemo/Admin/news_create.html.twig</argument>
+            <argument key="template_crud_list">@FSiDemo/Admin/user_edit.html.twig</argument>
+            <argument key="template_crud_create">@FSiDemo/Admin/user_create.html.twig</argument>
+            <argument key="template_crud_edit">@FSiDemo/Admin/user_edit.html.twig</argument>
+            <argument key="template_crud_delete">@FSiDemo/Admin/user_create.html.twig</argument>
         </argument>
         <tag name="admin.element"/>
     </service>
