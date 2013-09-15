@@ -9,9 +9,9 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 {% if form.vars.data.__toString() is defined %}
-                <h3>{{ title|trans({'%element%': form.vars.data}) }}</h3>
+                <h3>{{ title|trans({'%element%': form.vars.data}, 'FSiAdminBundle') }}</h3>
                 {% else %}
-                <h3>{{ title|trans }}</h3>
+                <h3>{{ title|trans({}, 'FSiAdminBundle') }}</h3>
                 {% endif %}
                 <form action="{{ path('fsi_admin_crud_edit', {element: element.id, id: id}) }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
                     {{ form_widget(form) }}
