@@ -8,8 +8,10 @@ List of available events can be found in [AdminEvents](Event/AdminEvents.php) an
 
 Following example will show you how to handle dynamically added/removed relation elements for doctrine entity.
 Just like in http://symfony.com/doc/current/cookbook/form/form_collections.html#allowing-tags-to-be-removed
+> This exsmple is only proof of concept, you should use orphanRemoval doctrine relation option instead of building complicated 
+> event listener.
 
-First you need to create event event listener
+First you need to create event listener class
 
 ```php
 
