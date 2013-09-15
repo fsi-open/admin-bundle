@@ -114,19 +114,17 @@ class User extends CRUDElement
      */
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        $builder = $factory->create('form', $data);
+        $form = $factory->create('form', $data);
 
-        $this->buildForm($builder);
-
-        $builder->add('email', 'email');
-        $builder->add('username', 'text');
-        $builder->add('enabled', 'choice', array(
+        $form->add('email', 'email');
+        $form->add('username', 'text');
+        $form->add('enabled', 'choice', array(
             'choices' => array(
                 0 => 'No',
                 1 => 'Yes',
             )
         ));
-        $builder->add('locked', 'choice', array(
+        $form->add('locked', 'choice', array(
             'choices' => array(
                 0 => 'No',
                 1 => 'Yes',
@@ -136,7 +134,7 @@ class User extends CRUDElement
         // Here you should add some fields into form
         // To get more information about Symfony form you should visit http://symfony.com/doc/current/book/forms.html
 
-        return $builder->getForm();
+        return $form;
     }
 }
 ```
