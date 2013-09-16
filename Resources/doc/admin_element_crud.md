@@ -18,7 +18,7 @@ class User extends CRUDElement
      */
     public function getClassName()
     {
-        return 'FSiDemoBundle:News'; // Doctrine class name
+        return 'FSiDemoBundle:User'; // Doctrine class name
     }
 
     /**
