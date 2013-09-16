@@ -1,4 +1,4 @@
-Copyright (C) 2013 Fabryka Stron Internetowych Sp. z o.o.
+Copyright (C) 2013 FSi Sp. z o.o.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
