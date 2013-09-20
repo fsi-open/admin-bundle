@@ -32,8 +32,10 @@ public function registerBundles()
     $bundles = array(
         // ...
         new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-        /* Resource Repository */
-        new FSi\Bundle\ResourceRepositoryBundle\FSiResourceRepositoryBundle(),
+        /* Resource Repository
+         * This is additional bundle and should be registered only when you want to use resource admin objects
+         */
+        //new FSi\Bundle\ResourceRepositoryBundle\FSiResourceRepositoryBundle(),
         /* CRUD */
         new FSi\Bundle\DataSourceBundle\DataSourceBundle(),
         new FSi\Bundle\DataGridBundle\DataGridBundle(),
