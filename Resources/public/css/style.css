@@ -5,6 +5,9 @@ body {position: relative;padding-top: 60px;}
 
 #filter input[type="text"],
 #filter input[type="email"],
+#filter input[type="datetime"],
+#filter input[type="date"],
+#filter input[type="time"],
 #filter select {width:190px; margin-right:5px;margin-left:5px;margin-bottom:5px;}
 #filter .submit-buttons {float:left; margin-right:5px;margin-left:5px;margin-bottom:5px;}
 #list-results {float:right;}
