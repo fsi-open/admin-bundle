@@ -116,7 +116,7 @@ class User extends CRUDElement
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
         $form = $factory->create('form', $data, array(
-            'data_class' => 'FSi/Bundle/DemoBundle/Entity/User' // this option is important for create form 
+            'data_class' => 'FSi\Bundle\DemoBundle\Entity\User' // this option is important for create form 
         ));
 
         $form->add('email', 'email');
