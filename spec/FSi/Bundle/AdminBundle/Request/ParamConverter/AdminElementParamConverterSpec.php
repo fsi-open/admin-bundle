@@ -19,6 +19,12 @@ class AdminElementParamConverterSpec extends ObjectBehavior
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter');
     }
 
+    function it_handle_only_fully_qualified_class_names(ParamConverter $configuration)
+    {
+        $configuration->getClass()->willReturn('FSiDemoBundle:News');
+        $this->supports($configuration)->shouldReturn(false);
+    }
+
     function it_supports_any_object_that_implements_element_interface(ParamConverter $configuration)
     {
         $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement');
