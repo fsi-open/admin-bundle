@@ -38,6 +38,8 @@ class FSIAdminExtensionSpec extends ObjectBehavior
         $builder->setParameter('admin.templates.delete_form_theme', '@FSiAdmin/Form/form_div_layout.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.resource_form_theme', '@FSiAdmin/Form/form_div_layout.html.twig')->shouldBeCalled();
 
+        $builder->has('fsi_resource_repository.map_builder')->shouldBeCalled()->willReturn(false);
+
         $this->load(array(), $builder);
     }
 }
