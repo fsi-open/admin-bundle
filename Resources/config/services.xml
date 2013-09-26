@@ -12,7 +12,6 @@
         <parameter key="admin.context_builder.doctrine.create.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\CreateContextBuilder</parameter>
         <parameter key="admin.context_builder.doctrine.edit.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\EditContextBuilder</parameter>
         <parameter key="admin.context_builder.doctrine.delete.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\DeleteContextBuilder</parameter>
-        <parameter key="admin.context_builder.doctrine.resource.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ResourceContextBuilder</parameter>
         <parameter key="admin.element.param.converter.class">FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter</parameter>
     </parameters>
 
@@ -53,13 +52,6 @@
             <call method="setRequest">
                 <argument type="service" id="request" on-invalid="null" strict="false" />
             </call>
-        </service>
-        <service id="admin.context_builder.doctrine.resource" class="%admin.context_builder.doctrine.resource.class%">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="fsi_resource_repository.map_builder"/>
-            <argument type="service" id="form.factory"/>
-            <argument type="service" id="router"/>
-            <tag name="admin.context.builder" />
         </service>
 
          <!-- Twig-->

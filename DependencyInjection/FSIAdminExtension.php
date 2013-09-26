@@ -31,6 +31,10 @@ class FSIAdminExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+
+        if ($container->has('fsi_resource_repository.map_builder')) {
+            $loader->load('resource_repository.xml');
+        }
     }
 
     /**
