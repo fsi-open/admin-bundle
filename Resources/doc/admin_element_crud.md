@@ -69,7 +69,7 @@ class User extends CRUDElement
         ));
         $datagrid->addColumn('username', 'text', array(
             'label' => 'Username',
-            'editabe' => true,
+            'editable' => true,
         ));
         $datagrid->addColumn('enabled', 'boolean', array(
             'label' => 'Enabled'
