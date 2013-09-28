@@ -1,7 +1,7 @@
 {% trans_default_domain 'FSiAdminBundle' %}
 
 {% if element.option('allow_delete') == true and datagrid_view.hasColumnType('batch') == true %}
-    <form class="form pull-left" id="batch_form" method="DELETE">
+    <form class="form pull-left" id="batch_form" method="POST">
         {% for index in datagrid_view.indexes %}
             <input type="checkbox" class="hidden" value="{{ index }}" name="indexes[]" id="index_{{ index }}">
         {% endfor %}
