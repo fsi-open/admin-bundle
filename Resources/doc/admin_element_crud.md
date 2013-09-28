@@ -26,7 +26,7 @@ class User extends CRUDElement
      */
     public function getId()
     {
-        return 'news'; // id is used in url generation http://domain.com/admin/{id}/list
+        return 'users'; // id is used in url generation http://domain.com/admin/{id}/list
     }
 
     /**
@@ -34,7 +34,7 @@ class User extends CRUDElement
      */
     public function getName()
     {
-        return 'admin.apartment.name'; // names are translated in twig so you can use translation key as name
+        return 'Users'; // names are translated in twig so you can use translation key as name
     }
 
     /**
