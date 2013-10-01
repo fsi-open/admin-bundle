@@ -3,12 +3,12 @@
 {% if datasource_view.getFields()|length > 0 %}
     <form class="form-inline" method="GET" action="{{ path('fsi_admin_crud_list', {element : element.id}) }}">
         <div class="pull-right hidden-xs">
-            <button type="submit" class="btn">{{ 'crud.list.datasource.search'|trans }}</button>
+            <button type="submit" class="btn btn-default">{{ 'crud.list.datasource.search'|trans }}</button>
             <a href="{{ path('fsi_admin_crud_list', {element : element.id}) }}" class="btn btn-primary">{{ 'crud.list.datasource.clear'|trans }}</a>
         </div>
         {{ datasource_filter_widget(datasource_view) }}
         <div class="visible-xs submit-buttons">
-            <button type="submit" class="btn">{{ 'crud.list.datasource.search'|trans }}</button>
+            <button type="submit" class="btn btn-default">{{ 'crud.list.datasource.search'|trans }}</button>
             <a href="{{ path('fsi_admin_crud_list', {element : element.id}) }}" class="btn btn-primary">{{ 'crud.list.datasource.clear'|trans }}</a>
         </div>
     </form>
