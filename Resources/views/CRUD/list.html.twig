@@ -1,20 +1,9 @@
 {% extends admin_templates_base %}
 
 {% block themes %}
-{% if datasource_view is not null %}
-{% datasource_theme datasource_view admin_templates_datasource_theme %}
-    {% if datagrid_view is not null %}
-        {% datagrid_theme datagrid_view admin_templates_datagrid_theme with {
-            'datasource' : datasource_view,
-            'router_name' : 'fsi_admin_crud_list',
-            'router_paramters' : {'element' : element.id}
-        } %}
-    {% endif %}
-{% else %}
-    {% if datagrid_view is not null %}
-        {% datagrid_theme datagrid_view '@FSiAdmin/CRUD/datagrid.html.twig'%}
-    {% endif %}
-{% endif %}
+    {% datasource_route datasource_view 'fsi_admin_crud_list' with {'element' : element.id} %}
+    {% datasource_theme datasource_view admin_templates_datasource_theme %}
+    {% datagrid_theme datagrid_view admin_templates_datagrid_theme with {'datasource' : datasource_view, 'element' : element.id} %}
 {% endblock themes %}
 
 {% block content %}

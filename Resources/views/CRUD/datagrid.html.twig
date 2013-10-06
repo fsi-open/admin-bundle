@@ -36,7 +36,7 @@
         {% if (vars.datasource.hasField(header.name)) %}
             {% set filter = vars.datasource.getField(header.name) %}
             {% if filter.getAttribute('sortable') == true %}
-                &nbsp;{{ datasource_sort_widget(filter, {'additional_parameters' : vars.router_paramters }) }}
+                &nbsp;{{ datasource_sort_widget(filter) }}
             {% endif %}
         {% endif %}
     </th>
@@ -47,14 +47,14 @@
 {% block datagrid_column_cell_form %}
 {% spaceless %}
     {% form_theme form _self %}
-    <form method="POST" action="{{ path('fsi_admin_crud_list', vars.datasource.getAllParameters()|merge(vars.router_paramters)) }}">
+    <form method="POST" action="{{ path('fsi_admin_crud_list', vars.datasource.getAllParameters()|merge({'element' : vars.element})) }}">
         {% for child in form.children %}
             {% for subchild in child.children %}
-            <div class="form-group{% if subchild.vars.errors|length %} has-error{% endif %}">
-                {{ form_label(subchild, subchild.vars.label|default(null), { 'label_attr': { 'class': 'sr-only' } }) }}
-                {{ form_widget(subchild, {'attr' : {'class' : 'form-control'} }) }}
-                {{ form_errors(subchild) }}
-            </div>
+                <div class="form-group{% if subchild.vars.errors|length %} has-error{% endif %}">
+                    {{ form_label(subchild, subchild.vars.label|default(null), { 'label_attr': { 'class': 'sr-only' } }) }}
+                    {{ form_widget(subchild, {'attr' : {'class' : 'form-control'} }) }}
+                    {{ form_errors(subchild) }}
+                </div>
             {% endfor %}
         {% endfor %}
         <div class="form-group editable-buttons">
