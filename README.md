@@ -9,6 +9,7 @@ Documentation:
 
 - [Installation](Resources/doc/installation.md)
 - [Admin Elements](Resources/doc/admin_element.md)
+- [Embedding Element](Resources/doc/embedding_element.md)
 - [Events](Resources/doc/events.md)
 - [Bundle Configuration](Resources/doc/configuration.md)
 
