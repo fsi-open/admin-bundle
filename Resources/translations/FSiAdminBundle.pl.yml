@@ -36,7 +36,7 @@ crud:
             reset: Wyczyść
             back_to_list: Powrót do listy
     delete:
-        message: Czy na pewno chcesz usunąc %count% z zaznaczonych elementów?
+        message: Czy na pewno chcesz usunąć %count% z zaznaczonych elementów?
         form:
             confirm:
                 label: Tak
