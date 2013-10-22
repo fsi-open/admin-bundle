@@ -54,4 +54,13 @@ admin:
     prefix: /admin
 ```
 
+## 4. Enable translations
+
+```
+# app/config/config.yml
+
+framework:
+    translator:      { fallback: %locale% }
+```
+
 Now you should read something about [admin elements](admin_element.md)
