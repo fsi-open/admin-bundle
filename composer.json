@@ -16,6 +16,7 @@
         "symfony/framework-bundle" : "~2.3",
         "symfony/form" : "~2.3",
         "symfony/options-resolver": "~2.3",
+        "doctrine/doctrine-bundle": "1.2.*",
         "sensio/framework-extra-bundle": "~2.3",
         "fsi/datagrid-bundle" : "1.0.*",
         "fsi/datasource-bundle" : "1.1.*",
