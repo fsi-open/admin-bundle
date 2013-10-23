@@ -1,5 +1,68 @@
-Resource type require ``fsi/resource-repository-bundle``.
-You can read more about it [here](https://github.com/fsi-open/resource-repository-bundle)
+**This element type require to install fsi/resource-repository-bundle before using it.**  
+**You can read more about it [here](https://github.com/fsi-open/resource-repository-bundle)**
+# Installation
+
+Add to your composer.json following lines
+
+```
+"require": {
+    "doctrine/doctrine-bundle" : "1.2.*@dev"
+    "fsi/resource-repository-bundle" : "1.0.*"
+}
+```
+
+Update AppKernel.php
+
+```php
+public function registerBundles()
+{
+    $bundles = array(
+        new FSi\Bundle\ResourceRepositoryBundle\FSiResourceRepositoryBundle(),
+        // Admin Bundle
+        new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+        new FSi\Bundle\DataSourceBundle\DataSourceBundle(),
+        new FSi\Bundle\DataGridBundle\DataGridBundle(),
+        new FSi\Bundle\AdminBundle\FSiAdminBundle(),
+    );
+}
+```
+
+Create Resource entity 
+
+```php
+
+<?php
+
+namespace FSi\Bundle\DemoBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use FSi\Bundle\ResourceRepositoryBundle\Model\Resource as BaseResource;
+
+/**
+ * @ORM\Entity(repositoryClass="FSi\Bundle\ResourceRepositoryBundle\Entity\ResourceRepository")
+ * @ORM\Table(name="fsi_resource")
+ */
+class Resource extends BaseResource
+{
+}
+```
+
+Modify app/config/config.yml
+
+```
+# app/config/config.yml
+
+fsi_resource_repository:
+    resource_class: FSi\Bundle\DemoBundle\Entity\Resource
+```
+
+Update database with following console command 
+
+```
+$ php app/console doctrine:schema:update --force
+```
+
+# Configuration
 
 Lets assume we have following configuration in ``resource_map.yml``
 
