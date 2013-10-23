@@ -15,7 +15,6 @@ or if you want to stay with ``"minimum-stability" : "stable"``
 
 ```
 "require": {
-    "doctrine/doctrine-bundle": "1.2.*@dev",
     "fsi/resource-repository-bundle" : "1.0.*@dev",
     "fsi/admin-bundle": "1.0.*@dev"
 },
