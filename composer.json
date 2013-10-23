@@ -20,10 +20,10 @@
         "fsi/datagrid-bundle" : "1.0.*",
         "fsi/datasource-bundle" : "1.1.*",
         "fsi/data-indexer" : "0.9.*",
-        "fsi/resource-repository-bundle": "1.0.*@dev",
         "knplabs/knp-menu-bundle": "1.1.*"
     },
     "require-dev": {
+        "fsi/resource-repository-bundle": "1.0.*",
         "phpspec/phpspec": "2.0.*@dev"
     },
     "config": {
