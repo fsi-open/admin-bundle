@@ -53,7 +53,7 @@ class AdminEvent extends Event
     }
 
     /**
-     * @return Request
+     * @return \Symfony\Component\HttpFoundation\Request
      */
     public function getRequest()
     {

@@ -84,7 +84,7 @@ class Manager
     }
 
     /**
-     * @param $group
+     * @param string $group
      * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface[]
      */
     public function getElementsByGroup($group)

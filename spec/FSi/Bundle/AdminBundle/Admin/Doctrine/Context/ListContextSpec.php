@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
@@ -49,9 +56,13 @@ class ListContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn('this_is_list_template.html.twig');
     }
 
-    function it_handle_request_with_POST_and_return_response(EventDispatcher $dispatcher, CRUDElement $element,
-       Request $request, DataSource $datasource, DataGrid $datagrid)
-    {
+    function it_handle_request_with_POST_and_return_response(
+        EventDispatcher $dispatcher,
+        CRUDElement $element,
+        Request $request,
+        DataSource $datasource,
+        DataGrid $datagrid
+    ) {
         $dispatcher->dispatch(
             CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE,
             Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')

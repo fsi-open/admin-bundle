@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -21,9 +28,15 @@ use Symfony\Component\Routing\Router;
 
 class ResourceContextSpec extends ObjectBehavior
 {
-    function let(EventDispatcher $dispatcher, ResourceElement $element, MapBuilder $builder, FormFactory $formFactory,
-        Router $router, FormBuilder $formBuilder, Form $form)
-    {
+    function let(
+        EventDispatcher $dispatcher,
+        ResourceElement $element,
+        MapBuilder $builder,
+        FormFactory $formFactory,
+        Router $router,
+        FormBuilder $formBuilder,
+        Form $form
+    ) {
         $this->beConstructedWith($dispatcher, $element, $builder, $formFactory, $router);
 
         $builder->getMap()->willReturn(array(
@@ -40,9 +53,14 @@ class ResourceContextSpec extends ObjectBehavior
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ResourceContext');
     }
 
-    function it_throw_exception_when_resource_key_is_not_resource_group_key(EventDispatcher $dispatcher,
-        FormFactory $formFactory, Router $router, MapBuilder $MapBuilder, ResourceElement $ResElement, TextType $resource)
-    {
+    function it_throw_exception_when_resource_key_is_not_resource_group_key(
+        EventDispatcher $dispatcher,
+        FormFactory $formFactory,
+        Router $router,
+        MapBuilder $MapBuilder,
+        ResourceElement $ResElement,
+        TextType $resource
+    ) {
         $ResElement->getKey()->willReturn('resources.resource_key');
         $MapBuilder->getMap()->willReturn(array(
             'resources' => array(
@@ -64,11 +82,22 @@ class ResourceContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('element');
     }
 
-    function it_handle_valid_request_with_post(Request $request, MapBuilder $builder, ResourceElement $element, TextType $textResource,
-        EmailType $emailResource, FormFactory $formFactory, FormBuilder $formBuilder, ResourceRepository $repository,
-        FormBuilder $textFormBuilder, FormBuilder $emailFormBuilder, Form $form, Router $router, ObjectManager $objectManager,
-        EventDispatcher $dispatcher)
-    {
+    function it_handle_valid_request_with_post(
+        Request $request,
+        MapBuilder $builder,
+        ResourceElement $element,
+        TextType $textResource,
+        EmailType $emailResource,
+        FormFactory $formFactory,
+        FormBuilder $formBuilder,
+        ResourceRepository $repository,
+        FormBuilder $textFormBuilder,
+        FormBuilder $emailFormBuilder,
+        Form $form,
+        Router $router,
+        ObjectManager $objectManager,
+        EventDispatcher $dispatcher
+    ) {
         $element->getId()->willReturn('resource_page');
         $element->getKey()->willReturn('resources');
         $element->getResourceFormOptions()->shouldBeCalled()->willReturn(array());

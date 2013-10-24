@@ -60,7 +60,7 @@ class DeleteContext implements ContextInterface
      * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
      * @param \Symfony\Component\Routing\Router $router
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     * @param $data array
+     * @param array $data
      * @internal param \Symfony\Component\Form\FormFactoryInterface $form
      */
     public function __construct(
