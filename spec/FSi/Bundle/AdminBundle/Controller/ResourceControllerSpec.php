@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
@@ -43,9 +50,14 @@ class ResourceControllerSpec extends ObjectBehavior
             ->during('resourceAction', array($element));
     }
 
-    function it_render_default_template_in_resource_action(Request $request, Response $response, AbstractResource $element,
-          ContextManager $manager, ListContext $context, DelegatingEngine $templating)
-    {
+    function it_render_default_template_in_resource_action(
+        Request $request,
+        Response $response,
+        AbstractResource $element,
+        ContextManager $manager,
+        ListContext $context,
+        DelegatingEngine $templating
+    ) {
         $manager->createContext('fsi_admin_resource', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
@@ -55,9 +67,14 @@ class ResourceControllerSpec extends ObjectBehavior
         $this->resourceAction($element)->shouldReturn($response);
     }
 
-    function it_render_template_from_element_in_resource_action(ContextManager $manager, AbstractResource $element,
-        ListContext $context, Request $request, DelegatingEngine $templating, Response $response)
-    {
+    function it_render_template_from_element_in_resource_action(
+        ContextManager $manager,
+        AbstractResource $element,
+        ListContext $context,
+        Request $request,
+        DelegatingEngine $templating,
+        Response $response
+    ) {
         $manager->createContext('fsi_admin_resource', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(true);
@@ -68,9 +85,13 @@ class ResourceControllerSpec extends ObjectBehavior
         $this->resourceAction($element)->shouldReturn($response);
     }
 
-    function it_return_response_from_context_in_resource_action(ContextManager $manager, AbstractResource $element,
-        ListContext $context, Request $request, Response $response)
-    {
+    function it_return_response_from_context_in_resource_action(
+        ContextManager $manager,
+        AbstractResource $element,
+        ListContext $context,
+        Request $request,
+        Response $response
+    ) {
         $manager->createContext('fsi_admin_resource', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 

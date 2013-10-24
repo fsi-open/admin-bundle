@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
@@ -17,9 +24,15 @@ use Symfony\Component\Routing\Router;
 
 class DeleteContextSpec extends ObjectBehavior
 {
-    function let(EventDispatcher $dispatcher, CRUDElement $element, Router $router, DoctrineDataIndexer $indexer,
-        FormFactory $factory, Form $form, FormView $view)
-    {
+    function let(
+        EventDispatcher $dispatcher,
+        CRUDElement $element,
+        Router $router,
+        DoctrineDataIndexer $indexer,
+        FormFactory $factory,
+        Form $form,
+        FormView $view
+    ) {
         $entity = new Entity();
         $entity1 = new Entity();
         $this->beConstructedWith($dispatcher, $element, $router, $factory, array($entity, $entity1));
@@ -77,9 +90,14 @@ class DeleteContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_handle_request_with_confirm_and_return_null(EventDispatcher $dispatcher, Form $form, Request $request,
-        ParameterBag $bag, CRUDElement $element, Router $router)
-    {
+    function it_handle_request_with_confirm_and_return_null(
+        EventDispatcher $dispatcher,
+        Form $form,
+        Request $request,
+        ParameterBag $bag,
+        CRUDElement $element,
+        Router $router
+    ) {
         $dispatcher->dispatch(
             CRUDEvents::CRUD_DELETE_CONTEXT_POST_CREATE,
             Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
@@ -124,9 +142,13 @@ class DeleteContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
     }
 
-    function it_handle_request_with_cancel(EventDispatcher $dispatcher, Request $request,
-        ParameterBag $bag, CRUDElement $element, Router $router)
-    {
+    function it_handle_request_with_cancel(
+        EventDispatcher $dispatcher,
+        Request $request,
+        ParameterBag $bag,
+        CRUDElement $element,
+        Router $router
+    ) {
         $dispatcher->dispatch(
             CRUDEvents::CRUD_DELETE_CONTEXT_POST_CREATE,
             Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')

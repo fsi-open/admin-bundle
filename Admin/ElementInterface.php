@@ -57,7 +57,7 @@ interface ElementInterface
     /**
      * Get option by name.
      *
-     * @param $name
+     * @param string $name
      * @return mixed
      * @throws \FSi\Bundle\AdminBundle\Exception\MissingOptionException
      */

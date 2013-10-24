@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
@@ -33,8 +40,11 @@ class DeleteContextBuilderSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface');
     }
 
-    function it_supports_doctrine_crud_element_that_allow_to_delete_elements(CRUDElement $element, Router $router, DoctrineDataIndexer $indexer)
-    {
+    function it_supports_doctrine_crud_element_that_allow_to_delete_elements(
+        CRUDElement $element,
+        Router $router,
+        DoctrineDataIndexer $indexer
+    ) {
         $entity = new Entity();
         $element->getDataIndexer()->willReturn($indexer);
         $element->getOption('allow_delete')->willReturn(true);
@@ -44,9 +54,10 @@ class DeleteContextBuilderSpec extends ObjectBehavior
         $this->supports('fsi_admin_crud_delete', $element, $router)->shouldReturn(true);
     }
 
-    function it_throws_exception_when_at_least_one_object_cant_be_found(CRUDElement $element,
-        DoctrineDataIndexer $indexer)
-    {
+    function it_throws_exception_when_at_least_one_object_cant_be_found(
+        CRUDElement $element,
+        DoctrineDataIndexer $indexer
+    ) {
         $entity = new Entity();
         $element->getDataIndexer()->willReturn($indexer);
         $element->getOption('allow_delete')->willReturn(true);
@@ -57,9 +68,10 @@ class DeleteContextBuilderSpec extends ObjectBehavior
             ->during('supports', array('fsi_admin_crud_delete', $element));
     }
 
-    function it_should_throw_exception_when_element_does_not_allow_delete(CRUDElement $element,
-        Request $request)
-    {
+    function it_should_throw_exception_when_element_does_not_allow_delete(
+        CRUDElement $element,
+        Request $request
+    ) {
         $this->setRequest($request);
         $element->getName()->willReturn('My Element');
         $element->getOption('allow_delete')->willReturn(false);
@@ -68,9 +80,11 @@ class DeleteContextBuilderSpec extends ObjectBehavior
             ->during('supports', array('fsi_admin_crud_delete', $element));
     }
 
-    function it_should_throw_exception_when_there_are_no_indexes_in_request(CRUDElement $element,
-        Request $request, ParameterBag $bag)
-    {
+    function it_should_throw_exception_when_there_are_no_indexes_in_request(
+        CRUDElement $element,
+        Request $request,
+        ParameterBag $bag
+    ) {
         $this->setRequest($request);
         $bag->get('indexes', array())->willReturn(array());
         $element->getOption('allow_delete')->willReturn(true);

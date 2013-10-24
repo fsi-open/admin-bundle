@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
@@ -50,9 +57,10 @@ class EditContextBuilderSpec extends ObjectBehavior
             ->during('supports', array('fsi_admin_crud_edit', $element));
     }
 
-    function it_throws_exception_when_cant_find_object_by_id(DoctrineDataIndexer $indexer,
-        CRUDElement $element)
-    {
+    function it_throws_exception_when_cant_find_object_by_id(
+        DoctrineDataIndexer $indexer,
+        CRUDElement $element
+    ) {
         $element->getOption('allow_edit')->shouldBeCalled()->willReturn(true);
         $element->getDataIndexer()->willReturn($indexer);
         $indexer->getData(1)->willReturn(null);

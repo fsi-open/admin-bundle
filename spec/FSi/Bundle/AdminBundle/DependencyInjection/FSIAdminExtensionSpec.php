@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace spec\FSi\Bundle\AdminBundle\DependencyInjection;
 
 use PhpSpec\ObjectBehavior;
@@ -15,9 +22,11 @@ class FSIAdminExtensionSpec extends ObjectBehavior
         $this->shouldHaveType('FSi\Bundle\AdminBundle\DependencyInjection\FSIAdminExtension');
     }
 
-    function it_set_parameters_at_container_builder(ContainerBuilder $builder,ParameterBagInterface $parameterBag,
-                                                    Definition $uploadable)
-    {
+    function it_set_parameters_at_container_builder(
+        ContainerBuilder $builder,
+        ParameterBagInterface $parameterBag,
+        Definition $uploadable
+    ) {
         $builder->hasExtension(Argument::type('string'))->willReturn(false);
         $builder->addResource(Argument::type('\Symfony\Component\Config\Resource\FileResource'))->shouldBeCalled();
         $builder->setDefinition(Argument::type('string'), Argument::type('Symfony\Component\DependencyInjection\Definition'))->shouldBeCalled();

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
@@ -53,9 +60,14 @@ class CRUDControllerSpec extends ObjectBehavior
             ->during('deleteAction', array($element));
     }
 
-    function it_render_default_template_in_list_action(Request $request, Response $response, AbstractCRUD $element,
-          ContextManager $manager, ListContext $context, DelegatingEngine $templating)
-    {
+    function it_render_default_template_in_list_action(
+        Request $request,
+        Response $response,
+        AbstractCRUD $element,
+        ContextManager $manager,
+        ListContext $context,
+        DelegatingEngine $templating
+    ) {
         $manager->createContext('fsi_admin_crud_list', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
@@ -65,9 +77,14 @@ class CRUDControllerSpec extends ObjectBehavior
         $this->listAction($element)->shouldReturn($response);
     }
 
-    function it_render_template_from_element_in_list_action(ContextManager $manager, AbstractCRUD $element,
-        ListContext $context, Request $request, DelegatingEngine $templating, Response $response)
-    {
+    function it_render_template_from_element_in_list_action(
+        ContextManager $manager,
+        AbstractCRUD $element,
+        ListContext $context,
+        Request $request,
+        DelegatingEngine $templating,
+        Response $response
+    ) {
         $manager->createContext('fsi_admin_crud_list', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(true);
@@ -78,18 +95,27 @@ class CRUDControllerSpec extends ObjectBehavior
         $this->listAction($element)->shouldReturn($response);
     }
 
-    function it_return_response_from_context_in_list_action(ContextManager $manager, AbstractCRUD $element,
-        ListContext $context, Request $request, Response $response)
-    {
+    function it_return_response_from_context_in_list_action(
+        ContextManager $manager,
+        AbstractCRUD $element,
+        ListContext $context,
+        Request $request,
+        Response $response
+    ) {
         $manager->createContext('fsi_admin_crud_list', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
         $this->listAction($element)->shouldReturn($response);
     }
 
-    function it_render_default_template_in_create_action(Request $request, Response $response, AbstractCRUD $element,
-       ContextManager $manager, CreateContext $context, DelegatingEngine $templating)
-    {
+    function it_render_default_template_in_create_action(
+        Request $request,
+        Response $response,
+        AbstractCRUD $element,
+        ContextManager $manager,
+        CreateContext $context,
+        DelegatingEngine $templating
+    ) {
         $manager->createContext('fsi_admin_crud_create', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
@@ -99,9 +125,14 @@ class CRUDControllerSpec extends ObjectBehavior
         $this->createAction($element)->shouldReturn($response);
     }
 
-    function it_render_template_from_element_in_create_action(ContextManager $manager, AbstractCRUD $element,
-        CreateContext $context, Request $request, DelegatingEngine $templating, Response $response)
-    {
+    function it_render_template_from_element_in_create_action(
+        ContextManager $manager,
+        AbstractCRUD $element,
+        CreateContext $context,
+        Request $request,
+        DelegatingEngine $templating,
+        Response $response
+    ) {
         $manager->createContext('fsi_admin_crud_create', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(true);
@@ -112,18 +143,27 @@ class CRUDControllerSpec extends ObjectBehavior
         $this->createAction($element)->shouldReturn($response);
     }
 
-    function it_return_response_from_context_in_create_action(ContextManager $manager, AbstractCRUD $element,
-        CreateContext $context, Request $request, Response $response)
-    {
+    function it_return_response_from_context_in_create_action(
+        ContextManager $manager,
+        AbstractCRUD $element,
+        CreateContext $context,
+        Request $request,
+        Response $response
+    ) {
         $manager->createContext('fsi_admin_crud_create', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
         $this->createAction($element)->shouldReturn($response);
     }
 
-    function it_render_default_template_in_edit_action(Request $request, Response $response, AbstractCRUD $element,
-         ContextManager $manager, CreateContext $context, DelegatingEngine $templating)
-    {
+    function it_render_default_template_in_edit_action(
+        Request $request,
+        Response $response,
+        AbstractCRUD $element,
+        ContextManager $manager,
+        CreateContext $context,
+        DelegatingEngine $templating
+    ) {
         $manager->createContext('fsi_admin_crud_edit', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
@@ -133,9 +173,14 @@ class CRUDControllerSpec extends ObjectBehavior
         $this->editAction($element)->shouldReturn($response);
     }
 
-    function it_render_template_from_element_in_edit_action(ContextManager $manager, AbstractCRUD $element,
-        CreateContext $context, Request $request, DelegatingEngine $templating, Response $response)
-    {
+    function it_render_template_from_element_in_edit_action(
+        ContextManager $manager,
+        AbstractCRUD $element,
+        CreateContext $context,
+        Request $request,
+        DelegatingEngine $templating,
+        Response $response
+    ) {
         $manager->createContext('fsi_admin_crud_edit', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(true);
@@ -146,18 +191,27 @@ class CRUDControllerSpec extends ObjectBehavior
         $this->editAction($element)->shouldReturn($response);
     }
 
-    function it_return_response_from_context_in_edit_action(ContextManager $manager, AbstractCRUD $element,
-        CreateContext $context, Request $request, Response $response)
-    {
+    function it_return_response_from_context_in_edit_action(
+        ContextManager $manager,
+        AbstractCRUD $element,
+        CreateContext $context,
+        Request $request,
+        Response $response
+    ) {
         $manager->createContext('fsi_admin_crud_edit', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
         $this->editAction($element)->shouldReturn($response);
     }
 
-    function it_render_default_template_in_delete_action(Request $request, Response $response, AbstractCRUD $element,
-                                                       ContextManager $manager, CreateContext $context, DelegatingEngine $templating)
-    {
+    function it_render_default_template_in_delete_action(
+        Request $request,
+        Response $response,
+        AbstractCRUD $element,
+        ContextManager $manager,
+        CreateContext $context,
+        DelegatingEngine $templating
+    ) {
         $manager->createContext('fsi_admin_crud_delete', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
@@ -167,9 +221,14 @@ class CRUDControllerSpec extends ObjectBehavior
         $this->deleteAction($element)->shouldReturn($response);
     }
 
-    function it_render_template_from_element_in_delete_action(ContextManager $manager, AbstractCRUD $element,
-        CreateContext $context, Request $request, DelegatingEngine $templating, Response $response)
-    {
+    function it_render_template_from_element_in_delete_action(
+        ContextManager $manager,
+        AbstractCRUD $element,
+        CreateContext $context,
+        Request $request,
+        DelegatingEngine $templating,
+        Response $response
+    ) {
         $manager->createContext('fsi_admin_crud_delete', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(true);
@@ -180,9 +239,13 @@ class CRUDControllerSpec extends ObjectBehavior
         $this->deleteAction($element)->shouldReturn($response);
     }
 
-    function it_return_response_from_context_in_delete_action(ContextManager $manager, AbstractCRUD $element,
-        CreateContext $context, Request $request, Response $response)
-    {
+    function it_return_response_from_context_in_delete_action(
+        ContextManager $manager,
+        AbstractCRUD $element,
+        CreateContext $context,
+        Request $request,
+        Response $response
+    ) {
         $manager->createContext('fsi_admin_crud_delete', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
