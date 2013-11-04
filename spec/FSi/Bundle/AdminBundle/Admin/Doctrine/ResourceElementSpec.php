@@ -11,9 +11,7 @@ namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
 
 class MyResourceElement extends ResourceElement

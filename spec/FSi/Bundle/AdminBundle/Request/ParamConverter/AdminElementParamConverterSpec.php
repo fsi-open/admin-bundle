@@ -11,7 +11,6 @@ namespace spec\FSi\Bundle\AdminBundle\Request\ParamConverter;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class AdminElementParamConverterSpec extends ObjectBehavior

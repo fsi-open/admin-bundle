@@ -10,7 +10,6 @@
 namespace spec\FSi\Bundle\AdminBundle\Twig\Extension;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AdminExtensionSpec extends ObjectBehavior
 {

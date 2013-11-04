@@ -11,7 +11,6 @@ namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
 use Symfony\Component\Form\FormBuilder;

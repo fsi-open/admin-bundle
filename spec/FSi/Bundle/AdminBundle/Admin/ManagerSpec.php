@@ -11,7 +11,6 @@ namespace spec\FSi\Bundle\AdminBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ManagerSpec extends ObjectBehavior
 {

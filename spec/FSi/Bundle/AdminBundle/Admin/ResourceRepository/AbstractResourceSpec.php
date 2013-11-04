@@ -10,7 +10,6 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
 
 class MyRresource extends AbstractResource

@@ -10,9 +10,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
-use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ListContextBuilderSpec extends ObjectBehavior

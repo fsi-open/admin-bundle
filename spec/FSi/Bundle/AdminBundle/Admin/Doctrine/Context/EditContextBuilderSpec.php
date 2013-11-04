@@ -11,7 +11,6 @@ namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
-use FSi\Bundle\AdminBundle\Exception\InvalidEntityIdException;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

@@ -11,7 +11,6 @@ namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
