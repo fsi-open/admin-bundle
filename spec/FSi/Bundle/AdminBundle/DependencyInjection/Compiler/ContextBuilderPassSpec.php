@@ -10,7 +10,6 @@
 namespace spec\FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 

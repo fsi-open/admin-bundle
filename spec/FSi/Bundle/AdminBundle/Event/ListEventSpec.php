@@ -13,7 +13,6 @@ use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Component\DataGrid\DataGrid;
 use FSi\Component\DataSource\DataSource;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 
 class ListEventSpec extends ObjectBehavior

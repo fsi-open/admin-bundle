@@ -11,7 +11,6 @@ namespace spec\FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminEventSpec extends ObjectBehavior

@@ -13,7 +13,6 @@ use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ContextManagerSpec extends ObjectBehavior
 {

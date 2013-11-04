@@ -14,10 +14,8 @@ use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
 class FormData
