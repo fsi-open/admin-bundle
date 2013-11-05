@@ -59,10 +59,6 @@ class MyCrudElement extends CRUDElement
     }
 }
 
-class MyEntity
-{
-}
-
 class CRUDElementSpec extends ObjectBehavior
 {
     function let()
@@ -98,21 +94,21 @@ class CRUDElementSpec extends ObjectBehavior
     public function it_should_save_object_at_object_manager(ManagerRegistry $registry, ObjectManager $om)
     {
         $registry->getManagerForClass('FSiDemoBundle:Entity')->shouldBeCalledTimes(1)->willReturn($om);
-        $om->persist(Argument::type('spec\FSi\Bundle\AdminBundle\Admin\Doctrine\MyEntity'))->shouldBeCalled();
+        $om->persist(Argument::type('stdClass'))->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
         $this->setManagerRegistry($registry);
-        $this->save(new MyEntity());
+        $this->save(new \stdClass());
     }
 
     public function it_should_remove_object_from_object_manager(ManagerRegistry $registry, ObjectManager $om)
     {
         $registry->getManagerForClass('FSiDemoBundle:Entity')->shouldBeCalledTimes(1)->willReturn($om);
-        $om->remove(Argument::type('spec\FSi\Bundle\AdminBundle\Admin\Doctrine\MyEntity'))->shouldBeCalled();
+        $om->remove(Argument::type('stdClass'))->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
         $this->setManagerRegistry($registry);
-        $this->delete(new MyEntity());
+        $this->delete(new \stdClass());
     }
 
     public function it_should_save_datagrid(ManagerRegistry $registry, ObjectManager $om)

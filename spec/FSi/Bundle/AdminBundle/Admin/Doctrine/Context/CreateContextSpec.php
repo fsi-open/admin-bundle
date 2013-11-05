@@ -13,14 +13,11 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use FSi\Bundle\AdminBundle\Fixtures\FormData;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-
-class FormData
-{
-}
 
 class CreateContextSpec extends ObjectBehavior
 {
@@ -63,7 +60,6 @@ class CreateContextSpec extends ObjectBehavior
         CRUDElement $element,
         Request $request,
         Form $form,
-        FormData $data,
         Router $router
     ) {
         $dispatcher->dispatch(
@@ -92,6 +88,7 @@ class CreateContextSpec extends ObjectBehavior
             Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
+        $data = new \stdClass();
         $form->getData()->willReturn($data);
         $element->save($data)->shouldBeCalled();
 

@@ -19,17 +19,13 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
-class Entity
-{
-}
-
 class EditContextSpec extends ObjectBehavior
 {
     private $data;
 
     function let(EventDispatcher $dispatcher, CRUDElement $element, Form $form, Router $router, DoctrineDataIndexer $indexer)
     {
-        $this->data = new Entity();
+        $this->data = new \stdClass();
         $element->createForm($this->data)->willReturn($form);
         $this->beConstructedWith($dispatcher, $element, $router, $this->data);
         $element->getDataIndexer()->willReturn($indexer);

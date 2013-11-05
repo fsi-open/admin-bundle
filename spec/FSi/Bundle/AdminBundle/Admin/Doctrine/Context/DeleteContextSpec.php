@@ -33,8 +33,8 @@ class DeleteContextSpec extends ObjectBehavior
         Form $form,
         FormView $view
     ) {
-        $entity = new Entity();
-        $entity1 = new Entity();
+        $entity = new \stdClass();
+        $entity1 = new \stdClass();
         $this->beConstructedWith($dispatcher, $element, $router, $factory, array($entity, $entity1));
         $element->getDataIndexer()->willReturn($indexer);
         $indexer->getIndex($entity)->willReturn(1);
@@ -126,7 +126,7 @@ class DeleteContextSpec extends ObjectBehavior
             Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
         )->shouldBeCalled();
 
-        $element->delete(Argument::type('spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Entity'))->shouldBeCalledTimes(2);
+        $element->delete(Argument::type('stdClass'))->shouldBeCalledTimes(2);
 
         $dispatcher->dispatch(
             CRUDEvents::CRUD_DELETE_ENTITIES_POST_DELETE,

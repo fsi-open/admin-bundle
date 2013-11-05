@@ -13,7 +13,6 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
@@ -39,7 +38,7 @@ class EditContextBuilderSpec extends ObjectBehavior
 
     function it_supports_doctrine_crud_element_that_allow_to_edit_objects(CRUDElement $element, DoctrineDataIndexer $indexer)
     {
-        $entity = new Entity();
+        $entity = new \stdClass();
         $element->getDataIndexer()->willReturn($indexer);
         $element->getOption('allow_edit')->shouldBeCalled()->willReturn(true);
         $indexer->getData(1)->shouldBeCalled()->willReturn($entity);
@@ -70,7 +69,7 @@ class EditContextBuilderSpec extends ObjectBehavior
 
     function it_build_context(CRUDElement $element, DoctrineDataIndexer $indexer)
     {
-        $entity = new Entity();
+        $entity = new \stdClass();
         $element->getDataIndexer()->willReturn($indexer);
         $element->createForm($entity)->shouldBeCalled();
         $indexer->getData(1)->shouldBeCalled()->willReturn($entity);
