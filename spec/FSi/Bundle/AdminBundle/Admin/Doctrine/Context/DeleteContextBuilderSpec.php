@@ -44,7 +44,7 @@ class DeleteContextBuilderSpec extends ObjectBehavior
         Router $router,
         DoctrineDataIndexer $indexer
     ) {
-        $entity = new Entity();
+        $entity = new \stdClass();
         $element->getDataIndexer()->willReturn($indexer);
         $element->getOption('allow_delete')->willReturn(true);
         $indexer->getData(1)->shouldBeCalled()->willReturn($entity);
@@ -57,9 +57,9 @@ class DeleteContextBuilderSpec extends ObjectBehavior
         CRUDElement $element,
         DoctrineDataIndexer $indexer
     ) {
-        $entity = new Entity();
         $element->getDataIndexer()->willReturn($indexer);
         $element->getOption('allow_delete')->willReturn(true);
+        $entity = new \stdClass();
         $indexer->getData(1)->shouldBeCalled()->willReturn($entity);
         $indexer->getData(2)->shouldBeCalled()->willReturn(null);
 
@@ -94,8 +94,8 @@ class DeleteContextBuilderSpec extends ObjectBehavior
 
     function it_build_context(CRUDElement $element, DoctrineDataIndexer $indexer)
     {
-        $entity = new Entity();
         $element->getDataIndexer()->willReturn($indexer);
+        $entity = new \stdClass();
         $indexer->getData(1)->shouldBeCalled()->willReturn($entity);
         $indexer->getData(2)->shouldBeCalled()->willReturn($entity);
 
