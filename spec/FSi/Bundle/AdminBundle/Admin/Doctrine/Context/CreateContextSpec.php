@@ -13,7 +13,6 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use FSi\Bundle\AdminBundle\Fixtures\FormData;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
