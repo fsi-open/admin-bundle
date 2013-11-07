@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="demo_bundle.admin.news" class="FSi\Behat\Fixtures\DemoBundle\Admin\News">
+            <tag name="admin.element" />
+        </service>
+
+        <service id="demo_bundle.admin.home_page" class="FSi\Behat\Fixtures\DemoBundle\Admin\HomePage">
+            <tag name="admin.element" alias="structure" />
+        </service>
+
+        <service id="demo_bundle.admin.about_us_page" class="FSi\Behat\Fixtures\DemoBundle\Admin\AboutUsPage">
+            <tag name="admin.element" alias="structure" />
+        </service>
+    </services>
+</container>

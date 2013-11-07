@@ -17,20 +17,32 @@
         "symfony/form" : "~2.3",
         "symfony/options-resolver": "~2.3",
         "sensio/framework-extra-bundle": "~2.3",
+        "symfony/twig-bundle": "~2.3",
         "fsi/datagrid-bundle" : "1.0.*",
         "fsi/datasource-bundle" : "1.1.*",
         "fsi/data-indexer" : "0.9.*",
         "knplabs/knp-menu-bundle": "1.1.*"
     },
     "require-dev": {
+        "ext-pdo_sqlite": "*",
         "fsi/resource-repository-bundle": "1.0.*",
-        "phpspec/phpspec": "2.0.*@dev"
+        "doctrine/doctrine-bundle": "1.2.*",
+        "phpspec/phpspec": "2.0.*@dev",
+        "behat/behat": "*@stable",
+        "behat/symfony2-extension": "*@stable",
+        "behat/mink-extension": "*",
+        "behat/mink-browserkit-driver": "*",
+        "sensiolabs/behat-page-object-extension": "*",
+        "bossa/phpspec2-expect": "dev-master"
     },
     "config": {
         "bin-dir": "bin"
     },
     "autoload": {
-        "psr-0": { "FSi\\Bundle\\AdminBundle\\": "" }
+        "psr-0": {
+            "FSi\\Bundle\\AdminBundle\\": "",
+            "FSi\\Behat": "features/"
+        }
     },
     "target-dir" : "FSi/Bundle/AdminBundle",
     "extra": {

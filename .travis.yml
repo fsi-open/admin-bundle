@@ -6,6 +6,8 @@ php:
   - 5.5
 
 before_script:
-  - composer --prefer-source --dev install
+  - composer --prefer-source -n install
 
-script: ./bin/phpspec run -f pretty
+script:
+  - ./bin/phpspec run -f pretty
+  - ./bin/behat --no-snippets --no-paths --verbose

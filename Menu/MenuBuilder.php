@@ -55,6 +55,7 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
+        $menu->setChildrenAttribute('id', 'top-menu');
 
         if (isset($this->request)) {
             $menu->setCurrentUri($this->request->getRequestUri());

@@ -1,0 +1,8 @@
+structure: Site structure
+admin:
+  news:
+    name: News
+  home_page:
+    name: Home page
+  about_us_page:
+    name: About us page
