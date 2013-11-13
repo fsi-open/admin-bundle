@@ -21,14 +21,42 @@ class News extends CRUDElement
 
     public function getClassName()
     {
+        return 'FSi\Behat\Fixtures\DemoBundle\Entity\News';
     }
 
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
+        /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
+        $datagrid = $factory->createDataGrid('news');
+
+        $datagrid->addColumn('title', 'text', array(
+            'label' => 'admin.news.list.title',
+            'editable' => true
+        ));
+
+        $datagrid->addColumn('created_at', 'datetime', array(
+            'label' => 'admin.news.list.created_at'
+        ));
+
+        $datagrid->addColumn('visible', 'boolean', array(
+            'label' => 'admin.news.list.visible'
+        ));
+
+        $datagrid->addColumn('creator_email', 'text', array(
+            'label' => 'admin.news.list.creator_email'
+        ));
+
+        return $datagrid;
     }
 
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
+        /* @var $datasource \FSi\Component\DataSource\DataSource */
+        $datasource = $factory->createDataSource('doctrine', array('entity' => $this->getClassName()), 'news');
+
+        $datasource->setMaxResults(10);
+
+        return $datasource;
     }
 
     protected function initForm(FormFactoryInterface $factory, $data = null)

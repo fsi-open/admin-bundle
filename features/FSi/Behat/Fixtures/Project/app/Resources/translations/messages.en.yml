@@ -2,6 +2,11 @@ structure: Site structure
 admin:
   news:
     name: News
+    list:
+      title: Title
+      created_at: Created at
+      visible: Visible
+      creator_email: Creator email
   home_page:
     name: Home page
   about_us_page:

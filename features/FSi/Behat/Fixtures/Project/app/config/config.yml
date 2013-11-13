@@ -18,7 +18,7 @@ doctrine:
         user:     admin
         password: admin
         charset:  UTF8
-        memory: true
+        path: %kernel.root_dir%/data.sqlite
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true

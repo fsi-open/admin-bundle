@@ -32,8 +32,9 @@
         "behat/symfony2-extension": "*@stable",
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
-        "sensiolabs/behat-page-object-extension": "*",
-        "bossa/phpspec2-expect": "dev-master"
+        "sensiolabs/behat-page-object-extension": "1.0.*@dev",
+        "bossa/phpspec2-expect": "dev-master",
+        "fzaninotto/faker": "1.2.*"
     },
     "config": {
         "bin-dir": "bin"

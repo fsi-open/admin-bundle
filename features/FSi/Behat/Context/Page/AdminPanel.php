@@ -9,7 +9,7 @@
 
 namespace FSi\Behat\Context\Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
 class AdminPanel extends Page
 {
@@ -17,19 +17,22 @@ class AdminPanel extends Page
 
     public function hasMenuElement($name, $group = null)
     {
-        $menu = $this->find('css', '#top-menu');
-
         if (!isset($group)) {
-            return $menu->has('css', sprintf('li > a:contains("%s")', $name));
+            return $this->getMenu()->has('css', sprintf('li > a:contains("%s")', $name));
         }
 
-        $groupExpandButton = $this->find('css', sprintf('li.dropdown > a:contains("%s")', $group));
+        $groupExpandButton = $this->getMenu()->find('css', sprintf('li.dropdown > a:contains("%s")', $group));
 
         if (isset($groupExpandButton)) {
             return $groupExpandButton->getParent()->has('css', sprintf('ul > li > a:contains("%s")', $name));
         }
 
         return false;
+    }
+
+    public function getMenu()
+    {
+        return $this->find('css', '#top-menu');
     }
 
     public function getNavbarBrandText()

@@ -9,6 +9,7 @@
 
 namespace FSi\Behat\Context;
 
+use Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
@@ -21,6 +22,12 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
      */
     protected $kernel;
 
+    function __construct()
+    {
+        $this->useContext('CRUD', new CRUDContext());
+        $this->useContext('data', new DataContext());
+    }
+
     public function setKernel(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
@@ -31,8 +38,6 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
      */
     public function theFollowingServicesWereRegistered(TableNode $table)
     {
-        $this->services = array();
-
         foreach ($table->getHash() as $serviceRow) {
             expect($this->kernel->getContainer()->has($serviceRow['Id']))->toBe(true);
             expect($this->kernel->getContainer()->get($serviceRow['Id']))->toBeAnInstanceOf($serviceRow['Class']);
@@ -69,6 +74,30 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     public function iOpenPage($pageName)
     {
         $this->getPage($pageName)->open();
+    }
+
+    /**
+     * @Given /^I am on the "([^"]*)" page$/
+     */
+    public function iAmOnThePage($pageName)
+    {
+        $this->getPage($pageName)->open();
+    }
+
+    /**
+     * @Then /^I should be on the "([^"]*)" page$/
+     */
+    public function iShouldBeOnThePage($pageName)
+    {
+        $this->getPage($pageName)->isOpen();
+    }
+
+    /**
+     * @When /^I follow "([^"]*)" url from top bar$/
+     */
+    public function iFollowUrlFromTopBar($menuElement)
+    {
+        $this->getPage('Admin Panel')->getMenu()->clickLink($menuElement);
     }
 
     /**
