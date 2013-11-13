@@ -20,8 +20,10 @@ Feature: Sorting elements at list
       | creator_email | text       | like             |
     And following options should be defined for "news" element datasource fields
       | Field name    | Option      | Value |
-      | created_at    | sortable    | true  |
+      | title         | sortable    | false |
       | creator_email | sortable    | true  |
+      | visible       | sortable    | false |
+      | created_at    | sortable    | true  |
 
   Scenario: Display sort links in column header where column name is equal to field name and sortable field option is true
     When I follow "News" menu element
@@ -32,3 +34,17 @@ Feature: Sorting elements at list
       | Created at    | true     |
       | Visible       | false    |
       | Creator email | true     |
+
+  Scenario: Change list sorting to asc
+    When I follow "News" menu element
+    Then both sorting buttons in column header "Created at" should be active
+    When I press "Sort asc" button in "Created at" column header
+    Then "Sort asc" button in "Created at" column header should be disabled
+    And  "Sort desc" button in "Created at" column header should be active
+
+  Scenario: Change list sorting to desc
+    When I follow "News" menu element
+    Then both sorting buttons in column header "Created at" should be active
+    When I press "Sort desc" button in "Created at" column header
+    Then "Sort desc" button in "Created at" column header should be disabled
+    And  "Sort asc" button in "Created at" column header should be active

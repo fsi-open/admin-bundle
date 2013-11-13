@@ -9,7 +9,6 @@
 
 namespace FSi\Behat\Context;
 
-use Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;

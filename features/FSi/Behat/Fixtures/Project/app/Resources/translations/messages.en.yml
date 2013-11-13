@@ -5,6 +5,8 @@ admin:
     list:
       title: Title
       created_at: Created at
+      created_at_from: Created at from
+      created_at_to: Created at to
       visible: Visible
       creator_email: Creator email
   home_page:

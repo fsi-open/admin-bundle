@@ -115,13 +115,14 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
      */
     public function iShouldSeeListWithFollowingColumns(TableNode $table)
     {
-        $newsList = $this->getElement('Elements List');
+        $list = $this->getElement('Elements List');
 
         foreach ($table->getHash() as $columnRow) {
-            expect($newsList->hasColumn($columnRow['Column name']))->toBe(true);
+            expect($list->hasColumn($columnRow['Column name']))->toBe(true);
 
             if (array_key_exists('Sortable', $columnRow)) {
-                expect($newsList->isColumnSortable($columnRow['Column name']))->toBe(true);
+                expect($list->isColumnSortable($columnRow['Column name']))
+                    ->toBe(($columnRow['Sortable'] === 'true') ? true : false);
             }
         }
     }
@@ -157,6 +158,62 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
             } else {
                 expect($pagination->isCurrentPage($buttonRow['Button']))->toBe(false);
             }
+        }
+    }
+
+    /**
+     * @Then /^both sorting buttons in column header "([^"]*)" should be active$/
+     */
+    public function bothSortingButtonsInColumnHeaderShouldBeActive($column)
+    {
+        expect($this->getElement('Elements List')->isColumnAscSortActive($column))->toBe(true);
+    }
+
+    /**
+     * @When /^I press "([^"]*)" button in "([^"]*)" column header$/
+     */
+    public function iPressButtonInColumnHeader($sort, $column)
+    {
+        $this->getElement('Elements List')->pressSortButton($column, $sort);
+    }
+
+    /**
+     * @Then /^"([^"]*)" button in "([^"]*)" column header should be disabled$/
+     */
+    public function buttonInColumnHeaderShouldBeDisabled($sort, $column)
+    {
+        $list = $this->getElement('Elements List');
+
+        switch (strtolower($sort)) {
+            case 'sort asc':
+                expect($list->isColumnAscSortActive($column))->toBe(false);
+                break;
+            case 'sort desc':
+                expect($list->isColumnDescSortActive($column))->toBe(false);
+                break;
+            default :
+                throw new BehaviorException(sprintf("Unknown sorting type %s", $sort));
+                break;
+        }
+    }
+
+    /**
+     * @Given /^"([^"]*)" button in "([^"]*)" column header should be active$/
+     */
+    public function buttonInColumnHeaderShouldBeActive($sort, $column)
+    {
+        $list = $this->getElement('Elements List');
+
+        switch (strtolower($sort)) {
+            case 'sort asc':
+                expect($list->isColumnAscSortActive($column))->toBe(true);
+                break;
+            case 'sort desc':
+                expect($list->isColumnDescSortActive($column))->toBe(true);
+                break;
+            default :
+                throw new BehaviorException(sprintf("Unknown sorting type %s", $sort));
+                break;
         }
     }
 
@@ -222,6 +279,28 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
 
             expect($datasource->getField($fieldRow['Field name'])->getOption($fieldRow['Option']))->toBe($value);
         }
+    }
+
+    /**
+     * @Given /^following values for "([^"]*)" option should be defined in ("[^"]*" element) datasource fields$/
+     */
+    public function followingValuesForOptionShouldBeDefinedInElementDatasourceFields(
+        $option, CRUDInterface $adminElement, TableNode $table
+    ) {
+        $datasource = $this->getDataSource($adminElement);
+
+        foreach ($table->getHash() as $fieldRow) {
+            $optionArray = $datasource->getField($fieldRow['Field name'])->getOption($option);
+            expect($optionArray[$fieldRow['Option']])->toBe($fieldRow['Value']);
+        }
+    }
+
+    /**
+     * @Then /^I should see following filters$/
+     */
+    public function iShouldSeeFollowingFilters(TableNode $table)
+    {
+        throw new PendingException();
     }
 
     /**
