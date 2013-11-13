@@ -19,4 +19,18 @@ class ElementsList extends Element
     {
         return count($this->findAll('css', 'tbody > tr'));
     }
+
+    public function hasColumn($columnHeader)
+    {
+        if (strtolower($columnHeader) == 'batch') {
+            return $this->has('css', 'th > input[type="checkbox"]');
+        }
+
+        return $this->has('css', sprintf('th span:contains("%s")', $columnHeader));
+    }
+
+    public function isColumnSortable($columnHeader)
+    {
+        return true;
+    }
 }

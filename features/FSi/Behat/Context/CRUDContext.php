@@ -111,14 +111,18 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @Then /^I should see news list with following columns$/
+     * @Then /^I should see list with following columns$/
      */
-    public function iShouldSeeNewsListWithFollowingColumns(TableNode $table)
+    public function iShouldSeeListWithFollowingColumns(TableNode $table)
     {
-        $newsList = $this->getPage('News list')->getElement('News list');
+        $newsList = $this->getElement('Elements List');
 
         foreach ($table->getHash() as $columnRow) {
-            $newsList->hasColumn($columnRow['Column name']);
+            expect($newsList->hasColumn($columnRow['Column name']))->toBe(true);
+
+            if (array_key_exists('Sortable', $columnRow)) {
+                expect($newsList->isColumnSortable($columnRow['Column name']))->toBe(true);
+            }
         }
     }
 
@@ -186,6 +190,38 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     public function iChangeElementsPerPageTo($elemetsCount)
     {
         $this->getElement('Elements List Results')->setElementsPerPage($elemetsCount);
+    }
+
+    /**
+     * @Given /^following fields should be added to ("[^"]*" element) datasource$/
+     */
+    public function followingFieldsShouldBeAddedToElementDatasource(CRUDInterface $adminElement, TableNode $table)
+    {
+        $datasource = $this->getDataSource($adminElement);
+
+        foreach ($table->getHash() as $fieldRow) {
+            expect($datasource->hasField($fieldRow['Field name']))->toBe(true);
+            expect($datasource->getField($fieldRow['Field name'])->getType())->toBe($fieldRow['Field type']);
+            expect($datasource->getField($fieldRow['Field name'])->getComparison())->toBe($fieldRow['Field comparison']);
+        }
+    }
+
+    /**
+     * @Given /^following options should be defined for ("[^"]*" element) datasource fields$/
+     */
+    public function followingOptionsShouldBeDefinedForElementDatasourceFields(CRUDInterface $adminElement, TableNode $table)
+    {
+        $datasource = $this->getDataSource($adminElement);
+
+        foreach ($table->getHash() as $fieldRow) {
+            $value = $fieldRow['Value'];
+
+            if ($value === 'true' || $value === 'false') {
+                $value = ($value === 'true') ? true : false;
+            }
+
+            expect($datasource->getField($fieldRow['Field name'])->getOption($fieldRow['Option']))->toBe($value);
+        }
     }
 
     /**

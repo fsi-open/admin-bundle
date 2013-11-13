@@ -54,6 +54,11 @@ class News extends CRUDElement
         /* @var $datasource \FSi\Component\DataSource\DataSource */
         $datasource = $factory->createDataSource('doctrine', array('entity' => $this->getClassName()), 'news');
 
+        $datasource->addField('title', 'text', 'like');
+        $datasource->addField('created_at', 'date', 'between');
+        $datasource->addField('visible', 'boolean', 'eq');
+        $datasource->addField('creator_email', 'text', 'like');
+
         $datasource->setMaxResults(10);
 
         return $datasource;

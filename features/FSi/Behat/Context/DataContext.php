@@ -89,7 +89,7 @@ class DataContext extends BehatContext implements KernelAwareInterface
         $populator->addEntity('FSi\Behat\Fixtures\DemoBundle\Entity\News', $newsCount, array(
             'creatorEmail' => function() use ($generator) { return $generator->email(); }
         ));
-        $id = $populator->execute();
+        $populator->execute();
 
         expect(count($this->getEntityRepository('FSi\Behat\Fixtures\DemoBundle\Entity\News')->findAll()))->toBe($newsCount);
     }

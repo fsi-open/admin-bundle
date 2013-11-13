@@ -4,7 +4,8 @@ Feature: Changing results per page at list page
   I need to install FSiAdminBundle and configure datagrid and datasource for news admin element
 
   Background:
-    Given the following services were registered
+    Given I am on the "Admin panel" page
+    And the following services were registered
       | Id                     | Class                                    | Tag           | Tag alias |
       | demo_bundle.admin.news | FSi\Behat\Fixtures\DemoBundle\Admin\News | admin.element |           |
     And "news" element datasource max results is set 10
@@ -16,7 +17,7 @@ Feature: Changing results per page at list page
 
   Scenario: Change elements per page
     Given there are 20 news in database
-    And I am on the "News list" page
+    When I follow "News" menu element
     Then there should be 10 elements at list
     When I change elements per page to 5
     Then there should be 5 elements at list

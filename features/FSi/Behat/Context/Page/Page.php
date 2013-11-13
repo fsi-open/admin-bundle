@@ -13,8 +13,4 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page as BasePage;
 
 class Page extends BasePage
 {
-    public function isOpen()
-    {
-        return $this->verifyPage();
-    }
 }

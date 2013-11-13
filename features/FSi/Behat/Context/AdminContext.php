@@ -69,14 +69,6 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @When /^I open "([^"]*)" page$/
-     */
-    public function iOpenPage($pageName)
-    {
-        $this->getPage($pageName)->open();
-    }
-
-    /**
      * @Given /^I am on the "([^"]*)" page$/
      */
     public function iAmOnThePage($pageName)
@@ -85,15 +77,8 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @Then /^I should be on the "([^"]*)" page$/
-     */
-    public function iShouldBeOnThePage($pageName)
-    {
-        $this->getPage($pageName)->isOpen();
-    }
-
-    /**
      * @When /^I follow "([^"]*)" url from top bar$/
+     * @Given /^I follow "([^"]*)" menu element$/
      */
     public function iFollowUrlFromTopBar($menuElement)
     {
