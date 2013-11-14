@@ -88,7 +88,8 @@ class DataContext extends BehatContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^there are|is (\d+) news in database$/
+     * @Given /^there are (\d+) news in database$/
+     * @Given /^there is (\d+) news in database$/
      */
     public function thereAreNewsInDatabase($newsCount)
     {
