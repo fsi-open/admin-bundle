@@ -11,9 +11,9 @@ namespace FSi\Behat\Context\Page;
 
 use Behat\Behat\Exception\BehaviorException;
 
-class NewsList extends Page
+class NewsEdit extends Page
 {
-    protected $path = '/admin/news/list';
+    protected $path = '/admin/news/edit/{id}';
 
     public function getHeader()
     {
@@ -22,8 +22,8 @@ class NewsList extends Page
 
     protected function verifyPage()
     {
-        if (!$this->has('css', 'h3#page-header:contains("List of elements")')) {
-            throw new BehaviorException(sprintf("%s page is missing \"List of elements\" header", $this->path));
+        if (!$this->has('css', 'h3#page-header:contains("Edit element")')) {
+            throw new BehaviorException(sprintf("%s page is missing \"New element\" header", $this->path));
         }
     }
 }

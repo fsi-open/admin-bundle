@@ -9,6 +9,7 @@ admin:
       created_at_to: Created at to
       visible: Visible
       creator_email: Creator email
+      actions: Actions
   home_page:
     name: Home page
   about_us_page:

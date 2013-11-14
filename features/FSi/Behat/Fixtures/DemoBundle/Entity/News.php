@@ -46,6 +46,16 @@ class News
     }
 
     /**
+     * @param mixed $id
+     * @return News
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * @param mixed $createdAt
      */
     public function setCreatedAt($createdAt)

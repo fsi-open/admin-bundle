@@ -76,6 +76,14 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
+     * @Given /^I am on the "([^"]*)" page with id (\d+)$/
+     */
+    public function iAmOnThePageWithId($pageName, $id)
+    {
+        $this->getPage($pageName)->open(array('id' => $id));
+    }
+
+    /**
      * @When /^I follow "([^"]*)" url from top bar$/
      * @Given /^I follow "([^"]*)" menu element$/
      */

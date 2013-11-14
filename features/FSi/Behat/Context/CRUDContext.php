@@ -13,6 +13,7 @@ use Behat\Behat\Exception\BehaviorException;
 use Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Faker\Factory;
 use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
 use FSi\Bundle\AdminBundle\Admin\CRUD\CRUDInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
@@ -34,6 +35,11 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
      * @var \FSi\Component\DataSource\DataSource[]
      */
     protected $datasources;
+
+    /**
+     * @var string
+     */
+    protected $newsTitle;
 
     /**
      * @param KernelInterface $kernel
@@ -66,6 +72,14 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     public function castStringToNumber($number)
     {
         return (int) $number;
+    }
+
+    /**
+     * @Given /^I should see "([^"]*)" page header "([^"]*)"$/
+     */
+    public function iShouldSeePageHeader($pageName, $headerContent)
+    {
+        expect($this->getPage($pageName)->getHeader())->toBe($headerContent);
     }
 
     /**
@@ -296,11 +310,168 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @Then /^I should see following filters$/
+     * @Then /^I should see simple text filter "([^"]*)"$/
      */
-    public function iShouldSeeFollowingFilters(TableNode $table)
+    public function iShouldSeeSimpleTextFilter($filterName)
     {
-        throw new PendingException();
+        expect($this->getElement('Filters')->hasField($filterName))->toBe(true);
+    }
+
+    /**
+     * @Given /^I should see between filter "([^"]*)" with "([^"]*)" and "([^"]*)" simple text fields$/
+     */
+    public function iShouldSeeBetweenFilterWithAndSimpleTextFields($filterName, $fromName, $toName)
+    {
+        expect($this->getElement('Filters')->hasBetweenFilter($filterName, $fromName, $toName))->toBe(true);
+    }
+
+    /**
+     * @Given /^I should see choice filter "([^"]*)"$/
+     */
+    public function iShouldSeeChoiceFilter($filterName)
+    {
+        throw new PendingException("This feature will be implemented after DataSource 1.2 release");
+        expect($this->getElement('Filters')->hasChoiceFilter($filterName))->toBe(true);
+    }
+
+    /**
+     * @Given /^I fill simple text filter "([^"]*)" with value "([^"]*)"$/
+     */
+    public function iFillSimpleTextFilterWithValue($filterName, $filterValue)
+    {
+        $this->getElement('Filters')->fillField($filterName, $filterValue);
+    }
+
+    /**
+     * @Given /^I press "Search" button$/
+     */
+    public function iPressSearchButton()
+    {
+        $this->getElement('Filters')->pressButton('Search');
+    }
+
+    /**
+     * @Given /^I press "New element" link$/
+     */
+    public function iPressLink()
+    {
+        $this->getElement('New Element Link')->click();
+    }
+
+    /**
+     * @Then /^I should see filtered list$/
+     */
+    public function iShouldSeeFilteredList()
+    {
+        $this->getElement('Elements List')->getHtml();
+    }
+
+    /**
+     * @Given /^simple text filter "([^"]*)" should be filled with value "([^"]*)"$/
+     */
+    public function simpleTextFilterShouldBeFilledWithValue($filterName, $filterValue)
+    {
+        expect($this->getElement('Filters')->findField($filterName)->getValue())->toBe($filterValue);
+    }
+
+    /**
+     * @Given /^following fields should be added to ("[^"]*" element) form$/
+     */
+    public function followingFieldsShouldBeAddedToElementForm(CRUDInterface $adminElement, TableNode $table)
+    {
+        $form = $adminElement->createForm();
+
+        foreach ($table->getHash() as $fieldRow) {
+            expect($form->has($fieldRow['Field name']))->toBe(true);
+            expect($form->get($fieldRow['Field name'])->getConfig()->getType()->getName())->toBe($fieldRow['Field type']);
+        }
+    }
+
+    /**
+     * @Given /^following options should be defined in ("[^"]*" element) form fields$/
+     */
+    public function followingOptionsShouldBeDefinedInElementFormFields(CRUDInterface $adminElement, TableNode $table)
+    {
+        $form = $adminElement->createForm();
+
+        foreach ($table->getHash() as $fieldRow) {
+            expect($form->get($fieldRow['Field name'])->getConfig()->getOption($fieldRow['Option']))->toBe($fieldRow['Value']);
+        }
+    }
+
+    /**
+     * @Given /^I should see form with following fields$/
+     */
+    public function iShouldSeeFormWithFollowingFields(TableNode $table)
+    {
+        $form = $this->getElement('Form');
+        foreach($table->getHash() as $fieldRow) {
+            expect($form->hasField($fieldRow['Field name']))->toBe(true);
+        }
+    }
+
+    /**
+     * @When /^I fill all form field properly$/
+     */
+    public function iFillAllFormFieldProperly()
+    {
+        expect($this->getMainContext()->getSubcontext('data')->getNewsCount())->toBe(0);
+        $generator = Factory::create();
+        $this->getElement('Form')->fillField('Title', $generator->text());
+        $this->getElement('Form')->fillField('Created at', $generator->date());
+        $this->getElement('Form')->fillField('Visible', $generator->boolean());
+        $this->getElement('Form')->fillField('Creator email', $generator->email());
+    }
+
+    /**
+     * @Given /^I press form "([^"]*)" button$/
+     */
+    public function iPressFormButton($button)
+    {
+        $this->getElement('Form')->pressButton($button);
+    }
+
+    /**
+     * @Then /^new news should be created$/
+     */
+    public function newNewsShouldBeCreated()
+    {
+        expect($this->getMainContext()->getSubcontext('data')->getNewsCount())->toBe(1);
+    }
+
+    /**
+     * @Given /^I should be redirected to "([^"]*)" page$/
+     */
+    public function iShouldBeRedirectedToPage($pageName)
+    {
+        $this->getPage($pageName)->isOpen();
+    }
+
+    /**
+     * @Given /^I press "([^"]*)" link in "([^"]*)" column of first element at list$/
+     */
+    public function iPressLinkInColumnOfFirstElementAtList($link, $columnName)
+    {
+        $this->getElement('Elements list')->pressLinkInRowInColumn($link, 1, $columnName);
+    }
+
+    /**
+     * @When /^I change form "Title" field value$/
+     */
+    public function iChangeFormTitleFieldValue()
+    {
+        $generator = Factory::create();
+        $this->newsTitle = $generator->text();
+        expect($this->newsTitle)->toNotBe($this->getElement('Form')->findField('Title')->getValue());
+        $this->getElement('Form')->fillField('Title', $this->newsTitle);
+    }
+
+    /**
+     * @Then /^news with id (\d+) should have changed title$/
+     */
+    public function newsWithIdShouldHaveChangedTitle($id)
+    {
+        expect($this->getMainContext()->getSubcontext('data')->findNewsById($id)->getTitle())->toBe($this->newsTitle);
     }
 
     /**

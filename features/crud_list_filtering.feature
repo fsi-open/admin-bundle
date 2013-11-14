@@ -32,12 +32,17 @@ Feature: Filtering elements at list
       | admin.news.list.created_at_to   | Created at to   |
       | admin.news.list.visible         | Visible         |
       | admin.news.list.creator_email   | Creator email   |
+
   Scenario: Display filters
     When I follow "News" menu element
-    Then I should see following filters
-      | Filter name     |
-      | Title           |
-      | Created at from |
-      | Created at to   |
-      | Visible         |
-      | Creator email   |
+    Then I should see simple text filter "Title"
+    And I should see between filter "Created at" with "from" and "to" simple text fields
+    And I should see simple text filter "Creator email"
+    And I should see choice filter "Visible"
+
+  Scenario: Fill filter and press the Search button
+    When I follow "News" menu element
+    And I fill simple text filter "Title" with value "Lorem ipsum"
+    And I press "Search" button
+    Then I should see filtered list
+    And simple text filter "Title" should be filled with value "Lorem ipsum"

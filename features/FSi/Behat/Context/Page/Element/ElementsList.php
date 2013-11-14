@@ -66,6 +66,13 @@ class ElementsList extends Element
         }
     }
 
+    public function pressLinkInRowInColumn($link, $row, $columnName)
+    {
+        $position = $this->getColumnPosition($columnName);
+        $cell = $this->find('css', sprintf('tbody tr:nth-child(%d) td:nth-child(%d)', (int) $row, $position));
+        $cell->clickLink($link);
+    }
+
     protected function getColumnHeader($columnHeader)
     {
         if (strtolower($columnHeader) == 'batch') {
@@ -75,5 +82,22 @@ class ElementsList extends Element
         }
 
         return $column->getParent();
+    }
+
+    /**
+     * @param $columnName
+     * @return int
+     */
+    private function getColumnPosition($columnName)
+    {
+        $position = 1;
+        $columnHeaders = $this->findAll('css', 'th');
+        foreach ($columnHeaders as $columnHeader) {
+            if ($columnHeader->has('css', sprintf('span:contains("%s")', $columnName))) {
+                break;
+            }
+            $position++;
+        }
+        return $position;
     }
 }

@@ -56,6 +56,16 @@ class DataContext extends BehatContext implements KernelAwareInterface
         }
     }
 
+    public function getNewsCount()
+    {
+        return count($this->getDoctrine()->getManager()->getRepository('FSi\Behat\Fixtures\DemoBundle\Entity\News')->findAll());
+    }
+
+    public function findNewsById($id)
+    {
+        return $this->getDoctrine()->getManager()->getRepository('FSi\Behat\Fixtures\DemoBundle\Entity\News')->findOneById($id);
+    }
+
     /**
      * @Given /^following news exist in database$/
      */
@@ -77,9 +87,8 @@ class DataContext extends BehatContext implements KernelAwareInterface
         }
     }
 
-
     /**
-     * @Given /^there are (\d+) news in database$/
+     * @Given /^there are|is (\d+) news in database$/
      */
     public function thereAreNewsInDatabase($newsCount)
     {
@@ -93,6 +102,24 @@ class DataContext extends BehatContext implements KernelAwareInterface
 
         expect(count($this->getEntityRepository('FSi\Behat\Fixtures\DemoBundle\Entity\News')->findAll()))->toBe($newsCount);
     }
+
+    /**
+     * @Given /^there is news with id (\d+) in database$/
+     */
+    public function thereIsNewsWithIdInDatabase($id)
+    {
+        $generator = Factory::create();
+        $populator = new Populator($generator, $this->getDoctrine()->getManager());
+
+        $populator->addEntity('FSi\Behat\Fixtures\DemoBundle\Entity\News', 1, array(
+            'id' => $id,
+            'creatorEmail' => function() use ($generator) { return $generator->email(); }
+        ));
+        $populator->execute();
+
+        expect(count($this->getEntityRepository('FSi\Behat\Fixtures\DemoBundle\Entity\News')->findAll()))->toBe(1);
+    }
+
 
     /**
      * @param string $name

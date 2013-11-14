@@ -9,8 +9,6 @@
 
 namespace FSi\Behat\Context\Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
-
 class AdminPanel extends Page
 {
     protected $path = '/admin';
