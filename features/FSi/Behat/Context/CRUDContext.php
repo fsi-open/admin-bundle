@@ -330,7 +330,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
      */
     public function iShouldSeeChoiceFilter($filterName)
     {
-        throw new PendingException("This feature will be implemented after DataSource 1.2 release");
         expect($this->getElement('Filters')->hasChoiceFilter($filterName))->toBe(true);
     }
 

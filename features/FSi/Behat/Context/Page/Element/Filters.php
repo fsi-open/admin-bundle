@@ -24,6 +24,6 @@ class Filters extends Element
 
     public function hasChoiceFilter($filterName)
     {
-        return $this->hasField($filterName) && ($this->findField($filterName)->getTagName() == 'SELECT');
+        return $this->hasField($filterName) && ($this->findField($filterName)->getTagName() == 'select');
     }
 }
