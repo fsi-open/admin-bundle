@@ -3,9 +3,8 @@ Feature: List of elements
   As a developer
   I need to install FSiAdminBundle and configure datagrid for news admin element
 
-  Background:
-    Given I am on the "Admin panel" page
-    And the following services were registered
+  Scenario: Services configuration
+    Given the following services were registered
       | Id                     | Class                                    | Tag           | Tag alias |
       | demo_bundle.admin.news | FSi\Behat\Fixtures\DemoBundle\Admin\News | admin.element |           |
     And following columns should be added to "news" element datagrid
@@ -29,6 +28,7 @@ Feature: List of elements
       | admin.news.list.creator_email | Creator email |
 
   Scenario: Accessing news list from admin panel main page
+    Given I am on the "Admin panel" page
     When I follow "News" url from top bar
     Then I should see list with following columns
       | Column name   |

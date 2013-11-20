@@ -3,9 +3,8 @@ Feature: Creating new object
   As a developer
   I need to install FSiAdminBundle and configure form in news admin element
 
-  Background:
-    Given I am on the "Admin panel" page
-    And the following services were registered
+  Scenario: Services configuration
+    Given the following services were registered
       | Id                     | Class                                    | Tag           | Tag alias |
       | demo_bundle.admin.news | FSi\Behat\Fixtures\DemoBundle\Admin\News | admin.element |           |
     And following fields should be added to "news" element form
@@ -29,6 +28,7 @@ Feature: Creating new object
       | admin.news.list.creator_email | Creator email |
 
     Scenario: Display create form
+      Given I am on the "Admin panel" page
       When I follow "News" menu element
       And I press "New element" link
       Then I should see "News Create" page header "New element"

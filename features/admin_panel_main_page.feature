@@ -3,8 +3,8 @@ Feature: Admin panel main page
   As a developer
   I need to install FSiAdminBundle and configure few admin elements
 
-  Background:
-    And the following services were registered
+  Scenario: Services configuration
+    Given the following services were registered
       | Id                              | Class                                           | Tag           | Tag alias |
       | demo_bundle.admin.news          | FSi\Behat\Fixtures\DemoBundle\Admin\News        | admin.element |           |
       | demo_bundle.admin.home_page     | FSi\Behat\Fixtures\DemoBundle\Admin\HomePage    | admin.element | structure |

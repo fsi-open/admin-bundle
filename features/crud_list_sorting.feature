@@ -3,8 +3,7 @@ Feature: Sorting elements at list
   As a developer
   I need to install FSiAdminBundle and configure datasource for news admin element
 
-  Background:
-    Given I am on the "Admin panel" page
+  Scenario: Services configuration
     And the following services were registered
       | Id                     | Class                                    | Tag           | Tag alias |
       | demo_bundle.admin.news | FSi\Behat\Fixtures\DemoBundle\Admin\News | admin.element |           |
@@ -26,7 +25,7 @@ Feature: Sorting elements at list
       | created_at    | sortable    | true  |
 
   Scenario: Display sort links in column header where column name is equal to field name and sortable field option is true
-    When I follow "News" menu element
+    Given I am on the "News list" page
     Then I should see list with following columns
       | Column name   | Sortable |
       | Batch         | false    |
@@ -36,14 +35,14 @@ Feature: Sorting elements at list
       | Creator email | true     |
 
   Scenario: Change list sorting to asc
-    When I follow "News" menu element
+    Given I am on the "News list" page
     Then both sorting buttons in column header "Created at" should be active
     When I press "Sort asc" button in "Created at" column header
     Then "Sort asc" button in "Created at" column header should be disabled
     And  "Sort desc" button in "Created at" column header should be active
 
   Scenario: Change list sorting to desc
-    When I follow "News" menu element
+    Given I am on the "News list" page
     Then both sorting buttons in column header "Created at" should be active
     When I press "Sort desc" button in "Created at" column header
     Then "Sort desc" button in "Created at" column header should be disabled

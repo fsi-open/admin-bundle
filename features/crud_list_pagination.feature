@@ -3,8 +3,7 @@ Feature: Pagination
   As a developer
   I need to install FSiAdminBundle and configure datasource for news admin element
 
-  Background:
-    Given I am on the "Admin panel" page
+  Scenario: Services configuration
     And the following services were registered
       | Id                     | Class                                    | Tag           | Tag alias |
       | demo_bundle.admin.news | FSi\Behat\Fixtures\DemoBundle\Admin\News | admin.element |           |
@@ -12,7 +11,7 @@ Feature: Pagination
 
   Scenario: Display pagination
     Given there are 20 news in database
-    When I follow "News" menu element
+    And I am on the "News list" page
     Then I should see pagination with following buttons
       | Button   | Active | Current |
       | first    | false  | false   |
@@ -24,12 +23,12 @@ Feature: Pagination
 
   Scenario: Pagination is not visible when max results is bigger than elements count
     Given there are 8 news in database
-    When I follow "News" menu element
+    And I am on the "News list" page
     Then I should not see pagination
 
   Scenario: Change current page
     Given there are 20 news in database
-    When I follow "News" menu element
+    And I am on the "News list" page
     Then I should see pagination with following buttons
       | Button   | Active | Current |
       | first    | false  | false   |

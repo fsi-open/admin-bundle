@@ -3,9 +3,8 @@ Feature: Filtering elements at list
   As a developer
   I need to install FSiAdminBundle and configure datasource for news admin element
 
-  Background:
-    Given I am on the "Admin panel" page
-    And the following services were registered
+  Scenario: Services configuration
+    Given the following services were registered
       | Id                     | Class                                    | Tag           | Tag alias |
       | demo_bundle.admin.news | FSi\Behat\Fixtures\DemoBundle\Admin\News | admin.element |           |
     And following fields should be added to "news" element datasource
@@ -34,15 +33,15 @@ Feature: Filtering elements at list
       | admin.news.list.creator_email   | Creator email   |
 
   Scenario: Display filters
-    When I follow "News" menu element
+    Given I am on the "News list" page
     Then I should see simple text filter "Title"
     And I should see between filter "Created at" with "from" and "to" simple text fields
     And I should see simple text filter "Creator email"
     And I should see choice filter "Visible"
 
   Scenario: Fill filter and press the Search button
-    When I follow "News" menu element
-    And I fill simple text filter "Title" with value "Lorem ipsum"
+    Given I am on the "News list" page
+    When I fill simple text filter "Title" with value "Lorem ipsum"
     And I press "Search" button
     Then I should see filtered list
     And simple text filter "Title" should be filled with value "Lorem ipsum"

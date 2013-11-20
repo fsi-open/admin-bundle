@@ -3,8 +3,7 @@ Feature: Changing results per page at list page
   As a developer
   I need to install FSiAdminBundle and configure datagrid and datasource for news admin element
 
-  Background:
-    Given I am on the "Admin panel" page
+  Scenario: Change list sorting to asc
     And the following services were registered
       | Id                     | Class                                    | Tag           | Tag alias |
       | demo_bundle.admin.news | FSi\Behat\Fixtures\DemoBundle\Admin\News | admin.element |           |
@@ -17,7 +16,7 @@ Feature: Changing results per page at list page
 
   Scenario: Change elements per page
     Given there are 20 news in database
-    When I follow "News" menu element
+    And I am on the "News list" page
     Then there should be 10 elements at list
     When I change elements per page to 5
     Then there should be 5 elements at list
