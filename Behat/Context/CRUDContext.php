@@ -54,16 +54,9 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     /**
      * @Transform /^"([^"]*)" element/
      */
-    public function transformListNameToAdminElement($name)
+    public function transformListNameToAdminElement($id)
     {
-        switch ($name) {
-            case 'news':
-                return $this->kernel->getContainer()->get('admin.manager')->getElement('news');
-                break;
-            default:
-                throw new BehaviorException(sprintf("Cant transform list name \"%s\" to admin element", $name));
-                break;
-        }
+        return $this->kernel->getContainer()->get('admin.manager')->getElement($id);
     }
 
     /**
@@ -80,6 +73,17 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     public function iShouldSeePageHeader($pageName, $headerContent)
     {
         expect($this->getPage($pageName)->getHeader())->toBe($headerContent);
+    }
+
+    /**
+     * @Given /^("[^"]*" element) have following options defined$/
+     */
+    public function elementHaveFollowingOptionsDefined(AbstractCRUD $adminElement, TableNode $options)
+    {
+        foreach ($options->getHash() as $optionRow) {
+            expect($adminElement->hasOption($optionRow['Option']))->toBe(true);
+            expect($adminElement->getOption($optionRow['Option']))->toBe($optionRow['Value']);
+        }
     }
 
     /**
@@ -471,6 +475,24 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     public function newsWithIdShouldHaveChangedTitle($id)
     {
         expect($this->getMainContext()->getSubcontext('data')->findNewsById($id)->getTitle())->toBe($this->newsTitle);
+    }
+
+    /**
+     * @Then /^I should see customized "([^"]*)" view$/
+     */
+    public function iShouldSeeCustomizedView($crudElement)
+    {
+        switch($crudElement) {
+            case 'list':
+                $this->getPage('Custom news list')->isOpen();
+                break;
+            case 'create':
+                $this->getPage('Custom news create')->isOpen();
+                break;
+            case 'edit':
+                $this->getPage('Custom news edit')->isOpen();
+                break;
+        }
     }
 
     /**

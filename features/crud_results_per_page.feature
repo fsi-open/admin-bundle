@@ -5,8 +5,8 @@ Feature: Changing results per page at list page
 
   Scenario: Change list sorting to asc
     And the following services were registered
-      | Id                     | Class                                    | Tag           | Tag alias |
-      | demo_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |           |
+      | Id                         | Class                         | Tag           | Tag alias |
+      | fixtures_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |           |
     And "news" element datasource max results is set 10
 
   Scenario: Display list with elements count equal to datasource max results

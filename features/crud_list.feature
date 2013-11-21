@@ -5,8 +5,8 @@ Feature: List of elements
 
   Scenario: Services configuration
     Given the following services were registered
-      | Id                     | Class                                    | Tag           | Tag alias |
-      | demo_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |           |
+      | Id                         | Class                         | Tag           | Tag alias |
+      | fixtures_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |           |
     And following columns should be added to "news" element datagrid
       | Column name   | Column type |
       | title         | text        |

@@ -5,8 +5,8 @@ Feature: Editing existing object
 
   Scenario: Services configuration
     Given the following services were registered
-      | Id                     | Class                                    | Tag           | Tag alias |
-      | demo_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |           |
+      | Id                         | Class                         | Tag           | Tag alias |
+      | fixtures_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |           |
     And following fields should be added to "news" element form
       | Field name    | Field type |
       | title         | text       |
@@ -22,7 +22,7 @@ Feature: Editing existing object
       | creator_email | label  | admin.news.list.creator_email |
     And following columns should be added to "news" element datagrid
       | Column name   | Column type |
-      | actions       | action        |
+      | actions       | action      |
     And following translations are available
       | Key                           | Translation   |
       | admin.news.list.title         | Title         |
