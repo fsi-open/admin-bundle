@@ -12,6 +12,7 @@ Documentation:
 - [Embedding Element](Resources/doc/embedding_element.md)
 - [Events](Resources/doc/events.md)
 - [Bundle Configuration](Resources/doc/configuration.md)
+- [Behat - live documentation](features)
 
 # Features
 
@@ -42,3 +43,4 @@ List of components, tools and bundles used to create FSiAdminBundle
 - [FSi Open dataindexer](https://github.com/fsi-open/data-indexer)
 - [KnpLabs menu](https://github.com/KnpLabs/KnpMenuBundle)
 - [PHPSpec](https://github.com/phpspec)
+- [Behat](https://github.com/behat)
