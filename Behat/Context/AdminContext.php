@@ -11,6 +11,7 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -33,6 +34,22 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
+     * @Transform /^"([^"]*)" element/
+     */
+    public function transformListNameToAdminElement($id)
+    {
+        return $this->kernel->getContainer()->get('admin.manager')->getElement($id);
+    }
+
+    /**
+     * @Transform /^(\d+)/
+     */
+    public function castStringToNumber($number)
+    {
+        return (int) $number;
+    }
+
+    /**
      * @Given /^the following services were registered$/
      */
     public function theFollowingServicesWereRegistered(TableNode $table)
@@ -40,6 +57,17 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
         foreach ($table->getHash() as $serviceRow) {
             expect($this->kernel->getContainer()->has($serviceRow['Id']))->toBe(true);
             expect($this->kernel->getContainer()->get($serviceRow['Id']))->toBeAnInstanceOf($serviceRow['Class']);
+        }
+    }
+
+    /**
+     * @Given /^("[^"]*" element) have following options defined$/
+     */
+    public function elementHaveFollowingOptionsDefined(AbstractCRUD $adminElement, TableNode $options)
+    {
+        foreach ($options->getHash() as $optionRow) {
+            expect($adminElement->hasOption($optionRow['Option']))->toBe(true);
+            expect($adminElement->getOption($optionRow['Option']))->toBe($optionRow['Value']);
         }
     }
 
@@ -113,5 +141,13 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
                 empty($elementRow['Element group']) ? null : $elementRow['Element group'])
             )->toBe(true);
         }
+    }
+
+    /**
+     * @Given /^I should see "([^"]*)" page header "([^"]*)"$/
+     */
+    public function iShouldSeePageHeader($pageName, $headerContent)
+    {
+        expect($this->getPage($pageName)->getHeader())->toBe($headerContent);
     }
 }

@@ -10,11 +10,9 @@
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Behat\Exception\BehaviorException;
-use Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Faker\Factory;
-use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
 use FSi\Bundle\AdminBundle\Admin\CRUD\CRUDInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -49,41 +47,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
         $this->datagrids = array();
         $this->datasources = array();
         $this->kernel = $kernel;
-    }
-
-    /**
-     * @Transform /^"([^"]*)" element/
-     */
-    public function transformListNameToAdminElement($id)
-    {
-        return $this->kernel->getContainer()->get('admin.manager')->getElement($id);
-    }
-
-    /**
-     * @Transform /^(\d+)/
-     */
-    public function castStringToNumber($number)
-    {
-        return (int) $number;
-    }
-
-    /**
-     * @Given /^I should see "([^"]*)" page header "([^"]*)"$/
-     */
-    public function iShouldSeePageHeader($pageName, $headerContent)
-    {
-        expect($this->getPage($pageName)->getHeader())->toBe($headerContent);
-    }
-
-    /**
-     * @Given /^("[^"]*" element) have following options defined$/
-     */
-    public function elementHaveFollowingOptionsDefined(AbstractCRUD $adminElement, TableNode $options)
-    {
-        foreach ($options->getHash() as $optionRow) {
-            expect($adminElement->hasOption($optionRow['Option']))->toBe(true);
-            expect($adminElement->getOption($optionRow['Option']))->toBe($optionRow['Value']);
-        }
     }
 
     /**
@@ -356,7 +319,7 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     /**
      * @Given /^I press "New element" link$/
      */
-    public function iPressLink()
+    public function iPressNewElementLink()
     {
         $this->getElement('New Element Link')->click();
     }
@@ -496,10 +459,10 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD $adminElement
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\CRUDInterface $adminElement
      * @return \FSi\Component\DataGrid\DataGrid
      */
-    protected function getDataGrid(AbstractCRUD $adminElement)
+    protected function getDataGrid(CRUDInterface $adminElement)
     {
         if (!array_key_exists($adminElement->getId(), $this->datagrids)) {
             $this->datagrids[$adminElement->getId()] = $adminElement->createDataGrid();
@@ -509,10 +472,10 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD $adminElement
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\CRUDInterface $adminElement
      * @return \FSi\Component\DataSource\DataSource
      */
-    protected function getDataSource(AbstractCRUD $adminElement)
+    protected function getDataSource(CRUDInterface $adminElement)
     {
         if (!array_key_exists($adminElement->getId(), $this->datasources)) {
             $this->datasources[$adminElement->getId()] = $adminElement->createDataSource();
