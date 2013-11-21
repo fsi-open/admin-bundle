@@ -6,7 +6,7 @@ Feature: Filtering elements at list
   Scenario: Services configuration
     Given the following services were registered
       | Id                     | Class                                    | Tag           | Tag alias |
-      | demo_bundle.admin.news | FSi\Behat\Fixtures\DemoBundle\Admin\News | admin.element |           |
+      | demo_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |           |
     And following fields should be added to "news" element datasource
       | Field name    | Field type | Field comparison |
       | title         | text       | like             |

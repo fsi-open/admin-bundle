@@ -6,7 +6,7 @@ Feature: Editing existing object
   Scenario: Services configuration
     Given the following services were registered
       | Id                     | Class                                    | Tag           | Tag alias |
-      | demo_bundle.admin.news | FSi\Behat\Fixtures\DemoBundle\Admin\News | admin.element |           |
+      | demo_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |           |
     And following fields should be added to "news" element form
       | Field name    | Field type |
       | title         | text       |

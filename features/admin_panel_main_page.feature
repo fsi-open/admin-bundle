@@ -6,9 +6,9 @@ Feature: Admin panel main page
   Scenario: Services configuration
     Given the following services were registered
       | Id                              | Class                                           | Tag           | Tag alias |
-      | demo_bundle.admin.news          | FSi\Behat\Fixtures\DemoBundle\Admin\News        | admin.element |           |
-      | demo_bundle.admin.home_page     | FSi\Behat\Fixtures\DemoBundle\Admin\HomePage    | admin.element | structure |
-      | demo_bundle.admin.about_us_page | FSi\Behat\Fixtures\DemoBundle\Admin\AboutUsPage | admin.element | structure |
+      | demo_bundle.admin.news          | FSi\FixturesBundle\Admin\News        | admin.element |           |
+      | demo_bundle.admin.home_page     | FSi\FixturesBundle\Admin\HomePage    | admin.element | structure |
+      | demo_bundle.admin.about_us_page | FSi\FixturesBundle\Admin\AboutUsPage | admin.element | structure |
     And there are following admin elements available
       | Id            | Name                     |
       | news          | admin.news.name          |

@@ -41,8 +41,7 @@
     },
     "autoload": {
         "psr-0": {
-            "FSi\\Bundle\\AdminBundle\\": "",
-            "FSi\\Behat": "features/"
+            "FSi\\Bundle\\AdminBundle\\": ""
         }
     },
     "target-dir" : "FSi/Bundle/AdminBundle",

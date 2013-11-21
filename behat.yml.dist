@@ -1,8 +1,8 @@
 default:
     paths:
-        bootstrap: %behat.paths.features%/../Behat
+        features: features
     context:
-        class: FSi\Behat\Context\FeatureContext
+        class: FSi\Bundle\AdminBundle\Behat\Context\FeatureContext
     extensions:
         Behat\MinkExtension\Extension:
             default_session: symfony2
@@ -11,6 +11,6 @@ default:
             kernel:
                 env: test
                 debug: true
-                path: features/FSi/Behat/Fixtures/Project/app/AppKernel.php
-                bootstrap: features/FSi/Behat/Fixtures/Project/app/bootstrap.php
+                path: features/fixtures/project/app/AppKernel.php
+                bootstrap: features/fixtures/project/app/bootstrap.php
         SensioLabs\Behat\PageObjectExtension\Extension: ~
