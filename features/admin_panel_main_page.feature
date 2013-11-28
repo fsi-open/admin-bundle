@@ -3,26 +3,14 @@ Feature: Admin panel main page
   As a developer
   I need to install FSiAdminBundle and configure few admin elements
 
-  Scenario: Services configuration
+  Scenario: Admin panel top bar appearance
     Given the following services were registered
       | Id                                  | Class                                | Tag           | Tag alias |
       | fixtures_bundle.admin.news          | FSi\FixturesBundle\Admin\News        | admin.element |           |
       | fixtures_bundle.admin.home_page     | FSi\FixturesBundle\Admin\HomePage    | admin.element | structure |
       | fixtures_bundle.admin.about_us_page | FSi\FixturesBundle\Admin\AboutUsPage | admin.element | structure |
-    And there are following admin elements available
-      | Id            | Name                     |
-      | news          | admin.news.name          |
-      | home_page     | admin.home_page.name     |
-      | about_us_page | admin.about_us_page.name |
-    And following translations are available
-      | Key                      | Translation    |
-      | structure                | Site structure |
-      | admin.news.name          | News           |
-      | admin.home_page.name     | Home page      |
-      | admin.about_us_page.name | About us page  |
-
-  Scenario: Admin panel top bar appearance
-    Given I am on the "Admin panel" page
+    And translations are enabled in application
+    And I am on the "Admin panel" page
     Then I should see "Admin" title at top bar
     And menu with following elements should be visible at the top of the page
       | Element name  | Element group  |

@@ -15,7 +15,6 @@ class FeatureContext extends BehatContext
 {
     public function __construct(array $parameters)
     {
-        $this->useContext('developer', new DeveloperContext());
         $this->useContext('admin', new AdminContext($parameters));
     }
 }

@@ -5,8 +5,8 @@ Feature: Overwriting default CRUD element templates
 
   Scenario: Services configuration
     Given the following services were registered
-      | Id                                | Class                               | Tag           | Tag alias |
-      | fixtures_bundle.admin.custom_news | FSi\FixturesBundle\Admin\CustomNews | admin.element |           |
+      | Id                                | Class                               | Tag           |
+      | fixtures_bundle.admin.custom_news | FSi\FixturesBundle\Admin\CustomNews | admin.element |
     And "custom_news" element have following options defined
       | Option               | Value                                      |
       | template_crud_list   | @FSiFixtures/Admin/custom_list.html.twig   |

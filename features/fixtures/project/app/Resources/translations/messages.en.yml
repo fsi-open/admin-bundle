@@ -12,5 +12,8 @@ admin:
       actions: Actions
   home_page:
     name: Home page
+    form:
+      header: Header
+      content: Content
   about_us_page:
     name: About us page

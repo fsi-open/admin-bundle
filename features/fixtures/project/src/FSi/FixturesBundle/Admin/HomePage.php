@@ -23,5 +23,6 @@ class HomePage extends ResourceElement
 
     public function getClassName()
     {
+        return 'FSi\FixturesBundle\Entity\Resource';
     }
 }

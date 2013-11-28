@@ -3,14 +3,14 @@ Feature: Changing results per page at list page
   As a developer
   I need to install FSiAdminBundle and configure datagrid and datasource for news admin element
 
-  Scenario: Change list sorting to asc
-    And the following services were registered
-      | Id                         | Class                         | Tag           | Tag alias |
-      | fixtures_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |           |
-    And "news" element datasource max results is set 10
+  Background:
+    Given "news" element datasource max results is set 10
 
   Scenario: Display list with elements count equal to datasource max results
-    Given there are 20 news in database
+    Given the following services were registered
+      | Id                         | Class                         | Tag           |
+      | fixtures_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |
+    And there are 20 news in database
     And I am on the "News list" page
     Then there should be 10 elements at list
 

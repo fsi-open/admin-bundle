@@ -20,3 +20,6 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
+
+fsi_resource_repository:
+    resource_class: FSi\FixturesBundle\Entity\Resource

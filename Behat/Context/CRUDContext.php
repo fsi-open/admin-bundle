@@ -50,48 +50,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^following columns should be added to ("[^"]*" element) datagrid$/
-     */
-    public function followingColumnsShouldBeAddedToElementDatagrid(CRUDInterface $adminElement, TableNode $table)
-    {
-        $datagrid = $this->getDataGrid($adminElement);
-
-        foreach ($table->getHash() as $columnRow) {
-            expect($datagrid->hasColumn($columnRow['Column name']))->toBe(true);
-            expect($datagrid->getColumn($columnRow['Column name'])->getId())->toBe($columnRow['Column type']);
-        }
-    }
-
-    /**
-     * @Given /^following options should be defined in ("[^"]*" element) datagrid columns$/
-     */
-    public function followingOptionsShouldBeDefinedInElementDatagridColumns(CRUDInterface $adminElement, TableNode $table)
-    {
-        $datagrid = $this->getDataGrid($adminElement);
-
-        foreach ($table->getHash() as $columnRow) {
-            $optionValue = $this->prepareColumnOptionValue($columnRow['Option value']);
-
-            expect($datagrid->getColumn($columnRow['Column name'])->getOption($columnRow['Option name']))
-                ->toBe($optionValue);
-        }
-    }
-
-    /**
-     * @Given /^following filters should be available at ("[^"]*" list) datasource$/
-     */
-    public function followingFiltersShouldBeAvailableAtListDatasource(CRUDInterface $adminElement, TableNode $table)
-    {
-        $datasource = $this->getDataSource($adminElement);
-
-        foreach ($table->getHash() as $filterRow) {
-            expect($datasource->hasField($filterRow['Filter name']))->toBe(true);
-            expect($datasource->getField($filterRow['Filter name'])->getComparison())->toBe($filterRow['Comparison']);
-            expect($datasource->getField($filterRow['Filter name'])->getType())->toBe($filterRow['Type']);
-        }
-    }
-
-    /**
      * @Then /^I should see list with following columns$/
      */
     public function iShouldSeeListWithFollowingColumns(TableNode $table)
@@ -231,52 +189,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^following fields should be added to ("[^"]*" element) datasource$/
-     */
-    public function followingFieldsShouldBeAddedToElementDatasource(CRUDInterface $adminElement, TableNode $table)
-    {
-        $datasource = $this->getDataSource($adminElement);
-
-        foreach ($table->getHash() as $fieldRow) {
-            expect($datasource->hasField($fieldRow['Field name']))->toBe(true);
-            expect($datasource->getField($fieldRow['Field name'])->getType())->toBe($fieldRow['Field type']);
-            expect($datasource->getField($fieldRow['Field name'])->getComparison())->toBe($fieldRow['Field comparison']);
-        }
-    }
-
-    /**
-     * @Given /^following options should be defined for ("[^"]*" element) datasource fields$/
-     */
-    public function followingOptionsShouldBeDefinedForElementDatasourceFields(CRUDInterface $adminElement, TableNode $table)
-    {
-        $datasource = $this->getDataSource($adminElement);
-
-        foreach ($table->getHash() as $fieldRow) {
-            $value = $fieldRow['Value'];
-
-            if ($value === 'true' || $value === 'false') {
-                $value = ($value === 'true') ? true : false;
-            }
-
-            expect($datasource->getField($fieldRow['Field name'])->getOption($fieldRow['Option']))->toBe($value);
-        }
-    }
-
-    /**
-     * @Given /^following values for "([^"]*)" option should be defined in ("[^"]*" element) datasource fields$/
-     */
-    public function followingValuesForOptionShouldBeDefinedInElementDatasourceFields(
-        $option, CRUDInterface $adminElement, TableNode $table
-    ) {
-        $datasource = $this->getDataSource($adminElement);
-
-        foreach ($table->getHash() as $fieldRow) {
-            $optionArray = $datasource->getField($fieldRow['Field name'])->getOption($option);
-            expect($optionArray[$fieldRow['Option']])->toBe($fieldRow['Value']);
-        }
-    }
-
-    /**
      * @Then /^I should see simple text filter "([^"]*)"$/
      */
     public function iShouldSeeSimpleTextFilter($filterName)
@@ -338,31 +250,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     public function simpleTextFilterShouldBeFilledWithValue($filterName, $filterValue)
     {
         expect($this->getElement('Filters')->findField($filterName)->getValue())->toBe($filterValue);
-    }
-
-    /**
-     * @Given /^following fields should be added to ("[^"]*" element) form$/
-     */
-    public function followingFieldsShouldBeAddedToElementForm(CRUDInterface $adminElement, TableNode $table)
-    {
-        $form = $adminElement->createForm();
-
-        foreach ($table->getHash() as $fieldRow) {
-            expect($form->has($fieldRow['Field name']))->toBe(true);
-            expect($form->get($fieldRow['Field name'])->getConfig()->getType()->getName())->toBe($fieldRow['Field type']);
-        }
-    }
-
-    /**
-     * @Given /^following options should be defined in ("[^"]*" element) form fields$/
-     */
-    public function followingOptionsShouldBeDefinedInElementFormFields(CRUDInterface $adminElement, TableNode $table)
-    {
-        $form = $adminElement->createForm();
-
-        foreach ($table->getHash() as $fieldRow) {
-            expect($form->get($fieldRow['Field name'])->getConfig()->getOption($fieldRow['Option']))->toBe($fieldRow['Value']);
-        }
     }
 
     /**

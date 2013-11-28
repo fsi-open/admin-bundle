@@ -10,4 +10,4 @@ before_script:
 
 script:
   - ./bin/phpspec run -f pretty
-  - ./bin/behat --no-snippets --no-paths --verbose
+  - ./bin/behat --no-snippets --no-paths --verbose --format=progress

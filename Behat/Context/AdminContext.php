@@ -25,6 +25,7 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     function __construct()
     {
         $this->useContext('CRUD', new CRUDContext());
+        $this->useContext('resource', new ResourceContext());
         $this->useContext('data', new DataContext());
     }
 
@@ -85,17 +86,6 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^following translations are available$/
-     */
-    public function followingTranslationsAreAvailable(TableNode $table)
-    {
-        foreach ($table->getHash() as $translationRow) {
-            expect($this->kernel->getContainer()->get('translator')->trans($translationRow['Key']))
-                ->toBe($translationRow['Translation']);
-        }
-    }
-
-    /**
      * @Given /^I am on the "([^"]*)" page$/
      */
     public function iAmOnThePage($pageName)
@@ -149,5 +139,13 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     public function iShouldSeePageHeader($pageName, $headerContent)
     {
         expect($this->getPage($pageName)->getHeader())->toBe($headerContent);
+    }
+
+    /**
+     * @Given /^translations are enabled in application$/
+     */
+    public function translationsAreEnabledInApplication()
+    {
+        expect($this->kernel->getContainer()->get('translator'))->toBeAnInstanceOf('Symfony\Bundle\FrameworkBundle\Translation\Translator');
     }
 }

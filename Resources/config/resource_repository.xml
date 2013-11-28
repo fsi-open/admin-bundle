@@ -11,9 +11,9 @@
     <services>
         <service id="admin.context_builder.doctrine.resource" class="%admin.context_builder.doctrine.resource.class%">
             <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="fsi_resource_repository.map_builder"/>
             <argument type="service" id="form.factory"/>
             <argument type="service" id="router"/>
+            <argument type="service" id="fsi_resource_repository.map_builder" on-invalid="ignore"/>
             <tag name="admin.context.builder" />
         </service>
     </services>
