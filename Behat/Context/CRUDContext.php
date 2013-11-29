@@ -10,10 +10,12 @@
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Behat\Exception\BehaviorException;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Faker\Factory;
 use FSi\Bundle\AdminBundle\Admin\CRUD\CRUDInterface;
+use PhpSpec\Exception\Example\PendingException;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -343,6 +345,67 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
                 $this->getPage('Custom news edit')->isOpen();
                 break;
         }
+    }
+
+    /**
+     * @Then /^I should see actions dropdown with following options$/
+     */
+    public function iShouldSeeActionsDropdownWithFollowingOptions(TableNode $actions)
+    {
+        expect($this->getPage('News list')->hasBatchActionsDropdown())->toBe(true);
+
+        foreach ($actions->getHash() as $actionRow) {
+            expect($this->getPage('News list')->hasBatchAction($actionRow['Option']))->toBe(true);
+        }
+    }
+
+    /**
+     * @Given /^I should see confirmation button "([^"]*)"$/
+     */
+    public function iShouldSeeConfirmationButton($button)
+    {
+        $this->getPage('News list')->hasButton($button);
+    }
+
+    /**
+     * @When /^I press checkbox in first column in first row$/
+     */
+    public function iPressCheckboxInFirstColumnInFirstRow()
+    {
+        $this->getPage('News list')->pressBatchCheckboxInRow(1);
+    }
+
+    /**
+     * @Given /^I choose action "([^"]*)" from actions$/
+     */
+    public function iChooseActionFromActions($action)
+    {
+        $this->getPage('News list')->selectBatchAction($action);
+    }
+
+    /**
+     * @Given /^I press confirmation button "Ok"$/
+     */
+    public function iPressConfirmationButton()
+    {
+        $this->getPage('News list')->pressBatchActionConfirmationButton();
+    }
+
+    /**
+     * @Then /^I should be redirected to confirmation page with message$/
+     */
+    public function iShouldBeRedirectedToConfirmationPageWithMessage(PyStringNode $message)
+    {
+        $this->getPage('News delete confirmation')->isOpen();
+        expect($this->getPage('News delete confirmation')->getConfirmationMessage())->toBe((string) $message);
+    }
+
+    /**
+     * @When /^I press "Yes"$/
+     */
+    public function iPress()
+    {
+        $this->getPage('News delete confirmation')->pressButton('Yes');
     }
 
     /**

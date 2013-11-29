@@ -1,0 +1,51 @@
+#!/bin/bash                                                                                                                                                                                                                     
+ 
+# TODO: http://wiki.debian.org/LSBInitScripts
+ 
+DESC="Selenium server"
+RUN_AS=root
+JAVA_BIN=/usr/bin/java
+
+SELENIUM_DIR=/usr/local/bin/
+SELENIUM_RUN_DIR=/var/run/
+PID_FILE="$SELENIUM_RUN_DIR/selenium.pid"
+JAR_FILE="$SELENIUM_DIR/selenium-server-standalone.jar"
+LOG_FILE="$SELENIUM_RUN_DIR/selenium.log"
+ 
+MAX_MEMORY="-Xmx500m"
+STACK_SIZE="-Xss1024k"
+ 
+DAEMON_OPTS=" -client $MAX_MEMORY $STACK_SIZE -jar $JAR_FILE -log $LOG_FILE"
+ 
+NAME=selenium
+
+# TODO: Put together /etc/init.d/xvfb
+
+case "$1" in
+    start)
+        echo -n "Starting $DESC: "
+        export DISPLAY=:99
+        start-stop-daemon -c $RUN_AS --start --background --pidfile $PID_FILE --make-pidfile --exec $JAVA_BIN -- $DAEMON_OPTS
+        echo "$NAME."
+        ;;
+ 
+    stop)
+        echo -n "Stopping $DESC: "
+        start-stop-daemon --stop --pidfile $PID_FILE
+        echo "$NAME."
+        ;;
+ 
+    restart|force-reload)
+        echo -n "Restarting $DESC: "
+        start-stop-daemon --stop --pidfile $PID_FILE
+	sleep 1
+	start-stop-daemon -c $RUN_AS --start --background --pidfile $PID_FILE  --make-pidfile --exec $JAVA_BIN -- $DAEMON_OPTS
+	echo "$NAME."
+	;;
+ 
+    *)
+      	N=/etc/init.d/$NAME
+        echo "Usage: $N {start|stop|restart|force-reload}" >&2
+        exit 1
+        ;;
+esac

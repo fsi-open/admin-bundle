@@ -6,6 +6,6 @@
             <input type="checkbox" class="hidden" value="{{ index }}" name="indexes[]" id="index_{{ index }}">
         {% endfor %}
         <input type="hidden" name="_method" value="DELETE" />
-        <input type="submit" class="btn btn-primary" value="{{ 'crud.list.batch.confirm'|trans }}"/>
+        <input id="batch_action_confirmation" type="submit" class="btn btn-primary" value="{{ 'crud.list.batch.confirm'|trans }}"/>
     </form>
 {% endif %}

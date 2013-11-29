@@ -24,6 +24,7 @@
         "knplabs/knp-menu-bundle": "1.1.*"
     },
     "require-dev": {
+        "symfony/class-loader": "2.3.*",
         "ext-pdo_sqlite": "*",
         "fsi/resource-repository-bundle": "1.0.*",
         "doctrine/doctrine-bundle": "1.2.*@dev",
@@ -32,6 +33,7 @@
         "behat/symfony2-extension": "*@stable",
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
+        "behat/mink-selenium2-driver": "*",
         "sensiolabs/behat-page-object-extension": "1.0.*@dev",
         "bossa/phpspec2-expect": "dev-master",
         "fzaninotto/faker": "1.2.*"

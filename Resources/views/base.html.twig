@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block head_meta %}{% endblock %}
     {% block head_css %}
-        <link rel="stylesheet" href="{{ asset('bundles/fsiadmin/css/bootstrap.min.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" type="text/css" media="all" />
         <link rel="stylesheet" href="{{ asset('bundles/fsiadmin/css/style.css') }}" type="text/css" media="all" />
     {% endblock %}
 </head>
@@ -38,8 +38,8 @@
     </div>
 </div>
 {% block javascripts %}
-    <script src="{{ asset('bundles/fsiadmin/js/jquery-1.9.1.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/fsiadmin/js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="//code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="{{ asset('bundles/fsiadmin/js/script.js') }}" type="text/javascript"></script>
 {% endblock %}
 </body>

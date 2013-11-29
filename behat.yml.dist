@@ -5,7 +5,11 @@ default:
         class: FSi\Bundle\AdminBundle\Behat\Context\FeatureContext
     extensions:
         Behat\MinkExtension\Extension:
+            base_url: 'http://fsi-admin-bundle.dev/app_test.php/'
             default_session: symfony2
+            selenium2:
+                browser: "firefox"
+                wd_host: http://127.0.0.1:4444/wd/hub
         Behat\Symfony2Extension\Extension:
             mink_driver: true
             kernel:

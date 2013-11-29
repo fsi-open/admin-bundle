@@ -71,6 +71,7 @@ class DataContext extends BehatContext implements KernelAwareInterface
      */
     public function followingNewsExistInDatabase(TableNode $table)
     {
+        $generator = Factory::create();
         foreach ($table->getHash() as $newsNode) {
             $news = $this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findOneByTitle($newsNode['Title']);
             if (!isset($news)) {
@@ -78,9 +79,9 @@ class DataContext extends BehatContext implements KernelAwareInterface
             }
 
             $news->setTitle($newsNode['Title']);
-            $news->setCreatedAt(new \DateTime($newsNode['Created at']));
-            $news->setVisible($newsNode['Visible'] === 'true');
-            $news->setCreatorEmail($newsNode['Created by']);
+            $news->setCreatedAt($generator->dateTime());
+            $news->setVisible($generator->boolean());
+            $news->setCreatorEmail($generator->email());
 
             $this->getDoctrine()->getManager()->persist($news);
             $this->getDoctrine()->getManager()->flush();

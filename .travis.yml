@@ -6,7 +6,7 @@ php:
   - 5.5
 
 before_script:
-  - composer --prefer-source -n install
+  - composer --prefer-source -n update
 
 script:
   - ./bin/phpspec run -f pretty
