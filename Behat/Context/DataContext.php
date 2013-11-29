@@ -67,7 +67,7 @@ class DataContext extends BehatContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^following news exist in database$/
+     * @Given /^the following news exist in database$/
      */
     public function followingNewsExistInDatabase(TableNode $table)
     {
@@ -122,6 +122,24 @@ class DataContext extends BehatContext implements KernelAwareInterface
         expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe(1);
     }
 
+    /**
+     * @Given /^news "([^"]*)" should not exist in database anymore$/
+     */
+    public function newsShouldNotExistInDatabaseAnymore($title)
+    {
+        expect($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findOneBy(array(
+            'title' => $title
+        )))->toBe(null);
+    }
+
+
+    /**
+     * @Given /^there should not be any news in database$/
+     */
+    public function thereShouldNotBeAnyNewsInDatabase()
+    {
+        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe(0);
+    }
 
     /**
      * @param string $name

@@ -409,6 +409,14 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
+     * @When /^I press checkbox in first column header$/
+     */
+    public function iPressCheckboxInFirstColumnHeader()
+    {
+        $this->getPage('News list')->selectAllElements();
+    }
+
+    /**
      * @param \FSi\Bundle\AdminBundle\Admin\CRUD\CRUDInterface $adminElement
      * @return \FSi\Component\DataGrid\DataGrid
      */

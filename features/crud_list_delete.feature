@@ -4,7 +4,7 @@ Feature: Deleting existing object
   I need to install FSiAdminBundle and configure news admin element
 
   Background:
-    Given following news exist in database
+    Given the following news exist in database
       | Title  |
       | News 1 |
       | News 2 |
@@ -34,7 +34,7 @@ Feature: Deleting existing object
     """
     When I press "Yes"
     Then I should be redirected to "News list" page
-    And "News 1" should not exist in database anymore
+    And news "News 1" should not exist in database anymore
 
   @javascript
   Scenario: Delete all elements from page

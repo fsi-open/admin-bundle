@@ -47,6 +47,12 @@ class NewsList extends Page
         $this->find('css', 'select#batch_action')->selectOption($action);
     }
 
+    public function selectAllElements()
+    {
+        $th = $this->find('xpath', "descendant-or-self::table/thead/tr/th[position() = 1]");
+        $th->find('css', 'input[type="checkbox"]')->click();
+    }
+
     protected function verifyPage()
     {
         if (!$this->has('css', 'h3#page-header:contains("List of elements")')) {
