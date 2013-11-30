@@ -417,6 +417,74 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
+     * @Given /^"([^"]*)" column is editable$/
+     */
+    public function columnIsEditable($columnHeader)
+    {
+        expect($this->getPage('News list')->isColumnEditable($columnHeader))->toBe(true);
+    }
+
+    /**
+     * @Given /^I clicked "([^"]*)" in "([^"]*)" column in first row$/
+     * @When /^I click "([^"]*)" in "([^"]*)" column in first row$/
+     */
+    public function iClickInColumnInFirstRow($link, $columnHeader)
+    {
+        $this->getPage('News list')->getCell($columnHeader, 1)->clickLink($link);
+    }
+
+    /**
+     * @Then /^popover with "([^"]*)" field in form should appear$/
+     */
+    public function popoverWithFieldInFormShouldAppear($newsTitle)
+    {
+        $popover = $this->getPage('News list')->getPopover();
+        expect($popover->isVisible())->toBe(true);
+        expect($popover->findField('Title')->getValue())->toBe($newsTitle);
+    }
+
+    /**
+     * @When /^I click X at popover$/
+     */
+    public function iClickXAtPopover()
+    {
+        $popover = $this->getPage('News list')->getPopover();
+        $popover->find('css', 'a.editable-close')->click();
+    }
+
+    /**
+     * @Then /^popover should not be visible anymore$/
+     */
+    public function popoverShouldNotBeVisibleAnymore()
+    {
+        expect($this->getPage('News list')->getPopover()->isVisible())->toBe(false);
+    }
+
+    /**
+     * @When /^I fill "([^"]*)" field at popover with "([^"]*)" value$/
+     */
+    public function iFillFieldAtPopoverWithValue($field, $value)
+    {
+        $this->getPage('News list')->getPopover()->fillField($field, $value);
+    }
+
+    /**
+     * @Given /^I press "([^"]*)" at popover$/
+     */
+    public function iPressAtPopover($button)
+    {
+        $this->getPage('News list')->getPopover()->pressButton($button);
+    }
+
+    /**
+     * @Then /^"([^"]*)" news title should be changed to "([^"]*)"$/
+     */
+    public function newsTitleShouldBeChangedTo($arg1, $arg2)
+    {
+        throw new PendingException();
+    }
+
+    /**
      * @param \FSi\Bundle\AdminBundle\Admin\CRUD\CRUDInterface $adminElement
      * @return \FSi\Component\DataGrid\DataGrid
      */

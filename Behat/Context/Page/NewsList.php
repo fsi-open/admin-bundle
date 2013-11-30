@@ -10,6 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Behat\Context\Page;
 
 use Behat\Behat\Exception\BehaviorException;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
 class NewsList extends Page
 {
@@ -53,9 +54,40 @@ class NewsList extends Page
         $th->find('css', 'input[type="checkbox"]')->click();
     }
 
+    public function isColumnEditable($columnHeader)
+    {
+        return $this->getCell($columnHeader, 1)->has('css', 'a.editable');
+    }
+
+    public function getColumnPosition($columnHeader)
+    {
+        $headers = $this->findAll('css', 'th');
+        foreach ($headers as $index => $header) {
+            if ($header->has('css', 'span')) {
+                if ($header->find('css', 'span')->getText() == $columnHeader) {
+                    return $index + 1;
+                }
+            }
+        }
+
+        throw new UnexpectedPageException(sprintf("Cant find column %s", $columnHeader));
+    }
+
+    public function getCell($columnHeader, $rowNumber)
+    {
+        $columnPos = $this->getColumnPosition($columnHeader);
+        return $this->find('xpath', sprintf("descendant-or-self::table/tbody/tr[%d]/td[%d]", $rowNumber, $columnPos));
+    }
+
+    public function getPopover()
+    {
+        return $this->find('css', 'div.popover-content');
+    }
+
     protected function verifyPage()
     {
         if (!$this->has('css', 'h3#page-header:contains("List of elements")')) {
+            echo $this->getHtml();
             throw new BehaviorException(sprintf("%s page is missing \"List of elements\" header", $this->path));
         }
     }

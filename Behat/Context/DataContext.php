@@ -1,5 +1,4 @@
 <?php
-
 /**
  * (c) FSi sp. z o.o. <info@fsi.pl>
  *
@@ -120,6 +119,15 @@ class DataContext extends BehatContext implements KernelAwareInterface
         $populator->execute();
 
         expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe(1);
+    }
+
+    /**
+     * @Then /^there should be news with "([^"]*)" title in database$/
+     */
+    public function thereShouldBeNewsWithTitleInDatabase($title)
+    {
+        expect($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findOneByTitle($title))
+            ->toBeAnInstanceOf('FSi\FixturesBundle\Entity\News');
     }
 
     /**

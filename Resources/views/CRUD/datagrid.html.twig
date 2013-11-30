@@ -48,7 +48,7 @@
 {% spaceless %}
     {% form_theme form _self %}
     <div class="editable-title">
-        <span>{{ 'crud.list.datagrid.editable.popover.title'|trans({}, 'FSiAdminBundle') }}</span>
+        <span>{{ 'crud.list.datagrid.editable.title'|trans({}, 'FSiAdminBundle') }}</span>
         <a href="#" class="close editable-close">&times;</a>
     </div>
     <form method="POST" action="{{ path('fsi_admin_crud_list', vars.datasource.getAllParameters()|merge({'element' : vars.element})) }}">
