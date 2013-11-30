@@ -450,6 +450,7 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     {
         $popover = $this->getPage('News list')->getPopover();
         $popover->find('css', 'a.editable-close')->click();
+        $this->getPage('News list')->getSession()->wait(1000);
     }
 
     /**
