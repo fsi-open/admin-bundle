@@ -44,3 +44,22 @@ List of components, tools and bundles used to create FSiAdminBundle
 - [KnpLabs menu](https://github.com/KnpLabs/KnpMenuBundle)
 - [PHPSpec](https://github.com/phpspec)
 - [Behat](https://github.com/behat)
+- [Behat - Page Object Extension](https://github.com/sensiolabs/BehatPageObjectExtension)
+
+# Tests
+
+Because few tests require javascript its recommended to use vagrant virtual machine.
+To configure virtual machine you need only go to vagrant folder in bundle
+
+```
+$ cd vagrant
+$ vagrant up
+```
+
+Then login into VM and go to bundle folder and run Behat/PHPSpec.
+
+```
+$ cd /var/www/admin-bundle/
+$ bin/behat
+$ bin/phpspec
+```
