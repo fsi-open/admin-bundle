@@ -73,28 +73,15 @@ php::module { 'php5-mcrypt': }
 php::module { 'php5-gd': }
 php::module { 'php-apc': }
 
-class { 'composer':
-  require => Package['php5', 'curl'],
-}
-
-puphpet::ini { 'php':
+php::ini { 'php_ini_configuration':
   value   => [
-    'date.timezone = "Europe/Warsaw"'
-  ],
-  ini     => '/etc/php5/conf.d/zzz_php.ini',
-  notify  => Service['apache'],
-  require => Class['php'],
-}
-
-puphpet::ini { 'custom':
-  value   => [
+    'date.timezone = "Europe/Warsaw"',
     'display_errors = On',
     'error_reporting = -1',
-    'short_open_tag = 0',
+    'short_open_tag = 0'
   ],
-  ini     => '/etc/php5/conf.d/zzz_custom.ini',
   notify  => Service['apache'],
-  require => Class['php'],
+  require => Class['php']
 }
 
 class{ 'xvfb': }
@@ -112,10 +99,10 @@ package { [
 }
 
 service { "selenium":
-    ensure => running,
-    enable => true,
-    hasstatus => true,
-    hasrestart => true,
-    require => Class['selenium']
+  ensure => running,
+  enable => true,
+  hasstatus => true,
+  hasrestart => true,
+  require => Class['selenium']
 }
 
