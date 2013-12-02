@@ -9,7 +9,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <h3 id="page-header">{{ title|trans({}, 'FSiAdminBundle') }}</h3>
-                <form action="{{ path('fsi_admin_resource', {element: element.id}) }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
+                {{ form_start(form, { action: path('fsi_admin_resource', { element: element.id }), 'attr': { class: 'form-horizontal' }|merge(form.vars.attr) }) }}
                     {{ form_widget(form) }}
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
@@ -17,7 +17,7 @@
                             <button type="reset" class="btn btn-primary">{{ 'resource.button.reset'|trans({}, 'FSiAdminBundle')  }}</button>
                         </div>
                     </div>
-                </form>
+                {{ form_end(form) }}
             </div>
         </div>
     </div>
