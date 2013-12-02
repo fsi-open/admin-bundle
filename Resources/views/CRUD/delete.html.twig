@@ -18,8 +18,8 @@
             {% endfor %}
             {{ form_rest(form) }}
             <input type="hidden" name="_method" value="DELETE" />
-            <input type="submit" class="btn btn-success" name="confirm" value="{{ 'crud.delete.form.confirm.label'|trans({}, 'FSiAdminBundle') }}">
-            <input type="submit" class="btn btn-danger" name="cancel" value="{{ 'crud.delete.form.cancel.label'|trans({}, 'FSiAdminBundle') }}">
+            <button type="submit" class="btn btn-success" name="confirm">{{ 'crud.delete.form.confirm.label'|trans({}, 'FSiAdminBundle') }}</button>
+            <button type="submit" class="btn btn-danger" name="cancel">{{ 'crud.delete.form.cancel.label'|trans({}, 'FSiAdminBundle') }}</button>
         </form>
         {% endblock form %}
     </div>

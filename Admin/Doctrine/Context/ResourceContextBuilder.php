@@ -12,6 +12,7 @@ namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
+use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactory;
@@ -48,12 +49,12 @@ class ResourceContextBuilder implements ContextBuilderInterface
      * @param \Symfony\Component\Form\FormFactory $formFactory
      * @param \Symfony\Component\Routing\Router $router
      */
-    public function __construct(EventDispatcher $dispatcher, MapBuilder $builder, FormFactory $formFactory, Router $router)
+    public function __construct(EventDispatcher $dispatcher, FormFactory $formFactory, Router $router, MapBuilder $builder = null)
     {
         $this->dispatcher = $dispatcher;
-        $this->mapBuilder = $builder;
         $this->formFactory = $formFactory;
         $this->router = $router;
+        $this->mapBuilder = $builder;
     }
 
     /**
@@ -67,6 +68,10 @@ class ResourceContextBuilder implements ContextBuilderInterface
 
         if (!$element instanceof ResourceElement) {
             return false;
+        }
+
+        if (!isset($this->mapBuilder)) {
+            throw new ContextBuilderException("MapBuilder is missing. Make sure that FSiResourceRepositoryBundle is registered in AppKernel");
         }
 
         return true;

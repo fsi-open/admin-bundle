@@ -9,6 +9,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
+use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -21,7 +22,7 @@ class ResourceContextBuilderSpec extends ObjectBehavior
 {
     function let(EventDispatcher $dispatcher, MapBuilder $builder, FormFactory $formFactory, Router $router)
     {
-        $this->beConstructedWith($dispatcher, $builder, $formFactory, $router);
+        $this->beConstructedWith($dispatcher, $formFactory, $router, $builder);
     }
 
     function it_is_initializable()
@@ -37,6 +38,14 @@ class ResourceContextBuilderSpec extends ObjectBehavior
     function it_supports_doctrine_resource_element(ResourceElement $element)
     {
         $this->supports('fsi_admin_resource', $element)->shouldReturn(true);
+    }
+
+    function it_throws_exception_when_element_match_but_map_builder_is_missing(ResourceElement $element, EventDispatcher $dispatcher, FormFactory $formFactory, Router $router)
+    {
+        $this->beConstructedWith($dispatcher, $formFactory, $router, null);
+
+        $this->shouldThrow(new ContextBuilderException("MapBuilder is missing. Make sure that FSiResourceRepositoryBundle is registered in AppKernel"))
+            ->during('supports', array('fsi_admin_resource', $element));
     }
 
     function it_build_context(ResourceElement $element, MapBuilder $builder, FormFactory $formFactory, FormBuilder $formBuilder)

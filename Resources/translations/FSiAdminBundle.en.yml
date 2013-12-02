@@ -16,8 +16,8 @@ crud:
             confirm: Ok
         datagrid:
             editable:
+                title: Edit
                 save: Save
-                edit: Edit
                 reset: Reset
             result_count: Number of records:
             action:

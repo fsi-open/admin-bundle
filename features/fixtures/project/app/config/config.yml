@@ -1,0 +1,25 @@
+framework:
+    secret:          this_is_secret
+    translator:      { fallback: en }
+    router:          { resource: "%kernel.root_dir%/config/routing.yml" }
+    form:            true
+    csrf_protection: true
+    validation:      { enable_annotations: true }
+    templating:      { engines: ['twig'] }
+    profiler:        { only_exceptions: false }
+    test:            ~
+    session:
+        storage_id:     session.storage.filesystem
+
+doctrine:
+    dbal:
+        driver:   pdo_sqlite
+        user:     admin
+        charset:  UTF8
+        path: %kernel.root_dir%/data.sqlite
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        auto_mapping: true
+
+fsi_resource_repository:
+    resource_class: FSi\FixturesBundle\Entity\Resource

@@ -113,8 +113,8 @@
         {% set attr = 'class' in attr|keys ? attr|merge({'class' : attr.class ~ ' row'}) : attr|merge({'class' : 'row'}) %}
         {% set vars = widget == 'text' ? { 'attr': { 'size': 1 }} : {} %}
         <div {{ block('widget_container_attributes') }}>
-        <div class="col-lg-6">{{ form_widget(form.hour, vars) }}{% if with_minutes %}</div><div class="col-lg-6">{{ form_widget(form.minute, vars) }}{% endif %}{% if with_seconds %}:{{ form_widget(form.second, vars) }}{% endif %}</div>
-    </div>
+            <div class="col-lg-6">{{ form_widget(form.hour, vars) }}{% if with_minutes %}</div><div class="col-lg-6">{{ form_widget(form.minute, vars) }}{% endif %}{% if with_seconds %}:{{ form_widget(form.second, vars) }}{% endif %}</div>
+        </div>
     {% endif %}
 {% endspaceless %}
 {% endblock time_widget %}

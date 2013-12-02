@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="fixtures_bundle.admin.news" class="FSi\FixturesBundle\Admin\News">
+            <tag name="admin.element" />
+        </service>
+        <service id="fixtures_bundle.admin.custom_news" class="FSi\FixturesBundle\Admin\CustomNews">
+            <argument type="collection">
+                <argument key="template_crud_list">@FSiFixtures/Admin/custom_list.html.twig</argument>
+                <argument key="template_crud_create">@FSiFixtures/Admin/custom_create.html.twig</argument>
+                <argument key="template_crud_edit">@FSiFixtures/Admin/custom_edit.html.twig</argument>
+                <argument key="template_crud_delete">@FSiFixtures/Admin/custom_delete.html.twig</argument>
+            </argument>
+            <tag name="admin.element" />
+        </service>
+        <service id="fixtures_bundle.admin.home_page" class="FSi\FixturesBundle\Admin\HomePage">
+            <tag name="admin.element" alias="structure" />
+        </service>
+        <service id="fixtures_bundle.admin.about_us_page" class="FSi\FixturesBundle\Admin\AboutUsPage">
+            <tag name="admin.element" alias="structure" />
+        </service>
+    </services>
+</container>

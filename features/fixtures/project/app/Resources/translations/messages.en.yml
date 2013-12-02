@@ -1,0 +1,19 @@
+structure: Site structure
+admin:
+  news:
+    name: News
+    list:
+      title: Title
+      created_at: Created at
+      created_at_from: Created at from
+      created_at_to: Created at to
+      visible: Visible
+      creator_email: Creator email
+      actions: Actions
+  home_page:
+    name: Home page
+    form:
+      header: Header
+      content: Content
+  about_us_page:
+    name: About us page

@@ -16,8 +16,8 @@ crud:
             confirm: Ok
         datagrid:
             editable:
+                title: Edytuj
                 save: Zapisz
-                edit: Edytuj
                 reset: Zresetuj
             result_count: Liczba znalezionych rekordów:
             action:
