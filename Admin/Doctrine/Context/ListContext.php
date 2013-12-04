@@ -13,7 +13,7 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -42,10 +42,10 @@ class ListContext implements ContextInterface
     protected $dataGrid;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
      */
-    public function __construct(EventDispatcher $dispatcher, CRUDElement $element)
+    public function __construct(EventDispatcherInterface $dispatcher, CRUDElement $element)
     {
         $this->dispatcher = $dispatcher;
         $this->element = $element;

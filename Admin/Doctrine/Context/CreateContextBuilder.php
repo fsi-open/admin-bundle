@@ -13,7 +13,7 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Router;
 
 /**
@@ -32,10 +32,10 @@ class CreateContextBuilder implements ContextBuilderInterface
     protected $router;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      * @param \Symfony\Component\Routing\Router $router
      */
-    public function __construct(EventDispatcher $dispatcher, Router $router)
+    public function __construct(EventDispatcherInterface $dispatcher, Router $router)
     {
         $this->dispatcher = $dispatcher;
         $this->router = $router;

@@ -16,7 +16,7 @@ use FSi\Bundle\AdminBundle\Event\ResourceEvents;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -60,14 +60,14 @@ class ResourceContext implements ContextInterface
     protected $form;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement $element
      * @param \FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder $builder
      * @param \Symfony\Component\Form\FormFactory $formFactory
      * @param \Symfony\Component\Routing\Router $router
      */
     public function __construct(
-        EventDispatcher $dispatcher,
+        EventDispatcherInterface $dispatcher,
         ResourceElement $element,
         MapBuilder $builder,
         FormFactory $formFactory,
