@@ -31,7 +31,6 @@ class CRUDControllerSpec extends ObjectBehavior
         $container->getParameter('admin.templates.crud_delete')->willReturn('default_crud_delete');
         $container->get('admin.context.manager')->willReturn($manager);
         $container->get('templating')->willReturn($templating);
-        $container->get('request')->willReturn($request);
         $this->setContainer($container);
     }
 
@@ -45,19 +44,22 @@ class CRUDControllerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Bundle\FrameworkBundle\Controller\Controller');
     }
 
-    function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(AbstractCRUD $element, ContextManager $manager)
-    {
+    function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
+        AbstractCRUD $element,
+        ContextManager $manager,
+        Request $request
+    ) {
         $element->getName()->willReturn('My Awesome Element');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
         $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
-            ->during('listAction', array($element));
+            ->during('listAction', array($element, $request));
         $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
-            ->during('createAction', array($element));
+            ->during('createAction', array($element, $request));
         $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
-            ->during('editAction', array($element));
+            ->during('editAction', array($element, $request));
         $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
-            ->during('deleteAction', array($element));
+            ->during('deleteAction', array($element, $request));
     }
 
     function it_render_default_template_in_list_action(
@@ -74,7 +76,7 @@ class CRUDControllerSpec extends ObjectBehavior
         $context->getData()->willReturn(array());
 
         $templating->renderResponse('default_crud_list', array(), null)->shouldBeCalled()->willReturn($response);
-        $this->listAction($element)->shouldReturn($response);
+        $this->listAction($element, $request)->shouldReturn($response);
     }
 
     function it_render_template_from_element_in_list_action(
@@ -92,7 +94,7 @@ class CRUDControllerSpec extends ObjectBehavior
         $context->getData()->willReturn(array());
 
         $templating->renderResponse('custom_template', array(), null)->shouldBeCalled()->willReturn($response);
-        $this->listAction($element)->shouldReturn($response);
+        $this->listAction($element, $request)->shouldReturn($response);
     }
 
     function it_return_response_from_context_in_list_action(
@@ -105,7 +107,7 @@ class CRUDControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_crud_list', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
-        $this->listAction($element)->shouldReturn($response);
+        $this->listAction($element, $request)->shouldReturn($response);
     }
 
     function it_render_default_template_in_create_action(
@@ -122,7 +124,7 @@ class CRUDControllerSpec extends ObjectBehavior
         $context->getData()->willReturn(array());
 
         $templating->renderResponse('default_crud_create', array(), null)->shouldBeCalled()->willReturn($response);
-        $this->createAction($element)->shouldReturn($response);
+        $this->createAction($element, $request)->shouldReturn($response);
     }
 
     function it_render_template_from_element_in_create_action(
@@ -140,7 +142,7 @@ class CRUDControllerSpec extends ObjectBehavior
         $context->getData()->willReturn(array());
 
         $templating->renderResponse('custom_template', array(), null)->shouldBeCalled()->willReturn($response);
-        $this->createAction($element)->shouldReturn($response);
+        $this->createAction($element, $request)->shouldReturn($response);
     }
 
     function it_return_response_from_context_in_create_action(
@@ -153,7 +155,7 @@ class CRUDControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_crud_create', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
-        $this->createAction($element)->shouldReturn($response);
+        $this->createAction($element, $request)->shouldReturn($response);
     }
 
     function it_render_default_template_in_edit_action(
@@ -170,7 +172,7 @@ class CRUDControllerSpec extends ObjectBehavior
         $context->getData()->willReturn(array());
 
         $templating->renderResponse('default_crud_edit', array(), null)->shouldBeCalled()->willReturn($response);
-        $this->editAction($element)->shouldReturn($response);
+        $this->editAction($element, $request)->shouldReturn($response);
     }
 
     function it_render_template_from_element_in_edit_action(
@@ -188,7 +190,7 @@ class CRUDControllerSpec extends ObjectBehavior
         $context->getData()->willReturn(array());
 
         $templating->renderResponse('custom_template', array(), null)->shouldBeCalled()->willReturn($response);
-        $this->editAction($element)->shouldReturn($response);
+        $this->editAction($element, $request)->shouldReturn($response);
     }
 
     function it_return_response_from_context_in_edit_action(
@@ -201,7 +203,7 @@ class CRUDControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_crud_edit', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
-        $this->editAction($element)->shouldReturn($response);
+        $this->editAction($element, $request)->shouldReturn($response);
     }
 
     function it_render_default_template_in_delete_action(
@@ -218,7 +220,7 @@ class CRUDControllerSpec extends ObjectBehavior
         $context->getData()->willReturn(array());
 
         $templating->renderResponse('default_crud_delete', array(), null)->shouldBeCalled()->willReturn($response);
-        $this->deleteAction($element)->shouldReturn($response);
+        $this->deleteAction($element, $request)->shouldReturn($response);
     }
 
     function it_render_template_from_element_in_delete_action(
@@ -236,7 +238,7 @@ class CRUDControllerSpec extends ObjectBehavior
         $context->getData()->willReturn(array());
 
         $templating->renderResponse('custom_template', array(), null)->shouldBeCalled()->willReturn($response);
-        $this->deleteAction($element)->shouldReturn($response);
+        $this->deleteAction($element, $request)->shouldReturn($response);
     }
 
     function it_return_response_from_context_in_delete_action(
@@ -249,6 +251,6 @@ class CRUDControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_crud_delete', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
-        $this->deleteAction($element)->shouldReturn($response);
+        $this->deleteAction($element, $request)->shouldReturn($response);
     }
 }

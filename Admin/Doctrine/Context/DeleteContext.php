@@ -13,7 +13,7 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,7 +55,7 @@ class DeleteContext implements ContextInterface
     protected $form;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
      * @param \Symfony\Component\Routing\Router $router
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
@@ -63,7 +63,7 @@ class DeleteContext implements ContextInterface
      * @internal param \Symfony\Component\Form\FormFactoryInterface $form
      */
     public function __construct(
-        EventDispatcher $dispatcher,
+        EventDispatcherInterface $dispatcher,
         CRUDElement $element,
         Router $router,
         FormFactoryInterface $factory,

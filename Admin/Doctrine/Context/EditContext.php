@@ -13,7 +13,7 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
@@ -54,7 +54,7 @@ class EditContext implements ContextInterface
      * @param \Symfony\Component\Routing\Router $router
      * @param $data mixed
      */
-    public function __construct(EventDispatcher $dispatcher, CRUDElement $element, Router $router, $data)
+    public function __construct(EventDispatcherInterface $dispatcher, CRUDElement $element, Router $router, $data)
     {
         $this->dispatcher = $dispatcher;
         $this->element = $element;

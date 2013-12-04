@@ -13,7 +13,7 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
@@ -44,11 +44,11 @@ class CreateContext implements ContextInterface
     protected $form;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
      * @param \Symfony\Component\Routing\Router $router
      */
-    public function __construct(EventDispatcher $dispatcher, CRUDElement $element, Router $router)
+    public function __construct(EventDispatcherInterface $dispatcher, CRUDElement $element, Router $router)
     {
         $this->dispatcher = $dispatcher;
         $this->element = $element;

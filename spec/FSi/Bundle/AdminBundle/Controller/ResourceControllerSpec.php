@@ -27,7 +27,6 @@ class ResourceControllerSpec extends ObjectBehavior
         $container->getParameter('admin.templates.resource')->willReturn('default_resource');
         $container->get('admin.context.manager')->willReturn($manager);
         $container->get('templating')->willReturn($templating);
-        $container->get('request')->willReturn($request);
         $this->setContainer($container);
     }
 
@@ -41,13 +40,16 @@ class ResourceControllerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Bundle\FrameworkBundle\Controller\Controller');
     }
 
-    function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(AbstractResource $element, ContextManager $manager)
-    {
+    function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
+        AbstractResource $element,
+        ContextManager $manager,
+        Request $request
+    ) {
         $element->getName()->willReturn('My Awesome Element');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
         $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
-            ->during('resourceAction', array($element));
+            ->during('resourceAction', array($element, $request));
     }
 
     function it_render_default_template_in_resource_action(
@@ -64,7 +66,7 @@ class ResourceControllerSpec extends ObjectBehavior
         $context->getData()->willReturn(array());
 
         $templating->renderResponse('default_resource', array(), null)->shouldBeCalled()->willReturn($response);
-        $this->resourceAction($element)->shouldReturn($response);
+        $this->resourceAction($element, $request)->shouldReturn($response);
     }
 
     function it_render_template_from_element_in_resource_action(
@@ -82,7 +84,7 @@ class ResourceControllerSpec extends ObjectBehavior
         $context->getData()->willReturn(array());
 
         $templating->renderResponse('custom_template', array(), null)->shouldBeCalled()->willReturn($response);
-        $this->resourceAction($element)->shouldReturn($response);
+        $this->resourceAction($element, $request)->shouldReturn($response);
     }
 
     function it_return_response_from_context_in_resource_action(
@@ -95,6 +97,6 @@ class ResourceControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_resource', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
-        $this->resourceAction($element)->shouldReturn($response);
+        $this->resourceAction($element, $request)->shouldReturn($response);
     }
 }

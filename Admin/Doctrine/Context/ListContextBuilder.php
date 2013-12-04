@@ -12,7 +12,7 @@ namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -25,9 +25,9 @@ class ListContextBuilder implements ContextBuilderInterface
     protected $dispatcher;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      */
-    public function __construct(EventDispatcher $dispatcher)
+    public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }

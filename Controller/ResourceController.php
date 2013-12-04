@@ -11,6 +11,7 @@ namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -20,10 +21,11 @@ class ResourceController extends Controller
 {
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource $element
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function resourceAction(AbstractResource $element)
+    public function resourceAction(AbstractResource $element, Request $request)
     {
         $context= $this->get('admin.context.manager')->createContext('fsi_admin_resource', $element);
 
@@ -31,7 +33,7 @@ class ResourceController extends Controller
             throw new NotFoundHttpException(sprintf('Cant find context builder that supports %s', $element->getName()));
         }
 
-        if (($response = $context->handleRequest($this->getRequest())) !== null) {
+        if (($response = $context->handleRequest($request)) !== null) {
             return $response;
         }
 

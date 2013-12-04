@@ -14,7 +14,7 @@ use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Routing\Router;
 
@@ -44,12 +44,12 @@ class ResourceContextBuilder implements ContextBuilderInterface
     protected $router;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      * @param \FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder $builder
      * @param \Symfony\Component\Form\FormFactory $formFactory
      * @param \Symfony\Component\Routing\Router $router
      */
-    public function __construct(EventDispatcher $dispatcher, FormFactory $formFactory, Router $router, MapBuilder $builder = null)
+    public function __construct(EventDispatcherInterface $dispatcher, FormFactory $formFactory, Router $router, MapBuilder $builder = null)
     {
         $this->dispatcher = $dispatcher;
         $this->formFactory = $formFactory;
