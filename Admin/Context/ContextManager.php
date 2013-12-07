@@ -14,7 +14,7 @@ use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class ContextManager
+class ContextManager implements ContextManagerInterface
 {
     /**
      * @var \FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface[]

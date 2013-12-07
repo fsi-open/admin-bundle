@@ -15,29 +15,20 @@ use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ResourceControllerSpec extends ObjectBehavior
 {
-    function let(Container $container, ContextManager $manager, DelegatingEngine $templating, Request $request)
+    function let(ContextManager $manager, DelegatingEngine $templating)
     {
-        $container->getParameter('admin.templates.resource')->willReturn('default_resource');
-        $container->get('admin.context.manager')->willReturn($manager);
-        $container->get('templating')->willReturn($templating);
-        $this->setContainer($container);
+        $this->beConstructedWith($templating, $manager, 'default_resource');
     }
 
     function it_is_initializable()
     {
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Controller\ResourceController');
-    }
-
-    function it_is_controller()
-    {
-        $this->shouldBeAnInstanceOf('Symfony\Bundle\FrameworkBundle\Controller\Controller');
     }
 
     function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(

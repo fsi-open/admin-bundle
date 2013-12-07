@@ -13,6 +13,9 @@
         <parameter key="admin.context_builder.doctrine.edit.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\EditContextBuilder</parameter>
         <parameter key="admin.context_builder.doctrine.delete.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\DeleteContextBuilder</parameter>
         <parameter key="admin.element.param.converter.class">FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter</parameter>
+        <parameter key="admin.controller.resource.class">FSi\Bundle\AdminBundle\Controller\ResourceController</parameter>
+        <parameter key="admin.controller.crud.class">FSi\Bundle\AdminBundle\Controller\CRUDController</parameter>
+        <parameter key="admin.controller.admin.class">FSi\Bundle\AdminBundle\Controller\AdminController</parameter>
     </parameters>
 
     <services>
@@ -82,6 +85,26 @@
                  factory-method="createMenu">
             <tag name="knp_menu.menu" alias="menu"/>
         </service>
-    </services>
 
+        <!-- Controllers -->
+        <service id="admin.controller.resource" class="%admin.controller.resource.class%">
+            <argument type="service" id="templating"/>
+            <argument type="service" id="admin.context.manager"/>
+            <argument>%admin.templates.resource%</argument>
+        </service>
+
+        <service id="admin.controller.crud" class="%admin.controller.crud.class%">
+            <argument type="service" id="templating"/>
+            <argument type="service" id="admin.context.manager"/>
+            <argument>%admin.templates.crud_list%</argument>
+            <argument>%admin.templates.crud_create%</argument>
+            <argument>%admin.templates.crud_edit%</argument>
+            <argument>%admin.templates.crud_delete%</argument>
+        </service>
+
+        <service id="admin.controller.admin" class="%admin.controller.admin.class%">
+            <argument type="service" id="templating"/>
+            <argument>%admin.templates.index_page%</argument>
+        </service>
+    </services>
 </container>
