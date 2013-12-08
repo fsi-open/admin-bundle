@@ -30,7 +30,7 @@ Documentation:
 - Full integration with Symfony2 Form component 
 - Full integration with FSi ResourceRepositoryBundle
 - Fully translatable
-- Easy to overwritte in every single part 
+- Easy to overwrite in every single part 
 - Customizable through powerful event system  
 - [Bootstrap 3](http://getbootstrap.com/) design (easy to change)  
 - ... and many many more ;) 
