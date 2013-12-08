@@ -15,33 +15,28 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\CreateContext;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ListContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
-use Symfony\Component\DependencyInjection\Container;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CRUDControllerSpec extends ObjectBehavior
 {
-    function let(Container $container, ContextManager $manager, DelegatingEngine $templating, Request $request)
+    function let(ContextManager $manager, EngineInterface $templating)
     {
-        $container->getParameter('admin.templates.crud_list')->willReturn('default_crud_list');
-        $container->getParameter('admin.templates.crud_create')->willReturn('default_crud_create');
-        $container->getParameter('admin.templates.crud_edit')->willReturn('default_crud_edit');
-        $container->getParameter('admin.templates.crud_delete')->willReturn('default_crud_delete');
-        $container->get('admin.context.manager')->willReturn($manager);
-        $container->get('templating')->willReturn($templating);
-        $this->setContainer($container);
+        $this->beConstructedWith(
+            $templating,
+            $manager,
+            'default_crud_list',
+            'default_crud_create',
+            'default_crud_edit',
+            'default_crud_delete'
+        );
     }
 
     function it_is_initializable()
     {
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Controller\CRUDController');
-    }
-
-    function it_is_controller()
-    {
-        $this->shouldBeAnInstanceOf('Symfony\Bundle\FrameworkBundle\Controller\Controller');
     }
 
     function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
@@ -68,7 +63,7 @@ class CRUDControllerSpec extends ObjectBehavior
         AbstractCRUD $element,
         ContextManager $manager,
         ListContext $context,
-        DelegatingEngine $templating
+        EngineInterface $templating
     ) {
         $manager->createContext('fsi_admin_crud_list', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -84,7 +79,7 @@ class CRUDControllerSpec extends ObjectBehavior
         AbstractCRUD $element,
         ListContext $context,
         Request $request,
-        DelegatingEngine $templating,
+        EngineInterface $templating,
         Response $response
     ) {
         $manager->createContext('fsi_admin_crud_list', $element)->shouldBeCalled()->willReturn($context);
@@ -116,7 +111,7 @@ class CRUDControllerSpec extends ObjectBehavior
         AbstractCRUD $element,
         ContextManager $manager,
         CreateContext $context,
-        DelegatingEngine $templating
+        EngineInterface $templating
     ) {
         $manager->createContext('fsi_admin_crud_create', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -132,7 +127,7 @@ class CRUDControllerSpec extends ObjectBehavior
         AbstractCRUD $element,
         CreateContext $context,
         Request $request,
-        DelegatingEngine $templating,
+        EngineInterface $templating,
         Response $response
     ) {
         $manager->createContext('fsi_admin_crud_create', $element)->shouldBeCalled()->willReturn($context);
@@ -164,7 +159,7 @@ class CRUDControllerSpec extends ObjectBehavior
         AbstractCRUD $element,
         ContextManager $manager,
         CreateContext $context,
-        DelegatingEngine $templating
+        EngineInterface $templating
     ) {
         $manager->createContext('fsi_admin_crud_edit', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -180,7 +175,7 @@ class CRUDControllerSpec extends ObjectBehavior
         AbstractCRUD $element,
         CreateContext $context,
         Request $request,
-        DelegatingEngine $templating,
+        EngineInterface $templating,
         Response $response
     ) {
         $manager->createContext('fsi_admin_crud_edit', $element)->shouldBeCalled()->willReturn($context);
@@ -212,7 +207,7 @@ class CRUDControllerSpec extends ObjectBehavior
         AbstractCRUD $element,
         ContextManager $manager,
         CreateContext $context,
-        DelegatingEngine $templating
+        EngineInterface $templating
     ) {
         $manager->createContext('fsi_admin_crud_delete', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -228,7 +223,7 @@ class CRUDControllerSpec extends ObjectBehavior
         AbstractCRUD $element,
         CreateContext $context,
         Request $request,
-        DelegatingEngine $templating,
+        EngineInterface $templating,
         Response $response
     ) {
         $manager->createContext('fsi_admin_crud_delete', $element)->shouldBeCalled()->willReturn($context);

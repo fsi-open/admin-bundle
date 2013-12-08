@@ -9,20 +9,38 @@
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class AdminController extends Controller
+class AdminController
 {
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
+     */
+    protected $templating;
+
+    /**
+     * @var string
+     */
+    protected $indexActionTemplate;
+
+    /**
+     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
+     * @param string $indexActionTemplate
+     */
+    function __construct(EngineInterface $templating, $indexActionTemplate)
+    {
+        $this->templating = $templating;
+        $this->indexActionTemplate = $indexActionTemplate;
+    }
+
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
-        $template = $this->container->getParameter('admin.templates.index_page');
-
-        return $this->render($template);
+        return $this->templating->renderResponse($this->indexActionTemplate);
     }
 }

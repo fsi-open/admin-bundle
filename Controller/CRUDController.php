@@ -9,16 +9,41 @@
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
+use FSi\Bundle\AdminBundle\Admin\Context\ContextManagerInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class CRUDController extends Controller
+class CRUDController
 {
+    /**
+     * @param EngineInterface $templating
+     * @param ContextManagerInterface $contextManager
+     * @param string $listActionTemplate
+     * @param string $createActionTemplate
+     * @param string $editActionTemplate
+     * @param string $deleteActionTemplate
+     */
+    function __construct(
+        EngineInterface $templating,
+        ContextManagerInterface $contextManager,
+        $listActionTemplate,
+        $createActionTemplate,
+        $editActionTemplate,
+        $deleteActionTemplate
+    ) {
+        $this->templating = $templating;
+        $this->contextManager = $contextManager;
+        $this->listActionTemplate = $listActionTemplate;
+        $this->editActionTemplate = $editActionTemplate;
+        $this->createActionTemplate = $createActionTemplate;
+        $this->deleteActionTemplate = $deleteActionTemplate;
+    }
+
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD $element
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -26,7 +51,7 @@ class CRUDController extends Controller
      */
     public function listAction(AbstractCRUD $element, Request $request)
     {
-        return $this->action($element, $request, 'fsi_admin_crud_list', 'admin.templates.crud_list');
+        return $this->action($element, $request, 'fsi_admin_crud_list', $this->listActionTemplate);
     }
 
     /**
@@ -36,7 +61,7 @@ class CRUDController extends Controller
      */
     public function createAction(AbstractCRUD $element, Request $request)
     {
-        return $this->action($element, $request, 'fsi_admin_crud_create', 'admin.templates.crud_create');
+        return $this->action($element, $request, 'fsi_admin_crud_create', $this->createActionTemplate);
     }
 
     /**
@@ -46,7 +71,7 @@ class CRUDController extends Controller
      */
     public function editAction(AbstractCRUD $element, Request $request)
     {
-        return $this->action($element, $request, 'fsi_admin_crud_edit', 'admin.templates.crud_edit');
+        return $this->action($element, $request, 'fsi_admin_crud_edit', $this->editActionTemplate);
     }
 
     /**
@@ -56,7 +81,7 @@ class CRUDController extends Controller
      */
     public function deleteAction(AbstractCRUD $element, Request $request)
     {
-       return $this->action($element, $request, 'fsi_admin_crud_delete', 'admin.templates.crud_delete');
+       return $this->action($element, $request, 'fsi_admin_crud_delete', $this->deleteActionTemplate);
     }
 
     /**
@@ -69,7 +94,7 @@ class CRUDController extends Controller
      */
     protected function action(AbstractCRUD $element, Request $request, $route, $defaultTemplate)
     {
-        $context = $this->get('admin.context.manager')->createContext($route, $element);
+        $context = $this->contextManager->createContext($route, $element);
 
         if (!isset($context)) {
             throw new NotFoundHttpException(sprintf('Cant find context builder that supports %s', $element->getName()));
@@ -79,8 +104,8 @@ class CRUDController extends Controller
             return $response;
         }
 
-        return $this->render(
-            $context->hasTemplateName() ? $context->getTemplateName() : $this->container->getParameter($defaultTemplate),
+        return $this->templating->renderResponse(
+            $context->hasTemplateName() ? $context->getTemplateName() : $defaultTemplate,
             $context->getData()
         );
     }
