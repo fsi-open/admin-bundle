@@ -9,6 +9,8 @@
 
 namespace FSi\Bundle\AdminBundle\Behat\Context\Page;
 
+use Behat\Behat\Exception\BehaviorException;
+
 class CustomNewsList extends Page
 {
     protected $path = '/admin/custom_news/list';

@@ -12,7 +12,6 @@ namespace spec\FSi\Bundle\AdminBundle\DependencyInjection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class FSIAdminExtensionSpec extends ObjectBehavior

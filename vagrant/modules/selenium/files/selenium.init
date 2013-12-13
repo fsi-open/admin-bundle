@@ -1,7 +1,5 @@
 #!/bin/bash                                                                                                                                                                                                                     
  
-# TODO: http://wiki.debian.org/LSBInitScripts
- 
 DESC="Selenium server"
 RUN_AS=root
 JAVA_BIN=/usr/bin/java
@@ -18,8 +16,6 @@ STACK_SIZE="-Xss1024k"
 DAEMON_OPTS=" -client $MAX_MEMORY $STACK_SIZE -jar $JAR_FILE -log $LOG_FILE"
  
 NAME=selenium
-
-# TODO: Put together /etc/init.d/xvfb
 
 case "$1" in
     start)
