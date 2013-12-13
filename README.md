@@ -11,6 +11,10 @@ Build Status:
 
 [![Latest Stable Version](https://poser.pugx.org/fsi/admin-bundle/v/stable.png)](https://packagist.org/packages/fsi/admin-bundle)
 
+Code quality:  
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/fsi-open/admin-bundle/badges/quality-score.png?s=fbe212a23fd11b49c05ac4e837d3de0a2cbadfd6)](https://scrutinizer-ci.com/g/fsi-open/admin-bundle/)  
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/6cc967b7-6ed6-4dec-b0d7-efe03a813b32/mini.png)](https://insight.sensiolabs.com/projects/6cc967b7-6ed6-4dec-b0d7-efe03a813b32)  
+
 Documentation:
 
 - [Installation](Resources/doc/installation.md)
