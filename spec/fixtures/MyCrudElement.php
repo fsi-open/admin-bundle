@@ -12,7 +12,6 @@ namespace FSi\Bundle\AdminBundle\spec\fixtures;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
-use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class MyCrudElement extends CRUDElement
