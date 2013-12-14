@@ -12,48 +12,12 @@ namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
-
-class MyResourceElement extends ResourceElement
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return 'main_page';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'admin.main_page';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getKey()
-    {
-        return 'resources.main_page';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
-    {
-        return 'FSi\Bundle\DemoBundle\Entity\Resource';
-    }
-}
 
 class ResourceElementSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry)
     {
-        $this->beAnInstanceOf('spec\FSi\Bundle\AdminBundle\Admin\Doctrine\MyResourceElement');
+        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyResourceElement');
         $this->setManagerRegistry($registry);
     }
 

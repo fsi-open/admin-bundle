@@ -10,31 +10,12 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
 use PhpSpec\ObjectBehavior;
-use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
-
-class MyRresource extends AbstractResource
-{
-    public function getKey()
-    {
-        return 'resources.main_page';
-    }
-
-    public function getId()
-    {
-        return 'main_page';
-    }
-
-    public function getName()
-    {
-        return 'admin.main_page';
-    }
-}
 
 class AbstractResourceSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beAnInstanceOf('spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository\MyRresource');
+        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyResource');
     }
 
     function it_is_initializable()
