@@ -12,7 +12,6 @@ namespace FSi\Bundle\AdminBundle\spec\fixtures;
 use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
-use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class MyCRUD extends AbstractCRUD
