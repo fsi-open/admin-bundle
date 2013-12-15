@@ -17,8 +17,8 @@ fsi_admin:
         resource: @FSiAdmin/Resource/resource.html.twig')
         datagrid_theme: @FSiAdmin/CRUD/datagrid.html.twig')
         datasource_theme: @FSiAdmin/CRUD/datasource.html.twig')
-        edit_form_theme: @FSiAdmin/CRUD/form_div_layout.html.twig')
-        create_form_theme: @FSiAdmin/CRUD/form_div_layout.html.twig')
-        delete_form_theme: @FSiAdmin/CRUD/form_div_layout.html.twig')
-        resource_form_theme: @FSiAdmin/CRUD/form_div_layout.html.twig')
+        edit_form_theme: @FSiAdmin/Form/form_div_layout.html.twig')
+        create_form_theme: @FSiAdmin/Form/form_div_layout.html.twig')
+        delete_form_theme: @FSiAdmin/Form/form_div_layout.html.twig')
+        resource_form_theme: @FSiAdmin/Form/form_div_layout.html.twig')
 ```
