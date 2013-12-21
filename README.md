@@ -39,6 +39,8 @@ Documentation:
 - [Bootstrap 3](http://getbootstrap.com/) design (easy to change)  
 - ... and many many more ;) 
 
+###[Demo](demo.fsi-open.com)
+
 # Architecture 
 
 FSi AdminBundle unlike to other available at github tools used to generate admin panels is build on top of
