@@ -148,4 +148,35 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     {
         expect($this->kernel->getContainer()->get('translator'))->toBeAnInstanceOf('Symfony\Bundle\FrameworkBundle\Translation\Translator');
     }
+
+
+    /**
+     * @Then /^I should see language dropdown button in navigation bar with text "([^"]*)"$/
+     * @Then /^I should see language dropdown button with text "([^"]*)"$/
+     */
+    public function iShouldSeeLanguageDropdownButtonInNavigationBarWithText($button)
+    {
+        expect($this->getPage('Admin panel')->getLanguageDropdown()->hasLink($button))->toBe(true);
+    }
+
+    /**
+     * @Given /^language dropdown button should have following links$/
+     */
+    public function languageDropdownButtonShouldHaveFollowingLinks(TableNode $dropdownLinks)
+    {
+        $links = $this->getPage('Admin panel')->getLanguageDropdownOptions();
+
+        foreach ($dropdownLinks->getHash() as $link) {
+            expect($links)->toContain($link['Link']);
+        }
+
+    }
+
+    /**
+     * @When /^I click "([^"]*)" link from language dropdown button$/
+     */
+    public function iClickLinkFromLanguageDropdownButton($link)
+    {
+        $this->getPage('Admin panel')->getLanguageDropdown()->clickLink($link);
+    }
 }

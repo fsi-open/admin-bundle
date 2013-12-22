@@ -1,5 +1,9 @@
 admin:
     title: Admin
+    language:
+        current: Język (%locale%)
+        english: Angielski (en)
+        polish: Polski (pl)
     menu:
         header: Menu
 resource:

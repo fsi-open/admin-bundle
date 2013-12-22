@@ -37,4 +37,28 @@ class AdminPanel extends Page
     {
         return $this->find('css', 'a.navbar-brand')->getText();
     }
+
+    public function getLanguageDropdownOptions()
+    {
+        $link = $this->find('css', sprintf('li#language'));
+        if (!isset($link)) {
+            return null;
+        }
+
+        $linkNodes = $this->findAll('css', 'li#language > ul > li');
+
+        return array_filter(array_map(function($element) {
+            return $element->getText();
+        }, $linkNodes));
+    }
+
+    public function getLanguageDropdown()
+    {
+        $link = $this->find('css', sprintf('li#language'));
+        if (!isset($link)) {
+            return null;
+        }
+
+        return $this->find('css', 'li#language');
+    }
 }

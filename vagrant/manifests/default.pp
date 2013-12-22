@@ -87,7 +87,7 @@ php::ini { 'php_ini_configuration':
 class{ 'xvfb': }
 class{ 'java': }
 class{ 'selenium':
-  version => "2.35.0",
+  version => "2.39.0",
   require => Class['java', 'xvfb'],
   notify  => Service['apache'],
 }
