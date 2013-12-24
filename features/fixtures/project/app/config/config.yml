@@ -23,3 +23,6 @@ doctrine:
 
 fsi_resource_repository:
     resource_class: FSi\FixturesBundle\Entity\Resource
+
+fsi_admin:
+    display_language_switch: true

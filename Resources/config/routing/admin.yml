@@ -3,6 +3,11 @@ fsi_admin:
     defaults:
         _controller: admin.controller.admin:indexAction
 
+fsi_admin_locale:
+    path: /{_locale}
+    defaults:
+        _controller: admin.controller.admin:indexAction
+
 fsi_admin_crud_list:
     path: /{element}/list
     defaults:

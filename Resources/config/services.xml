@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="admin.manager.class">FSi\Bundle\AdminBundle\Admin\Manager</parameter>
         <parameter key="admin.menu.builder.class">FSi\Bundle\AdminBundle\Menu\MenuBuilder</parameter>
+        <parameter key="admin.locale_listener.class">FSi\Bundle\AdminBundle\EventListener\LocaleListener</parameter>
         <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Admin\Context\ContextManager</parameter>
         <parameter key="admin.context_builder.doctrine.list.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ListContextBuilder</parameter>
         <parameter key="admin.context_builder.doctrine.create.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\CreateContextBuilder</parameter>
@@ -27,6 +28,12 @@
         <service id="admin.element.param.converter" class="%admin.element.param.converter.class%">
             <argument type="service" id="admin.manager" />
             <tag name="request.param_converter" converter="admin.element" priority="10" />
+        </service>
+
+        <service id="admin.locale_listener" class="%admin.locale_listener.class%">
+            <argument>%kernel.default_locale%</argument>
+
+            <tag name="kernel.event_subscriber" />
         </service>
 
         <!-- Context Builders -->
@@ -68,6 +75,7 @@
                 <argument key="admin_templates_create_form_theme">%admin.templates.create_form_theme%</argument>
                 <argument key="admin_templates_delete_form_theme">%admin.templates.delete_form_theme%</argument>
                 <argument key="admin_templates_resource_form_theme">%admin.templates.resource_form_theme%</argument>
+                <argument key="admin_display_language_switch">%admin.display_language_switch%</argument>
             </argument>
         </service>
 
