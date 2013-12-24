@@ -27,6 +27,7 @@ class FSIAdminExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->setParameter('admin.display_language_switch', $config['display_language_switch']);
         $this->setTemplateParameters($container, $config['templates']);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

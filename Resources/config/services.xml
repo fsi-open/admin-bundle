@@ -75,6 +75,7 @@
                 <argument key="admin_templates_create_form_theme">%admin.templates.create_form_theme%</argument>
                 <argument key="admin_templates_delete_form_theme">%admin.templates.delete_form_theme%</argument>
                 <argument key="admin_templates_resource_form_theme">%admin.templates.resource_form_theme%</argument>
+                <argument key="admin_display_language_switch">%admin.display_language_switch%</argument>
             </argument>
         </service>
 

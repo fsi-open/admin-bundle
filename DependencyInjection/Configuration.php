@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('display_language_switch')->defaultFalse()->end()
                 ->arrayNode('templates')
                     ->addDefaultsIfNotSet()
                     ->children()

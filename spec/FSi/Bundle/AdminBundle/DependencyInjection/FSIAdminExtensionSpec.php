@@ -31,6 +31,7 @@ class FSIAdminExtensionSpec extends ObjectBehavior
         $builder->getParameterBag()->shouldBeCalled()->willReturn($parameterBag);
         /* Above code is added only because builder is used in services loader */
 
+        $builder->setParameter('admin.display_language_switch', false)->shouldBeCalled();
         $builder->setParameter('admin.templates.base', '@FSiAdmin/base.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.index_page', '@FSiAdmin/Admin/index.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.crud_list', '@FSiAdmin/CRUD/list.html.twig')->shouldBeCalled();
