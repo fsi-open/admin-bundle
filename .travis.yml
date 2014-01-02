@@ -27,7 +27,7 @@ before_script:
 
 script:
     - composer self-update
-    - composer install -n --prefer-source
+    - composer update -n --prefer-source
     - ./bin/phpspec run -f pretty
     - ./bin/behat --no-snippets --no-paths --verbose --format=progress
 
