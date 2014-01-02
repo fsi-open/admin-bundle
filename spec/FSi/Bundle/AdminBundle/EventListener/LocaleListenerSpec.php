@@ -3,7 +3,6 @@
 namespace spec\FSi\Bundle\AdminBundle\EventListener;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;

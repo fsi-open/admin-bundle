@@ -7,6 +7,7 @@ This is reference for admin bundle configuration with all default options.
 # app/config/config.yml
 
 fsi_admin:
+    display_language_switch: false
     templates:
         base: @FSiAdmin/base.html.twig
         index_page: @FSiAdmin/Admin/index.html.twig
