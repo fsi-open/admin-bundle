@@ -12,7 +12,7 @@ namespace FSi\Bundle\AdminBundle\Admin;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class Manager
+class Manager implements ManagerInterface
 {
     /**
      * @var \FSi\Bundle\AdminBundle\Admin\ElementInterface[]
@@ -68,6 +68,14 @@ class Manager
     }
 
     /**
+     * @param int $id
+     */
+    public function removeElement($id)
+    {
+        unset($this->elements[$id]);
+    }
+
+    /**
      * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface[]
      */
     public function getElements()
@@ -105,7 +113,7 @@ class Manager
         $elements = array();
 
         foreach ($this->elements as $id => $element) {
-            if ($this->hasGroup($id)) {
+            if ($this->isElementInGroup($id)) {
                 continue;
             }
 
@@ -121,7 +129,7 @@ class Manager
      * @param string $id
      * @return bool
      */
-    private function hasGroup($id)
+    private function isElementInGroup($id)
     {
         foreach ($this->groups as $group) {
             if (in_array($id, $group)) {
