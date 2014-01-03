@@ -50,4 +50,14 @@ class ManagerSpec extends ObjectBehavior
             'element_bar' => $elementBar
         ));
     }
+
+    function it_remove_element_by_id(ElementInterface $element)
+    {
+        $element->getId()->shouldBeCalled()->willReturn('foo');
+        $this->addElement($element);
+
+        $this->hasElement('foo')->shouldReturn(true);
+        $this->removeElement('foo');
+        $this->hasElement('foo')->shouldReturn(false);
+    }
 }
