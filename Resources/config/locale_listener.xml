@@ -11,7 +11,6 @@
     <services>
         <service id="admin.locale_listener" class="%admin.locale_listener.class%">
             <argument>%kernel.default_locale%</argument>
-
             <tag name="kernel.event_subscriber" />
         </service>
     </services>
