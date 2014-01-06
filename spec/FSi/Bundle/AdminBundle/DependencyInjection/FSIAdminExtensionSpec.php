@@ -46,6 +46,38 @@ class FSIAdminExtensionSpec extends ObjectBehavior
         $builder->setParameter('admin.templates.delete_form_theme', '@FSiAdmin/Form/form_div_layout.html.twig')->shouldBeCalled();
         $builder->setParameter('admin.templates.resource_form_theme', '@FSiAdmin/Form/form_div_layout.html.twig')->shouldBeCalled();
 
+        $builder->getParameter('admin.display_language_switch')->shouldBeCalled();
+
+        $builder->setDefinition(
+            'admin.locale_listener',
+            Argument::type('Symfony\Component\DependencyInjection\Definition')
+        )->shouldNotBeCalled();
+
+        $this->load(array(), $builder);
+    }
+
+    function it_load_locale_listener_service_definition_when_display_language_switch_is_set_to_true(
+        ContainerBuilder $builder,
+        ParameterBagInterface $parameterBag
+    ) {
+        $builder->hasExtension(Argument::type('string'))->willReturn(false);
+        $builder->addResource(Argument::type('\Symfony\Component\Config\Resource\FileResource'))->shouldBeCalled();
+        $builder->setDefinition(
+            Argument::type('string'),
+            Argument::type('Symfony\Component\DependencyInjection\Definition')
+        )->shouldBeCalled();
+        $builder->getParameterBag()->shouldBeCalled()->willReturn($parameterBag);
+
+        $builder->setParameter(Argument::type('string'), Argument::type('string'))->shouldBeCalled();
+
+        $builder->setParameter('admin.display_language_switch', Argument::type('bool'))->shouldBeCalled();
+        $builder->getParameter('admin.display_language_switch')->shouldBeCalled()->willReturn(true);
+
+        $builder->setDefinition(
+            'admin.locale_listener',
+            Argument::type('Symfony\Component\DependencyInjection\Definition')
+        )->shouldBeCalled();
+
         $this->load(array(), $builder);
     }
 }
