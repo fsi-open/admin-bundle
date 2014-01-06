@@ -34,7 +34,7 @@ class FSIAdminExtension extends Extension
         $loader->load('services.xml');
         $loader->load('resource_repository.xml');
 
-        if ($container->getParameter('admin.display_language_switch')) {
+        if ($config['display_language_switch']) {
             $loader->load('locale_listener.xml');
         }
     }
