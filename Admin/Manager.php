@@ -72,7 +72,31 @@ class Manager implements ManagerInterface
      */
     public function removeElement($id)
     {
+        if ($this->isElementInGroup($id)) {
+            $this->removeElementFromGroup($id);
+        }
+
         unset($this->elements[$id]);
+    }
+
+    public function removeElementFromGroup($providedId)
+    {
+        foreach ($this->groups as $groupKey => $group) {
+            foreach ($group as $key => $id) {
+                if ($providedId == $id) {
+                    unset($this->groups[$groupKey][$key]);
+
+                    if (count($this->groups[$groupKey]) == 0) {
+                        $this->removeGroup($groupKey);
+                    }
+                }
+            }
+        }
+    }
+
+    public function removeGroup($group)
+    {
+        unset($this->groups[$group]);
     }
 
     /**
