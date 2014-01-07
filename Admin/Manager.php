@@ -79,12 +79,12 @@ class Manager implements ManagerInterface
         unset($this->elements[$id]);
     }
 
-    public function removeElementFromGroup($providedId)
+    public function removeElementFromGroup($providedElementId)
     {
         foreach ($this->groups as $groupKey => $group) {
-            foreach ($group as $key => $id) {
-                if ($providedId == $id) {
-                    unset($this->groups[$groupKey][$key]);
+            foreach ($group as $index => $elementId) {
+                if ($providedElementId == $elementId) {
+                    unset($this->groups[$groupKey][$index]);
 
                     if (count($this->groups[$groupKey]) == 0) {
                         $this->removeGroup($groupKey);
