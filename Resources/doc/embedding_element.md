@@ -429,7 +429,7 @@ user admin element service options.
 And ``@AcmeDemo/Admin/user_edit.html.twig`` file
 
 ```
-{# src/Acme/DemoBundle/Resources/views/Aadmin/user_edit.html.twig #}
+{# src/Acme/DemoBundle/Resources/views/Admin/user_edit.html.twig #}
 {% extends '@FSiAdmin/CRUD/edit.html.twig' %}
 
 {% block content %}
