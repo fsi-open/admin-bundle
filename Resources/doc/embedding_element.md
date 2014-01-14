@@ -436,7 +436,7 @@ And ``@AcmeDemo/Admin/user_edit.html.twig`` file
 {{ parent() }}
 <div class="col-lg-12">
     <h1>User invoices</h1>
-    {% render(controller('FSiAdminBundle:CRUD:List', {'element': element.invoices(form.vars.data)})) %}
+    {% render(controller('admin.controller.crud:ListAction', {'element': element.invoices(form.vars.data)})) %}
 </div>
 {% endblock %}
 ```
