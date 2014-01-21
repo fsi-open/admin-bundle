@@ -40,7 +40,7 @@ Documentation:
 - [Bootstrap 3](http://getbootstrap.com/) design (easy to change)  
 - ... and many many more ;) 
 
-###[Demo](demo.fsi-open.com)
+###[Demo](http://demo.fsi-open.com)
 
 # Architecture 
 
