@@ -444,6 +444,16 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
+     * @Then /^popover with empty date field in form should appear$/
+     */
+    public function popoverWithEmptyDateFieldInFormShouldAppear()
+    {
+        $popover = $this->getPage('News list')->getPopover();
+        expect($popover->isVisible())->toBe(true);
+        expect($popover->findField('Date')->getValue())->toBe('');
+    }
+
+    /**
      * @When /^I click X at popover$/
      */
     public function iClickXAtPopover()

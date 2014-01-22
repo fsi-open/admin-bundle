@@ -20,7 +20,13 @@
                 {% if cell.getAttribute('form').vars.valid == false %}
                     {% set class = class ~ ' has-error' %}
                 {% endif %}
-                <a href="#" class="{{ class }}" data-toggle="popover" data-html="true" data-content="{{ datagrid_column_cell_form_widget(cell)|escape }}">{{ cell.value|raw }}</a>
+                <a href="#" class="{{ class }}" data-toggle="popover" data-html="true" data-content="{{ datagrid_column_cell_form_widget(cell)|escape }}">
+                    {% if cell.value is empty %}
+                        {{ 'crud.list.datagrid.editable.empty'|trans({}, 'FSiAdminBundle') }}
+                    {% else %}
+                        {{ cell.value|raw }}
+                    {% endif %}
+                </a>
             {% else %}
                 {{ cell.value|raw }}
             {% endif %}

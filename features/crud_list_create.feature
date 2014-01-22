@@ -15,6 +15,7 @@ Feature: Creating new object
     And I should see form with following fields
       | Field name    |
       | Title         |
+      | Date          |
       | Created at    |
       | Visible       |
       | Creator email |

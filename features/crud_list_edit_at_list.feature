@@ -5,8 +5,9 @@ Feature: Editing news title directly from list of elements
 
   Background:
     Given the following news exist in database
-      | Title  |
-      | News 1 |
+      | Title  | Date       |
+      | News 1 |            |
+      | News 2 | 2013-12-31 |
     And I am on the "News list" page
     And "Title" column is editable
 
@@ -14,6 +15,11 @@ Feature: Editing news title directly from list of elements
   Scenario: Display popover with news title edit form
     When I click "News 1" in "Title" column in first row
     Then popover with "News 1" field in form should appear
+
+  @javascript
+  Scenario: Display popover with news date when date is not set
+    When I click "Edit" in "Date" column in first row
+    Then popover with empty date field in form should appear
 
   @javascript
   Scenario: Hide popover with news title edit form

@@ -14,6 +14,7 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Faker\Factory;
 use Faker\ORM\Doctrine\Populator;
+use FSi\Component\DataSource\Driver\Collection\Extension\Core\Field\DateTime;
 use FSi\FixturesBundle\Entity\News;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -78,6 +79,9 @@ class DataContext extends BehatContext implements KernelAwareInterface
             }
 
             $news->setTitle($newsNode['Title']);
+            if (isset($newsNode['Date']) && $newsNode['Date']) {
+                $news->setDate(\DateTime::createFromFormat('Y-m-d', $newsNode['Date']));
+            }
             $news->setCreatedAt($generator->dateTime());
             $news->setVisible($generator->boolean());
             $news->setCreatorEmail($generator->email());

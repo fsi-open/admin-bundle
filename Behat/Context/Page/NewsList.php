@@ -87,7 +87,6 @@ class NewsList extends Page
     protected function verifyPage()
     {
         if (!$this->has('css', 'h3#page-header:contains("List of elements")')) {
-            echo $this->getHtml();
             throw new BehaviorException(sprintf("%s page is missing \"List of elements\" header", $this->path));
         }
     }
