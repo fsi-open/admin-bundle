@@ -4,6 +4,7 @@ admin:
     name: News
     list:
       title: Title
+      date: Date
       created_at: Created at
       created_at_from: Created at from
       created_at_to: Created at to

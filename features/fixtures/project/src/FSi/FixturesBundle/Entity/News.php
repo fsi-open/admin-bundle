@@ -23,6 +23,11 @@ class News
     protected $title;
 
     /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    protected $date;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     protected $visible;
@@ -101,6 +106,22 @@ class News
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @param mixed $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 
     /**

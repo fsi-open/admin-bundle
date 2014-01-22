@@ -32,6 +32,15 @@ class News extends CRUDElement
             'label' => 'admin.news.list.title',
             'editable' => true
         ));
+        $datagrid->addColumn('date', 'datetime', array(
+            'label' => 'admin.news.list.date',
+            'datetime_format' => 'Y-m-d',
+            'editable' => true,
+            'form_type' => array('date' => 'date'),
+            'form_options' => array(
+                'date' => array('widget' => 'single_text')
+            )
+        ));
         $datagrid->addColumn('created_at', 'datetime', array(
             'label' => 'admin.news.list.created_at'
         ));
@@ -106,6 +115,10 @@ class News extends CRUDElement
 
         $builder->add('title', 'text', array(
             'label' => 'admin.news.list.title',
+        ));
+        $builder->add('date', 'date', array(
+            'label' => 'admin.news.list.date',
+            'widget' => 'single_text'
         ));
         $builder->add('created_at', 'date', array(
             'label' => 'admin.news.list.created_at',

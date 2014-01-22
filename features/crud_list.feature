@@ -14,6 +14,7 @@ Feature: List of elements
       | Column name   |
       | Batch         |
       | Title         |
+      | Date          |
       | Created at    |
       | Visible       |
       | Creator email |

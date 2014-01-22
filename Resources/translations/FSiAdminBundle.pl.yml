@@ -20,6 +20,7 @@ crud:
             confirm: Ok
         datagrid:
             editable:
+                empty: Edytuj
                 title: Edytuj
                 save: Zapisz
                 reset: Zresetuj
