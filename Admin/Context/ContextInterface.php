@@ -18,7 +18,7 @@ interface ContextInterface
 {
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return null|\Symfony\Component\HttpFoundation\Response
      */
     public function handleRequest(Request $request);
 
