@@ -9,29 +9,14 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request;
 
-use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class DataGridSetDataHandler implements HandlerInterface
+class DataGridSetDataHandler extends AbstractListRequestHandler
 {
-    /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
     /**
      * @param AdminEvent $event
      * @param Request $request
@@ -40,9 +25,7 @@ class DataGridSetDataHandler implements HandlerInterface
      */
     public function handleRequest(AdminEvent $event, Request $request)
     {
-        if (!$event instanceof ListEvent) {
-            throw new RequestHandlerException("DataGridSetDataHandler require ListEvent");
-        }
+        $this->validateEvent($event);
 
         $this->eventDispatcher->dispatch(CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND, $event);
         if ($event->hasResponse()) {

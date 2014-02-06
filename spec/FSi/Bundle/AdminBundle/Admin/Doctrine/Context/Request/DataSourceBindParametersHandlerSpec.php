@@ -28,8 +28,11 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
 
     function it_throw_exception_for_non_list_event(AdminEvent $event, Request $request)
     {
-        $this->shouldThrow(new RequestHandlerException("DataSourceBindParametersHandler require ListEvent"))
-            ->during('handleRequest', array($event, $request));
+        $this->shouldThrow(
+                new RequestHandlerException(
+                    "FSi\\Bundle\\AdminBundle\\Admin\\Doctrine\\Context\\Request\\DataSourceBindParametersHandler require ListEvent"
+                )
+            )->during('handleRequest', array($event, $request));
     }
 
     function it_bind_request_to_datasource_and_dispatch_events(

@@ -30,8 +30,11 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
 
     function it_throw_exception_for_non_list_event(AdminEvent $event, Request $request)
     {
-        $this->shouldThrow(new RequestHandlerException("DataGridSetDataHandler require ListEvent"))
-            ->during('handleRequest', array($event, $request));
+        $this->shouldThrow(
+                new RequestHandlerException(
+                    "FSi\\Bundle\\AdminBundle\\Admin\\Doctrine\\Context\\Request\\DataGridBindDataHandler require ListEvent"
+                )
+            )->during('handleRequest', array($event, $request));
     }
 
     function it_do_nothing_when_request_is_not_a_POST(
