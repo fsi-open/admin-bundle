@@ -9,23 +9,23 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
-use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Component\DataGrid\DataGrid;
 use FSi\Component\DataSource\DataSource;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListContextSpec extends ObjectBehavior
 {
-    function let(EventDispatcher $dispatcher, CRUDElement $element, DataSource $datasource, DataGrid $datagrid)
+    function let(CRUDElement $element, DataSource $datasource, DataGrid $datagrid, HandlerInterface $handler)
     {
-        $this->beConstructedWith($dispatcher, $element);
+        $this->beConstructedWith(array($handler));
         $element->createDataGrid()->willReturn($datagrid);
         $element->createDataSource()->willReturn($datasource);
+        $this->setElement($element);
     }
 
     function it_is_context()
@@ -52,368 +52,23 @@ class ListContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn('this_is_list_template.html.twig');
     }
 
-    function it_handle_request_and_return_response_from_post_create_event(
-        EventDispatcher $dispatcher,
-        Request $request
-    ) {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->will(function($args) {
-                $args[1]->setResponse(new Response());
-            });
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
-    }
-
-    function it_handle_request_and_return_response_from_pre_datasource_bind_params_event(
-        EventDispatcher $dispatcher,
-        Request $request
-    ) {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->will(function($args) {
-                $args[1]->setResponse(new Response());
-            });
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
-    }
-
-    function it_handle_request_and_return_response_from_post_datasource_bind_params_event(
-        EventDispatcher $dispatcher,
-        Request $request,
-        DataSource $datasource
-    ) {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datasource->bindParameters($request)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->will(function($args) {
-                $args[1]->setResponse(new Response());
-            });
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
-    }
-
-    function it_handle_request_and_return_response_from_pre_datagrid_bind_data_event(
-        EventDispatcher $dispatcher,
-        Request $request,
-        DataSource $datasource
-    ) {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datasource->bindParameters($request)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->will(function($args) {
-            $args[1]->setResponse(new Response());
-        });
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
-    }
-
-    function it_handle_request_and_return_response_from_post_datagrid_bind_data_event(
-        EventDispatcher $dispatcher,
-        Request $request,
-        DataSource $datasource,
-        DataGrid $datagrid
-    ) {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datasource->bindParameters($request)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datasource->getResult()->willReturn(array());
-        $datagrid->setData(array())->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->will(function($args) {
-                $args[1]->setResponse(new Response());
-            });
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
-    }
-
-    function it_handle_request_and_return_response_from_pre_datagrid_request_bind_data_event(
-        EventDispatcher $dispatcher,
-        Request $request,
-        DataSource $datasource,
-        DataGrid $datagrid
-    ) {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datasource->bindParameters($request)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datasource->getResult()->willReturn(array());
-        $datagrid->setData(array())->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $request->isMethod('POST')->willReturn(true);
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->will(function($args) {
-                $args[1]->setResponse(new Response());
-            });
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
-    }
-
-    function it_handle_request_and_return_response_from_post_datagrid_request_bind_data_event(
-        EventDispatcher $dispatcher,
-        Request $request,
-        DataSource $datasource,
-        DataGrid $datagrid
-    ) {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datasource->bindParameters($request)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datasource->getResult()->willReturn(array());
-        $datagrid->setData(array())->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $request->isMethod('POST')->willReturn(true);
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datagrid->bindData($request)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_REQUEST_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->will(function($args) {
-                $args[1]->setResponse(new Response());
-            });
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
-    }
-
-    function it_handle_request_with_POST(
-        EventDispatcher $dispatcher,
-        CRUDElement $element,
-        Request $request,
-        DataSource $datasource,
-        DataGrid $datagrid
-    ) {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datasource->bindParameters($request)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datasource->getResult()->willReturn(array());
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datagrid->setData(array())->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $request->isMethod('POST')->willReturn(true);
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datagrid->bindData($request)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_REQUEST_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $element->saveDataGrid()->shouldBeCAlled();
-        $datasource->bindParameters($request)->shouldBeCAlled();
-        $datasource->getResult()->willReturn(array());
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_RESPONSE_PRE_RENDER,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
+    function it_handle_request_with_request_handlers(HandlerInterface $handler, Request $request)
+    {
+        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent'), $request)
+            ->shouldBeCalled();
 
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_handle_request_and_return_response_from_pre_render_event(
-        EventDispatcher $dispatcher,
-        Request $request,
-        DataSource $datasource,
-        DataGrid $datagrid
+    function it_return_response_from_handler(
+        HandlerInterface $handler,
+        Request $request
     ) {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
+        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent'), $request)
+            ->willReturn(new Response());
 
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datasource->bindParameters($request)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datasource->getResult()->willReturn(array());
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $datagrid->setData(array())->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_DATAGRID_DATA_POST_BIND,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->shouldBeCalled();
-
-        $request->isMethod('POST')->willReturn(false);
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_LIST_RESPONSE_PRE_RENDER,
-            Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent')
-        )->will(function($args) {
-                $args[1]->setResponse(new Response());
-            });
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+        $this->handleRequest($request)
+            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
     public function getMatchers()

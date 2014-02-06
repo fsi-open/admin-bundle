@@ -9,11 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
-use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use FSi\Component\DataGrid\DataGrid;
+use FSi\Component\DataSource\DataSource;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -22,32 +23,38 @@ use Symfony\Component\HttpFoundation\Request;
 class ListContext implements ContextInterface
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var HandlerInterface[]
      */
-    protected $dispatcher;
+    private $requestHandlers;
 
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement
+     * @var CRUDElement
      */
     protected $element;
 
     /**
-     * @var \FSi\Component\DataSource\DataSource
+     * @var DataSource
      */
     protected $dataSource;
 
     /**
-     * @var \FSi\Component\DataGrid\DataGrid
+     * @var DataGrid
      */
     protected $dataGrid;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-     * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
+     * @param array $requestHandlers
      */
-    public function __construct(EventDispatcherInterface $dispatcher, CRUDElement $element)
+    public function __construct($requestHandlers)
     {
-        $this->dispatcher = $dispatcher;
+        $this->requestHandlers = $requestHandlers;
+    }
+
+    /**
+     * @param CRUDElement $element
+     */
+    public function setElement(CRUDElement $element)
+    {
         $this->element = $element;
         $this->dataSource = $this->element->createDataSource();
         $this->dataGrid = $this->element->createDataGrid();
@@ -88,20 +95,19 @@ class ListContext implements ContextInterface
     public function handleRequest(Request $request)
     {
         $event = new ListEvent($this->element, $request, $this->dataSource, $this->dataGrid);
-        $this->dispatcher->dispatch(CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE, $event);
 
-        if (!$event->hasResponse()) {
-            return $this->dataSourceBindParameters($event, $request);
+        foreach ($this->requestHandlers as $handler) {
+            $response = $handler->handleRequest($event, $request);
+            if (isset($response)) {
+                return $response;
+            }
         }
-
-        return $event->getResponse();
     }
 
     /**
      * @param ListEvent $event
      * @param Request $request
      * @return null|\Symfony\Component\HttpFoundation\Response
-     */
     private function dataSourceBindParameters(ListEvent $event, Request $request)
     {
         $this->dispatcher->dispatch(CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND, $event);
@@ -123,7 +129,6 @@ class ListContext implements ContextInterface
      * @param ListEvent $event
      * @param Request $request
      * @return null|\Symfony\Component\HttpFoundation\Response
-     */
     private function dataGridSetData(ListEvent $event, Request $request)
     {
         $this->dispatcher->dispatch(CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND, $event);
@@ -146,7 +151,6 @@ class ListContext implements ContextInterface
      * @param ListEvent $event
      * @param Request $request
      * @return null|\Symfony\Component\HttpFoundation\Response
-     */
     private function handlePostRequest(ListEvent $event, Request $request)
     {
         if ($request->isMethod('POST')) {
@@ -169,7 +173,7 @@ class ListContext implements ContextInterface
      * @param ListEvent $event
      * @param Request $request
      * @return null|\Symfony\Component\HttpFoundation\Response
-     */
+    private function dataGridBindData(ListEvent $event, Request $request)
     private function dataGridBindData(ListEvent $event, Request $request)
     {
         $this->dispatcher->dispatch(CRUDEvents::CRUD_LIST_DATAGRID_REQUEST_PRE_BIND, $event);
@@ -192,4 +196,5 @@ class ListContext implements ContextInterface
 
         return null;
     }
+    */
 }
