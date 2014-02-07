@@ -25,9 +25,9 @@ use Symfony\Component\Routing\Router;
 class DeleteContext implements ContextInterface
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var HandlerInterface[]
      */
-    protected $dispatcher;
+    private $requestHandlers;
 
     /**
      * @var \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement
@@ -35,46 +35,34 @@ class DeleteContext implements ContextInterface
     protected $element;
 
     /**
-     * @var \Symfony\Component\Routing\Router
-     */
-    protected $router;
-
-    /**
-     * @var array
-     */
-    protected $data;
-
-    /**
-     * @var \Symfony\Component\Form\FormFactoryInterface
-     */
-    protected $factory;
-
-    /**
-     * @var \Symfony\Component\Form\FormInterface
+     * @var \Symfony\Component\Form\Form
      */
     protected $form;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-     * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
-     * @param \Symfony\Component\Routing\Router $router
+     * @var array
+     */
+    protected $indexes;
+
+    /**
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     * @param array $data
-     * @internal param \Symfony\Component\Form\FormFactoryInterface $form
+     * @param array $requestHandlers
      */
     public function __construct(
-        EventDispatcherInterface $dispatcher,
-        CRUDElement $element,
-        Router $router,
         FormFactoryInterface $factory,
-        array $data
+        array $requestHandlers
     ) {
-        $this->dispatcher = $dispatcher;
-        $this->element = $element;
-        $this->router = $router;
         $this->factory = $factory;
-        $this->data = $data;
+        $this->requestHandlers = $requestHandlers;
         $this->form = $this->factory->createNamed('delete', 'form');
+    }
+
+    /**
+     * @param CRUDElement $element
+     */
+    public function setElement(CRUDElement $element)
+    {
+        $this->element = $element;
     }
 
     /**
@@ -83,7 +71,15 @@ class DeleteContext implements ContextInterface
     public function handleRequest(Request $request)
     {
         $event = new FormEvent($this->element, $request, $this->form);
+        $this->indexes = $request->request->get('indexes', array());
 
+        foreach ($this->requestHandlers as $handler) {
+            $response = $handler->handleRequest($event, $request);
+            if (isset($response)) {
+                return $response;
+            }
+        }
+/*
         $this->dispatcher->dispatch(CRUDEvents::CRUD_DELETE_CONTEXT_POST_CREATE, $event);
         if ($event->hasResponse()) {
             return $event->getResponse();
@@ -125,7 +121,7 @@ class DeleteContext implements ContextInterface
             return new RedirectResponse($this->router->generate('fsi_admin_crud_list', array('element' => $this->element->getId())));
         }
 
-        return null;
+        return null;*/
     }
 
     /**
@@ -149,14 +145,9 @@ class DeleteContext implements ContextInterface
      */
     public function getData()
     {
-        $indexes = array();
-        foreach ($this->data as $object) {
-            $indexes[] = $this->element->getDataIndexer()->getIndex($object);
-        }
-
         return array(
             'element' => $this->element,
-            'indexes' => $indexes,
+            'indexes' => $this->indexes,
             'form' => $this->form->createView(),
         );
     }

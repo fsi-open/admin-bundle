@@ -9,37 +9,29 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
-use FSi\Bundle\AdminBundle\Event\CRUDEvents;
-use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\HttpFoundation\Response;
 
 class DeleteContextSpec extends ObjectBehavior
 {
     function let(
-        EventDispatcher $dispatcher,
+        HandlerInterface $handler,
         CRUDElement $element,
-        Router $router,
-        DoctrineDataIndexer $indexer,
         FormFactory $factory,
         Form $form,
         FormView $view
     ) {
-        $entity = new \stdClass();
-        $entity1 = new \stdClass();
-        $this->beConstructedWith($dispatcher, $element, $router, $factory, array($entity, $entity1));
-        $element->getDataIndexer()->willReturn($indexer);
-        $indexer->getIndex($entity)->willReturn(1);
-        $indexer->getIndex($entity1)->willReturn(2);
         $factory->createNamed('delete', 'form')->willReturn($form);
+        $this->beConstructedWith($factory, array($handler));
+        $this->setElement($element);
         $form->createView()->willReturn($view);
     }
 
@@ -76,100 +68,33 @@ class DeleteContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn('this_is_delete_template.html.twig');
     }
 
-    function it_handle_request_and_return_null(EventDispatcher $dispatcher, Request $request, ParameterBag $bag)
-    {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_DELETE_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
-        )->shouldBeCalled();
+    function it_handle_request_with_request_handlers(
+        HandlerInterface $handler,
+        Request $request,
+        ParameterBag $requestParameterBag
+    ) {
+        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
+            ->shouldBeCalled();
 
-        $bag->has('confirm')->willReturn(false);
-        $bag->has('cancel')->willReturn(false);
-        $request->request = $bag;
+        $request->request = $requestParameterBag;
+        $requestParameterBag->get('indexes', array())->willReturn(array());
 
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_handle_request_with_confirm_and_return_null(
-        EventDispatcher $dispatcher,
-        Form $form,
+    function it_return_response_from_handler(
+        HandlerInterface $handler,
         Request $request,
-        ParameterBag $bag,
-        CRUDElement $element,
-        Router $router
+        ParameterBag $requestParameterBag
     ) {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_DELETE_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
+        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
+            ->willReturn(new Response());
 
-        $bag->has('confirm')->willReturn(true);
-        $bag->has('cancel')->willReturn(false);
-        $request->request = $bag;
+        $request->request = $requestParameterBag;
+        $requestParameterBag->get('indexes', array())->willReturn(array());
 
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_DELETE_FORM_PRE_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $form->submit($request)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_DELETE_FORM_POST_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $form->isValid()->shouldBeCalled()->willReturn(true);
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_DELETE_ENTITIES_PRE_DELETE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $element->delete(Argument::type('stdClass'))->shouldBeCalledTimes(2);
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_DELETE_ENTITIES_POST_DELETE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $element->getId()->willReturn('element_id');
-
-        $router->generate('fsi_admin_crud_list', array(
-            'element' => 'element_id'
-        ))->shouldBeCalled()->willReturn('redirect_create_url');
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
-    }
-
-    function it_handle_request_with_cancel(
-        EventDispatcher $dispatcher,
-        Request $request,
-        ParameterBag $bag,
-        CRUDElement $element,
-        Router $router
-    ) {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_DELETE_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $bag->has('confirm')->willReturn(false);
-        $bag->has('cancel')->willReturn(true);
-        $request->request = $bag;
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_DELETE_FORM_PRE_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldNotBeCalled();
-
-        $element->getId()->willReturn('element_id');
-
-        $router->generate('fsi_admin_crud_list', array(
-            'element' => 'element_id'
-        ))->shouldBeCalled()->willReturn('redirect_create_url');
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
+        $this->handleRequest($request)
+            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
     public function getMatchers()
