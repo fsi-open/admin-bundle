@@ -39,6 +39,7 @@ class FSIAdminExtension extends Extension
         }
 
         $loader->load('context/list.xml');
+        $loader->load('context/create.xml');
     }
 
     /**

@@ -13,8 +13,6 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Routing\Router;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -22,23 +20,16 @@ use Symfony\Component\Routing\Router;
 class CreateContextBuilder implements ContextBuilderInterface
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var CreateContext
      */
-    protected $dispatcher;
+    private $context;
 
     /**
-     * @var \Symfony\Component\Routing\Router
+     * @param CreateContext $context
      */
-    protected $router;
-
-    /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-     * @param \Symfony\Component\Routing\Router $router
-     */
-    public function __construct(EventDispatcherInterface $dispatcher, Router $router)
+    public function __construct(CreateContext $context)
     {
-        $this->dispatcher = $dispatcher;
-        $this->router = $router;
+        $this->context = $context;
     }
 
     /**
@@ -66,9 +57,9 @@ class CreateContextBuilder implements ContextBuilderInterface
      */
     public function buildContext(ElementInterface $element)
     {
-        $context = new CreateContext($this->dispatcher, $element, $this->router);
+        $this->context->setElement($element);
 
-        return $context;
+        return $this->context;
     }
 
     /**

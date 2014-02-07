@@ -9,14 +9,11 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
-use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -24,9 +21,9 @@ use Symfony\Component\Routing\Router;
 class CreateContext implements ContextInterface
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var HandlerInterface[]
      */
-    protected $dispatcher;
+    private $routerHandlers;
 
     /**
      * @var \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement
@@ -34,25 +31,24 @@ class CreateContext implements ContextInterface
     protected $element;
 
     /**
-     * @var \Symfony\Component\Routing\Router
-     */
-    protected $router;
-
-    /**
      * @var \Symfony\Component\Form\Form
      */
     protected $form;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-     * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
-     * @param \Symfony\Component\Routing\Router $router
+     * @param $routerHandlers
      */
-    public function __construct(EventDispatcherInterface $dispatcher, CRUDElement $element, Router $router)
+    public function __construct($routerHandlers)
     {
-        $this->dispatcher = $dispatcher;
+        $this->routerHandlers = $routerHandlers;
+    }
+
+    /**
+     * @param CRUDElement $element
+     */
+    public function setElement(CRUDElement $element)
+    {
         $this->element = $element;
-        $this->router = $router;
         $this->form = $this->element->createForm();
     }
 
@@ -63,49 +59,12 @@ class CreateContext implements ContextInterface
     {
         $event = new FormEvent($this->element, $request, $this->form);
 
-        $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_CONTEXT_POST_CREATE, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        if ($request->isMethod('POST')) {
-            $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_FORM_REQUEST_PRE_SUBMIT, $event);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            $this->form->submit($request);
-
-            $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_FORM_REQUEST_POST_SUBMIT, $event);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            if ($this->form->isValid()) {
-                $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_ENTITY_PRE_SAVE, $event);
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                $this->element->save($this->form->getData());
-
-                $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_ENTITY_POST_SAVE, $event);
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                return new RedirectResponse($this->router->generate('fsi_admin_crud_list', array(
-                    'element' => $this->element->getId()
-                )));
+        foreach ($this->routerHandlers as $handler) {
+            $response = $handler->handleRequest($event, $request);
+            if (isset($response)) {
+                return $response;
             }
         }
-
-        $this->dispatcher->dispatch(CRUDEvents::CRUD_CREATE_RESPONSE_PRE_RENDER, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        return null;
     }
 
     /**
