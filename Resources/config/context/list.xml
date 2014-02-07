@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="admin.doctrine.context.list.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ListContext</parameter>
+        <parameter key="admin.doctrine.context_builder.list.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ListContextBuilder</parameter>
+        <parameter key="admin.doctrine.context.list.request_handler.datasource_bind_parameters.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\DataSourceBindParametersHandler</parameter>
+        <parameter key="admin.doctrine.context.list.request_handler.datagrid_set_data.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\DataGridSetDataHandler</parameter>
+        <parameter key="admin.doctrine.context.list.request_handler.datagrid_bind_data.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\DataGridBindDataHandler</parameter>
+    </parameters>
+
+    <services>
+        <service id="admin.doctrine.context_builder.list" class="%admin.doctrine.context_builder.list.class%">
+            <argument type="service" id="admin.doctrine.context.list"/>
+            <tag name="admin.context.builder" />
+        </service>
+
+        <service id="admin.doctrine.context.list" class="%admin.doctrine.context.list.class%">
+            <argument type="collection">
+                <argument type="service" id="admin.doctrine.context.list.request_handler.datasource_bind_params"/>
+                <argument type="service" id="admin.doctrine.context.list.request_handler.datagrid_set_data"/>
+                <argument type="service" id="admin.doctrine.context.list.request_handler.datagrid_bind_data"/>
+            </argument>
+        </service>
+        
+        <service id="admin.doctrine.context.list.request_handler.datasource_bind_params"
+                class="%admin.doctrine.context.list.request_handler.datasource_bind_parameters.class%">
+            <argument type="service" id="event_dispatcher" />
+        </service>
+        <service id="admin.doctrine.context.list.request_handler.datagrid_set_data"
+                 class="%admin.doctrine.context.list.request_handler.datagrid_set_data.class%">
+            <argument type="service" id="event_dispatcher" />
+        </service>
+        <service id="admin.doctrine.context.list.request_handler.datagrid_bind_data"
+                 class="%admin.doctrine.context.list.request_handler.datagrid_bind_data.class%">
+            <argument type="service" id="event_dispatcher" />
+        </service>
+
+    </services>
+</container>

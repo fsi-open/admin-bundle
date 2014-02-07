@@ -9,11 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
-use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use FSi\Component\DataGrid\DataGrid;
+use FSi\Component\DataSource\DataSource;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -22,100 +23,41 @@ use Symfony\Component\HttpFoundation\Request;
 class ListContext implements ContextInterface
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var HandlerInterface[]
      */
-    protected $dispatcher;
+    private $requestHandlers;
 
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement
+     * @var CRUDElement
      */
     protected $element;
 
     /**
-     * @var \FSi\Component\DataSource\DataSource
+     * @var DataSource
      */
     protected $dataSource;
 
     /**
-     * @var \FSi\Component\DataGrid\DataGrid
+     * @var DataGrid
      */
     protected $dataGrid;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-     * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
+     * @param array $requestHandlers
      */
-    public function __construct(EventDispatcherInterface $dispatcher, CRUDElement $element)
+    public function __construct($requestHandlers)
     {
-        $this->dispatcher = $dispatcher;
-        $this->element = $element;
-        $this->dataSource = $this->element->createDataSource();
-        $this->dataGrid = $this->element->createDataGrid();
+        $this->requestHandlers = $requestHandlers;
     }
 
     /**
-     * {@inheritdoc}
+     * @param CRUDElement $element
      */
-    public function handleRequest(Request $request)
+    public function setElement(CRUDElement $element)
     {
-        $event = new ListEvent($this->element, $request, $this->dataSource, $this->dataGrid);
-
-        $this->dispatcher->dispatch(CRUDEvents::CRUD_LIST_CONTEXT_POST_CREATE, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        $this->dispatcher->dispatch(CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        $this->dataSource->bindParameters($request);
-
-        $this->dispatcher->dispatch(CRUDEvents::CRUD_LIST_DATASOURCE_REQUEST_POST_BIND, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        $data = $this->dataSource->getResult();
-
-        $this->dispatcher->dispatch(CRUDEvents::CRUD_LIST_DATAGRID_DATA_PRE_BIND, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        $this->dataGrid->setData($data);
-
-        $this->dispatcher->dispatch(CRUDEvents::CRUD_LIST_DATAGRID_DATA_POST_BIND, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        if ($request->isMethod('POST'))  {
-            $this->dispatcher->dispatch(CRUDEvents::CRUD_LIST_DATAGRID_REQUEST_PRE_BIND, $event);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            $this->dataGrid->bindData($request);
-
-            $this->dispatcher->dispatch(CRUDEvents::CRUD_LIST_DATAGRID_REQUEST_POST_BIND, $event);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            $this->element->saveDataGrid();
-            $this->dataSource->bindParameters($request);
-            $data = $this->dataSource->getResult();
-            $this->dataGrid->setData($data);
-        }
-
-        $this->dispatcher->dispatch(CRUDEvents::CRUD_LIST_RESPONSE_PRE_RENDER, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        return null;
+        $this->element = $element;
+        $this->dataSource = $this->element->createDataSource();
+        $this->dataGrid = $this->element->createDataGrid();
     }
 
     /**
@@ -145,5 +87,20 @@ class ListContext implements ContextInterface
             'element' => $this->element,
             'title' => $this->element->getOption('crud_list_title'),
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function handleRequest(Request $request)
+    {
+        $event = new ListEvent($this->element, $request, $this->dataSource, $this->dataGrid);
+
+        foreach ($this->requestHandlers as $handler) {
+            $response = $handler->handleRequest($event, $request);
+            if (isset($response)) {
+                return $response;
+            }
+        }
     }
 }

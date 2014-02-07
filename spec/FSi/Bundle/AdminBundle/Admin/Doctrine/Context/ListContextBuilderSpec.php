@@ -9,20 +9,15 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ListContext;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ListContextBuilderSpec extends ObjectBehavior
 {
-    function let(EventDispatcher $dispatcher)
+    function let(ListContext $context)
     {
-        $this->beConstructedWith($dispatcher);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ListContextBuilder');
+        $this->beConstructedWith($context);
     }
 
     function it_is_context_builder()
@@ -35,8 +30,9 @@ class ListContextBuilderSpec extends ObjectBehavior
         $this->supports('fsi_admin_crud_list', $element)->shouldReturn(true);
     }
 
-    function it_build_context(CRUDElement $element)
+    function it_build_context(ListContext $context, CRUDElement $element)
     {
-        $this->buildContext($element)->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ListContext');
+        $context->setElement($element)->shouldBeCalled();
+        $this->buildContext($element)->shouldReturn($context);
     }
 }

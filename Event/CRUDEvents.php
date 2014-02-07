@@ -14,6 +14,7 @@ namespace FSi\Bundle\AdminBundle\Event;
  */
 final class CRUDEvents
 {
+    /* @deprecated since version 1.0 and will be removed in 1.2 */
     const CRUD_LIST_CONTEXT_POST_CREATE = 'admin.crud.list.context.post_create';
 
     const CRUD_LIST_DATASOURCE_REQUEST_PRE_BIND = 'admin.crud.list.datasource.request.pre_bind';

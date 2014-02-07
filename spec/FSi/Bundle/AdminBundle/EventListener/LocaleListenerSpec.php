@@ -32,7 +32,6 @@ class LocaleListenerSpec extends ObjectBehavior
         $this->onKernelRequest($event);
     }
 
-
     function it_set_locale_to_session_if_it_exist_in_request(
         GetResponseEvent $event,
         Request $request,

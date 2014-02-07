@@ -30,10 +30,6 @@
         </service>
 
         <!-- Context Builders -->
-        <service id="admin.context_builder.doctrine.list" class="%admin.context_builder.doctrine.list.class%">
-            <argument type="service" id="event_dispatcher"/>
-            <tag name="admin.context.builder" />
-        </service>
         <service id="admin.context_builder.doctrine.create" class="%admin.context_builder.doctrine.create.class%">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="router"/>

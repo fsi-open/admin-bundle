@@ -37,6 +37,8 @@ class FSIAdminExtension extends Extension
         if ($config['display_language_switch']) {
             $loader->load('locale_listener.xml');
         }
+
+        $loader->load('context/list.xml');
     }
 
     /**
