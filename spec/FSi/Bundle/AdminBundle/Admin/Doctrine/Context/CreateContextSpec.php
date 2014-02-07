@@ -9,26 +9,21 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
-use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CreateContextSpec extends ObjectBehavior
 {
-    function let(EventDispatcher $dispatcher, CRUDElement $element, Form $form, Router $router)
+    function let(CRUDElement $element, Form $form, HandlerInterface $handler)
     {
-        $this->beConstructedWith($dispatcher, $element, $router);
+        $this->beConstructedWith(array($handler));
         $element->createForm(Argument::any())->willReturn($form);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\CreateContext');
+        $this->setElement($element);
     }
 
     function it_is_context()
@@ -54,72 +49,23 @@ class CreateContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn('this_is_list_template.html.twig');
     }
 
-    function it_handle_request_with_POST_and_return_redirect_response(
-        EventDispatcher $dispatcher,
-        CRUDElement $element,
-        Request $request,
-        Form $form,
-        Router $router
-    ) {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_CREATE_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_CREATE_FORM_REQUEST_PRE_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $form->submit($request)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_CREATE_FORM_REQUEST_POST_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $form->isValid()->willReturn(true);
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_CREATE_ENTITY_PRE_SAVE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $data = new \stdClass();
-        $form->getData()->willReturn($data);
-        $element->save($data)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_CREATE_ENTITY_POST_SAVE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $element->getId()->willReturn('element_id');
-
-        $router->generate('fsi_admin_crud_list', array(
-            'element' => 'element_id'
-        ))->shouldBeCalled()->willReturn('redirect_create_url');
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
-    }
-
-    function it_handle_request_without_POST_and_return_response(EventDispatcher $dispatcher, Request $request)
+    function it_handle_request_with_request_handlers(HandlerInterface $handler, Request $request)
     {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_CREATE_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_CREATE_RESPONSE_PRE_RENDER,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $request->isMethod('POST')->shouldBeCalled()->willReturn(false);
+        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
+            ->shouldBeCalled();
 
         $this->handleRequest($request)->shouldReturn(null);
+    }
+
+    function it_return_response_from_handler(
+        HandlerInterface $handler,
+        Request $request
+    ) {
+        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
+            ->willReturn(new Response());
+
+        $this->handleRequest($request)
+            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
     public function getMatchers()

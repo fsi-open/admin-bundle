@@ -30,19 +30,6 @@
         </service>
 
         <!-- Context Builders -->
-        <service id="admin.context_builder.doctrine.create" class="%admin.context_builder.doctrine.create.class%">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="router"/>
-            <tag name="admin.context.builder" />
-        </service>
-        <service id="admin.context_builder.doctrine.edit" class="%admin.context_builder.doctrine.edit.class%">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="router"/>
-            <tag name="admin.context.builder" />
-            <call method="setRequest">
-                <argument type="service" id="request" on-invalid="null" strict="false" />
-            </call>
-        </service>
         <service id="admin.context_builder.doctrine.delete" class="%admin.context_builder.doctrine.delete.class%">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="router"/>

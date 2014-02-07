@@ -9,26 +9,20 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\EditContext;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
 
 class EditContextBuilderSpec extends ObjectBehavior
 {
-    function let(EventDispatcher $dispatcher, Router $router, Request $request)
+    function let(EditContext $context, Request $request)
     {
-        $this->beConstructedWith($dispatcher, $router);
-        $this->setRequest($request);
+        $this->beConstructedWith($context);
         $request->get('id', null)->willReturn(1);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\EditContextBuilder');
+        $this->setRequest($request);
     }
 
     function it_is_context_builder()
@@ -67,13 +61,15 @@ class EditContextBuilderSpec extends ObjectBehavior
             ->during('supports', array('fsi_admin_crud_edit', $element));
     }
 
-    function it_build_context(CRUDElement $element, DoctrineDataIndexer $indexer)
+    function it_build_context(EditContext $context, CRUDElement $element, DoctrineDataIndexer $indexer)
     {
         $entity = new \stdClass();
         $element->getDataIndexer()->willReturn($indexer);
-        $element->createForm($entity)->shouldBeCalled();
-        $indexer->getData(1)->shouldBeCalled()->willReturn($entity);
+        $indexer->getData(1)->willReturn($entity);
 
-        $this->buildContext($element)->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\EditContext');
+        $context->setEntity($entity)->shouldBeCalled();
+        $context->setElement($element)->shouldBeCalled();
+
+        $this->buildContext($element)->shouldReturn($context);
     }
 }

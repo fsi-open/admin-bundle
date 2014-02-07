@@ -11,10 +11,10 @@ namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
-use FSi\Bundle\AdminBundle\Event\ListEvent;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 
-abstract class AbstractListRequestHandler extends AbstractHandler
+abstract class AbstractFormRequestHandler extends AbstractHandler
 {
     /**
      * @param AdminEvent $event
@@ -22,8 +22,8 @@ abstract class AbstractListRequestHandler extends AbstractHandler
      */
     protected function validateEvent(AdminEvent $event)
     {
-        if (!$event instanceof ListEvent) {
-            throw new RequestHandlerException(sprintf("%s require ListEvent", get_class($this)));
+        if (!$event instanceof FormEvent) {
+            throw new RequestHandlerException(sprintf("%s require FormEvent", get_class($this)));
         }
     }
 }
