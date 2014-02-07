@@ -29,17 +29,6 @@
             <tag name="request.param_converter" converter="admin.element" priority="10" />
         </service>
 
-        <!-- Context Builders -->
-        <service id="admin.context_builder.doctrine.delete" class="%admin.context_builder.doctrine.delete.class%">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="router"/>
-            <argument type="service" id="form.factory"/>
-            <tag name="admin.context.builder" />
-            <call method="setRequest">
-                <argument type="service" id="request" on-invalid="null" strict="false" />
-            </call>
-        </service>
-
          <!-- Twig-->
          <service id="admin.twig.extension" class="FSi\Bundle\AdminBundle\Twig\Extension\AdminExtension" public="false">
             <tag name="twig.extension" />
