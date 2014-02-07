@@ -79,49 +79,6 @@ class DeleteContext implements ContextInterface
                 return $response;
             }
         }
-/*
-        $this->dispatcher->dispatch(CRUDEvents::CRUD_DELETE_CONTEXT_POST_CREATE, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        if ($request->request->has('confirm')) {
-            $this->dispatcher->dispatch(CRUDEvents::CRUD_DELETE_FORM_PRE_SUBMIT, $event);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            $this->form->submit($request);
-
-            $this->dispatcher->dispatch(CRUDEvents::CRUD_DELETE_FORM_POST_SUBMIT, $event);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            if ($this->form->isValid()) {
-                $this->dispatcher->dispatch(CRUDEvents::CRUD_DELETE_ENTITIES_PRE_DELETE, $event);
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                foreach ($this->data as $entity) {
-                    $this->element->delete($entity);
-                }
-
-                $this->dispatcher->dispatch(CRUDEvents::CRUD_DELETE_ENTITIES_POST_DELETE, $event);
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-            }
-
-            return new RedirectResponse($this->router->generate('fsi_admin_crud_list', array('element' => $this->element->getId())));
-        }
-
-        if ($request->request->has('cancel')) {
-            return new RedirectResponse($this->router->generate('fsi_admin_crud_list', array('element' => $this->element->getId())));
-        }
-
-        return null;*/
     }
 
     /**

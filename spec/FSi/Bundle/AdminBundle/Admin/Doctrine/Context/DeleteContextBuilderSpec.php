@@ -42,14 +42,9 @@ class DeleteContextBuilderSpec extends ObjectBehavior
 
     function it_supports_doctrine_crud_element_that_allow_to_delete_elements(
         CRUDElement $element,
-        Router $router,
-        DoctrineDataIndexer $indexer
+        Router $router
     ) {
-//        $entity = new \stdClass();
-//        $element->getDataIndexer()->willReturn($indexer);
         $element->getOption('allow_delete')->willReturn(true);
-//        $indexer->getData(1)->shouldBeCalled()->willReturn($entity);
-//        $indexer->getData(2)->shouldBeCalled()->willReturn($entity);
 
         $this->supports('fsi_admin_crud_delete', $element, $router)->shouldReturn(true);
     }
