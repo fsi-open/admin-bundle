@@ -9,61 +9,31 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request;
 
-use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
-use FSi\Bundle\AdminBundle\Event\FormEvent;
-use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
 
-class EditFormSubmitHandler implements HandlerInterface
+class EditFormSubmitHandler extends AbstractFormSubmitHandler
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     * @return string
      */
-    protected $eventDispatcher;
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    protected function getContextPostCreateEventName()
     {
-        $this->eventDispatcher = $eventDispatcher;
+        return CRUDEvents::CRUD_EDIT_CONTEXT_POST_CREATE;
     }
 
     /**
-     * @param AdminEvent $event
-     * @param Request $request
-     * @throws \FSi\Bundle\AdminBundle\Exception\RequestHandlerException
-     * @return null|\Symfony\Component\HttpFoundation\Response
+     * @return string
      */
-    public function handleRequest(AdminEvent $event, Request $request)
+    protected function getFormRequestPreSubmitEventName()
     {
-        if (!$event instanceof FormEvent) {
-            throw new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\Doctrine\\Context\\Request\\FormSubmitHandler require FormEvent"
-            );
-        }
+        return CRUDEvents::CRUD_EDIT_FORM_REQUEST_PRE_SUBMIT;
+    }
 
-        $this->eventDispatcher->dispatch(CRUDEvents::CRUD_EDIT_CONTEXT_POST_CREATE, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        if ($request->getMethod() == 'POST') {
-            $this->eventDispatcher->dispatch(CRUDEvents::CRUD_EDIT_FORM_REQUEST_PRE_SUBMIT, $event);
-
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            $event->getForm()->submit($request);
-            $this->eventDispatcher->dispatch(CRUDEvents::CRUD_EDIT_FORM_REQUEST_POST_SUBMIT, $event);
-
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-        }
+    /**
+     * @return string
+     */
+    protected function getFormRequestPostSubmitEventName()
+    {
+        return CRUDEvents::CRUD_EDIT_FORM_REQUEST_POST_SUBMIT;
     }
 }

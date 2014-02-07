@@ -30,7 +30,7 @@ class EditFormSubmitHandlerSpec extends ObjectBehavior
     {
         $this->shouldThrow(
                 new RequestHandlerException(
-                    "FSi\\Bundle\\AdminBundle\\Admin\\Doctrine\\Context\\Request\\FormSubmitHandler require FormEvent"
+                    "FSi\\Bundle\\AdminBundle\\Admin\\Doctrine\\Context\\Request\\EditFormSubmitHandler require FormEvent"
                 )
             )->during('handleRequest', array($listEvent, $request));
     }
