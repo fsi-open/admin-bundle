@@ -78,53 +78,6 @@ class EditContext implements ContextInterface
                 return $response;
             }
         }
-        /*
-        $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_CONTEXT_POST_CREATE, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        if ($request->isMethod('POST')) {
-            $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_FORM_REQUEST_PRE_SUBMIT, $event);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            $this->form->submit($request);
-
-            $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_FORM_REQUEST_POST_SUBMIT, $event);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            if ($this->form->isValid()) {
-                $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_ENTITY_PRE_SAVE, $event);
-
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                $this->element->save($this->form->getData());
-
-                $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_ENTITY_POST_SAVE, $event);
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                return new RedirectResponse($this->router->generate('fsi_admin_crud_list', array(
-                    'element' => $this->element->getId(),
-                )));
-            }
-        }
-
-        $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_RESPONSE_PRE_RENDER, $event);
-
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        return null;
-        */
     }
 
     /**
