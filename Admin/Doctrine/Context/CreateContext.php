@@ -23,7 +23,7 @@ class CreateContext implements ContextInterface
     /**
      * @var HandlerInterface[]
      */
-    private $routerHandlers;
+    private $requestHandlers;
 
     /**
      * @var \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement
@@ -36,11 +36,11 @@ class CreateContext implements ContextInterface
     protected $form;
 
     /**
-     * @param $routerHandlers
+     * @param $requestHandlers
      */
-    public function __construct($routerHandlers)
+    public function __construct($requestHandlers)
     {
-        $this->routerHandlers = $routerHandlers;
+        $this->requestHandlers = $requestHandlers;
     }
 
     /**
@@ -59,7 +59,7 @@ class CreateContext implements ContextInterface
     {
         $event = new FormEvent($this->element, $request, $this->form);
 
-        foreach ($this->routerHandlers as $handler) {
+        foreach ($this->requestHandlers as $handler) {
             $response = $handler->handleRequest($event, $request);
             if (isset($response)) {
                 return $response;

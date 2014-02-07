@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="admin.doctrine.context.edit.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\EditContext</parameter>
+        <parameter key="admin.doctrine.context_builder.edit.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\EditContextBuilder</parameter>
+        <parameter key="admin.doctrine.context.edit.request_handler.create_form_submit.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\EditFormSubmitHandler</parameter>
+        <parameter key="admin.doctrine.context.edit.request_handler.create_form_valid_request.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\EditFormValidRequestHandler</parameter>
+    </parameters>
+
+    <services>
+        <service id="admin.doctrine.context_builder.edit" class="%admin.doctrine.context_builder.edit.class%">
+            <argument type="service" id="admin.doctrine.context.edit"/>
+            <argument type="service" id="router" />
+            <tag name="admin.context.builder" />
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="null" strict="false" />
+            </call>
+        </service>
+
+        <service id="admin.doctrine.context.edit" class="%admin.doctrine.context.edit.class%">
+            <argument type="collection">
+                <argument type="service" id="admin.doctrine.context.edit.request_handler.create_form_submit"/>
+                <argument type="service" id="admin.doctrine.context.edit.request_handler.create_form_valid_request"/>
+            </argument>
+        </service>
+
+        <service id="admin.doctrine.context.edit.request_handler.create_form_submit"
+                class="%admin.doctrine.context.edit.request_handler.create_form_submit.class%">
+            <argument type="service" id="event_dispatcher" />
+        </service>
+
+        <service id="admin.doctrine.context.edit.request_handler.create_form_valid_request"
+                 class="%admin.doctrine.context.edit.request_handler.create_form_valid_request.class%">
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="router" />
+        </service>
+    </services>
+</container>

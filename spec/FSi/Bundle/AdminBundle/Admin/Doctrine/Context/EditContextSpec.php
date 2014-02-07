@@ -9,27 +9,26 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
-use FSi\Bundle\AdminBundle\Event\CRUDEvents;
-use FSi\Component\DataIndexer\DoctrineDataIndexer;
+use FSi\Component\DataIndexer\DataIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class EditContextSpec extends ObjectBehavior
 {
-    private $data;
+    protected $data;
 
-    function let(EventDispatcher $dispatcher, CRUDElement $element, Form $form, Router $router, DoctrineDataIndexer $indexer)
+    function let(HandlerInterface $handler, CRUDElement $element, Form $form)
     {
         $this->data = new \stdClass();
+        $this->beConstructedWith(array($handler));
+        $this->setElement($element);
         $element->createForm($this->data)->willReturn($form);
-        $this->beConstructedWith($dispatcher, $element, $router, $this->data);
-        $element->getDataIndexer()->willReturn($indexer);
-        $indexer->getIndex($this->data)->willReturn(1);
+        $this->setEntity($this->data);
     }
 
     function it_is_initializable()
@@ -42,8 +41,10 @@ class EditContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_array_data(CRUDElement $element)
+    function it_have_array_data(CRUDElement $element, DataIndexerInterface $indexer)
     {
+        $element->getDataIndexer()->willReturn($indexer);
+        $indexer->getIndex($this->data)->willReturn(1);
         $element->getOption('crud_edit_title')->shouldBeCalled();
 
         $this->getData()->shouldBeArray();
@@ -61,67 +62,23 @@ class EditContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn('this_is_edit_template.html.twig');
     }
 
-    function it_handle_request_with_POST_and_return_redirect_response(EventDispatcher $dispatcher, CRUDElement $element,
-          Request $request, Form $form, Router $router)
+    function it_handle_request_with_request_handlers(HandlerInterface $handler, Request $request)
     {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_EDIT_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_EDIT_FORM_REQUEST_PRE_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $form->submit($request)->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_EDIT_FORM_REQUEST_POST_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $form->isValid()->willReturn(true);
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_EDIT_ENTITY_PRE_SAVE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $form->getData()->willReturn($this->data);
-        $element->save(Argument::any())->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_EDIT_ENTITY_POST_SAVE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $element->getId()->willReturn('element_id');
-
-        $router->generate('fsi_admin_crud_list', array(
-            'element' => 'element_id',
-        ))->shouldBeCalled()->willReturn('redirect_list_url');
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
-    }
-
-    function it_handle_request_without_POST_and_return_response(EventDispatcher $dispatcher, Request $request)
-    {
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_EDIT_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $dispatcher->dispatch(
-            CRUDEvents::CRUD_EDIT_RESPONSE_PRE_RENDER,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-
-        $request->isMethod('POST')->shouldBeCalled()->willReturn(false);
+        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
+            ->shouldBeCalled();
 
         $this->handleRequest($request)->shouldReturn(null);
+    }
+
+    function it_return_response_from_handler(
+        HandlerInterface $handler,
+        Request $request
+    ) {
+        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
+            ->willReturn(new Response());
+
+        $this->handleRequest($request)
+            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
     public function getMatchers()

@@ -13,9 +13,7 @@ use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -23,14 +21,9 @@ use Symfony\Component\Routing\Router;
 class EditContextBuilder implements ContextBuilderInterface
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var EditContext
      */
-    protected $dispatcher;
-
-    /**
-     * @var \Symfony\Component\Routing\Router
-     */
-    protected $router;
+    private $context;
 
     /**
      * @var \Symfony\Component\HttpFoundation\Request
@@ -38,13 +31,11 @@ class EditContextBuilder implements ContextBuilderInterface
     protected $request;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-     * @param \Symfony\Component\Routing\Router $router
+     * @param EditContext $context
      */
-    public function __construct(EventDispatcherInterface $dispatcher, Router $router)
+    public function __construct(EditContext $context)
     {
-        $this->dispatcher = $dispatcher;
-        $this->router = $router;
+        $this->context = $context;
     }
 
     /**
@@ -84,10 +75,10 @@ class EditContextBuilder implements ContextBuilderInterface
      */
     public function buildContext(ElementInterface $element)
     {
-        /* @var $element \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement */
-        $context = new EditContext($this->dispatcher, $element, $this->router, $this->getObject($element));
+        $this->context->setElement($element);
+        $this->context->setEntity($this->getObject($element));
 
-        return $context;
+        return $this->context;
     }
 
     /**

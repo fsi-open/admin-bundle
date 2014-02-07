@@ -17,7 +17,7 @@ use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class FormSubmitHandler implements HandlerInterface
+class CreateFormSubmitHandler implements HandlerInterface
 {
     /**
      * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface

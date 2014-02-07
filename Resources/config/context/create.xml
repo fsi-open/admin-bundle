@@ -7,8 +7,8 @@
     <parameters>
         <parameter key="admin.doctrine.context.create.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\CreateContext</parameter>
         <parameter key="admin.doctrine.context_builder.create.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\CreateContextBuilder</parameter>
-        <parameter key="admin.doctrine.context.create.request_handler.form_submit.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\FormSubmitHandler</parameter>
-        <parameter key="admin.doctrine.context.create.request_handler.form_valid_request.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\FormValidRequestHandler</parameter>
+        <parameter key="admin.doctrine.context.create.request_handler.create_form_submit.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\CreateFormSubmitHandler</parameter>
+        <parameter key="admin.doctrine.context.create.request_handler.create_form_valid_request.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\CreateFormValidRequestHandler</parameter>
     </parameters>
 
     <services>
@@ -20,18 +20,18 @@
 
         <service id="admin.doctrine.context.create" class="%admin.doctrine.context.create.class%">
             <argument type="collection">
-                <argument type="service" id="admin.doctrine.context.create.request_handler.form_submit"/>
-                <argument type="service" id="admin.doctrine.context.create.request_handler.form_valid_request"/>
+                <argument type="service" id="admin.doctrine.context.create.request_handler.create_form_submit"/>
+                <argument type="service" id="admin.doctrine.context.create.request_handler.create_form_valid_request"/>
             </argument>
         </service>
 
-        <service id="admin.doctrine.context.create.request_handler.form_submit"
-                class="%admin.doctrine.context.create.request_handler.form_submit.class%">
+        <service id="admin.doctrine.context.create.request_handler.create_form_submit"
+                class="%admin.doctrine.context.create.request_handler.create_form_submit.class%">
             <argument type="service" id="event_dispatcher" />
         </service>
 
-        <service id="admin.doctrine.context.create.request_handler.form_valid_request"
-                 class="%admin.doctrine.context.create.request_handler.form_valid_request.class%">
+        <service id="admin.doctrine.context.create.request_handler.create_form_valid_request"
+                 class="%admin.doctrine.context.create.request_handler.create_form_valid_request.class%">
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="router" />
         </service>

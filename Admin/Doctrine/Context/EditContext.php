@@ -9,14 +9,11 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
-use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -24,19 +21,14 @@ use Symfony\Component\Routing\Router;
 class EditContext implements ContextInterface
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var HandlerInterface[]
      */
-    protected $dispatcher;
+    private $requestHandlers;
 
     /**
      * @var \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement
      */
     protected $element;
-
-    /**
-     * @var \Symfony\Component\Routing\Router
-     */
-    protected $router;
 
     /**
      * @var \Symfony\Component\Form\Form
@@ -46,21 +38,31 @@ class EditContext implements ContextInterface
     /**
      * @var mixed
      */
-    protected $data;
+    protected $entity;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
-     * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
-     * @param \Symfony\Component\Routing\Router $router
-     * @param $data mixed
+     * @param array $requestHandlers
      */
-    public function __construct(EventDispatcherInterface $dispatcher, CRUDElement $element, Router $router, $data)
+    public function __construct($requestHandlers)
     {
-        $this->dispatcher = $dispatcher;
+        $this->requestHandlers = $requestHandlers;
+    }
+
+    /**
+     * @param CRUDElement $element
+     */
+    public function setElement(CRUDElement $element)
+    {
         $this->element = $element;
-        $this->router = $router;
-        $this->data = $data;
-        $this->form = $this->element->createForm($this->data);
+    }
+
+    /**
+     * @param $entity
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+        $this->form = $this->element->createForm($entity);
     }
 
     /**
@@ -70,6 +72,13 @@ class EditContext implements ContextInterface
     {
         $event = new FormEvent($this->element, $request, $this->form);
 
+        foreach ($this->requestHandlers as $handler) {
+            $response = $handler->handleRequest($event, $request);
+            if (isset($response)) {
+                return $response;
+            }
+        }
+        /*
         $this->dispatcher->dispatch(CRUDEvents::CRUD_EDIT_CONTEXT_POST_CREATE, $event);
         if ($event->hasResponse()) {
             return $event->getResponse();
@@ -115,6 +124,7 @@ class EditContext implements ContextInterface
         }
 
         return null;
+        */
     }
 
     /**
@@ -141,7 +151,7 @@ class EditContext implements ContextInterface
         return array(
             'element' => $this->element,
             'form' => $this->form->createView(),
-            'id' => $this->element->getDataIndexer()->getIndex($this->data),
+            'id' => $this->element->getDataIndexer()->getIndex($this->entity),
             'title' => $this->element->getOption('crud_edit_title'),
         );
     }
