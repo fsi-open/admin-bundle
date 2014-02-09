@@ -1,8 +1,8 @@
 #Events 
 
 Admin bundle provide several events that can be handled in application.
-List of available events can be found in [AdminEvents](Event/AdminEvents.php) and
-[ResourceEvents](Event/ResourceEvents.php). Listeners of ``CRUD_LIST_*`` events will receive one argument of
+List of available events can be found in [CRUDEvents](/Event/CRUDEvents.php) and
+[ResourceEvents](/Event/ResourceEvents.php). Listeners of ``CRUD_LIST_*`` events will receive one argument of
 ``FSi\Bundle\AdminBundle\Event\ListEvent`` class. Listeners of all the other events will receive one argument of
 ``FSi\Bundle\AdminBundle\Event\FormEvent`` class.
 
