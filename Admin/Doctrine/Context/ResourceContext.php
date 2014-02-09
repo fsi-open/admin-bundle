@@ -13,7 +13,7 @@ use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
+use FSi\Bundle\AdminBundle\Exception\ContextException;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -123,7 +123,7 @@ class ResourceContext implements ContextInterface
         $resources = $this->getResourceGroup($this->element);
 
         if (!is_array($resources)) {
-            throw new ContextBuilderException(sprintf('%s its not a resource group key', $this->element->getKey()));
+            throw new ContextException(sprintf('%s its not a resource group key', $this->element->getKey()));
         }
 
         $builder = $this->formFactory->createBuilder(

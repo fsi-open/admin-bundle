@@ -10,7 +10,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
-use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
+use FSi\Bundle\AdminBundle\Exception\ContextException;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\TextType;
 use PhpSpec\ObjectBehavior;
@@ -62,7 +62,7 @@ class ResourceContextSpec extends ObjectBehavior
         ));
 
         $this->shouldThrow(
-                new ContextBuilderException("resources.resource_key its not a resource group key")
+                new ContextException("resources.resource_key its not a resource group key")
             )->during(
                 'setElement',
                 array($resourceElement)
