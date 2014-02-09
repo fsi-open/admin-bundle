@@ -10,7 +10,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
-use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ListContext;
+use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Read\ListContext;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

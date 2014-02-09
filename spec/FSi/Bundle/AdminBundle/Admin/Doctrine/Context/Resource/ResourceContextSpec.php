@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
+namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Resource;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Exception\ContextException;

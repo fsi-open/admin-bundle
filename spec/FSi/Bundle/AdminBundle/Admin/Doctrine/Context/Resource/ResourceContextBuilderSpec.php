@@ -7,15 +7,15 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
+namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Resource;
 
-use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ListContext;
-use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
+use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Resource\ResourceContext;
 use PhpSpec\ObjectBehavior;
+use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
 
-class ListContextBuilderSpec extends ObjectBehavior
+class ResourceContextBuilderSpec extends ObjectBehavior
 {
-    function let(ListContext $context)
+    function let(ResourceContext $context)
     {
         $this->beConstructedWith($context);
     }
@@ -25,14 +25,15 @@ class ListContextBuilderSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface');
     }
 
-    function it_supports_doctrine_crud_element(CRUDElement $element)
+    function it_supports_doctrine_resource_element(ResourceElement $element)
     {
-        $this->supports('fsi_admin_crud_list', $element)->shouldReturn(true);
+        $this->supports('fsi_admin_resource', $element)->shouldReturn(true);
     }
 
-    function it_build_context(ListContext $context, CRUDElement $element)
+    function it_build_context(ResourceElement $element, ResourceContext $context)
     {
         $context->setElement($element)->shouldBeCalled();
+
         $this->buildContext($element)->shouldReturn($context);
     }
 }

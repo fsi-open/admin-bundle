@@ -7,27 +7,26 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
+namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Resource;
 
-use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
-use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
+use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class CreateContextBuilder implements ContextBuilderInterface
+class ResourceContextBuilder implements ContextBuilderInterface
 {
     /**
-     * @var CreateContext
+     * @var ResourceContext
      */
     private $context;
 
     /**
-     * @param CreateContext $context
+     * @param ResourceContext $context
      */
-    public function __construct(CreateContext $context)
+    public function __construct(ResourceContext $context)
     {
         $this->context = $context;
     }
@@ -41,15 +40,11 @@ class CreateContextBuilder implements ContextBuilderInterface
             return false;
         }
 
-        if ($element instanceof CRUDElement) {
-            if ($element->getOption('allow_add')) {
-                return true;
-            }
-
-            throw new ContextBuilderException(sprintf("%s does not allow to create objects", $element->getName()));
+        if (!$element instanceof ResourceElement) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -67,6 +62,6 @@ class CreateContextBuilder implements ContextBuilderInterface
      */
     protected function getSupportedRoute()
     {
-        return 'fsi_admin_crud_create';
+        return 'fsi_admin_resource';
     }
 }

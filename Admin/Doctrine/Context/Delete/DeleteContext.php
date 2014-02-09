@@ -7,21 +7,22 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
+namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Delete;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class CreateContext implements ContextInterface
+class DeleteContext implements ContextInterface
 {
     /**
-     * @var HandlerInterface[]
+     * @var HandlerInterface
      */
     private $requestHandlers;
 
@@ -36,11 +37,21 @@ class CreateContext implements ContextInterface
     protected $form;
 
     /**
-     * @param $requestHandlers
+     * @var array
      */
-    public function __construct($requestHandlers)
-    {
+    protected $indexes;
+
+    /**
+     * @param array $requestHandlers
+     * @param FormFactoryInterface $factory
+     */
+    public function __construct(
+        array $requestHandlers,
+        FormFactoryInterface $factory
+    ) {
+        $this->factory = $factory;
         $this->requestHandlers = $requestHandlers;
+        $this->form = $this->factory->createNamed('delete', 'form');
     }
 
     /**
@@ -49,7 +60,6 @@ class CreateContext implements ContextInterface
     public function setElement(CRUDElement $element)
     {
         $this->element = $element;
-        $this->form = $this->element->createForm();
     }
 
     /**
@@ -58,6 +68,7 @@ class CreateContext implements ContextInterface
     public function handleRequest(Request $request)
     {
         $event = new FormEvent($this->element, $request, $this->form);
+        $this->indexes = $request->request->get('indexes', array());
 
         foreach ($this->requestHandlers as $handler) {
             $response = $handler->handleRequest($event, $request);
@@ -72,7 +83,7 @@ class CreateContext implements ContextInterface
      */
     public function hasTemplateName()
     {
-        return $this->element->hasOption('template_crud_create');
+        return $this->element->hasOption('template_crud_delete');
     }
 
     /**
@@ -80,7 +91,7 @@ class CreateContext implements ContextInterface
      */
     public function getTemplateName()
     {
-        return $this->element->getOption('template_crud_create');
+        return $this->element->getOption('template_crud_delete');
     }
 
     /**
@@ -90,8 +101,8 @@ class CreateContext implements ContextInterface
     {
         return array(
             'element' => $this->element,
+            'indexes' => $this->indexes,
             'form' => $this->form->createView(),
-            'title' => $this->element->getOption('crud_create_title'),
         );
     }
 }
