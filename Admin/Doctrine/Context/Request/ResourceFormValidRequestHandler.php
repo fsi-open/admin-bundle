@@ -12,8 +12,6 @@ namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\ResourceEvents;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class ResourceFormValidRequestHandler extends AbstractFormValidRequestHandler
 {

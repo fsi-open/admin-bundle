@@ -11,8 +11,6 @@ namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request;
 
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
-use FSi\Bundle\AdminBundle\Event\ListEvent;
-use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
 
 class DataGridSetDataHandler extends AbstractListRequestHandler
