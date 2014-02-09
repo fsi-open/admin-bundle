@@ -7,16 +7,13 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
+namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Delete;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -24,7 +21,7 @@ use Symfony\Component\Routing\Router;
 class DeleteContextBuilder implements ContextBuilderInterface
 {
     /**
-     * @var EditContext
+     * @var DeleteContext
      */
     private $context;
 
@@ -34,9 +31,7 @@ class DeleteContextBuilder implements ContextBuilderInterface
     protected $request;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-     * @param \Symfony\Component\Routing\Router $router
-     * @param \Symfony\Component\Form\FormFactoryInterface $factory
+     * @param DeleteContext $context
      */
     public function __construct(DeleteContext $context)
     {

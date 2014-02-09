@@ -11,8 +11,6 @@ namespace FSi\Bundle\AdminBundle\Admin\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
-use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDInterface;
-use FSi\Bundle\AdminBundle\Admin\Doctrine\DoctrineAwareInterface;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 

@@ -7,16 +7,13 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
+namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Delete;
 
-use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\DeleteContext;
+use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Delete\DeleteContext;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
-use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
 
@@ -28,11 +25,6 @@ class DeleteContextBuilderSpec extends ObjectBehavior
         $this->setRequest($request);
         $bag->get('indexes', array())->willReturn(array(1, 2));
         $request->request = $bag;
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\DeleteContextBuilder');
     }
 
     function it_is_context_builder()
@@ -61,8 +53,9 @@ class DeleteContextBuilderSpec extends ObjectBehavior
             ->during('supports', array('fsi_admin_crud_delete', $element));
     }
 
-    function it_build_context(CRUDElement $element)
+    function it_build_context(CRUDElement $element, DeleteContext $context)
     {
-        $this->buildContext($element)->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\DeleteContext');
+        $context->setElement($element)->shouldBeCalled();
+        $this->buildContext($element)->shouldReturn($context);
     }
 }

@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
+namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Edit;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
@@ -29,11 +29,6 @@ class EditContextSpec extends ObjectBehavior
         $this->setElement($element);
         $element->createForm($this->data)->willReturn($form);
         $this->setEntity($this->data);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\EditContext');
     }
 
     function it_is_context()

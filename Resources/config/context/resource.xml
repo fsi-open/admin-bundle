@@ -5,8 +5,8 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="admin.doctrine.context.resource.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ResourceContext</parameter>
-        <parameter key="admin.doctrine.context_builder.resource.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ResourceContextBuilder</parameter>
+        <parameter key="admin.doctrine.context.resource.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Resource\ResourceContext</parameter>
+        <parameter key="admin.doctrine.context_builder.resource.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Resource\ResourceContextBuilder</parameter>
         <parameter key="admin.doctrine.context.resource.request_handler.create_form_submit.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\ResourceFormSubmitHandler</parameter>
         <parameter key="admin.doctrine.context.resource.request_handler.create_form_valid_request.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\ResourceFormValidRequestHandler</parameter>
     </parameters>

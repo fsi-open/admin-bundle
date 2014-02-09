@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
+namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Create;
 
-use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\CreateContext;
+use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Create\CreateContext;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use PhpSpec\ObjectBehavior;

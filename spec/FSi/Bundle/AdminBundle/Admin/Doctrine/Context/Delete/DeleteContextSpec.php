@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
+namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Delete;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
@@ -30,14 +30,9 @@ class DeleteContextSpec extends ObjectBehavior
         FormView $view
     ) {
         $factory->createNamed('delete', 'form')->willReturn($form);
-        $this->beConstructedWith($factory, array($handler));
+        $this->beConstructedWith(array($handler), $factory);
         $this->setElement($element);
         $form->createView()->willReturn($view);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\DeleteContext');
     }
 
     function it_is_context()
