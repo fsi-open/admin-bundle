@@ -24,19 +24,9 @@ use Symfony\Component\Routing\Router;
 class DeleteContextBuilder implements ContextBuilderInterface
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var EditContext
      */
-    protected $dispatcher;
-
-    /**
-     * @var \Symfony\Component\Routing\Router
-     */
-    protected $router;
-
-    /**
-     * @var \Symfony\Component\Form\FormFactoryInterface
-     */
-    protected $factory;
+    private $context;
 
     /**
      * @var \Symfony\Component\HttpFoundation\Request
@@ -48,11 +38,9 @@ class DeleteContextBuilder implements ContextBuilderInterface
      * @param \Symfony\Component\Routing\Router $router
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
      */
-    public function __construct(EventDispatcherInterface $dispatcher, Router $router, FormFactoryInterface $factory)
+    public function __construct(DeleteContext $context)
     {
-        $this->dispatcher = $dispatcher;
-        $this->router = $router;
-        $this->factory = $factory;
+        $this->context = $context;
     }
 
     /**
@@ -77,12 +65,6 @@ class DeleteContextBuilder implements ContextBuilderInterface
                 throw new ContextBuilderException(sprintf("%s does not allow to delete objects", $element->getName()));
             }
 
-            $data = $this->getData($element);
-
-            if (!count($data)) {
-                throw new ContextBuilderException("There must be at least one object to execute delete action");
-            }
-
             return true;
         }
 
@@ -94,10 +76,9 @@ class DeleteContextBuilder implements ContextBuilderInterface
      */
     public function buildContext(ElementInterface $element)
     {
-        /* @var $element \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement */
-        $context = new DeleteContext($this->dispatcher, $element, $this->router, $this->factory, $this->getData($element));
+        $this->context->setElement($element);
 
-        return $context;
+        return $this->context;
     }
 
     /**
@@ -106,27 +87,5 @@ class DeleteContextBuilder implements ContextBuilderInterface
     protected function getSupportedRoute()
     {
         return 'fsi_admin_crud_delete';
-    }
-
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
-     * @return array
-     * @throws \FSi\Bundle\AdminBundle\Exception\ContextBuilderException
-     */
-    protected function getData(ElementInterface $element)
-    {
-        $data = array();
-        $indexes = $this->request->request->get('indexes', array());
-        foreach ($indexes as $index) {
-            $entity = $element->getDataIndexer()->getData($index);
-
-            if (!isset($entity)) {
-                throw new ContextBuilderException(sprintf('Cant find object with id %s', $index));
-            }
-
-            $data[] = $entity;
-        }
-
-        return $data;
     }
 }
