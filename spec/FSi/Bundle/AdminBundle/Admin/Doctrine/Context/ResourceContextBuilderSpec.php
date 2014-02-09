@@ -9,20 +9,15 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
-use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
-use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
+use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ResourceContext;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\Routing\Router;
 
 class ResourceContextBuilderSpec extends ObjectBehavior
 {
-    function let(EventDispatcher $dispatcher, MapBuilder $builder, FormFactory $formFactory, Router $router)
+    function let(ResourceContext $context)
     {
-        $this->beConstructedWith($dispatcher, $formFactory, $router, $builder);
+        $this->beConstructedWith($context);
     }
 
     function it_is_initializable()
@@ -40,25 +35,10 @@ class ResourceContextBuilderSpec extends ObjectBehavior
         $this->supports('fsi_admin_resource', $element)->shouldReturn(true);
     }
 
-    function it_throws_exception_when_element_match_but_map_builder_is_missing(ResourceElement $element, EventDispatcher $dispatcher, FormFactory $formFactory, Router $router)
+    function it_build_context(ResourceElement $element, ResourceContext $context)
     {
-        $this->beConstructedWith($dispatcher, $formFactory, $router, null);
+        $context->setElement($element)->shouldBeCalled();
 
-        $this->shouldThrow(new ContextBuilderException("MapBuilder is missing. Make sure that FSiResourceRepositoryBundle is registered in AppKernel"))
-            ->during('supports', array('fsi_admin_resource', $element));
-    }
-
-    function it_build_context(ResourceElement $element, MapBuilder $builder, FormFactory $formFactory, FormBuilder $formBuilder)
-    {
-        $builder->getMap()->willReturn(array(
-            'resources' => array()
-        ));
-
-        $element->getResourceFormOptions()->willReturn(array());
-        $element->getKey()->willReturn('resources');
-        $formFactory->createBuilder('form', array(),array())->shouldBeCalled()->willReturn($formBuilder);
-        $formBuilder->getForm()->shouldBeCalled();
-
-        $this->buildContext($element)->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ResourceContext');
+        $this->buildContext($element)->shouldReturn($context);
     }
 }

@@ -32,7 +32,6 @@ class FSIAdminExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
-        $loader->load('resource_repository.xml');
 
         if ($config['display_language_switch']) {
             $loader->load('locale_listener.xml');
@@ -42,6 +41,7 @@ class FSIAdminExtension extends Extension
         $loader->load('context/create.xml');
         $loader->load('context/edit.xml');
         $loader->load('context/delete.xml');
+        $loader->load('context/resource.xml');
     }
 
     /**

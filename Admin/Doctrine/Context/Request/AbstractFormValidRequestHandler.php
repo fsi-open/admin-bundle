@@ -48,7 +48,7 @@ abstract class AbstractFormValidRequestHandler extends AbstractFormRequestHandle
                     return $event->getResponse();
                 }
 
-                $event->getElement()->save($event->getForm()->getData());
+                $this->action($event);
                 $this->eventDispatcher->dispatch($this->getEntityPostSaveEventName(), $event);
 
                 if ($event->hasResponse()) {
@@ -65,6 +65,14 @@ abstract class AbstractFormValidRequestHandler extends AbstractFormRequestHandle
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
+    }
+
+    /**
+     * @param AdminEvent $event
+     */
+    protected function action(AdminEvent $event)
+    {
+        $event->getElement()->save($event->getForm()->getData());
     }
 
     /**

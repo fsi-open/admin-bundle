@@ -10,19 +10,16 @@
 namespace FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use FSi\Bundle\AdminBundle\Event\ResourceEvents;
-use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
+use FSi\Bundle\AdminBundle\Exception\ContextException;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Routing\Router;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -30,54 +27,48 @@ use Symfony\Component\Routing\Router;
 class ResourceContext implements ContextInterface
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var HandlerInterface[]
      */
-    protected $dispatcher;
+    private $requestHandlers;
 
     /**
      * @var \FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement
      */
-    protected $element;
+    private $element;
 
     /**
      * @var \FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder
      */
-    protected $builder;
+    private $mapBuilder;
 
     /**
      * @var \Symfony\Component\Form\FormFactory
      */
-    protected $formFactory;
-
-    /**
-     * @var \Symfony\Component\Routing\Router
-     */
-    protected $router;
+    private $formFactory;
 
     /**
      * @var \Symfony\Component\Form\Form
      */
-    protected $form;
+    private  $form;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-     * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement $element
-     * @param \FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder $builder
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     * @param \Symfony\Component\Routing\Router $router
+     * @param $requestHandlers
+     * @param \Symfony\Component\Form\FormFactoryInterface $formFactory
+     * @param \FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder $mapBuilder
      */
-    public function __construct(
-        EventDispatcherInterface $dispatcher,
-        ResourceElement $element,
-        MapBuilder $builder,
-        FormFactory $formFactory,
-        Router $router
-    ) {
-        $this->dispatcher = $dispatcher;
-        $this->element = $element;
-        $this->builder = $builder;
+    function __construct($requestHandlers, FormFactoryInterface $formFactory, MapBuilder $mapBuilder = null)
+    {
+        $this->requestHandlers = $requestHandlers;
         $this->formFactory = $formFactory;
-        $this->router = $router;
+        $this->mapBuilder = $mapBuilder;
+    }
+
+    /**
+     * @param ResourceElement $element
+     */
+    public function setElement(ResourceElement $element)
+    {
+        $this->element = $element;
         $this->createForm();
     }
 
@@ -87,55 +78,13 @@ class ResourceContext implements ContextInterface
     public function handleRequest(Request $request)
     {
         $event = new FormEvent($this->element, $request, $this->form);
-        $this->dispatcher->dispatch(ResourceEvents::RESOURCE_CONTEXT_POST_CREATE, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
 
-        if ($request->isMethod('POST')) {
-            $this->dispatcher->dispatch(ResourceEvents::RESOURCE_FORM_REQUEST_PRE_SUBMIT, $event);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            $this->form->submit($request);
-
-            $this->dispatcher->dispatch(ResourceEvents::RESOURCE_FORM_REQUEST_POST_SUBMIT, $event);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            if ($this->form->isValid()) {
-                $data = $this->form->getData();
-
-                $this->dispatcher->dispatch(ResourceEvents::RESOURCE_PRE_SAVE, $event);
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                foreach ($data as $object) {
-                    $this->element->getObjectManager()->persist($object);
-                }
-
-                $this->element->getObjectManager()->flush();
-
-                $this->dispatcher->dispatch(ResourceEvents::RESOURCE_POST_SAVE, $event);
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                return new RedirectResponse($this->router->generate('fsi_admin_resource', array(
-                    'element' => $this->element->getId(),
-                )));
+        foreach ($this->requestHandlers as $handler) {
+            $response = $handler->handleRequest($event, $request);
+            if (isset($response)) {
+                return $response;
             }
         }
-
-        $this->dispatcher->dispatch(ResourceEvents::RESOURCE_RESPONSE_PRE_RENDER, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        return null;
     }
 
     /**
@@ -169,12 +118,12 @@ class ResourceContext implements ContextInterface
     /**
      * @throws \FSi\Bundle\AdminBundle\Exception\ContextBuilderException
      */
-    protected function createForm()
+    private function createForm()
     {
         $resources = $this->getResourceGroup($this->element);
 
         if (!is_array($resources)) {
-            throw new ContextBuilderException(sprintf('%s its not a resource group key', $this->element->getKey()));
+            throw new ContextException(sprintf('%s its not a resource group key', $this->element->getKey()));
         }
 
         $builder = $this->formFactory->createBuilder(
@@ -191,9 +140,9 @@ class ResourceContext implements ContextInterface
      * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement $element
      * @return mixed
      */
-    protected function getResourceGroup(ResourceElement $element)
+    private function getResourceGroup(ResourceElement $element)
     {
-        $map = $this->builder->getMap();
+        $map = $this->mapBuilder->getMap();
 
         $parts = explode('.', $element->getKey());
         $propertyPath = '';
@@ -211,7 +160,7 @@ class ResourceContext implements ContextInterface
      * @param array $resources
      * @return array
      */
-    protected function createFormData(array $resources)
+    private function createFormData(array $resources)
     {
         $data = array();
 
@@ -228,7 +177,7 @@ class ResourceContext implements ContextInterface
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $resources
      */
-    protected function buildForm(FormBuilderInterface $builder, array $resources)
+    private function buildForm(FormBuilderInterface $builder, array $resources)
     {
         foreach ($resources as $resource) {
             if ($resource instanceof ResourceInterface) {
@@ -243,7 +192,7 @@ class ResourceContext implements ContextInterface
      * @param string $key
      * @return string
      */
-    protected function normalizeKey($key)
+    private function normalizeKey($key)
     {
         return str_replace('.', '_', $key);
     }

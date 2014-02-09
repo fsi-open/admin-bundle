@@ -9,36 +9,29 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Doctrine\Context;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use FSi\Bundle\AdminBundle\Event\ResourceEvents;
-use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
-use FSi\Bundle\ResourceRepositoryBundle\Entity\ResourceRepository;
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Exception\ContextException;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
-use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\EmailType;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\TextType;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResourceContextSpec extends ObjectBehavior
 {
     function let(
-        EventDispatcher $dispatcher,
+        HandlerInterface $handler,
         ResourceElement $element,
         MapBuilder $builder,
         FormFactory $formFactory,
-        Router $router,
         FormBuilder $formBuilder,
         Form $form
     ) {
-        $this->beConstructedWith($dispatcher, $element, $builder, $formFactory, $router);
-
         $builder->getMap()->willReturn(array(
             'resources' => array()
         ));
@@ -46,30 +39,34 @@ class ResourceContextSpec extends ObjectBehavior
         $element->getKey()->willReturn('resources');
         $formFactory->createBuilder('form', array(),array())->willReturn($formBuilder);
         $formBuilder->getForm()->willReturn($form);
+
+        $this->beConstructedWith(array($handler), $formFactory, $builder);
+        $this->setElement($element);
     }
 
-    function it_is_initializable()
+    function it_is_context()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\Context\ResourceContext');
+        $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
     function it_throw_exception_when_resource_key_is_not_resource_group_key(
-        EventDispatcher $dispatcher,
-        FormFactory $formFactory,
-        Router $router,
-        MapBuilder $MapBuilder,
-        ResourceElement $ResElement,
+        MapBuilder $builder,
+        ResourceElement $resourceElement,
         TextType $resource
     ) {
-        $ResElement->getKey()->willReturn('resources.resource_key');
-        $MapBuilder->getMap()->willReturn(array(
+        $resourceElement->getKey()->willReturn('resources.resource_key');
+        $builder->getMap()->willReturn(array(
             'resources' => array(
                 'resource_key' => $resource
             )
         ));
 
-        $this->shouldThrow(new ContextBuilderException("resources.resource_key its not a resource group key"))
-            ->during('__construct', array($dispatcher, $ResElement, $MapBuilder, $formFactory, $router));
+        $this->shouldThrow(
+                new ContextException("resources.resource_key its not a resource group key")
+            )->during(
+                'setElement',
+                array($resourceElement)
+            );
     }
 
     function it_have_array_data(ResourceElement $element)
@@ -82,93 +79,24 @@ class ResourceContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('element');
     }
 
-    function it_handle_valid_request_with_post(
-        Request $request,
-        MapBuilder $builder,
-        ResourceElement $element,
-        TextType $textResource,
-        EmailType $emailResource,
-        FormFactory $formFactory,
-        FormBuilder $formBuilder,
-        ResourceRepository $repository,
-        FormBuilder $textFormBuilder,
-        FormBuilder $emailFormBuilder,
-        Form $form,
-        Router $router,
-        ObjectManager $objectManager,
-        EventDispatcher $dispatcher
-    ) {
-        $element->getId()->willReturn('resource_page');
-        $element->getKey()->willReturn('resources');
-        $element->getResourceFormOptions()->shouldBeCalled()->willReturn(array());
-        $element->getRepository()->willReturn($repository);
-        $element->getObjectManager()->willReturn($objectManager);
-        $objectManager->flush()->shouldBeCalled();
-        $repository->get(Argument::type('string'))->willReturn(null);
-        $textResource->getName()->willReturn('resources.resource_text');
-        $emailResource->getName()->willReturn('resources.resource_email');
+    function it_handle_request_with_request_handlers(HandlerInterface $handler, Request $request)
+    {
+        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
+            ->shouldBeCalled();
 
-        $textResource->getFormBuilder($formFactory)->willReturn($textFormBuilder);
-        $emailResource->getFormBuilder($formFactory)->willReturn($emailFormBuilder);
-
-        $builder->getMap()->willReturn(array(
-            'resources' => array(
-                'resource_text' => $textResource,
-                'resource_email' => $emailResource
-            )
-        ));
-
-        $formFactory->createBuilder('form', array(
-                'resources_resource_text' => null,
-                'resources_resource_email' => null
-            ),
-            array()
-        )->shouldBeCalled()->willReturn($formBuilder);
-
-        $formBuilder->add('resources_resource_text', 'resource', array(
-            'resource_key' => 'resources.resource_text',
-        ))->shouldBeCalled();
-        $formBuilder->add('resources_resource_email', 'resource', array(
-            'resource_key' => 'resources.resource_email',
-        ))->shouldBeCalled();
-
-        $request->isMethod('POST')->shouldBeCalled()->willReturn(true);
-        $form->submit($request)->shouldBeCalled()->willReturn(true);
-        $form->isValid()->shouldBeCalled()->willReturn(true);
-        $form->getData()->shouldBeCalled()->willReturn(array());
-
-        $router->generate('fsi_admin_resource', array('element' => 'resource_page'))
-            ->shouldBeCalled()
-            ->willReturn('/admin/resource/resource_page');
-
-        $dispatcher->dispatch(
-            ResourceEvents::RESOURCE_CONTEXT_POST_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-        $dispatcher->dispatch(
-            ResourceEvents::RESOURCE_FORM_REQUEST_PRE_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-        $dispatcher->dispatch(
-            ResourceEvents::RESOURCE_FORM_REQUEST_POST_SUBMIT,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-        $dispatcher->dispatch(
-            ResourceEvents::RESOURCE_PRE_SAVE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-        $dispatcher->dispatch(
-            ResourceEvents::RESOURCE_POST_SAVE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldBeCalled();
-        $dispatcher->dispatch(
-            ResourceEvents::RESOURCE_RESPONSE_PRE_RENDER,
-            Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent')
-        )->shouldNotBeCalled();
-
-        $this->handleRequest($request)->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
+        $this->handleRequest($request)->shouldReturn(null);
     }
 
+    function it_return_response_from_handler(
+        HandlerInterface $handler,
+        Request $request
+    ) {
+        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
+            ->willReturn(new Response());
+
+        $this->handleRequest($request)
+            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+    }
     public function getMatchers()
     {
         return array(
