@@ -81,7 +81,9 @@ class CRUDController
      */
     public function deleteAction(AbstractCRUD $element, Request $request)
     {
-       return $this->action($element, $request, 'fsi_admin_crud_delete', $this->deleteActionTemplate);
+        echo phpversion();
+        die();
+        return $this->action($element, $request, 'fsi_admin_crud_delete', $this->deleteActionTemplate);
     }
 
     /**

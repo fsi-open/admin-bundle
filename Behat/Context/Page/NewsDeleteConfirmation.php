@@ -21,6 +21,8 @@ class NewsDeleteConfirmation extends Page
     protected function verifyPage()
     {
         if (!$this->has('css', 'div#delete-wrapper')) {
+            echo $this->getText();
+            die();
             throw new BehaviorException(sprintf("Page is not a delete confirmation page"));
         }
     }
