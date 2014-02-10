@@ -17,17 +17,17 @@ use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class ListContextBuilder implements ContextBuilderInterface
+class ContextBuilder implements ContextBuilderInterface
 {
     /**
-     * @var ListContext
+     * @var Context
      */
     private $context;
 
     /**
-     * @param ListContext $context
+     * @param Context $context
      */
-    public function __construct(ListContext $context)
+    public function __construct(Context $context)
     {
         $this->context = $context;
     }

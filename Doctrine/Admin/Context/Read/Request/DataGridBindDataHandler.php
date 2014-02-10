@@ -7,8 +7,9 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request;
+namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Request;
 
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request\AbstractListRequestHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use Symfony\Component\HttpFoundation\Request;

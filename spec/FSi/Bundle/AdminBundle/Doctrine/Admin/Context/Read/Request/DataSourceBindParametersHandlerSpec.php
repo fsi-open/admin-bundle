@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request;
+namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Request;
 
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
@@ -30,7 +30,7 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
     {
         $this->shouldThrow(
                 new RequestHandlerException(
-                    "FSi\\Bundle\\AdminBundle\\Doctrine\\Admin\\Context\\Request\\DataSourceBindParametersHandler require ListEvent"
+                    "FSi\\Bundle\\AdminBundle\\Doctrine\\Admin\\Context\\Read\\Request\\DataSourceBindParametersHandler require ListEvent"
                 )
             )->during('handleRequest', array($event, $request));
     }

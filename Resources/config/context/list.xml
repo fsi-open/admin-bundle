@@ -5,11 +5,11 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="admin.doctrine.context.list.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\ListContext</parameter>
-        <parameter key="admin.doctrine.context_builder.list.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\ListContextBuilder</parameter>
-        <parameter key="admin.doctrine.context.list.request_handler.datasource_bind_parameters.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request\DataSourceBindParametersHandler</parameter>
-        <parameter key="admin.doctrine.context.list.request_handler.datagrid_set_data.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request\DataGridSetDataHandler</parameter>
-        <parameter key="admin.doctrine.context.list.request_handler.datagrid_bind_data.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request\DataGridBindDataHandler</parameter>
+        <parameter key="admin.doctrine.context.list.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Context</parameter>
+        <parameter key="admin.doctrine.context_builder.list.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\ContextBuilder</parameter>
+        <parameter key="admin.doctrine.context.list.request_handler.datasource_bind_parameters.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Request\DataSourceBindParametersHandler</parameter>
+        <parameter key="admin.doctrine.context.list.request_handler.datagrid_set_data.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Request\DataGridSetDataHandler</parameter>
+        <parameter key="admin.doctrine.context.list.request_handler.datagrid_bind_data.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Request\DataGridBindDataHandler</parameter>
     </parameters>
 
     <services>

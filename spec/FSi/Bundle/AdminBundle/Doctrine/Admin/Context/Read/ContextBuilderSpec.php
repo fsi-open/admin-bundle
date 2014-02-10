@@ -9,13 +9,13 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read;
 
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\ListContext;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Context;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use PhpSpec\ObjectBehavior;
 
-class ListContextBuilderSpec extends ObjectBehavior
+class ContextBuilderSpec extends ObjectBehavior
 {
-    function let(ListContext $context)
+    function let(Context $context)
     {
         $this->beConstructedWith($context);
     }
@@ -30,7 +30,7 @@ class ListContextBuilderSpec extends ObjectBehavior
         $this->supports('fsi_admin_crud_list', $element)->shouldReturn(true);
     }
 
-    function it_build_context(\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\ListContext $context, CRUDElement $element)
+    function it_build_context(Context $context, CRUDElement $element)
     {
         $context->setElement($element)->shouldBeCalled();
         $this->buildContext($element)->shouldReturn($context);

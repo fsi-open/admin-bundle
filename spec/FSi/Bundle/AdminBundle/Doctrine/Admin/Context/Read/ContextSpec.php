@@ -18,7 +18,7 @@ use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListContextSpec extends ObjectBehavior
+class ContextSpec extends ObjectBehavior
 {
     function let(CRUDElement $element, DataSource $datasource, DataGrid $datagrid, HandlerInterface $handler)
     {

@@ -10,7 +10,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\ListContext;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Context;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -48,7 +48,7 @@ class ResourceControllerSpec extends ObjectBehavior
         Response $response,
         AbstractResource $element,
         ContextManager $manager,
-        ListContext $context,
+        Context $context,
         DelegatingEngine $templating
     ) {
         $manager->createContext('fsi_admin_resource', $element)->shouldBeCalled()->willReturn($context);
@@ -63,7 +63,7 @@ class ResourceControllerSpec extends ObjectBehavior
     function it_render_template_from_element_in_resource_action(
         ContextManager $manager,
         AbstractResource $element,
-        ListContext $context,
+        Context $context,
         Request $request,
         DelegatingEngine $templating,
         Response $response
@@ -81,7 +81,7 @@ class ResourceControllerSpec extends ObjectBehavior
     function it_return_response_from_context_in_resource_action(
         ContextManager $manager,
         AbstractResource $element,
-        ListContext $context,
+        Context $context,
         Request $request,
         Response $response
     ) {
