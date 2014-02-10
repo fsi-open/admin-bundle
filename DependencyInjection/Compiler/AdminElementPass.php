@@ -40,7 +40,8 @@ class AdminElementPass implements CompilerPassInterface
             if (in_array('FSi\Bundle\AdminBundle\Admin\CRUD\FormAwareInterface', $implements)) {
                 $element->addMethodCall('setFormFactory', array($container->findDefinition('form.factory')));
             }
-            if (in_array('FSi\Bundle\AdminBundle\Admin\Doctrine\DoctrineAwareInterface', $implements)) {
+            if (in_array('FSi\Bundle\AdminBundle\Admin\Doctrine\DoctrineAwareInterface', $implements)
+                || in_array('FSi\Bundle\AdminBundle\Doctrine\Admin\DoctrineAwareInterface', $implements)) {
                 $element->addMethodCall('setManagerRegistry', array($container->findDefinition('doctrine')));
             }
 

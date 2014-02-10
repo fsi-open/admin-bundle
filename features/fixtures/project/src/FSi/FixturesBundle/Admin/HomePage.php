@@ -2,7 +2,7 @@
 
 namespace FSi\FixturesBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
 
 class HomePage extends ResourceElement
 {

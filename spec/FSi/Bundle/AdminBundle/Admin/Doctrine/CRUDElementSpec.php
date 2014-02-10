@@ -24,11 +24,6 @@ class CRUDElementSpec extends ObjectBehavior
         $this->beConstructedWith(array());
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement');
-    }
-
     public function it_should_return_object_manager(ManagerRegistry $registry, ObjectManager $om)
     {
         $registry->getManagerForClass('FSiDemoBundle:Entity')->shouldBeCalledTimes(1)->willReturn($om);

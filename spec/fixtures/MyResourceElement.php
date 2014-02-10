@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\spec\fixtures;
 
-use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
 
 class MyResourceElement extends ResourceElement
 {

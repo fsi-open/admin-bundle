@@ -151,7 +151,7 @@ should be created only for specific User. Ok, so lets start with ``UserInvoice``
 
 namespace Acme\DemoBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -256,7 +256,7 @@ namespace Acme\DemoBundle\Admin;
 
 use Acme\DemoBundle\Entity\User as UserEntity;
 use Acme\DemoBundle\Admin\UserInvoice;
-use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;

@@ -9,60 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Doctrine;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
-use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement as BaseResourceElement;
 
 /**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
+ * @deprecated Deprecated since version 1.0, to be removed in 1.2. Use
+ *             FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement instead.
  */
-abstract class ResourceElement extends AbstractResource implements DoctrineAwareInterface
+abstract class ResourceElement extends BaseResourceElement
 {
-    /**
-     * @var \Doctrine\Common\Persistence\ManagerRegistry
-     */
-    protected $registry;
-
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $om;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setManagerRegistry(ManagerRegistry $registry)
-    {
-        $this->registry = $registry;
-    }
-
-    /**
-     * @return string
-     */
-    abstract public function getClassName();
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    public function getRepository()
-    {
-        return $this->registry->getRepository($this->getClassName());
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
-     */
-    public function getObjectManager()
-    {
-        if (!isset($this->om)) {
-            $this->om = $this->registry->getManagerForClass($this->getClassName());
-        }
-
-        if (is_null($this->om)) {
-            throw new RuntimeException(sprintf('Registry manager does\'t have manager for class "%s".', $this->getClassName()));
-        }
-
-        return $this->om;
-    }
 }
