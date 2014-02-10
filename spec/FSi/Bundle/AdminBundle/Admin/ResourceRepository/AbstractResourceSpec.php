@@ -48,6 +48,7 @@ class AbstractResourceSpec extends ObjectBehavior
     function it_has_default_options_values()
     {
         $this->getOptions()->shouldReturn(array(
+            'menu' => true,
             'template' => null,
             'title' => 'resource.title'
         ));

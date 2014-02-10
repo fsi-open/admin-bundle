@@ -81,6 +81,7 @@ class AbstractCRUDSpec extends ObjectBehavior
     function it_has_default_options_values()
     {
         $this->getOptions()->shouldReturn(array(
+            'menu' => true,
             'allow_delete' => true,
             'allow_add' => true,
             'allow_edit' => true,
