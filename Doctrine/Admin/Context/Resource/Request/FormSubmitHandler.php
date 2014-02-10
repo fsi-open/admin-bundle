@@ -7,11 +7,12 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request;
+namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Resource\Request;
 
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request\AbstractFormSubmitHandler;
 use FSi\Bundle\AdminBundle\Event\ResourceEvents;
 
-class ResourceFormSubmitHandler extends AbstractFormSubmitHandler
+class FormSubmitHandler extends AbstractFormSubmitHandler
 {
     /**
      * @return string

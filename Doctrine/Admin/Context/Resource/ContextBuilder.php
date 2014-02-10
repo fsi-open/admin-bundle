@@ -17,17 +17,17 @@ use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class ResourceContextBuilder implements ContextBuilderInterface
+class ContextBuilder implements ContextBuilderInterface
 {
     /**
-     * @var ResourceContext
+     * @var Context
      */
     private $context;
 
     /**
-     * @param ResourceContext $context
+     * @param Context $context
      */
-    public function __construct(ResourceContext $context)
+    public function __construct(Context $context)
     {
         $this->context = $context;
     }

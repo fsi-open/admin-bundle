@@ -24,7 +24,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class ResourceContext implements ContextInterface
+class Context implements ContextInterface
 {
     /**
      * @var HandlerInterface[]

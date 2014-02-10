@@ -7,13 +7,14 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request;
+namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Resource\Request;
 
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request\AbstractFormValidRequestHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\ResourceEvents;
 
-class ResourceFormValidRequestHandler extends AbstractFormValidRequestHandler
+class FormValidRequestHandler extends AbstractFormValidRequestHandler
 {
     /**
      * @return string

@@ -22,7 +22,7 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ResourceContextSpec extends ObjectBehavior
+class ContextSpec extends ObjectBehavior
 {
     function let(
         HandlerInterface $handler,
