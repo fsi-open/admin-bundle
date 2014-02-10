@@ -10,13 +10,13 @@
 namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Create;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Create\CreateContext;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Create\Context;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use PhpSpec\ObjectBehavior;
 
-class CreateContextBuilderSpec extends ObjectBehavior
+class ContextBuilderSpec extends ObjectBehavior
 {
-    function let(CreateContext $context)
+    function let(Context $context)
     {
         $this->beConstructedWith($context);
     }
@@ -41,7 +41,7 @@ class CreateContextBuilderSpec extends ObjectBehavior
             ->during('supports', array('fsi_admin_crud_create', $element));
     }
 
-    function it_build_context(CreateContext $context, CRUDElement $element)
+    function it_build_context(Context $context, CRUDElement $element)
     {
         $context->setElement($element)->shouldBeCalled();
         $this->buildContext($element)->shouldReturn($context);

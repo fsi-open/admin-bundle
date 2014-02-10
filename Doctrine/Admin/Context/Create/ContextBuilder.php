@@ -18,17 +18,17 @@ use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class CreateContextBuilder implements ContextBuilderInterface
+class ContextBuilder implements ContextBuilderInterface
 {
     /**
-     * @var CreateContext
+     * @var Context
      */
     private $context;
 
     /**
-     * @param CreateContext $context
+     * @param Context $context
      */
-    public function __construct(CreateContext $context)
+    public function __construct(Context $context)
     {
         $this->context = $context;
     }

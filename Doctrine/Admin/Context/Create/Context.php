@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class CreateContext implements ContextInterface
+class Context implements ContextInterface
 {
     /**
      * @var HandlerInterface[]

@@ -17,8 +17,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class
-CreateContextSpec extends ObjectBehavior
+class ContextSpec extends ObjectBehavior
 {
     function let(CRUDElement $element, Form $form, HandlerInterface $handler)
     {
