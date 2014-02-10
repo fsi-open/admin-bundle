@@ -5,10 +5,10 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="admin.doctrine.context.delete.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Delete\DeleteContext</parameter>
-        <parameter key="admin.doctrine.context_builder.delete.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Delete\DeleteContextBuilder</parameter>
-        <parameter key="admin.doctrine.context.delete.request_handler.delete_form_submit.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\DeleteFormSubmitHandler</parameter>
-        <parameter key="admin.doctrine.context.delete.request_handler.delete_form_valid_request.class">FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Request\DeleteFormValidRequestHandler</parameter>
+        <parameter key="admin.doctrine.context.delete.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\Context</parameter>
+        <parameter key="admin.doctrine.context_builder.delete.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\ContextBuilder</parameter>
+        <parameter key="admin.doctrine.context.delete.request_handler.form_submit.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\Request\FormSubmitHandler</parameter>
+        <parameter key="admin.doctrine.context.delete.request_handler.form_valid_request.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\Request\FormValidRequestHandler</parameter>
     </parameters>
 
     <services>
@@ -23,19 +23,19 @@
 
         <service id="admin.doctrine.context.delete" class="%admin.doctrine.context.delete.class%">
             <argument type="collection">
-                <argument type="service" id="admin.doctrine.context.delete.request_handler.delete_form_submit"/>
-                <argument type="service" id="admin.doctrine.context.delete.request_handler.delete_form_valid_request"/>
+                <argument type="service" id="admin.doctrine.context.delete.request_handler.form_submit"/>
+                <argument type="service" id="admin.doctrine.context.delete.request_handler.form_valid_request"/>
             </argument>
             <argument type="service" id="form.factory" />
         </service>
 
-        <service id="admin.doctrine.context.delete.request_handler.delete_form_submit"
-                class="%admin.doctrine.context.delete.request_handler.delete_form_submit.class%">
+        <service id="admin.doctrine.context.delete.request_handler.form_submit"
+                class="%admin.doctrine.context.delete.request_handler.form_submit.class%">
             <argument type="service" id="event_dispatcher" />
         </service>
 
-        <service id="admin.doctrine.context.delete.request_handler.delete_form_valid_request"
-                 class="%admin.doctrine.context.delete.request_handler.delete_form_valid_request.class%">
+        <service id="admin.doctrine.context.delete.request_handler.form_valid_request"
+                 class="%admin.doctrine.context.delete.request_handler.form_valid_request.class%">
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="router" />
         </service>

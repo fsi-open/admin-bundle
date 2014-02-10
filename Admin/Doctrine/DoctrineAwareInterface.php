@@ -9,16 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Doctrine;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\DoctrineAwareInterface as BaseDoctrineAwareInterface;
 
 /**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
+ * @deprecated Deprecated since version 1.0, to be removed in 1.2. Use
+ *             FSi\Bundle\AdminBundle\Doctrine\Admin\DoctrineAwareInterface instead.
  */
-interface DoctrineAwareInterface
+interface DoctrineAwareInterface extends BaseDoctrineAwareInterface
 {
-    /**
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
-     * @return mixed
-     */
-    public function setManagerRegistry(ManagerRegistry $registry);
 }

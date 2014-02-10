@@ -37,8 +37,8 @@ class AdminElementPassSpec extends ObjectBehavior
         $container->findDefinition('form.factory')->willReturn($def);
         $container->findDefinition('doctrine')->willReturn($def);
 
-        $elmFoo->getClass()->shouldBeCalled()->willReturn('FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement');
-        $elmBar->getClass()->shouldBeCalled()->willReturn('FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement');
+        $elmFoo->getClass()->willReturn('FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement');
+        $elmBar->getClass()->willReturn('FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement');
 
         $elmFoo->addMethodCall('setDataGridFactory', Argument::containing(Argument::type('Symfony\Component\DependencyInjection\Definition')))
             ->shouldBeCalled();

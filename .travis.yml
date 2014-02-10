@@ -32,7 +32,6 @@ before_script:
 
 script:
     - composer self-update
-    - composer require symfony/symfony:${SYMFONY_VERSION}
-    - composer update -n --prefer-source
+    - composer require symfony/symfony:${SYMFONY_VERSION} -n --prefer-source
     - ./bin/phpspec run -f pretty
     - ./bin/behat --no-snippets --no-paths --verbose --format=progress

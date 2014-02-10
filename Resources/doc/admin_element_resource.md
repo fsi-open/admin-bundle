@@ -84,7 +84,7 @@ resources:
 
 namespace FSi\Bundle\DemoBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
 
 class MainPage extends ResourceElement
 {

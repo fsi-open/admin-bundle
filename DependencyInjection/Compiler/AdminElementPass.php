@@ -11,6 +11,7 @@ namespace FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -29,20 +30,11 @@ class AdminElementPass implements CompilerPassInterface
         $elementServices = $container->findTaggedServiceIds('admin.element');
         foreach ($elementServices as $id => $tag) {
             $element = $container->findDefinition($id);
-            $implements = class_implements($element->getClass());
 
-            if (in_array('FSi\Bundle\AdminBundle\Admin\CRUD\DataGridAwareInterface', $implements)) {
-                $element->addMethodCall('setDataGridFactory', array($container->findDefinition('datagrid.factory')));
-            }
-            if (in_array('FSi\Bundle\AdminBundle\Admin\CRUD\DataSourceAwareInterface', $implements)) {
-                $element->addMethodCall('setDataSourceFactory', array($container->findDefinition('datasource.factory')));
-            }
-            if (in_array('FSi\Bundle\AdminBundle\Admin\CRUD\FormAwareInterface', $implements)) {
-                $element->addMethodCall('setFormFactory', array($container->findDefinition('form.factory')));
-            }
-            if (in_array('FSi\Bundle\AdminBundle\Admin\Doctrine\DoctrineAwareInterface', $implements)) {
-                $element->addMethodCall('setManagerRegistry', array($container->findDefinition('doctrine')));
-            }
+            $this->handleDataGridAwareElement($element, $container);
+            $this->handleDataSourceAwareElement($element, $container);
+            $this->handleFormAwareElement($element, $container);
+            $this->handleDoctrineAwareElement($element, $container);
 
             $group = (isset($tag[0]['alias'])) ? $tag[0]['alias'] : null;
 
@@ -50,6 +42,60 @@ class AdminElementPass implements CompilerPassInterface
                 $element,
                 $group,
             ));
+        }
+    }
+
+    /**
+     * @param Definition $definition
+     * @param ContainerBuilder $container
+     */
+    private function handleDataGridAwareElement(Definition $definition, ContainerBuilder $container)
+    {
+        $implements = class_implements($definition->getClass());
+
+        if (in_array('FSi\Bundle\AdminBundle\Admin\CRUD\DataGridAwareInterface', $implements)) {
+            $definition->addMethodCall('setDataGridFactory', array($container->findDefinition('datagrid.factory')));
+        }
+    }
+
+    /**
+     * @param Definition $definition
+     * @param ContainerBuilder $container
+     */
+    private function handleDataSourceAwareElement(Definition $definition, ContainerBuilder $container)
+    {
+        $implements = class_implements($definition->getClass());
+
+        if (in_array('FSi\Bundle\AdminBundle\Admin\CRUD\DataSourceAwareInterface', $implements)) {
+            $definition->addMethodCall('setDataSourceFactory', array($container->findDefinition('datasource.factory')));
+        }
+    }
+
+
+    /**
+     * @param Definition $definition
+     * @param ContainerBuilder $container
+     */
+    private function handleFormAwareElement(Definition $definition, ContainerBuilder $container)
+    {
+        $implements = class_implements($definition->getClass());
+
+        if (in_array('FSi\Bundle\AdminBundle\Admin\CRUD\FormAwareInterface', $implements)) {
+            $definition->addMethodCall('setFormFactory', array($container->findDefinition('form.factory')));
+        }
+    }
+
+    /**
+     * @param Definition $definition
+     * @param ContainerBuilder $container
+     */
+    private function handleDoctrineAwareElement(Definition $definition, ContainerBuilder $container)
+    {
+        $implements = class_implements($definition->getClass());
+
+        if (in_array('FSi\Bundle\AdminBundle\Admin\Doctrine\DoctrineAwareInterface', $implements)
+            || in_array('FSi\Bundle\AdminBundle\Doctrine\Admin\DoctrineAwareInterface', $implements)) {
+            $definition->addMethodCall('setManagerRegistry', array($container->findDefinition('doctrine')));
         }
     }
 }

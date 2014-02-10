@@ -11,8 +11,10 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
-use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Create\CreateContext;
-use FSi\Bundle\AdminBundle\Admin\Doctrine\Context\Read\ListContext;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Create\Context as CreateContext;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\Context as DeleteContext;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Context as ReadContext;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Edit\Context as EditContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -62,7 +64,7 @@ class CRUDControllerSpec extends ObjectBehavior
         Response $response,
         AbstractCRUD $element,
         ContextManager $manager,
-        ListContext $context,
+        ReadContext $context,
         EngineInterface $templating
     ) {
         $manager->createContext('fsi_admin_crud_list', $element)->shouldBeCalled()->willReturn($context);
@@ -77,7 +79,7 @@ class CRUDControllerSpec extends ObjectBehavior
     function it_render_template_from_element_in_list_action(
         ContextManager $manager,
         AbstractCRUD $element,
-        ListContext $context,
+        ReadContext $context,
         Request $request,
         EngineInterface $templating,
         Response $response
@@ -95,7 +97,7 @@ class CRUDControllerSpec extends ObjectBehavior
     function it_return_response_from_context_in_list_action(
         ContextManager $manager,
         AbstractCRUD $element,
-        ListContext $context,
+        ReadContext $context,
         Request $request,
         Response $response
     ) {
@@ -158,7 +160,7 @@ class CRUDControllerSpec extends ObjectBehavior
         Response $response,
         AbstractCRUD $element,
         ContextManager $manager,
-        CreateContext $context,
+        EditContext $context,
         EngineInterface $templating
     ) {
         $manager->createContext('fsi_admin_crud_edit', $element)->shouldBeCalled()->willReturn($context);
@@ -173,7 +175,7 @@ class CRUDControllerSpec extends ObjectBehavior
     function it_render_template_from_element_in_edit_action(
         ContextManager $manager,
         AbstractCRUD $element,
-        CreateContext $context,
+        EditContext $context,
         Request $request,
         EngineInterface $templating,
         Response $response
@@ -191,7 +193,7 @@ class CRUDControllerSpec extends ObjectBehavior
     function it_return_response_from_context_in_edit_action(
         ContextManager $manager,
         AbstractCRUD $element,
-        CreateContext $context,
+        EditContext $context,
         Request $request,
         Response $response
     ) {
@@ -206,7 +208,7 @@ class CRUDControllerSpec extends ObjectBehavior
         Response $response,
         AbstractCRUD $element,
         ContextManager $manager,
-        CreateContext $context,
+        DeleteContext $context,
         EngineInterface $templating
     ) {
         $manager->createContext('fsi_admin_crud_delete', $element)->shouldBeCalled()->willReturn($context);
@@ -221,7 +223,7 @@ class CRUDControllerSpec extends ObjectBehavior
     function it_render_template_from_element_in_delete_action(
         ContextManager $manager,
         AbstractCRUD $element,
-        CreateContext $context,
+        DeleteContext $context,
         Request $request,
         EngineInterface $templating,
         Response $response
@@ -239,7 +241,7 @@ class CRUDControllerSpec extends ObjectBehavior
     function it_return_response_from_context_in_delete_action(
         ContextManager $manager,
         AbstractCRUD $element,
-        CreateContext $context,
+        DeleteContext $context,
         Request $request,
         Response $response
     ) {

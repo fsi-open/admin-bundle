@@ -33,7 +33,7 @@ class AdminElementParamConverterSpec extends ObjectBehavior
 
     function it_supports_any_object_that_implements_element_interface(ParamConverter $configuration)
     {
-        $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement');
+        $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement');
         $this->supports($configuration)->shouldReturn(true);
 
         $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD');

@@ -21,11 +21,6 @@ class ResourceElementSpec extends ObjectBehavior
         $this->setManagerRegistry($registry);
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement');
-    }
-
     function it_return_repository(ManagerRegistry $registry, ObjectRepository $repository)
     {
         $registry->getRepository('FSi\Bundle\DemoBundle\Entity\Resource')->shouldBecalled()->willReturn($repository);
