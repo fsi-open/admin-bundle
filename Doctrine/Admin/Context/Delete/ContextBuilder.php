@@ -19,10 +19,10 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class DeleteContextBuilder implements ContextBuilderInterface
+class ContextBuilder implements ContextBuilderInterface
 {
     /**
-     * @var DeleteContext
+     * @var Context
      */
     private $context;
 
@@ -32,9 +32,9 @@ class DeleteContextBuilder implements ContextBuilderInterface
     protected $request;
 
     /**
-     * @param DeleteContext $context
+     * @param Context $context
      */
-    public function __construct(DeleteContext $context)
+    public function __construct(Context $context)
     {
         $this->context = $context;
     }

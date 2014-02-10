@@ -1,8 +1,9 @@
 <?php
 
-namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request;
+namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\Request;
 
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request\AbstractFormRequestHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
-class DeleteFormValidRequestHandler extends AbstractFormRequestHandler
+class FormValidRequestHandler extends AbstractFormRequestHandler
 {
     /**
      * @var RouterInterface

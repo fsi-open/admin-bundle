@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class DeleteContextSpec extends ObjectBehavior
+class ContextSpec extends ObjectBehavior
 {
     function let(
         HandlerInterface $handler,

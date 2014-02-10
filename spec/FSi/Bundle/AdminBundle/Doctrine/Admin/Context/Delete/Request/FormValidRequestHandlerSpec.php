@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request;
+namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\Request;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class DeleteFormValidRequestHandlerSpec extends ObjectBehavior
+class FormValidRequestHandlerSpec extends ObjectBehavior
 {
     function let(EventDispatcherInterface $eventDispatcher, FormEvent $event, Router $router)
     {
@@ -35,7 +35,7 @@ class DeleteFormValidRequestHandlerSpec extends ObjectBehavior
     {
         $this->shouldThrow(
                 new RequestHandlerException(
-                    "FSi\\Bundle\\AdminBundle\\Doctrine\\Admin\\Context\\Request\\DeleteFormValidRequestHandler require FormEvent"
+                    "FSi\\Bundle\\AdminBundle\\Doctrine\\Admin\\Context\\Delete\\Request\\FormValidRequestHandler require FormEvent"
                 )
             )->during('handleRequest', array($listEvent, $request));
     }

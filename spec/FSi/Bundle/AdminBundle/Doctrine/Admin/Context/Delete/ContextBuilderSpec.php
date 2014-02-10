@@ -9,7 +9,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete;
 
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\DeleteContext;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\Context;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use PhpSpec\ObjectBehavior;
@@ -17,9 +17,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
 
-class DeleteContextBuilderSpec extends ObjectBehavior
+class ContextBuilderSpec extends ObjectBehavior
 {
-    function let(DeleteContext $context, Request $request, ParameterBag $bag)
+    function let(Context $context, Request $request, ParameterBag $bag)
     {
         $this->beConstructedWith($context);
         $this->setRequest($request);
@@ -53,7 +53,7 @@ class DeleteContextBuilderSpec extends ObjectBehavior
             ->during('supports', array('fsi_admin_crud_delete', $element));
     }
 
-    function it_build_context(CRUDElement $element, DeleteContext $context)
+    function it_build_context(CRUDElement $element, Context $context)
     {
         $context->setElement($element)->shouldBeCalled();
         $this->buildContext($element)->shouldReturn($context);

@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class DeleteContext implements ContextInterface
+class Context implements ContextInterface
 {
     /**
      * @var HandlerInterface

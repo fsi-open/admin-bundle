@@ -1,12 +1,13 @@
 <?php
 
-namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request;
+namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\Request;
 
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request\AbstractFormRequestHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use Symfony\Component\HttpFoundation\Request;
 
-class DeleteFormSubmitHandler extends AbstractFormRequestHandler
+class FormSubmitHandler extends AbstractFormRequestHandler
 {
     /**
      * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event

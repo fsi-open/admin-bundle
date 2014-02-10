@@ -12,7 +12,7 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Create\Context as CreateContext;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\DeleteContext;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\Context as DeleteContext;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Context as ReadContext;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Edit\Context as EditContext;
 use PhpSpec\ObjectBehavior;
