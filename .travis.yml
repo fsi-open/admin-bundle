@@ -4,7 +4,6 @@ php:
   - 5.3
   - 5.4
   - 5.5
-  - hhvm
 
 env:
   - SYMFONY_VERSION=2.3.*
@@ -37,7 +36,3 @@ script:
     - composer update -n --prefer-source
     - ./bin/phpspec run -f pretty
     - ./bin/behat --no-snippets --no-paths --verbose --format=progress
-
-matrix:
-  allow_failures:
-    - php: hhvm
