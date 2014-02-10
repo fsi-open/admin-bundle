@@ -19,10 +19,10 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class EditContextBuilder implements ContextBuilderInterface
+class ContextBuilder implements ContextBuilderInterface
 {
     /**
-     * @var EditContext
+     * @var Context
      */
     private $context;
 
@@ -32,9 +32,9 @@ class EditContextBuilder implements ContextBuilderInterface
     protected $request;
 
     /**
-     * @param EditContext $context
+     * @param Context $context
      */
-    public function __construct(EditContext $context)
+    public function __construct(Context $context)
     {
         $this->context = $context;
     }

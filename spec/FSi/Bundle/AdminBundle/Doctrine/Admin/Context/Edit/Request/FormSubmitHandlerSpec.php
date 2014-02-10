@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request;
+namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Edit\Request;
 
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
@@ -13,7 +13,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EditFormSubmitHandlerSpec extends ObjectBehavior
+class FormSubmitHandlerSpec extends ObjectBehavior
 {
     function let(EventDispatcher $eventDispatcher, FormEvent $event)
     {
@@ -30,7 +30,7 @@ class EditFormSubmitHandlerSpec extends ObjectBehavior
     {
         $this->shouldThrow(
                 new RequestHandlerException(
-                    "FSi\\Bundle\\AdminBundle\\Doctrine\\Admin\\Context\\Request\\EditFormSubmitHandler require FormEvent"
+                    "FSi\\Bundle\\AdminBundle\\Doctrine\\Admin\\Context\\Edit\\Request\\FormSubmitHandler require FormEvent"
                 )
             )->during('handleRequest', array($listEvent, $request));
     }

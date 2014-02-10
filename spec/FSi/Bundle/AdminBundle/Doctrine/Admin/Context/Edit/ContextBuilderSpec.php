@@ -9,16 +9,16 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Edit;
 
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Edit\EditContext;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Edit\Context;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
 
-class EditContextBuilderSpec extends ObjectBehavior
+class ContextBuilderSpec extends ObjectBehavior
 {
-    function let(EditContext $context, Request $request)
+    function let(Context $context, Request $request)
     {
         $this->beConstructedWith($context);
         $request->get('id', null)->willReturn(1);
@@ -61,7 +61,7 @@ class EditContextBuilderSpec extends ObjectBehavior
             ->during('supports', array('fsi_admin_crud_edit', $element));
     }
 
-    function it_build_context(EditContext $context, CRUDElement $element, DoctrineDataIndexer $indexer)
+    function it_build_context(Context $context, CRUDElement $element, DoctrineDataIndexer $indexer)
     {
         $entity = new \stdClass();
         $element->getDataIndexer()->willReturn($indexer);

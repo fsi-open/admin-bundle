@@ -18,7 +18,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EditContextSpec extends ObjectBehavior
+class ContextSpec extends ObjectBehavior
 {
     protected $data;
 
