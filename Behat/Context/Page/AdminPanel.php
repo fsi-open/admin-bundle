@@ -28,6 +28,11 @@ class AdminPanel extends Page
         return false;
     }
 
+    public function getMenuElementsCount()
+    {
+        return count($this->getMenu()->findAll('css', 'li.admin-element'));
+    }
+
     public function getMenu()
     {
         return $this->find('css', '#top-menu');

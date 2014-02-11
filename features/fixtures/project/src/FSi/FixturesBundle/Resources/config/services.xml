@@ -13,6 +13,7 @@
                 <argument key="template_crud_create">@FSiFixtures/Admin/custom_create.html.twig</argument>
                 <argument key="template_crud_edit">@FSiFixtures/Admin/custom_edit.html.twig</argument>
                 <argument key="template_crud_delete">@FSiFixtures/Admin/custom_delete.html.twig</argument>
+                <argument key="menu">false</argument>
             </argument>
             <tag name="admin.element" />
         </service>

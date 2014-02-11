@@ -9,8 +9,10 @@
 
 namespace FSi\Bundle\AdminBundle\Menu;
 
+use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\MenuItem;
 use Symfony\Component\HttpFoundation\Request;
 
 class MenuBuilder
@@ -18,17 +20,17 @@ class MenuBuilder
     /**
      * @var \Knp\Menu\FactoryInterface
      */
-    private $factory;
+    protected $factory;
 
     /**
      * @var \FSi\Bundle\AdminBundle\Admin\Manager
      */
-    private $manager;
+    protected $manager;
 
     /**
      * @var \Symfony\Component\HttpFoundation\Request
      */
-    private $request;
+    protected $request;
 
     /**
      * @param \Knp\Menu\FactoryInterface $factory
@@ -53,35 +55,68 @@ class MenuBuilder
      */
     public function createMenu()
     {
-        $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttribute('class', 'nav navbar-nav');
-        $menu->setChildrenAttribute('id', 'top-menu');
+        $menu = $this->createMenuRoot();
 
         if (isset($this->request)) {
             $menu->setCurrentUri($this->request->getRequestUri());
         }
 
+        $this->populateWithElementsWithoutGroup($menu);
+        $this->populateWithElementsWithGroups($menu);
+
+        return $menu;
+    }
+
+    /**
+     * @return \Knp\Menu\ItemInterface
+     */
+    protected function createMenuRoot()
+    {
+        $menu = $this->factory->createItem('root');
+        $menu->setChildrenAttribute('class', 'nav navbar-nav');
+        $menu->setChildrenAttribute('id', 'top-menu');
+
+        return $menu;
+    }
+
+    /**
+     * @param $menu
+     * @return ElementInterface
+     */
+    protected function populateWithElementsWithoutGroup($menu)
+    {
         foreach ($this->manager->getElementsWithoutGroup() as $element) {
+            $this->addElementToMenu($menu, $element);
+        }
+    }
+
+    /**
+     * @param $menu
+     */
+    protected function populateWithElementsWithGroups($menu)
+    {
+        foreach ($this->manager->getGroups() as $group) {
+            $menu->addChild($group, array('uri' => '#'))
+                ->setAttribute('dropdown', true);
+
+            foreach ($this->manager->getElementsByGroup($group) as $element) {
+                $this->addElementToMenu($menu[$group], $element);
+            }
+        }
+    }
+
+    /**
+     * @param MenuItem $menu
+     * @param ElementInterface $element
+     */
+    protected function addElementToMenu(MenuItem $menu, Elementinterface $element)
+    {
+        if ($element->hasOption('menu') && $element->getOption('menu') == true) {
             $menu->addChild($element->getName(), array(
                 'route' => $element->getRoute(),
                 'routeParameters' => $element->getRouteParameters(),
             ));
+            $menu[$element->getName()]->setAttribute('class', 'admin-element');
         }
-
-        foreach ($this->manager->getGroups() as $group) {
-            $menu
-                ->addChild($group, array('uri' => '#'))
-                ->setAttribute('dropdown', true)
-            ;
-
-            foreach ($this->manager->getElementsByGroup($group) as $element) {
-                $menu[$group]->addChild($element->getName(), array(
-                    'route' => $element->getRoute(),
-                    'routeParameters' => $element->getRouteParameters(),
-                ));
-            }
-        }
-
-        return $menu;
     }
 }

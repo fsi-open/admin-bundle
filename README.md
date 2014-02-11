@@ -21,6 +21,7 @@ Documentation:
 - [Admin Elements](Resources/doc/admin_element.md)
 - [Embedding Element](Resources/doc/embedding_element.md)
 - [Events](Resources/doc/events.md)
+- [Events](Resources/doc/menu.md)
 - [Bundle Configuration](Resources/doc/configuration.md)
 - [Admin Panel Translation](Resources/doc/admin_panel_translation.md)
 - [Behat - live documentation](features)

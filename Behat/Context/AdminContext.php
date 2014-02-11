@@ -125,6 +125,8 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     {
         $page = $this->getPage('Admin Panel');
 
+        expect($page->getMenuElementsCount())->toBe(count($table->getHash()));
+
         foreach ($table->getHash() as $elementRow) {
             expect($page->hasMenuElement(
                 $elementRow['Element name'],
