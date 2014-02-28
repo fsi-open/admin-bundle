@@ -75,8 +75,9 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(ResourceEvents::RESOURCE_POST_SAVE, $event)
             ->shouldBeCalled();
 
-        $element->getId()->willReturn(1);
-        $router->generate('fsi_admin_crud_list', array('element' => 1))->willReturn('/list/page');
+        $element->getId()->willReturn('test-resource');
+        $router->generate('fsi_admin_resource', array('element' => 'test-resource'))
+            ->willReturn('/resource/test-resource');
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');

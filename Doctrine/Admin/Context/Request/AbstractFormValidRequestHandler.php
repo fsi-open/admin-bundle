@@ -55,9 +55,12 @@ abstract class AbstractFormValidRequestHandler extends AbstractFormRequestHandle
                     return $event->getResponse();
                 }
 
-                return new RedirectResponse($this->router->generate('fsi_admin_crud_list', array(
-                    'element' => $event->getElement()->getId()
-                )));
+                return new RedirectResponse(
+                    $this->router->generate(
+                        $this->getRedirectRouteName(),
+                        array('element' => $event->getElement()->getId())
+                    )
+                );
             }
         }
 
@@ -74,6 +77,11 @@ abstract class AbstractFormValidRequestHandler extends AbstractFormRequestHandle
     {
         $event->getElement()->save($event->getForm()->getData());
     }
+
+    /**
+     * @return string
+     */
+    abstract protected function getRedirectRouteName();
 
     /**
      * @return string
