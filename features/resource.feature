@@ -25,9 +25,8 @@ Feature: Editing page resources
 
   Scenario: Redirect after successful save
     Given there are following resources added to resource map
-      | Key                        | Type |
-      | resources.homepage.content | text |
-      | resources.homepage.header  | text |
+      | Key                        |
+      | resources.homepage.content |
     And I am on the "Home page edit" page
     And I fill form "Content" field with "Resource test content"
     When I press form "Save" button

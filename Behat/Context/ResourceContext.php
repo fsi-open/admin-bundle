@@ -39,11 +39,13 @@ class ResourceContext extends PageObjectContext implements KernelAwareInterface
                 ->get('fsi_resource_repository.map_builder')
                 ->hasResource($resource['Key']))->toBe(true);
 
-            expect($this->kernel->getContainer()
-                ->get('fsi_resource_repository.map_builder')
-                ->getResource($resource['Key']))->toBeAnInstanceOf(
-                    sprintf('FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\%sType', ucfirst($resource['Type']))
-                );
+            if (isset($resource['Type'])) {
+                expect($this->kernel->getContainer()
+                    ->get('fsi_resource_repository.map_builder')
+                    ->getResource($resource['Key']))->toBeAnInstanceOf(
+                        sprintf('FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\%sType', ucfirst($resource['Type']))
+                    );
+            }
         }
     }
 
