@@ -46,4 +46,20 @@ class ResourceContext extends PageObjectContext implements KernelAwareInterface
                 );
         }
     }
+
+    /**
+     * @Given /^I fill form "Content" field with "([^"]*)"$/
+     */
+    public function iFillFormFieldWith($value)
+    {
+        $this->getElement('Form')->fillField('Content', $value);
+    }
+
+    /**
+     * @Given /^I should see form "Content" field with value "([^"]*)"$/
+     */
+    public function iShouldSeeFormFieldWithValue($value)
+    {
+        expect($this->getElement('Form')->findField('Content')->getValue())->toBe($value);
+    }
 }
