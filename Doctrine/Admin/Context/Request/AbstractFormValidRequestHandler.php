@@ -57,7 +57,7 @@ abstract class AbstractFormValidRequestHandler extends AbstractFormRequestHandle
 
                 return new RedirectResponse(
                     $this->router->generate(
-                        $this->getRedirectRouteName(),
+                        $this->getSuccessRouteName(),
                         array('element' => $event->getElement()->getId())
                     )
                 );
@@ -81,7 +81,7 @@ abstract class AbstractFormValidRequestHandler extends AbstractFormRequestHandle
     /**
      * @return string
      */
-    abstract protected function getRedirectRouteName();
+    abstract protected function getSuccessRouteName();
 
     /**
      * @return string

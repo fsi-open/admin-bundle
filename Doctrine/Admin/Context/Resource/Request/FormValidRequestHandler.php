@@ -58,7 +58,7 @@ class FormValidRequestHandler extends AbstractFormValidRequestHandler
     /**
      * @return string
      */
-    protected function getRedirectRouteName()
+    protected function getSuccessRouteName()
     {
         return 'fsi_admin_resource';
     }
