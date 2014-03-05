@@ -12,6 +12,7 @@ namespace FSi\Bundle\AdminBundle;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminElementPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextBuilderPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\FSIAdminExtension;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -27,7 +28,7 @@ class FSiAdminBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new AdminElementPass());
+        $container->addCompilerPass(new AdminElementPass(), PassConfig::TYPE_BEFORE_REMOVING);
         $container->addCompilerPass(new ContextBuilderPass());
     }
 
