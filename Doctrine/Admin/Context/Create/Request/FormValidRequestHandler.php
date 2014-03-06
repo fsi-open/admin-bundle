@@ -37,4 +37,12 @@ class FormValidRequestHandler extends AbstractFormValidRequestHandler
     {
         return CRUDEvents::CRUD_CREATE_RESPONSE_PRE_RENDER;
     }
+
+    /**
+     * @return string
+     */
+    protected function getSuccessRouteName()
+    {
+        return 'fsi_admin_crud_list';
+    }
 }

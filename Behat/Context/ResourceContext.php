@@ -39,11 +39,29 @@ class ResourceContext extends PageObjectContext implements KernelAwareInterface
                 ->get('fsi_resource_repository.map_builder')
                 ->hasResource($resource['Key']))->toBe(true);
 
-            expect($this->kernel->getContainer()
-                ->get('fsi_resource_repository.map_builder')
-                ->getResource($resource['Key']))->toBeAnInstanceOf(
-                    sprintf('FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\%sType', ucfirst($resource['Type']))
-                );
+            if (isset($resource['Type'])) {
+                expect($this->kernel->getContainer()
+                    ->get('fsi_resource_repository.map_builder')
+                    ->getResource($resource['Key']))->toBeAnInstanceOf(
+                        sprintf('FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\%sType', ucfirst($resource['Type']))
+                    );
+            }
         }
+    }
+
+    /**
+     * @Given /^I fill form "Content" field with "([^"]*)"$/
+     */
+    public function iFillFormFieldWith($value)
+    {
+        $this->getElement('Form')->fillField('Content', $value);
+    }
+
+    /**
+     * @Given /^I should see form "Content" field with value "([^"]*)"$/
+     */
+    public function iShouldSeeFormFieldWithValue($value)
+    {
+        expect($this->getElement('Form')->findField('Content')->getValue())->toBe($value);
     }
 }

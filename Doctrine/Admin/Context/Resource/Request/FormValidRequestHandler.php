@@ -54,4 +54,12 @@ class FormValidRequestHandler extends AbstractFormValidRequestHandler
             $event->getElement()->getObjectManager()->flush();
         }
     }
+
+    /**
+     * @return string
+     */
+    protected function getSuccessRouteName()
+    {
+        return 'fsi_admin_resource';
+    }
 }
