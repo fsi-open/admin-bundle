@@ -21,19 +21,13 @@ class ContextManagerSpec extends ObjectBehavior
         $this->beConstructedWith(array($builder));
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\ContextManager');
-    }
-
     function it_build_context_for_element(
         ElementInterface $element,
         ContextBuilderInterface $builder,
         ContextInterface $context
     ) {
-        $builder->supports('route_name', $element)->shouldBeCalled()->willReturn(true);
-        $builder->buildContext($element)->shouldBeCalled()->willReturn($context);
-
+        $builder->supports('route_name', $element)->willReturn(true);
+        $builder->buildContext($element)->willReturn($context);
 
         $this->createContext('route_name', $element)->shouldReturn($context);
     }
@@ -42,7 +36,7 @@ class ContextManagerSpec extends ObjectBehavior
         ElementInterface $element,
         ContextBuilderInterface $builder
     ) {
-        $builder->supports('route_name', $element)->shouldBeCalled()->willReturn(false);
+        $builder->supports('route_name', $element)->willReturn(false);
         $builder->buildContext($element)->shouldNotBeCalled();
 
         $this->createContext('route_name', $element)->shouldReturn(null);

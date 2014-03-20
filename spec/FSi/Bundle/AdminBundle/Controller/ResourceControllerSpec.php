@@ -26,18 +26,13 @@ class ResourceControllerSpec extends ObjectBehavior
         $this->beConstructedWith($templating, $manager, 'default_resource');
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Controller\ResourceController');
-    }
-
     function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
         AbstractResource $element,
         ContextManager $manager,
         Request $request
     ) {
         $element->getName()->willReturn('My Awesome Element');
-        $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
+        $manager->createContext(Argument::type('string'), $element)->willReturn(null);
 
         $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
             ->during('resourceAction', array($element, $request));
@@ -51,12 +46,12 @@ class ResourceControllerSpec extends ObjectBehavior
         Context $context,
         DelegatingEngine $templating
     ) {
-        $manager->createContext('fsi_admin_resource', $element)->shouldBeCalled()->willReturn($context);
+        $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
         $context->getData()->willReturn(array());
 
-        $templating->renderResponse('default_resource', array(), null)->shouldBeCalled()->willReturn($response);
+        $templating->renderResponse('default_resource', array(), null)->willReturn($response);
         $this->resourceAction($element, $request)->shouldReturn($response);
     }
 
@@ -68,13 +63,13 @@ class ResourceControllerSpec extends ObjectBehavior
         DelegatingEngine $templating,
         Response $response
     ) {
-        $manager->createContext('fsi_admin_resource', $element)->shouldBeCalled()->willReturn($context);
+        $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('custom_template');
         $context->getData()->willReturn(array());
 
-        $templating->renderResponse('custom_template', array(), null)->shouldBeCalled()->willReturn($response);
+        $templating->renderResponse('custom_template', array(), null)->willReturn($response);
         $this->resourceAction($element, $request)->shouldReturn($response);
     }
 
@@ -85,7 +80,7 @@ class ResourceControllerSpec extends ObjectBehavior
         Request $request,
         Response $response
     ) {
-        $manager->createContext('fsi_admin_resource', $element)->shouldBeCalled()->willReturn($context);
+        $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
         $this->resourceAction($element, $request)->shouldReturn($response);

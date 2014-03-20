@@ -16,11 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class FSiAdminBundleSpec extends ObjectBehavior
 {
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\FSiAdminBundle');
-    }
-
     function it_is_bundle()
     {
         $this->shouldBeAnInstanceOf('Symfony\Component\HttpKernel\Bundle\Bundle');

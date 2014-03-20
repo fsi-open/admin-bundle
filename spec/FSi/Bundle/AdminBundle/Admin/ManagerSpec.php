@@ -40,8 +40,8 @@ class ManagerSpec extends ObjectBehavior
 
     function it_return_elements_without_group_id(ElementInterface $elementFoo, ElementInterface $elementBar)
     {
-        $elementFoo->getId()->shouldBeCalled()->willReturn('element_foo');
-        $elementBar->getId()->shouldBeCalled()->willReturn('element_bar');
+        $elementFoo->getId()->willReturn('element_foo');
+        $elementBar->getId()->willReturn('element_bar');
 
         $this->addElement($elementFoo, 'foo');
         $this->addElement($elementBar);
@@ -53,7 +53,7 @@ class ManagerSpec extends ObjectBehavior
 
     function it_remove_element_by_id(ElementInterface $element)
     {
-        $element->getId()->shouldBeCalled()->willReturn('foo');
+        $element->getId()->willReturn('foo');
         $this->addElement($element);
 
         $this->hasElement('foo')->shouldReturn(true);

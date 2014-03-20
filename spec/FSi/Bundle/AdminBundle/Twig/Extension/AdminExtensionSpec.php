@@ -13,11 +13,6 @@ use PhpSpec\ObjectBehavior;
 
 class AdminExtensionSpec extends ObjectBehavior
 {
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Twig\Extension\AdminExtension');
-    }
-
     function it_is_twig_extension()
     {
         $this->shouldBeAnInstanceOf('\Twig_Extension');
