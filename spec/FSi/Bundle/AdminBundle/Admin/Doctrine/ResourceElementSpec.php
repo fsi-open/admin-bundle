@@ -23,7 +23,7 @@ class ResourceElementSpec extends ObjectBehavior
 
     function it_return_repository(ManagerRegistry $registry, ObjectRepository $repository)
     {
-        $registry->getRepository('FSi\Bundle\DemoBundle\Entity\Resource')->shouldBecalled()->willReturn($repository);
+        $registry->getRepository('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($repository);
 
         $this->getRepository()->shouldReturn($repository);
     }

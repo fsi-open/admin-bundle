@@ -74,14 +74,14 @@ class CRUDElementSpec extends ObjectBehavior
 
     public function it_should_have_doctrine_data_indexer(ManagerRegistry $registry, ObjectManager $om, ObjectRepository $repository, ClassMetadata $metadata)
     {
-        $registry->getManagerForClass('FSiDemoBundle:Entity')->shouldBeCalled()->willReturn($om);
-        $registry->getManagerForClass('FSi/Bundle/DemoBundle/Entity/Entity')->shouldBeCalled()->willReturn($om);
+        $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
+        $registry->getManagerForClass('FSi/Bundle/DemoBundle/Entity/Entity')->willReturn($om);
         $om->getRepository('FSiDemoBundle:Entity')->shouldBeCalledTimes(1)->willReturn($repository);
         $metadata->isMappedSuperclass = false;
         $metadata->rootEntityName = 'FSi/Bundle/DemoBundle/Entity/Entity';
         $om->getClassMetadata('FSi/Bundle/DemoBundle/Entity/Entity')->willReturn($metadata);
 
-        $repository->getClassName()->shouldBeCalled()->willReturn('FSi/Bundle/DemoBundle/Entity/Entity');
+        $repository->getClassName()->willReturn('FSi/Bundle/DemoBundle/Entity/Entity');
 
         $this->setManagerRegistry($registry);
         $this->getDataIndexer()->shouldReturnAnInstanceOf('FSi\Component\DataIndexer\DoctrineDataIndexer');

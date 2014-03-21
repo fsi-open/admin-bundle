@@ -20,11 +20,6 @@ class AdminElementParamConverterSpec extends ObjectBehavior
         $this->beConstructedWith($manager);
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter');
-    }
-
     function it_handle_only_fully_qualified_class_names(ParamConverter $configuration)
     {
         $configuration->getClass()->willReturn('FSiDemoBundle:News');

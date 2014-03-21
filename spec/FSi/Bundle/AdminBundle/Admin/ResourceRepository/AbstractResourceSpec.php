@@ -18,11 +18,6 @@ class AbstractResourceSpec extends ObjectBehavior
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyResource');
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource');
-    }
-
     function it_have_id()
     {
         $this->getId()->shouldReturn('main_page');
