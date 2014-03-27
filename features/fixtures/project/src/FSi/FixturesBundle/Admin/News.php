@@ -2,12 +2,11 @@
 
 namespace FSi\FixturesBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\ListElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 
-class News extends CRUDElement
+class News extends ListElement
 {
     public function getId()
     {
@@ -49,17 +48,6 @@ class News extends CRUDElement
         ));
         $datagrid->addColumn('creator_email', 'text', array(
             'label' => 'admin.news.list.creator_email'
-        ));
-        $datagrid->addColumn('actions', 'action', array(
-            'label' => 'admin.news.list.actions',
-            'field_mapping' => array('id'),
-            'actions' => array(
-                'edit' => array(
-                    'route_name' => 'fsi_admin_crud_edit',
-                    'additional_parameters' => array('element' => $this->getId()),
-                    'parameters_field_mapping' => array('id' => 'id')
-                ),
-            )
         ));
 
         return $datagrid;
@@ -104,33 +92,5 @@ class News extends CRUDElement
         $datasource->setMaxResults(10);
 
         return $datasource;
-    }
-
-    protected function initForm(FormFactoryInterface $factory, $data = null)
-    {
-
-        $builder = $factory->createNamedBuilder('news', 'form', $data, array(
-            'data_class' => $this->getClassName()
-        ));
-
-        $builder->add('title', 'text', array(
-            'label' => 'admin.news.list.title',
-        ));
-        $builder->add('date', 'date', array(
-            'label' => 'admin.news.list.date',
-            'widget' => 'single_text'
-        ));
-        $builder->add('created_at', 'date', array(
-            'label' => 'admin.news.list.created_at',
-            'widget' => 'single_text'
-        ));
-        $builder->add('visible', 'checkbox', array(
-            'label' => 'admin.news.list.visible',
-        ));
-        $builder->add('creator_email', 'email', array(
-            'label' => 'admin.news.list.creator_email'
-        ));
-
-        return $builder->getForm();
     }
 }

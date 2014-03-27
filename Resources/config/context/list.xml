@@ -5,6 +5,14 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <!-- List -->
+        <parameter key="fsi_admin.doctrine.context.list.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\ListContext</parameter>
+        <parameter key="fsi_admin.doctrine.context_builder.list.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\ListContextBuilder</parameter>
+        <parameter key="fsi_admin.doctrine.context.list.request_handler.datasource_bind_parameters.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request\DataSourceBindParametersHandler</parameter>
+        <parameter key="fsi_admin.doctrine.context.list.request_handler.datagrid_set_data.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request\DataGridSetDataHandler</parameter>
+        <parameter key="fsi_admin.doctrine.context.list.request_handler.datagrid_bind_data.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request\DataGridBindDataHandler</parameter>
+
+        <!-- CRUD List -->
         <parameter key="admin.doctrine.context.list.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Context</parameter>
         <parameter key="admin.doctrine.context_builder.list.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\ContextBuilder</parameter>
         <parameter key="admin.doctrine.context.list.request_handler.datasource_bind_parameters.class">FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Request\DataSourceBindParametersHandler</parameter>
@@ -13,6 +21,34 @@
     </parameters>
 
     <services>
+        <!-- List -->
+        <service id="fsi_admin.doctrine.context_builder.list" class="%fsi_admin.doctrine.context_builder.list.class%">
+            <argument type="service" id="fsi_admin.doctrine.context.list"/>
+            <tag name="admin.context.builder" />
+        </service>
+
+        <service id="fsi_admin.doctrine.context.list" class="%fsi_admin.doctrine.context.list.class%">
+            <argument type="collection">
+                <argument type="service" id="fsi_admin.doctrine.context.list.request_handler.datasource_bind_params"/>
+                <argument type="service" id="fsi_admin.doctrine.context.list.request_handler.datagrid_set_data"/>
+                <argument type="service" id="fsi_admin.doctrine.context.list.request_handler.datagrid_bind_data"/>
+            </argument>
+        </service>
+
+        <service id="fsi_admin.doctrine.context.list.request_handler.datasource_bind_params"
+                 class="%fsi_admin.doctrine.context.list.request_handler.datasource_bind_parameters.class%">
+            <argument type="service" id="event_dispatcher" />
+        </service>
+        <service id="fsi_admin.doctrine.context.list.request_handler.datagrid_set_data"
+                 class="%fsi_admin.doctrine.context.list.request_handler.datagrid_set_data.class%">
+            <argument type="service" id="event_dispatcher" />
+        </service>
+        <service id="fsi_admin.doctrine.context.list.request_handler.datagrid_bind_data"
+                 class="%fsi_admin.doctrine.context.list.request_handler.datagrid_bind_data.class%">
+            <argument type="service" id="event_dispatcher" />
+        </service>
+
+        <!-- CRUD List -->
         <service id="admin.doctrine.context_builder.list" class="%admin.doctrine.context_builder.list.class%">
             <argument type="service" id="admin.doctrine.context.list"/>
             <tag name="admin.context.builder" />
@@ -38,6 +74,5 @@
                  class="%admin.doctrine.context.list.request_handler.datagrid_bind_data.class%">
             <argument type="service" id="event_dispatcher" />
         </service>
-
     </services>
 </container>

@@ -33,3 +33,8 @@ fsi_admin_resource:
     path: /resource/{element}
     defaults:
         _controller: admin.controller.resource:resourceAction
+
+fsi_admin_list:
+    path: /list/{element}
+    defaults:
+        _controller: fsi_admin.controller.list:displayAction
