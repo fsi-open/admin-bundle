@@ -36,7 +36,7 @@ class AdminClassFinder
     {
         $paths = array();
         foreach ($this->bundlePathExtractor->getBundlePaths() as $path) {
-            if (file_exists($path . '/Admin')) {
+            if (is_dir($path . '/Admin')) {
                 $paths[] = $path . '/Admin';
             }
         }
