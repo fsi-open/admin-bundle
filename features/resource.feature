@@ -4,9 +4,6 @@ Feature: Editing page resources
   I need to install FSiAdminBundle and configure resource admin element
 
   Scenario: Accessing resource edit page
-    Given the following services were registered
-      | Id                              | Class                             | Tag           |
-      | fixtures_bundle.admin.home_page | FSi\FixturesBundle\Admin\HomePage | admin.element |
     And I am on the "Admin panel" page
     And translations are enabled in application
     When I follow "Home page" menu element

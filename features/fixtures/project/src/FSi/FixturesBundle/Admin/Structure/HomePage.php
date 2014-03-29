@@ -1,9 +1,13 @@
 <?php
 
-namespace FSi\FixturesBundle\Admin;
+namespace FSi\FixturesBundle\Admin\Structure;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
+use FSi\Bundle\AdminBundle\Annotation as Admin;
 
+/**
+ * @Admin\Element(group="structure")
+ */
 class HomePage extends ResourceElement
 {
     public function getId()

@@ -6,16 +6,28 @@
 
     <parameters>
         <parameter key="admin.manager.class">FSi\Bundle\AdminBundle\Admin\Manager</parameter>
+        <parameter key="admin.annotation.builder.class">FSi\Bundle\AdminBundle\Annotation\ManagerBuilder</parameter>
         <parameter key="admin.menu.builder.class">FSi\Bundle\AdminBundle\Menu\MenuBuilder</parameter>
         <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Admin\Context\ContextManager</parameter>
         <parameter key="admin.element.param.converter.class">FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter</parameter>
+        <parameter key="admin.element.factory.class">FSi\Bundle\AdminBundle\Admin\ElementFactory</parameter>
         <parameter key="admin.controller.resource.class">FSi\Bundle\AdminBundle\Controller\ResourceController</parameter>
         <parameter key="admin.controller.crud.class">FSi\Bundle\AdminBundle\Controller\CRUDController</parameter>
         <parameter key="admin.controller.admin.class">FSi\Bundle\AdminBundle\Controller\AdminController</parameter>
+        <parameter key="admin.extractor.bundle_path.class">FSi\Bundle\AdminBundle\Extractor\BundlePathExtractor</parameter>
+        <parameter key="admin.finder.admin_class.class">FSi\Bundle\AdminBundle\Finder\AdminClassFinder</parameter>
     </parameters>
 
     <services>
-        <service id="admin.manager" class="%admin.manager.class%" />
+        <service id="admin.annotation.builder" class="%admin.annotation.builder.class%">
+            <argument type="service" id="admin.finder.admin_class"/>
+            <argument type="service" id="admin.element.factory" />
+        </service>
+
+        <service id="admin.manager" class="%admin.manager.class%">
+            <argument type="service" id="admin.annotation.builder"/>
+        </service>
+
         <service id="admin.context.manager" class="%admin.context.manager.class%">
             <argument type="collection"></argument>
         </service>
@@ -25,7 +37,22 @@
             <tag name="request.param_converter" converter="admin.element" priority="10" />
         </service>
 
-         <!-- Twig-->
+        <service id="admin.element.factory" class="%admin.element.factory.class%">
+            <call method="setDataGridFactory">
+                <argument type="service" id="datagrid.factory" />
+            </call>
+            <call method="setDataSourceFactory">
+                <argument type="service" id="datasource.factory" />
+            </call>
+            <call method="setFormFactory">
+                <argument type="service" id="form.factory" />
+            </call>
+            <call method="setManagerRegistry">
+                <argument type="service" id="doctrine" />
+            </call>
+        </service>
+
+        <!-- Twig-->
          <service id="admin.twig.extension" class="FSi\Bundle\AdminBundle\Twig\Extension\AdminExtension" public="false">
             <tag name="twig.extension" />
             <argument type="collection">
@@ -76,5 +103,15 @@
             <argument type="service" id="templating"/>
             <argument>%admin.templates.index_page%</argument>
         </service>
+
+        <service id="admin.extractor.bundle_path" class="%admin.extractor.bundle_path.class%">
+            <argument type="service" id="kernel" />
+        </service>
+
+        <service id="admin.finder.admin_class" class="%admin.finder.admin_class.class%">
+            <argument type="service" id="admin.extractor.bundle_path" />
+            <argument>%admin.elements.dirs%</argument>
+        </service>
+
     </services>
 </container>

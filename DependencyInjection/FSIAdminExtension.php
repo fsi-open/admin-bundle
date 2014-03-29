@@ -29,6 +29,8 @@ class FSIAdminExtension extends Extension
 
         $container->setParameter('admin.display_language_switch', $config['display_language_switch']);
         $container->setParameter('admin.menu_config_path', $config['menu_config_path']);
+        $container->setParameter('admin.elements.dirs', $config['annotations']['dirs']);
+
         $this->setTemplateParameters($container, $config['templates']);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

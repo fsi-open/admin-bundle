@@ -9,6 +9,8 @@
 
 namespace FSi\Bundle\AdminBundle\Admin;
 
+use FSi\Bundle\AdminBundle\Annotation\ManagerBuilder;
+
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
@@ -20,6 +22,15 @@ class Manager implements ManagerInterface
     protected $elements;
 
     /**
+     * @param ManagerBuilder $builder
+     */
+    public function __construct(ManagerBuilder $builder)
+    {
+        $builder->build($this);
+        $this->elements = array();
+    }
+
+    /**
      * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
      * @return \FSi\Bundle\AdminBundle\Admin\Manager
      */
@@ -28,11 +39,6 @@ class Manager implements ManagerInterface
         $this->elements[$element->getId()] = $element;
 
         return $this;
-    }
-
-    public function __construct()
-    {
-        $this->elements = array();
     }
 
     /**
