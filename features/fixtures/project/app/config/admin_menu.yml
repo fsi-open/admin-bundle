@@ -1,0 +1,5 @@
+menu:
+  - news
+  - admin.menu.structure:
+    - home_page
+    - about_us_page

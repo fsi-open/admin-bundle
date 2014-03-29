@@ -56,8 +56,6 @@ abstract class AbstractCRUD extends AbstractElement implements
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::setDefaultOptions($resolver);
-
         $resolver->setDefaults(array(
             'allow_delete' => true,
             'allow_add' => true,

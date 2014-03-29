@@ -36,12 +36,7 @@ class AdminElementPass implements CompilerPassInterface
             $this->handleFormAwareElement($element, $container);
             $this->handleDoctrineAwareElement($element, $container);
 
-            $group = (isset($tag[0]['alias'])) ? $tag[0]['alias'] : null;
-
-            $container->findDefinition('admin.manager')->addMethodCall('addElement', array(
-                $element,
-                $group,
-            ));
+            $container->findDefinition('admin.manager')->addMethodCall('addElement', array($element));
         }
     }
 

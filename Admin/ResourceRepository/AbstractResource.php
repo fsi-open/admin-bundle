@@ -53,8 +53,6 @@ abstract class AbstractResource extends AbstractElement implements ResourceInter
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::setDefaultOptions($resolver);
-
         $resolver->setDefaults(array(
             'template' => null,
             'title' => 'resource.title',
