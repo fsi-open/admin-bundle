@@ -8,7 +8,7 @@ use Prophecy\Argument;
 
 class AdminClassFinderSpec extends ObjectBehavior
 {
-    const FIXTURES_BUNDLE_PATH = '/../../../../../features/fixtures/project/src/FSi/FixturesBundle';
+    const FIXTURES_BUNDLE_PATH = '/../../../../../spec/fixtures';
 
     function let(BundlePathExtractor $bundlePathExtractor)
     {
@@ -20,12 +20,11 @@ class AdminClassFinderSpec extends ObjectBehavior
 
     function it_find_admin_classes_in_bundles_default_admin_path()
     {
-        $this->findClasses()->shouldReturn(array(
-            "FSi\\FixturesBundle\\Admin\\News",
-            "FSi\\FixturesBundle\\Admin\\CustomNews",
-            "FSi\\FixturesBundle\\Admin\\Structure\\HomePage",
-            "FSi\\FixturesBundle\\Admin\\AboutUsPage"
-        ));
+        /* We can't just check if result is an array with following values because it might be in other order */
+        $this->findClasses()->shouldHaveCount(3);
+        $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\CRUDElement");
+        $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DoctrineElement");
+        $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\SimpleAdminElement");
     }
 
     function it_find_admin_classes_in_default_bundle_paths_and_additional_paths(BundlePathExtractor $bundlePathExtractor)
@@ -37,12 +36,10 @@ class AdminClassFinderSpec extends ObjectBehavior
             )
         );
 
-        $this->findClasses()->shouldReturn(array(
-        "FSi\\FixturesBundle\\Admin\\News",
-        "FSi\\FixturesBundle\\Admin\\CustomNews",
-        "FSi\\FixturesBundle\\Admin\\Structure\\HomePage",
-        "FSi\\FixturesBundle\\Admin\\AboutUsPage",
-        "FSi\\FixturesBundle\\CustomAdmin\\Contact"
-    ));
+        $this->findClasses()->shouldHaveCount(4);
+        $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\CRUDElement");
+        $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DoctrineElement");
+        $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\SimpleAdminElement");
+        $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\CustomAdmin\\SimpleAdminElement");
     }
 }

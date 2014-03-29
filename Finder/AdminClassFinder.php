@@ -85,6 +85,7 @@ class AdminClassFinder
                 $classes[] = $className;
             }
         }
+
         return $classes;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace FSi\FixturesBundle\Admin;
+namespace FSi\Bundle\AdminBundle\spec\fixtures\Admin;
 
 /**
  * Custom class used to test AdminClassFinder
