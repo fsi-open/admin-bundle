@@ -3,7 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Annotation;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use FSi\Bundle\AdminBundle\Admin\ElementFactory;
+use FSi\Bundle\AdminBundle\Factory\ElementFactory;
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use FSi\Bundle\AdminBundle\Finder\AdminClassFinder;
 use FSi\Bundle\AdminBundle\spec\fixtures\Admin\SimpleAdminElement;

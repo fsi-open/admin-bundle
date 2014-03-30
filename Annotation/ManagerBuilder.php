@@ -10,8 +10,8 @@
 namespace FSi\Bundle\AdminBundle\Annotation;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use FSi\Bundle\AdminBundle\Admin\ElementFactory;
 use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Factory\ElementFactory;
 use FSi\Bundle\AdminBundle\Finder\AdminClassFinder;
 
 class ManagerBuilder
@@ -24,7 +24,7 @@ class ManagerBuilder
     private $finder;
 
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\ElementFactory
+     * @var \FSi\Bundle\AdminBundle\Factory\ElementFactory
      */
     private $elementFactory;
 
