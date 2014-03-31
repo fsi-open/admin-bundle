@@ -46,16 +46,6 @@ abstract class AbstractElement implements ElementInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'menu' => true
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getOption($name)
     {
         if (!$this->hasOption($name)) {

@@ -13,10 +13,10 @@ interface ManagerInterface
 {
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
-     * @param string|null $group
+     * @internal string $group
      * @return \FSi\Bundle\AdminBundle\Admin\Manager
      */
-    public function addElement(ElementInterface $element, $group = null);
+    public function addElement(ElementInterface $element);
 
     /**
      * @param string $id
@@ -39,20 +39,4 @@ interface ManagerInterface
      * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface[]
      */
     public function getElements();
-
-    /**
-     * @return array
-     */
-    public function getGroups();
-
-    /**
-     * @param string $group
-     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface[]
-     */
-    public function getElementsByGroup($group);
-
-    /**
-     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface[]
-     */
-    public function getElementsWithoutGroup();
 }

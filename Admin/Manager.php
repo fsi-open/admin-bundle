@@ -20,33 +20,19 @@ class Manager implements ManagerInterface
     protected $elements;
 
     /**
-     * @var array
+     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @return \FSi\Bundle\AdminBundle\Admin\Manager
      */
-    protected $groups;
+    public function addElement(ElementInterface $element)
+    {
+        $this->elements[$element->getId()] = $element;
+
+        return $this;
+    }
 
     public function __construct()
     {
         $this->elements = array();
-        $this->groups = array();
-    }
-
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
-     * @param string|null $group
-     * @return \FSi\Bundle\AdminBundle\Admin\Manager
-     */
-    public function addElement(ElementInterface $element, $group = null)
-    {
-        $this->elements[$element->getId()] = $element;
-        if (isset($group)) {
-            if (!array_key_exists($group, $this->groups)) {
-                $this->groups[$group] = array();
-            }
-
-            $this->groups[$group][] = $element->getId();
-        }
-
-        return $this;
     }
 
     /**
@@ -72,31 +58,7 @@ class Manager implements ManagerInterface
      */
     public function removeElement($id)
     {
-        if ($this->isElementInGroup($id)) {
-            $this->removeElementFromGroup($id);
-        }
-
         unset($this->elements[$id]);
-    }
-
-    public function removeElementFromGroup($providedElementId)
-    {
-        foreach ($this->groups as $groupKey => $group) {
-            foreach ($group as $index => $elementId) {
-                if ($providedElementId == $elementId) {
-                    unset($this->groups[$groupKey][$index]);
-
-                    if (count($this->groups[$groupKey]) == 0) {
-                        $this->removeGroup($groupKey);
-                    }
-                }
-            }
-        }
-    }
-
-    public function removeGroup($group)
-    {
-        unset($this->groups[$group]);
     }
 
     /**
@@ -105,62 +67,5 @@ class Manager implements ManagerInterface
     public function getElements()
     {
         return $this->elements;
-    }
-
-    /**
-     * @return array
-     */
-    public function getGroups()
-    {
-        return array_keys($this->groups);
-    }
-
-    /**
-     * @param string $group
-     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface[]
-     */
-    public function getElementsByGroup($group)
-    {
-        $elements = array();
-        foreach ($this->groups[$group] as $elementId) {
-            $elements[$elementId] = $this->getElement($elementId);
-        }
-
-        return $elements;
-    }
-
-    /**
-     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface[]
-     */
-    public function getElementsWithoutGroup()
-    {
-        $elements = array();
-
-        foreach ($this->elements as $id => $element) {
-            if ($this->isElementInGroup($id)) {
-                continue;
-            }
-
-            $elements[$id] = $element;
-        }
-
-        return $elements;
-    }
-
-    /**
-     * Check if element is assigned into group.
-     *
-     * @param string $id
-     * @return bool
-     */
-    private function isElementInGroup($id)
-    {
-        foreach ($this->groups as $group) {
-            if (in_array($id, $group)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

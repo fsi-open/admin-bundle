@@ -31,28 +31,21 @@ class AdminElementPassSpec extends ObjectBehavior
     function it_add_elements_into_manager(
         ContainerBuilder $container,
         Definition $def,
-        Definition $elmFoo,
-        Definition $elmBar
+        Definition $elmFoo
     ) {
         $container->findTaggedServiceIds('admin.element')->willReturn(array(
-            'admin.foo.element' => array(array()),
-            'admin.bar.element' => array(array('alias' => 'bar.group'))
+            'admin.foo.element' => array(array())
         ));
 
         $container->findDefinition('admin.foo.element')->willReturn($elmFoo);
-        $container->findDefinition('admin.bar.element')->willReturn($elmBar);
 
         $elmFoo->getClass()->willReturn('FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement');
-        $elmBar->getClass()->willReturn('FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement');
 
         foreach ($this->setters as $setter) {
-            foreach (array($elmBar, $elmFoo) as $element) {
-                $element->addMethodCall($setter, Argument::containing(Argument::type('Symfony\Component\DependencyInjection\Definition')))->shouldBeCalled();
-            }
+            $elmFoo->addMethodCall($setter, Argument::containing(Argument::type('Symfony\Component\DependencyInjection\Definition')))->shouldBeCalled();
         }
 
-        $def->addMethodCall('addElement', array($elmFoo, null))->shouldBeCalled();
-        $def->addMethodCall('addElement', array($elmBar, 'bar.group'))->shouldBeCalled();
+        $def->addMethodCall('addElement', array($elmFoo))->shouldBeCalled();
 
         $this->process($container);
     }

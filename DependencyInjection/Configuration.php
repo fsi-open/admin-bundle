@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('display_language_switch')->defaultFalse()->end()
+                ->scalarNode('menu_config_path')->defaultValue("%kernel.root_dir%/config/admin_menu.yml")->end()
                 ->arrayNode('templates')
                     ->addDefaultsIfNotSet()
                     ->children()

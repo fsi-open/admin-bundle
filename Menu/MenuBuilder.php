@@ -9,11 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Menu;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuItem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Yaml\Yaml;
 
 class MenuBuilder
 {
@@ -32,14 +33,20 @@ class MenuBuilder
      */
     protected $request;
 
+
+    protected $menuConfigPath;
+
     /**
      * @param \Knp\Menu\FactoryInterface $factory
      * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
+     * @param string $menuConfigPath
      */
-    public function __construct(FactoryInterface $factory, Manager $manager)
+    public function __construct(FactoryInterface $factory, Manager $manager, $menuConfigPath)
     {
         $this->factory = $factory;
         $this->manager = $manager;
+        $yaml = new Yaml();
+        $this->menuConfigPath = $yaml->parse($menuConfigPath, true);
     }
 
     /**
@@ -51,18 +58,33 @@ class MenuBuilder
     }
 
     /**
+     * @throws \RuntimeException
      * @return \Knp\Menu\ItemInterface
      */
     public function createMenu()
     {
         $menu = $this->createMenuRoot();
+        $this->validateMenuConfiguration();
 
         if (isset($this->request)) {
             $menu->setCurrentUri($this->request->getRequestUri());
         }
 
-        $this->populateWithElementsWithoutGroup($menu);
-        $this->populateWithElementsWithGroups($menu);
+        foreach ($this->menuConfigPath['menu'] as $elementConfig) {
+            if (!is_array($elementConfig)) {
+                $this->addElementToMenu($menu, $elementConfig);
+                continue;
+            }
+
+            $group = key($elementConfig);
+            $menu->addChild($group, array('uri' => '#'))
+                ->setAttribute('dropdown', true);
+
+            $elements = current($elementConfig);
+            foreach ($elements as $groupElementConfig) {
+                $this->addElementToMenu($menu[$group], $groupElementConfig);
+            }
+        }
 
         return $menu;
     }
@@ -80,43 +102,30 @@ class MenuBuilder
     }
 
     /**
-     * @param $menu
-     * @return ElementInterface
+     * @param ItemInterface $menu
+     * @param string $elementId
+     * @throws \RuntimeException
      */
-    protected function populateWithElementsWithoutGroup($menu)
+    protected function addElementToMenu(ItemInterface $menu, $elementId)
     {
-        foreach ($this->manager->getElementsWithoutGroup() as $element) {
-            $this->addElementToMenu($menu, $element);
+        if (!$this->manager->hasElement($elementId)) {
+            throw new \RuntimeException(sprintf("Admin manager does not contain element with id \"%s\"", $elementId));
         }
+        $element = $this->manager->getElement($elementId);
+        $menu->addChild($element->getName(), array(
+            'route' => $element->getRoute(),
+            'routeParameters' => $element->getRouteParameters(),
+        ));
+        $menu[$element->getName()]->setAttribute('class', 'admin-element');
     }
 
     /**
-     * @param $menu
+     * @throws \RuntimeException
      */
-    protected function populateWithElementsWithGroups($menu)
+    private function validateMenuConfiguration()
     {
-        foreach ($this->manager->getGroups() as $group) {
-            $menu->addChild($group, array('uri' => '#'))
-                ->setAttribute('dropdown', true);
-
-            foreach ($this->manager->getElementsByGroup($group) as $element) {
-                $this->addElementToMenu($menu[$group], $element);
-            }
-        }
-    }
-
-    /**
-     * @param MenuItem $menu
-     * @param ElementInterface $element
-     */
-    protected function addElementToMenu(MenuItem $menu, Elementinterface $element)
-    {
-        if ($element->hasOption('menu') && $element->getOption('menu') == true) {
-            $menu->addChild($element->getName(), array(
-                'route' => $element->getRoute(),
-                'routeParameters' => $element->getRouteParameters(),
-            ));
-            $menu[$element->getName()]->setAttribute('class', 'admin-element');
+        if (!array_key_exists('menu', $this->menuConfigPath)) {
+            throw new \RuntimeException("admin_menu.yml must contain \"menu\" element as a root.");
         }
     }
 }

@@ -44,6 +44,7 @@
         <service id="admin.menu.builder" class="%admin.menu.builder.class%">
             <argument type="service" id="knp_menu.factory"/>
             <argument type="service" id="admin.manager" />
+            <argument>%admin.menu_config_path%</argument>
             <call method="setRequest">
                 <argument type="service" id="request" on-invalid="null" strict="false" />
             </call>
