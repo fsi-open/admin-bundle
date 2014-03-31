@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\FSi\Bundle\AdminBundle\Annotation;
+namespace spec\FSi\Bundle\AdminBundle\Admin\Manager;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use FSi\Bundle\AdminBundle\Factory\ElementFactory;
@@ -10,7 +10,7 @@ use FSi\Bundle\AdminBundle\spec\fixtures\Admin\SimpleAdminElement;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class ManagerBuilderSpec extends ObjectBehavior
+class AnnotationVisitorSpec extends ObjectBehavior
 {
     function let(AdminClassFinder $finder, ElementFactory $elementFactory)
     {
@@ -19,7 +19,7 @@ class ManagerBuilderSpec extends ObjectBehavior
         AnnotationRegistry::registerFile($annotationReflection->getFileName());
     }
 
-    function it_build_manager_from_class_with_annotation(
+    function it_visit_manager_and_add_into_it_elements(
         Manager $manager,
         AdminClassFinder $finder,
         ElementFactory $elementFactory,
@@ -29,8 +29,8 @@ class ManagerBuilderSpec extends ObjectBehavior
             'FSi\Bundle\AdminBundle\spec\fixtures\Admin\SimpleAdminElement'
         ));
         $elementFactory->create('FSi\Bundle\AdminBundle\spec\fixtures\Admin\SimpleAdminElement')->willReturn($adminElement);
-        $manager->addElement($adminElement, 'structure')->shouldBeCalled();
+        $manager->addElement($adminElement)->shouldBeCalled();
 
-        $this->build($manager);
+        $this->visitManager($manager);
     }
 }

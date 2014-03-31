@@ -6,6 +6,7 @@ use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CustomNews extends CRUDElement
 {

@@ -6,7 +6,8 @@
 
     <parameters>
         <parameter key="admin.manager.class">FSi\Bundle\AdminBundle\Admin\Manager</parameter>
-        <parameter key="admin.annotation.builder.class">FSi\Bundle\AdminBundle\Annotation\ManagerBuilder</parameter>
+        <parameter key="admin.manager.visitor.annotation.class">FSi\Bundle\AdminBundle\Admin\Manager\AnnotationVisitor</parameter>
+        <parameter key="admin.manager.visitor.class_collection.class">FSi\Bundle\AdminBundle\Admin\Manager\ClassCollectionVisitor</parameter>
         <parameter key="admin.menu.builder.class">FSi\Bundle\AdminBundle\Menu\MenuBuilder</parameter>
         <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Admin\Context\ContextManager</parameter>
         <parameter key="admin.element.param.converter.class">FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter</parameter>
@@ -24,14 +25,7 @@
     </parameters>
 
     <services>
-        <service id="admin.annotation.builder" class="%admin.annotation.builder.class%">
-            <argument type="service" id="admin.finder.admin_class"/>
-            <argument type="service" id="admin.element.factory" />
-        </service>
-
-        <service id="admin.manager" class="%admin.manager.class%">
-            <argument type="service" id="admin.annotation.builder"/>
-        </service>
+        <service id="admin.manager" class="%admin.manager.class%" />
 
         <service id="admin.element.param.converter" class="%admin.element.param.converter.class%">
             <argument type="service" id="admin.manager" />
@@ -121,6 +115,13 @@
             <argument>%admin.templates.index_page%</argument>
         </service>
 
+        <!-- Manager Visitors -->
+        <service id="admin.manager.visitor.annotation" class="%admin.manager.visitor.annotation.class%">
+            <argument type="service" id="admin.finder.admin_class"/>
+            <argument type="service" id="admin.element.factory" />
+            <tag name="admin.manager.visitor" />
+        </service>
+
         <service id="admin.extractor.bundle_path" class="%admin.extractor.bundle_path.class%">
             <argument type="service" id="kernel" />
         </service>
@@ -129,6 +130,5 @@
             <argument type="service" id="admin.extractor.bundle_path" />
             <argument>%admin.elements.dirs%</argument>
         </service>
-
     </services>
 </container>

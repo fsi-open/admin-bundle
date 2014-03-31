@@ -11,9 +11,10 @@ namespace FSi\Bundle\AdminBundle\spec\fixtures\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Annotation as Admin;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * @Admin\Element(group="structure")
+ * @Admin\Element
  */
 class SimpleAdminElement extends AbstractElement
 {
@@ -46,6 +47,14 @@ class SimpleAdminElement extends AbstractElement
      * @return string
      */
     public function getRoute()
+    {
+    }
+
+    /**
+     * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver
+     * @return mixed
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
     }
 }

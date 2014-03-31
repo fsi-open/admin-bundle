@@ -19,12 +19,7 @@
             </argument>
             <tag name="admin.element" />
         </service>
-<<<<<<< HEAD
-        <service id="fixtures_bundle.admin.home_page" class="FSi\FixturesBundle\Admin\HomePage">
-            <tag name="admin.element" />
-        </service>
-=======
->>>>>>> Register admin elements via annotations
+
         <service id="fixtures_bundle.admin.about_us_page" class="FSi\FixturesBundle\Admin\AboutUsPage">
             <tag name="admin.element" />
         </service>

@@ -10,18 +10,12 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
-use FSi\Bundle\AdminBundle\Annotation\ManagerBuilder;
+use FSi\Bundle\AdminBundle\Admin\Manager\Visitor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ManagerSpec extends ObjectBehavior
 {
-    function let(ManagerBuilder $builder)
-    {
-        $builder->build(Argument::type('FSi\Bundle\AdminBundle\Admin\Manager'))->willReturn();
-        $this->beConstructedWith($builder);
-    }
-
     function it_remove_element_by_id(ElementInterface $element)
     {
         $element->getId()->willReturn('foo');
@@ -30,5 +24,11 @@ class ManagerSpec extends ObjectBehavior
         $this->hasElement('foo')->shouldReturn(true);
         $this->removeElement('foo');
         $this->hasElement('foo')->shouldReturn(false);
+    }
+
+    function it_accept_visitors(Visitor $visitor)
+    {
+        $visitor->visitManager($this)->shouldBeCalled();
+        $this->accept($visitor);
     }
 }

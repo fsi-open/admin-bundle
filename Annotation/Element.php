@@ -16,8 +16,4 @@ use Doctrine\Common\Annotations\Annotation;
  */
 final class Element extends Annotation
 {
-    /**
-     * @var string
-     */
-    public $group = null;
 }

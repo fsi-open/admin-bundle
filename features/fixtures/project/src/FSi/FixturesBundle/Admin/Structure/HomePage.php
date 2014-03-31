@@ -6,7 +6,7 @@ use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
 use FSi\Bundle\AdminBundle\Annotation as Admin;
 
 /**
- * @Admin\Element(group="structure")
+ * @Admin\Element
  */
 class HomePage extends ResourceElement
 {
