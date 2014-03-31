@@ -9,6 +9,8 @@
 
 namespace FSi\Bundle\AdminBundle\Admin;
 
+use FSi\Bundle\AdminBundle\Admin\Manager\Visitor;
+
 interface ManagerInterface
 {
     /**
@@ -39,4 +41,10 @@ interface ManagerInterface
      * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface[]
      */
     public function getElements();
+
+    /**
+     * @param Visitor $visitor
+     * @return mixed
+     */
+    public function accept(Visitor $visitor);
 }

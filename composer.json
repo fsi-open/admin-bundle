@@ -21,7 +21,8 @@
         "fsi/datagrid-bundle" : "1.0.*",
         "fsi/datasource-bundle" : "1.2.*",
         "fsi/data-indexer" : "0.9.*",
-        "knplabs/knp-menu-bundle": "1.1.*"
+        "knplabs/knp-menu-bundle": "1.1.*",
+        "doctrine/annotations": "~1.0"
     },
     "require-dev": {
         "symfony/class-loader": "~2.3",

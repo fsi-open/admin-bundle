@@ -27,6 +27,8 @@ class FSiAdminBundleSpec extends ObjectBehavior
                 Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminElementPass'),
                 PassConfig::TYPE_BEFORE_REMOVING
             )->shouldBeCalled();
+        $builder->addCompilerPass(Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ManagerVisitorPass'))
+            ->shouldBeCalled();
         $builder->addCompilerPass(Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextBuilderPass'))
             ->shouldBeCalled();
 

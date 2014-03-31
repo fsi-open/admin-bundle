@@ -11,7 +11,6 @@ namespace FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -19,78 +18,20 @@ use Symfony\Component\DependencyInjection\Definition;
 class AdminElementPass implements CompilerPassInterface
 {
     /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('admin.manager')) {
+        if (!$container->hasDefinition('admin.manager') || !$container->has('admin.manager.visitor.element_collection')) {
             return;
         }
 
+        $elements = array();
         $elementServices = $container->findTaggedServiceIds('admin.element');
         foreach ($elementServices as $id => $tag) {
-            $element = $container->findDefinition($id);
-
-            $this->handleDataGridAwareElement($element, $container);
-            $this->handleDataSourceAwareElement($element, $container);
-            $this->handleFormAwareElement($element, $container);
-            $this->handleDoctrineAwareElement($element, $container);
-
-            $container->findDefinition('admin.manager')->addMethodCall('addElement', array($element));
+            $elements[] = $container->findDefinition($id);
         }
-    }
 
-    /**
-     * @param Definition $definition
-     * @param ContainerBuilder $container
-     */
-    private function handleDataGridAwareElement(Definition $definition, ContainerBuilder $container)
-    {
-        $implements = class_implements($definition->getClass());
-
-        if (in_array('FSi\Bundle\AdminBundle\Admin\CRUD\DataGridAwareInterface', $implements)) {
-            $definition->addMethodCall('setDataGridFactory', array($container->findDefinition('datagrid.factory')));
-        }
-    }
-
-    /**
-     * @param Definition $definition
-     * @param ContainerBuilder $container
-     */
-    private function handleDataSourceAwareElement(Definition $definition, ContainerBuilder $container)
-    {
-        $implements = class_implements($definition->getClass());
-
-        if (in_array('FSi\Bundle\AdminBundle\Admin\CRUD\DataSourceAwareInterface', $implements)) {
-            $definition->addMethodCall('setDataSourceFactory', array($container->findDefinition('datasource.factory')));
-        }
-    }
-
-
-    /**
-     * @param Definition $definition
-     * @param ContainerBuilder $container
-     */
-    private function handleFormAwareElement(Definition $definition, ContainerBuilder $container)
-    {
-        $implements = class_implements($definition->getClass());
-
-        if (in_array('FSi\Bundle\AdminBundle\Admin\CRUD\FormAwareInterface', $implements)) {
-            $definition->addMethodCall('setFormFactory', array($container->findDefinition('form.factory')));
-        }
-    }
-
-    /**
-     * @param Definition $definition
-     * @param ContainerBuilder $container
-     */
-    private function handleDoctrineAwareElement(Definition $definition, ContainerBuilder $container)
-    {
-        $implements = class_implements($definition->getClass());
-
-        if (in_array('FSi\Bundle\AdminBundle\Admin\Doctrine\DoctrineAwareInterface', $implements)
-            || in_array('FSi\Bundle\AdminBundle\Doctrine\Admin\DoctrineAwareInterface', $implements)) {
-            $definition->addMethodCall('setManagerRegistry', array($container->findDefinition('doctrine')));
-        }
+        $container->findDefinition('admin.manager.visitor.element_collection')->replaceArgument(0, $elements);
     }
 }

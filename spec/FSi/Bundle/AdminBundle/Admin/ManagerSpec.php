@@ -10,7 +10,9 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Manager\Visitor;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class ManagerSpec extends ObjectBehavior
 {
@@ -22,5 +24,11 @@ class ManagerSpec extends ObjectBehavior
         $this->hasElement('foo')->shouldReturn(true);
         $this->removeElement('foo');
         $this->hasElement('foo')->shouldReturn(false);
+    }
+
+    function it_accept_visitors(Visitor $visitor)
+    {
+        $visitor->visitManager($this)->shouldBeCalled();
+        $this->accept($visitor);
     }
 }

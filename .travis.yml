@@ -37,8 +37,8 @@ before_script:
 script:
     - composer self-update
     - composer require symfony/symfony:${SYMFONY_VERSION} -n --prefer-source
-    - ./bin/phpspec run -f pretty
-    - ./bin/behat --no-snippets --no-paths --verbose --format=progress
+    - ./bin/phpspec run -f progress -vvv
+    - ./bin/behat --no-snippets --no-paths --verbose --format=progress -vvv
 
 notifications:
   irc:   "irc.freenode.org#fsi-open"
