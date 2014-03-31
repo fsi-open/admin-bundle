@@ -12,6 +12,7 @@ namespace FSi\Bundle\AdminBundle;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminElementPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextBuilderPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ManagerVisitorPass;
+use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\FSIAdminExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,6 +33,7 @@ class FSiAdminBundle extends Bundle
         $container->addCompilerPass(new AdminElementPass(), PassConfig::TYPE_BEFORE_REMOVING);
         $container->addCompilerPass(new ManagerVisitorPass());
         $container->addCompilerPass(new ContextBuilderPass());
+        $container->addCompilerPass(new TwigGlobalsPass());
     }
 
     /**
