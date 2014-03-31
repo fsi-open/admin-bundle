@@ -7,7 +7,7 @@
     <parameters>
         <parameter key="admin.manager.class">FSi\Bundle\AdminBundle\Admin\Manager</parameter>
         <parameter key="admin.manager.visitor.annotation.class">FSi\Bundle\AdminBundle\Admin\Manager\AnnotationVisitor</parameter>
-        <parameter key="admin.manager.visitor.class_collection.class">FSi\Bundle\AdminBundle\Admin\Manager\ClassCollectionVisitor</parameter>
+        <parameter key="admin.manager.visitor.element_collection.class">FSi\Bundle\AdminBundle\Admin\Manager\ElementCollectionVisitor</parameter>
         <parameter key="admin.menu.builder.class">FSi\Bundle\AdminBundle\Menu\MenuBuilder</parameter>
         <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Admin\Context\ContextManager</parameter>
         <parameter key="admin.element.param.converter.class">FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter</parameter>
@@ -116,6 +116,13 @@
         </service>
 
         <!-- Manager Visitors -->
+        <service id="admin.manager.visitor.element_collection" class="%admin.manager.visitor.element_collection.class%">
+            <!-- This collection is replaced in AdminElementPass -->
+            <argument type="collection" />
+            <argument type="service" id="admin.element.factory.production_line" />
+            <tag name="admin.manager.visitor" />
+        </service>
+
         <service id="admin.manager.visitor.annotation" class="%admin.manager.visitor.annotation.class%">
             <argument type="service" id="admin.finder.admin_class"/>
             <argument type="service" id="admin.element.factory" />
