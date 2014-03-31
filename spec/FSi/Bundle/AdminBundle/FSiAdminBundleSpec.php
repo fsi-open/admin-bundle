@@ -31,6 +31,8 @@ class FSiAdminBundleSpec extends ObjectBehavior
             ->shouldBeCalled();
         $builder->addCompilerPass(Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextBuilderPass'))
             ->shouldBeCalled();
+        $builder->addCompilerPass(Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass'))
+            ->shouldBeCalled();
 
         $this->build($builder);
     }

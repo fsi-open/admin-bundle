@@ -63,21 +63,6 @@
             <argument type="service" id="doctrine" />
         </service>
 
-        <!-- Twig-->
-         <service id="admin.twig.extension" class="FSi\Bundle\AdminBundle\Twig\Extension\AdminExtension" public="false">
-            <tag name="twig.extension" />
-            <argument type="collection">
-                <argument key="admin_templates_base">%admin.templates.base%</argument>
-                <argument key="admin_templates_datagrid_theme">%admin.templates.datagrid_theme%</argument>
-                <argument key="admin_templates_datasource_theme">%admin.templates.datasource_theme%</argument>
-                <argument key="admin_templates_edit_form_theme">%admin.templates.edit_form_theme%</argument>
-                <argument key="admin_templates_create_form_theme">%admin.templates.create_form_theme%</argument>
-                <argument key="admin_templates_delete_form_theme">%admin.templates.delete_form_theme%</argument>
-                <argument key="admin_templates_resource_form_theme">%admin.templates.resource_form_theme%</argument>
-                <argument key="admin_display_language_switch">%admin.display_language_switch%</argument>
-            </argument>
-        </service>
-
         <!-- Menu -->
         <service id="admin.menu.builder" class="%admin.menu.builder.class%">
             <argument type="service" id="knp_menu.factory"/>
