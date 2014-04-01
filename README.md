@@ -17,15 +17,8 @@ Code quality:
 
 Documentation:
 
-- [Installation](Resources/doc/installation.md)
-- [Admin Elements](Resources/doc/admin_element.md)
-- [Embedding Element](Resources/doc/embedding_element.md)
-- [Events](Resources/doc/events.md)
-- [Home page](Resources/doc/home_page.md)
-- [Menu](Resources/doc/menu.md)
-- [Bundle Configuration](Resources/doc/configuration.md)
-- [Admin Panel Translation](Resources/doc/admin_panel_translation.md)
-- [Behat - live documentation](features)
+- [For master](Resources/doc/index.md)
+- [For version 1.0](https://github.com/fsi-open/admin-bundle/blob/1.0/README.md)
 
 # Features
 
