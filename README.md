@@ -6,7 +6,7 @@ FSi Admin Bundle is complete solution that provides mechanisms to generate admin
 > and you need to secure it on your own. It's recommended to use [FSiAdminSecurityBundle](https://github.com/fsi-open/admin-security-bundle)
 
 Build Status:  
-[![Build Status](https://travis-ci.org/fsi-open/admin-bundle.png?branch=master)](https://travis-ci.org/fsi-open/admin-bundle) - Master  
+[![Build Status](https://travis-ci.org/fsi-open/admin-bundle.png?branch=master)](https://travis-ci.org/fsi-open/admin-bundle) - Master
 [![Build Status](https://travis-ci.org/fsi-open/admin-bundle.png?branch=1.0)](https://travis-ci.org/fsi-open/admin-bundle) - 1.0  
 
 [![Latest Stable Version](https://poser.pugx.org/fsi/admin-bundle/v/stable.png)](https://packagist.org/packages/fsi/admin-bundle)
@@ -17,15 +17,8 @@ Code quality:
 
 Documentation:
 
-- [Installation](Resources/doc/installation.md)
-- [Admin Elements](Resources/doc/admin_element.md)
-- [Embedding Element](Resources/doc/embedding_element.md)
-- [Events](Resources/doc/events.md)
-- [Home page](Resources/doc/home_page.md)
-- [Menu](Resources/doc/menu.md)
-- [Bundle Configuration](Resources/doc/configuration.md)
-- [Admin Panel Translation](Resources/doc/admin_panel_translation.md)
-- [Behat - live documentation](features)
+- [For master](Resources/doc/index.md)
+- [For version 1.0](https://github.com/fsi-open/admin-bundle/blob/1.0/README.md)
 
 # Features
 
