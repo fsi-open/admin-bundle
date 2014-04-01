@@ -1,0 +1,52 @@
+{% extends admin_templates_base %}
+{% trans_default_domain 'FSiAdminBundle' %}
+
+{% block themes %}
+    {% datasource_route datasource_view 'fsi_admin_list' with {'element' : element.id} %}
+    {% datasource_theme datasource_view admin_templates_datasource_theme %}
+    {% datagrid_theme datagrid_view admin_templates_datagrid_theme with {'datasource' : datasource_view, 'element' : element.id} %}
+{% endblock themes %}
+
+{% block above_content %}
+<div class="row">
+    <div class="col-lg-12">
+        <form class="form-inline filters" method="GET" action="{{ path('fsi_admin_list', {element : element.id}) }}">
+            <div class="pull-right hidden-xs">
+                <button type="submit" class="btn btn-primary">{{ 'list.datasource.search'|trans }}</button>
+                <a href="{{ path('fsi_admin_list', {element : element.id}) }}" class="btn btn-default">{{ 'list.datasource.clear'|trans }}</a>
+            </div>
+            {{ datasource_filter_widget(datasource_view) }}
+            <div class="visible-xs submit-buttons">
+                <button type="submit" class="btn btn-primary">{{ 'list.datasource.search'|trans }}</button>
+                <a href="{{ path('fsi_admin_list', {element : element.id}) }}" class="btn btn-default">{{ 'list.datasource.clear'|trans }}</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock above_content %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 id="page-header">{{ 'list.title'|trans }}</h3>
+        <div id="datagrid-wrapper" class="table-responsive">
+            {{ datagrid_widget(datagrid_view) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block under_content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div id="list-results">
+            <strong>{{ 'list.datagrid.result_count'|trans }} {{ datasource_view.result|length }}</strong>
+            {{ datasource_max_results_widget(datasource_view) }}
+        </div>
+        <div class="clearfix"></div>
+        <div id="pagination-centered">
+            {{ datasource_pagination_widget(datasource_view, {max_pages: 10}) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

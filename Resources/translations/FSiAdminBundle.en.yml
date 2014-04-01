@@ -53,3 +53,12 @@ crud:
             save: Save
             reset: Reset
             back_to_list: Back to list
+
+list:
+    title: List of elements
+    datagrid:
+        result_count: Number of records:
+    datasource:
+        results_per_page: Results at page
+        search: Search
+        clear: Clear

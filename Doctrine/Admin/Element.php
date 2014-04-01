@@ -11,11 +11,24 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
-interface DoctrineAwareInterface
+interface Element
 {
+    /**
+     * @return string
+     */
+    public function getClassName();
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
+     */
+    public function getObjectManager();
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    public function getRepository();
+
     /**
      * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
      */

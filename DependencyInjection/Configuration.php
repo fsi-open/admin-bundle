@@ -34,6 +34,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('base')->defaultValue('@FSiAdmin/base.html.twig')->end()
                         ->scalarNode('index_page')->defaultValue('@FSiAdmin/Admin/index.html.twig')->end()
+                        ->scalarNode('list')->defaultValue('@FSiAdmin/List/list.html.twig')->end()
                         ->scalarNode('crud_list')->defaultValue('@FSiAdmin/CRUD/list.html.twig')->end()
                         ->scalarNode('crud_create')->defaultValue('@FSiAdmin/CRUD/create.html.twig')->end()
                         ->scalarNode('crud_edit')->defaultValue('@FSiAdmin/CRUD/edit.html.twig')->end()
