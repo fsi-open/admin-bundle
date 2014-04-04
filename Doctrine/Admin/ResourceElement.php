@@ -24,11 +24,6 @@ abstract class ResourceElement extends AbstractResource implements Element
     protected $registry;
 
     /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $om;
-
-    /**
      * {@inheritdoc}
      */
     public function setManagerRegistry(ManagerRegistry $registry)
