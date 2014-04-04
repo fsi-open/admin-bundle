@@ -12,7 +12,8 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
+ * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use
+ *             FSi\Bundle\AdminBundle\Doctrine\Admin\Element instead.
  */
 interface DoctrineAwareInterface
 {

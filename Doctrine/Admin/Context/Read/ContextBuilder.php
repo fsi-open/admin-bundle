@@ -9,7 +9,6 @@
 
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read;
 
-use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement as DeprecatedCRUDElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
@@ -41,7 +40,7 @@ class ContextBuilder implements ContextBuilderInterface
             return false;
         }
 
-        if ($element instanceof DeprecatedCRUDElement || $element instanceof CRUDElement) {
+        if ($element instanceof CRUDElement) {
             return true;
         }
 

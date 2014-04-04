@@ -16,17 +16,12 @@ use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-abstract class ResourceElement extends AbstractResource implements DoctrineAwareInterface
+abstract class ResourceElement extends AbstractResource implements Element
 {
     /**
      * @var \Doctrine\Common\Persistence\ManagerRegistry
      */
     protected $registry;
-
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $om;
 
     /**
      * {@inheritdoc}
@@ -55,14 +50,12 @@ abstract class ResourceElement extends AbstractResource implements DoctrineAware
      */
     public function getObjectManager()
     {
-        if (!isset($this->om)) {
-            $this->om = $this->registry->getManagerForClass($this->getClassName());
-        }
+        $om = $this->registry->getManagerForClass($this->getClassName());
 
-        if (is_null($this->om)) {
+        if (is_null($om)) {
             throw new RuntimeException(sprintf('Registry manager does\'t have manager for class "%s".', $this->getClassName()));
         }
 
-        return $this->om;
+        return $om;
     }
 }
