@@ -1,6 +1,10 @@
-**This element type require to install fsi/resource-repository-bundle before using it.**  
+# How to create simple resource element in 4 steps
+
+## 1. Installation
+
+**This element type require to install fsi/resource-repository-bundle before using it.**
 **You can read more about it [here](https://github.com/fsi-open/resource-repository-bundle)**
-# Installation
+**This step should be done only once**
 
 Add to your composer.json following lines
 
@@ -62,7 +66,7 @@ Update database with following console command
 $ php app/console doctrine:schema:update --force
 ```
 
-# Configuration
+## 2. Resources configuration
 
 Lets assume we have following configuration in ``resource_map.yml``
 
@@ -77,7 +81,7 @@ resources:
                 label: Main page content
 ```
 
-## Admin object class
+## 3. Create admin resource element class
 
 ```php
 <?php
@@ -85,7 +89,13 @@ resources:
 namespace FSi\Bundle\DemoBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
+use FSi\Bundle\AdminBundle\Annotation as Admin;
 
+/**
+ * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
+ *
+ * @Admin\Element
+ */
 class MainPage extends ResourceElement
 {
     /**
@@ -122,53 +132,44 @@ class MainPage extends ResourceElement
 }
 ```
 
-## Main page resource service
+## 4. Add element into menu
 
-Every single admin element must be registered as a service with ``admin.element`` tag.
-Optionally you can also use tag ``alias`` attribute to assign element into group.
-Group name as element name is translated so you can use translation key as a group name (alias)
-
-```xml
-
-<?xml version="1.0" ?>
-
-<container xmlns="http://symfony.com/schema/dic/services"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-<services>
-
-    <service id="fsi_demo_bundle.admin.main_page" class="FSi\Bundle\DemoBundle\Admin\MainPage">
-        <tag name="admin.element"/>
-    </service>
-
-</services>
-</container>
+By default elements are not visible in menu. You need to add it into menu manually.
 
 ```
+# app/config/admin_menu.yml
 
-This should be enough to create simple admin element and display it in menu.
-However sometimes you need you customize admin object. This can be done with options that you can pass as a service
-collection argument.
-
-## Doctrine CRUD Element options
-
-```xml
-<?xml version="1.0" ?>
-
-<container xmlns="http://symfony.com/schema/dic/services"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-<services>
-
-    <service id="fsi_demo_bundle.admin.news" class="FSi\Bundle\DemoBundle\Admin\MainPage">
-        <argument type="collection">
-            <argument key="title">resource.title</argument>
-            <argument key="template">@FSiDemo/Resource/resource.html.twig</argument>
-        </argument>
-        <tag name="admin.element"/>
-    </service>
-
-</services>
+menu:
+  - main_page
 ```
 
-![Preview of resource](../preview/resource.png)
+## Admin element options
+
+There are also several options that you can use to configure admin element.
+This can be easily done by overwriting ``setDefaultOptions`` method in admin element class.
+Following example contains all available options with default values:
+
+```php
+<?php
+// src/FSi/Bundle/DemoBundle/Admin/User
+
+namespace FSi\Bundle\DemoBundle\Admin;
+
+/**
+ * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
+ *
+ * @Admin\Element
+ */
+class UserElement extends CRUDElement
+{
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            "title" => "resource.title",
+            "template" => "@FSiDemo/Resource/resource.html.twig",
+        ));
+    }
+}
+```
+
+[Back to index](index.md)

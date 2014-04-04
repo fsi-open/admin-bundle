@@ -1,7 +1,7 @@
 # Documentation
 
 - [Installation](installation.md)
-- [Admin Elements](admin_element.md)
+- [Create your first admin element](admin_element.md)
 - [Embedding Element](embedding_element.md)
 - [Events](events.md)
 - [Home page](home_page.md)

@@ -47,4 +47,6 @@ framework:
     translator:      { fallback: %locale% }
 ```
 
-Now you should read something about [admin elements](admin_element.md)
+It's time to register your first [admin element](admin_element.md)
+
+[Back to index](index.md)

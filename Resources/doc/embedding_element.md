@@ -542,6 +542,4 @@ And finally we must register it in services.xml file
 </container>
 ```
 
-## Demo
-
-![Preview of embedded list](../preview/embedded_list.png)
+[Back to index](index.md)

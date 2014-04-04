@@ -1,4 +1,6 @@
-## Admin object class
+# How to create simple CRUD element in 5 steps
+
+## 1. Create admin element class
 
 ```php
 <?php
@@ -10,15 +12,22 @@ use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use FSi\Bundle\DemoBundle\Form\Type\UserType;
+use FSi\Bundle\AdminBundle\Annotation as Admin;
 
-class User extends CRUDElement
+/**
+ * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
+ *
+ * @Admin\Element
+ */
+class UserElement extends CRUDElement
 {
     /**
      * {@inheritdoc}
      */
     public function getClassName()
     {
-        return 'FSiDemoBundle:User'; // Doctrine class name
+        return 'FSi\Bundle\DemoBundle\Entity\User'; // Doctrine class name
     }
 
     /**
@@ -45,13 +54,11 @@ class User extends CRUDElement
         /* @var $datasource \FSi\Component\DataSource\DataSource */
         $datasource = $factory->createDataSource('doctrine', array(
             'entity' => $this->getClassName()
-        ), 'datasource');
+        ), 'admin_users');
 
-        $datasource->addField('email', 'text', 'like');
-        $datasource->addField('username', 'text', 'like');
+        $datasource->setMaxResults(10);
 
-        // Here you can add some fields or filters into datasource
-        // To get more information about datasource you should visit https://github.com/fsi-open/datasource
+        // To get more information about datasource you should visit https://github.com/fsi-open/datasource-bundle/blob/master/Resources/docs/basic_usage.md
 
         return $datasource;
     }
@@ -62,50 +69,9 @@ class User extends CRUDElement
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
         /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
-        $datagrid = $factory->createDataGrid('datagrid');
+        $datagrid = $factory->createDataGrid('admin_users');
 
-        $datagrid->addColumn('email', 'text', array(
-            'label' => 'Eamil'
-        ));
-        $datagrid->addColumn('username', 'text', array(
-            'label' => 'Username',
-            'editable' => true,
-        ));
-        $datagrid->addColumn('enabled', 'boolean', array(
-            'label' => 'Enabled'
-        ));
-        $datagrid->addColumn('locked', 'boolean', array(
-            'label' => 'Locked'
-        ));
-        $datagrid->addColumn('roles', 'text', array(
-            'label' => 'Roles',
-            'value_format' => function($data) {
-                return implode(', ', $data['roles']);
-            }
-        ));
-        $datagrid->addColumn('action', 'action', array(
-            'label' => 'Action',
-            'field_mapping' => array('id'),
-            'actions' => array(
-                'edit' => array(
-                    'url_attr' => array(
-                        'class' => 'btn btn-warning btn-small-horizontal',
-                        'title' => 'edit user'
-                    ),
-                    'content' => '<span class="icon-eject icon-white"></span>',
-                    'route_name' => 'fsi_admin_crud_edit',
-                    'parameters_field_mapping' => array(
-                        'id' => 'id'
-                    ),
-                    'additional_parameters' => array(
-                        'element' => $this->getId()
-                    )
-                )
-            )
-        ));
-
-        // Here you can add some columns into datagrid
-        // To get more information about datagrid you should visit https://github.com/fsi-open/datagrid
+        // To get more information about datagrid you should visit https://github.com/fsi-open/datagrid-bundle/blob/master/Resources/docs/basic_usage.md
 
         return $datagrid;
     }
@@ -115,26 +81,8 @@ class User extends CRUDElement
      */
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        $form = $factory->create('form', $data, array(
-            'data_class' => 'FSi\Bundle\DemoBundle\Entity\User' // this option is important for create form 
-        ));
+        $form = $factory->create(new UserType(), $data));
 
-        $form->add('email', 'email');
-        $form->add('username', 'text');
-        $form->add('enabled', 'choice', array(
-            'choices' => array(
-                0 => 'No',
-                1 => 'Yes',
-            )
-        ));
-        $form->add('locked', 'choice', array(
-            'choices' => array(
-                0 => 'No',
-                1 => 'Yes',
-            )
-        ));
-
-        // Here you should add some fields into form
         // To get more information about Symfony form you should visit http://symfony.com/doc/current/book/forms.html
 
         return $form;
@@ -142,69 +90,99 @@ class User extends CRUDElement
 }
 ```
 
-## User CRUD service
+## 3. Configure datagrid
 
-Every single admin element must be registered as a service with ``admin.element`` tag.
-Optionally you can also use tag ``alias`` attribute to assign element into group.
-Group name same as element name is translated so you can use translation key as a group name (alias)
+Just remember to set file name equal to datagrid name (create by factory)
 
-```xml
+```
+# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yml
 
-<?xml version="1.0" ?>
-
-<container xmlns="http://symfony.com/schema/dic/services"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-<services>
-
-    <service id="fsi_demo_bundle.admin.user" class="FSi\Bundle\DemoBundle\Admin\User">
-        <tag name="admin.element"/>
-    </service>
-
-</services>
-</container>
+columns:
+  email:
+    type: text
+    options:
+      label: Email address
+  enabled:
+    type: boolean
+    options:
+      label: Enabled
+  actions:
+    type: action
+    options:
+      label: Actions
+      field_mapping: [ id ]
+      actions:
+        edit:
+          route_name: "fsi_admin_crud_edit"
+          additional_parameters: { element: admin_users }
+          parameters_field_mapping: { id: id }
 
 ```
 
-This should be enough to create simple admin element and display it in menu.
-However sometimes you need you customize admin object. This can be done with options that you can pass as a service
-collection argument.
+## 4. Configure datasource
 
-## Doctrine CRUD Element options
+```
+# src/FSi/Bundle/DemoBundle/Resources/config/datasource/admin_users.yml
 
-```xml
-<?xml version="1.0" ?>
-
-<container xmlns="http://symfony.com/schema/dic/services"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-<services>
-
-    <service id="fsi_demo_bundle.admin.user" class="FSi\Bundle\DemoBundle\Admin\User">
-        <argument type="collection">
-            <argument key="allow_delete">true</argument>
-            <argument key="allow_add">true</argument>
-            <argument key="allow_edit">true</argument>
-            <argument key="crud_list_title">crud.list.title</argument>
-            <argument key="crud_create_title">crud.create.title</argument>
-            <argument key="crud_edit_title">crud.edit.title</argument>
-            <argument key="template_crud_list">@FSiDemo/Admin/user_edit.html.twig</argument>
-            <argument key="template_crud_create">@FSiDemo/Admin/user_create.html.twig</argument>
-            <argument key="template_crud_edit">@FSiDemo/Admin/user_edit.html.twig</argument>
-            <argument key="template_crud_delete">@FSiDemo/Admin/user_create.html.twig</argument>
-        </argument>
-        <tag name="admin.element"/>
-    </service>
-
-</services>
+fields:
+  email:
+    type: text
+    comparison: like
+  enabled:
+    type: boolean
+    comparison: eq
 ```
 
-## Demo
+## 5. Add element into menu
 
-![Preview of list](../preview/crud_list.png)
+By default elements are not visible in menu. You need to add it into menu manually.
 
-![Preview of create form](../preview/crud_create.png)
+```
+# app/config/admin_menu.yml
 
-![Preview of edit form](../preview/crud_edit.png)
+menu:
+  - users
 
-![Preview of delete](../preview/crud_delete.png)
+```
+
+Remember to use id of element that is returned by ``UserElement::getId`` method in menu configuration.
+You can read more about menu configuration in [Menu section](menu.md)
+
+## Admin element options
+
+There are also several options that you can use to configure admin element.
+This can be easily done by overwriting ``setDefaultOptions`` method in admin element class.
+Following example contains all available options with default values:
+
+```php
+<?php
+// src/FSi/Bundle/DemoBundle/Admin/User
+
+namespace FSi\Bundle\DemoBundle\Admin;
+
+/**
+ * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
+ *
+ * @Admin\Element
+ */
+class UserElement extends CRUDElement
+{
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            "allow_delete" => true,
+            "allow_add" => true,
+            "allow_edit" => true,
+            "crud_list_title" => "crud.list.title",
+            "crud_create_title" => "crud.create.title",
+            "crud_edit_title" => "crud.edit.title",
+            "template_crud_list" => "@FSiDemo/Admin/user_edit.html.twig",
+            "template_crud_create" => "@FSiDemo/Admin/user_create.html.twig",
+            "template_crud_edit" => "@FSiDemo/Admin/user_edit.html.twig",
+            "template_crud_delete" => "@FSiDemo/Admin/user_create.html.twig"
+        ));
+    }
+}
+```
+
+[Back to index](index.md)

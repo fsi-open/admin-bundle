@@ -44,3 +44,5 @@ fsi_admin:
     defaults:
         _controller: YourAdminBundle:Admin:index
 ```
+
+[Back to index](index.md)

@@ -12,3 +12,5 @@ To enable admin panel translation you need to add following lines to ``app/confi
 fsi_admin:
     display_language_switch: true
 ```
+
+[Back to index](index.md)
