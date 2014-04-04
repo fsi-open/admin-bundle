@@ -11,7 +11,6 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Resource;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
-use FSi\Bundle\AdminBundle\Admin\Doctrine\ResourceElement as DeprecatedResourceElement;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
 
 /**
@@ -41,7 +40,7 @@ class ContextBuilder implements ContextBuilderInterface
             return false;
         }
 
-        if (!$element instanceof DeprecatedResourceElement && !$element instanceof ResourceElement) {
+        if (!$element instanceof ResourceElement) {
             return false;
         }
 
