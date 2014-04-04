@@ -9,11 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+
 /**
- * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use
- *             FSi\Bundle\AdminBundle\Doctrine\Admin\Element instead.
+ * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-interface CRUDInterface
+interface Element extends CRUDInterface, DoctrineAwareInterface
 {
     /**
      * Class name that represent entity. It might be returned in Symfony2 style:
@@ -35,4 +36,10 @@ interface CRUDInterface
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
     public function getRepository();
+
+    /**
+     * @param ManagerRegistry $registry
+     * @return mixed
+     */
+    public function setManagerRegistry(ManagerRegistry $registry);
 }

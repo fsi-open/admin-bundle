@@ -13,7 +13,7 @@ class DoctrineWorkerSpec extends ObjectBehavior
         $this->beConstructedWith($managerRegistry);
     }
 
-    function it_mount_datagrid_factory_to_elements_that_are_datagrid_aware(CRUDElement $element, ManagerRegistry $managerRegistry)
+    function it_mount_datagrid_factory_to_elements_that_are_doctrine_elements(CRUDElement $element, ManagerRegistry $managerRegistry)
     {
         $element->setManagerRegistry($managerRegistry)->shouldBeCalled();
 
