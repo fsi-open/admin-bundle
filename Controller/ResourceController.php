@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Admin\Context\ContextManagerInterface;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -21,18 +21,18 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 class ResourceController
 {
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
+     * @var EngineInterface
      */
     protected $templating;
 
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\Context\ContextManagerInterface
+     * @var ContextManager
      */
     protected $contextManager;
 
     function __construct(
         EngineInterface $templating,
-        ContextManagerInterface $contextManager,
+        ContextManager $contextManager,
         $resourceActionTemplate
     ) {
         $this->templating = $templating;
@@ -41,9 +41,9 @@ class ResourceController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource $element
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @param AbstractResource $element
+     * @param Request $request
+     * @throws NotFoundHttpException
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function resourceAction(AbstractResource $element, Request $request)

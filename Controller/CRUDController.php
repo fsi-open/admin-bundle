@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Admin\Context\ContextManagerInterface;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -22,7 +22,7 @@ class CRUDController
 {
     /**
      * @param EngineInterface $templating
-     * @param ContextManagerInterface $contextManager
+     * @param ContextManager $contextManager
      * @param string $listActionTemplate
      * @param string $createActionTemplate
      * @param string $editActionTemplate
@@ -30,7 +30,7 @@ class CRUDController
      */
     function __construct(
         EngineInterface $templating,
-        ContextManagerInterface $contextManager,
+        ContextManager $contextManager,
         $listActionTemplate,
         $createActionTemplate,
         $editActionTemplate,
