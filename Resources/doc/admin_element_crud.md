@@ -111,13 +111,11 @@ columns:
     options:
       label: Actions
       field_mapping: [ id ]
-      actions:
-        edit:
-          route_name: "fsi_admin_crud_edit"
-          additional_parameters: { element: admin_users }
-          parameters_field_mapping: { id: id }
-
+      admin_edit_element_id: admin_users
 ```
+
+You should also read [how to create edit link at list](how_to_create_edit_link_at_list.md) to better
+understand what's going on under the hood.
 
 ## 4. Configure datasource
 
