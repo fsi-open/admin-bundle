@@ -114,6 +114,8 @@ columns:
       admin_edit_element_id: admin_users
 ```
 
+[DataGrid column types reference](https://github.com/fsi-open/datagrid-bundle/blob/master/Resources/docs/columns.md)
+
 You should also read [how to create edit link at list](how_to_create_edit_link_at_list.md) to better
 understand what's going on under the hood.
 
