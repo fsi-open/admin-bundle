@@ -53,7 +53,14 @@ class News extends CRUDElement
         $datagrid->addColumn('actions', 'action', array(
             'label' => 'admin.news.list.actions',
             'field_mapping' => array('id'),
-            'admin_edit_element_id' => $this->getId()
+            'admin_edit_element_id' => $this->getId(),
+            'actions' => array(
+                'display' => array(
+                    'route_name' => "fsi_admin_display",
+                    'additional_parameters' => array('element' => DisplayNews::ID),
+                    'parameters_field_mapping' => array('id' => 'id')
+                )
+            )
         ));
 
         return $datagrid;

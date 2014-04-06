@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="admin.display.context.class">FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContext</parameter>
+        <parameter key="admin.display.context_builder.class">FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContextBuilder</parameter>
+        <parameter key="admin.display.context.request_handler.class">FSi\Bundle\AdminBundle\Admin\Display\Context\Request\Handler</parameter>
+    </parameters>
+
+    <services>
+        <service id="admin.display.context_builder" class="%admin.display.context_builder.class%">
+            <argument type="service" id="admin.display.context"/>
+            <tag name="admin.context.builder" />
+        </service>
+
+        <service id="admin.display.context" class="%admin.display.context.class%">
+            <argument type="collection">
+                <argument type="service" id="admin.display.context.request_handler"/>
+            </argument>
+        </service>
+
+        <service id="admin.display.context.request_handler" class="%admin.display.context.request_handler.class%">
+            <argument type="service" id="event_dispatcher" />
+        </service>
+    </services>
+</container>

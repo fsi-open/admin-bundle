@@ -46,6 +46,7 @@ class FSIAdminExtension extends Extension
         $loader->load('context/edit.xml');
         $loader->load('context/delete.xml');
         $loader->load('context/resource.xml');
+        $loader->load('context/display.xml');
     }
 
     /**

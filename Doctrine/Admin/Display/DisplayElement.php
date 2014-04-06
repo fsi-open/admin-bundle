@@ -1,0 +1,62 @@
+<?php
+
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Display;
+
+use Doctrine\Common\Persistence\ManagerRegistry;
+use FSi\Bundle\AdminBundle\Admin\Display\GenericDisplayElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\Element;
+use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Component\DataIndexer\DoctrineDataIndexer;
+
+abstract class DisplayElement extends GenericDisplayElement implements Element
+{
+    /**
+     * @var ManagerRegistry
+     */
+    protected $registry;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectManager()
+    {
+        $om = $this->registry->getManagerForClass($this->getClassName());
+
+        if (is_null($om)) {
+            throw new RuntimeException(sprintf('Registry manager does\'t have manager for class "%s".', $this->getClassName()));
+        }
+
+        return $om;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRepository()
+    {
+        return $this->getObjectManager()->getRepository($this->getClassName());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDataIndexer()
+    {
+        return new DoctrineDataIndexer($this->registry, $this->getRepository()->getClassName());;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setManagerRegistry(ManagerRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
+}
