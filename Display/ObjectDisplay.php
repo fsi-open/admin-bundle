@@ -9,6 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Display;
 
+use FSi\Bundle\AdminBundle\Display\Property\View;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ObjectDisplay implements Display
@@ -56,8 +57,8 @@ class ObjectDisplay implements Display
         $view = new DisplayView();
         foreach ($this->properties as $property) {
             $view->add(
-                new PropertyView(
-                    $accessor->getValue($this->object, $property->getPath()),
+                new View(
+                    $this->getPropertyValue($accessor, $property),
                     $property->getLabel()
                 )
             );
@@ -73,7 +74,22 @@ class ObjectDisplay implements Display
     {
         $accessorBuilder = PropertyAccess::createPropertyAccessorBuilder();
         $accessorBuilder->enableMagicCall();
-        $accessorBuilder->enableExceptionOnInvalidIndex();
+
         return $accessorBuilder->getPropertyAccessor();
+    }
+
+    /**
+     * @param $accessor
+     * @param $property
+     * @return mixed
+     */
+    private function getPropertyValue($accessor, $property)
+    {
+        $value = $accessor->getValue($this->object, $property->getPath());
+        foreach ($property->getValueDecorators() as $decorator) {
+            $value = $decorator->decorate($value);
+        }
+
+        return $value;
     }
 }

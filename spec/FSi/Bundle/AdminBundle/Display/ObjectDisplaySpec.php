@@ -3,7 +3,6 @@
 namespace spec\FSi\Bundle\AdminBundle\Display;
 
 use FSi\Bundle\AdminBundle\Display\Property;
-use FSi\Bundle\AdminBundle\Display\PropertyView;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
@@ -40,8 +39,18 @@ class ObjectDisplaySpec extends ObjectBehavior
         $this->add(new Property('first_name', 'First Name'));
         $this->add(new Property('roles'));
 
-        $this->createView()->shouldHavePropertyView(new PropertyView('Norbert', 'First Name'));
-        $this->createView()->shouldHavePropertyView(new PropertyView(array('ROLE_ADMIN', 'ROLE_USER'), null));
+        $this->createView()->shouldHavePropertyView(new Property\View('Norbert', 'First Name'));
+        $this->createView()->shouldHavePropertyView(new Property\View(array('ROLE_ADMIN', 'ROLE_USER'), null));
+    }
+
+    function it_create_display_view_with_decorated_values()
+    {
+        $object = new \stdClass();
+        $object->date = new \DateTime();
+        $this->beConstructedWith($object);
+        $this->add(new Property('date', null, array(new Property\Decorator\DateTime('Y-m-d'))));
+
+        $this->createView()->shouldHavePropertyView(new Property\View($object->date->format('Y-m-d'), null));
     }
 
     public function getMatchers()

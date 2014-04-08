@@ -48,9 +48,9 @@ class DisplayNews extends DisplayElement
         $display = new ObjectDisplay($object);
         $display->add(new Property('id', 'Identity'))
             ->add(new Property('title'))
-            ->add(new Property('date'))
+            ->add(new Property('date', null, array(new Property\Decorator\DateTime('Y-m-d H:i:s'))))
             ->add(new Property('visible'))
-            ->add(new Property('createdAt'))
+            ->add(new Property('createdAt', null, array(new Property\Decorator\DateTime('Y-m-d H:i:s'))))
             ->add(new Property('creatorEmail'));
 
         return $display;

@@ -9,10 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Display;
 
+use FSi\Bundle\AdminBundle\Display\Property\View;
+
 class DisplayView implements \IteratorAggregate
 {
     /**
-     * @var PropertyView[]
+     * @var View[]
      */
     protected $properties;
 
@@ -22,15 +24,15 @@ class DisplayView implements \IteratorAggregate
     }
 
     /**
-     * @param PropertyView $propertyView
+     * @internal param $PropertyVi ew $propertyView*
      */
-    public function add(PropertyView $propertyView)
+    public function add(View $propertyView)
     {
         $this->properties[] = $propertyView;
     }
 
     /**
-     * @return \ArrayIterator|Traversable
+     * @return \ArrayIterator|\Traversable
      */
     public function getIterator()
     {

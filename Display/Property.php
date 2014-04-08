@@ -9,6 +9,8 @@
 
 namespace FSi\Bundle\AdminBundle\Display;
 
+use FSi\Bundle\AdminBundle\Display\Property\ValueDecorator;
+
 class Property
 {
     /**
@@ -22,16 +24,23 @@ class Property
     private $label;
 
     /**
+     * @var array
+     */
+    private $valueDecorators;
+
+    /**
      * @param string $path
      * @param null|string $label
-     * @throws \InvalidArgumentException
+     * @param array $valueDecorators
      */
-    public function __construct($path, $label = null)
+    public function __construct($path, $label = null, $valueDecorators = array())
     {
         $this->validatePath($path);
+        $this->validateDecorators($valueDecorators);
 
         $this->path = $path;
         $this->label = $label;
+        $this->valueDecorators = $valueDecorators;
     }
 
     /**
@@ -51,6 +60,14 @@ class Property
     }
 
     /**
+     * @return array
+     */
+    public function getValueDecorators()
+    {
+        return $this->valueDecorators;
+    }
+
+    /**
      * @param $path
      * @throws \InvalidArgumentException
      */
@@ -58,6 +75,19 @@ class Property
     {
         if (!is_string($path)) {
             throw new \InvalidArgumentException("Property path must be a string value");
+        }
+    }
+
+    /**
+     * @param $viewDecorators
+     * @throws \InvalidArgumentException
+     */
+    private function validateDecorators($viewDecorators)
+    {
+        foreach ($viewDecorators as $decorator) {
+            if (!$decorator instanceof ValueDecorator) {
+                throw new \InvalidArgumentException("All property value decorators must implement ValueDecorator interface");
+            }
         }
     }
 }

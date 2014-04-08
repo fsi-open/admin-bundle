@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Display;
+namespace FSi\Bundle\AdminBundle\Display\Property;
 
-class PropertyView
+class View
 {
     /**
      * @var mixed
