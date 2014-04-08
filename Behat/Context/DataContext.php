@@ -89,7 +89,6 @@ class DataContext extends BehatContext implements KernelAwareInterface
             $this->getDoctrine()->getManager()->persist($news);
             $this->getDoctrine()->getManager()->flush();
         }
-        die();
     }
 
     /**
