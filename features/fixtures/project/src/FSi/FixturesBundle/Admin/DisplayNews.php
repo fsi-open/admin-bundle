@@ -4,7 +4,7 @@ namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Display\Display;
 use FSi\Bundle\AdminBundle\Display\ObjectDisplay;
-use FSi\Bundle\AdminBundle\Display\Property;
+use FSi\Bundle\AdminBundle\Display\Property\Formatter;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\Display\DisplayElement;
 use FSi\Bundle\AdminBundle\Annotation as Admin;
 
@@ -46,12 +46,21 @@ class DisplayNews extends DisplayElement
     protected function initDisplay($object)
     {
         $display = new ObjectDisplay($object);
-        $display->add(new Property('id', 'Identity'))
-            ->add(new Property('title'))
-            ->add(new Property('date', null, array(new Property\Decorator\DateTime('Y-m-d H:i:s'))))
-            ->add(new Property('visible'))
-            ->add(new Property('createdAt', null, array(new Property\Decorator\DateTime('Y-m-d H:i:s'))))
-            ->add(new Property('creatorEmail'));
+        $display->add('id', 'Identity')
+            ->add('title')
+            ->add('date', null, array(
+                new Formatter\EmptyValue(),
+                new Formatter\DateTime('Y-m-d H:i:s')
+            ))
+            ->add('visible', 'Visible', array(
+                new Formatter\Boolean("yes", "no")
+            ))
+            ->add('categories')
+            ->add('createdAt', null, array(
+                new Formatter\EmptyValue(),
+                new Formatter\DateTime('Y-m-d H:i:s')
+            ))
+            ->add('creatorEmail');
 
         return $display;
     }

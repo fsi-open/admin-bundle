@@ -20,16 +20,18 @@ class View
      * @var null|string
      */
     protected $label;
+    private $path;
 
     /**
      * @param mixed $value
+     * @param $path
      * @param null|string $label
-     * @throws \InvalidArgumentException
      */
-    public function __construct($value, $label = null)
+    public function __construct($value, $path, $label = null)
     {
         $this->value = $value;
         $this->label = $label;
+        $this->path = $path;
     }
 
     /**
@@ -46,5 +48,13 @@ class View
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPath()
+    {
+        return $this->path;
     }
 }

@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Display;
 
-use FSi\Bundle\AdminBundle\Display\Property\ValueDecorator;
+use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
 
 class Property
 {
@@ -31,16 +31,16 @@ class Property
     /**
      * @param string $path
      * @param null|string $label
-     * @param array $valueDecorators
+     * @param array $valueFormatters
      */
-    public function __construct($path, $label = null, $valueDecorators = array())
+    public function __construct($path, $label = null, $valueFormatters = array())
     {
         $this->validatePath($path);
-        $this->validateDecorators($valueDecorators);
+        $this->validateFormatters($valueFormatters);
 
         $this->path = $path;
         $this->label = $label;
-        $this->valueDecorators = $valueDecorators;
+        $this->valueDecorators = $valueFormatters;
     }
 
     /**
@@ -79,14 +79,14 @@ class Property
     }
 
     /**
-     * @param $viewDecorators
+     * @param $valueFormatters
      * @throws \InvalidArgumentException
      */
-    private function validateDecorators($viewDecorators)
+    private function validateFormatters($valueFormatters)
     {
-        foreach ($viewDecorators as $decorator) {
-            if (!$decorator instanceof ValueDecorator) {
-                throw new \InvalidArgumentException("All property value decorators must implement ValueDecorator interface");
+        foreach ($valueFormatters as $decorator) {
+            if (!$decorator instanceof ValueFormatter) {
+                throw new \InvalidArgumentException("All property value formatters must implement ValueFormatter interface");
             }
         }
     }

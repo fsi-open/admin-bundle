@@ -23,7 +23,7 @@ class ObjectDisplaySpec extends ObjectBehavior
 
         $this->beConstructedWith($object);
 
-        $this->add(new Property('firstName', 'First Name'));
+        $this->add('firstName', 'First Name');
         $this->shouldThrow(new NoSuchPropertyException('Neither the property "firstName" nor one of the methods "getFirstName()", "isFirstName()", "hasFirstName()", "__get()", "__call()" exist and have public access in class "stdClass".'))
             ->during('createView', array());
     }
@@ -36,11 +36,11 @@ class ObjectDisplaySpec extends ObjectBehavior
 
         $this->beConstructedWith($object);
 
-        $this->add(new Property('first_name', 'First Name'));
-        $this->add(new Property('roles'));
+        $this->add('first_name', 'First Name');
+        $this->add('roles');
 
-        $this->createView()->shouldHavePropertyView(new Property\View('Norbert', 'First Name'));
-        $this->createView()->shouldHavePropertyView(new Property\View(array('ROLE_ADMIN', 'ROLE_USER'), null));
+        $this->createView()->shouldHavePropertyView(new Property\View('Norbert', 'first_name', 'First Name'));
+        $this->createView()->shouldHavePropertyView(new Property\View(array('ROLE_ADMIN', 'ROLE_USER'), 'roles', null));
     }
 
     function it_create_display_view_with_decorated_values()
@@ -48,9 +48,9 @@ class ObjectDisplaySpec extends ObjectBehavior
         $object = new \stdClass();
         $object->date = new \DateTime();
         $this->beConstructedWith($object);
-        $this->add(new Property('date', null, array(new Property\Decorator\DateTime('Y-m-d'))));
+        $this->add('date', null, array(new Property\Formatter\DateTime('Y-m-d')));
 
-        $this->createView()->shouldHavePropertyView(new Property\View($object->date->format('Y-m-d'), null));
+        $this->createView()->shouldHavePropertyView(new Property\View($object->date->format('Y-m-d'), 'date', null));
     }
 
     public function getMatchers()

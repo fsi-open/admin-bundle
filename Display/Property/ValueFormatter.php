@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Display\Property;
 
-interface ValueDecorator
+interface ValueFormatter
 {
-    public function decorate($value);
+    public function format($value);
 }

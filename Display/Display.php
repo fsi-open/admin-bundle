@@ -12,9 +12,12 @@ namespace FSi\Bundle\AdminBundle\Display;
 interface Display
 {
     /**
-     * @param Property $property
+     * @param $path
+     * @param null $label
+     * @param array $valueFormatters
+     * @return Display
      */
-    public function add(Property $property);
+    public function add($path, $label = null, $valueFormatters = array());
 
     /**
      * @return DisplayView

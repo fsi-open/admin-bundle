@@ -1,24 +1,43 @@
 {% extends admin_templates_base %}
 
 {% block content %}
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <table class="table table-bordered">
-                    {% for property in display %}
-                        <tr>
-                            <td>
-                                {% if property.label is not empty %}
-                                {{ property.label }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                            <td>{{ property.value }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
+<div class="col-lg-12">
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8">
+            <table class="table table-bordered">
+                {% for property in display %}
+                    <tr>
+                        <td>
+                            {{ property.label|trans|default(property.path|humanize) }}
+                        </td>
+                        <td>
+                        {% if property.value is iterable %}
+                            {{ block('iterable_property') }}
+                        {% else %}
+                            {{ block('simple_property') }}
+                        {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% if app.request.query.has('redirect_uri') %}
+                <a class="btn btn-info pull-right" href="{{ app.request.query.get('redirect_uri') }}">{{ 'crud.edit.button.back_to_list'|trans({}, 'FSiAdminBundle')  }}</a>
+            {% endif %}
         </div>
     </div>
+</div>
+{% endblock %}
+
+{% block simple_property %}
+{{ property.value }}
+{% endblock %}
+
+{% block iterable_property %}
+{% if property.value|length %}
+<ul class="list-unstyled">
+    {% for value in property.value %}
+        <li>{{ value }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% endblock %}

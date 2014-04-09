@@ -41,9 +41,9 @@ class ObjectDisplay implements Display
     /**
      * {@inheritdoc}
      */
-    public function add(Property $property)
+    public function add($path, $label = null, $valueFormatters = array())
     {
-        $this->properties[] = $property;
+        $this->properties[] = new Property($path, $label, $valueFormatters);
 
         return $this;
     }
@@ -59,6 +59,7 @@ class ObjectDisplay implements Display
             $view->add(
                 new View(
                     $this->getPropertyValue($accessor, $property),
+                    $property->getPath(),
                     $property->getLabel()
                 )
             );
@@ -87,7 +88,7 @@ class ObjectDisplay implements Display
     {
         $value = $accessor->getValue($this->object, $property->getPath());
         foreach ($property->getValueDecorators() as $decorator) {
-            $value = $decorator->decorate($value);
+            $value = $decorator->format($value);
         }
 
         return $value;

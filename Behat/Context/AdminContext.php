@@ -181,4 +181,12 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     {
         $this->getPage('Admin panel')->getLanguageDropdown()->clickLink($link);
     }
+
+    /**
+     * @Then /^I should see details about news at page$/
+     */
+    public function iShouldSeeDetailsAboutNewsAtPage()
+    {
+        expect($this->getPage('News List')->hasTable('table-bordered'))->toBe(true);
+    }
 }

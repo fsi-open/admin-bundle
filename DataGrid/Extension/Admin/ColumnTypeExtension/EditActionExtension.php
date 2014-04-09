@@ -43,10 +43,12 @@ class EditActionExtension extends ColumnAbstractTypeExtension
     {
         $column->getOptionsResolver()->setDefaults(array(
             'admin_edit_element_id' => null,
+            'admin_display_element_id' => null
         ));
 
         $column->getOptionsResolver()->setAllowedTypes(array(
             'admin_edit_element_id' => array('string', 'null'),
+            'admin_display_element_id' => array('string', 'null'),
         ));
     }
 
@@ -72,6 +74,21 @@ class EditActionExtension extends ColumnAbstractTypeExtension
             $column->setOption('actions', $actions);
         }
 
+        if ($this->editDisplayIdIsValid($column)) {
+            $actions = array_merge(
+                array(
+                    'display' => array(
+                        'route_name' => 'fsi_admin_display',
+                        'additional_parameters' =>  array('element' =>  $column->getOption('admin_display_element_id')),
+                        'parameters_field_mapping' => array('id' => 'id')
+                    )
+                ),
+                $column->getOption('actions')
+            );
+
+            $column->setOption('actions', $actions);
+        }
+
         return parent::filterValue($column, $value);
     }
 
@@ -82,5 +99,14 @@ class EditActionExtension extends ColumnAbstractTypeExtension
     private function editElementIdIsValid(ColumnTypeInterface $column)
     {
         return $column->hasOption('admin_edit_element_id') && $this->manager->hasElement($column->getOption('admin_edit_element_id'));
+    }
+
+    /**
+     * @param ColumnTypeInterface $column
+     * @return bool
+     */
+    private function editDisplayIdIsValid(ColumnTypeInterface $column)
+    {
+        return $column->hasOption('admin_display_element_id') && $this->manager->hasElement($column->getOption('admin_display_element_id'));
     }
 }

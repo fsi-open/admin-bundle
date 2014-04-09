@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Display\Property\Decorator;
+namespace FSi\Bundle\AdminBundle\Display\Property\Formatter;
 
-use FSi\Bundle\AdminBundle\Display\Property\ValueDecorator;
+use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
 
-class DateTime implements ValueDecorator
+class DateTime implements ValueFormatter
 {
     /**
      * @var string
@@ -23,14 +23,10 @@ class DateTime implements ValueDecorator
         $this->format = $format;
     }
 
-    public function decorate($value)
+    public function format($value)
     {
-        if (empty($value)) {
+        if (empty($value) || !$value instanceof \DateTime) {
             return $value;
-        }
-
-        if (!$value instanceof \DateTime) {
-            throw new \InvalidArgumentException("DateTime decorator require value to be an instance of \\DateTime");
         }
 
         return $value->format($this->format);
