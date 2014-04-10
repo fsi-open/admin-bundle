@@ -101,7 +101,8 @@ class DataContext extends BehatContext implements KernelAwareInterface
         $populator = new Populator($generator, $this->getDoctrine()->getManager());
 
         $populator->addEntity('FSi\FixturesBundle\Entity\News', $newsCount, array(
-            'creatorEmail' => function() use ($generator) { return $generator->email(); }
+            'creatorEmail' => function() use ($generator) { return $generator->email(); },
+            'categories' => function() use($generator) {return array($generator->text(), $generator->text());}
         ));
         $populator->execute();
 

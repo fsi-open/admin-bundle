@@ -79,7 +79,7 @@
 {% block datagrid_column_type_action_cell %}
 {% spaceless %}
     <td class="cell">
-        <div class="text-right">
+        <div class="text-right actions">
             {% for action_name, action in cell.value %}
                 {{ datagrid_column_type_action_cell_action_widget(cell, action_name, action.content, action.url_attr|merge({'href' : action.url})) }}
             {% endfor %}
@@ -95,6 +95,15 @@
         <span class="glyphicon glyphicon-edit icon-white"></span>
     </a>
 {% endspaceless %}
+{% endblock %}
+
+{#  pattern: datagrid_column_type_action_cell_action_{action_name} #}
+{% block datagrid_column_type_action_cell_action_display %}
+    {% spaceless %}
+        <a href="{{ attr.href }}" title="{{ 'crud.list.datagrid.action.display'|trans({}, 'FSiAdminBundle')  }}" class="btn btn-warning btn-sm">
+            <span class="glyphicon glyphicon-zoom-in icon-white"></span>
+        </a>
+    {% endspaceless %}
 {% endblock %}
 
 {% block form_errors %}

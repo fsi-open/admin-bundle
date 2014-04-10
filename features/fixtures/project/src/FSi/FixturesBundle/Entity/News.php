@@ -43,6 +43,16 @@ class News
     protected $creatorEmail;
 
     /**
+     * @ORM\Column(type="array", name="categories");
+     */
+    protected $categories;
+
+    public function __construct()
+    {
+        $this->categories = array();
+    }
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -140,5 +150,21 @@ class News
     public function isVisible()
     {
         return $this->visible;
+    }
+
+    /**
+     * @param mixed $categories
+     */
+    public function setCategories(array $categories)
+    {
+        $this->categories = $categories;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategories()
+    {
+        return (array) $this->categories;
     }
 }

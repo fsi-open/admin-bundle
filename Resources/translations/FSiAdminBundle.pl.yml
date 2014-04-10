@@ -27,6 +27,7 @@ crud:
             result_count: Liczba znalezionych rekordów:
             action:
                 edit: Edytuj
+                display: Wyświetl
                 delete: Usuń
         datasource:
             results_per_page: Wyników na stronie

@@ -27,6 +27,7 @@ crud:
             result_count: Number of records:
             action:
                 edit: Edit
+                display: Display
                 delete: Delete
         datasource:
             results_per_page: Results at page

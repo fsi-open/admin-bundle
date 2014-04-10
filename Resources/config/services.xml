@@ -18,6 +18,7 @@
         <parameter key="admin.element.factory.worker.form.class">FSi\Bundle\AdminBundle\Factory\Worker\FormWorker</parameter>
         <parameter key="admin.element.factory.worker.doctrine.class">FSi\Bundle\AdminBundle\Factory\Worker\DoctrineWorker</parameter>
         <parameter key="admin.controller.resource.class">FSi\Bundle\AdminBundle\Controller\ResourceController</parameter>
+        <parameter key="admin.controller.display.class">FSi\Bundle\AdminBundle\Controller\DisplayController</parameter>
         <parameter key="admin.controller.crud.class">FSi\Bundle\AdminBundle\Controller\CRUDController</parameter>
         <parameter key="admin.controller.admin.class">FSi\Bundle\AdminBundle\Controller\AdminController</parameter>
         <parameter key="admin.extractor.bundle_path.class">FSi\Bundle\AdminBundle\Extractor\BundlePathExtractor</parameter>
@@ -84,6 +85,12 @@
             <argument type="service" id="templating"/>
             <argument type="service" id="admin.context.manager"/>
             <argument>%admin.templates.resource%</argument>
+        </service>
+
+        <service id="admin.controller.display" class="%admin.controller.display.class%">
+            <argument type="service" id="templating"/>
+            <argument type="service" id="admin.context.manager"/>
+            <argument>%admin.templates.display%</argument>
         </service>
 
         <service id="admin.controller.crud" class="%admin.controller.crud.class%">
