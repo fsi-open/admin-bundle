@@ -9,15 +9,10 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
-interface ResourceInterface
+/**
+ * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use
+ *             FSi\Bundle\AdminBundle\Admin\ResourceRepository\Element instead.
+ */
+interface ResourceInterface extends Element
 {
-    /**
-     * @return string
-     */
-    public function getKey();
-
-    /**
-     * @return array
-     */
-    public function getResourceFormOptions();
 }

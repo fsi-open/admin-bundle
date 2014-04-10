@@ -7,15 +7,15 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Resource;
+namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context;
 
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Resource\Context;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\ResourceRepositoryContext;
 use PhpSpec\ObjectBehavior;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
 
-class ContextBuilderSpec extends ObjectBehavior
+class ResourceRepositoryContextBuilderSpec extends ObjectBehavior
 {
-    function let(Context $context)
+    function let(ResourceRepositoryContext $context)
     {
         $this->beConstructedWith($context);
     }
@@ -30,7 +30,7 @@ class ContextBuilderSpec extends ObjectBehavior
         $this->supports('fsi_admin_resource', $element)->shouldReturn(true);
     }
 
-    function it_build_context(ResourceElement $element, Context $context)
+    function it_build_context(ResourceElement $element, ResourceRepositoryContext $context)
     {
         $context->setElement($element)->shouldBeCalled();
 

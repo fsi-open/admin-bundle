@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Resource\Request;
+namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request;
 
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
@@ -30,7 +30,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
     {
         $this->shouldThrow(
                 new RequestHandlerException(
-                    "FSi\\Bundle\\AdminBundle\\Doctrine\\Admin\\Context\\Resource\\Request\\FormSubmitHandler require FormEvent"
+                    "FSi\\Bundle\\AdminBundle\\Admin\\ResourceRepository\\Context\\Request\\FormSubmitHandler require FormEvent"
                 )
             )->during('handleRequest', array($listEvent, $request));
     }

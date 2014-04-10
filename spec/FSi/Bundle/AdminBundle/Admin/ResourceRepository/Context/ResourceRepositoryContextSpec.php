@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Resource;
+namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
@@ -22,7 +22,7 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ContextSpec extends ObjectBehavior
+class ResourceRepositoryContextSpec extends ObjectBehavior
 {
     function let(
         HandlerInterface $handler,

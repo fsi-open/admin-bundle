@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Resource;
+namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
@@ -21,10 +21,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
-class Context implements ContextInterface
+class ResourceRepositoryContext implements ContextInterface
 {
     /**
      * @var HandlerInterface[]
@@ -32,7 +29,7 @@ class Context implements ContextInterface
     private $requestHandlers;
 
     /**
-     * @var ResourceElement
+     * @var GenericResourceElement
      */
     private $element;
 
@@ -64,9 +61,9 @@ class Context implements ContextInterface
     }
 
     /**
-     * @param ResourceElement $element
+     * @param GenericResourceElement $element
      */
-    public function setElement(ResourceElement $element)
+    public function setElement(GenericResourceElement $element)
     {
         $this->element = $element;
         $this->createForm();
@@ -137,10 +134,10 @@ class Context implements ContextInterface
     }
 
     /**
-     * @param ResourceElement $element
+     * @param GenericResourceElement $element
      * @return mixed
      */
-    private function getResourceGroup(ResourceElement $element)
+    private function getResourceGroup(GenericResourceElement $element)
     {
         $map = $this->mapBuilder->getMap();
 

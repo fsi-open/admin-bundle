@@ -11,6 +11,7 @@ namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -41,12 +42,12 @@ class ResourceController
     }
 
     /**
-     * @param AbstractResource $element
+     * @param GenericResourceElement $element
      * @param Request $request
-     * @throws NotFoundHttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function resourceAction(AbstractResource $element, Request $request)
+    public function resourceAction(GenericResourceElement $element, Request $request)
     {
         $context= $this->contextManager->createContext('fsi_admin_resource', $element);
 

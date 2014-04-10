@@ -10,6 +10,7 @@
 namespace FSi\Bundle\AdminBundle\spec\fixtures;
 
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceInterface;
 
 class MyResource extends AbstractResource
 {
@@ -26,5 +27,12 @@ class MyResource extends AbstractResource
     public function getName()
     {
         return 'admin.main_page';
+    }
+
+    /**
+     * @param ResourceInterface $resource
+     */
+    public function save(ResourceInterface $resource)
+    {
     }
 }

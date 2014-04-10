@@ -10,13 +10,14 @@
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceInterface;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-abstract class ResourceElement extends AbstractResource implements Element
+abstract class ResourceElement extends GenericResourceElement implements Element
 {
     /**
      * @var \Doctrine\Common\Persistence\ManagerRegistry
@@ -57,5 +58,14 @@ abstract class ResourceElement extends AbstractResource implements Element
         }
 
         return $om;
+    }
+
+    /**
+     * @param ResourceInterface $resource
+     */
+    public function save(ResourceInterface $resource)
+    {
+        $this->getObjectManager()->persist($resource);
+        $this->getObjectManager()->flush();
     }
 }

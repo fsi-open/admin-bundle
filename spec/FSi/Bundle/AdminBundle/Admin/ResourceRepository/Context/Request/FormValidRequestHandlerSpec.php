@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Resource\Request;
+namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
@@ -8,6 +8,7 @@ use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Event\ResourceEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
+use FSi\Bundle\AdminBundle\spec\fixtures\Entity\Resource;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -33,7 +34,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     {
         $this->shouldThrow(
                 new RequestHandlerException(
-                    "FSi\\Bundle\\AdminBundle\\Doctrine\\Admin\\Context\\Resource\\Request\\FormValidRequestHandler require FormEvent"
+                    "FSi\\Bundle\\AdminBundle\\Admin\\ResourceRepository\\Context\\Request\\FormValidRequestHandler require FormEvent"
                 )
             )->during('handleRequest', array($listEvent, $request));
     }
@@ -66,11 +67,9 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(ResourceEvents::RESOURCE_PRE_SAVE, $event)
             ->shouldBeCalled();
 
-        $form->getData()->willReturn(array(new \stdClass(), new \stdClass()));
+        $form->getData()->willReturn(array(new Resource(), new Resource()));
         $event->getElement()->willReturn($element);
-        $element->getObjectManager()->willReturn($objectManager);
-        $objectManager->persist(Argument::type('stdClass'))->shouldBeCalledTimes(2);
-        $objectManager->flush()->shouldBeCalled();
+        $element->save(Argument::type('FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Entity\\Resource'))->shouldBeCalledTimes(2);
 
         $eventDispatcher->dispatch(ResourceEvents::RESOURCE_POST_SAVE, $event)
             ->shouldBeCalled();
@@ -134,11 +133,9 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(ResourceEvents::RESOURCE_PRE_SAVE, $event)
             ->shouldBeCalled();
 
-        $form->getData()->willReturn(array(new \stdClass(), new \stdClass()));
+        $form->getData()->willReturn(array(new Resource(), new Resource()));
         $event->getElement()->willReturn($element);
-        $element->getObjectManager()->willReturn($objectManager);
-        $objectManager->persist(Argument::type('stdClass'))->shouldBeCalledTimes(2);
-        $objectManager->flush()->shouldBeCalled();
+        $element->save(Argument::type('FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Entity\\Resource'))->shouldBeCalledTimes(2);
 
         $eventDispatcher->dispatch(ResourceEvents::RESOURCE_POST_SAVE, $event)
             ->will(function() use ($event) {

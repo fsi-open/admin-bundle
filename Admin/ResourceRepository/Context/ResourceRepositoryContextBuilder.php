@@ -7,26 +7,23 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Resource;
+namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
-class ContextBuilder implements ContextBuilderInterface
+class ResourceRepositoryContextBuilder implements ContextBuilderInterface
 {
     /**
-     * @var Context
+     * @var ResourceRepositoryContext
      */
     private $context;
 
     /**
-     * @param Context $context
+     * @param ResourceRepositoryContext $context
      */
-    public function __construct(Context $context)
+    public function __construct(ResourceRepositoryContext $context)
     {
         $this->context = $context;
     }
@@ -40,7 +37,7 @@ class ContextBuilder implements ContextBuilderInterface
             return false;
         }
 
-        if (!$element instanceof ResourceElement) {
+        if (!$element instanceof GenericResourceElement) {
             return false;
         }
 
