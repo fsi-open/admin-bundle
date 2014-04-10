@@ -35,4 +35,14 @@ class CollectionSpec extends ObjectBehavior
         $formatter->format(Argument::any())->will(function($argument) {return $argument[0];});
         $this->format($value)->shouldReturn($value);
     }
+
+    function it_format_each_element_of_iterator_using_formatters(ValueFormatter $formatter)
+    {
+        $value = array(
+            'first-date' => new \DateTime(),
+            'second-date' => new \DateTime()
+        );
+        $formatter->format(Argument::any())->will(function($argument) {return $argument[0];});
+        $this->format(new \ArrayIterator($value))->shouldReturn($value);
+    }
 }

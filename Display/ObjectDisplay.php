@@ -87,7 +87,7 @@ class ObjectDisplay implements Display
     private function getPropertyValue($accessor, $property)
     {
         $value = $accessor->getValue($this->object, $property->getPath());
-        foreach ($property->getValueDecorators() as $decorator) {
+        foreach ($property->getValueFormatters() as $decorator) {
             $value = $decorator->format($value);
         }
 

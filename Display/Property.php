@@ -62,7 +62,7 @@ class Property
     /**
      * @return array
      */
-    public function getValueDecorators()
+    public function getValueFormatters()
     {
         return $this->valueDecorators;
     }
