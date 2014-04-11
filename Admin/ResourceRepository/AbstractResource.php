@@ -9,58 +9,10 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
-use FSi\Bundle\AdminBundle\Admin\AbstractElement;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 /**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
+ * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use
+ *             FSi\Bundle\AdminBundle\Admin\ResourceRepository\Element instead.
  */
-abstract class AbstractResource extends AbstractElement implements ResourceInterface
+abstract class AbstractResource extends GenericResourceElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoute()
-    {
-        return 'fsi_admin_resource';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRouteParameters()
-    {
-        return array(
-            'element' => $this->getId(),
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getKey();
-
-    /**
-     * @return array
-     */
-    public function getResourceFormOptions()
-    {
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'template' => null,
-            'title' => 'resource.title',
-        ));
-
-        $resolver->setAllowedTypes(array(
-            'template' => array('null', 'string'),
-            'title' => 'string',
-        ));
-    }
 }
