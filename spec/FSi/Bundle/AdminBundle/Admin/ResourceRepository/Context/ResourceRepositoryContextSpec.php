@@ -10,6 +10,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\TextType;
@@ -28,8 +29,7 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         HandlerInterface $handler,
         ResourceElement $element,
         MapBuilder $builder,
-        FormFactory $formFactory,
-        FormBuilder $formBuilder,
+        ResourceFormBuilder $resourceFormBuilder,
         Form $form
     ) {
         $builder->getMap()->willReturn(array(
@@ -37,36 +37,15 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         ));
         $element->getResourceFormOptions()->willReturn(array());
         $element->getKey()->willReturn('resources');
-        $formFactory->createBuilder('form', array(),array())->willReturn($formBuilder);
-        $formBuilder->getForm()->willReturn($form);
+        $resourceFormBuilder->build($element)->willReturn($form);
 
-        $this->beConstructedWith(array($handler), $formFactory, $builder);
+        $this->beConstructedWith(array($handler), $resourceFormBuilder);
         $this->setElement($element);
     }
 
     function it_is_context()
     {
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
-    }
-
-    function it_throw_exception_when_resource_key_is_not_resource_group_key(
-        MapBuilder $builder,
-        ResourceElement $resourceElement,
-        TextType $resource
-    ) {
-        $resourceElement->getKey()->willReturn('resources.resource_key');
-        $builder->getMap()->willReturn(array(
-            'resources' => array(
-                'resource_key' => $resource
-            )
-        ));
-
-        $this->shouldThrow(
-                new ContextException("resources.resource_key its not a resource group key")
-            )->during(
-                'setElement',
-                array($resourceElement)
-            );
     }
 
     function it_have_array_data(ResourceElement $element)

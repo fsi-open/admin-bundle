@@ -27,7 +27,7 @@
     "require-dev": {
         "symfony/class-loader": "~2.3",
         "ext-pdo_sqlite": "*",
-        "fsi/resource-repository-bundle": "1.0.*",
+        "fsi/resource-repository-bundle": "1.1.*@dev",
         "doctrine/doctrine-bundle": "dev-master",
         "phpspec/phpspec": "2.0.*@dev",
         "behat/behat": "*@stable",
