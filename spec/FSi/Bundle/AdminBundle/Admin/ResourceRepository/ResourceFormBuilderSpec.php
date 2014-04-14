@@ -18,22 +18,28 @@ class ResourceFormBuilderSpec extends ObjectBehavior
 {
     function let(
         MapBuilder $mapBuilder,
-        FormFactoryInterface $formFactory
-    ) {
-        $this->beConstructedWith($formFactory, $mapBuilder);
-    }
-
-    function it_throw_exception_when_resource_key_is_not_resource_group_key(
-        MapBuilder $mapBuilder,
+        FormFactoryInterface $formFactory,
         GenericResourceElement $element,
+        ResourceValueRepository $valueRepository,
         TextType $resource
     ) {
-        $element->getKey()->willReturn('resources.resource_key');
         $mapBuilder->getMap()->willReturn(array(
             'resources' => array(
                 'resource_key' => $resource
             )
         ));
+        $resource->getName()->willReturn('resources.resource_key');
+
+        $element->getRepository()->willReturn($valueRepository);
+        $element->getResourceFormOptions()->willReturn(array('form_options'));
+
+        $this->beConstructedWith($formFactory, $mapBuilder);
+    }
+
+    function it_throw_exception_when_resource_key_is_not_resource_group_key(
+        GenericResourceElement $element
+    ) {
+        $element->getKey()->willReturn('resources.resource_key');
 
         $this->shouldThrow(
             new RuntimeException("resources.resource_key its not a resource group key")
@@ -44,8 +50,6 @@ class ResourceFormBuilderSpec extends ObjectBehavior
     }
 
     function it_builds_form_for_resource_group(
-        MapBuilder $mapBuilder,
-        TextType $resource,
         FormFactoryInterface $formFactory,
         FormBuilderInterface $formBuilder,
         GenericResourceElement $element,
@@ -54,14 +58,6 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         FormInterface $form
     ) {
         $element->getKey()->willReturn('resources');
-        $element->getRepository()->willReturn($valueRepository);
-        $element->getResourceFormOptions()->willReturn(array('form_options'));
-        $mapBuilder->getMap()->willReturn(array(
-            'resources' => array(
-                'resource_key' => $resource
-            )
-        ));
-        $resource->getName()->willReturn('resources.resource_key');
         $valueRepository->get('resources.resource_key')->willReturn($resourceValue);
 
         $formFactory
