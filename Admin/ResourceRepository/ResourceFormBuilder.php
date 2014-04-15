@@ -5,7 +5,6 @@ namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
-use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface as ResourceTypeInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -44,18 +43,13 @@ class ResourceFormBuilder
 
     /**
      * @param string $key
-     * @return mixed
+     * @return array
      */
     private function getResourceGroup($key)
     {
         $map = $this->mapBuilder->getMap();
 
-        $parts = explode('.', $key);
-        $propertyPath = '';
-
-        foreach ($parts as $part) {
-            $propertyPath .= sprintf("[%s]", $part);
-        }
+        $propertyPath = $this->createPropertyPath($key);
 
         $accessor = PropertyAccess::createPropertyAccessor();
 
@@ -69,7 +63,23 @@ class ResourceFormBuilder
     }
 
     /**
-     * @param array $resources
+     * @param $key
+     * @return string
+     */
+    private function createPropertyPath($key)
+    {
+        $parts = explode('.', $key);
+        $propertyPath = '';
+
+        foreach ($parts as $part) {
+            $propertyPath .= sprintf("[%s]", $part);
+        }
+
+        return $propertyPath;
+    }
+
+    /**
+     * @param array|\FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface[] $resources
      * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository $valueRepository
      * @return array
      */
@@ -78,9 +88,7 @@ class ResourceFormBuilder
         $data = array();
 
         foreach ($resources as $resource) {
-            if ($resource instanceof ResourceTypeInterface) {
-                $data[$this->normalizeKey($resource->getName())] = $valueRepository->get($resource->getName());
-            }
+            $data[$this->normalizeKey($resource->getName())] = $valueRepository->get($resource->getName());
         }
 
         return $data;
@@ -88,20 +96,18 @@ class ResourceFormBuilder
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param array $resources
+     * @param array|\FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface[] $resources
      */
     private function buildForm(FormBuilderInterface $builder, array $resources)
     {
         foreach ($resources as $resource) {
-            if ($resource instanceof ResourceTypeInterface) {
-                $builder->add(
-                    $this->normalizeKey($resource->getName()),
-                    'resource',
-                    array(
-                        'resource_key' => $resource->getName(),
-                    )
-                );
-            }
+            $builder->add(
+                $this->normalizeKey($resource->getName()),
+                'resource',
+                array(
+                    'resource_key' => $resource->getName(),
+                )
+            );
         }
     }
 
