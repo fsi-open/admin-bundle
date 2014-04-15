@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="admin.resource.context.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\ResourceRepositoryContext</parameter>
+        <parameter key="admin.resource.context.form_builder.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder</parameter>
         <parameter key="admin.resource.context_builder.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\ResourceRepositoryContextBuilder</parameter>
         <parameter key="admin.resource.context.request_handler.form_submit.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request\FormSubmitHandler</parameter>
         <parameter key="admin.resource.context.request_handler.form_valid_request.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request\FormValidRequestHandler</parameter>
@@ -17,13 +18,17 @@
             <tag name="admin.context.builder" />
         </service>
 
+        <service id="admin.resource.context.form_builder" class="%admin.resource.context.form_builder.class%">
+            <argument type="service" id="form.factory"/>
+            <argument type="service" id="fsi_resource_repository.resource.map_builder" on-invalid="ignore"/>
+        </service>
+
         <service id="admin.resource.context" class="%admin.resource.context.class%">
             <argument type="collection">
                 <argument type="service" id="admin.resource.context.request_handler.form_submit"/>
                 <argument type="service" id="admin.resource.context.request_handler.form_valid_request"/>
             </argument>
-            <argument type="service" id="form.factory"/>
-            <argument type="service" id="fsi_resource_repository.map_builder" on-invalid="ignore"/>
+            <argument type="service" id="admin.resource.context.form_builder" />
         </service>
 
         <service id="admin.resource.context.request_handler.form_submit"
