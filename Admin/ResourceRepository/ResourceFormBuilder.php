@@ -48,13 +48,10 @@ class ResourceFormBuilder
     private function getResourceGroup($key)
     {
         $map = $this->mapBuilder->getMap();
-
         $propertyPath = $this->createPropertyPath($key);
-
         $accessor = PropertyAccess::createPropertyAccessor();
 
         $resources = $accessor->getValue($map, $propertyPath);
-
         if (!is_array($resources)) {
             throw new RuntimeException(sprintf('%s its not a resource group key', $key));
         }
