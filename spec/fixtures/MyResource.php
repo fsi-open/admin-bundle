@@ -29,6 +29,10 @@ class MyResource extends AbstractResource
         return 'admin.main_page';
     }
 
+    public function getRepository()
+    {
+    }
+
     /**
      * @param ResourceInterface $resource
      */

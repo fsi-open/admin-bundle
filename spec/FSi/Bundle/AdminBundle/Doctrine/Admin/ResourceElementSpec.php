@@ -10,6 +10,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -21,10 +22,19 @@ class ResourceElementSpec extends ObjectBehavior
         $this->setManagerRegistry($registry);
     }
 
-    function it_return_repository(ManagerRegistry $registry, ObjectRepository $repository)
+    function it_return_repository(ManagerRegistry $registry, ResourceValueRepository $repository)
     {
         $registry->getRepository('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($repository);
 
         $this->getRepository()->shouldReturn($repository);
+    }
+
+    function it_throws_exception_when_repository_does_not_implement_resource_value_repository(
+        ManagerRegistry $registry, ObjectRepository $repository
+    ) {
+        $registry->getRepository('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($repository);
+
+        $this->shouldThrow()->during('getRepository');
+
     }
 }

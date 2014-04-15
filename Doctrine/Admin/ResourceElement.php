@@ -12,7 +12,9 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Bundle\ResourceRepositoryBundle\Doctrine\ResourceRepository;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceInterface;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -38,11 +40,20 @@ abstract class ResourceElement extends GenericResourceElement implements Element
     abstract public function getClassName();
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return \FSi\Bundle\ResourceRepositoryBundle\Doctrine\ResourceRepository
      */
     public function getRepository()
     {
-        return $this->registry->getRepository($this->getClassName());
+        $repository = $this->registry->getRepository($this->getClassName());
+
+        if (!$repository instanceof ResourceValueRepository) {
+            throw new RuntimeException(sprintf(
+                'Repository for class %s must implement \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository',
+                $this->getClassName()
+            ));
+        }
+
+        return $repository;
     }
 
     /**
