@@ -1,0 +1,33 @@
+{% extends admin_templates_base %}
+
+{% block themes %}
+    {% datasource_route datasource_view 'fsi_admin_list' with {'element' : element.id} %}
+    {% datasource_theme datasource_view admin_templates_datasource_theme %}
+    {% datagrid_theme datagrid_view admin_templates_datagrid_theme with {'datasource' : datasource_view, 'element' : element.id} %}
+{% endblock themes %}
+
+{% block content %}
+<div class="row" id="filter">
+    <div class="col-lg-12">
+        {% block filter %}
+        {% include '@FSiAdmin/List/filter_content.html.twig' %}
+        {% endblock filter %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        {% block header %}
+        <h3 id="page-header">{{ 'crud.list.title'|trans({}, 'FSiAdminBundle') }}</h3>
+        {% endblock header %}
+        {% block datagrid %}
+            {% include '@FSiAdmin/List/datagrid_content.html.twig' %}
+        {% endblock datagrid %}
+        {% block results %}
+            {% include '@FSiAdmin/List/results.html.twig' %}
+        {% endblock results %}
+        {% block pagination %}
+            {% include '@FSiAdmin/List/pagination_content.html.twig' %}
+        {% endblock pagination %}
+    </div>
+</div>
+{% endblock content %}

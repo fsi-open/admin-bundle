@@ -15,16 +15,9 @@ use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
-abstract class AbstractCRUD extends AbstractElement implements
-    CRUDInterface,
-    FormAwareInterface
+abstract class AbstractList extends AbstractElement implements ListElement
 {
     /**
      * @var \FSi\Component\DataSource\DataSourceFactoryInterface
@@ -37,16 +30,11 @@ abstract class AbstractCRUD extends AbstractElement implements
     protected $datagridFactory;
 
     /**
-     * @var \Symfony\Component\Form\FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
      * {@inheritdoc}
      */
     public function getRoute()
     {
-        return 'fsi_admin_crud_list';
+        return 'fsi_admin_list';
     }
 
     /**
@@ -55,26 +43,11 @@ abstract class AbstractCRUD extends AbstractElement implements
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'allow_delete' => true,
-            'allow_add' => true,
-            'allow_edit' => true,
-            'crud_list_title' => 'crud.list.title',
-            'crud_create_title' => 'crud.create.title',
-            'crud_edit_title' => 'crud.edit.title',
-            'template_crud_list' => null,
-            'template_crud_create' => null,
-            'template_crud_edit' => null,
-            'template_crud_delete' => null,
+            'template_list' => null,
         ));
 
         $resolver->setAllowedTypes(array(
-            'allow_delete' => 'bool',
-            'allow_add' => 'bool',
-            'allow_edit' => 'bool',
-            'template_crud_list' => array('null', 'string'),
-            'template_crud_create' => array('null', 'string'),
-            'template_crud_edit' => array('null', 'string'),
-            'template_crud_delete' => array('null', 'string'),
+            'template_list' => array('null', 'string'),
         ));
     }
 
@@ -97,26 +70,12 @@ abstract class AbstractCRUD extends AbstractElement implements
     /**
      * {@inheritdoc}
      */
-    public function setFormFactory(FormFactoryInterface $factory)
-    {
-        $this->formFactory = $factory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function createDataGrid()
     {
         $datagrid = $this->initDataGrid($this->datagridFactory);
 
         if (!is_object($datagrid) || !$datagrid instanceof DataGridInterface) {
             throw new RuntimeException('initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface');
-        }
-
-        if ($this->options['allow_delete']) {
-            if (!$datagrid->hasColumnType('batch')) {
-                $datagrid->addColumn('batch', 'batch', array('display_order' => -1000));
-            }
         }
 
         return $datagrid;
@@ -137,20 +96,6 @@ abstract class AbstractCRUD extends AbstractElement implements
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function createForm($data = null)
-    {
-        $form = $this->initForm($this->formFactory, $data);
-
-        if (!is_object($form) || !$form instanceof FormInterface) {
-            throw new RuntimeException('initForm should return instanceof Symfony\\Component\\Form\\FormInterface');
-        }
-
-        return $form;
-    }
-
-    /**
      * Initialize DataGrid.
      *
      * @param \FSi\Component\DataGrid\DataGridFactoryInterface $factory
@@ -165,13 +110,4 @@ abstract class AbstractCRUD extends AbstractElement implements
      * @return \FSi\Component\DataSource\DataSourceInterface
      */
     abstract protected function initDataSource(DataSourceFactoryInterface $factory);
-
-    /**
-     * Initialize create Form. This form will be used in createAction in CRUDController.
-     *
-     * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     * @param mixed $data
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    abstract protected function initForm(FormFactoryInterface $factory, $data = null);
 }
