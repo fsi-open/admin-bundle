@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Request\AbstractListRequestHandler;
+use FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\AbstractListRequestHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvents;
 use Symfony\Component\HttpFoundation\Request;
