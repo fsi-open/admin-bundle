@@ -18,9 +18,6 @@ use FSi\Component\DataGrid\DataGrid;
 use FSi\Component\DataSource\DataSource;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class ListElementContext implements ContextInterface
 {
     /**

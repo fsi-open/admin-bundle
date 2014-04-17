@@ -10,13 +10,11 @@
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
-abstract class ListElement extends \FSi\Bundle\AdminBundle\Admin\CRUD\AbstractList implements Element
+abstract class ListElement extends GenericListElement implements Element
 {
     /**
      * @var \Doctrine\Common\Persistence\ManagerRegistry

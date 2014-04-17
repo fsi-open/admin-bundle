@@ -2,11 +2,11 @@
 
 namespace FSi\Bundle\AdminBundle\spec\fixtures;
 
-use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractList;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 
-class MyList extends AbstractList
+class MyList extends GenericListElement
 {
     public function getId()
     {

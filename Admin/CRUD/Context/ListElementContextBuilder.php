@@ -13,9 +13,6 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class ListElementContextBuilder implements ContextBuilderInterface
 {
     /**

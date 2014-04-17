@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
 abstract class AbstractCRUD extends AbstractElement implements
-    CRUDInterface,
+    CRUDElement,
     FormAwareInterface
 {
     /**

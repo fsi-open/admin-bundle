@@ -8,7 +8,7 @@ use FSi\Component\DataSource\DataSourceFactory;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class AbstractListSpec extends ObjectBehavior
+class GenericListElementSpec extends ObjectBehavior
 {
     function let()
     {
@@ -18,7 +18,7 @@ class AbstractListSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\AbstractList');
+        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement');
     }
 
     function it_is_list_element()

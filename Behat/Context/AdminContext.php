@@ -11,8 +11,7 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
-use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractList;
+use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -65,7 +64,7 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     /**
      * @Given /^("[^"]*" element) have following options defined$/
      */
-    public function elementHaveFollowingOptionsDefined(AbstractList $adminElement, TableNode $options)
+    public function elementHaveFollowingOptionsDefined(AbstractElement $adminElement, TableNode $options)
     {
         foreach ($options->getHash() as $optionRow) {
             expect($adminElement->hasOption($optionRow['Option']))->toBe(true);

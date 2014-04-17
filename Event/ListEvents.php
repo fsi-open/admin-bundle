@@ -9,9 +9,6 @@
 
 namespace FSi\Bundle\AdminBundle\Event;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 final class ListEvents
 {
     const LIST_DATASOURCE_REQUEST_PRE_BIND = 'admin.list.datasource.request.pre_bind';

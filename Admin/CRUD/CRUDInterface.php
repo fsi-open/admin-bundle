@@ -13,29 +13,6 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD;
  * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use
  *             FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement instead.
  */
-interface CRUDInterface extends ListElement
+interface CRUDInterface extends CRUDElement
 {
-    /**
-     * @param mixed $data
-     * @return \Symfony\Component\Form\Form|null
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
-     */
-    public function createForm($data = null);
-
-    /**
-     * This method is called from CRUDController after form validation is passed in edit and create action.
-     * Mostly this method should save updated object in database.
-     *
-     * @param mixed $object
-     */
-    public function save($object);
-
-    /**
-     * This method is called from CRUDController in delete action.
-     * Mostly this method should delete entity from database but it can be overwritten to
-     * set flag instead of executing hard delete.
-     *
-     * @param mixed $object
-     */
-    public function delete($object);
 }

@@ -14,7 +14,6 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Faker\Factory;
-use FSi\Bundle\AdminBundle\Admin\CRUD\CRUDInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use PhpSpec\Exception\Example\PendingException;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;

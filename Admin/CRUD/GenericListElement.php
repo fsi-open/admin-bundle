@@ -17,7 +17,7 @@ use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-abstract class AbstractList extends AbstractElement implements ListElement
+abstract class GenericListElement extends AbstractElement implements ListElement
 {
     /**
      * @var \FSi\Component\DataSource\DataSourceFactoryInterface

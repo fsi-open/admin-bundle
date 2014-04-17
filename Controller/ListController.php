@@ -10,14 +10,11 @@
 namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
-use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractList;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class ListController
 {
     /**
@@ -51,26 +48,13 @@ class ListController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\AbstractList $element
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction(AbstractList $element, Request $request)
+    public function listAction(GenericListElement $element, Request $request)
     {
-        return $this->action($element, $request, 'fsi_admin_list', $this->listActionTemplate);
-    }
-
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\AbstractList $element
-     * @param Request $request
-     * @param string $route
-     * @param string $defaultTemplate
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function action(AbstractList $element, Request $request, $route, $defaultTemplate)
-    {
-        $context = $this->contextManager->createContext($route, $element);
+        $context = $this->contextManager->createContext('fsi_admin_list', $element);
 
         if (!isset($context)) {
             throw new NotFoundHttpException(sprintf('Can\'t find context builder that supports %s', $element->getName()));
@@ -81,7 +65,7 @@ class ListController
         }
 
         return $this->templating->renderResponse(
-            $context->hasTemplateName() ? $context->getTemplateName() : $defaultTemplate,
+            $context->hasTemplateName() ? $context->getTemplateName() : $this->listActionTemplate,
             $context->getData()
         );
     }

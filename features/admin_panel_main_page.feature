@@ -14,5 +14,6 @@ Feature: Admin panel main page
     And menu with following elements should be visible at the top of the page
       | Element name  | Element group  |
       | News          |                |
+      | Subscribers   |                |
       | About us page | Site structure |
       | Home page     | Site structure |
