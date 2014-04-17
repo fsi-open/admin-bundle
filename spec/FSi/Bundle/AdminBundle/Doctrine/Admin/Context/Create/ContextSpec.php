@@ -33,12 +33,9 @@ class ContextSpec extends ObjectBehavior
 
     function it_have_array_data(CRUDElement $element)
     {
-        $element->getOption('crud_create_title')->shouldBeCalled();
-
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('form');
         $this->getData()->shouldHaveKeyInArray('element');
-        $this->getData()->shouldHaveKeyInArray('title');
     }
 
     function it_has_template(CRUDElement $element)

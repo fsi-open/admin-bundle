@@ -14,7 +14,7 @@
                     {% endblock header %}
                 {% else %}
                     {% block header %}
-                        <h3 id="page-header">{{ ''|trans({}, 'FSiAdminBundle') }}</h3>
+                        <h3 id="page-header">{{ 'crud.edit.title'|trans({}, 'FSiAdminBundle') }}</h3>
                     {% endblock header %}
                 {% endif %}
                 {{ form_start(form, { action: path('fsi_admin_crud_edit', { element: element.id, id: id }), 'attr': { class: 'form-horizontal' }|merge(form.vars.attr) }) }}
