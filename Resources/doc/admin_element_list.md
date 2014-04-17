@@ -1,4 +1,4 @@
-# How to create simple list element in 5 steps
+# How to create simple list element in 4 steps
 
 ## 1. Create admin list element class
 
@@ -76,7 +76,7 @@ class SubscriberElement extends ListElement
 }
 ```
 
-## 3. Configure datagrid
+## 2. Configure datagrid
 
 Just remember to set file name equal to datagrid name (create by factory)
 
@@ -96,7 +96,7 @@ columns:
 
 [DataGrid column types reference](https://github.com/fsi-open/datagrid-bundle/blob/master/Resources/docs/columns.md)
 
-## 4. Configure datasource
+## 3. Configure datasource
 
 ```
 # src/FSi/Bundle/DemoBundle/Resources/config/datasource/admin_subscribers.yml
@@ -110,7 +110,9 @@ fields:
     comparison: eq
 ```
 
-## 5. Add element into menu
+[DataSource column types reference](https://github.com/fsi-open/datasource-bundle/blob/master/Resources/docs/columns.md)
+
+## 4. Add element into menu
 
 By default elements are not visible in menu. You need to add it into menu manually.
 

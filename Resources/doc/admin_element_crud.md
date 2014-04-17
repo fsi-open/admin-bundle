@@ -90,7 +90,7 @@ class UserElement extends CRUDElement
 }
 ```
 
-## 3. Configure datagrid
+## 2. Configure datagrid
 
 Just remember to set file name equal to datagrid name (create by factory)
 
@@ -119,7 +119,7 @@ columns:
 You should also read [how to create edit link at list](how_to_create_edit_link_at_list.md) to better
 understand what's going on under the hood.
 
-## 4. Configure datasource
+## 3. Configure datasource
 
 ```
 # src/FSi/Bundle/DemoBundle/Resources/config/datasource/admin_users.yml
@@ -133,7 +133,9 @@ fields:
     comparison: eq
 ```
 
-## 5. Add element into menu
+[DataSource column types reference](https://github.com/fsi-open/datasource-bundle/blob/master/Resources/docs/columns.md)
+
+## 4. Add element into menu
 
 By default elements are not visible in menu. You need to add it into menu manually.
 
@@ -148,7 +150,7 @@ menu:
 Remember to use id of element that is returned by ``UserElement::getId`` method in menu configuration.
 You can read more about menu configuration in [Menu section](menu.md)
 
-## Admin element options
+## 5. Admin element options
 
 There are also several options that you can use to configure admin element.
 This can be easily done by overwriting ``setDefaultOptions`` method in admin element class.
