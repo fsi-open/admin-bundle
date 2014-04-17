@@ -84,8 +84,7 @@ class Context implements ContextInterface
         return array(
             'datagrid_view' => $this->dataGrid->createView(),
             'datasource_view' => $this->dataSource->createView(),
-            'element' => $this->element,
-            'title' => $this->element->getOption('crud_list_title'),
+            'element' => $this->element
         );
     }
 
