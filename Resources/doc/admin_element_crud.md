@@ -4,7 +4,7 @@
 
 ```php
 <?php
-// src/FSi/Bundle/DemoBundle/Admin/User
+// src/FSi/Bundle/DemoBundle/Admin/UserElement
 
 namespace FSi\Bundle\DemoBundle\Admin;
 
@@ -156,7 +156,7 @@ Following example contains all available options with default values:
 
 ```php
 <?php
-// src/FSi/Bundle/DemoBundle/Admin/User
+// src/FSi/Bundle/DemoBundle/Admin/UserElement
 
 namespace FSi\Bundle\DemoBundle\Admin;
 
