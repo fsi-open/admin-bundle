@@ -9,11 +9,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 {% block header %}
-                    {% if form.vars.data.__toString() is defined %}
-                        <h3 id="page-header">{{ 'crud.edit.title'|trans({'%element%': form.vars.data}, 'FSiAdminBundle') }}</h3>
-                    {% else %}
-                        <h3 id="page-header">{{ 'crud.edit.title'|trans({}, 'FSiAdminBundle') }}</h3>
-                    {% endif %}
+                    <h3 id="page-header">{{ 'crud.edit.title'|trans({}, 'FSiAdminBundle') }}</h3>
                 {% endblock header %}
                 
                 {{ form_start(form, { action: path('fsi_admin_crud_edit', { element: element.id, id: id }), 'attr': { class: 'form-horizontal' }|merge(form.vars.attr) }) }}
