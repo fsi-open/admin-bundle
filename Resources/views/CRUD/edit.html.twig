@@ -8,15 +8,14 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                {% if form.vars.data.__toString() is defined %}
-                    {% block header %}
+                {% block header %}
+                    {% if form.vars.data.__toString() is defined %}
                         <h3 id="page-header">{{ 'crud.edit.title'|trans({'%element%': form.vars.data}, 'FSiAdminBundle') }}</h3>
-                    {% endblock header %}
-                {% else %}
-                    {% block header %}
+                    {% else %}
                         <h3 id="page-header">{{ 'crud.edit.title'|trans({}, 'FSiAdminBundle') }}</h3>
-                    {% endblock header %}
-                {% endif %}
+                    {% endif %}
+                {% endblock header %}
+                
                 {{ form_start(form, { action: path('fsi_admin_crud_edit', { element: element.id, id: id }), 'attr': { class: 'form-horizontal' }|merge(form.vars.attr) }) }}
                     {{ form_widget(form) }}
                     <div class="form-group">
