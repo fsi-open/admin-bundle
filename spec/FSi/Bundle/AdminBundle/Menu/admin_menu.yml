@@ -1,4 +1,6 @@
 menu:
-  - news
+  - {id : news, name: "News"}
+  - article
   - admin.menu.structure:
     - home_page
+    - {id: contact, name: "Contact"}
