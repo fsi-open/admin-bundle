@@ -13,8 +13,8 @@
                     {{ form_widget(form) }}
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
-                            <button type="submit" class="btn btn-default">{{ 'crud.create.button.save'|trans({}, 'FSiAdminBundle')  }}</button>
-                            <button type="reset" class="btn btn-primary">{{ 'crud.create.button.reset'|trans({}, 'FSiAdminBundle')  }}</button>
+                            <button type="submit" class="btn btn-primary">{{ 'crud.create.button.save'|trans({}, 'FSiAdminBundle')  }}</button>
+                            <button type="reset" class="btn btn-default">{{ 'crud.create.button.reset'|trans({}, 'FSiAdminBundle')  }}</button>
                             {% if app.request.query.has('redirect_uri') %}
                                 <a class="btn btn-info pull-right" href="{{ app.request.query.get('redirect_uri') }}">{{ 'crud.create.button.back_to_list'|trans({}, 'FSiAdminBundle')  }}</a>
                             {% endif %}
