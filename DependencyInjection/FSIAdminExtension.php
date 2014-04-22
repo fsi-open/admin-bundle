@@ -36,6 +36,7 @@ class FSIAdminExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
         $loader->load('datagrid.xml');
+        $loader->load('menu.xml');
 
         if ($config['display_language_switch']) {
             $loader->load('locale_listener.xml');

@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="admin.fos.menu.builder.class">FSi\Bundle\AdminBundle\Menu\FOSMenuBuilder</parameter>
+        <parameter key="admin.menu.builder_yml.class">FSi\Bundle\AdminBundle\Menu\YamlBuilder</parameter>
+    </parameters>
+
+    <services>
+        <service id="admin.menu.builder_yml" class="%admin.menu.builder_yml.class%">
+            <argument type="service" id="admin.manager" />
+            <argument>%admin.menu_config_path%</argument>
+        </service>
+
+        <service id="admin.fos.menu.builder" class="%admin.fos.menu.builder.class%">
+            <argument type="service" id="admin.menu.builder_yml"/>
+            <argument type="service" id="knp_menu.factory"/>
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="null" strict="false" />
+            </call>
+        </service>
+
+        <service id="admin.menu.top" class="FSi\Bundle\AdminBundle\Menu\MenuItem"
+                 factory-service="admin.fos.menu.builder"
+                 factory-method="createMenu">
+            <tag name="knp_menu.menu" alias="menu"/>
+        </service>
+
+    </services>
+</container>
