@@ -13,8 +13,7 @@
         <parameter key="admin.element.param.converter.class">FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter</parameter>
         <parameter key="admin.element.factory.class">FSi\Bundle\AdminBundle\Factory\ElementFactory</parameter>
         <parameter key="admin.element.factory.production_line.class">FSi\Bundle\AdminBundle\Factory\ProductionLine</parameter>
-        <parameter key="admin.element.factory.worker.datagrid.class">FSi\Bundle\AdminBundle\Factory\Worker\DataGridWorker</parameter>
-        <parameter key="admin.element.factory.worker.datasource.class">FSi\Bundle\AdminBundle\Factory\Worker\DataSourceWorker</parameter>
+        <parameter key="admin.element.factory.worker.list.class">FSi\Bundle\AdminBundle\Factory\Worker\ListWorker</parameter>
         <parameter key="admin.element.factory.worker.form.class">FSi\Bundle\AdminBundle\Factory\Worker\FormWorker</parameter>
         <parameter key="admin.element.factory.worker.doctrine.class">FSi\Bundle\AdminBundle\Factory\Worker\DoctrineWorker</parameter>
         <parameter key="admin.controller.resource.class">FSi\Bundle\AdminBundle\Controller\ResourceController</parameter>
@@ -40,8 +39,7 @@
 
         <service id="admin.element.factory.production_line" class="%admin.element.factory.production_line.class%">
             <argument type="collection">
-                <argument type="service" id="admin.element.factory.worker.datagrid"/>
-                <argument type="service" id="admin.element.factory.worker.datasource"/>
+                <argument type="service" id="admin.element.factory.worker.list"/>
                 <argument type="service" id="admin.element.factory.worker.form" />
                 <argument type="service" id="admin.element.factory.worker.doctrine"/>
             </argument>
@@ -52,11 +50,9 @@
         </service>
 
         <!-- ProductionLine Workers -->
-        <service id="admin.element.factory.worker.datagrid" class="%admin.element.factory.worker.datagrid.class%">
-            <argument type="service" id="datagrid.factory" />
-        </service>
-        <service id="admin.element.factory.worker.datasource" class="%admin.element.factory.worker.datasource.class%">
+        <service id="admin.element.factory.worker.list" class="%admin.element.factory.worker.list.class%">
             <argument type="service" id="datasource.factory" />
+            <argument type="service" id="datagrid.factory" />
         </service>
         <service id="admin.element.factory.worker.form" class="%admin.element.factory.worker.form.class%">
             <argument type="service" id="form.factory" />
