@@ -2,6 +2,8 @@
 
 namespace FSi\Bundle\AdminBundle\Factory\Worker;
 
+use FSi\Bundle\AdminBundle\Admin\CRUD\DataGridAwareInterface;
+use FSi\Bundle\AdminBundle\Admin\CRUD\DataSourceAwareInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Factory\Worker;
@@ -38,6 +40,13 @@ class ListWorker implements Worker
     {
         if ($element instanceof ListElement) {
             $element->setDataSourceFactory($this->dataSourceFactory);
+            $element->setDataGridFactory($this->dataGridFactory);
+            return;
+        }
+        if ($element instanceof DataSourceAwareInterface) {
+            $element->setDataSourceFactory($this->dataSourceFactory);
+        }
+        if ($element instanceof DataGridAwareInterface) {
             $element->setDataGridFactory($this->dataGridFactory);
         }
     }
