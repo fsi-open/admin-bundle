@@ -155,6 +155,22 @@ class DataContext extends BehatContext implements KernelAwareInterface
     }
 
     /**
+     * @Given /^there are (\d+) subscribers in database$/
+     */
+    public function thereAreSubscribersInDatabase($count)
+    {
+        $generator = Factory::create();
+        $populator = new Populator($generator, $this->getDoctrine()->getManager());
+
+        $populator->addEntity('FSi\FixturesBundle\Entity\Subscriber', $count, array(
+            'email' => function() use ($generator) { return $generator->email(); }
+        ));
+        $populator->execute();
+
+        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll()))->toBe($count);
+    }
+
+    /**
      * @param string $name
      * @return \Doctrine\Orm\EntityRepository
      */

@@ -12,6 +12,12 @@ admin:
       visible: Visible
       creator_email: Creator email
       actions: Actions
+  subscriber:
+    name: Subscribers
+    list:
+      email: Email
+      created_at: Created at
+      active: Active
   home_page:
     name: Home page
     form:

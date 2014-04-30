@@ -14,7 +14,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Faker\Factory;
-use FSi\Bundle\AdminBundle\Admin\CRUD\CRUDInterface;
+use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use PhpSpec\Exception\Example\PendingException;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -71,7 +71,7 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     /**
      * @Given /^("[^"]*" element) datasource max results is set (\d+)$/
      */
-    public function elementDatasourceMaxResultsIsSet(CRUDInterface $adminElement, $maxResults)
+    public function elementDatasourceMaxResultsIsSet(ListElement $adminElement, $maxResults)
     {
         $datasource = $this->getDataSource($adminElement);
 
@@ -223,6 +223,14 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
+     * @When /^I select "([^"]*)" in choice filter "([^"]*)"$/
+     */
+    public function iSelectInChoiceFilter($filterValue, $filterName)
+    {
+        $this->getElement('Filters')->findField($filterName)->selectOption($filterValue);
+    }
+
+    /**
      * @Given /^I press "Search" button$/
      */
     public function iPressSearchButton()
@@ -252,6 +260,16 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     public function simpleTextFilterShouldBeFilledWithValue($filterName, $filterValue)
     {
         expect($this->getElement('Filters')->findField($filterName)->getValue())->toBe($filterValue);
+    }
+
+    /**
+     * @Given /^choice filter "([^"]*)" should have value "([^"]*)" selected$/
+     */
+    public function choiceFilterShouldHaveValueSelected($filterName, $choice)
+    {
+        $field = $this->getElement('Filters')->findField($filterName);
+        expect($field->find('css', sprintf('option:contains("%s")', $choice))
+            ->getAttribute('selected'))->toBe('selected');
     }
 
     /**
@@ -335,6 +353,9 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     public function iShouldSeeCustomizedView($crudElement)
     {
         switch($crudElement) {
+            case 'subscribers list':
+                $this->getPage('Custom subscribers list')->isOpen();
+                break;
             case 'list':
                 $this->getPage('Custom news list')->isOpen();
                 break;
@@ -496,10 +517,10 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\CRUDInterface $adminElement
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\ListElement $adminElement
      * @return \FSi\Component\DataGrid\DataGrid
      */
-    protected function getDataGrid(CRUDInterface $adminElement)
+    protected function getDataGrid(ListElement $adminElement)
     {
         if (!array_key_exists($adminElement->getId(), $this->datagrids)) {
             $this->datagrids[$adminElement->getId()] = $adminElement->createDataGrid();
@@ -509,10 +530,10 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\CRUDInterface $adminElement
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\ListElement $adminElement
      * @return \FSi\Component\DataSource\DataSource
      */
-    protected function getDataSource(CRUDInterface $adminElement)
+    protected function getDataSource(ListElement $adminElement)
     {
         if (!array_key_exists($adminElement->getId(), $this->datasources)) {
             $this->datasources[$adminElement->getId()] = $adminElement->createDataSource();

@@ -21,10 +21,12 @@ class AdminClassFinderSpec extends ObjectBehavior
     function it_find_admin_classes_in_bundles_default_admin_path()
     {
         /* We can't just check if result is an array with following values because it might be in other order */
-        $this->findClasses()->shouldHaveCount(3);
+        $this->findClasses()->shouldHaveCount(5);
         $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\CRUDElement");
         $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DoctrineElement");
         $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\SimpleAdminElement");
+        $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DataGridAwareElement");
+        $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DataSourceAwareElement");
     }
 
     function it_find_admin_classes_in_default_bundle_paths_and_additional_paths(BundlePathExtractor $bundlePathExtractor)
@@ -36,10 +38,12 @@ class AdminClassFinderSpec extends ObjectBehavior
             )
         );
 
-        $this->findClasses()->shouldHaveCount(4);
+        $this->findClasses()->shouldHaveCount(6);
         $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\CRUDElement");
         $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DoctrineElement");
         $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\SimpleAdminElement");
+        $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DataGridAwareElement");
+        $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DataSourceAwareElement");
         $this->findClasses()->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\CustomAdmin\\SimpleAdminElement");
     }
 }

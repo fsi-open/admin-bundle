@@ -1,5 +1,6 @@
 menu:
   - news
+  - subscriber
   - admin.menu.structure:
     - home_page
     - about_us_page
