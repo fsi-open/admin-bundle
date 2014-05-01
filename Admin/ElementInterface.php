@@ -27,13 +27,6 @@ interface ElementInterface
     public function getId();
 
     /**
-     * Name is a simple string that can be translated.
-     *
-     * @return string
-     */
-    public function getName();
-
-    /**
      * Return route name that will be used to generate element url in menu.
      *
      * @return string

@@ -15,11 +15,6 @@ class Subscriber extends ListElement
         return 'subscriber';
     }
 
-    public function getName()
-    {
-        return 'admin.subscriber.name';
-    }
-
     public function getClassName()
     {
         return 'FSi\FixturesBundle\Entity\Subscriber';

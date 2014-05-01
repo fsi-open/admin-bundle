@@ -1,6 +1,6 @@
 menu:
-  - news
-  - subscriber
+  - { id: news, name: admin.news.name }
+  - { id: subscriber, name : admin.subscriber.name }
   - admin.menu.structure:
-    - home_page
-    - about_us_page
+    - { id: home_page, name: admin.home_page.name }
+    - { id: about_us_page, name: admin.about_us_page.name }
