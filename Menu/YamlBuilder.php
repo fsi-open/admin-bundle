@@ -71,17 +71,18 @@ class YamlBuilder implements Builder
                 $item->setElement($this->manager->getElement($itemConfig));
             }
         }
-        if (isset($itemConfig['name'])) {
+        if (is_array($itemConfig) && array_key_exists('name', $itemConfig)) {
             $item = new Item($itemConfig['name']);
         }
-        if (!isset($itemConfig['name']) && isset($itemConfig['id'])) {
+        if (is_array($itemConfig) && !array_key_exists('name', $itemConfig) && array_key_exists('id', $itemConfig)) {
             $item = new Item($itemConfig['id']);
         }
         if (!isset($item) && is_array($itemConfig)) {
+            reset($itemConfig);
             $item = new Item(key($itemConfig));
             $this->iterateBuildMenu($item, current($itemConfig));
         }
-        if (isset($itemConfig['id']) && $this->manager->hasElement($itemConfig['id'])) {
+        if (is_array($itemConfig) && array_key_exists('id', $itemConfig) && $this->manager->hasElement($itemConfig['id'])) {
             $item->setElement($this->manager->getElement($itemConfig['id']));
         }
 
@@ -90,7 +91,7 @@ class YamlBuilder implements Builder
 
     /**
      * @param Item $item
-     * @param array $configg
+     * @param array $config
      */
     private function iterateBuildMenu(Item $item, array $config)
     {
