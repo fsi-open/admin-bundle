@@ -58,15 +58,6 @@ class YamlBuilder implements Builder
         return $menu;
     }
 
-    public function iterateBuildMenu(Item &$item, array $config)
-    {
-        foreach ($config as $itemConfig) {
-            $child =  $this->buildItem($itemConfig);
-
-            $item->addChild($child);
-        }
-    }
-
     /**
      * @param $itemConfig
      * @return array
@@ -95,5 +86,18 @@ class YamlBuilder implements Builder
         }
 
         return $item;
+    }
+
+    /**
+     * @param Item $item
+     * @param array $configg
+     */
+    private function iterateBuildMenu(Item $item, array $config)
+    {
+        foreach ($config as $itemConfig) {
+            $child =  $this->buildItem($itemConfig);
+
+            $item->addChild($child);
+        }
     }
 }
