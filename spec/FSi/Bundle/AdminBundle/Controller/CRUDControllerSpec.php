@@ -46,16 +46,16 @@ class CRUDControllerSpec extends ObjectBehavior
         ContextManager $manager,
         Request $request
     ) {
-        $element->getName()->willReturn('My Awesome Element');
+        $element->getId()->willReturn('my_awesome_element');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
-        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
+        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports element with id \"my_awesome_element\""))
             ->during('listAction', array($element, $request));
-        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
+        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports element with id \"my_awesome_element\""))
             ->during('createAction', array($element, $request));
-        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
+        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports element with id \"my_awesome_element\""))
             ->during('editAction', array($element, $request));
-        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports My Awesome Element"))
+        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports element with id \"my_awesome_element\""))
             ->during('deleteAction', array($element, $request));
     }
 

@@ -57,7 +57,7 @@ class ContextBuilder implements ContextBuilderInterface
 
         if ($element instanceof CRUDElement) {
             if (!$element->getOption('allow_edit')) {
-                throw new ContextBuilderException(sprintf("%s does not allow to edit objects", $element->getName()));
+                throw new ContextBuilderException(sprintf("Element with id \"%s\" does not allow to edit objects", $element->getId()));
             }
 
             if (!$this->hasObject($element)) {
