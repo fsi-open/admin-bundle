@@ -34,10 +34,10 @@ class ContextBuilderSpec extends ObjectBehavior
 
     function it_throws_exception_when_element_does_not_allow_to_create_objects(CRUDElement $element)
     {
-        $element->getName()->willReturn('My Element');
+        $element->getId()->willReturn('my_element');
         $element->getOption('allow_add')->willReturn(false);
 
-        $this->shouldThrow(new ContextBuilderException("My Element does not allow to create objects"))
+        $this->shouldThrow(new ContextBuilderException("Element with id \"my_element\" does not allow to create objects"))
             ->during('supports', array('fsi_admin_crud_create', $element));
     }
 
