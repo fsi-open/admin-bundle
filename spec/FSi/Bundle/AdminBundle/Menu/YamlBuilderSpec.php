@@ -36,7 +36,8 @@ class YamlBuilderSpec extends ObjectBehavior
     {
         return array(
             'haveItem' => function($menu, $itemName, $elementId = false) {
-                    foreach ($menu->getItems() as $item) {
+                    $items = $menu->getItems();
+                    foreach ($items as $item) {
                         if ($item->getName() === $itemName) {
                             if (!$elementId) {
                                 return true;
