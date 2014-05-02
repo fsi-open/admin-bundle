@@ -14,7 +14,7 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\MenuItem;
 use Symfony\Component\HttpFoundation\Request;
 
-class FOSMenuBuilder
+class KnpMenuBuilder
 {
     /**
      * @var FactoryInterface

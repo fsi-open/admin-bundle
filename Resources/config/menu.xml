@@ -5,8 +5,9 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="admin.fos.menu.builder.class">FSi\Bundle\AdminBundle\Menu\FOSMenuBuilder</parameter>
+        <parameter key="admin.knp.menu.builder.class">FSi\Bundle\AdminBundle\Menu\KnpMenuBuilder</parameter>
         <parameter key="admin.menu.builder_yml.class">FSi\Bundle\AdminBundle\Menu\YamlBuilder</parameter>
+        <parameter key="admin.menu.top.class">FSi\Bundle\AdminBundle\Menu</parameter>
     </parameters>
 
     <services>
@@ -15,7 +16,7 @@
             <argument>%admin.menu_config_path%</argument>
         </service>
 
-        <service id="admin.fos.menu.builder" class="%admin.fos.menu.builder.class%">
+        <service id="admin.knp.menu.builder" class="%admin.knp.menu.builder.class%">
             <argument type="service" id="admin.menu.builder_yml"/>
             <argument type="service" id="knp_menu.factory"/>
             <call method="setRequest">
@@ -23,8 +24,8 @@
             </call>
         </service>
 
-        <service id="admin.menu.top" class="FSi\Bundle\AdminBundle\Menu\MenuItem"
-                 factory-service="admin.fos.menu.builder"
+        <service id="admin.menu.top" class="%admin.menu.top.class%"
+                 factory-service="admin.knp.menu.builder"
                  factory-method="createMenu">
             <tag name="knp_menu.menu" alias="menu"/>
         </service>
