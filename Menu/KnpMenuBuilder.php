@@ -93,7 +93,10 @@ class KnpMenuBuilder
     private function addMenuItem(Item $item, MenuItem $menu)
     {
         $options = $item->hasElement()
-            ? array('route' => $item->getElement()->getRoute(), 'routeParameters' => $item->getElement()->getRouteParameters())
+            ? array(
+                'route' => $item->getElement()->getRoute(),
+                'routeParameters' => $item->getElement()->getRouteParameters()
+            )
             : array('uri' => '#');
 
         $menu->addChild($item->getName(), $options)->setAttribute('class', 'admin-element');
