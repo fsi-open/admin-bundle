@@ -145,6 +145,23 @@ class DataContext extends BehatContext implements KernelAwareInterface
         )))->toBe(null);
     }
 
+    /**
+     * @Given /^news "([^"]*)" should exist in database$/
+     */
+    public function newsShouldExistInDatabase($title)
+    {
+        expect($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findOneBy(array(
+            'title' => $title
+        )))->toNotBe(null);
+    }
+
+    /**
+     * @Given /^there should be (\d+) news in database$/
+     */
+    public function thereShouldBeThatManyNewsInDatabase($count)
+    {
+        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe((int) $count);
+    }
 
     /**
      * @Given /^there should not be any news in database$/

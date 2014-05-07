@@ -40,15 +40,23 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             )->during('handleRequest', array($listEvent, $request));
     }
 
-    function it_do_nothing_if_request_has_no_confirm(
+    function it_redirect_if_no_confirm(
         FormEvent $event,
         Request $request,
-        ParameterBag $requestParameterBag
+        ParameterBag $requestParameterBag,
+        CRUDElement $element,
+        Router $router
     ) {
         $request->request = $requestParameterBag;
         $requestParameterBag->has('confirm')->willReturn(false);
+        $requestParameterBag->has('cancel')->willReturn(true);
 
-        $this->handleRequest($event, $request)->shouldReturn(null);
+        $event->getElement()->willReturn($element);
+        $element->getId()->willReturn(1);
+        $router->generate('fsi_admin_crud_list', array('element' => 1))->willReturn('/list/page');
+
+        $this->handleRequest($event, $request)
+            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
     }
 
     function it_should_throw_exception_when_there_are_no_indexes_in_request(
