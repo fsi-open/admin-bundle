@@ -24,7 +24,7 @@ class ObjectDisplaySpec extends ObjectBehavior
         $this->beConstructedWith($object);
 
         $this->add('firstName', 'First Name');
-        $this->shouldThrow(new NoSuchPropertyException('Neither the property "firstName" nor one of the methods "getFirstName()", "isFirstName()", "hasFirstName()", "__get()", "__call()" exist and have public access in class "stdClass".'))
+        $this->shouldThrow('Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException')
             ->during('createView', array());
     }
 
