@@ -12,7 +12,8 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
+ * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use
+ *             FSi\Bundle\AdminBundle\Admin\CRUD\FormElement instead.
  */
 interface FormAwareInterface
 {

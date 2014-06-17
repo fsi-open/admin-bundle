@@ -42,6 +42,11 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     protected $newsTitle;
 
     /**
+     * @var string
+     */
+    protected $subscriberEmail;
+
+    /**
      * @param KernelInterface $kernel
      */
     public function setKernel(KernelInterface $kernel)
@@ -290,10 +295,25 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     {
         expect($this->getMainContext()->getSubcontext('data')->getNewsCount())->toBe(0);
         $generator = Factory::create();
-        $this->getElement('Form')->fillField('Title', $generator->text());
-        $this->getElement('Form')->fillField('Created at', $generator->date());
-        $this->getElement('Form')->fillField('Visible', $generator->boolean());
-        $this->getElement('Form')->fillField('Creator email', $generator->email());
+        $form = $this->getElement('Form');
+        if ($form->hasField('Title')) {
+            $form->fillField('Title', $generator->text());
+        }
+        if ($form->hasField('Created at')) {
+            $this->getElement('Form')->fillField('Created at', $generator->date());
+        }
+        if ($form->hasField('Visible')) {
+            $this->getElement('Form')->fillField('Visible', $generator->boolean());
+        }
+        if ($form->hasField('Active')) {
+            $this->getElement('Form')->fillField('Active', $generator->boolean());
+        }
+        if ($form->hasField('Email')) {
+            $this->getElement('Form')->fillField('Email', $generator->email());
+        }
+        if ($form->hasField('Creator email')) {
+            $this->getElement('Form')->fillField('Creator email', $generator->email());
+        }
     }
 
     /**
@@ -313,6 +333,14 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
+     * @Then /^new subscriber should be created$/
+     */
+    public function newSubscriberShouldBeCreated()
+    {
+        expect($this->getMainContext()->getSubcontext('data')->getSubscribersCount())->toBe(1);
+    }
+
+    /**
      * @Given /^I should be redirected to "([^"]*)" page$/
      */
     public function iShouldBeRedirectedToPage($pageName)
@@ -329,14 +357,21 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @When /^I change form "Title" field value$/
+     * @When /^I change form "([^"]*)" field value$/
      */
-    public function iChangeFormTitleFieldValue()
+    public function iChangeFormTitleFieldValue($field)
     {
         $generator = Factory::create();
-        $this->newsTitle = $generator->text();
-        expect($this->newsTitle)->toNotBe($this->getElement('Form')->findField('Title')->getValue());
-        $this->getElement('Form')->fillField('Title', $this->newsTitle);
+        switch ($field) {
+            case 'Titile':
+                $this->newsTitle = $generator->text();
+                expect($this->newsTitle)->toNotBe($this->getElement('Form')->findField($field)->getValue());
+                $this->getElement('Form')->fillField($field, $this->newsTitle);
+            case 'Email':
+                $this->subscriberEmail = $generator->email();
+                expect($this->subscriberEmail)->toNotBe($this->getElement('Form')->findField($field)->getValue());
+                $this->getElement('Form')->fillField($field, $this->subscriberEmail);
+        }
     }
 
     /**
@@ -345,6 +380,14 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     public function newsWithIdShouldHaveChangedTitle($id)
     {
         expect($this->getMainContext()->getSubcontext('data')->findNewsById($id)->getTitle())->toBe($this->newsTitle);
+    }
+
+    /**
+     * @Then /^subscriber with id (\d+) should have changed email$/
+     */
+    public function subscriberWithIdShouldHaveChangedEmail($id)
+    {
+        expect($this->getMainContext()->getSubcontext('data')->findSubscriberById($id)->getEmail())->toBe($this->subscriberEmail);
     }
 
     /**

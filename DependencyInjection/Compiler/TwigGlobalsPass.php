@@ -25,6 +25,7 @@ class TwigGlobalsPass implements CompilerPassInterface
 
         $parameters = array(
             'admin_templates_base'                => $container->getParameter('admin.templates.base'),
+            'admin_templates_form_theme'          => $container->getParameter('admin.templates.form_theme'),
             'admin_templates_datagrid_theme'      => $container->getParameter('admin.templates.datagrid_theme'),
             'admin_templates_datasource_theme'    => $container->getParameter('admin.templates.datasource_theme'),
             'admin_templates_edit_form_theme'     => $container->getParameter('admin.templates.edit_form_theme'),
