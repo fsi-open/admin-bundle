@@ -49,7 +49,7 @@ abstract class ListElement extends GenericListElement implements Element
      */
     public function getDataIndexer()
     {
-        return new DoctrineDataIndexer($this->registry, $this->getRepository()->getClassName());;
+        return new DoctrineDataIndexer($this->registry, $this->getRepository()->getClassName());
     }
 
     /**
