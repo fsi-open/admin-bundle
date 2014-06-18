@@ -363,14 +363,16 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     {
         $generator = Factory::create();
         switch ($field) {
-            case 'Titile':
+            case 'Title':
                 $this->newsTitle = $generator->text();
                 expect($this->newsTitle)->toNotBe($this->getElement('Form')->findField($field)->getValue());
                 $this->getElement('Form')->fillField($field, $this->newsTitle);
+                break;
             case 'Email':
                 $this->subscriberEmail = $generator->email();
                 expect($this->subscriberEmail)->toNotBe($this->getElement('Form')->findField($field)->getValue());
                 $this->getElement('Form')->fillField($field, $this->subscriberEmail);
+                break;
         }
     }
 

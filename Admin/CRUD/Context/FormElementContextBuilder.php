@@ -12,7 +12,6 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use Symfony\Component\HttpFoundation\Request;
 

@@ -2,11 +2,9 @@
 
 namespace FSi\FixturesBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ListElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 
 class Subscriber extends ListElement
 {

@@ -9,7 +9,6 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <h3 id="page-header">{{ 'crud.form.title'|trans({}, 'FSiAdminBundle') }}</h3>
-                {{ dump(id) }}
                 {{ form_start(form, { action: path('fsi_admin_form', { element: element.id, id: app.request.get('id') }), 'attr': { class: 'form-horizontal' }|merge(form.vars.attr) }) }}
                     {{ form_widget(form) }}
                     <div class="form-group">
