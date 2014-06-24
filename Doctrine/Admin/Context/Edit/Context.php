@@ -104,8 +104,7 @@ class Context implements ContextInterface
         return array(
             'element' => $this->element,
             'form' => $this->form->createView(),
-            'id' => $this->element->getDataIndexer()->getIndex($this->entity),
-            'title' => $this->element->getOption('crud_edit_title'),
+            'id' => $this->element->getDataIndexer()->getIndex($this->entity)
         );
     }
 }

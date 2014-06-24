@@ -57,8 +57,7 @@ abstract class GenericResourceElement extends AbstractElement implements Element
         ));
 
         $resolver->setAllowedTypes(array(
-            'template' => array('null', 'string'),
-            'title' => 'string',
+            'template' => array('null', 'string')
         ));
     }
 }

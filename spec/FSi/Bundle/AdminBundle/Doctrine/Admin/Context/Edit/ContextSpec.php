@@ -40,13 +40,11 @@ class ContextSpec extends ObjectBehavior
     {
         $element->getDataIndexer()->willReturn($indexer);
         $indexer->getIndex($this->data)->willReturn(1);
-        $element->getOption('crud_edit_title')->shouldBeCalled();
 
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('form');
         $this->getData()->shouldHaveKeyInArray('element');
         $this->getData()->shouldHaveKeyInArray('id');
-        $this->getData()->shouldHaveKeyInArray('title');
     }
 
     function it_has_template(CRUDElement $element)
