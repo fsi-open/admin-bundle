@@ -8,7 +8,9 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <h3 id="page-header">{{ title|trans({}, 'FSiAdminBundle') }}</h3>
+                {% block header %}
+                    <h3 id="page-header">{{ 'resource.title'|trans({}, 'FSiAdminBundle') }}</h3>
+                {% endblock header %}
                 {{ form_start(form, { action: path('fsi_admin_resource', { element: element.id }), 'attr': { class: 'form-horizontal' }|merge(form.vars.attr) }) }}
                     {{ form_widget(form) }}
                     <div class="form-group">

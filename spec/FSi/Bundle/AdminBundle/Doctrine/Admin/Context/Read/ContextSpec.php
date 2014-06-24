@@ -35,13 +35,10 @@ class ContextSpec extends ObjectBehavior
 
     function it_have_array_data(CRUDElement $element)
     {
-        $element->getOption('crud_list_title')->shouldBeCalled();
-
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('datagrid_view');
         $this->getData()->shouldHaveKeyInArray('datasource_view');
         $this->getData()->shouldHaveKeyInArray('element');
-        $this->getData()->shouldHaveKeyInArray('title');
     }
 
     function it_has_template(CRUDElement $element)

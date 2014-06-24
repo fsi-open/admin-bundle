@@ -90,8 +90,7 @@ class Context implements ContextInterface
     {
         return array(
             'element' => $this->element,
-            'form' => $this->form->createView(),
-            'title' => $this->element->getOption('crud_create_title'),
+            'form' => $this->form->createView()
         );
     }
 }
