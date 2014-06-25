@@ -46,10 +46,10 @@ class ContextBuilderSpec extends ObjectBehavior
         Request $request
     ) {
         $this->setRequest($request);
-        $element->getName()->willReturn('My Element');
+        $element->getId()->willReturn('my_element');
         $element->getOption('allow_delete')->willReturn(false);
 
-        $this->shouldThrow(new ContextBuilderException("My Element does not allow to delete objects"))
+        $this->shouldThrow(new ContextBuilderException("Element with id \"my_element\" does not allow to delete objects"))
             ->during('supports', array('fsi_admin_crud_delete', $element));
     }
 

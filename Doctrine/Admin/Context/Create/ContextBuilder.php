@@ -46,7 +46,7 @@ class ContextBuilder implements ContextBuilderInterface
                 return true;
             }
 
-            throw new ContextBuilderException(sprintf("%s does not allow to create objects", $element->getName()));
+            throw new ContextBuilderException(sprintf("Element with id \"%s\" does not allow to create objects", $element->getId()));
         }
 
         return false;

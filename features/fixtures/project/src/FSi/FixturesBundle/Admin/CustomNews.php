@@ -15,11 +15,6 @@ class CustomNews extends CRUDElement
         return 'custom_news';
     }
 
-    public function getName()
-    {
-        return 'admin.news.custom_name';
-    }
-
     public function getClassName()
     {
         return 'FSi\FixturesBundle\Entity\News';

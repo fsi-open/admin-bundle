@@ -42,10 +42,10 @@ class ContextBuilderSpec extends ObjectBehavior
 
     function it_throws_exception_when_doctrine_crud_element_does_not_allow_edit_objects(CRUDElement $element)
     {
-        $element->getName()->shouldBeCalled()->willReturn('My Element');
+        $element->getId()->shouldBeCalled()->willReturn('my_element');
         $element->getOption('allow_edit')->shouldBeCalled()->willReturn(false);
 
-        $this->shouldThrow(new ContextBuilderException("My Element does not allow to edit objects"))
+        $this->shouldThrow(new ContextBuilderException("Element with id \"my_element\" does not allow to edit objects"))
             ->during('supports', array('fsi_admin_crud_edit', $element));
     }
 

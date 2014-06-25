@@ -20,11 +20,6 @@ class HomePage extends ResourceElement
         return 'resources.homepage';
     }
 
-    public function getName()
-    {
-        return 'admin.home_page.name';
-    }
-
     public function getClassName()
     {
         return 'FSi\FixturesBundle\Entity\Resource';
