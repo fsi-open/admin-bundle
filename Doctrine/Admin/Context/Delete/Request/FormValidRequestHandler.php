@@ -54,7 +54,9 @@ class FormValidRequestHandler extends AbstractFormRequestHandler
                     return $event->getResponse();
                 }
             }
+        }
 
+        if ($request->request->has('confirm') || $request->request->has('cancel')) {
             return new RedirectResponse($this->router->generate(
                 'fsi_admin_crud_list',
                 array('element' => $event->getElement()->getId())

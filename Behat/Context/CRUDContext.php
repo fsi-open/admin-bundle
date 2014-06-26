@@ -401,11 +401,11 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @When /^I press "Yes"$/
+     * @When /^I press "(Yes|No)"$/
      */
-    public function iPress()
+    public function iPress($name)
     {
-        $this->getPage('News delete confirmation')->pressButton('Yes');
+        $this->getPage('News delete confirmation')->pressButton($name);
     }
 
     /**
