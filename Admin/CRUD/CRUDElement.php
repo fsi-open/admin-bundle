@@ -9,23 +9,8 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
-interface CRUDElement extends ListElement
+interface CRUDElement extends ListElement, FormElement
 {
-    /**
-     * @param mixed $data
-     * @return \Symfony\Component\Form\Form|null
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
-     */
-    public function createForm($data = null);
-
-    /**
-     * This method is called from CRUDController after form validation is passed in edit and create action.
-     * Mostly this method should save updated object in database.
-     *
-     * @param mixed $object
-     */
-    public function save($object);
-
     /**
      * This method is called from CRUDController in delete action.
      * Mostly this method should delete entity from database but it can be overwritten to
