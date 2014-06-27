@@ -64,29 +64,42 @@ class YamlBuilder implements Builder
      */
     private function buildItem($itemConfig)
     {
-        $item = null;
+        $item = $this->buildSingleItem($itemConfig);
+
+        if (!isset($item) && is_array($itemConfig)) {
+            $item = new Item(key($itemConfig));
+            $this->iterateBuildMenu($item, current($itemConfig));
+        }
+
+        if ($this->hasEntry($itemConfig, 'id') && $this->manager->hasElement($itemConfig['id'])) {
+            $item->setElement($this->manager->getElement($itemConfig['id']));
+        }
+
+        return $item;
+    }
+
+    private function buildSingleItem($itemConfig)
+    {
         if (is_string($itemConfig)) {
             $item = new Item($itemConfig);
             if ($this->manager->hasElement($itemConfig)) {
                 $item->setElement($this->manager->getElement($itemConfig));
             }
-        }
-        if (is_array($itemConfig) && array_key_exists('name', $itemConfig)) {
-            $item = new Item($itemConfig['name']);
-        }
-        if (is_array($itemConfig) && !array_key_exists('name', $itemConfig) && array_key_exists('id', $itemConfig)) {
-            $item = new Item($itemConfig['id']);
-        }
-        if (!isset($item) && is_array($itemConfig)) {
-            reset($itemConfig);
-            $item = new Item(key($itemConfig));
-            $this->iterateBuildMenu($item, current($itemConfig));
-        }
-        if (is_array($itemConfig) && array_key_exists('id', $itemConfig) && $this->manager->hasElement($itemConfig['id'])) {
-            $item->setElement($this->manager->getElement($itemConfig['id']));
+            return $item;
         }
 
-        return $item;
+        if ($this->hasEntry($itemConfig, 'name')) {
+            return new Item($itemConfig['name']);
+        }
+
+        if ($this->hasEntry($itemConfig, 'id')) {
+            return new Item($itemConfig['id']);
+        }
+    }
+
+    private function hasEntry($itemConfig, $keyName)
+    {
+        return is_array($itemConfig) && array_key_exists($keyName, $itemConfig);
     }
 
     /**
@@ -97,7 +110,6 @@ class YamlBuilder implements Builder
     {
         foreach ($config as $itemConfig) {
             $child =  $this->buildItem($itemConfig);
-
             $item->addChild($child);
         }
     }
