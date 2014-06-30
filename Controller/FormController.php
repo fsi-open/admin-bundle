@@ -42,7 +42,7 @@ class FormController
         $context = $this->contextManager->createContext('fsi_admin_form', $element);
 
         if (!isset($context)) {
-            throw new NotFoundHttpException(sprintf('Cant find context builder that supports %s', $element->getName()));
+            throw new NotFoundHttpException(sprintf('Cant find context builder that supports element with id %s', $element->getId()));
         }
 
         if (($response = $context->handleRequest($request)) !== null) {
