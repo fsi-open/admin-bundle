@@ -40,10 +40,10 @@ class ListControllerSpec extends ObjectBehavior
         ContextManager $manager,
         Request $request
     ) {
-        $element->getName()->willReturn('My Awesome List Element');
+        $element->getId()->willReturn("my_awesome_list_element");
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
-        $this->shouldThrow(new NotFoundHttpException("Can't find context builder that supports My Awesome List Element"))
+        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports element with id \"my_awesome_list_element\""))
             ->during('listAction', array($element, $request));
     }
 

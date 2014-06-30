@@ -8,7 +8,6 @@
         <parameter key="admin.manager.class">FSi\Bundle\AdminBundle\Admin\Manager</parameter>
         <parameter key="admin.manager.visitor.annotation.class">FSi\Bundle\AdminBundle\Admin\Manager\AnnotationVisitor</parameter>
         <parameter key="admin.manager.visitor.element_collection.class">FSi\Bundle\AdminBundle\Admin\Manager\ElementCollectionVisitor</parameter>
-        <parameter key="admin.menu.builder.class">FSi\Bundle\AdminBundle\Menu\MenuBuilder</parameter>
         <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Admin\Context\ContextManager</parameter>
         <parameter key="admin.element.param.converter.class">FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter</parameter>
         <parameter key="admin.element.factory.class">FSi\Bundle\AdminBundle\Factory\ElementFactory</parameter>
@@ -59,22 +58,6 @@
         </service>
         <service id="admin.element.factory.worker.doctrine" class="%admin.element.factory.worker.doctrine.class%">
             <argument type="service" id="doctrine" />
-        </service>
-
-        <!-- Menu -->
-        <service id="admin.menu.builder" class="%admin.menu.builder.class%">
-            <argument type="service" id="knp_menu.factory"/>
-            <argument type="service" id="admin.manager" />
-            <argument>%admin.menu_config_path%</argument>
-            <call method="setRequest">
-                <argument type="service" id="request" on-invalid="null" strict="false" />
-            </call>
-        </service>
-
-        <service id="admin.menu.top" class="FSi\Bundle\AdminBundle\Menu\MenuItem"
-                 factory-service="admin.menu.builder"
-                 factory-method="createMenu">
-            <tag name="knp_menu.menu" alias="menu"/>
         </service>
 
         <!-- Controllers -->

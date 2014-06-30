@@ -97,7 +97,7 @@ class CRUDController
         $context = $this->contextManager->createContext($route, $element);
 
         if (!isset($context)) {
-            throw new NotFoundHttpException(sprintf('Cant find context builder that supports %s', $element->getName()));
+            throw new NotFoundHttpException(sprintf('Cant find context builder that supports element with id "%s"', $element->getId()));
         }
 
         if (($response = $context->handleRequest($request)) !== null) {

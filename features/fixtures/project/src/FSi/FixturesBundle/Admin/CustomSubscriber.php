@@ -13,11 +13,6 @@ class CustomSubscriber extends ListElement
         return 'custom_subscriber';
     }
 
-    public function getName()
-    {
-        return 'admin.subscriber.custom_name';
-    }
-
     public function getClassName()
     {
         return 'FSi\FixturesBundle\Entity\Subscriber';

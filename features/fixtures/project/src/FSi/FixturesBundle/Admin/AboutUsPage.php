@@ -16,11 +16,6 @@ class AboutUsPage extends ResourceElement
         return 'resources.about_us';
     }
 
-    public function getName()
-    {
-        return 'admin.about_us_page.name';
-    }
-
     public function getClassName()
     {
     }
