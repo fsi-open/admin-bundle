@@ -33,7 +33,7 @@ class FormController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD $element
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -42,7 +42,7 @@ class FormController
         $context = $this->contextManager->createContext('fsi_admin_form', $element);
 
         if (!isset($context)) {
-            throw new NotFoundHttpException(sprintf('Cant find context builder that supports element with id %s', $element->getId()));
+            throw new NotFoundHttpException(sprintf('Cant find context builder that supports element with id "%s"', $element->getId()));
         }
 
         if (($response = $context->handleRequest($request)) !== null) {

@@ -47,7 +47,7 @@ class FormControllerSpec extends ObjectBehavior
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
-        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports element with id admin_element_id"))
+        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports element with id \"admin_element_id\""))
             ->during('formAction', array($element, $request));
     }
 
