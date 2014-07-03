@@ -12,10 +12,6 @@ class MyList extends GenericListElement
     {
     }
 
-    public function getName()
-    {
-    }
-
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
     }
