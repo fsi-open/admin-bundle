@@ -10,6 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
+use FSi\Bundle\AdminBundle\Admin\CRUD\RedirectableElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
@@ -59,7 +60,7 @@ class FormValidRequestHandler extends AbstractHandler
                     return $event->getResponse();
                 }
 
-                return $this->getRedirectResponse($event, $request);
+                return $this->getRedirectResponse($event);
             }
         }
 
@@ -86,20 +87,24 @@ class FormValidRequestHandler extends AbstractHandler
         if (!$event instanceof FormEvent) {
             throw new RequestHandlerException(sprintf("%s require FormEvent", get_class($this)));
         }
+        if (!$event->getElement() instanceof RedirectableElement) {
+            throw new RequestHandlerException(sprintf("%s require RedirectableElement", get_class($this)));
+        }
     }
 
     /**
-     * @return string
+     * @param FormEvent $event
+     * @return RedirectResponse
      */
-    protected function getRedirectResponse(AdminEvent $event, Request $request)
+    protected function getRedirectResponse(FormEvent $event)
     {
+        /** @var \FSi\Bundle\AdminBundle\Admin\CRUD\RedirectableElement $element */
+        $element = $event->getElement();
+
         return new RedirectResponse(
             $this->router->generate(
-                'fsi_admin_form',
-                array(
-                    'element' => $event->getElement()->getId(),
-                    'id' => $request->get('id', null)
-                )
+                $element->getSuccessRoute(),
+                $element->getSuccessRouteParameters()
             )
         );
     }

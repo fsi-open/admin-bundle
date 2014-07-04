@@ -9,9 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
-
-interface FormElement extends ElementInterface, FormAwareInterface
+interface FormElement extends RedirectableElement, FormAwareInterface
 {
     /**
      * @param mixed $data
@@ -34,18 +32,4 @@ interface FormElement extends ElementInterface, FormAwareInterface
      * @param mixed $object
      */
     public function save($object);
-
-    /**
-     * Return route name that will be used to redirect after successful form handling.
-     *
-     * @return string
-     */
-    public function getSuccessRoute();
-
-    /**
-     * Return array of parameters used with route returned from getSuccessRoute().
-     *
-     * @return mixed
-     */
-    public function getSuccessRouteParameters();
 }

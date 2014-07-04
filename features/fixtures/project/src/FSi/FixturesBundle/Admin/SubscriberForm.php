@@ -29,6 +29,16 @@ class SubscriberForm extends FormElement
         return 'admin.subscriber.name';
     }
 
+    public function getSuccessRoute()
+    {
+        return 'fsi_admin_list';
+    }
+
+    public function getSuccessRouteParameters()
+    {
+        return array('element' => 'subscriber');
+    }
+
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
         $builder = $factory->createNamedBuilder('subscriber', 'form', $data, array(

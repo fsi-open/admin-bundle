@@ -22,7 +22,7 @@ class SubscriberEdit extends Page
 
     protected function verifyPage()
     {
-        if (!$this->has('css', 'h3#page-header:contains("Element form")')) {
+        if (!$this->has('css', '#page-header:contains("Element form")')) {
             throw new BehaviorException(sprintf("%s page is missing \"Element form\" header", $this->path));
         }
     }

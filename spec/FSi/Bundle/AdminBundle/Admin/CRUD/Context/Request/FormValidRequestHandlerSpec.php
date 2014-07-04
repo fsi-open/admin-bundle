@@ -3,8 +3,6 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
-use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvents;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
@@ -39,14 +37,27 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         )->during('handleRequest', array($listEvent, $request));
     }
 
+    function it_throw_exception_for_non_redirectable_element(FormEvent $formEvent, Request $request)
+    {
+        $formEvent->getElement()->willReturn(new \stdClass());
+
+        $this->shouldThrow(
+            new RequestHandlerException(
+                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\FormValidRequestHandler require RedirectableElement"
+            )
+        )->during('handleRequest', array($formEvent, $request));
+    }
+
     function it_do_nothing_on_non_POST_request(
         FormEvent $event,
+        FormElement $element,
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
         $request->getMethod()->willReturn('GET');
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
             ->shouldBeCalled();
+        $event->getElement()->willReturn($element);
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -73,9 +84,10 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_POST_SAVE, $event)
             ->shouldBeCalled();
 
-        $element->getId()->willReturn(1);
-        $request->get('id', null)->willReturn(9);
-        $router->generate('fsi_admin_form', array('element' => 1, 'id' => 9))->willReturn('/form/page');
+        $element->getSuccessRoute()->willReturn('fsi_admin_list');
+        $element->getSuccessRouteParameters()->willReturn(array('element' => 'element_list_id'));
+        $element->getId()->willReturn('element_form_id');
+        $router->generate('fsi_admin_list', array('element' => 'element_list_id'))->willReturn('/list/page');
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
@@ -83,6 +95,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
 
     function it_return_response_from_pre_render_event(
         FormEvent $event,
+        FormElement $element,
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
@@ -92,6 +105,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
                 $event->hasResponse()->willReturn(true);
                 $event->getResponse()->willReturn(new Response());
             });
+        $event->getElement()->willReturn($element);
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
@@ -99,6 +113,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
 
     function it_return_response_from_pre_data_save_event(
         FormEvent $event,
+        FormElement $element,
         Request $request,
         EventDispatcher $eventDispatcher,
         Form $form
@@ -112,6 +127,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
                 $event->hasResponse()->willReturn(true);
                 $event->getResponse()->willReturn(new Response());
             });
+        $event->getElement()->willReturn($element);
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
