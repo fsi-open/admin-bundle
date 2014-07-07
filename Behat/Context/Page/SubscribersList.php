@@ -18,7 +18,7 @@ class SubscribersList extends Page
 
     public function getHeader()
     {
-        return $this->find('css', 'h3#page-header')->getText();
+        return $this->find('css', '#page-header')->getText();
     }
 
     public function isColumnEditable($columnHeader)
@@ -53,7 +53,7 @@ class SubscribersList extends Page
 
     protected function verifyPage()
     {
-        if (!$this->has('css', 'h3#page-header:contains("List of elements")')) {
+        if (!$this->has('css', '#page-header:contains("List of elements")')) {
             throw new BehaviorException(sprintf("%s page is missing \"List of elements\" header", $this->path));
         }
     }

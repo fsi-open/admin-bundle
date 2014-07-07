@@ -20,6 +20,11 @@ fsi_admin_form:
         _controller: admin.controller.form:formAction
         id: null
 
+fsi_admin_batch:
+    path: /batch/{element}
+    defaults:
+        _controller: admin.controller.batch:batchAction
+
 fsi_admin_crud_list:
     path: /{element}/list
     defaults:

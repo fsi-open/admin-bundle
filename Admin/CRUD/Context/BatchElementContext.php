@@ -10,16 +10,15 @@
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
-use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
-use FSi\Bundle\AdminBundle\Event\ListEvent;
-use FSi\Component\DataGrid\DataGrid;
-use FSi\Component\DataSource\DataSource;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class ListElementContext implements ContextInterface
+class BatchElementContext implements ContextInterface
 {
     /**
      * @var HandlerInterface[]
@@ -27,42 +26,38 @@ class ListElementContext implements ContextInterface
     private $requestHandlers;
 
     /**
-     * @var ListElement
+     * @var FormElement
      */
     protected $element;
 
     /**
-     * @var DataSource
+     * @var Form
      */
-    protected $dataSource;
+    protected $form;
 
     /**
-     * @var DataGrid
+     * @var array
      */
-    protected $dataGrid;
-
-    /**
-     * @var \Symfony\Component\Form\FormInterface
-     */
-    protected $batchForm;
+    protected $indexes;
 
     /**
      * @param array $requestHandlers
+     * @param \Symfony\Component\Form\FormFactoryInterface $factory
      */
-    public function __construct($requestHandlers, FormFactoryInterface $formFactory)
-    {
+    public function __construct(
+        $requestHandlers,
+        FormFactoryInterface $factory
+    ) {
         $this->requestHandlers = $requestHandlers;
-        $this->batchForm = $formFactory->createNamed('batch_action', 'form');
+        $this->form = $factory->createNamed('batch_action', 'form');
     }
 
     /**
-     * @param ListElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
      */
-    public function setElement(ListElement $element)
+    public function setElement(BatchElement $element)
     {
         $this->element = $element;
-        $this->dataSource = $this->element->createDataSource();
-        $this->dataGrid = $this->element->createDataGrid();
     }
 
     /**
@@ -70,7 +65,7 @@ class ListElementContext implements ContextInterface
      */
     public function hasTemplateName()
     {
-        return $this->element->hasOption('template_list');
+        return false;
     }
 
     /**
@@ -78,7 +73,7 @@ class ListElementContext implements ContextInterface
      */
     public function getTemplateName()
     {
-        return $this->element->getOption('template_list');
+        return null;
     }
 
     /**
@@ -86,12 +81,13 @@ class ListElementContext implements ContextInterface
      */
     public function getData()
     {
-        return array(
-            'datagrid_view' => $this->dataGrid->createView(),
-            'datasource_view' => $this->dataSource->createView(),
+        $data = array(
             'element' => $this->element,
-            'batch' => $this->batchForm->createView()
+            'indexes' => $this->indexes,
+            'form' => $this->form->createView()
         );
+
+        return $data;
     }
 
     /**
@@ -99,7 +95,8 @@ class ListElementContext implements ContextInterface
      */
     public function handleRequest(Request $request)
     {
-        $event = new ListEvent($this->element, $request, $this->dataSource, $this->dataGrid);
+        $event = new FormEvent($this->element, $request, $this->form);
+        $this->indexes = $request->request->get('indexes', array());
 
         foreach ($this->requestHandlers as $handler) {
             $response = $handler->handleRequest($event, $request);

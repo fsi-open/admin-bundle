@@ -16,16 +16,25 @@ use FSi\Component\DataGrid\DataGrid;
 use FSi\Component\DataSource\DataSource;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListElementContextSpec extends ObjectBehavior
 {
-    function let(ListElement $element, DataSource $datasource, DataGrid $datagrid, HandlerInterface $handler)
-    {
-        $this->beConstructedWith(array($handler));
+    function let(
+        ListElement $element,
+        DataSource $datasource,
+        DataGrid $datagrid,
+        HandlerInterface $handler,
+        FormFactoryInterface $formFactory,
+        FormInterface $batchForm
+    ) {
+        $this->beConstructedWith(array($handler), $formFactory);
         $element->createDataGrid()->willReturn($datagrid);
         $element->createDataSource()->willReturn($datasource);
+        $formFactory->createNamed('batch_action', 'form')->willReturn($batchForm);
         $this->setElement($element);
     }
 
@@ -40,6 +49,7 @@ class ListElementContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('datagrid_view');
         $this->getData()->shouldHaveKeyInArray('datasource_view');
         $this->getData()->shouldHaveKeyInArray('element');
+        $this->getData()->shouldHaveKeyInArray('batch');
     }
 
     function it_has_template(ListElement $element)

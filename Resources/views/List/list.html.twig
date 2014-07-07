@@ -30,7 +30,13 @@
 {% block content %}
 <div class="row">
     <div class="col-lg-12">
-        <h3 id="page-header">{{ 'crud.list.title'|trans({}, 'FSiAdminBundle') }}</h3>
+        <h3>
+            <span id="page-header">{% block list_title 'crud.list.title'|trans({}, 'FSiAdminBundle') %}</span>
+            <div class="pull-right">
+                {% block top_buttons %}
+                {% endblock top_buttons %}
+            </div>
+        </h3>
         <div id="datagrid-wrapper" class="table-responsive">
             {{ datagrid_widget(datagrid_view) }}
         </div>
@@ -41,7 +47,22 @@
 {% block under_content %}
 <div class="row">
     <div class="col-lg-12">
-        <div id="list-results">
+        {% if datagrid_view.hasColumnType('batch') == true %}
+            <form class="form pull-left" id="batch_form" method="POST">
+                <select id="batch_action" class="pull-left form-control">
+                    <option>{{ 'crud.list.batch.empty_choice'|trans }}</option>
+                    {% block batch_actions %}
+                    {% endblock batch_actions %}
+                </select>
+                {% for index in datagrid_view.indexes %}
+                    <input type="checkbox" class="hidden" value="{{ index }}" name="indexes[]" id="index_{{ index }}">
+                {% endfor %}
+                {{ form_rest(batch) }}
+                <input id="batch_action_confirmation" type="submit" class="btn btn-primary" value="{{ 'crud.list.batch.confirm'|trans }}"/>
+            </form>
+        {% endif %}
+        {% block bottom_buttons '' %}
+        <div id="list-results" class="pull-right">
             <strong>{{ 'crud.list.datagrid.result_count'|trans }} {{ datasource_view.result|length }}</strong>
             {{ datasource_max_results_widget(datasource_view) }}
         </div>
@@ -52,3 +73,28 @@
     </div>
 </div>
 {% endblock under_content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% if datagrid_view.hasColumnType('batch') == true %}
+        <script>
+            $(document).ready(function() {
+                $('#batch_form').submit(function(event) {
+                    var self = $(this),
+                        action = $('#batch_action'),
+                        elements = $('.{{ datagrid_view.name }}_batch'),
+                        i = 0;
+
+                    if (action[0].selectedIndex && $('.{{ datagrid_view.name }}_batch:checked').length) {
+                        self.attr('action', action.val());
+                        for (i; i < elements.length; i++) {
+                            $('#index_' + $(elements[i]).val()).prop('checked', $(elements[i]).prop('checked'));
+                        }
+                    } else {
+                        event.preventDefault();
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock javascripts %}

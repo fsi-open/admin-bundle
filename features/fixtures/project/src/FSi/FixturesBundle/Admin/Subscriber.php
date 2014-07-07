@@ -22,6 +22,7 @@ class Subscriber extends ListElement
     {
         /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
         $datagrid = $factory->createDataGrid('subscriber');
+        $datagrid->addColumn('batch', 'batch');
         $datagrid->addColumn('email', 'text', array(
             'label' => 'admin.subscriber.list.email',
             'editable' => true

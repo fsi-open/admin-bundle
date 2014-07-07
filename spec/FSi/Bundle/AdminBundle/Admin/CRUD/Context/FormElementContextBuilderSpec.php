@@ -28,7 +28,7 @@ class FormElementContextBuilderSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface');
     }
 
-    function it_supports_doctrine_crud_element(FormElement $element)
+    function it_supports_form_element(FormElement $element)
     {
         $this->supports('fsi_admin_form', $element)->shouldReturn(true);
     }
