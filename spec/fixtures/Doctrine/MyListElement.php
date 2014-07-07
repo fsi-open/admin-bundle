@@ -7,14 +7,13 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\spec\fixtures;
+namespace FSi\Bundle\AdminBundle\spec\fixtures\Doctrine;
 
-use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\ListElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 
-class MyCrudElement extends CRUDElement
+class MyListElement extends ListElement
 {
     /**
      * {@inheritdoc}
@@ -32,23 +31,11 @@ class MyCrudElement extends CRUDElement
         return 'my_entity';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'admin.my_entity.name';
-    }
-
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
     }
 
     protected function initDataSource(DataSourceFactoryInterface $factory)
-    {
-    }
-
-    protected function initForm(FormFactoryInterface $factory, $data = null)
     {
     }
 }
