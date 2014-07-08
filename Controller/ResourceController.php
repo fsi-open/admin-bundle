@@ -10,7 +10,6 @@
 namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
-use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

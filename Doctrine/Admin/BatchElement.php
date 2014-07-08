@@ -11,7 +11,6 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericBatchElement;
-use FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 

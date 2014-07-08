@@ -2,12 +2,8 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 
-use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Component\DataGrid\DataGridFactory;
-use FSi\Component\DataSource\DataSourceFactory;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
 
 class GenericBatchElementSpec extends ObjectBehavior
 {

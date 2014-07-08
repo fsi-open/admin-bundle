@@ -13,7 +13,6 @@ use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use FSi\Bundle\AdminBundle\Event\FormEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -33,7 +32,7 @@ class BatchFormSubmitHandler extends AbstractHandler
             return $event->getResponse();
         }
 
-        if ($request->getMethod() == 'POST') {
+        if ($request->isMethod('POST')) {
             $this->eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_PRE_SUBMIT, $event);
 
             if ($event->hasResponse()) {

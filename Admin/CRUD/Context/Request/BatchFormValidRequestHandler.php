@@ -11,16 +11,12 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
-use FSi\Bundle\AdminBundle\Admin\CRUD\GenericBatchElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\RedirectableElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
-use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use FSi\Bundle\AdminBundle\Event\FormEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -50,23 +46,31 @@ class BatchFormValidRequestHandler extends AbstractHandler
     public function handleRequest(AdminEvent $event, Request $request)
     {
         $this->validateEvent($event);
-        if ($request->getMethod() == 'POST') {
-            if ($event->getForm()->isValid()) {
-                $this->eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event);
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                $this->action($event, $request);
-
-                $this->eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event);
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                return $this->getRedirectResponse($event);
+        if ($this->isValidPostRequest($event, $request)) {
+            $this->eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event);
+            if ($event->hasResponse()) {
+                return $event->getResponse();
             }
+
+            $this->action($event, $request);
+
+            $this->eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event);
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            return $this->getRedirectResponse($event);
         }
+    }
+
+    /**
+     * @param FormEvent $event
+     * @param Request $request
+     * @return bool
+     */
+    protected function isValidPostRequest(FormEvent $event, Request $request)
+    {
+        return $request->isMethod('POST') && $event->getForm()->isValid();
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
-use FSi\Bundle\AdminBundle\Event\CRUDEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvents;
 use FSi\Bundle\AdminBundle\Event\ListEvent;

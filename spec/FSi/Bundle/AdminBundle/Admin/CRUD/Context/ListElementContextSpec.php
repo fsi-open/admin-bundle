@@ -11,7 +11,6 @@ namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Component\DataGrid\DataGrid;
 use FSi\Component\DataSource\DataSource;
 use PhpSpec\ObjectBehavior;

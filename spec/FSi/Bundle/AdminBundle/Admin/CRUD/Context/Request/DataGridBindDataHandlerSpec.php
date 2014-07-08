@@ -42,7 +42,7 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
-        $request->getMethod()->willReturn('GET');
+        $request->isMethod('POST')->willReturn(false);
         $eventDispatcher->dispatch(ListEvents::LIST_RESPONSE_PRE_RENDER, $event)->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
@@ -53,7 +53,7 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
-        $request->getMethod()->willReturn('GET');
+        $request->isMethod('POST')->willReturn(false);
         $eventDispatcher->dispatch(ListEvents::LIST_RESPONSE_PRE_RENDER, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
@@ -72,7 +72,7 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         DataSource $dataSource,
         ListElement $element
     ) {
-        $request->getMethod()->willReturn('POST');
+        $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND, $event)
             ->shouldBeCalled();
 
@@ -98,7 +98,7 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
-        $request->getMethod()->willReturn('POST');
+        $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
@@ -115,7 +115,7 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         EventDispatcher $eventDispatcher,
         DataGrid $dataGrid
     ) {
-        $request->getMethod()->willReturn('POST');
+        $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND, $event)
             ->shouldBeCalled();
 

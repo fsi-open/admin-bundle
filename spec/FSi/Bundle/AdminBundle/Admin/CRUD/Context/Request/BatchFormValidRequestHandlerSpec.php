@@ -3,7 +3,6 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
-use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
@@ -61,7 +60,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         DataIndexerInterface $dataIndexer,
         Router $router
     ) {
-        $request->getMethod()->willReturn('POST');
+        $request->isMethod('POST')->willReturn(true);
         $request->request = $requestParameterbag;
         $requestParameterbag->get('indexes', array())->willReturn(array('index'));
 
@@ -97,8 +96,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         EventDispatcher $eventDispatcher,
         Form $form
     ) {
-        $request->getMethod()->willReturn('POST');
-
+        $request->isMethod('POST')->willReturn(true);
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
@@ -121,7 +119,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         BatchElement $element,
         DataIndexerInterface $dataIndexer
     ) {
-        $request->getMethod()->willReturn('POST');
+        $request->isMethod('POST')->willReturn(true);
         $request->request = $requestParameterbag;
         $requestParameterbag->get('indexes', array())->willReturn(array('index'));
 
