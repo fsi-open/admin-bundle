@@ -29,14 +29,6 @@ class MyBatchElement extends BatchElement
         return 'my_entity_batch';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'admin.my_entity.name';
-    }
-
     public function apply($object)
     {
     }

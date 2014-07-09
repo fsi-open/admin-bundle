@@ -28,12 +28,4 @@ class MyDeleteElement extends DeleteElement
     {
         return 'my_entity_batch';
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'admin.my_entity.name';
-    }
 }

@@ -30,14 +30,6 @@ class MyFormElement extends FormElement
         return 'my_entity_form';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'admin.my_entity.name';
-    }
-
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
     }

@@ -32,14 +32,6 @@ class MyCrudElement extends CRUDElement
         return 'my_entity';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'admin.my_entity.name';
-    }
-
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
     }
