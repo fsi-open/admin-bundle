@@ -11,8 +11,6 @@ namespace FSi\Bundle\AdminBundle\Event;
 
 final class BatchEvents
 {
-    const BATCH_CONTEXT_POST_CREATE = 'admin.batch.context.post_create';
-
     const BATCH_REQUEST_PRE_SUBMIT = 'admin.batch.request.pre_submit';
 
     const BATCH_REQUEST_POST_SUBMIT = 'admin.batch.request.post_submit';

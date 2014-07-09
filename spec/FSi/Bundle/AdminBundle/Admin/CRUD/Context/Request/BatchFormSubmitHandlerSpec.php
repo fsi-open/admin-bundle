@@ -41,8 +41,6 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
         EventDispatcher $eventDispatcher
     ) {
         $request->isMethod('POST')->willReturn(false);
-        $eventDispatcher->dispatch(BatchEvents::BATCH_CONTEXT_POST_CREATE, $event)
-            ->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -54,8 +52,6 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
         Form $form
     ) {
         $request->isMethod('POST')->willReturn(true);
-        $eventDispatcher->dispatch(BatchEvents::BATCH_CONTEXT_POST_CREATE, $event)
-            ->shouldBeCalled();
 
         $eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_PRE_SUBMIT, $event)
             ->shouldBeCalled();
@@ -69,30 +65,12 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
 
-    function it_return_response_from_context_post_create_event(
-        FormEvent $event,
-        Request $request,
-        EventDispatcher $eventDispatcher
-    ) {
-        $request->isMethod('POST')->willReturn(false);
-        $eventDispatcher->dispatch(BatchEvents::BATCH_CONTEXT_POST_CREATE, $event)
-            ->will(function() use ($event) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
-            });
-
-        $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
-    }
-
     function it_return_response_from_request_pre_submit_event(
         FormEvent $event,
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
         $request->isMethod('POST')->willReturn(true);
-        $eventDispatcher->dispatch(BatchEvents::BATCH_CONTEXT_POST_CREATE, $event)
-            ->shouldBeCalled();
 
         $eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_PRE_SUBMIT, $event)
             ->will(function() use ($event) {
@@ -111,8 +89,6 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
         Form $form
     ) {
         $request->isMethod('POST')->willReturn(true);
-        $eventDispatcher->dispatch(BatchEvents::BATCH_CONTEXT_POST_CREATE, $event)
-            ->shouldBeCalled();
 
         $eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_PRE_SUBMIT, $event)
             ->shouldBeCalled();

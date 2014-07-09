@@ -27,21 +27,16 @@ class FormSubmitHandler extends AbstractHandler
     public function handleRequest(AdminEvent $event, Request $request)
     {
         $this->validateEvent($event);
-        $this->eventDispatcher->dispatch(FormEvents::FORM_CONTEXT_POST_CREATE, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
 
         if ($request->isMethod('POST')) {
             $this->eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event);
-
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
 
             $event->getForm()->submit($request);
-            $this->eventDispatcher->dispatch(FormEvents::FORM_REQUEST_POST_SUBMIT, $event);
 
+            $this->eventDispatcher->dispatch(FormEvents::FORM_REQUEST_POST_SUBMIT, $event);
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }

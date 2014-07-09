@@ -11,8 +11,6 @@ namespace FSi\Bundle\AdminBundle\Event;
 
 final class FormEvents
 {
-    const FORM_CONTEXT_POST_CREATE = 'admin.form.context.post_create';
-
     const FORM_REQUEST_PRE_SUBMIT = 'admin.form.request.pre_submit';
 
     const FORM_REQUEST_POST_SUBMIT = 'admin.form.request.post_submit';

@@ -27,21 +27,16 @@ class BatchFormSubmitHandler extends AbstractHandler
     public function handleRequest(AdminEvent $event, Request $request)
     {
         $this->validateEvent($event);
-        $this->eventDispatcher->dispatch(BatchEvents::BATCH_CONTEXT_POST_CREATE, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
 
         if ($request->isMethod('POST')) {
             $this->eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_PRE_SUBMIT, $event);
-
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
 
             $event->getForm()->submit($request);
-            $this->eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_POST_SUBMIT, $event);
 
+            $this->eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_POST_SUBMIT, $event);
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
