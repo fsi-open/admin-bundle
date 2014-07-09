@@ -53,12 +53,11 @@ class AdminElementParamConverter implements ParamConverterInterface
      */
     public function supports(ConfigurationInterface $configuration)
     {
-
         if (!$configuration instanceof ParamConverter) {
             return false;
         }
 
-        if (!class_exists($configuration->getClass())) {
+        if (!class_exists($configuration->getClass()) && !interface_exists($configuration->getClass())) {
             return false;
         }
 

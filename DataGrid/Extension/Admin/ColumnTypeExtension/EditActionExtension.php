@@ -63,7 +63,7 @@ class EditActionExtension extends ColumnAbstractTypeExtension
             $actions = array_merge(
                 array(
                     'edit' => array(
-                        'route_name' => 'fsi_admin_crud_edit',
+                        'route_name' => 'fsi_admin_form',
                         'additional_parameters' =>  array('element' =>  $column->getOption('admin_edit_element_id')),
                         'parameters_field_mapping' => array('id' => 'id')
                     )

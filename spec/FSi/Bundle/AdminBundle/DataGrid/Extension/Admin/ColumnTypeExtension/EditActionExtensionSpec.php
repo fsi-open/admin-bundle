@@ -31,7 +31,7 @@ class EditActionExtensionSpec extends ObjectBehavior
 
         $columnType->setOption('actions', array(
             'edit' => array(
-                'route_name' => 'fsi_admin_crud_edit',
+                'route_name' => 'fsi_admin_form',
                 'additional_parameters' =>  array('element' =>  'news'),
                 'parameters_field_mapping' => array('id' => 'id')
             ),

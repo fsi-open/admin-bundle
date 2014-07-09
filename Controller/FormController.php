@@ -10,6 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
+use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -33,11 +34,11 @@ class FormController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function formAction(GenericFormElement $element, Request $request)
+    public function formAction(FormElement $element, Request $request)
     {
         $context = $this->contextManager->createContext('fsi_admin_form', $element);
 

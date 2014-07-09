@@ -88,6 +88,9 @@ columns:
 
 [DataGrid column types reference](https://github.com/fsi-open/datagrid-bundle/blob/master/Resources/docs/columns.md)
 
+You should also read [how to create edit and display links at list](how_to_create_edit_link_at_list.md) to better
+understand what's going on under the hood.
+
 ## 3. Configure datasource
 
 ```
