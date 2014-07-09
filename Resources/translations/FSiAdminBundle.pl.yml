@@ -54,3 +54,8 @@ crud:
             save: Zapisz
             reset: Wyczyść
             back_to_list: Powrót do listy
+    form:
+        title: Formularz elementu
+        button:
+            save: Zapisz
+            back: Powrót

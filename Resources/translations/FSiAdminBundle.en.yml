@@ -54,3 +54,8 @@ crud:
             save: Save
             reset: Reset
             back_to_list: Back to list
+    form:
+        title: Element form
+        button:
+            save: Save
+            back: Back

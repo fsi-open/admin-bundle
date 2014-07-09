@@ -23,8 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
 abstract class AbstractCRUD extends AbstractElement implements
-    CRUDElement,
-    FormAwareInterface
+    CRUDElement
 {
     /**
      * @var \FSi\Component\DataSource\DataSourceFactoryInterface
@@ -47,6 +46,22 @@ abstract class AbstractCRUD extends AbstractElement implements
     public function getRoute()
     {
         return 'fsi_admin_crud_list';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSuccessRoute()
+    {
+        return $this->getRoute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSuccessRouteParameters()
+    {
+        return $this->getRouteParameters();
     }
 
     /**

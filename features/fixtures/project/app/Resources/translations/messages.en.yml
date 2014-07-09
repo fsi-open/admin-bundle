@@ -18,6 +18,7 @@ admin:
       email: Email
       created_at: Created at
       active: Active
+      actions: Actions
   home_page:
     name: Home page
     form:

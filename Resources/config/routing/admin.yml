@@ -14,6 +14,12 @@ fsi_admin_list:
     defaults:
         _controller: admin.controller.list:listAction
 
+fsi_admin_form:
+    path: /form/{element}/{id}
+    defaults:
+        _controller: admin.controller.form:formAction
+        id: null
+
 fsi_admin_crud_list:
     path: /{element}/list
     defaults:

@@ -1,0 +1,10 @@
+{% extends '@FSiAdmin/List/list.html.twig' %}
+
+{% block content %}
+    {{ parent() }}
+<div class="row">
+    <div class="col-lg-12">
+        <a href="{{ path('fsi_admin_form', {element : 'subscriber_form'}) }}" class="btn btn-success" id="create-element">{{ 'crud.list.button.create'|trans  }}</a>
+    </div>
+</div>
+{% endblock content %}

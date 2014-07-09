@@ -35,7 +35,7 @@
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
         "behat/mink-selenium2-driver": "*",
-        "sensiolabs/behat-page-object-extension": "1.0.*@dev",
+        "sensiolabs/behat-page-object-extension": "1.0.*",
         "bossa/phpspec2-expect": "dev-master",
         "fzaninotto/faker": "1.2.*"
     },

@@ -10,11 +10,11 @@
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
-abstract class ListElement extends GenericListElement implements Element
+abstract class FormElement extends GenericFormElement implements Element
 {
     /**
      * @var \Doctrine\Common\Persistence\ManagerRegistry
@@ -55,8 +55,9 @@ abstract class ListElement extends GenericListElement implements Element
     /**
      * {@inheritdoc}
      */
-    public function saveDataGrid()
+    public function save($object)
     {
+        $this->getObjectManager()->persist($object);
         $this->getObjectManager()->flush();
     }
 

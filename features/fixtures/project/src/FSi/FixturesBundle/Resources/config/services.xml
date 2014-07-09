@@ -6,6 +6,7 @@
     <parameters>
         <parameter key="fixtures_bundle.admin.news.class">FSi\FixturesBundle\Admin\News</parameter>
         <parameter key="fixtures_bundle.admin.subscriber.class">FSi\FixturesBundle\Admin\Subscriber</parameter>
+        <parameter key="fixtures_bundle.admin.subscriber_form.class">FSi\FixturesBundle\Admin\SubscriberForm</parameter>
     </parameters>
     <services>
         <service id="fixtures_bundle.admin.news" class="%fixtures_bundle.admin.news.class%">
@@ -22,6 +23,13 @@
         </service>
 
         <service id="fixtures_bundle.admin.subscriber" class="%fixtures_bundle.admin.subscriber.class%">
+            <argument type="collection">
+                <argument key="template_list">@FSiFixtures/Admin/subscriber_list.html.twig</argument>
+            </argument>
+            <tag name="admin.element" />
+        </service>
+
+        <service id="fixtures_bundle.admin.subscriber_form" class="%fixtures_bundle.admin.subscriber_form.class%">
             <tag name="admin.element" />
         </service>
 

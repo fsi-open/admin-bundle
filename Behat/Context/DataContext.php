@@ -14,7 +14,6 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Faker\Factory;
 use Faker\ORM\Doctrine\Populator;
-use FSi\Component\DataSource\Driver\Collection\Extension\Core\Field\DateTime;
 use FSi\FixturesBundle\Entity\News;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -61,9 +60,19 @@ class DataContext extends BehatContext implements KernelAwareInterface
         return count($this->getDoctrine()->getManager()->getRepository('FSi\FixturesBundle\Entity\News')->findAll());
     }
 
+    public function getSubscribersCount()
+    {
+        return count($this->getDoctrine()->getManager()->getRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll());
+    }
+
     public function findNewsById($id)
     {
         return $this->getDoctrine()->getManager()->getRepository('FSi\FixturesBundle\Entity\News')->findOneById($id);
+    }
+
+    public function findSubscriberById($id)
+    {
+        return $this->getDoctrine()->getManager()->getRepository('FSi\FixturesBundle\Entity\Subscriber')->findOneById($id);
     }
 
     /**
@@ -155,6 +164,7 @@ class DataContext extends BehatContext implements KernelAwareInterface
     }
 
     /**
+     * @Given /^there is (\d+) subscriber in database$/
      * @Given /^there are (\d+) subscribers in database$/
      */
     public function thereAreSubscribersInDatabase($count)
@@ -168,6 +178,23 @@ class DataContext extends BehatContext implements KernelAwareInterface
         $populator->execute();
 
         expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll()))->toBe($count);
+    }
+
+    /**
+     * @Given /^there is subscriber with id (\d+) in database$/
+     */
+    public function thereIsSubscriberWithIdInDatabase($id)
+    {
+        $generator = Factory::create();
+        $populator = new Populator($generator, $this->getDoctrine()->getManager());
+
+        $populator->addEntity('FSi\FixturesBundle\Entity\Subscriber', 1, array(
+            'id' => $id,
+            'email' => function() use ($generator) { return $generator->email(); }
+        ));
+        $populator->execute();
+
+        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll()))->toBe(1);
     }
 
     /**
