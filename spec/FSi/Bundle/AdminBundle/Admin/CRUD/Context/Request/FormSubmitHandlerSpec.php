@@ -41,7 +41,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
-        $request->getMethod()->willReturn('GET');
+        $request->isMethod('POST')->willReturn(false);
         $eventDispatcher->dispatch(FormEvents::FORM_CONTEXT_POST_CREATE, $event)
             ->shouldBeCalled();
 
@@ -54,7 +54,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         EventDispatcher $eventDispatcher,
         Form $form
     ) {
-        $request->getMethod()->willReturn('POST');
+        $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(FormEvents::FORM_CONTEXT_POST_CREATE, $event)
             ->shouldBeCalled();
 
@@ -75,7 +75,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
-        $request->getMethod()->willReturn('GET');
+        $request->isMethod('POST')->willReturn(false);
         $eventDispatcher->dispatch(FormEvents::FORM_CONTEXT_POST_CREATE, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
@@ -91,7 +91,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
-        $request->getMethod()->willReturn('POST');
+        $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(FormEvents::FORM_CONTEXT_POST_CREATE, $event)
             ->shouldBeCalled();
 
@@ -111,7 +111,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         EventDispatcher $eventDispatcher,
         Form $form
     ) {
-        $request->getMethod()->willReturn('POST');
+        $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(FormEvents::FORM_CONTEXT_POST_CREATE, $event)
             ->shouldBeCalled();
 

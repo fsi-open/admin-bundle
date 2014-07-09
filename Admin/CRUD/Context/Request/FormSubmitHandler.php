@@ -32,7 +32,7 @@ class FormSubmitHandler extends AbstractHandler
             return $event->getResponse();
         }
 
-        if ($request->getMethod() == 'POST') {
+        if ($request->isMethod('POST')) {
             $this->eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event);
 
             if ($event->hasResponse()) {

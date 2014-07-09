@@ -18,11 +18,6 @@ class GenericFormElementSpec extends ObjectBehavior
         $this->setFormFactory($factory);
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement');
-    }
-
     function it_is_form_element()
     {
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\FormElement');

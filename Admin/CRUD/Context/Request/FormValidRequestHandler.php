@@ -46,28 +46,36 @@ class FormValidRequestHandler extends AbstractHandler
     public function handleRequest(AdminEvent $event, Request $request)
     {
         $this->validateEvent($event);
-        if ($request->getMethod() == 'POST') {
-            if ($event->getForm()->isValid()) {
-                $this->eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event);
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                $this->action($event);
-
-                $this->eventDispatcher->dispatch(FormEvents::FORM_DATA_POST_SAVE, $event);
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                return $this->getRedirectResponse($event);
+        if ($this->isValidPostRequest($event, $request)) {
+            $this->eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event);
+            if ($event->hasResponse()) {
+                return $event->getResponse();
             }
+
+            $this->action($event);
+
+            $this->eventDispatcher->dispatch(FormEvents::FORM_DATA_POST_SAVE, $event);
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            return $this->getRedirectResponse($event);
         }
 
         $this->eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event);
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
+    }
+
+    /**
+     * @param FormEvent $event
+     * @param Request $request
+     * @return bool
+     */
+    protected function isValidPostRequest(FormEvent $event, Request $request)
+    {
+        return $request->isMethod('POST') && $event->getForm()->isValid();
     }
 
     /**

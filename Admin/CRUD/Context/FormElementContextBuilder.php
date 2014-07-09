@@ -58,7 +58,7 @@ class FormElementContextBuilder implements ContextBuilderInterface
             }
 
             if (!$this->hasObject($element)) {
-                throw new ContextBuilderException(sprintf("Cant find object with id %s", $this->getObjectId()));
+                throw new ContextBuilderException(sprintf("Can't find object with id %s", $this->getObjectId()));
             }
 
             return true;

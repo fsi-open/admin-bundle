@@ -11,7 +11,6 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
-use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Component\Form\FormInterface;
@@ -43,7 +42,7 @@ class FormElementContext implements ContextInterface
     }
 
     /**
-     * @param ListElement $element
+     * @param FormElement $element
      */
     public function setElement(FormElement $element, $formData = null)
     {
