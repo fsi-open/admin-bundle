@@ -38,14 +38,6 @@ class SubscriberFormElement extends FormElement
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'Subscriber form'; // names are translated in twig so you can use translation key as name
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
         $builder = $factory->createNamedBuilder('subscriber', 'form', $data, array(

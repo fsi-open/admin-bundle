@@ -41,14 +41,6 @@ class UserElement extends CRUDElement
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'Users'; // names are translated in twig so you can use translation key as name
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
         /* @var $datasource \FSi\Component\DataSource\DataSource */
