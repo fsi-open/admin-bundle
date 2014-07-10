@@ -8,7 +8,3 @@
 {% block top_buttons %}
     <a href="{{ path('fsi_admin_form', {element : 'subscriber_form', redirect_uri: app.request.uri }) }}" class="btn btn-xs btn-success" id="create-element"><span class="glyphicon glyphicon-plus"></span> {{ 'crud.list.button.create'|trans }}</a>
 {% endblock top_buttons %}
-
-{% block batch_actions %}
-    <option value="{{ path('fsi_admin_batch', {element : 'subscriber_delete'}) }}">{{ 'crud.list.batch.delete'|trans }}</option>
-{% endblock batch_actions %}
