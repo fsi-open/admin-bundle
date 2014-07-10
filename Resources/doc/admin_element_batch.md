@@ -45,36 +45,22 @@ class SubscriberDeactivateElement extends BatchElement
 }
 ```
 
-## 2. Modify your list admin element and set custom list template
-
-```php
-<?php
-// src/FSi/Bundle/DemoBundle/Admin/SubscriberElement
-
-// ...
-
-class SubscriberElement extends ListElement
-{
-    // ...
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        parent::setDefaultOptions($resolver);
-
-        $resolver->setDefaults(array('template_list' => 'Admin/subscriber_list.html.twig')); 
-    }
-}
+## 2. Add batch column into subscribers list
 
 ```
-{# src/FSi/Bundle/DemoBundle/Resources/views/Admin/subscriber_list.html.twig #}
-{% extends '@FSiAdmin/List/list.html.twig' %}
+# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_subscribers.yml
 
-{% block batch_actions %}
-    <option value="{{ path('fsi_admin_batch', {element : 'subscriber_deactivate'}) }}">{{ 'deactivate'|trans }}</option>
-{% endblock batch_actions %}
+columns:
+  batch:
+    type: batch
+    options:
+      actions:
+        deactivate:
+          element: subscribers_deactivate
+          label: deactivate
+
+  # other columns
+
 ```
 
 [Back to index](index.md)
