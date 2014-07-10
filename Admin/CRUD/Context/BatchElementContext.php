@@ -15,7 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class BatchElementContext implements ContextInterface
@@ -42,14 +42,14 @@ class BatchElementContext implements ContextInterface
 
     /**
      * @param array $requestHandlers
-     * @param \Symfony\Component\Form\FormFactoryInterface $factory
+     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
      */
     public function __construct(
         $requestHandlers,
-        FormFactoryInterface $factory
+        FormBuilderInterface $formBuilder
     ) {
         $this->requestHandlers = $requestHandlers;
-        $this->form = $factory->createNamed('batch_action', 'form');
+        $this->form = $formBuilder->getForm();
     }
 
     /**

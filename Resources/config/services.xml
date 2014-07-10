@@ -9,7 +9,7 @@
         <parameter key="admin.manager.visitor.annotation.class">FSi\Bundle\AdminBundle\Admin\Manager\AnnotationVisitor</parameter>
         <parameter key="admin.manager.visitor.element_collection.class">FSi\Bundle\AdminBundle\Admin\Manager\ElementCollectionVisitor</parameter>
         <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Admin\Context\ContextManager</parameter>
-        <parameter key="admin.form.type.batch_action.class">FSi\Bundle\AdminBundle\Form\Type\BatchType</parameter>
+        <parameter key="admin.form.builder.batch.class">Symfony\Component\Form\FormBuilder</parameter>
         <parameter key="admin.element.param.converter.class">FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter</parameter>
         <parameter key="admin.element.factory.class">FSi\Bundle\AdminBundle\Factory\ElementFactory</parameter>
         <parameter key="admin.element.factory.production_line.class">FSi\Bundle\AdminBundle\Factory\ProductionLine</parameter>
@@ -49,6 +49,14 @@
 
         <service id="admin.context.manager" class="%admin.context.manager.class%">
             <argument type="collection"></argument>
+        </service>
+
+        <service id="admin.form.builder.batch" class="%admin.form.builder.batch.class%" factory-service="form.factory" factory-method="createNamedBuilder">
+            <argument type="string">batch_action</argument>
+            <argument type="string">form</argument>
+            <argument type="collection">
+                <argument key="translation_domain" type="string">FSiAdminBundle</argument>
+            </argument>
         </service>
 
         <!-- ProductionLine Workers -->

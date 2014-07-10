@@ -7,17 +7,17 @@ use FSi\Bundle\AdminBundle\Doctrine\Admin\BatchElement;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class BatchElementContextSpec extends ObjectBehavior
 {
-    function let(BatchElement $element, FormFactory $formFactory, Form $batchForm, HandlerInterface $handler)
+    function let(BatchElement $element, FormBuilderInterface $formBuilder, Form $batchForm, HandlerInterface $handler)
     {
-        $this->beConstructedWith(array($handler), $formFactory);
-        $formFactory->createNamed('batch_action', 'form')->willReturn($batchForm);
+        $this->beConstructedWith(array($handler), $formBuilder);
+        $formBuilder->getForm()->willReturn($batchForm);
         $this->setElement($element);
     }
 

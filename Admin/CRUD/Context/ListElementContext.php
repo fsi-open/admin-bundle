@@ -16,7 +16,6 @@ use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Component\DataGrid\DataGrid;
 use FSi\Component\DataSource\DataSource;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ListElementContext implements ContextInterface
@@ -42,17 +41,11 @@ class ListElementContext implements ContextInterface
     protected $dataGrid;
 
     /**
-     * @var \Symfony\Component\Form\FormInterface
-     */
-    protected $batchForm;
-
-    /**
      * @param array $requestHandlers
      */
-    public function __construct($requestHandlers, FormFactoryInterface $formFactory)
+    public function __construct($requestHandlers)
     {
         $this->requestHandlers = $requestHandlers;
-        $this->batchForm = $formFactory->createNamed('batch_action', 'form');
     }
 
     /**
@@ -90,7 +83,6 @@ class ListElementContext implements ContextInterface
             'datagrid_view' => $this->dataGrid->createView(),
             'datasource_view' => $this->dataSource->createView(),
             'element' => $this->element,
-            'batch' => $this->batchForm->createView()
         );
     }
 

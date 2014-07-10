@@ -48,18 +48,19 @@
 <div class="row">
     <div class="col-lg-12">
         {% if datagrid_view.hasColumnType('batch') == true %}
-            <form class="form pull-left" id="batch_form" method="POST">
-                <select id="batch_action" class="pull-left form-control">
-                    <option>{{ 'crud.list.batch.empty_choice'|trans }}</option>
-                    {% block batch_actions %}
-                    {% endblock batch_actions %}
-                </select>
-                {% for index in datagrid_view.indexes %}
-                    <input type="checkbox" class="hidden" value="{{ index }}" name="indexes[]" id="index_{{ index }}">
-                {% endfor %}
-                {{ form_rest(batch) }}
-                <input id="batch_action_confirmation" type="submit" class="btn btn-primary" value="{{ 'crud.list.batch.confirm'|trans }}"/>
-            </form>
+            {% for column in datagrid_view.getColumns %}
+                {% if column.type == 'batch' %}
+                    {% set batch_form = column.getAttribute('batch_form') %}
+                    {{ form_widget(batch_form.action, { 'id': 'batch_action', 'attr': { 'class': 'pull-left form-control' } } ) }}
+                    {{ form_widget(batch_form.submit, { 'id': 'batch_action_confirmation', 'attr': { 'class': 'btn btn-primary' } } ) }}
+                    <form class="form pull-left" id="batch_form" method="POST">
+                        {% for index in datagrid_view.indexes %}
+                            <input type="checkbox" class="hidden" value="{{ index }}" name="indexes[]" id="index_{{ index }}">
+                        {% endfor %}
+                        {{ form_rest(batch_form) }}
+                    </form>
+                {% endif %}
+            {% endfor %}
         {% endif %}
         {% block bottom_buttons '' %}
         <div id="list-results" class="pull-right">
@@ -79,19 +80,19 @@
     {% if datagrid_view.hasColumnType('batch') == true %}
         <script>
             $(document).ready(function() {
-                $('#batch_form').submit(function(event) {
+                $('#batch_action_confirmation').click(function(event) {
                     var self = $(this),
                         action = $('#batch_action'),
                         elements = $('.{{ datagrid_view.name }}_batch'),
                         i = 0;
 
                     if (action[0].selectedIndex && $('.{{ datagrid_view.name }}_batch:checked').length) {
-                        self.attr('action', action.val());
+                        $('#batch_form').attr('action', action.val());
                         for (i; i < elements.length; i++) {
                             $('#index_' + $(elements[i]).val()).prop('checked', $(elements[i]).prop('checked'));
                         }
-                    } else {
-                        event.preventDefault();
+
+                        $('#batch_form')[0].submit();
                     }
                 });
             });

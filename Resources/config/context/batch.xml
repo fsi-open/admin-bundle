@@ -23,7 +23,7 @@
                 <argument type="service" id="admin.context.batch.request_handler.form_submit"/>
                 <argument type="service" id="admin.context.batch.request_handler.form_valid_request"/>
             </argument>
-            <argument type="service" id="form.factory" />
+            <argument type="service" id="admin.form.builder.batch" />
         </service>
 
         <service id="admin.context.batch.request_handler.form_submit"
