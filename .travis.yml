@@ -26,13 +26,13 @@ install:
     - sudo sed -i -e "s/export APACHE_RUN_USER=.*/export APACHE_RUN_USER=travis/ ; s/export APACHE_RUN_GROUP=.*/export APACHE_RUN_GROUP=travis/" /etc/apache2/envvars
     - sudo chown -R travis:travis /var/lock/apache2
     - echo '' > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
-    - wget http://selenium.googlecode.com/files/selenium-server-standalone-2.35.0.jar
+    - wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
 
 before_script:
     - sudo /etc/init.d/apache2 restart
     - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99.0
-    - java -jar selenium-server-standalone-2.35.0.jar > /dev/null &
+    - java -jar selenium-server-standalone-2.42.2.jar > /dev/null &
     - sleep 5
 
 script:
