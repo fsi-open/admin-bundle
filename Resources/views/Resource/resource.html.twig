@@ -11,7 +11,7 @@
                 {% block header %}
                     <h3 id="page-header">{{ 'resource.title'|trans({}, 'FSiAdminBundle') }}</h3>
                 {% endblock header %}
-                {{ form_start(form, { action: path('fsi_admin_resource', { element: element.id }), 'attr': { class: 'form-horizontal' }|merge(form.vars.attr) }) }}
+                {{ form_start(form, { action: path(element.route, element.routeParameters), 'attr': { class: 'form-horizontal' }|merge(form.vars.attr) }) }}
                     {{ form_widget(form) }}
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
