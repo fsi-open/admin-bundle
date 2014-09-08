@@ -73,7 +73,8 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
                 continue;
             }
 
-            $path = $this->router->generate('fsi_admin_batch', array('element' => $action['element']));
+            $element = $this->manager->getElement($action['element']);
+            $path = $this->router->generate($element->getRoute(), $element->getRouteParameters());
             $choices[$path] = $action['label'];
         }
 

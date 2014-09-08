@@ -2,6 +2,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
+use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
@@ -98,6 +99,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
     function it_adds_actions_choice_to_form_when_actions_are_defined(
         Manager $manager,
+        BatchElement $batchElement,
         RouterInterface $router,
         FormBuilderInterface $formBuilder,
         FormView $formView,
@@ -111,6 +113,10 @@ class BatchActionExtensionSpec extends ObjectBehavior
             )
         ));
         $manager->hasElement('some_batch_element_id')->willReturn(true);
+        $manager->getElement('some_batch_element_id')->willReturn($batchElement);
+        $batchElement->getRoute()->willReturn('fsi_admin_batch');
+        $batchElement->getRouteParameters()->willReturn(array('element' => 'some_batch_element_id'));
+
         $router->generate('fsi_admin_batch', array('element' => 'some_batch_element_id'))
             ->willReturn('path_to_batch_action');
 
