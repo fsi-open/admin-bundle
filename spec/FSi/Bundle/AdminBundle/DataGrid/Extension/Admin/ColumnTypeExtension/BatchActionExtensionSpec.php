@@ -11,7 +11,9 @@ use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Test\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -21,11 +23,16 @@ class BatchActionExtensionSpec extends ObjectBehavior
         Manager $manager,
         RouterInterface $router,
         FormBuilderInterface $formBuilder,
+        RequestStack $requestStack,
+        Request $request,
+        ParameterBag $queryAttributes,
         Form $form,
         FormView $formView
     ) {
-        $this->beConstructedWith($manager, $router, $formBuilder);
+        $this->beConstructedWith($manager, $requestStack, $router, $formBuilder);
         $formBuilder->getForm()->willReturn($form);
+        $requestStack->getMasterRequest()->willReturn($request);
+        $request->query = $queryAttributes;
         $form->createView()->willReturn($formView);
     }
 
@@ -100,6 +107,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
     function it_adds_actions_choice_to_form_when_actions_are_defined(
         Manager $manager,
         BatchElement $batchElement,
+        ParameterBag $queryAttributes,
         RouterInterface $router,
         FormBuilderInterface $formBuilder,
         FormView $formView,
@@ -116,8 +124,10 @@ class BatchActionExtensionSpec extends ObjectBehavior
         $manager->getElement('some_batch_element_id')->willReturn($batchElement);
         $batchElement->getRoute()->willReturn('fsi_admin_batch');
         $batchElement->getRouteParameters()->willReturn(array('element' => 'some_batch_element_id'));
+        $queryAttributes->has('redirect_uri')->willReturn(true);
+        $queryAttributes->get('redirect_uri')->willReturn('some_redirect_uri');
 
-        $router->generate('fsi_admin_batch', array('element' => 'some_batch_element_id'))
+        $router->generate('fsi_admin_batch', array('element' => 'some_batch_element_id', 'redirect_uri' => 'some_redirect_uri'))
             ->willReturn('path_to_batch_action');
 
         $formBuilder->add('action', 'choice', array(

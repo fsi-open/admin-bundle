@@ -7,6 +7,7 @@ use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -23,6 +24,11 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     protected $router;
 
     /**
+     * @var \Symfony\Component\HttpFoundation\RequestStack
+     */
+    protected $requestStack;
+
+    /**
      * @var \Symfony\Component\Form\FormBuilderInterface
      */
     protected $formBuilder;
@@ -35,9 +41,14 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
      */
-    public function __construct(Manager $manager, RouterInterface $router, FormBuilderInterface $formBuilder)
-    {
+    public function __construct(
+        Manager $manager,
+        RequestStack $requestStack,
+        RouterInterface $router,
+        FormBuilderInterface $formBuilder
+    ) {
         $this->manager = $manager;
+        $this->requestStack = $requestStack;
         $this->router = $router;
         $this->formBuilder = $formBuilder;
         $this->initActionOptions();
@@ -74,7 +85,12 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
             }
 
             $element = $this->manager->getElement($action['element']);
-            $path = $this->router->generate($element->getRoute(), $element->getRouteParameters());
+            $parameters = $element->getRouteParameters();
+            if ($this->requestStack->getMasterRequest()->query->has('redirect_uri')) {
+                $parameters['redirect_uri'] = $this->requestStack->getMasterRequest()->query->get('redirect_uri');
+            }
+
+            $path = $this->router->generate($element->getRoute(), $parameters);
             $choices[$path] = $action['label'];
         }
 

@@ -17,6 +17,7 @@
 
         <service id="admin.datagrid.extension.column_type.batch_action" class="%admin.datagrid.extension.column_type.batch_action.class%">
             <argument type="service" id="admin.manager"/>
+            <argument type="service" id="request_stack" />
             <argument type="service" id="router"/>
             <argument type="service" id="admin.form.builder.batch"/>
             <tag name="datagrid.column_extension" alias="admin.batch_action"/>

@@ -59,7 +59,7 @@ class BatchFormValidRequestHandler extends AbstractHandler
                 return $event->getResponse();
             }
 
-            return $this->getRedirectResponse($event);
+            return $this->getRedirectResponse($event, $request);
         }
     }
 
@@ -132,10 +132,15 @@ class BatchFormValidRequestHandler extends AbstractHandler
 
     /**
      * @param FormEvent $event
+     * @param Request $request
      * @return RedirectResponse
      */
-    protected function getRedirectResponse(FormEvent $event)
+    protected function getRedirectResponse(FormEvent $event, Request $request)
     {
+        if ($request->query->has('redirect_uri')) {
+            return new RedirectResponse($request->query->get('redirect_uri'));
+        }
+
         /** @var \FSi\Bundle\AdminBundle\Admin\CRUD\RedirectableElement $element */
         $element = $event->getElement();
 

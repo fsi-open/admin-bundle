@@ -54,6 +54,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         FormEvent $event,
         Request $request,
         ParameterBag $requestParameterbag,
+        ParameterBag $queryParameterbag,
         EventDispatcher $eventDispatcher,
         Form $form,
         BatchElement $element,
@@ -62,6 +63,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     ) {
         $request->isMethod('POST')->willReturn(true);
         $request->request = $requestParameterbag;
+        $request->query = $queryParameterbag;
         $requestParameterbag->get('indexes', array())->willReturn(array('index'));
 
         $event->getForm()->willReturn($form);
@@ -83,10 +85,53 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 
         $dataIndexer->getData('index')->willReturn(new \stdClass());
 
+        $queryParameterbag->has('redirect_uri')->willReturn(false);
         $router->generate('fsi_admin_list', array('element' => 'element_list_id'))->willReturn('/list/page');
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
+    }
+
+    function it_return_redirect_response_with_redirect_uri_passed_by_request(
+        FormEvent $event,
+        Request $request,
+        ParameterBag $requestParameterbag,
+        ParameterBag $queryParameterbag,
+        EventDispatcher $eventDispatcher,
+        Form $form,
+        BatchElement $element,
+        DataIndexerInterface $dataIndexer
+    ) {
+        $request->isMethod('POST')->willReturn(true);
+        $request->request = $requestParameterbag;
+        $request->query = $queryParameterbag;
+        $requestParameterbag->get('indexes', array())->willReturn(array('index'));
+
+        $event->getForm()->willReturn($form);
+        $form->isValid()->willReturn(true);
+        $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
+            ->shouldBeCalled();
+
+        $form->getData()->willReturn(new \stdClass());
+        $event->getElement()->willReturn($element);
+        $element->apply(Argument::type('stdClass'))->shouldBeCalled();
+
+        $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
+            ->shouldBeCalled();
+
+        $element->getSuccessRoute()->willReturn('fsi_admin_list');
+        $element->getSuccessRouteParameters()->willReturn(array('element' => 'element_list_id'));
+        $element->getId()->willReturn('element_form_id');
+        $element->getDataIndexer()->willReturn($dataIndexer);
+
+        $dataIndexer->getData('index')->willReturn(new \stdClass());
+
+        $queryParameterbag->has('redirect_uri')->willReturn(true);
+        $queryParameterbag->get('redirect_uri')->willReturn('some_redirect_uri');
+
+        $response = $this->handleRequest($event, $request);
+        $response->shouldBeAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->getTargetUrl()->shouldReturn('some_redirect_uri');
     }
 
     function it_return_response_from_pre_apply_event(
