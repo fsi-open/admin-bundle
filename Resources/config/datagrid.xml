@@ -11,11 +11,6 @@
     </parameters>
 
     <services>
-        <service id="admin.datagrid.extension.column_type.edit_action" class="%admin.datagrid.extension.column_type.edit_action.class%">
-            <argument type="service" id="admin.manager"/>
-            <tag name="datagrid.column_extension" alias="admin.edit_action"/>
-        </service>
-
         <service id="admin.datagrid.extension.column_type.element_action" class="%admin.datagrid.extension.column_type.element_action.class%">
             <argument type="service" id="admin.manager"/>
             <tag name="datagrid.column_extension" alias="admin.element_action" />
