@@ -24,9 +24,10 @@
                 {{ form_start(form, {
                     action: path(
                         element.route,
-                        element.routeParameters
-                            |merge({ id: app.request.get('id') })
-                            |merge(app.request.query.has('redirect_uri') ? { redirect_uri: app.request.query.get('redirect_uri') } : {})
+                        element.routeParameters|merge({
+                            id: app.request.get('id'),
+                            redirect_uri: app.request.query.get('redirect_uri')
+                        })
                     ),
                     attr: { class: 'form-horizontal' }|merge(form.vars.attr)
                 } ) }}
