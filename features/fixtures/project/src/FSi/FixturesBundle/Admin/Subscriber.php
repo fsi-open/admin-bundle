@@ -43,13 +43,7 @@ class Subscriber extends ListElement
         $datagrid->addColumn('actions', 'action', array(
             'label' => 'admin.subscriber.list.actions',
             'field_mapping' => array('id'),
-            'actions' => array(
-                'edit' => array(
-                    'route_name' => 'fsi_admin_form',
-                    'additional_parameters' => array('element' => 'subscriber_form'),
-                    'parameters_field_mapping' => array('id' => 'id')
-                )
-            )
+            'admin_edit_element_id' => 'subscriber_form'
         ));
 
         return $datagrid;
