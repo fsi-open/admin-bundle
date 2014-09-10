@@ -1,7 +1,7 @@
 {% trans_default_domain 'FSiAdminBundle' %}
 
 {% if element.option('allow_delete') == true and datagrid_view.hasColumnType('batch') == true %}
-    <select id="batch_action" class="pull-left form-control">
+    <select id="batch_action" class="pull-left form-control" data-datagrid-name="{{ datagrid_view.name }}">
         <option>{{ 'crud.list.batch.empty_choice'|trans }}</option>
         <option value="{{ path('fsi_admin_crud_delete', {element : element.id}) }}">{{ 'crud.list.batch.delete'|trans }}</option>
     </select>
