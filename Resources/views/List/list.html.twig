@@ -52,22 +52,20 @@
                 {% if column.type == 'batch' %}
                     {% set batch_form = column.getAttribute('batch_form') %}
                     {{ form_widget(batch_form.action, {
-                        'id': datagrid_view.name ~ '_batch_action',
                         'attr': {
                             'class': 'pull-left form-control',
                             'data-datagrid-name': datagrid_view.name
                         }
                     }) }}
                     {{ form_widget(batch_form.submit, {
-                        'id': datagrid_view.name ~ '_batch_action_confirmation',
                         'attr': {
                             'class': 'btn btn-primary',
                             'data-datagrid-name': datagrid_view.name
                         }
                     }) }}
-                    <form class="form pull-left" id="batch_form" method="POST" data-datagrid-name="{{ datagrid_view.name }}">
+                    <form class="form pull-left" method="POST" data-datagrid-name="{{ datagrid_view.name }}">
                         {% for index in datagrid_view.indexes %}
-                            <input type="checkbox" class="hidden" value="{{ index }}" name="indexes[]" id="index_{{ datagrid_view.name }}_{{ index }}">
+                            <input type="checkbox" class="hidden" value="{{ index }}" name="indexes[]">
                         {% endfor %}
                         {{ form_rest(batch_form) }}
                     </form>
@@ -101,7 +99,7 @@
                     if (action[0].selectedIndex && checkboxes.length) {
                         form.attr('action', action.val());
                         for (var i = 0; i < checkboxes.length; i++) {
-                            $('#index_' + datagrid_name + '_' + $(checkboxes[i]).val())
+                            form.find('input[type="checkbox"][value="' + $(checkboxes[i]).val() + '"]')
                                 .prop('checked', $(checkboxes[i]).prop('checked'));
                         }
 
