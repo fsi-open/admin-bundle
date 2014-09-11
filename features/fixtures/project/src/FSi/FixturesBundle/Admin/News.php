@@ -55,7 +55,7 @@ class News extends CRUDElement
                     'parameters_field_mapping' => array('id' => 'id')
                 ),
                 'display' => array(
-                    'element_id' => DisplayNews::ID
+                    'element' => DisplayNews::ID
                 )
             )
         ));

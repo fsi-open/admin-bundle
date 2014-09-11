@@ -40,8 +40,8 @@ class ElementActionExtensionSpec extends ObjectBehavior
         Action $column,
         OptionsResolverInterface $actionOptionsResolver
     ) {
-        $actionOptionsResolver->setOptional(array('element_id'))->shouldBeCalled();
-        $actionOptionsResolver->setAllowedTypes(array('element_id' => 'string'))->shouldBeCalled();
+        $actionOptionsResolver->setOptional(array('element'))->shouldBeCalled();
+        $actionOptionsResolver->setAllowedTypes(array('element' => 'string'))->shouldBeCalled();
 
         $this->initOptions($column);
     }
@@ -52,7 +52,7 @@ class ElementActionExtensionSpec extends ObjectBehavior
         Action $column
     ) {
         $actionOptions = array(
-            'element_id' => 'some_element_id',
+            'element' => 'some_element_id',
             'additional_parameters' => array(
                 'additional_action_parameter' => 'action_parameter_value'
             ),

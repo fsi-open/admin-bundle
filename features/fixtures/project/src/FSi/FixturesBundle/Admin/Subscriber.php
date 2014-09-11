@@ -45,7 +45,7 @@ class Subscriber extends ListElement
             'field_mapping' => array('id'),
             'actions' => array(
                 'edit' => array(
-                    'element_id' => 'subscriber_form'
+                    'element' => 'subscriber_form'
                 )
             )
         ));

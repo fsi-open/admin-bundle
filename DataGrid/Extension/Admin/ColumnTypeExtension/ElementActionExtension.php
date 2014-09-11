@@ -35,8 +35,8 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
     {
         $this->validateColumn($column);
 
-        $column->getActionOptionsResolver()->setOptional(array('element_id'));
-        $column->getActionOptionsResolver()->setAllowedTypes(array('element_id' => 'string'));
+        $column->getActionOptionsResolver()->setOptional(array('element'));
+        $column->getActionOptionsResolver()->setAllowedTypes(array('element' => 'string'));
     }
 
     public function filterValue(ColumnTypeInterface $column, $value)
@@ -52,7 +52,7 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
             }
 
             $generatedActions[$action] = $this->generateActionOptions($actionOptions);
-            unset($actions[$action]['element_id']);
+            unset($actions[$action]['element']);
         }
 
         $column->setOption('actions', array_replace_recursive($actions, $generatedActions));
@@ -81,14 +81,14 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
      */
     private function validateActionOptions(ColumnTypeInterface $column, $action, array $actionOptions)
     {
-        if (!isset($actionOptions['element_id'])) {
+        if (!isset($actionOptions['element'])) {
             return false;
         }
 
-        if (!$this->manager->hasElement($actionOptions['element_id'])) {
+        if (!$this->manager->hasElement($actionOptions['element'])) {
             throw new RuntimeException(sprintf(
-                'Unknown element_id "%s" specified in action "%s" of datagrid "%s"',
-                $actionOptions['element_id'],
+                'Unknown element "%s" specified in action "%s" of datagrid "%s"',
+                $actionOptions['element'],
                 $action,
                 $column->getDataGrid()->getName()
             ));
@@ -103,7 +103,7 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
      */
     private function generateActionOptions(array $actionOptions)
     {
-        $element = $this->manager->getElement($actionOptions['element_id']);
+        $element = $this->manager->getElement($actionOptions['element']);
 
         $additionalParameters = array_merge(
             array('element' => $element->getId()),
