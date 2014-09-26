@@ -19,6 +19,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class BatchController
 {
     /**
+     * @var ContextManager
+     */
+    protected $contextManager;
+
+    /**
      * @param ContextManager $contextManager
      */
     function __construct(
