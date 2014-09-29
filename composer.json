@@ -22,8 +22,7 @@
         "fsi/datasource-bundle" : "1.2.*",
         "fsi/data-indexer" : "0.9.*",
         "knplabs/knp-menu-bundle": "1.1.*",
-        "doctrine/annotations": "~1.0",
-        "symfony/symfony": "2.4.*"
+        "doctrine/annotations": "~1.0"
     },
     "require-dev": {
         "symfony/class-loader": "~2.3",
