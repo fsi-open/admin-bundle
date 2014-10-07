@@ -39,14 +39,6 @@ class SubscriberElement extends ListElement
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'Subscribers'; // names are translated in twig so you can use translation key as name
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
         /* @var $datasource \FSi\Component\DataSource\DataSource */

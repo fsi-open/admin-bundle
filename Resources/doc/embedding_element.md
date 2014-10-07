@@ -175,14 +175,6 @@ class UserInvoice extends CRUDElement
         return 'invoices';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'Invoices';
-    }
-
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);

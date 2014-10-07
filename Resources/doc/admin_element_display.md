@@ -39,14 +39,6 @@ class DisplayNewsElement extends DisplayElement
     /**
      * @return string
      */
-    public function getName()
-    {
-        return 'admin.news.display';
-    }
-
-    /**
-     * @return string
-     */
     public function getClassName()
     {
         return 'FSi\FixturesBundle\Entity\News';

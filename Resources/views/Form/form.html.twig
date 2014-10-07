@@ -22,7 +22,13 @@
                     </div>
                 </h3>
                 {{ form_start(form, {
-                    action: path('fsi_admin_form', { element: element.id, id: app.request.get('id') }),
+                    action: path(
+                        element.route,
+                        element.routeParameters|merge({
+                            id: app.request.get('id'),
+                            redirect_uri: app.request.query.get('redirect_uri')
+                        })
+                    ),
                     attr: { class: 'form-horizontal' }|merge(form.vars.attr)
                 } ) }}
                     {{ form_widget(form) }}

@@ -9,13 +9,9 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
+use FSi\Bundle\AdminBundle\Admin\CRUD\Context\FormElementContext;
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Create\Context as CreateContext;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Delete\Context as DeleteContext;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Context as ReadContext;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Edit\Context as EditContext;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -51,7 +47,7 @@ class FormControllerSpec extends ObjectBehavior
         Response $response,
         GenericFormElement $element,
         ContextManager $manager,
-        CreateContext $context,
+        FormElementContext $context,
         EngineInterface $templating
     ) {
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
@@ -66,7 +62,7 @@ class FormControllerSpec extends ObjectBehavior
     function it_render_template_from_element_in_form_action(
         ContextManager $manager,
         GenericFormElement $element,
-        CreateContext $context,
+        FormElementContext $context,
         Request $request,
         EngineInterface $templating,
         Response $response
@@ -84,7 +80,7 @@ class FormControllerSpec extends ObjectBehavior
     function it_return_response_from_context_in_form_action(
         ContextManager $manager,
         GenericFormElement $element,
-        CreateContext $context,
+        FormElementContext $context,
         Request $request,
         Response $response
     ) {

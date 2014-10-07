@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\spec\fixtures;
+namespace FSi\Bundle\AdminBundle\spec\fixtures\Doctrine;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
@@ -30,14 +30,6 @@ class MyCrudElement extends CRUDElement
     public function getId()
     {
         return 'my_entity';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'admin.my_entity.name';
     }
 
     protected function initDataGrid(DataGridFactoryInterface $factory)

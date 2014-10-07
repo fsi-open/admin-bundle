@@ -198,6 +198,22 @@ class DataContext extends BehatContext implements KernelAwareInterface
     }
 
     /**
+     * @Given /^there should be (\d+) subscribers in database$/
+     */
+    public function thereShouldBeSubscribersInDatabase($count)
+    {
+        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll()))->toBe($count);
+    }
+
+    /**
+     * @Given /^there should not be any subscribers in database$/
+     */
+    public function thereShouldNotBeAnySubscribersInDatabase()
+    {
+        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll()))->toBe(0);
+    }
+
+    /**
      * @param string $name
      * @return \Doctrine\Orm\EntityRepository
      */

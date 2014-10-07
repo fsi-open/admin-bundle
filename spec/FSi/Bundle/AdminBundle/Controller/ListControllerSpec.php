@@ -30,11 +30,6 @@ class ListControllerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Controller\ListController');
-    }
-
     function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
         GenericListElement $element,
         ContextManager $manager,

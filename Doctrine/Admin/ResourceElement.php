@@ -12,7 +12,6 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Bundle\ResourceRepositoryBundle\Doctrine\ResourceRepository;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceInterface;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 

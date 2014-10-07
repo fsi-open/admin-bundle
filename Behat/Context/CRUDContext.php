@@ -345,7 +345,7 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
      */
     public function iShouldBeRedirectedToPage($pageName)
     {
-        $this->getPage($pageName)->isOpen();
+        expect($this->getPage($pageName)->isOpen())->toBe(true);
     }
 
     /**

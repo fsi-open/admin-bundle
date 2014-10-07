@@ -18,17 +18,17 @@ class NewsList extends Page
 
     public function getHeader()
     {
-        return $this->find('css', 'h3#page-header')->getText();
+        return $this->find('css', '#page-header')->getText();
     }
 
     public function hasBatchActionsDropdown()
     {
-        return $this->has('css', 'select#batch_action');
+        return $this->has('css', 'select[data-datagrid-name]');
     }
 
     public function hasBatchAction($value)
     {
-        $select = $this->find('css', 'select#batch_action');
+        $select = $this->find('css', 'select[data-datagrid-name]');
         return $select->has('css', sprintf('option:contains("%s")', $value));
     }
 
@@ -40,12 +40,12 @@ class NewsList extends Page
 
     public function pressBatchActionConfirmationButton()
     {
-        $this->find('css', '#batch_action_confirmation')->click();
+        $this->find('css', 'button[data-datagrid-name]')->click();
     }
 
     public function selectBatchAction($action)
     {
-        $this->find('css', 'select#batch_action')->selectOption($action);
+        $this->find('css', 'select[data-datagrid-name]')->selectOption($action);
     }
 
     public function selectAllElements()
@@ -86,7 +86,7 @@ class NewsList extends Page
 
     protected function verifyPage()
     {
-        if (!$this->has('css', 'h3#page-header:contains("List of elements")')) {
+        if (!$this->has('css', '#page-header:contains("List of elements")')) {
             throw new BehaviorException(sprintf("%s page is missing \"List of elements\" header", $this->path));
         }
     }

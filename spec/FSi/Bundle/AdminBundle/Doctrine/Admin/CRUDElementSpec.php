@@ -20,7 +20,7 @@ class CRUDElementSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, ObjectManager $om)
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyCrudElement');
+        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyCrudElement');
         $this->beConstructedWith(array());
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);

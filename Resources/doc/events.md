@@ -1,10 +1,14 @@
 #Events 
 
 Admin bundle provide several events that can be handled in application.
-List of available events can be found in [CRUDEvents](/Event/CRUDEvents.php) and
-[ResourceEvents](/Event/ResourceEvents.php). Listeners of ``CRUD_LIST_*`` events will receive one argument of
-``FSi\Bundle\AdminBundle\Event\ListEvent`` class. Listeners of all the other events will receive one argument of
-``FSi\Bundle\AdminBundle\Event\FormEvent`` class.
+List of available events can be found in following classes (along with their argument type):
+
+- [CRUDEvents](/Event/CRUDEvents.php), type of argument: [ListEvent](/Event/ListEvent.php) for ``CRUD_LIST_*`` and [FormEvent](/Event/FormEvent.php) for all the others
+- [ListEvents](/Event/ListEvents.php), type of argument: [ListEvent](/Event/ListEvent.php)
+- [FormEvents](/Event/FormEvents.php), type of argument: [FormEvent](/Event/FormEvent.php)
+- [DisplayEvents](/Event/DisplayEvents.php), type of argument: [DisplayEvent](/Event/DisplayEvent.php)
+- [BatchEvents](/Event/BatchEvents.php), type of argument: [FormEvent](/Event/FormEvent.php)
+- [ResourceEvents](/Event/ResourceEvents.php), type of argument: [FormEvent](/Event/FormEvent.php)
 
 Following example will show you how to handle dynamically added/removed relation elements for doctrine entity.
 Just like in http://symfony.com/doc/current/cookbook/form/form_collections.html#allowing-tags-to-be-removed
