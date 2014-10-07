@@ -28,8 +28,8 @@ columns:
           parameters_field_mapping: { id: id }
 ```
 
-To prevent setting this every single time you can use ``admin_edit_element_id`` and ``admin_display_element_id`` options
-which are shortcuts to create these actions. So following configuration works exactly like above one
+To prevent setting this every single time you can use ``element`` option of each action
+which is shortcut to create action pointing to that element. So following configuration works exactly like above one
 
 ```
 # src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yml
@@ -40,8 +40,11 @@ columns:
     options:
       label: Actions
       field_mapping: [ id ]
-      admin_edit_element_id: admin_users_form
-      admin_display_element_id: admin_users_display
+      actions:
+        edit:
+          element: admin_users_form
+        display:
+          element: admin_users_display
 ```
 
 *You should not use this shortcut option if entity that is edited or displayed by admin element is identified by other
