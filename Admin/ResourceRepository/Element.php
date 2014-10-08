@@ -9,10 +9,11 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
+use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceInterface as ModelResourceInterface;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 
-interface Element
+interface Element extends ElementInterface
 {
     /**
      * @return string
