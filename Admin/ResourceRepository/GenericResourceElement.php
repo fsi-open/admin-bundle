@@ -10,7 +10,6 @@
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
-use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 abstract class GenericResourceElement extends AbstractElement implements Element
