@@ -11,7 +11,7 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 
-interface ListElement extends ElementInterface, DataSourceAwareInterface, DataGridAwareInterface
+interface ListElement extends DataIndexerElement, DataSourceAwareInterface, DataGridAwareInterface
 {
     /**
      * @return \FSi\Component\DataGrid\DataGrid|null
@@ -24,13 +24,6 @@ interface ListElement extends ElementInterface, DataSourceAwareInterface, DataGr
      * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createDataSource();
-
-    /**
-     * This method should be used inside of admin objects to retrieve DataIndexerInterface.
-     *
-     * @return \FSi\Component\DataIndexer\DataIndexerInterface
-     */
-    public function getDataIndexer();
 
     /**
      * Method called after DataGrid update at listAction in CRUDController.

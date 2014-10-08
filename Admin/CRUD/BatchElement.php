@@ -9,15 +9,8 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
-interface BatchElement extends RedirectableElement
+interface BatchElement extends DataIndexerElement, RedirectableElement
 {
-    /**
-     * This method should be used inside of admin objects to retrieve DataIndexerInterface.
-     *
-     * @return \FSi\Component\DataIndexer\DataIndexerInterface
-     */
-    public function getDataIndexer();
-
     /**
      * This method is called from BatchController after action is confirmed.
      *

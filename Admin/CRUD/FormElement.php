@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
-interface FormElement extends RedirectableElement, FormAwareInterface
+interface FormElement extends DataIndexerElement, RedirectableElement, FormAwareInterface
 {
     /**
      * @param mixed $data
@@ -17,13 +17,6 @@ interface FormElement extends RedirectableElement, FormAwareInterface
      * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createForm($data = null);
-
-    /**
-     * This method should be used inside of admin objects to retrieve DataIndexerInterface.
-     *
-     * @return \FSi\Component\DataIndexer\DataIndexerInterface
-     */
-    public function getDataIndexer();
 
     /**
      * This method is called from FormController after form validation is passed in edit and create action.
