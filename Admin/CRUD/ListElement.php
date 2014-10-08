@@ -9,8 +9,6 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
-
 interface ListElement extends DataIndexerElement, DataSourceAwareInterface, DataGridAwareInterface
 {
     /**

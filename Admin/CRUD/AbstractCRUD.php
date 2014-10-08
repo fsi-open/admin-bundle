@@ -91,6 +91,14 @@ abstract class AbstractCRUD extends AbstractElement implements
     }
 
     /**
+     * @inheritdoc
+     */
+    public function apply($object)
+    {
+        $this->delete($object);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setDataGridFactory(DataGridFactoryInterface $factory)
