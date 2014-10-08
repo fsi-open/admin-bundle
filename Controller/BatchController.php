@@ -10,7 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
-use FSi\Bundle\AdminBundle\Admin\CRUD\GenericBatchElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,11 +33,11 @@ class BatchController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\GenericBatchElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function batchAction(GenericBatchElement $element, Request $request)
+    public function batchAction(BatchElement $element, Request $request)
     {
         $context = $this->contextManager->createContext('fsi_admin_batch', $element);
 

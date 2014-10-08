@@ -10,7 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
-use FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -48,11 +48,11 @@ class ListController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\ListElement $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction(GenericListElement $element, Request $request)
+    public function listAction(ListElement $element, Request $request)
     {
         $context = $this->contextManager->createContext('fsi_admin_list', $element);
 

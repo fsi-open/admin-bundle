@@ -11,7 +11,7 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\CRUD\Context\ListElementContext;
-use FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -31,7 +31,7 @@ class ListControllerSpec extends ObjectBehavior
     }
 
     function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
-        GenericListElement $element,
+        ListElement $element,
         ContextManager $manager,
         Request $request
     ) {
@@ -45,7 +45,7 @@ class ListControllerSpec extends ObjectBehavior
     function it_render_default_template_in_list_action(
         Request $request,
         Response $response,
-        GenericListElement $element,
+        ListElement $element,
         ContextManager $manager,
         ListElementContext $context,
         EngineInterface $templating
@@ -61,7 +61,7 @@ class ListControllerSpec extends ObjectBehavior
 
     function it_render_template_from_element_in_list_action(
         ContextManager $manager,
-        GenericListElement $element,
+        ListElement $element,
         ListElementContext $context,
         Request $request,
         EngineInterface $templating,
@@ -79,7 +79,7 @@ class ListControllerSpec extends ObjectBehavior
 
     function it_return_response_from_context_in_list_action(
         ContextManager $manager,
-        GenericListElement $element,
+        ListElement $element,
         ListElementContext $context,
         Request $request,
         Response $response

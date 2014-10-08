@@ -10,7 +10,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
-use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Context;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -27,7 +27,7 @@ class ResourceControllerSpec extends ObjectBehavior
     }
 
     function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
-        GenericResourceElement $element,
+        ResourceRepository\Element $element,
         ContextManager $manager,
         Request $request
     ) {
@@ -41,7 +41,7 @@ class ResourceControllerSpec extends ObjectBehavior
     function it_render_default_template_in_resource_action(
         Request $request,
         Response $response,
-        GenericResourceElement $element,
+        ResourceRepository\Element $element,
         ContextManager $manager,
         Context $context,
         DelegatingEngine $templating
@@ -57,7 +57,7 @@ class ResourceControllerSpec extends ObjectBehavior
 
     function it_render_template_from_element_in_resource_action(
         ContextManager $manager,
-        GenericResourceElement $element,
+        ResourceRepository\Element $element,
         Context $context,
         Request $request,
         DelegatingEngine $templating,
@@ -75,7 +75,7 @@ class ResourceControllerSpec extends ObjectBehavior
 
     function it_return_response_from_context_in_resource_action(
         ContextManager $manager,
-        GenericResourceElement $element,
+        ResourceRepository\Element $element,
         Context $context,
         Request $request,
         Response $response

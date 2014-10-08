@@ -11,7 +11,7 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext;
-use FSi\Bundle\AdminBundle\Admin\CRUD\GenericBatchElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -29,7 +29,7 @@ class BatchControllerSpec extends ObjectBehavior
     }
 
     function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
-        GenericBatchElement $element,
+        BatchElement $element,
         ContextManager $manager,
         Request $request
     ) {
@@ -42,7 +42,7 @@ class BatchControllerSpec extends ObjectBehavior
 
     function it_throws_exception_when_context_does_not_return_response(
         ContextManager $manager,
-        GenericBatchElement $element,
+        BatchElement $element,
         BatchElementContext $context,
         Request $request
     ) {
@@ -55,7 +55,7 @@ class BatchControllerSpec extends ObjectBehavior
 
     function it_return_response_from_context_in_batch_action(
         ContextManager $manager,
-        GenericBatchElement $element,
+        BatchElement $element,
         BatchElementContext $context,
         Request $request,
         Response $response
