@@ -9,7 +9,9 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Display;
 
-interface Element
+use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+
+interface Element extends ElementInterface
 {
     /**
      * @param mixed $object
