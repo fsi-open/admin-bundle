@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
-use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceInterface;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceInterface as ModelResourceInterface;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 
 interface Element
@@ -25,9 +25,9 @@ interface Element
     public function getResourceFormOptions();
 
     /**
-     * @param ResourceInterface $resource
+     * @param ModelResourceInterface $resource
      */
-    public function save(ResourceInterface $resource);
+    public function save(ModelResourceInterface $resource);
 
     /**
      * @return ResourceValueRepository
