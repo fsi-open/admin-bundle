@@ -2,7 +2,9 @@
 
 namespace FSi\FixturesBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -47,9 +49,18 @@ class News
      */
     protected $categories;
 
+    /**
+     * @var Tag[]
+     *
+     * @Assert\Valid
+     * @ORM\OneToMany(targetEntity="Tag", mappedBy="news", cascade={"persist"}, orphanRemoval=true)
+     */
+    protected $tags;
+
     public function __construct()
     {
         $this->categories = array();
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -166,5 +177,33 @@ class News
     public function getCategories()
     {
         return (array) $this->categories;
+    }
+
+    /**
+     * @return Tag[]|ArrayCollection
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function addTag(Tag $tag)
+    {
+        if (!$this->tags->contains($tag)) {
+            $tag->setNews($this);
+            $this->tags->add($tag);
+        }
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function removeTag(Tag $tag)
+    {
+        $tag->setNews(null);
+        $this->tags->removeElement($tag);
     }
 }

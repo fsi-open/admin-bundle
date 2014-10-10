@@ -5,6 +5,7 @@ namespace FSi\FixturesBundle\Admin;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\FixturesBundle\Form\TagType;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class News extends CRUDElement
@@ -106,7 +107,6 @@ class News extends CRUDElement
 
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-
         $builder = $factory->createNamedBuilder('news', 'form', $data, array(
             'data_class' => $this->getClassName()
         ));
@@ -116,7 +116,8 @@ class News extends CRUDElement
         ));
         $builder->add('date', 'date', array(
             'label' => 'admin.news.list.date',
-            'widget' => 'single_text'
+            'widget' => 'single_text',
+            'required' => false,
         ));
         $builder->add('created_at', 'date', array(
             'label' => 'admin.news.list.created_at',
@@ -124,9 +125,17 @@ class News extends CRUDElement
         ));
         $builder->add('visible', 'checkbox', array(
             'label' => 'admin.news.list.visible',
+            'required' => false,
         ));
         $builder->add('creator_email', 'email', array(
             'label' => 'admin.news.list.creator_email'
+        ));
+        $builder->add('tags', 'collection', array(
+            'type' => new TagType(),
+            'label' => 'admin.news.list.tags',
+            'allow_add' => true,
+            'allow_delete' => true,
+            'by_reference' => false,
         ));
 
         return $builder->getForm();

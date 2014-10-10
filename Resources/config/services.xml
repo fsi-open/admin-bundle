@@ -25,6 +25,7 @@
         <parameter key="admin.controller.admin.class">FSi\Bundle\AdminBundle\Controller\AdminController</parameter>
         <parameter key="admin.extractor.bundle_path.class">FSi\Bundle\AdminBundle\Extractor\BundlePathExtractor</parameter>
         <parameter key="admin.finder.admin_class.class">FSi\Bundle\AdminBundle\Finder\AdminClassFinder</parameter>
+        <parameter key="admin.form.collection_extension.class">FSi\Bundle\AdminBundle\Form\CollectionTypeExtension</parameter>
     </parameters>
 
     <services>
@@ -57,6 +58,10 @@
             <argument type="collection">
                 <argument key="translation_domain" type="string">FSiAdminBundle</argument>
             </argument>
+        </service>
+
+        <service id="admin.form.collection_type_extension" class="%admin.form.collection_extension.class%">
+            <tag name="form.type_extension" alias="collection" />
         </service>
 
         <!-- ProductionLine Workers -->

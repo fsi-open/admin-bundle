@@ -15,7 +15,10 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Faker\Factory;
 use Faker\ORM\Doctrine\Populator;
 use FSi\FixturesBundle\Entity\News;
+use FSi\FixturesBundle\Entity\Tag;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class DataContext extends BehatContext implements KernelAwareInterface
 {
@@ -107,14 +110,24 @@ class DataContext extends BehatContext implements KernelAwareInterface
     public function thereAreNewsInDatabase($newsCount)
     {
         $generator = Factory::create();
-        $populator = new Populator($generator, $this->getDoctrine()->getManager());
+        $manager = $this->getDoctrine()->getManager();
 
-        $populator->addEntity('FSi\FixturesBundle\Entity\News', $newsCount, array(
-            'creatorEmail' => function() use ($generator) { return $generator->email(); },
-            'categories' => function() use($generator) {return array($generator->text(), $generator->text());}
-        ));
-        $populator->execute();
+        for ($i=0; $i<$newsCount; $i++) {
+            $news = new News();
+            $news->setTitle($generator->sentence());
+            $news->setVisible(true);
+            $news->setCreatedAt($generator->dateTimeThisYear());
+            $news->setCreatorEmail($generator->email());
+            $news->setCategories(array($generator->text(), $generator->text()));
 
+            $tag = new Tag();
+            $tag->setName($generator->sentence());
+            $news->addTag($tag);
+
+            $manager->persist($news);
+        }
+
+        $manager->flush();
         expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe($newsCount);
     }
 
@@ -228,5 +241,24 @@ class DataContext extends BehatContext implements KernelAwareInterface
     protected function getDoctrine()
     {
         return $this->kernel->getContainer()->get('doctrine');
+    }
+
+    /**
+     * @Then /^news should have (\d+) elements in collection "([^"]*)"$/
+     */
+    public function newsShouldHaveElementsInCollection($expectedCount, $collectionName)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $manager->clear();
+
+        $news = $manager
+            ->getRepository('FSi\FixturesBundle\Entity\News')
+            ->findBy(array(), array(), 1);
+        $news = reset($news);
+
+        $propertyAccessor = new PropertyAccessor();
+        $tags = $propertyAccessor->getValue($news, strtolower($collectionName));
+
+        expect(count($tags))->toBe($expectedCount);
     }
 }

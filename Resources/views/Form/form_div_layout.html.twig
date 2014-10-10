@@ -10,6 +10,16 @@
 {% endspaceless %}
 {% endblock form_row %}
 
+{% block collection_widget -%}
+    {% if prototype is defined %}
+        {%- set attr = attr|merge({'data-prototype': form_row(prototype) }) -%}
+    {% endif %}
+    {%- set attr = attr|merge({'data-allow-add': form.vars.allow_add }) -%}
+    {%- set attr = attr|merge({'data-allow-delete': form.vars.allow_delete }) -%}
+    {%- set attr = attr|merge({'data-prototype-name': form.vars.prototype_name }) -%}
+    {{- block('form_widget') -}}
+{%- endblock collection_widget %}
+
 {% block form_errors %}
 {% spaceless %}
     {% if errors|length > 0 %}

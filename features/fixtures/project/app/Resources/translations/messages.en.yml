@@ -11,6 +11,8 @@ admin:
       created_at_to: Created at to
       visible: Visible
       creator_email: Creator email
+      tags: Tags
+      tag_elements: Elements
       actions: Actions
   subscriber:
     name: Subscribers

@@ -60,6 +60,8 @@ crud:
         button:
             save: Save
             back: Back
+        collection:
+            add: Add value
     display:
         title: Display element
         button:

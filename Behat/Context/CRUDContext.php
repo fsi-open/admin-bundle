@@ -268,7 +268,7 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^choice filter "([^"]*)" should have value "([^"]*)" selected$/
+     * @Given /^choice filter "([^"]*)" s   value "([^"]*)" selected$/
      */
     public function choiceFilterShouldHaveValueSelected($filterName, $choice)
     {
@@ -303,7 +303,11 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
             $this->getElement('Form')->fillField('Created at', $generator->date());
         }
         if ($form->hasField('Visible')) {
-            $this->getElement('Form')->fillField('Visible', $generator->boolean());
+            if ($generator->boolean()) {
+                $this->getElement('Form')->checkField('Visible');
+            } else {
+                $this->getElement('Form')->uncheckField('Visible');
+            }
         }
         if ($form->hasField('Active')) {
             $this->getElement('Form')->fillField('Active', $generator->boolean());
