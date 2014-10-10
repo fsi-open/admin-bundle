@@ -3,11 +3,13 @@
 namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -75,54 +77,179 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
 
     public function buildHeaderView(ColumnTypeInterface $column, HeaderViewInterface $view)
     {
-        $actions = $column->getOption('actions');
-
-        $choices = array('crud.list.batch.empty_choice');
-        foreach ($actions as $action) {
-            $action = $this->actionOptionsResolver->resolve($action);
-            if (!$this->manager->hasElement($action['element'])) {
-                continue;
-            }
-
-            $element = $this->manager->getElement($action['element']);
-            $parameters = $element->getRouteParameters();
-            if ($this->requestStack->getMasterRequest()->query->has('redirect_uri')) {
-                $parameters['redirect_uri'] = $this->requestStack->getMasterRequest()->query->get('redirect_uri');
-            }
-
-            $path = $this->router->generate($element->getRoute(), $parameters);
-            $choices[$path] = $action['label'];
-        }
-
-        if (count($choices) > 1) {
-            $this->formBuilder->add(
-                'action',
-                'choice',
-                array(
-                    'choices' => $choices,
-                    'translation_domain' => 'FSiAdminBundle'
-                )
-            );
-            $this->formBuilder->add(
-                'submit',
-                'submit',
-                array(
-                    'label' => 'crud.list.batch.confirm',
-                    'translation_domain' => 'FSiAdminBundle'
-                )
-            );
-        }
+        $this->buildBatchForm(
+            $this->buildBatchActions($column)
+        );
 
         $view->setAttribute('batch_form', $this->formBuilder->getForm()->createView());
     }
 
-    protected function initActionOptions()
+    private function initActionOptions()
     {
         $this->actionOptionsResolver = new OptionsResolver();
-        $this->actionOptionsResolver->setRequired(array('element', 'label'));
+        $this->actionOptionsResolver->setRequired(array(
+            'route_name'
+        ));
+        $this->actionOptionsResolver->setOptional(array(
+            'element'
+        ));
+        $self = $this;
+        $this->actionOptionsResolver->setDefaults(array(
+            'route_name' => function(Options $options) use ($self) {
+                return $self->getDefaultRouteName($options);
+            },
+            'additional_parameters' => array(),
+            'label' => null
+        ));
+        $this->actionOptionsResolver->setNormalizers(array(
+            'additional_parameters' => function(Options $options, $value) use ($self) {
+                return $self->normalizeAdditionalParameters($options, $value);
+            },
+        ));
         $this->actionOptionsResolver->setAllowedTypes(array(
             'element' => 'string',
-            'label' => 'string'
+            'route_name' => 'string',
+            'additional_parameters' => 'array',
+            'label' => array('string', 'null')
         ));
+    }
+
+    /**
+     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
+     * @return array
+     */
+    private function buildBatchActions(ColumnTypeInterface $column)
+    {
+        $batchActions = array('crud.list.batch.empty_choice');
+
+        foreach ($column->getOption('actions') as $name => $action) {
+            $actionOptions = $this->actionOptionsResolver->resolve($action);
+
+            $batchActions[$this->getBatchActionUrl($actionOptions)] =
+                isset($actionOptions['label']) ? $actionOptions['label'] : $name;
+        }
+
+        return $batchActions;
+    }
+
+    /**
+     * @param array $actionOptions
+     * @return string
+     */
+    private function getBatchActionUrl(array $actionOptions)
+    {
+        return $this->router->generate(
+            $actionOptions['route_name'],
+            $actionOptions['additional_parameters']
+        );
+    }
+
+    /**
+     * @param array $batchActions
+     */
+    private function buildBatchForm(array $batchActions)
+    {
+        if (count($batchActions) > 1) {
+            $this->formBuilder->add('action', 'choice', array(
+                'choices' => $batchActions,
+                'translation_domain' => 'FSiAdminBundle'
+            ));
+            $this->formBuilder->add('submit', 'submit', array(
+                'label' => 'crud.list.batch.confirm',
+                'translation_domain' => 'FSiAdminBundle'
+            ));
+        }
+    }
+
+    /**
+     * @param \Symfony\Component\OptionsResolver\Options $options
+     * @return null|string
+     */
+    private function getDefaultRouteName(Options $options)
+    {
+        if ($options->has('element')) {
+            $this->validateElementFromOptions($options);
+
+            return $this->getElementFromOption($options)->getRoute();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param \Symfony\Component\OptionsResolver\Options $options
+     * @param array|null $additionalParameters
+     * @return array
+     */
+    private function normalizeAdditionalParameters(Options $options, $additionalParameters)
+    {
+        if ($options->has('element')) {
+            $this->validateElementFromOptions($options);
+
+            $additionalParameters = $this->mergeAdditionalParametersWithElementFromOptions(
+                $options,
+                $additionalParameters
+            );
+        }
+
+        return $this->mergeAdditionalParametersWithRedirectUri($additionalParameters);
+    }
+
+    /**
+     * @param \Symfony\Component\OptionsResolver\Options $options
+     */
+    private function validateElementFromOptions(Options $options)
+    {
+        if (!$this->manager->hasElement($options->get('element'))) {
+            throw new RuntimeException(sprintf(
+                'Unknown element "%s" specified in batch action',
+                $options->get('element')
+            ));
+        }
+    }
+
+    /**
+     * @param \Symfony\Component\OptionsResolver\Options $options
+     * @param $additionalParameters
+     * @return array
+     */
+    private function mergeAdditionalParametersWithElementFromOptions(Options $options, $additionalParameters)
+    {
+        $additionalParameters = array_merge(
+            array('element' => $this->getElementFromOption($options)->getId()),
+            $this->getElementFromOption($options)->getRouteParameters(),
+            isset($additionalParameters) ? $additionalParameters : array()
+        );
+        return $additionalParameters;
+    }
+
+    /**
+     * @param \Symfony\Component\OptionsResolver\Options $options
+     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface
+     */
+    private function getElementFromOption(Options $options)
+    {
+        return $this->manager->getElement($options->get('element'));
+    }
+
+    /**
+     * @param array $additionalParameters
+     * @return mixed
+     */
+    private function mergeAdditionalParametersWithRedirectUri(array $additionalParameters)
+    {
+        if ($this->getMasterRequestQuery()->has('redirect_uri')) {
+            $additionalParameters['redirect_uri'] = $this->getMasterRequestQuery()->get('redirect_uri');
+        }
+
+        return $additionalParameters;
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\ParameterBag
+     */
+    private function getMasterRequestQuery()
+    {
+        return $this->requestStack->getMasterRequest()->query;
     }
 }
