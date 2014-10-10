@@ -14,7 +14,9 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Faker\Factory;
 use Faker\ORM\Doctrine\Populator;
 use FSi\FixturesBundle\Entity\News;
+use FSi\FixturesBundle\Entity\Tag;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class DataContext implements KernelAwareContext
 {
@@ -116,7 +118,12 @@ class DataContext implements KernelAwareContext
             'creatorEmail' => function() use ($generator) { return $generator->email(); },
             'categories' => function() use($generator) {return array($generator->text(), $generator->text());},
             'photoKey' => null
-        ));
+        ), array(function(News $news) use($generator) {
+            $tag = new Tag();
+            $tag->setName($generator->sentence());
+            $tag->setNews($news);
+            $news->setTags(array($tag));
+        }));
         $populator->execute();
 
         expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe($newsCount);
@@ -233,5 +240,24 @@ class DataContext implements KernelAwareContext
     protected function getDoctrine()
     {
         return $this->kernel->getContainer()->get('doctrine');
+    }
+
+    /**
+     * @Then /^news should have (\d+) elements in collection "([^"]*)"$/
+     */
+    public function newsShouldHaveElementsInCollection($expectedCount, $collectionName)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $manager->clear();
+
+        $news = $manager
+            ->getRepository('FSi\FixturesBundle\Entity\News')
+            ->findBy(array(), array(), 1);
+        $news = reset($news);
+
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $tags = $propertyAccessor->getValue($news, strtolower($collectionName));
+
+        expect(count($tags))->toBe($expectedCount);
     }
 }

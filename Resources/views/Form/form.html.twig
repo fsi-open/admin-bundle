@@ -41,10 +41,15 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        require(['jquery'], function ($) {
+        require(['jquery', 'collection'], function ($) {
             $('label.required').each(function (index, label) {
                 $(label).append(' <i class="glyphicon glyphicon-asterisk"></i>');
             });
+            $('div[data-prototype]')
+                .formCollection()
+                .on('add.collection-item', function(event, item) {
+                    $(item).find('div[data-prototype]').formCollection();
+                });
         });
     </script>
 {% endblock javascripts %}

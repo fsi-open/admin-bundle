@@ -12,6 +12,8 @@ admin:
       visible: Visible
       photo: Photo
       creator_email: Creator email
+      tags: Tags
+      tag_elements: Elements
       actions: Actions
   subscriber:
     name: Subscribers

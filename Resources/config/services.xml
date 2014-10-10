@@ -9,6 +9,7 @@
         <parameter key="admin.manager.visitor.element_collection.class">FSi\Bundle\AdminBundle\Admin\Manager\ElementCollectionVisitor</parameter>
         <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Admin\Context\ContextManager</parameter>
         <parameter key="admin.form.builder.batch.class">Symfony\Component\Form\FormBuilder</parameter>
+        <parameter key="admin.form.collection_extension.class">FSi\Bundle\AdminBundle\Form\CollectionTypeExtension</parameter>
         <parameter key="admin.element.param.converter.class">FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter</parameter>
         <parameter key="admin.element.factory.production_line.class">FSi\Bundle\AdminBundle\Factory\ProductionLine</parameter>
         <parameter key="admin.element.factory.worker.list.class">FSi\Bundle\AdminBundle\Factory\Worker\ListWorker</parameter>
@@ -49,6 +50,10 @@
             <argument type="collection">
                 <argument key="translation_domain" type="string">FSiAdminBundle</argument>
             </argument>
+        </service>
+
+        <service id="admin.form.collection_type_extension" class="%admin.form.collection_extension.class%">
+            <tag name="form.type_extension" alias="collection" />
         </service>
 
         <!-- ProductionLine Workers -->

@@ -69,7 +69,7 @@ class ElementsList extends Element
     public function pressLinkInRowInColumn($link, $row, $columnName)
     {
         $position = $this->getColumnPosition($columnName);
-        $cell = $this->find('css', sprintf('tbody tr:nth-child(%d) td:nth-child(%d)', (int) $row, $position));
+        $cell = $this->find('css', sprintf('tbody tr:nth-of-type(%d) td:nth-of-type(%d)', (int) $row, $position));
         $cell->clickLink($link);
     }
 
