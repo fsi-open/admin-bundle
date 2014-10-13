@@ -28,10 +28,6 @@ class TwigGlobalsPass implements CompilerPassInterface
             'admin_templates_form_theme'          => $container->getParameter('admin.templates.form_theme'),
             'admin_templates_datagrid_theme'      => $container->getParameter('admin.templates.datagrid_theme'),
             'admin_templates_datasource_theme'    => $container->getParameter('admin.templates.datasource_theme'),
-            'admin_templates_edit_form_theme'     => $container->getParameter('admin.templates.edit_form_theme'),
-            'admin_templates_create_form_theme'   => $container->getParameter('admin.templates.create_form_theme'),
-            'admin_templates_delete_form_theme'   => $container->getParameter('admin.templates.delete_form_theme'),
-            'admin_templates_resource_form_theme' => $container->getParameter('admin.templates.resource_form_theme'),
             'admin_display_language_switch'       => $container->getParameter('admin.display_language_switch'),
         );
 

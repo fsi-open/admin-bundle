@@ -1,17 +1,27 @@
 {% extends admin_templates_base %}
 
 {% block themes %}
-    {% form_theme form admin_templates_resource_form_theme %}
+    {% form_theme form admin_templates_form_theme %}
 {% endblock themes %}
 
 {% block content %}
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                {% block header %}
-                    <h3 id="page-header">{{ 'resource.title'|trans({}, 'FSiAdminBundle') }}</h3>
-                {% endblock header %}
-                {{ form_start(form, { action: path(element.route, element.routeParameters), 'attr': { class: 'form-horizontal' }|merge(form.vars.attr) }) }}
+                <h3>
+                    <span id="page-header">{% block header 'resource.title'|trans({}, 'FSiAdminBundle') %}</span>
+                    <div class="pull-right">
+                        {% block top_buttons %}
+                            {% if app.request.query.has('redirect_uri') %}
+                                <a class="btn btn-xs btn-default" href="{{ app.request.query.get('redirect_uri') }}">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                    {{ 'crud.form.button.back'|trans({}, 'FSiAdminBundle') }}
+                                </a>
+                            {% endif %}
+                        {% endblock top_buttons %}
+                    </div>
+                </h3>
+                {{ form_start(form, { 'attr': form.vars.attr|merge({ class: 'form-horizontal' }) }) }}
                     {{ form_widget(form) }}
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">

@@ -165,7 +165,6 @@ class UserElement extends CRUDElement
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            "title" => "resource.title",
             "template" => "@FSiDemo/Resource/resource.html.twig",
         ));
     }

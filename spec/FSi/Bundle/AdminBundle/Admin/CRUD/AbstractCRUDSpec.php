@@ -53,7 +53,16 @@ class AbstractCRUDSpec extends ObjectBehavior
     {
         $factory->createDataGrid('my_datagrid')->shouldBeCalled()->willReturn($datagrid);
         $datagrid->hasColumnType('batch')->shouldBeCalled()->willReturn(false);
-        $datagrid->addColumn('batch', 'batch', array('display_order' => -1000))->shouldBeCalled();
+        $datagrid->addColumn('batch', 'batch', array(
+            'actions' => array(
+                'delete' => array(
+                    'route_name' => 'fsi_admin_batch',
+                    'additional_parameters' => array('element' => $this->getId()),
+                    'label' => 'crud.list.batch.delete'
+                )
+            ),
+            'display_order' => -1000
+        ))->shouldBeCalled();
 
         $this->setDataGridFactory($factory);
 
@@ -83,11 +92,11 @@ class AbstractCRUDSpec extends ObjectBehavior
         $this->getOptions()->shouldReturn(array(
             'allow_delete' => true,
             'allow_add' => true,
-            'allow_edit' => true,
             'template_crud_list' => null,
             'template_crud_create' => null,
             'template_crud_edit' => null,
-            'template_crud_delete' => null,
+            'template_list' => null,
+            'template_form' => null
         ));
     }
 }

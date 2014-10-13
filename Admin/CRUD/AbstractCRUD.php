@@ -17,13 +17,13 @@ use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-abstract class AbstractCRUD extends AbstractElement implements
-    CRUDElement
+abstract class AbstractCRUD extends AbstractElement implements CRUDElement
 {
     /**
      * @var \FSi\Component\DataSource\DataSourceFactoryInterface
@@ -72,21 +72,37 @@ abstract class AbstractCRUD extends AbstractElement implements
         $resolver->setDefaults(array(
             'allow_delete' => true,
             'allow_add' => true,
-            'allow_edit' => true,
             'template_crud_list' => null,
             'template_crud_create' => null,
             'template_crud_edit' => null,
-            'template_crud_delete' => null,
+            'template_list' => function (Options $options) {
+                return $options->get('template_crud_list');
+            },
+            'template_form' => function (Options $options) {
+                return $options->get('template_crud_edit');
+            }
+        ));
+
+        $resolver->setNormalizers(array(
+            'template_crud_create' => function (Options $options, $value) {
+                if ($value !== $options->get('template_crud_edit')) {
+                    throw new RuntimeException(
+                        'CRUD admin element options "template_crud_create" and "template_crud_edit" have both to have the same value'
+                    );
+                }
+
+                return $value;
+            }
         ));
 
         $resolver->setAllowedTypes(array(
             'allow_delete' => 'bool',
             'allow_add' => 'bool',
-            'allow_edit' => 'bool',
             'template_crud_list' => array('null', 'string'),
             'template_crud_create' => array('null', 'string'),
             'template_crud_edit' => array('null', 'string'),
-            'template_crud_delete' => array('null', 'string'),
+            'template_list' =>  array('null', 'string'),
+            'template_form' =>  array('null', 'string'),
         ));
     }
 
@@ -135,7 +151,16 @@ abstract class AbstractCRUD extends AbstractElement implements
 
         if ($this->options['allow_delete']) {
             if (!$datagrid->hasColumnType('batch')) {
-                $datagrid->addColumn('batch', 'batch', array('display_order' => -1000));
+                $datagrid->addColumn('batch', 'batch', array(
+                    'actions' => array(
+                        'delete' => array(
+                            'route_name' => 'fsi_admin_batch',
+                            'additional_parameters' => array('element' => $this->getId()),
+                            'label' => 'crud.list.batch.delete'
+                        )
+                    ),
+                    'display_order' => -1000
+                ));
             }
         }
 
