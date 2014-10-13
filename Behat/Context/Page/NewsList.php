@@ -14,7 +14,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageExce
 
 class NewsList extends Page
 {
-    protected $path = '/admin/news/list';
+    protected $path = '/admin/list/news';
 
     public function getHeader()
     {

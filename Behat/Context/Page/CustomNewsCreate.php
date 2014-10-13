@@ -13,7 +13,7 @@ use Behat\Behat\Exception\BehaviorException;
 
 class CustomNewsCreate extends Page
 {
-    protected $path = '/admin/custom_news/create';
+    protected $path = '/admin/form/custom_news';
 
     protected function verifyPage()
     {
