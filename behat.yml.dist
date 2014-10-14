@@ -1,4 +1,4 @@
-default:
+default: &default
     paths:
         features: features
     context:
@@ -18,3 +18,8 @@ default:
                 path: features/fixtures/project/app/AppKernel.php
                 bootstrap: features/fixtures/project/app/bootstrap.php
         SensioLabs\Behat\PageObjectExtension\Extension: ~
+travis:
+    <<: *default
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: "http://fsi-admin-bundle.dev:8080/app_test.php"
