@@ -34,6 +34,15 @@ class AdminElementParamConverterSpec extends ObjectBehavior
         $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD');
         $this->supports($configuration)->shouldReturn(true);
 
+        $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\CRUD\FormElement');
+        $this->supports($configuration)->shouldReturn(true);
+
+        $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\CRUD\ListElement');
+        $this->supports($configuration)->shouldReturn(true);
+
+        $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement');
+        $this->supports($configuration)->shouldReturn(true);
+
         $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\Manager');
         $this->supports($configuration)->shouldReturn(false);
     }

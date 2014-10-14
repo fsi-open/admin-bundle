@@ -11,6 +11,7 @@ resource:
     button:
         save: Save
         reset: Reset
+
 crud:
     list:
         title: List of elements
@@ -58,4 +59,8 @@ crud:
         title: Element form
         button:
             save: Save
+            back: Back
+    display:
+        title: Display element
+        button:
             back: Back

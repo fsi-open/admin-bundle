@@ -63,4 +63,58 @@ columns:
 
 ```
 
+## 3. Doctrine delete admin element
+
+This is the only predefined batch admin element class which can be used to delete entities/documents in batch mode.
+
+```php
+<?php
+// src/FSi/Bundle/DemoBundle/Admin/SubscriberDeactivateElement
+
+namespace FSi\Bundle\DemoBundle\Admin;
+
+use FSi\Bundle\AdminBundle\Doctrine\Admin\DeleteElement;
+use FSi\Bundle\AdminBundle\Annotation as Admin;
+
+/**
+ * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
+ *
+ * @Admin\Element
+ */
+class SubscriberDeleteElement extends DeleteElement
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function getClassName()
+    {
+        return 'FSi\Bundle\DemoBundle\Entity\Subscriber'; // Doctrine class name
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return 'subscribers_delete'; // id is used in url generation http://domain.com/admin/batch/{id}
+    }
+}
+```
+
+```
+# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_subscribers.yml
+
+columns:
+  batch:
+    type: batch
+    options:
+      actions:
+        delete:
+          element: subscribers_delete
+          label: delete
+
+  # other columns
+
+```
+
 [Back to index](index.md)

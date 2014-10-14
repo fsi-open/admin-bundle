@@ -8,6 +8,7 @@ Admin elements have different types, at the moment you can choose from
 * [Doctrine CRUD (Create Read Update Delete)](admin_element_crud.md)
 * [Doctrine List](admin_element_list.md)
 * [Doctrine Form](admin_element_form.md)
+* [Doctrine Batch/Delete](admin_element_batch.md)
 * [Doctrine Resource](admin_element_resource.md)
 * [Doctrine Display](admin_element_display.md)
 

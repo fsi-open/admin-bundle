@@ -26,6 +26,7 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     {
         $this->useContext('CRUD', new CRUDContext());
         $this->useContext('resource', new ResourceContext());
+        $this->useContext('display', new DisplayContext());
         $this->useContext('data', new DataContext());
     }
 

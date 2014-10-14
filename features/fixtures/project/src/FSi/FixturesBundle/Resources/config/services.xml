@@ -5,6 +5,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
         <parameter key="fixtures_bundle.admin.news.class">FSi\FixturesBundle\Admin\News</parameter>
+        <parameter key="fixtures_bundle.admin.news_display.class">FSi\FixturesBundle\Admin\DisplayNews</parameter>
         <parameter key="fixtures_bundle.admin.subscriber.class">FSi\FixturesBundle\Admin\Subscriber</parameter>
         <parameter key="fixtures_bundle.admin.subscriber_form.class">FSi\FixturesBundle\Admin\SubscriberForm</parameter>
         <parameter key="fixtures_bundle.admin.subscriber_delete.class">FSi\FixturesBundle\Admin\SubscriberDelete</parameter>
@@ -13,6 +14,11 @@
         <service id="fixtures_bundle.admin.news" class="%fixtures_bundle.admin.news.class%">
             <tag name="admin.element" />
         </service>
+
+        <service id="fixtures_bundle.admin.news_display" class="%fixtures_bundle.admin.news_display.class%">
+            <tag name="admin.element" />
+        </service>
+
         <service id="fixtures_bundle.admin.custom_news" class="FSi\FixturesBundle\Admin\CustomNews">
             <argument type="collection">
                 <argument key="template_crud_list">@FSiFixtures/Admin/custom_list.html.twig</argument>

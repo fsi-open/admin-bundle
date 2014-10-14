@@ -52,6 +52,6 @@ fsi_admin_resource:
         _controller: admin.controller.resource:resourceAction
 
 fsi_admin_display:
-    path: /{element}/display/{id}
+    path: /display/{element}/{id}
     defaults:
         _controller: admin.controller.display:displayAction
