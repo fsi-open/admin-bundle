@@ -10,14 +10,16 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class ResourceRepositoryPassSpec extends ObjectBehavior
 {
-    public function it_do_nothind_when_there_no_resource_extension(ContainerBuilder $container)
+    public function it_does_nothing_when_there_is_no_resource_extension(ContainerBuilder $container)
     {
         $container->hasExtension('fsi_resource_repository')->willReturn(false);
         $this->process($container);
     }
 
-    public function it_add_resource_only_if_extension_exists(ContainerBuilder $container, ParameterBag $bag)
-    {
+    public function it_loads_resources_config_only_if_resource_repository_extension_exists(
+        ContainerBuilder $container,
+        ParameterBag $bag
+    ) {
         $container->hasExtension(Argument::type('string'))->willReturn(false);
         $container->hasExtension('fsi_resource_repository')->willReturn(true);
 
