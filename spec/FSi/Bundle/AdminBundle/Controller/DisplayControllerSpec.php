@@ -11,6 +11,7 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\Display;
+use FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContext;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Context;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -43,7 +44,7 @@ class DisplayControllerSpec extends ObjectBehavior
         Response $response,
         Display\Element $element,
         ContextManager $manager,
-        Context $context,
+        DisplayContext $context,
         DelegatingEngine $templating
     ) {
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
@@ -58,7 +59,7 @@ class DisplayControllerSpec extends ObjectBehavior
     function it_render_template_from_element_in_display_action(
         ContextManager $manager,
         Display\Element $element,
-        Context $context,
+        DisplayContext $context,
         Request $request,
         DelegatingEngine $templating,
         Response $response
@@ -76,7 +77,7 @@ class DisplayControllerSpec extends ObjectBehavior
     function it_return_response_from_context_in_display_action(
         ContextManager $manager,
         Display\Element $element,
-        Context $context,
+        DisplayContext $context,
         Request $request,
         Response $response
     ) {
