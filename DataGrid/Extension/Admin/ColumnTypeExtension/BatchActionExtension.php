@@ -178,10 +178,10 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
 
     /**
      * @param \Symfony\Component\OptionsResolver\Options $options
-     * @param array|null $additionalParameters
+     * @param array $additionalParameters
      * @return array
      */
-    private function normalizeAdditionalParameters(Options $options, $additionalParameters)
+    private function normalizeAdditionalParameters(Options $options, array $additionalParameters)
     {
         if ($options->has('element')) {
             $this->validateElementFromOptions($options);
@@ -210,15 +210,15 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
 
     /**
      * @param \Symfony\Component\OptionsResolver\Options $options
-     * @param $additionalParameters
+     * @param array $additionalParameters
      * @return array
      */
-    private function mergeAdditionalParametersWithElementFromOptions(Options $options, $additionalParameters)
+    private function mergeAdditionalParametersWithElementFromOptions(Options $options, array $additionalParameters)
     {
         $additionalParameters = array_merge(
             array('element' => $this->getElementFromOption($options)->getId()),
             $this->getElementFromOption($options)->getRouteParameters(),
-            isset($additionalParameters) ? $additionalParameters : array()
+            $additionalParameters
         );
         return $additionalParameters;
     }
