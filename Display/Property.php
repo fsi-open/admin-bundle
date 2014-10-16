@@ -31,7 +31,7 @@ class Property
     /**
      * @param string $path
      * @param null|string $label
-     * @param array $valueFormatters
+     * @param array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[] $valueFormatters
      */
     public function __construct($path, $label = null, $valueFormatters = array())
     {
@@ -60,7 +60,7 @@ class Property
     }
 
     /**
-     * @return array
+     * @return array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[]
      */
     public function getValueFormatters()
     {
@@ -68,7 +68,7 @@ class Property
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @throws \InvalidArgumentException
      */
     private function validatePath($path)
@@ -79,13 +79,13 @@ class Property
     }
 
     /**
-     * @param $valueFormatters
+     * @param array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[] $valueFormatters
      * @throws \InvalidArgumentException
      */
-    private function validateFormatters($valueFormatters)
+    private function validateFormatters(array $valueFormatters)
     {
-        foreach ($valueFormatters as $decorator) {
-            if (!$decorator instanceof ValueFormatter) {
+        foreach ($valueFormatters as $formatter) {
+            if (!$formatter instanceof ValueFormatter) {
                 throw new \InvalidArgumentException("All property value formatters must implement ValueFormatter interface");
             }
         }

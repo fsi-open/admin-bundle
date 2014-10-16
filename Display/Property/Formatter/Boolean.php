@@ -24,8 +24,8 @@ class Boolean implements ValueFormatter
     private $false;
 
     /**
-     * @param $true
-     * @param $false
+     * @param string $true
+     * @param string $false
      */
     public function __construct($true, $false)
     {
@@ -33,6 +33,10 @@ class Boolean implements ValueFormatter
         $this->false = $false;
     }
 
+    /**
+     * @param mixed $value
+     * @return mixed|string
+     */
     public function format($value)
     {
         if (empty($value) && !is_bool($value)) {

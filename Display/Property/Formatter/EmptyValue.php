@@ -18,11 +18,18 @@ class EmptyValue implements ValueFormatter
      */
     private $emptyValue;
 
+    /**
+     * @param string $emptyValue
+     */
     public function __construct($emptyValue = '-')
     {
         $this->emptyValue = $emptyValue;
     }
 
+    /**
+     * @param mixed $value
+     * @return mixed
+     */
     public function format($value)
     {
         if (empty($value)) {

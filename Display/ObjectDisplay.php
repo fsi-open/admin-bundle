@@ -11,6 +11,7 @@ namespace FSi\Bundle\AdminBundle\Display;
 
 use FSi\Bundle\AdminBundle\Display\Property\View;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class ObjectDisplay implements Display
 {
@@ -20,12 +21,12 @@ class ObjectDisplay implements Display
     private $object;
 
     /**
-     * @var Property[]
+     * @var \FSi\Bundle\AdminBundle\Display\Property[]
      */
     private $properties;
 
     /**
-     * @param $object
+     * @param object $object
      * @throws \InvalidArgumentException
      */
     public function __construct($object)
@@ -80,15 +81,15 @@ class ObjectDisplay implements Display
     }
 
     /**
-     * @param $accessor
-     * @param $property
+     * @param \Symfony\Component\PropertyAccess\PropertyAccessorInterface $accessor
+     * @param \FSi\Bundle\AdminBundle\Display\Property $property
      * @return mixed
      */
-    private function getPropertyValue($accessor, $property)
+    private function getPropertyValue(PropertyAccessorInterface $accessor, Property $property)
     {
         $value = $accessor->getValue($this->object, $property->getPath());
-        foreach ($property->getValueFormatters() as $decorator) {
-            $value = $decorator->format($value);
+        foreach ($property->getValueFormatters() as $formatter) {
+            $value = $formatter->format($value);
         }
 
         return $value;

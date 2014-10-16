@@ -24,7 +24,7 @@ class DisplayView implements \IteratorAggregate
     }
 
     /**
-     * @internal param $PropertyVi ew $propertyView*
+     * @param \FSi\Bundle\AdminBundle\Display\Property\View $propertyView
      */
     public function add(View $propertyView)
     {

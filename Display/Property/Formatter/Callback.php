@@ -18,11 +18,18 @@ class Callback implements ValueFormatter
      */
     private $closure;
 
+    /**
+     * @param callable $closure
+     */
     public function __construct(\Closure $closure)
     {
         $this->closure = $closure;
     }
 
+    /**
+     * @param mixed $value
+     * @return mixed
+     */
     public function format($value)
     {
         if (empty($value)) {
