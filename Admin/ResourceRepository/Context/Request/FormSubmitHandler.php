@@ -9,49 +9,24 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request;
 
-use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
-use FSi\Bundle\AdminBundle\Event\FormEvent;
+use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractFormSubmitHandler;
 use FSi\Bundle\AdminBundle\Event\FormEvents;
-use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
-use Symfony\Component\HttpFoundation\Request;
 
-class FormSubmitHandler extends AbstractHandler
+class FormSubmitHandler extends AbstractFormSubmitHandler
 {
     /**
-     * @param AdminEvent $event
-     * @param Request $request
-     * @throws \FSi\Bundle\AdminBundle\Exception\RequestHandlerException
-     * @return null|\Symfony\Component\HttpFoundation\Response
+     * @return string
      */
-    public function handleRequest(AdminEvent $event, Request $request)
+    protected function getPreSubmitEventName()
     {
-        $this->validateEvent($event);
-
-        if ($request->isMethod('POST')) {
-            $this->eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event);
-
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-
-            $event->getForm()->submit($request);
-            $this->eventDispatcher->dispatch(FormEvents::FORM_REQUEST_POST_SUBMIT, $event);
-
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
-        }
+        return FormEvents::FORM_REQUEST_PRE_SUBMIT;
     }
 
     /**
-     * @param AdminEvent $event
-     * @throws RequestHandlerException
+     * @return string
      */
-    protected function validateEvent(AdminEvent $event)
+    protected function getPostSubmitEventName()
     {
-        if (!$event instanceof FormEvent) {
-            throw new RequestHandlerException(sprintf("%s require FormEvent", get_class($this)));
-        }
+        return FormEvents::FORM_REQUEST_POST_SUBMIT;
     }
 }

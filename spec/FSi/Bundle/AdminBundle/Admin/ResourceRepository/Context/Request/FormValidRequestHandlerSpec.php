@@ -41,8 +41,10 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     function it_do_nothing_on_non_POST_request(
         FormEvent $event,
         Request $request,
+        ResourceElement $element,
         EventDispatcher $eventDispatcher
     ) {
+        $event->getElement()->willReturn($element);
         $request->isMethod('POST')->willReturn(false);
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
             ->shouldBeCalled();
@@ -84,9 +86,11 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     function it_return_response_from_pre_render_event(
         FormEvent $event,
         Request $request,
+        ResourceElement $element,
         EventDispatcher $eventDispatcher
     ) {
         $request->isMethod('POST')->willReturn(false);
+        $event->getElement()->willReturn($element);
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
@@ -100,6 +104,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     function it_return_response_from_pre_entity_save_event(
         FormEvent $event,
         Request $request,
+        ResourceElement $element,
         EventDispatcher $eventDispatcher,
         Form $form
     ) {
@@ -107,6 +112,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
+        $event->getElement()->willReturn($element);
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
