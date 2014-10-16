@@ -10,29 +10,29 @@
 namespace FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
-use FSi\Component\DataGrid\DataGrid;
-use FSi\Component\DataSource\DataSource;
+use FSi\Component\DataGrid\DataGridInterface;
+use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ListEvent extends AdminEvent
 {
     /**
-     * @var \FSi\Component\DataSource\DataSource
+     * @var \FSi\Component\DataSource\DataSourceInterface
      */
     protected $dataSource;
 
     /**
-     * @var \FSi\Component\DataGrid\DataGrid
+     * @var \FSi\Component\DataGrid\DataGridInterface
      */
     protected $dataGrid;
 
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \FSi\Component\DataSource\DataSource $dataSource
-     * @param \FSi\Component\DataGrid\DataGrid $dataGrid
+     * @param \FSi\Component\DataSource\DataSourceInterface $dataSource
+     * @param \FSi\Component\DataGrid\DataGridInterface $dataGrid
      */
-    public function __construct(Element $element, Request $request, DataSource $dataSource, DataGrid $dataGrid)
+    public function __construct(Element $element, Request $request, DataSourceInterface $dataSource, DataGridInterface $dataGrid)
     {
         parent::__construct($element, $request);
         $this->dataSource = $dataSource;
@@ -40,7 +40,7 @@ class ListEvent extends AdminEvent
     }
 
     /**
-     * @return \FSi\Component\DataSource\DataSource
+     * @return \FSi\Component\DataSource\DataSourceInterface
      */
     public function getDataSource()
     {
@@ -48,7 +48,7 @@ class ListEvent extends AdminEvent
     }
 
     /**
-     * @return \FSi\Component\DataGrid\DataGrid
+     * @return \FSi\Component\DataGrid\DataGridInterface
      */
     public function getDataGrid()
     {
