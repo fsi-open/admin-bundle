@@ -38,8 +38,8 @@ interface Element extends CRUDInterface, DoctrineAwareInterface
     public function getRepository();
 
     /**
-     * @param ManagerRegistry $registry
-     * @return mixed
+     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
+     * @return null
      */
     public function setManagerRegistry(ManagerRegistry $registry);
 }

@@ -9,7 +9,6 @@
 
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
@@ -20,30 +19,16 @@ use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
  */
 abstract class ResourceElement extends GenericResourceElement implements Element
 {
-    /**
-     * @var \Doctrine\Common\Persistence\ManagerRegistry
-     */
-    protected $registry;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setManagerRegistry(ManagerRegistry $registry)
-    {
-        $this->registry = $registry;
+    use ElementImpl {
+        getRepository as protected getElementRepository;
     }
-
-    /**
-     * @return string
-     */
-    abstract public function getClassName();
 
     /**
      * @return \FSi\Bundle\ResourceRepositoryBundle\Doctrine\ResourceRepository
      */
     public function getRepository()
     {
-        $repository = $this->registry->getRepository($this->getClassName());
+        $repository = $this->getElementRepository();
 
         if (!$repository instanceof ResourceValueRepository) {
             throw new RuntimeException(sprintf(
@@ -53,21 +38,6 @@ abstract class ResourceElement extends GenericResourceElement implements Element
         }
 
         return $repository;
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
-     */
-    public function getObjectManager()
-    {
-        $om = $this->registry->getManagerForClass($this->getClassName());
-
-        if (is_null($om)) {
-            throw new RuntimeException(sprintf('Registry manager does\'t have manager for class "%s".', $this->getClassName()));
-        }
-
-        return $om;
     }
 
     /**
