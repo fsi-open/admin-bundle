@@ -7,11 +7,10 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Display;
+namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use FSi\Bundle\AdminBundle\Admin\Display\GenericDisplayElement;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Element;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 

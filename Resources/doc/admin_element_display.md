@@ -16,7 +16,7 @@ namespace FSi\FixturesBundle\Admin;
 use FSi\Bundle\AdminBundle\Display\Display;
 use FSi\Bundle\AdminBundle\Display\ObjectDisplay;
 use FSi\Bundle\AdminBundle\Display\Property\Formatter;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Display\DisplayElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\DisplayElement;
 use FSi\Bundle\AdminBundle\Annotation as Admin;
 
 /**
