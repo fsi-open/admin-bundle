@@ -7,9 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Admin\CRUD;
-
-use FSi\Bundle\AdminBundle\Admin\Element;
+namespace FSi\Bundle\AdminBundle\Admin;
 
 interface RedirectableElement extends Element
 {

@@ -9,6 +9,8 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
+use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
+
 interface BatchElement extends DataIndexerElement, RedirectableElement
 {
     /**

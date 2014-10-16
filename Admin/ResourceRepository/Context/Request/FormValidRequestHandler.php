@@ -64,12 +64,7 @@ class FormValidRequestHandler extends AbstractHandler
                     return $event->getResponse();
                 }
 
-                return new RedirectResponse(
-                    $this->router->generate(
-                        'fsi_admin_resource',
-                        array('element' => $event->getElement()->getId())
-                    )
-                );
+                return $this->getRedirectResponse($event);
             }
         }
 
@@ -88,5 +83,22 @@ class FormValidRequestHandler extends AbstractHandler
         if (!$event instanceof FormEvent) {
             throw new RequestHandlerException(sprintf("%s require FormEvent", get_class($this)));
         }
+    }
+
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    private function getRedirectResponse(AdminEvent $event)
+    {
+        /** @var \FSi\Bundle\AdminBundle\Admin\RedirectableElement $element */
+        $element = $event->getElement();
+
+        return new RedirectResponse(
+            $this->router->generate(
+                $element->getSuccessRoute(),
+                $element->getSuccessRouteParameters()
+            )
+        );
     }
 }

@@ -35,6 +35,22 @@ abstract class GenericResourceElement extends AbstractElement implements Element
     /**
      * {@inheritdoc}
      */
+    public function getSuccessRoute()
+    {
+        return $this->getRoute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSuccessRouteParameters()
+    {
+        return $this->getRouteParameters();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     abstract public function getKey();
 
     /**
@@ -52,7 +68,6 @@ abstract class GenericResourceElement extends AbstractElement implements Element
     {
         $resolver->setDefaults(array(
             'template' => null,
-            'title' => 'resource.title',
         ));
 
         $resolver->setAllowedTypes(array(

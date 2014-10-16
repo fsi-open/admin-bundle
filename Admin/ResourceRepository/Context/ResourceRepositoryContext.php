@@ -101,8 +101,7 @@ class ResourceRepositoryContext implements ContextInterface
     {
         return array(
             'form' => $this->form->createView(),
-            'element' => $this->element,
-            'title' => $this->element->getOption('title')
+            'element' => $this->element
         );
     }
 }

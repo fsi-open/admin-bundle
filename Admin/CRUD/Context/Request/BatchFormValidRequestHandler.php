@@ -11,7 +11,7 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
-use FSi\Bundle\AdminBundle\Admin\CRUD\RedirectableElement;
+use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
@@ -141,7 +141,7 @@ class BatchFormValidRequestHandler extends AbstractHandler
             return new RedirectResponse($request->query->get('redirect_uri'));
         }
 
-        /** @var \FSi\Bundle\AdminBundle\Admin\CRUD\RedirectableElement $element */
+        /** @var \FSi\Bundle\AdminBundle\Admin\RedirectableElement $element */
         $element = $event->getElement();
 
         return new RedirectResponse(

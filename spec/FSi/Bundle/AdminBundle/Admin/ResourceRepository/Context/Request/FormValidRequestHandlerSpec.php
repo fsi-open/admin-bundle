@@ -57,8 +57,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         EventDispatcher $eventDispatcher,
         Form $form,
         ResourceElement $element,
-        Router $router,
-        ObjectManager $objectManager
+        Router $router
     ) {
         $request->getMethod()->willReturn('POST');
 
@@ -74,7 +73,8 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(ResourceEvents::RESOURCE_POST_SAVE, $event)
             ->shouldBeCalled();
 
-        $element->getId()->willReturn('test-resource');
+        $element->getSuccessRoute()->willReturn('fsi_admin_resource');
+        $element->getSuccessRouteParameters()->willReturn(array('element' => 'test-resource'));
         $router->generate('fsi_admin_resource', array('element' => 'test-resource'))
             ->willReturn('/resource/test-resource');
 
@@ -123,8 +123,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcher $eventDispatcher,
         Form $form,
-        ResourceElement $element,
-        ObjectManager $objectManager
+        ResourceElement $element
     ) {
         $request->getMethod()->willReturn('POST');
 

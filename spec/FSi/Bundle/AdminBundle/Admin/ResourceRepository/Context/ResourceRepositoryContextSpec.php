@@ -47,11 +47,8 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
 
     function it_have_array_data(ResourceElement $element)
     {
-        $element->getOption('title')->shouldBeCalled();
-
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('form');
-        $this->getData()->shouldHaveKeyInArray('title');
         $this->getData()->shouldHaveKeyInArray('element');
     }
 
@@ -73,6 +70,7 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         $this->handleRequest($request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
+
     public function getMatchers()
     {
         return array(

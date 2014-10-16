@@ -9,10 +9,10 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
-use FSi\Bundle\AdminBundle\Admin\Element as BaseElement;
+use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 
-interface Element extends BaseElement
+interface Element extends RedirectableElement
 {
     /**
      * @return string
