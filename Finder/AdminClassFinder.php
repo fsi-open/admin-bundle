@@ -7,7 +7,7 @@ use Symfony\Component\Finder\Finder;
 
 class AdminClassFinder
 {
-    const ADMIN_ELEMENT_INTERFACE = 'FSi\\Bundle\\AdminBundle\\Admin\\ElementInterface';
+    const ADMIN_ELEMENT_INTERFACE = 'FSi\\Bundle\\AdminBundle\\Admin\\Element';
 
     /**
      * @var BundlePathExtractor

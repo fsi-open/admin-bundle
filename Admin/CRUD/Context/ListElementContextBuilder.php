@@ -10,7 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 
 class ListElementContextBuilder implements ContextBuilderInterface
@@ -31,7 +31,7 @@ class ListElementContextBuilder implements ContextBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($route, ElementInterface $element)
+    public function supports($route, Element $element)
     {
         if ($route !== $this->getSupportedRoute()) {
             return false;
@@ -47,7 +47,7 @@ class ListElementContextBuilder implements ContextBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildContext(ElementInterface $element)
+    public function buildContext(Element $element)
     {
         $this->context->setElement($element);
 

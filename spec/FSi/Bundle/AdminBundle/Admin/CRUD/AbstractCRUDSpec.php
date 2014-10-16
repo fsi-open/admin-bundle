@@ -32,7 +32,7 @@ class AbstractCRUDSpec extends ObjectBehavior
 
     function it_is_admin_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\ElementInterface');
+        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Element');
     }
 
     function it_have_default_route()

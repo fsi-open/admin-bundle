@@ -289,6 +289,10 @@ The following old routes have been marked deprecated and redirected to the new r
     <th>Old interface/class/namespace</th><th>New interface/class/namespace</th>
   </tr>
   <tr>
+    <td><a href="Admin/ElementInterface.php"><code>FSi\Bundle\AdminBundle\Admin\ElementInterface</code></a></td>
+    <td><a href="Admin/Element.php"><code>FSi\Bundle\AdminBundle\Admin\Element</code></a></td>
+  </tr>
+  <tr>
     <td><a href="Admin/CRUD/CRUDInterface.php"><code>FSi\Bundle\AdminBundle\Admin\CRUD\CRUDInterface</code></a></td>
     <td><a href="Admin/CRUD/CRUDElement.php"><code>FSi\Bundle\AdminBundle\Admin\CRUD\CRUDElement</code></a></td>
   </tr>

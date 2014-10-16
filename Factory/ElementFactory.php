@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Factory;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 class ElementFactory
 {
@@ -27,13 +27,13 @@ class ElementFactory
     }
     /**
      * @param string $class
-     * @return ElementInterface
+     * @return \FSi\Bundle\AdminBundle\Admin\Element
      * @throws \InvalidArgumentException
      */
     public function create($class)
     {
         $element = new $class;
-        if (!$element instanceof ElementInterface) {
+        if (!$element instanceof Element) {
             throw new \InvalidArgumentException(sprintf("%s does not seems to be an admin element.", $class));
         }
 

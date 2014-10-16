@@ -9,14 +9,14 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\Manager\Visitor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ManagerSpec extends ObjectBehavior
 {
-    function it_remove_element_by_id(ElementInterface $element)
+    function it_remove_element_by_id(Element $element)
     {
         $element->getId()->willReturn('foo');
         $this->addElement($element);

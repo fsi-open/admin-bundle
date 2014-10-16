@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Event;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,11 +21,11 @@ class FormEvent extends AdminEvent
     protected $form;
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Symfony\Component\Form\Form $form
      */
-    public function __construct(ElementInterface $element, Request $request, Form $form)
+    public function __construct(Element $element, Request $request, Form $form)
     {
         parent::__construct($element, $request);
         $this->form = $form;

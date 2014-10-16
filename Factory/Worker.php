@@ -2,15 +2,15 @@
 
 namespace FSi\Bundle\AdminBundle\Factory;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 interface Worker
 {
     /**
      * Mount something to admin element.
      *
-     * @param ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      * @return mixed
      */
-    public function mount(ElementInterface $element);
+    public function mount(Element $element);
 }

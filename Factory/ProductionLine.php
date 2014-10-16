@@ -2,7 +2,7 @@
 
 namespace FSi\Bundle\AdminBundle\Factory;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 class ProductionLine
 {
@@ -50,9 +50,9 @@ class ProductionLine
     /**
      * Work on element with workers to make it ready to use.
      *
-     * @param ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      */
-    public function workOn(ElementInterface $element)
+    public function workOn(Element $element)
     {
         foreach ($this->workers as $worker) {
             $worker->mount($element);

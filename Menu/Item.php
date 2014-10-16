@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Menu;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 class Item
 {
@@ -24,7 +24,7 @@ class Item
     private $children;
 
     /**
-     * @var ElementInterface
+     * @var \FSi\Bundle\AdminBundle\Admin\Element
      */
     private $element;
 
@@ -47,15 +47,15 @@ class Item
     }
 
     /**
-     * @param ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      */
-    public function setElement(ElementInterface $element)
+    public function setElement(Element $element)
     {
         $this->element = $element;
     }
 
     /**
-     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface
+     * @return \FSi\Bundle\AdminBundle\Admin\Element
      */
     public function getElement()
     {

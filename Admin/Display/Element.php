@@ -9,9 +9,9 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Display;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element as BaseElement;
 
-interface Element extends ElementInterface
+interface Element extends BaseElement
 {
     /**
      * @param mixed $object

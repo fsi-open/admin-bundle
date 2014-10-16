@@ -9,9 +9,9 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
-interface RedirectableElement extends ElementInterface
+interface RedirectableElement extends Element
 {
     /**
      * Return route name that will be used to redirect after successful form handling.

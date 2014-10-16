@@ -15,7 +15,7 @@ class ElementFactorySpec extends ObjectBehavior
 
     function it_create_admin_element(ProductionLine $productionLine)
     {
-        $productionLine->workOn(Argument::type('FSi\Bundle\AdminBundle\Admin\ElementInterface'))->shouldBeCalled();
+        $productionLine->workOn(Argument::type('FSi\Bundle\AdminBundle\Admin\Element'))->shouldBeCalled();
         $this->create("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\SimpleAdminElement")
             ->shouldReturnAnInstanceOf("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\SimpleAdminElement");
     }

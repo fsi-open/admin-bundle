@@ -10,7 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +46,7 @@ class FormElementContextBuilder implements ContextBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($route, ElementInterface $element)
+    public function supports($route, Element $element)
     {
         if ($route !== $this->getSupportedRoute()) {
             return false;
@@ -70,7 +70,7 @@ class FormElementContextBuilder implements ContextBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildContext(ElementInterface $element)
+    public function buildContext(Element $element)
     {
         $this->context->setElement($element, $this->getObject($element));
 

@@ -17,7 +17,7 @@ use FSi\Bundle\AdminBundle\Admin\Manager\Visitor;
 class Manager implements ManagerInterface
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\ElementInterface[]
+     * @var \FSi\Bundle\AdminBundle\Admin\Element[]
      */
     protected $elements;
 
@@ -27,10 +27,10 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      * @return \FSi\Bundle\AdminBundle\Admin\Manager
      */
-    public function addElement(ElementInterface $element)
+    public function addElement(Element $element)
     {
         $this->elements[$element->getId()] = $element;
 
@@ -48,7 +48,7 @@ class Manager implements ManagerInterface
 
     /**
      * @param string $id
-     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface
+     * @return \FSi\Bundle\AdminBundle\Admin\Element
      */
     public function getElement($id)
     {
@@ -64,7 +64,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface[]
+     * @return \FSi\Bundle\AdminBundle\Admin\Element[]
      */
     public function getElements()
     {

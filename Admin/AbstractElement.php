@@ -11,12 +11,11 @@ namespace FSi\Bundle\AdminBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Exception\MissingOptionException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-abstract class AbstractElement implements ElementInterface
+abstract class AbstractElement implements Element
 {
     /**
      * @var array

@@ -5,7 +5,7 @@ namespace FSi\Bundle\AdminBundle\Factory\Worker;
 use FSi\Bundle\AdminBundle\Admin\CRUD\DataGridAwareInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\DataSourceAwareInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Factory\Worker;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
@@ -36,7 +36,7 @@ class ListWorker implements Worker
     /**
      * @inheritdoc
      */
-    public function mount(ElementInterface $element)
+    public function mount(Element $element)
     {
         if ($element instanceof ListElement) {
             $element->setDataSourceFactory($this->dataSourceFactory);

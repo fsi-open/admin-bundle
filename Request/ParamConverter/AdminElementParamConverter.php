@@ -63,7 +63,7 @@ class AdminElementParamConverter implements ParamConverterInterface
 
         $implements = class_implements($configuration->getClass());
 
-        if (in_array('FSi\\Bundle\\AdminBundle\\Admin\\ElementInterface', $implements)) {
+        if (in_array('FSi\\Bundle\\AdminBundle\\Admin\\Element', $implements)) {
             return true;
         }
 

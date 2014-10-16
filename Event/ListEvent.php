@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Event;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Component\DataGrid\DataGrid;
 use FSi\Component\DataSource\DataSource;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,12 +27,12 @@ class ListEvent extends AdminEvent
     protected $dataGrid;
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \FSi\Component\DataSource\DataSource $dataSource
      * @param \FSi\Component\DataGrid\DataGrid $dataGrid
      */
-    public function __construct(ElementInterface $element, Request $request, DataSource $dataSource, DataGrid $dataGrid)
+    public function __construct(Element $element, Request $request, DataSource $dataSource, DataGrid $dataGrid)
     {
         parent::__construct($element, $request);
         $this->dataSource = $dataSource;

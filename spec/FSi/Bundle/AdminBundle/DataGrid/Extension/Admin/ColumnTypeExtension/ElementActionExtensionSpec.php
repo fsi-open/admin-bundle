@@ -9,7 +9,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use FSi\Component\DataGrid\Extension\Symfony\ColumnType\Action;
 use PhpSpec\ObjectBehavior;
@@ -48,7 +48,7 @@ class ElementActionExtensionSpec extends ObjectBehavior
 
     function it_initializes_action_route_and_parameters_based_on_element_id(
         Manager $manager,
-        ElementInterface $element,
+        Element $element,
         Action $column
     ) {
         $actionOptions = array(

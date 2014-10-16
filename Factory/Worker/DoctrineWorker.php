@@ -3,7 +3,7 @@
 namespace FSi\Bundle\AdminBundle\Factory\Worker;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DoctrineAwareInterface;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\Element as DoctrineElement;
 use FSi\Bundle\AdminBundle\Factory\Worker;
@@ -26,7 +26,7 @@ class DoctrineWorker implements Worker
     /**
      * @inheritdoc
      */
-    public function mount(ElementInterface $element)
+    public function mount(Element $element)
     {
         if ($element instanceof DoctrineAwareInterface || $element instanceof DoctrineElement) {
             $element->setManagerRegistry($this->managerRegistry);
