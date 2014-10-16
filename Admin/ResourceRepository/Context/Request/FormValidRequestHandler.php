@@ -12,6 +12,7 @@ namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
+use FSi\Bundle\AdminBundle\Event\FormEvents;
 use FSi\Bundle\AdminBundle\Event\ResourceEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -44,31 +45,23 @@ class FormValidRequestHandler extends AbstractHandler
     public function handleRequest(AdminEvent $event, Request $request)
     {
         $this->validateEvent($event);
-        if ($request->getMethod() == 'POST') {
-            if ($event->getForm()->isValid()) {
-                $this->eventDispatcher->dispatch(ResourceEvents::RESOURCE_PRE_SAVE, $event);
-
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-                /* @var $element \FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement */
-                $element = $event->getElement();
-                $data = $event->getForm()->getData();
-                foreach ($data as $resource) {
-                    $element->save($resource);
-                }
-
-                $this->eventDispatcher->dispatch(ResourceEvents::RESOURCE_POST_SAVE, $event);
-
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                return $this->getRedirectResponse($event);
+        if ($this->isValidPostRequest($event, $request)) {
+            $this->eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event);
+            if ($event->hasResponse()) {
+                return $event->getResponse();
             }
+
+            $this->action($event);
+
+            $this->eventDispatcher->dispatch(FormEvents::FORM_DATA_POST_SAVE, $event);
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            return $this->getRedirectResponse($event);
         }
 
-        $this->eventDispatcher->dispatch(ResourceEvents::RESOURCE_RESPONSE_PRE_RENDER, $event);
+        $this->eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event);
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
@@ -86,10 +79,20 @@ class FormValidRequestHandler extends AbstractHandler
     }
 
     /**
+     * @param FormEvent $event
+     * @param Request $request
+     * @return bool
+     */
+    protected function isValidPostRequest(FormEvent $event, Request $request)
+    {
+        return $request->isMethod('POST') && $event->getForm()->isValid();
+    }
+
+    /**
      * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    private function getRedirectResponse(AdminEvent $event)
+    protected function getRedirectResponse(AdminEvent $event)
     {
         /** @var \FSi\Bundle\AdminBundle\Admin\RedirectableElement $element */
         $element = $event->getElement();
@@ -100,5 +103,18 @@ class FormValidRequestHandler extends AbstractHandler
                 $element->getSuccessRouteParameters()
             )
         );
+    }
+
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     */
+    protected function action(FormEvent $event)
+    {
+        /* @var $element \FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement */
+        $element = $event->getElement();
+        $data = $event->getForm()->getData();
+        foreach ($data as $resource) {
+            $element->save($resource);
+        }
     }
 }

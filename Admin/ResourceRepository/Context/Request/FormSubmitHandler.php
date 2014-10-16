@@ -12,7 +12,7 @@ namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use FSi\Bundle\AdminBundle\Event\ResourceEvents;
+use FSi\Bundle\AdminBundle\Event\FormEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,20 +27,16 @@ class FormSubmitHandler extends AbstractHandler
     public function handleRequest(AdminEvent $event, Request $request)
     {
         $this->validateEvent($event);
-        $this->eventDispatcher->dispatch(ResourceEvents::RESOURCE_CONTEXT_POST_CREATE, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
 
-        if ($request->getMethod() == 'POST') {
-            $this->eventDispatcher->dispatch(ResourceEvents::RESOURCE_FORM_REQUEST_PRE_SUBMIT, $event);
+        if ($request->isMethod('POST')) {
+            $this->eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event);
 
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
 
             $event->getForm()->submit($request);
-            $this->eventDispatcher->dispatch(ResourceEvents::RESOURCE_FORM_REQUEST_POST_SUBMIT, $event);
+            $this->eventDispatcher->dispatch(FormEvents::FORM_REQUEST_POST_SUBMIT, $event);
 
             if ($event->hasResponse()) {
                 return $event->getResponse();

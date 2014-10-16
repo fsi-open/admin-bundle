@@ -2,11 +2,10 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
+use FSi\Bundle\AdminBundle\Event\FormEvents;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
-use FSi\Bundle\AdminBundle\Event\ResourceEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use FSi\Bundle\AdminBundle\spec\fixtures\Entity\Resource;
 use PhpSpec\ObjectBehavior;
@@ -44,8 +43,8 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
-        $request->getMethod()->willReturn('GET');
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_RESPONSE_PRE_RENDER, $event)
+        $request->isMethod('POST')->willReturn(false);
+        $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
             ->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
@@ -59,18 +58,18 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         ResourceElement $element,
         Router $router
     ) {
-        $request->getMethod()->willReturn('POST');
+        $request->isMethod('POST')->willReturn(true);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_PRE_SAVE, $event)
+        $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
             ->shouldBeCalled();
 
         $form->getData()->willReturn(array(new Resource(), new Resource()));
         $event->getElement()->willReturn($element);
         $element->save(Argument::type('FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Entity\\Resource'))->shouldBeCalledTimes(2);
 
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_POST_SAVE, $event)
+        $eventDispatcher->dispatch(FormEvents::FORM_DATA_POST_SAVE, $event)
             ->shouldBeCalled();
 
         $element->getSuccessRoute()->willReturn('fsi_admin_resource');
@@ -87,8 +86,8 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
-        $request->getMethod()->willReturn('GET');
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_RESPONSE_PRE_RENDER, $event)
+        $request->isMethod('POST')->willReturn(false);
+        $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
                 $event->getResponse()->willReturn(new Response());
@@ -104,11 +103,11 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         EventDispatcher $eventDispatcher,
         Form $form
     ) {
-        $request->getMethod()->willReturn('POST');
+        $request->isMethod('POST')->willReturn(true);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_PRE_SAVE, $event)
+        $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
                 $event->getResponse()->willReturn(new Response());
@@ -125,18 +124,18 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         Form $form,
         ResourceElement $element
     ) {
-        $request->getMethod()->willReturn('POST');
+        $request->isMethod('POST')->willReturn(true);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_PRE_SAVE, $event)
+        $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
             ->shouldBeCalled();
 
         $form->getData()->willReturn(array(new Resource(), new Resource()));
         $event->getElement()->willReturn($element);
         $element->save(Argument::type('FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Entity\\Resource'))->shouldBeCalledTimes(2);
 
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_POST_SAVE, $event)
+        $eventDispatcher->dispatch(FormEvents::FORM_DATA_POST_SAVE, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
                 $event->getResponse()->willReturn(new Response());
