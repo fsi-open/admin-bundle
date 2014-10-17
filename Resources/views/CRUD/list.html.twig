@@ -1,67 +1,21 @@
-{% extends admin_templates_base %}
+{% extends '@FSiAdmin/List/list.html.twig' %}
 
-{% block themes %}
-    {% datasource_route datasource_view 'fsi_admin_crud_list' with {'element' : element.id} %}
-    {% datasource_theme datasource_view admin_templates_datasource_theme %}
-    {% datagrid_theme datagrid_view admin_templates_datagrid_theme with {'datasource' : datasource_view, 'element' : element.id} %}
-{% endblock themes %}
+{% block top_buttons %}
+    {% if element.option('allow_add') == true %}
+        <a href="{{ path('fsi_admin_form', {element : element.id, redirect_uri: app.request.uri}) }}" class="btn btn-xs btn-success">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'crud.list.button.create'|trans({}, 'FSiAdminBundle') }}
+        </a>
+    {% endif %}
+{% endblock top_buttons %}
 
-{% block content %}
-<div class="row" id="filter">
-    <div class="col-lg-12">
-        {% block filter %}
-        {% include '@FSiAdmin/CRUD/List/filter_content.html.twig' %}
-        {% endblock filter %}
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-12">
-        {% block header %}
-            <h3 id="page-header">{{ 'crud.list.title'|trans({}, 'FSiAdminBundle') }}</h3>
-        {% endblock header %}
-        {% block datagrid %}
-            {% include '@FSiAdmin/CRUD/List/datagrid_content.html.twig' %}
-        {% endblock datagrid %}
-        {% block batch_action %}
-            {% include '@FSiAdmin/CRUD/List/batch_action_content.html.twig' %}
-        {% endblock batch_action %}
-        {% block batch_form %}
-            {% include '@FSiAdmin/CRUD/List/batch_form_content.html.twig' %}
-        {% endblock batch_form %}
-        {% block buttons %}
-            {% include '@FSiAdmin/CRUD/List/buttons_content.html.twig' %}
-        {% endblock buttons %}
-        {% block results %}
-            {% include '@FSiAdmin/CRUD/List/results.html.twig' %}
-        {% endblock results %}
-        {% block pagination %}
-            {% include '@FSiAdmin/CRUD/List/pagination_content.html.twig' %}
-        {% endblock pagination %}
-    </div>
-</div>
-{% endblock content %}
-
-{% block javascripts %}
-{{ parent() }}
-{% if element.option('allow_delete') == true and datagrid_view.hasColumnType('batch') == true %}
-<script>
-    $(document).ready(function() {
-        $('#batch_form').submit(function(event) {
-            var self = $(this),
-                action = $('#batch_action'),
-                elements = $('.{{ datagrid_view.name }}_batch'),
-                i = 0;
-
-            if (action[0].selectedIndex && $('.{{ datagrid_view.name }}_batch:checked').length) {
-                self.attr('action', action.val());
-                for (i; i < elements.length; i++) {
-                    $('#index_' + $(elements[i]).val()).prop('checked', $(elements[i]).prop('checked'));
-                }
-            } else {
-                event.preventDefault();
-            }
-        });
-    });
-</script>
-{% endif %}
-{% endblock javascripts %}
+{% block bottom_buttons %}
+    {% block buttons %}
+        {% if element.option('allow_add') == true %}
+            <a href="{{ path('fsi_admin_form', {element : element.id, redirect_uri: app.request.uri}) }}" class="btn btn-success" id="create-element">
+                <span class="glyphicon glyphicon-plus"></span>
+                {{ 'crud.list.button.create'|trans({}, 'FSiAdminBundle') }}
+            </a>
+        {% endif %}
+    {% endblock buttons %}
+{% endblock bottom_buttons %}

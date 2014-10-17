@@ -9,6 +9,10 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
-interface CRUDElement extends ListElement, FormElement, DeleteElement
+interface DeleteElement extends BatchElement
 {
+    /**
+     * @param mixed $object
+     */
+    public function delete($object);
 }

@@ -166,14 +166,11 @@ class UserElement extends CRUDElement
         $resolver->setDefaults(array(
             "allow_delete" => true,
             "allow_add" => true,
-            "allow_edit" => true,
-            "crud_list_title" => "crud.list.title",
-            "crud_create_title" => "crud.create.title",
-            "crud_edit_title" => "crud.edit.title",
-            "template_crud_list" => "@FSiDemo/Admin/user_edit.html.twig",
-            "template_crud_create" => "@FSiDemo/Admin/user_create.html.twig",
-            "template_crud_edit" => "@FSiDemo/Admin/user_edit.html.twig",
-            "template_crud_delete" => "@FSiDemo/Admin/user_create.html.twig"
+            "template_list" => "@FSiDemo/Admin/user_list.html.twig",
+            "template_form" => "@FSiDemo/Admin/user_form.html.twig",
+            "template_crud_list" => "@FSiDemo/Admin/user_list.html.twig", # deprecated since version 1.1, will be removed in version 1.2
+            "template_crud_create" => "@FSiDemo/Admin/user_create.html.twig", # deprecated since version 1.1, will be removed in version 1.2
+            "template_crud_edit" => "@FSiDemo/Admin/user_edit.html.twig", # deprecated since version 1.1, will be removed in version 1.2
         ));
     }
 }

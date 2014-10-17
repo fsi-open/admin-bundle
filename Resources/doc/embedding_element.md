@@ -271,14 +271,6 @@ class User extends CRUDElement
         return 'users';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'Users';
-    }
-
     public function invoices(UserEntity $user)
     {
         $invoice = new UserInvoice(array(
@@ -428,7 +420,7 @@ And ``@AcmeDemo/Admin/user_edit.html.twig`` file
 {{ parent() }}
 <div class="col-lg-12">
     <h1>User invoices</h1>
-    {% render(controller('admin.controller.crud:ListAction', {'element': element.invoices(form.vars.data)})) %}
+    {% render(controller('admin.controller.list:listAction', {'element': element.invoices(form.vars.data)})) %}
 </div>
 {% endblock %}
 ```
@@ -436,30 +428,13 @@ And ``@AcmeDemo/Admin/user_edit.html.twig`` file
 We are almost ready! Next step is to create template for UserInvoice element list. ``@AcmeDemo/Admin/user_invoices_list.html.twig``
 
 ```
-{% datasource_route datasource_view 'fsi_admin_crud_edit' with {'element' : 'users', 'id' : element.userId} %}
+{% extends '@FSiAdmin/List/list.html.twig' %}
+
+{% block themes %}
+{% datasource_route datasource_view 'fsi_admin_form' with {'element' : 'users', 'id' : element.userId} %}
 {% datasource_theme datasource_view admin_templates_datasource_theme %}
 {% datagrid_theme datagrid_view admin_templates_datagrid_theme with {'datasource' : datasource_view, 'element' : element.id} %}
-
-
-<h3>{{ title|trans({}, 'FSiAdminBundle') }}</h3>
-{% block datagrid %}
-    {% include '@FSiAdmin/CRUD/List/datagrid_content.html.twig' %}
-{% endblock datagrid %}
-{% block batch_action %}
-    {% include '@FSiAdmin/CRUD/List/batch_action_content.html.twig' %}
-{% endblock batch_action %}
-{% block batch_form %}
-    {% include '@FSiAdmin/CRUD/List/batch_form_content.html.twig' %}
-{% endblock batch_form %}
-{% block buttons %}
-    {% include '@FSiAdmin/CRUD/List/buttons_content.html.twig' %}
-{% endblock buttons %}
-{% block results %}
-    {% include '@FSiAdmin/CRUD/List/results.html.twig' %}
-{% endblock results %}
-{% block pagination %}
-    {% include '@FSiAdmin/CRUD/List/pagination_content.html.twig' %}
-{% endblock pagination %}
+{% endblock themes %}
 ```
 
 Ok this should be enough to display user invoices under user edit form (of course if user have any invoices).

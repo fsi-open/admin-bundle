@@ -7,19 +7,15 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Admin\Display;
+namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\ElementInterface;
 
-interface Element extends ElementInterface
+interface DataIndexerElement extends ElementInterface
 {
     /**
-     * @param mixed $object
-     * @return \FSi\Bundle\AdminBundle\Display\Display
-     */
-    public function createDisplayElement($object);
-
-    /**
+     * This method should be used inside of admin objects to retrieve DataIndexerInterface.
+     *
      * @return \FSi\Component\DataIndexer\DataIndexerInterface
      */
     public function getDataIndexer();

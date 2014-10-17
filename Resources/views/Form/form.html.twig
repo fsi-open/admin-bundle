@@ -9,7 +9,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <h3>
-                    <span id="page-header">{% block form_title 'crud.form.title'|trans({}, 'FSiAdminBundle') %}</span>
+                    <span id="page-header">{% block header 'crud.form.title'|trans({}, 'FSiAdminBundle') %}</span>
                     <div class="pull-right">
                         {% block top_buttons %}
                             {% if app.request.query.has('redirect_uri') %}
@@ -21,16 +21,7 @@
                         {% endblock top_buttons %}
                     </div>
                 </h3>
-                {{ form_start(form, {
-                    action: path(
-                        element.route,
-                        element.routeParameters|merge({
-                            id: app.request.get('id'),
-                            redirect_uri: app.request.query.get('redirect_uri')
-                        })
-                    ),
-                    attr: { class: 'form-horizontal' }|merge(form.vars.attr)
-                } ) }}
+                {{ form_start(form, { attr: form.vars.attr|merge({ class: 'form-horizontal' }) } ) }}
                     {{ form_widget(form) }}
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">

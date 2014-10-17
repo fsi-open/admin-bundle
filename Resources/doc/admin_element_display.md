@@ -86,7 +86,8 @@ columns:
     options:
       label: Actions
       field_mapping: [ id ]
-      admin_display_element_id: news-display
+      display:
+        element: news-display
 ```
 
 

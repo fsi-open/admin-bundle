@@ -9,6 +9,13 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
-interface CRUDElement extends ListElement, FormElement, DeleteElement
+abstract class GenericDeleteElement extends GenericBatchElement implements DeleteElement
 {
+    /**
+     * @inheritdoc
+     */
+    public function apply($object)
+    {
+        $this->delete($object);
+    }
 }

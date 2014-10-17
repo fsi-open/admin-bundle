@@ -404,9 +404,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
             case 'list':
                 $this->getPage('Custom news list')->isOpen();
                 break;
-            case 'create':
-                $this->getPage('Custom news create')->isOpen();
-                break;
             case 'edit':
                 $this->getPage('Custom news edit')->isOpen();
                 break;

@@ -13,16 +13,16 @@ use Behat\Behat\Exception\BehaviorException;
 
 class NewsEdit extends Page
 {
-    protected $path = '/admin/news/edit/{id}';
+    protected $path = '/admin/form/news/{id}';
 
     public function getHeader()
     {
-        return $this->find('css', 'h3#page-header')->getText();
+        return $this->find('css', '#page-header')->getText();
     }
 
     protected function verifyPage()
     {
-        if (!$this->has('css', 'h3#page-header:contains("Edit element")')) {
+        if (!$this->has('css', '#page-header:contains("Edit element")')) {
             throw new BehaviorException(sprintf("%s page is missing \"New element\" header", $this->path));
         }
     }

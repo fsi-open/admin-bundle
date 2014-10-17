@@ -28,11 +28,6 @@ Feature: Deleting existing object
     When I press checkbox in first column in first row
     And I choose action "Delete" from actions
     And I press confirmation button "Ok"
-    Then I should be redirected to confirmation page with message
-    """
-    Are you sure you want to delete 1 from selected elements?
-    """
-    When I press "Yes"
     Then I should be redirected to "News list" page
     And news "News 1" should not exist in database anymore
 
@@ -42,10 +37,5 @@ Feature: Deleting existing object
     When I press checkbox in first column header
     And I choose action "Delete" from actions
     And I press confirmation button "Ok"
-    Then I should be redirected to confirmation page with message
-    """
-    Are you sure you want to delete 3 from selected elements?
-    """
-    When I press "Yes"
     Then I should be redirected to "News list" page
     And there should not be any news in database
