@@ -49,7 +49,7 @@ class Context implements ContextInterface
     /**
      * @var \Symfony\Component\Form\Form
      */
-    private  $form;
+    private $form;
 
     /**
      * @param $requestHandlers
@@ -164,9 +164,11 @@ class Context implements ContextInterface
     {
         $data = array();
 
-        foreach ($resources as $resource) {
+        foreach ($resources as $resourceKey => $resource) {
             if ($resource instanceof ResourceInterface) {
-                $data[$this->normalizeKey($resource->getName())] = $this->element->getRepository()->get($resource->getName());
+                $resourceName = $this->element->getKey() . "." . $resourceKey;
+                $data[$this->normalizeKey($resourceName)]
+                    = $this->element->getRepository()->get($resource->getName());
             }
         }
 
@@ -179,11 +181,16 @@ class Context implements ContextInterface
      */
     private function buildForm(FormBuilderInterface $builder, array $resources)
     {
-        foreach ($resources as $resource) {
+        foreach ($resources as $resourceKey => $resource) {
             if ($resource instanceof ResourceInterface) {
-                $builder->add($this->normalizeKey($resource->getName()), 'resource', array(
-                    'resource_key' => $resource->getName(),
-                ));
+                $resourceName = $this->element->getKey() . "." . $resourceKey;
+                $builder->add(
+                    $this->normalizeKey($resourceName),
+                    'resource',
+                    array(
+                        'resource_key' => $resourceName,
+                    )
+                );
             }
         }
     }
