@@ -42,7 +42,7 @@ class ResourceRepositoryContext implements ContextInterface
     /**
      * @var \Symfony\Component\Form\Form
      */
-    private  $form;
+    private $form;
 
     /**
      * @param $requestHandlers

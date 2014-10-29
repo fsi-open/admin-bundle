@@ -33,17 +33,18 @@ class ResourceFormBuilder
 
         $builder = $this->formFactory->createBuilder(
             'form',
-            $this->createFormData($resources, $element->getRepository()),
+            $this->createFormData($element, $element->getRepository(), $resources),
             $element->getResourceFormOptions()
         );
 
-        $this->buildForm($builder, $resources);
+        $this->buildForm($element, $builder, $resources);
         return $builder->getForm();
     }
 
     /**
      * @param string $key
      * @return array
+     * @throws RuntimeException
      */
     private function getResourceGroup($key)
     {
@@ -76,33 +77,43 @@ class ResourceFormBuilder
     }
 
     /**
-     * @param array|\FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface[] $resources
+     * @param GenericResourceElement $element
      * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository $valueRepository
+     * @param array|\FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface[] $resources
      * @return array
      */
-    private function createFormData(array $resources, ResourceValueRepository $valueRepository)
-    {
+    private function createFormData(
+        GenericResourceElement $element,
+        ResourceValueRepository $valueRepository,
+        array $resources
+    ) {
         $data = array();
 
-        foreach ($resources as $resource) {
-            $data[$this->normalizeKey($resource->getName())] = $valueRepository->get($resource->getName());
+        foreach ($resources as $resourceKey => $resource) {
+            $resourceName = $this->buildResourceName($element, $resourceKey);
+            $data[$this->normalizeKey($resourceName)] = $valueRepository->get($resource->getName());
         }
 
         return $data;
     }
 
     /**
+     * @param GenericResourceElement $element
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array|\FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface[] $resources
      */
-    private function buildForm(FormBuilderInterface $builder, array $resources)
-    {
-        foreach ($resources as $resource) {
+    private function buildForm(
+        GenericResourceElement $element,
+        FormBuilderInterface $builder,
+        array $resources
+    ) {
+        foreach ($resources as $resourceKey => $resource) {
+            $resourceName = $this->buildResourceName($element, $resourceKey);
             $builder->add(
-                $this->normalizeKey($resource->getName()),
+                $this->normalizeKey($resourceName),
                 'resource',
                 array(
-                    'resource_key' => $resource->getName(),
+                    'resource_key' => $resourceName,
                 )
             );
         }
@@ -115,5 +126,15 @@ class ResourceFormBuilder
     private function normalizeKey($key)
     {
         return str_replace('.', '_', $key);
+    }
+
+    /**
+     * @param GenericResourceElement $element
+     * @param string $resourceKey
+     * @return string
+     */
+    private function buildResourceName(GenericResourceElement $element, $resourceKey)
+    {
+        return sprintf("%s.%s", $element->getKey(), $resourceKey);
     }
 }
