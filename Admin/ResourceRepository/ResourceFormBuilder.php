@@ -21,6 +21,11 @@ class ResourceFormBuilder
      */
     protected $mapBuilder;
 
+    /**
+     * @var GenericResourceElement $element
+     */
+    protected $element;
+
     public function __construct(FormFactoryInterface $formFactory, MapBuilder $mapBuilder)
     {
         $this->formFactory = $formFactory;
@@ -29,12 +34,14 @@ class ResourceFormBuilder
 
     public function build(GenericResourceElement $element)
     {
-        $resources = $this->getResourceGroup($element->getKey());
+        $this->element = $element;
+
+        $resources = $this->getResourceGroup($this->element->getKey());
 
         $builder = $this->formFactory->createBuilder(
             'form',
-            $this->createFormData($resources, $element->getRepository()),
-            $element->getResourceFormOptions()
+            $this->createFormData($resources, $this->element->getRepository()),
+            $this->element->getResourceFormOptions()
         );
 
         $this->buildForm($builder, $resources);
@@ -44,6 +51,7 @@ class ResourceFormBuilder
     /**
      * @param string $key
      * @return array
+     * @throws RuntimeException
      */
     private function getResourceGroup($key)
     {
@@ -84,8 +92,9 @@ class ResourceFormBuilder
     {
         $data = array();
 
-        foreach ($resources as $resource) {
-            $data[$this->normalizeKey($resource->getName())] = $valueRepository->get($resource->getName());
+        foreach ($resources as $resourceKey => $resource) {
+            $resourceName = $this->buildResourceName($resourceKey);
+            $data[$this->normalizeKey($resourceName)] = $valueRepository->get($resource->getName());
         }
 
         return $data;
@@ -97,12 +106,13 @@ class ResourceFormBuilder
      */
     private function buildForm(FormBuilderInterface $builder, array $resources)
     {
-        foreach ($resources as $resource) {
+        foreach ($resources as $resourceKey => $resource) {
+            $resourceName = $this->buildResourceName($resourceKey);
             $builder->add(
-                $this->normalizeKey($resource->getName()),
+                $this->normalizeKey($resourceName),
                 'resource',
                 array(
-                    'resource_key' => $resource->getName(),
+                    'resource_key' => $resourceName,
                 )
             );
         }
@@ -115,5 +125,14 @@ class ResourceFormBuilder
     private function normalizeKey($key)
     {
         return str_replace('.', '_', $key);
+    }
+
+    /**
+     * @param string $resourceKey
+     * @return string
+     */
+    private function buildResourceName($resourceKey)
+    {
+        return sprintf("%s.%s", $this->element->getKey(), $resourceKey);
     }
 }
