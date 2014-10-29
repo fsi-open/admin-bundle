@@ -166,7 +166,7 @@ class Context implements ContextInterface
 
         foreach ($resources as $resourceKey => $resource) {
             if ($resource instanceof ResourceInterface) {
-                $resourceName = $this->element->getKey() . "." . $resourceKey;
+                $resourceName = $this->buildResourceName($resourceKey);
                 $data[$this->normalizeKey($resourceName)]
                     = $this->element->getRepository()->get($resource->getName());
             }
@@ -183,7 +183,7 @@ class Context implements ContextInterface
     {
         foreach ($resources as $resourceKey => $resource) {
             if ($resource instanceof ResourceInterface) {
-                $resourceName = $this->element->getKey() . "." . $resourceKey;
+                $resourceName = $this->buildResourceName($resourceKey);
                 $builder->add(
                     $this->normalizeKey($resourceName),
                     'resource',
@@ -202,5 +202,14 @@ class Context implements ContextInterface
     private function normalizeKey($key)
     {
         return str_replace('.', '_', $key);
+    }
+
+    /**
+     * @param string $resourceKey
+     * @return string
+     */
+    private function buildResourceName($resourceKey)
+    {
+        return sprintf("%s.%s", $this->element->getKey(), $resourceKey);
     }
 }
