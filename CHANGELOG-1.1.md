@@ -14,7 +14,7 @@ specialized interfaces of admin elements:
 
 - [``FSi\Bundle\AdminBundle\Admin\CRUD\ListElement``](Admin/CRUD/ListElement.php) - creates list of items using
   [fsi/datasource](https://github.com/fsi-open/datasource) and [fsi/datagrid](https://github.com/fsi-open/datagrid)
-- [``FSi\Bundle\AdminBundle\Admin\CRUD\FormElement``](Admin/CRUD/ListElement.php) - creates form for a single item
+- [``FSi\Bundle\AdminBundle\Admin\CRUD\FormElement``](Admin/CRUD/FormElement.php) - creates form for a single item
 - [``FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement``](Admin/CRUD/BatchElement.php) - performs some simple action on
   a single item
 
@@ -74,8 +74,8 @@ The following options were removed from [``FSi\Bundle\AdminBundle\Admin\CRUD\Abs
 - ``menu`` - removed from all admin elements in favour of new method of menu building method
 - ``allow_edit`` - removed because there is no longer any specific "edit" action
 - ``crud_list_title`` - removed in favour of ``header`` block in [list template](Resources/views/List/list.html.twig)
-- ``crud_create_title`` - removed in favour of ``header`` block in [list template](Resources/views/Form/form.html.twig)
-- ``crud_edit_title`` - removed in favour of ``header`` block in [list template](Resources/views/Form/form.html.twig)
+- ``crud_create_title`` - removed in favour of ``header`` block in [form template](Resources/views/Form/form.html.twig)
+- ``crud_edit_title`` - removed in favour of ``header`` block in [form template](Resources/views/Form/form.html.twig)
 - ``template_crud_delete`` - removed because delete action has no longer any intermediate confirmation action 
 
 #### Added options
