@@ -32,12 +32,14 @@ class News extends CRUDElement
             'datetime_format' => 'Y-m-d',
             'editable' => true,
             'form_type' => array('date' => 'date'),
+            'input_type' => 'datetime',
             'form_options' => array(
                 'date' => array('widget' => 'single_text')
             )
         ));
         $datagrid->addColumn('created_at', 'datetime', array(
-            'label' => 'admin.news.list.created_at'
+            'label' => 'admin.news.list.created_at',
+            'input_type' => 'datetime',
         ));
         $datagrid->addColumn('visible', 'boolean', array(
             'label' => 'admin.news.list.visible'

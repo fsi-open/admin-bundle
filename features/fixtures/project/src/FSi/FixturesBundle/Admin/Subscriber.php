@@ -38,7 +38,8 @@ class Subscriber extends ListElement
             'label' => 'admin.subscriber.list.active'
         ));
         $datagrid->addColumn('created_at', 'datetime', array(
-            'label' => 'admin.subscriber.list.created_at'
+            'label' => 'admin.subscriber.list.created_at',
+            'input_type' => 'datetime'
         ));
         $datagrid->addColumn('actions', 'action', array(
             'label' => 'admin.subscriber.list.actions',
