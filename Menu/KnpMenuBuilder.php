@@ -10,6 +10,9 @@
 namespace FSi\Bundle\AdminBundle\Menu;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Menu\Builder\Builder;
+use FSi\Bundle\AdminBundle\Menu\Item\ItemInterface;
+use FSi\Bundle\AdminBundle\Menu\Item\RoutableItemInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\MenuItem;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,17 +90,19 @@ class KnpMenuBuilder
     }
 
     /**
-     * @param $item
+     * @param ItemInterface $item
      * @param $menu
      */
-    private function addMenuItem(Item $item, MenuItem $menu)
+    private function addMenuItem(ItemInterface $item, MenuItem $menu)
     {
-        $options = $item->hasElement()
-            ? array(
-                'route' => $item->getElement()->getRoute(),
-                'routeParameters' => $item->getElement()->getRouteParameters()
-            )
-            : array('uri' => '#');
+        $options = array('uri' => '#');
+
+        if ($item instanceof RoutableItemInterface && $item->getRoute()) {
+            $options = array(
+                'route' => $item->getRoute(),
+                'routeParameters' => $item->getRouteParameters()
+            );
+        }
 
         $menu->addChild($item->getName(), $options)->setAttribute('class', 'admin-element');
     }

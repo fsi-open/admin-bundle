@@ -6,29 +6,56 @@
 
     <parameters>
         <parameter key="admin.knp.menu.builder.class">FSi\Bundle\AdminBundle\Menu\KnpMenuBuilder</parameter>
-        <parameter key="admin.menu.builder_yml.class">FSi\Bundle\AdminBundle\Menu\YamlBuilder</parameter>
-        <parameter key="admin.menu.top.class">FSi\Bundle\AdminBundle\Menu</parameter>
+        <parameter key="admin.menu.builder.yaml.class">FSi\Bundle\AdminBundle\Menu\Builder\YamlBuilder</parameter>
+        <parameter key="admin.menu.builder.evented.class">FSi\Bundle\AdminBundle\Menu\Builder\EventedBuilder</parameter>
+        <parameter key="admin.menu.listener.tools.class">FSi\Bundle\AdminBundle\EventListener\MenuToolsListener</parameter>
     </parameters>
 
     <services>
-        <service id="admin.menu.builder_yml" class="%admin.menu.builder_yml.class%">
+        <service id="admin.menu.builder.yaml" class="%admin.menu.builder.yaml.class%">
             <argument type="service" id="admin.manager" />
             <argument>%admin.menu_config_path%</argument>
         </service>
 
-        <service id="admin.knp.menu.builder" class="%admin.knp.menu.builder.class%">
-            <argument type="service" id="admin.menu.builder_yml"/>
+        <service id="admin.menu.builder.evented" class="%admin.menu.builder.evented.class%">
+            <argument type="service" id="event_dispatcher" />
+        </service>
+
+        <service id="admin.menu.knp.builder.elements" class="%admin.knp.menu.builder.class%">
+            <argument type="service" id="admin.menu.builder.yaml"/>
             <argument type="service" id="knp_menu.factory"/>
             <call method="setRequest">
                 <argument type="service" id="request" on-invalid="null" strict="false" />
             </call>
         </service>
 
-        <service id="admin.menu.top" class="%admin.menu.top.class%"
-                 factory-service="admin.knp.menu.builder"
-                 factory-method="createMenu">
-            <tag name="knp_menu.menu" alias="menu"/>
+        <service id="admin.menu.knp.builder.tools" class="%admin.knp.menu.builder.class%">
+            <argument type="service" id="admin.menu.builder.evented"/>
+            <argument type="service" id="knp_menu.factory"/>
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="null" strict="false" />
+            </call>
         </service>
 
+        <service id="admin.menu.elements" class="%admin.knp.menu.builder.class%"
+                 factory-service="admin.menu.knp.builder.elements"
+                 factory-method="createMenu">
+            <tag name="knp_menu.menu" alias="elements"/>
+        </service>
+
+        <service id="admin.menu.tools" class="%admin.knp.menu.builder.class%"
+                 factory-service="admin.menu.knp.builder.tools"
+                 factory-method="createMenu">
+            <tag name="knp_menu.menu" alias="tools"/>
+        </service>
+
+        <service id="admin.menu.listener.tools" class="%admin.menu.listener.tools.class%" scope="request">
+            <argument type="string">%admin.display_language_switch%</argument>
+            <argument type="service" id="translator"/>
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="null" strict="false" />
+            </call>
+            <tag name="kernel.event_listener" event="menu.tools" method="createLocaleMenu" />
+        </service>
     </services>
 </container>

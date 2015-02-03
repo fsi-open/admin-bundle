@@ -9,10 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Menu;
 
+use FSi\Bundle\AdminBundle\Menu\Item\ItemInterface;
+
 class Menu
 {
     /**
-     * @var Item[]
+     * @var ItemInterface[]
      */
     private $items;
 
@@ -22,15 +24,15 @@ class Menu
     }
 
     /**
-     * @param Item $item
+     * @param ItemInterface $item
      */
-    public function addItem(Item $item)
+    public function addItem(ItemInterface $item)
     {
         $this->items[] = $item;
     }
 
     /**
-     * @return Item[]
+     * @return ItemInterface[]
      */
     public function getItems()
     {

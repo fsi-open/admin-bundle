@@ -1,0 +1,8 @@
+{% extends '@FSiAdmin/Admin/knp_menu.html.twig' %}
+
+{% block root %}
+    {% set listAttributes = { class: 'nav navbar-nav navbar-right' } %}
+    {{ block('list') -}}
+{% endblock %}
+
+{% block label %}{{ item.label|trans({}, 'FSiAdminBundle') }}{% endblock %}

@@ -7,9 +7,12 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Menu;
+namespace FSi\Bundle\AdminBundle\Menu\Builder;
 
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
+use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
+use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
+use FSi\Bundle\AdminBundle\Menu\Menu;
 use Symfony\Component\Yaml\Yaml;
 
 class YamlBuilder implements Builder
@@ -67,12 +70,8 @@ class YamlBuilder implements Builder
         $item = $this->buildSingleItem($itemConfig);
 
         if (!isset($item) && is_array($itemConfig)) {
-            $item = new Item(key($itemConfig));
+            $item = new RoutableItem(key($itemConfig));
             $this->iterateBuildMenu($item, current($itemConfig));
-        }
-
-        if ($this->hasEntry($itemConfig, 'id') && $this->manager->hasElement($itemConfig['id'])) {
-            $item->setElement($this->manager->getElement($itemConfig['id']));
         }
 
         return $item;
@@ -81,20 +80,22 @@ class YamlBuilder implements Builder
     private function buildSingleItem($itemConfig)
     {
         if (is_string($itemConfig)) {
-            $item = new Item($itemConfig);
             if ($this->manager->hasElement($itemConfig)) {
-                $item->setElement($this->manager->getElement($itemConfig));
+                return new ElementItem($itemConfig, $this->manager->getElement($itemConfig));
             }
-            return $item;
+
+            return new RoutableItem($itemConfig);
         }
 
-        if ($this->hasEntry($itemConfig, 'name')) {
-            return new Item($itemConfig['name']);
+        if (!$this->hasEntry($itemConfig, 'id')) {
+            //throw new \Exception('There should be id: ' . var_export($itemConfig, true)); // FIXME: !!!
+            return null;
         }
 
-        if ($this->hasEntry($itemConfig, 'id')) {
-            return new Item($itemConfig['id']);
-        }
+        return new ElementItem(
+            ($this->hasEntry($itemConfig, 'name')) ? $itemConfig['name'] : $itemConfig['id'],
+            $this->manager->getElement($itemConfig['id'])
+        );
     }
 
     private function hasEntry($itemConfig, $keyName)
@@ -103,10 +104,10 @@ class YamlBuilder implements Builder
     }
 
     /**
-     * @param Item $item
+     * @param RoutableItem $item
      * @param array $config
      */
-    private function iterateBuildMenu(Item $item, array $config)
+    private function iterateBuildMenu(RoutableItem $item, array $config)
     {
         foreach ($config as $itemConfig) {
             $child =  $this->buildItem($itemConfig);

@@ -28,7 +28,6 @@ class TwigGlobalsPass implements CompilerPassInterface
             'admin_templates_form_theme'          => $container->getParameter('admin.templates.form_theme'),
             'admin_templates_datagrid_theme'      => $container->getParameter('admin.templates.datagrid_theme'),
             'admin_templates_datasource_theme'    => $container->getParameter('admin.templates.datasource_theme'),
-            'admin_display_language_switch'       => $container->getParameter('admin.display_language_switch'),
         );
 
         $twig = $container->findDefinition('twig');
