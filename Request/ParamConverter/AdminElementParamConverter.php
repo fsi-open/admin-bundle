@@ -29,11 +29,10 @@ class AdminElementParamConverter implements ParamConverterInterface
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface $configuration
+     * @param \Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter $configuration
      * @return bool
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function apply(Request $request, ConfigurationInterface $configuration)
+    public function apply(Request $request, ParamConverter $configuration)
     {
         $param = $configuration->getName();
         $id = $request->attributes->get($param, '');
@@ -48,10 +47,10 @@ class AdminElementParamConverter implements ParamConverterInterface
     }
 
     /**
-     * @param \Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface $configuration
+     * @param \Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter $configuration
      * @return bool
      */
-    public function supports(ConfigurationInterface $configuration)
+    public function supports(ParamConverter $configuration)
     {
         if (!$configuration instanceof ParamConverter) {
             return false;

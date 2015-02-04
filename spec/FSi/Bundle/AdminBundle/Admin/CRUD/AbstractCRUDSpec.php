@@ -89,14 +89,20 @@ class AbstractCRUDSpec extends ObjectBehavior
 
     function it_has_default_options_values()
     {
-        $this->getOptions()->shouldReturn(array(
-            'allow_delete' => true,
-            'allow_add' => true,
-            'template_crud_list' => null,
-            'template_crud_create' => null,
-            'template_crud_edit' => null,
-            'template_list' => null,
-            'template_form' => null
-        ));
+        $options = $this->getOptions();
+        $options->shouldHaveKey('allow_delete');
+        $options->shouldHaveKey('allow_add');
+        $options->shouldHaveKey('template_crud_list');
+        $options->shouldHaveKey('template_crud_create');
+        $options->shouldHaveKey('template_crud_edit');
+        $options->shouldHaveKey('template_list');
+        $options->shouldHaveKey('template_form');
+        $options['allow_delete']->shouldBe(true);
+        $options['allow_add']->shouldBe(true);
+        $options['template_crud_list']->shouldBe(null);
+        $options['template_crud_create']->shouldBe(null);
+        $options['template_crud_edit']->shouldBe(null);
+        $options['template_list']->shouldBe(null);
+        $options['template_form']->shouldBe(null);
     }
 }
