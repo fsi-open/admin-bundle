@@ -22,7 +22,7 @@ class RoutableItem extends Item
     private $routeParameters;
 
     /**
-     * @param string|null $name
+     * @param string $name
      * @param $route
      * @param $routeParameters
      */

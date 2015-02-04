@@ -58,21 +58,23 @@ class KnpMenuBuilder
      */
     public function createMenu()
     {
-        $menu = $this->createMenuRoot();
+        $rootMenuItem = $this->builder->buildMenu();
+        $knpMenuItem = $this->createMenuRoot($rootMenuItem);
 
-        $this->populateMenu($menu, $this->builder->buildMenu()->getChildren());
+        $this->populateMenu($knpMenuItem, $rootMenuItem->getChildren());
 
-        return $menu;
+        return $knpMenuItem;
     }
 
     /**
+     * @param Item $rootMenuItem
      * @return KnpItemInterface
      */
-    protected function createMenuRoot()
+    protected function createMenuRoot(Item $rootMenuItem)
     {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttribute('class', 'nav navbar-nav');
-        $menu->setChildrenAttribute('id', 'top-menu');
+        $menu->setChildrenAttribute('class', $rootMenuItem->getOption('class'));
+        $menu->setChildrenAttribute('id', $rootMenuItem->getOption('id'));
 
         return $menu;
     }
@@ -97,15 +99,19 @@ class KnpMenuBuilder
      */
     protected function addMenuItem(KnpItemInterface $menu, Item $item)
     {
-        $options = array('uri' => '#');
+        $options = array(
+            'uri' => '#',
+            'attributes' => $item->getOptions(),
+        );
 
         if ($item instanceof RoutableItem && $item->getRoute()) {
             $options = array(
                 'route' => $item->getRoute(),
-                'routeParameters' => $item->getRouteParameters()
+                'routeParameters' => $item->getRouteParameters(),
+                'attributes' => $item->getOptions(),
             );
         }
 
-        return $menu->addChild($item->getName(), $options)->setAttribute('class', 'admin-element');
+        return $menu->addChild($item->getName(), $options);
     }
 }

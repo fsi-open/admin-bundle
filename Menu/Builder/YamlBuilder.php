@@ -13,7 +13,6 @@ use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructure;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
-use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use Symfony\Component\Yaml\Yaml;
 
 class YamlBuilder implements Builder
@@ -59,6 +58,11 @@ class YamlBuilder implements Builder
         }
 
         $menu = new Item();
+        $menu->setOptions(array(
+            'id' => 'top-menu',
+            'class' => 'nav navbar-nav',
+        ));
+
         $this->populateMenu($menu, $config['menu']);
 
         return $menu;
@@ -68,6 +72,10 @@ class YamlBuilder implements Builder
     {
         foreach ($configs as $itemConfig) {
             $item = $this->buildSingleItem($itemConfig);
+
+            if (null !== $item) {
+                $item->setOptions(array('class' => 'admin-element',));
+            }
 
             if (null === $item && is_array($itemConfig)) {
                 $item = new Item(key($itemConfig));
