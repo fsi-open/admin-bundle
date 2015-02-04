@@ -59,8 +59,10 @@ class YamlBuilder implements Builder
 
         $menu = new Item();
         $menu->setOptions(array(
-            'id' => 'top-menu',
-            'class' => 'nav navbar-nav',
+            'attr' => array(
+                'id' => 'top-menu',
+                'class' => 'nav navbar-nav',
+            )
         ));
 
         $this->populateMenu($menu, $config['menu']);
@@ -74,7 +76,7 @@ class YamlBuilder implements Builder
             $item = $this->buildSingleItem($itemConfig);
 
             if (null !== $item) {
-                $item->setOptions(array('class' => 'admin-element',));
+                $item->setOptions(array('attr' => array('class' => 'admin-element',)));
             }
 
             if (null === $item && is_array($itemConfig)) {

@@ -59,7 +59,7 @@ class MenuToolsListener
                 'FSiAdminBundle'
             )
         );
-        $language->setOptions(array('id' => 'language'));
+        $language->setOptions(array('attr' => array('id' => 'language')));
         $language->addChild(new RoutableItem('admin.language.polish', 'fsi_admin_locale', array('_locale' => 'pl')));
         $language->addChild(new RoutableItem('admin.language.english', 'fsi_admin_locale', array('_locale' => 'en')));
 

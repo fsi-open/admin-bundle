@@ -4,7 +4,6 @@ namespace FSi\Bundle\AdminBundle\Menu\Item;
 
 use FSi\Bundle\AdminBundle\Exception\MissingOptionException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class Item
 {
@@ -108,24 +107,28 @@ class Item
     public function setOptions(array $options)
     {
         $optionsResolver = new OptionsResolver();
-        $this->setDefaultOptions($optionsResolver);
-        $this->options = $optionsResolver->resolve($options);
-    }
+        $optionsResolver->setDefaults(array(
+            'attr' => array(),
+        ));
 
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    private function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
+        $optionsResolver->setAllowedTypes(array(
+            'attr' => array('array'),
+        ));
+
+        $options = $optionsResolver->resolve($options);
+
+        $attrOptionsResolver = new OptionsResolver();
+        $attrOptionsResolver->setDefaults(array(
             'id' => null,
             'class' => null,
         ));
 
-        $resolver->setAllowedTypes(array(
+        $attrOptionsResolver->setAllowedTypes(array(
             'id' => array('null', 'string'),
             'class' => array('null', 'string'),
         ));
+
+        $this->options = $attrOptionsResolver->resolve($options['attr']);
     }
 
     public function hasOption($name)
