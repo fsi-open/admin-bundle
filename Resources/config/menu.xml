@@ -55,7 +55,7 @@
             <call method="setRequest">
                 <argument type="service" id="request" on-invalid="null" strict="false" />
             </call>
-            <tag name="kernel.event_listener" event="menu.tools" method="createLocaleMenu" />
+            <tag name="kernel.event_listener" event="fsi_admin.menu.tools" method="createLocaleMenu" />
         </service>
     </services>
 </container>

@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class MenuBuilderEvent extends Event
 {
-    const TOOLS = 'menu.tools';
+    const TOOLS = 'fsi_admin.menu.tools';
 
     /**
      * @var Item

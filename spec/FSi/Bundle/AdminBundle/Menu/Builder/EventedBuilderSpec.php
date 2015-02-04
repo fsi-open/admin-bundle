@@ -15,7 +15,7 @@ class EventedBuilderSpec extends ObjectBehavior
 
     public function it_should_emit_proper_event(EventDispatcherInterface $dispatcher)
     {
-        $dispatcher->dispatch('menu.tools', Argument::allOf(
+        $dispatcher->dispatch('fsi_admin.menu.tools', Argument::allOf(
             Argument::type('FSi\Bundle\AdminBundle\Event\MenuBuilderEvent')
         ))->shouldBeCalled();
 
