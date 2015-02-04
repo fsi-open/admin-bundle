@@ -11,6 +11,7 @@ namespace FSi\Bundle\AdminBundle\Menu\Builder;
 
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
+use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use FSi\Bundle\AdminBundle\Menu\Menu;
 use Symfony\Component\Yaml\Yaml;
@@ -53,9 +54,7 @@ class YamlBuilder implements Builder
         $menuConfig = $config['menu'];
 
         foreach ($menuConfig as $itemConfig) {
-            $item = $this->buildItem($itemConfig);
-
-            $menu->addItem($item);
+            $menu->addItem($this->buildItem($itemConfig));
         }
 
         return $menu;
@@ -63,7 +62,7 @@ class YamlBuilder implements Builder
 
     /**
      * @param $itemConfig
-     * @return array
+     * @return Item
      */
     private function buildItem($itemConfig)
     {
@@ -88,7 +87,6 @@ class YamlBuilder implements Builder
         }
 
         if (!$this->hasEntry($itemConfig, 'id')) {
-            //throw new \Exception('There should be id: ' . var_export($itemConfig, true)); // FIXME: !!!
             return null;
         }
 
@@ -104,10 +102,10 @@ class YamlBuilder implements Builder
     }
 
     /**
-     * @param RoutableItem $item
+     * @param Item $item
      * @param array $config
      */
-    private function iterateBuildMenu(RoutableItem $item, array $config)
+    private function iterateBuildMenu(Item $item, array $config)
     {
         foreach ($config as $itemConfig) {
             $child =  $this->buildItem($itemConfig);

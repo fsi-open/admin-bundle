@@ -9,18 +9,8 @@
 
 namespace FSi\Bundle\AdminBundle\Menu\Item;
 
-class RoutableItem implements RoutableItemInterface
+class RoutableItem extends Item
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var RoutableItem[]
-     */
-    private $children;
-
     /**
      * @var string
      */
@@ -38,50 +28,10 @@ class RoutableItem implements RoutableItemInterface
      */
     public function __construct($name, $route = null, $routeParameters = array())
     {
-        $this->children = array();
-        $this->name = $name;
+        parent::__construct($name);
+
         $this->route = $route;
         $this->routeParameters = $routeParameters;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param ItemInterface $item
-     */
-    public function addChild(ItemInterface $item)
-    {
-        $this->children[] = $item;
-    }
-
-    /**
-     * @return int
-     */
-    public function hasChildren()
-    {
-        return (boolean) count($this->children);
-    }
-
-    /**
-     * @return ItemInterface[]
-     */
-    public function getChildren()
-    {
-        return $this->children;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->name;
     }
 
     /**

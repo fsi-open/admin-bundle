@@ -19,7 +19,7 @@ class MenuToolsListenerSpec extends ObjectBehavior
     {
         $event->getMenu()->willReturn($menu);
 
-        $menu->addItem(Argument::type('FSi\Bundle\AdminBundle\Menu\Item\RoutableItem'))->shouldBeCalled();
+        $menu->addItem(Argument::type('FSi\Bundle\AdminBundle\Menu\Item\Item'))->shouldBeCalled();
 
         $this->createLocaleMenu($event);
     }

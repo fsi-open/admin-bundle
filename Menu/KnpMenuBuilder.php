@@ -11,10 +11,10 @@ namespace FSi\Bundle\AdminBundle\Menu;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use FSi\Bundle\AdminBundle\Menu\Builder\Builder;
-use FSi\Bundle\AdminBundle\Menu\Item\ItemInterface;
-use FSi\Bundle\AdminBundle\Menu\Item\RoutableItemInterface;
+use FSi\Bundle\AdminBundle\Menu\Item\Item;
+use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use Knp\Menu\FactoryInterface;
-use Knp\Menu\MenuItem;
+use Knp\Menu\ItemInterface as KnpItemInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class KnpMenuBuilder
@@ -30,6 +30,11 @@ class KnpMenuBuilder
     private $builder;
 
     /**
+     * @var Request
+     */
+    private $request;
+
+    /**
      * @param Builder $builder
      * @param FactoryInterface $factory
      */
@@ -40,7 +45,7 @@ class KnpMenuBuilder
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      */
     public function setRequest(Request $request = null)
     {
@@ -49,7 +54,7 @@ class KnpMenuBuilder
 
     /**
      * @throws \RuntimeException
-     * @return \Knp\Menu\ItemInterface
+     * @return KnpItemInterface
      */
     public function createMenu()
     {
@@ -78,7 +83,7 @@ class KnpMenuBuilder
     }
 
     /**
-     * @return \Knp\Menu\ItemInterface
+     * @return KnpItemInterface
      */
     protected function createMenuRoot()
     {
@@ -90,14 +95,14 @@ class KnpMenuBuilder
     }
 
     /**
-     * @param ItemInterface $item
-     * @param $menu
+     * @param Item $item
+     * @param KnpItemInterface $menu
      */
-    private function addMenuItem(ItemInterface $item, MenuItem $menu)
+    private function addMenuItem(Item $item, KnpItemInterface $menu)
     {
         $options = array('uri' => '#');
 
-        if ($item instanceof RoutableItemInterface && $item->getRoute()) {
+        if ($item instanceof RoutableItem && $item->getRoute()) {
             $options = array(
                 'route' => $item->getRoute(),
                 'routeParameters' => $item->getRouteParameters()
