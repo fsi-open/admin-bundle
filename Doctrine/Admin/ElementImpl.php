@@ -7,23 +7,29 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Doctrine\Admin\Display;
+namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use FSi\Bundle\AdminBundle\Admin\Display\GenericDisplayElement;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Element;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
-abstract class DisplayElement extends GenericDisplayElement implements Element
+trait ElementImpl
 {
     /**
-     * @var ManagerRegistry
+     * @var \Doctrine\Common\Persistence\ManagerRegistry
      */
     protected $registry;
 
     /**
-     * {@inheritdoc}
+     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
+     */
+    public function setManagerRegistry(ManagerRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function getObjectManager()
     {
@@ -37,26 +43,10 @@ abstract class DisplayElement extends GenericDisplayElement implements Element
     }
 
     /**
-     * {@inheritdoc}
+     * @return \Doctrine\Common\Persistence\ObjectRepository
      */
     public function getRepository()
     {
         return $this->getObjectManager()->getRepository($this->getClassName());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataIndexer()
-    {
-        return new DoctrineDataIndexer($this->registry, $this->getRepository()->getClassName());;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setManagerRegistry(ManagerRegistry $registry)
-    {
-        $this->registry = $registry;
     }
 }

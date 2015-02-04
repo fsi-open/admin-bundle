@@ -9,7 +9,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Context;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use PhpSpec\ObjectBehavior;
@@ -22,7 +22,7 @@ class ContextManagerSpec extends ObjectBehavior
     }
 
     function it_build_context_for_element(
-        ElementInterface $element,
+        Element $element,
         ContextBuilderInterface $builder,
         ContextInterface $context
     ) {
@@ -33,7 +33,7 @@ class ContextManagerSpec extends ObjectBehavior
     }
 
     function it_return_null_when_context_builders_do_not_support_element(
-        ElementInterface $element,
+        Element $element,
         ContextBuilderInterface $builder
     ) {
         $builder->supports('route_name', $element)->willReturn(false);

@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Event;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminEvent extends Event
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\ElementInterface
+     * @var \FSi\Bundle\AdminBundle\Admin\Element
      */
     protected $element;
 
@@ -35,17 +35,17 @@ class AdminEvent extends Event
     protected $response;
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    public function __construct(ElementInterface $element, Request $request)
+    public function __construct(Element $element, Request $request)
     {
         $this->element = $element;
         $this->request = $request;
     }
 
     /**
-     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface
+     * @return \FSi\Bundle\AdminBundle\Admin\Element
      */
     public function getElement()
     {

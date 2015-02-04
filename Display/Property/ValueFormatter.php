@@ -11,5 +11,9 @@ namespace FSi\Bundle\AdminBundle\Display\Property;
 
 interface ValueFormatter
 {
+    /**
+     * @param mixed $value
+     * @return mixed
+     */
     public function format($value);
 }

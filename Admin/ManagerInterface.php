@@ -14,11 +14,11 @@ use FSi\Bundle\AdminBundle\Admin\Manager\Visitor;
 interface ManagerInterface
 {
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      * @internal string $group
      * @return \FSi\Bundle\AdminBundle\Admin\Manager
      */
-    public function addElement(ElementInterface $element);
+    public function addElement(Element $element);
 
     /**
      * @param string $id
@@ -28,7 +28,7 @@ interface ManagerInterface
 
     /**
      * @param string $id
-     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface
+     * @return \FSi\Bundle\AdminBundle\Admin\Element
      */
     public function getElement($id);
 
@@ -38,7 +38,7 @@ interface ManagerInterface
     public function removeElement($id);
 
     /**
-     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface[]
+     * @return \FSi\Bundle\AdminBundle\Admin\Element[]
      */
     public function getElements();
 

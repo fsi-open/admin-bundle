@@ -9,10 +9,10 @@
 
 namespace FSi\Bundle\AdminBundle\spec\fixtures;
 
-use FSi\Bundle\AdminBundle\Admin\ResourceRepository\AbstractResource;
-use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceInterface;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 
-class MyResource extends AbstractResource
+class MyResource extends GenericResourceElement
 {
     public function getKey()
     {
@@ -34,9 +34,9 @@ class MyResource extends AbstractResource
     }
 
     /**
-     * @param ResourceInterface $resource
+     * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue $resource
      */
-    public function save(ResourceInterface $resource)
+    public function save(ResourceValue $resource)
     {
     }
 }

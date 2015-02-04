@@ -9,9 +9,9 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
-interface DataIndexerElement extends ElementInterface
+interface DataIndexerElement extends Element
 {
     /**
      * This method should be used inside of admin objects to retrieve DataIndexerInterface.

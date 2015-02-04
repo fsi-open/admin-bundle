@@ -9,11 +9,10 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
-use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceInterface as ModelResourceInterface;
-use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
+use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 
-interface Element extends ElementInterface
+interface Element extends RedirectableElement
 {
     /**
      * @return string
@@ -26,12 +25,12 @@ interface Element extends ElementInterface
     public function getResourceFormOptions();
 
     /**
-     * @param ModelResourceInterface $resource
+     * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue $resource
      */
-    public function save(ModelResourceInterface $resource);
+    public function save(ResourceValue $resource);
 
     /**
-     * @return ResourceValueRepository
+     * @return \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository
      */
     public function getRepository();
 }

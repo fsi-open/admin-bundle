@@ -14,17 +14,21 @@ class View
     /**
      * @var mixed
      */
-    protected $value;
+    private $value;
 
     /**
      * @var null|string
      */
-    protected $label;
+    private $label;
+
+    /**
+     * @var string
+     */
     private $path;
 
     /**
      * @param mixed $value
-     * @param $path
+     * @param string $path
      * @param null|string $label
      */
     public function __construct($value, $path, $label = null)
@@ -35,7 +39,7 @@ class View
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLabel()
     {
@@ -51,7 +55,7 @@ class View
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPath()
     {

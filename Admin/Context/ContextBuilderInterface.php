@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Context;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -18,15 +18,15 @@ interface ContextBuilderInterface
 {
     /**
      * @param string $route
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      * @return boolean
      * @throws \FSi\Bundle\AdminBundle\Exception\ContextBuilderException
      */
-    public function supports($route, ElementInterface $element);
+    public function supports($route, Element $element);
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      * @return \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface
      */
-    public function buildContext(ElementInterface $element);
+    public function buildContext(Element $element);
 }

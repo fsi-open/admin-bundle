@@ -18,11 +18,18 @@ class DateTime implements ValueFormatter
      */
     private $format;
 
+    /**
+     * @param string $format
+     */
     public function __construct($format = 'Y-m-d H:i:s')
     {
         $this->format = $format;
     }
 
+    /**
+     * @param mixed $value
+     * @return mixed|string
+     */
     public function format($value)
     {
         if (empty($value) || !$value instanceof \DateTime) {

@@ -12,15 +12,15 @@ namespace FSi\Bundle\AdminBundle\Display;
 interface Display
 {
     /**
-     * @param $path
-     * @param null $label
-     * @param array $valueFormatters
-     * @return Display
+     * @param string $path
+     * @param string|null $label
+     * @param array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[] $valueFormatters
+     * @return \FSi\Bundle\AdminBundle\Display\Display
      */
     public function add($path, $label = null, $valueFormatters = array());
 
     /**
-     * @return DisplayView
+     * @return \FSi\Bundle\AdminBundle\Display\DisplayView
      */
     public function createView();
 }

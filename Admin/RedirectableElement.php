@@ -7,11 +7,9 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Admin\CRUD;
+namespace FSi\Bundle\AdminBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
-
-interface RedirectableElement extends ElementInterface
+interface RedirectableElement extends Element
 {
     /**
      * Return route name that will be used to redirect after successful form handling.

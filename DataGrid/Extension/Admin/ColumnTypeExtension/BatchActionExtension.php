@@ -225,7 +225,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
 
     /**
      * @param \Symfony\Component\OptionsResolver\Options $options
-     * @return \FSi\Bundle\AdminBundle\Admin\ElementInterface
+     * @return \FSi\Bundle\AdminBundle\Admin\Element
      */
     private function getElementFromOption(Options $options)
     {

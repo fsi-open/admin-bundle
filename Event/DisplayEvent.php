@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Event;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Display\Display;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,11 +21,11 @@ class DisplayEvent extends AdminEvent
     private $display;
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \FSi\Bundle\AdminBundle\Display\Display $display
      */
-    public function __construct(ElementInterface $element, Request $request, Display $display)
+    public function __construct(Element $element, Request $request, Display $display)
     {
         parent::__construct($element, $request);
         $this->display = $display;

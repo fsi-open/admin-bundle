@@ -14,15 +14,22 @@ use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
 class Collection implements ValueFormatter
 {
     /**
-     * @var ValueFormatter[]
+     * @var array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[]
      */
     private $formatters;
 
-    public function __construct($formatters)
+    /**
+     * @param array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[] $formatters
+     */
+    public function __construct(array $formatters)
     {
         $this->formatters = $formatters;
     }
 
+    /**
+     * @param mixed $value
+     * @return array|mixed
+     */
     public function format($value)
     {
         if (empty($value)) {

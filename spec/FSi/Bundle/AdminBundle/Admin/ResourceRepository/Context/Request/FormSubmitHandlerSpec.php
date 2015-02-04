@@ -3,6 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request;
 
 use FSi\Bundle\AdminBundle\Event\FormEvent;
+use FSi\Bundle\AdminBundle\Event\FormEvents;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Event\ResourceEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
@@ -37,12 +38,9 @@ class FormSubmitHandlerSpec extends ObjectBehavior
 
     function it_do_nothing_on_non_POST_request(
         FormEvent $event,
-        Request $request,
-        EventDispatcher $eventDispatcher
+        Request $request
     ) {
-        $request->getMethod()->willReturn('GET');
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_CONTEXT_POST_CREATE, $event)
-            ->shouldBeCalled();
+        $request->isMethod('POST')->willReturn(false);
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -53,36 +51,18 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         EventDispatcher $eventDispatcher,
         Form $form
     ) {
-        $request->getMethod()->willReturn('POST');
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_CONTEXT_POST_CREATE, $event)
-            ->shouldBeCalled();
+        $request->isMethod('POST')->willReturn(true);
 
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_FORM_REQUEST_PRE_SUBMIT, $event)
+        $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
             ->shouldBeCalled();
 
         $event->getForm()->willReturn($form);
         $form->submit($request)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_FORM_REQUEST_POST_SUBMIT, $event)
+        $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_POST_SUBMIT, $event)
             ->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
-    }
-
-    function it_return_response_from_context_post_create_event(
-        FormEvent $event,
-        Request $request,
-        EventDispatcher $eventDispatcher
-    ) {
-        $request->getMethod()->willReturn('GET');
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_CONTEXT_POST_CREATE, $event)
-            ->will(function() use ($event) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
-            });
-
-        $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
     function it_return_response_from_request_pre_submit_event(
@@ -90,11 +70,9 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
-        $request->getMethod()->willReturn('POST');
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_CONTEXT_POST_CREATE, $event)
-            ->shouldBeCalled();
+        $request->isMethod('POST')->willReturn(true);
 
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_FORM_REQUEST_PRE_SUBMIT, $event)
+        $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
                 $event->getResponse()->willReturn(new Response());
@@ -110,18 +88,15 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         EventDispatcher $eventDispatcher,
         Form $form
     ) {
-        $request->getMethod()->willReturn('POST');
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_CONTEXT_POST_CREATE, $event)
-            ->shouldBeCalled();
+        $request->isMethod('POST')->willReturn(true);
 
-
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_FORM_REQUEST_PRE_SUBMIT, $event)
+        $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
             ->shouldBeCalled();
 
         $event->getForm()->willReturn($form);
         $form->submit($request)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(ResourceEvents::RESOURCE_FORM_REQUEST_POST_SUBMIT, $event)
+        $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_POST_SUBMIT, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
                 $event->getResponse()->willReturn(new Response());

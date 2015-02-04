@@ -11,7 +11,7 @@ namespace FSi\Bundle\AdminBundle\Admin\Display\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
 use FSi\Bundle\AdminBundle\Admin\Display\GenericDisplayElement;
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 class DisplayContextBuilder implements ContextBuilderInterface
 {
@@ -31,7 +31,7 @@ class DisplayContextBuilder implements ContextBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($route, ElementInterface $element)
+    public function supports($route, Element $element)
     {
         if ($route !== $this->getSupportedRoute()) {
             return false;
@@ -47,7 +47,7 @@ class DisplayContextBuilder implements ContextBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildContext(ElementInterface $element)
+    public function buildContext(Element $element)
     {
         $this->context->setElement($element);
 

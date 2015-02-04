@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Context;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -43,10 +43,10 @@ class ContextManager
 
     /**
      * @param string $route
-     * @param \FSi\Bundle\AdminBundle\Admin\ElementInterface $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
      * @return \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface|null
      */
-    public function createContext($route, ElementInterface $element)
+    public function createContext($route, Element $element)
     {
         foreach ($this->builders as $builder) {
             if ($builder->supports($route, $element)) {

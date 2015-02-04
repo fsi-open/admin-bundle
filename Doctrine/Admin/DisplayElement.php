@@ -9,17 +9,9 @@
 
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
-use FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement;
+use FSi\Bundle\AdminBundle\Admin\Display\GenericDisplayElement;
 
-abstract class ListElement extends GenericListElement implements Element
+abstract class DisplayElement extends GenericDisplayElement implements Element
 {
     use DataIndexerElementImpl;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveDataGrid()
-    {
-        $this->getObjectManager()->flush();
-    }
 }
