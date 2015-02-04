@@ -27,12 +27,12 @@ class KnpMenuBuilder
     /**
      * @var Builder
      */
-    private $builder;
+    protected $builder;
 
     /**
      * @var Request
      */
-    private $request;
+    protected $request;
 
     /**
      * @param Builder $builder
@@ -64,20 +64,7 @@ class KnpMenuBuilder
             $menu->setCurrentUri($this->request->getRequestUri());
         }
 
-        foreach ($this->builder->buildMenu()->getChildren() as $item) {
-            if ($item->hasChildren()) {
-                $menu->addChild($item->getName(), array('uri' => '#'))
-                    ->setAttribute('dropdown', true);
-
-                foreach ($item->getChildren() as $child) {
-                    $this->addMenuItem($child, $menu[$item->getName()]);
-                }
-
-                continue;
-            }
-
-            $this->addMenuItem($item, $menu);
-        }
+        $this->populateMenu($menu, $this->builder->buildMenu()->getChildren());
 
         return $menu;
     }
@@ -94,11 +81,25 @@ class KnpMenuBuilder
         return $menu;
     }
 
+    protected function populateMenu(KnpItemInterface $menu, array $children)
+    {
+        foreach ($children as $item) {
+            /** @var $item Item */
+            $knpItem = $this->addMenuItem($menu, $item);
+
+            if ($item->hasChildren()) {
+                $knpItem->setAttribute('dropdown', true);
+                $this->populateMenu($knpItem, $item->getChildren());
+            }
+        }
+    }
+
     /**
-     * @param Item $item
      * @param KnpItemInterface $menu
+     * @param Item $item
+     * @return KnpItemInterface $menu
      */
-    private function addMenuItem(Item $item, KnpItemInterface $menu)
+    protected function addMenuItem(KnpItemInterface $menu, Item $item)
     {
         $options = array('uri' => '#');
 
@@ -109,6 +110,6 @@ class KnpMenuBuilder
             );
         }
 
-        $menu->addChild($item->getName(), $options)->setAttribute('class', 'admin-element');
+        return $menu->addChild($item->getName(), $options)->setAttribute('class', 'admin-element');
     }
 }
