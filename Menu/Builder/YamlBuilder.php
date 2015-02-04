@@ -48,31 +48,28 @@ class YamlBuilder implements Builder
      */
     public function buildMenu()
     {
-        $menu = new Item(null);
         $config = $this->yaml->parse($this->configFilePath, true, true);
         $menuConfig = $config['menu'];
 
-        foreach ($menuConfig as $itemConfig) {
-            $menu->addChild($this->buildItem($itemConfig));
-        }
+        $menu = new Item(null);
+        $this->populateMenu($menu, $menuConfig);
 
         return $menu;
     }
 
-    /**
-     * @param $itemConfig
-     * @return Item
-     */
-    private function buildItem($itemConfig)
+    private function populateMenu(Item $menu, array $configs)
     {
-        $item = $this->buildSingleItem($itemConfig);
+        foreach ($configs as $itemConfig) {
+            $item = $this->buildSingleItem($itemConfig);
 
-        if (!isset($item) && is_array($itemConfig)) {
-            $item = new RoutableItem(key($itemConfig));
-            $this->iterateBuildMenu($item, current($itemConfig));
+            if (null === $item && is_array($itemConfig)) {
+                $item = new Item(key($itemConfig));
+                $group = array_values($itemConfig);
+                $this->populateMenu($item, $group[0]);
+            }
+
+            $menu->addChild($item);
         }
-
-        return $item;
     }
 
     private function buildSingleItem($itemConfig)
@@ -98,17 +95,5 @@ class YamlBuilder implements Builder
     private function hasEntry($itemConfig, $keyName)
     {
         return is_array($itemConfig) && array_key_exists($keyName, $itemConfig);
-    }
-
-    /**
-     * @param Item $item
-     * @param array $config
-     */
-    private function iterateBuildMenu(Item $item, array $config)
-    {
-        foreach ($config as $itemConfig) {
-            $child =  $this->buildItem($itemConfig);
-            $item->addChild($child);
-        }
     }
 }
