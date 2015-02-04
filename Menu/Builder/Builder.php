@@ -9,12 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Menu\Builder;
 
-use FSi\Bundle\AdminBundle\Menu\Menu;
+use FSi\Bundle\AdminBundle\Menu\Item\Item;
 
 interface Builder
 {
     /**
-     * @return Menu
+     * @return Item
      */
     public function buildMenu();
 }

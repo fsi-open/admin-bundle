@@ -3,7 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Event\MenuBuilderEvent;
-use FSi\Bundle\AdminBundle\Menu\Menu;
+use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -15,11 +15,11 @@ class MenuToolsListenerSpec extends ObjectBehavior
         $this->beConstructedWith(true, $translator);
     }
 
-    function it_should_build_locale_menu(MenuBuilderEvent $event, Menu $menu)
+    function it_should_build_locale_menu(MenuBuilderEvent $event, Item $menu)
     {
         $event->getMenu()->willReturn($menu);
 
-        $menu->addItem(Argument::type('FSi\Bundle\AdminBundle\Menu\Item\Item'))->shouldBeCalled();
+        $menu->addChild(Argument::type('FSi\Bundle\AdminBundle\Menu\Item\Item'))->shouldBeCalled();
 
         $this->createLocaleMenu($event);
     }

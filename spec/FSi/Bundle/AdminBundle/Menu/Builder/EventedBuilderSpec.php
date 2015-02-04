@@ -19,6 +19,6 @@ class EventedBuilderSpec extends ObjectBehavior
             Argument::type('FSi\Bundle\AdminBundle\Event\MenuBuilderEvent')
         ))->shouldBeCalled();
 
-        $this->buildMenu()->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Menu\Menu');
+        $this->buildMenu()->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Menu\Item\Item');
     }
 }

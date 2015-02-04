@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Event;
 
-use FSi\Bundle\AdminBundle\Menu\Menu;
+use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use Symfony\Component\EventDispatcher\Event;
 
 class MenuBuilderEvent extends Event
@@ -17,20 +17,20 @@ class MenuBuilderEvent extends Event
     const TOOLS = 'menu.tools';
 
     /**
-     * @var Menu
+     * @var Item
      */
     private $menu;
 
     /**
-     * @param Menu $menu
+     * @param Item $menu
      */
-    public function __construct(Menu $menu)
+    public function __construct(Item $menu)
     {
         $this->menu = $menu;
     }
 
     /**
-     * @return Menu
+     * @return Item
      */
     public function getMenu()
     {

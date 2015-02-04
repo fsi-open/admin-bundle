@@ -3,6 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Menu\Builder;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Prophet;
@@ -24,7 +25,7 @@ class YamlBuilderSpec extends ObjectBehavior
 
     function it_build_menu()
     {
-        $this->buildMenu()->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Menu\Menu');
+        $this->buildMenu()->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Menu\Item\Item');
         $this->buildMenu()->shouldHaveItem('News', 'news');
         $this->buildMenu()->shouldHaveItem('article', 'article');
         $this->buildMenu()->shouldHaveItem('admin.menu.structure', false);
@@ -35,8 +36,8 @@ class YamlBuilderSpec extends ObjectBehavior
     public function getMatchers()
     {
         return array(
-            'haveItem' => function($menu, $itemName, $elementId = false) {
-                    $items = $menu->getItems();
+            'haveItem' => function(Item $menu, $itemName, $elementId = false) {
+                    $items = $menu->getChildren();
                     foreach ($items as $item) {
                         if ($item->getName() === $itemName) {
                             if (!$elementId) {
@@ -48,8 +49,8 @@ class YamlBuilderSpec extends ObjectBehavior
                     }
                     return false;
                 },
-            'haveItemThatHaveChild' => function($menu, $itemName, $childName, $elementId = false) {
-                    foreach ($menu->getItems() as $item) {
+            'haveItemThatHaveChild' => function(Item $menu, $itemName, $childName, $elementId = false) {
+                    foreach ($menu->getChildren() as $item) {
                         if ($item->getName() === $itemName && $item->hasChildren()) {
                             foreach ($item->getChildren() as $child) {
                                 if ($child->getName() === $childName) {

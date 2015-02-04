@@ -61,6 +61,6 @@ class MenuToolsListener
         $language->addChild(new RoutableItem('admin.language.polish', 'fsi_admin_locale', array('_locale' => 'pl')));
         $language->addChild(new RoutableItem('admin.language.english', 'fsi_admin_locale', array('_locale' => 'en')));
 
-        $event->getMenu()->addItem($language);
+        $event->getMenu()->addChild($language);
     }
 }

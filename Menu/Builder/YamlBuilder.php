@@ -13,7 +13,6 @@ use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
-use FSi\Bundle\AdminBundle\Menu\Menu;
 use Symfony\Component\Yaml\Yaml;
 
 class YamlBuilder implements Builder
@@ -45,16 +44,16 @@ class YamlBuilder implements Builder
     }
 
     /**
-     * @return Menu
+     * @return Item
      */
     public function buildMenu()
     {
-        $menu = new Menu();
+        $menu = new Item(null);
         $config = $this->yaml->parse($this->configFilePath, true, true);
         $menuConfig = $config['menu'];
 
         foreach ($menuConfig as $itemConfig) {
-            $menu->addItem($this->buildItem($itemConfig));
+            $menu->addChild($this->buildItem($itemConfig));
         }
 
         return $menu;

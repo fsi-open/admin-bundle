@@ -64,7 +64,7 @@ class KnpMenuBuilder
             $menu->setCurrentUri($this->request->getRequestUri());
         }
 
-        foreach ($this->builder->buildMenu()->getItems() as $item) {
+        foreach ($this->builder->buildMenu()->getChildren() as $item) {
             if ($item->hasChildren()) {
                 $menu->addChild($item->getName(), array('uri' => '#'))
                     ->setAttribute('dropdown', true);
