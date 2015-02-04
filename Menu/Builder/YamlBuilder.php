@@ -51,7 +51,7 @@ class YamlBuilder implements Builder
         $config = $this->yaml->parse($this->configFilePath, true, true);
         $menuConfig = $config['menu'];
 
-        $menu = new Item(null);
+        $menu = new Item();
         $this->populateMenu($menu, $menuConfig);
 
         return $menu;
@@ -79,7 +79,7 @@ class YamlBuilder implements Builder
                 return new ElementItem($itemConfig, $this->manager->getElement($itemConfig));
             }
 
-            return new RoutableItem($itemConfig);
+            return new Item($itemConfig);
         }
 
         if (!$this->hasEntry($itemConfig, 'id')) {

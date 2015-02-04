@@ -30,7 +30,7 @@ class EventedBuilder implements Builder
      */
     public function buildMenu()
     {
-        $menu = new Item(null);
+        $menu = new Item();
 
         $this->eventDispatcher->dispatch(MenuBuilderEvent::TOOLS, new MenuBuilderEvent($menu));
 

@@ -17,7 +17,7 @@ class Item
     /**
      * @param string|null $name
      */
-    public function __construct($name)
+    public function __construct($name = null)
     {
         $this->children = array();
         $this->name = $name;
