@@ -112,6 +112,12 @@ class KnpMenuBuilder
             );
         }
 
-        return $menu->addChild($item->getName(), $options);
+        $child = $menu->addChild($item->getName(), $options);
+
+        if ($item->getLabel()) {
+            $child->setLabel($item->getLabel());
+        }
+
+        return $child;
     }
 }

@@ -14,6 +14,11 @@ class Item
     private $name;
 
     /**
+     * @var string
+     */
+    private $label;
+
+    /**
      * @var Item[]
      */
     private $children;
@@ -43,11 +48,37 @@ class Item
     }
 
     /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * @param string $label
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+    }
+
+    /**
      * @param Item $item
      */
     public function addChild(Item $item)
     {
-        $this->children[] = $item;
+        $this->children[$item->getName()] = $item;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function removeChild($name)
+    {
+        if (isset($this->children[$name])) {
+            unset($this->children[$name]);
+        }
     }
 
     /**
@@ -84,7 +115,7 @@ class Item
     /**
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    private function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             'id' => null,

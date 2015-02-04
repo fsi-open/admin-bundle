@@ -51,7 +51,8 @@ class MenuToolsListener
             return;
         }
 
-        $language = new RoutableItem(
+        $language = new RoutableItem('admin.language.current');
+        $language->setLabel(
             $this->translator->trans(
                 'admin.language.current',
                 array('%locale%' => $this->request ? $this->request->getLocale() : '---'),
