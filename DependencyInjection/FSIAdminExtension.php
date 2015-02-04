@@ -45,7 +45,6 @@ class FSIAdminExtension extends Extension
         $loader->load('context/list.xml');
         $loader->load('context/form.xml');
         $loader->load('context/batch.xml');
-        $loader->load('context/resource.xml');
         $loader->load('context/display.xml');
     }
 
