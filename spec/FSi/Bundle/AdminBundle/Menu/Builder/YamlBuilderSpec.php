@@ -3,6 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Menu\Builder;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructure;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use PhpSpec\ObjectBehavior;
@@ -22,6 +23,16 @@ class YamlBuilderSpec extends ObjectBehavior
 
         $manager->hasElement(Argument::type('string'))->willReturn(true);
         $this->beConstructedWith($manager, __DIR__ . '/admin_menu.yml');
+    }
+
+    function it_throws_exception_when_yaml_definition_of_menu_is_invalid(Manager $manager)
+    {
+        $menuYaml = __DIR__ . '/invalid_admin_menu.yml';
+        $this->beConstructedWith($manager, $menuYaml);
+
+        $this->shouldThrow(new InvalidYamlStructure(
+            sprintf('File "%s" should contain top level "menu:" key', $menuYaml)
+        ))->during('buildMenu');
     }
 
     function it_build_menu()

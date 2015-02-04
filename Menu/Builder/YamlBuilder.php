@@ -10,6 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Menu\Builder;
 
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
+use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructure;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
@@ -45,14 +46,20 @@ class YamlBuilder implements Builder
 
     /**
      * @return Item
+     * @throws InvalidYamlStructure
      */
     public function buildMenu()
     {
         $config = $this->yaml->parse($this->configFilePath, true, true);
-        $menuConfig = $config['menu'];
+
+        if (!isset($config['menu'])) {
+            throw new InvalidYamlStructure(
+                sprintf('File "%s" should contain top level "menu:" key', $this->configFilePath)
+            );
+        }
 
         $menu = new Item();
-        $this->populateMenu($menu, $menuConfig);
+        $this->populateMenu($menu, $config['menu']);
 
         return $menu;
     }
