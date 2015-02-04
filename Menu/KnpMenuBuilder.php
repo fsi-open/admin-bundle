@@ -60,10 +60,6 @@ class KnpMenuBuilder
     {
         $menu = $this->createMenuRoot();
 
-        if (isset($this->request)) {
-            $menu->setCurrentUri($this->request->getRequestUri());
-        }
-
         $this->populateMenu($menu, $this->builder->buildMenu()->getChildren());
 
         return $menu;
