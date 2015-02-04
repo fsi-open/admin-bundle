@@ -8,22 +8,21 @@ php:
 env:
   - SYMFONY_VERSION=2.4.*
   - SYMFONY_VERSION=2.5.*
+  - SYMFONY_VERSION=2.6.*
   - SYMFONY_VERSION=dev-master
+
+sudo: false
 
 matrix:
   allow_failures:
     - env: SYMFONY_VERSION=dev-master
 
-before_install:
-    - sudo apt-get update > /dev/null
-
 install:
-    - echo "127.0.0.1 fsi-admin-bundle.dev" | sudo tee -a /etc/hosts
     - echo '' > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
     - wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
 
 before_script:
-    - nohup php -S fsi-admin-bundle.dev:8080 -t features/fixtures/project/web > server.log 2>&1 &
+    - nohup php -S localhost:8080 -t features/fixtures/project/web > server.log 2>&1 &
     - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99.0
     - java -jar selenium-server-standalone-2.42.2.jar > /dev/null &

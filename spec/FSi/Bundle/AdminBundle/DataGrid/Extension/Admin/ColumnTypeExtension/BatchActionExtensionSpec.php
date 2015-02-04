@@ -80,7 +80,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
             )
         ));
 
-        $this->shouldThrow('Symfony\Component\OptionsResolver\Exception\InvalidOptionsException')
+        $this->shouldThrow()
             ->during('buildHeaderView', array($column, $view));
     }
 
