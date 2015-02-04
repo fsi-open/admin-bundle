@@ -3,6 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Menu\Builder;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -14,7 +15,7 @@ class YamlBuilderSpec extends ObjectBehavior
     {
         $prophet = new Prophet();
         $manager->getElement(Argument::type('string'))->will(function($args) use ($prophet) {
-            $element = $prophet->prophesize('FSi\Bundle\AdminBundle\Admin\ElementInterface');
+            $element = $prophet->prophesize('FSi\Bundle\AdminBundle\Admin\Element');
             $element->getId()->willReturn($args[0]);
             return $element;
         });
@@ -44,6 +45,7 @@ class YamlBuilderSpec extends ObjectBehavior
                                 return true;
                             }
 
+                            /** @var ElementItem $item */
                             return $item->getElement()->getId() === $elementId;
                         }
                     }
@@ -58,6 +60,7 @@ class YamlBuilderSpec extends ObjectBehavior
                                         return true;
                                     }
 
+                                    /** @var ElementItem $child */
                                     return $child->getElement()->getId() === $elementId;
                                 }
                             }

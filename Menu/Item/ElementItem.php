@@ -9,16 +9,16 @@
 
 namespace FSi\Bundle\AdminBundle\Menu\Item;
 
-use FSi\Bundle\AdminBundle\Admin\ElementInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 class ElementItem extends RoutableItem
 {
     /**
-     * @var ElementInterface
+     * @var Element
      */
     private $element;
 
-    function __construct($name, ElementInterface $element)
+    function __construct($name, Element $element)
     {
         parent::__construct($name);
 
@@ -26,7 +26,7 @@ class ElementItem extends RoutableItem
     }
 
     /**
-     * @return ElementInterface
+     * @return Element
      */
     public function getElement()
     {
