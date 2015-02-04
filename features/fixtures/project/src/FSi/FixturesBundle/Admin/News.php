@@ -34,7 +34,6 @@ class News extends CRUDElement
         ));
         $datagrid->addColumn('date', 'datetime', array(
             'label' => 'admin.news.list.date',
-            'input_type' => 'datetime',
             'datetime_format' => 'Y-m-d',
             'editable' => true,
             'form_type' => array('date' => 'date'),
@@ -43,7 +42,6 @@ class News extends CRUDElement
             )
         ));
         $datagrid->addColumn('created_at', 'datetime', array(
-            'input_type' => 'datetime',
             'label' => 'admin.news.list.created_at'
         ));
         $datagrid->addColumn('visible', 'boolean', array(
