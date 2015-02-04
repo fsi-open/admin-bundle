@@ -49,7 +49,7 @@
             <tag name="knp_menu.menu" alias="tools"/>
         </service>
 
-        <service id="admin.menu.listener.tools" class="%admin.menu.listener.tools.class%" scope="request">
+        <service id="admin.menu.listener.tools" class="%admin.menu.listener.tools.class%">
             <argument type="string">%admin.display_language_switch%</argument>
             <argument type="service" id="translator"/>
             <call method="setRequest">
