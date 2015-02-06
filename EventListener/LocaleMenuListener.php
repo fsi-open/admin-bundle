@@ -9,12 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\EventListener;
 
-use FSi\Bundle\AdminBundle\Event\MenuBuilderEvent;
+use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class MenuToolsListener
+class LocaleMenuListener
 {
     /**
      * @var bool
@@ -45,7 +45,7 @@ class MenuToolsListener
         $this->request = $request;
     }
 
-    public function createLocaleMenu(MenuBuilderEvent $event)
+    public function createLocaleMenu(MenuEvent $event)
     {
         if ($this->displayLanguageSwitch == false) {
             return;

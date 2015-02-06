@@ -15,7 +15,7 @@ use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use Symfony\Component\Yaml\Yaml;
 
-class YamlBuilder implements Builder
+class MainMenuBuilder implements Builder
 {
     /**
      * @var string

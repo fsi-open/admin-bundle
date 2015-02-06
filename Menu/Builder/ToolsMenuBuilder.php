@@ -9,11 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Menu\Builder;
 
-use FSi\Bundle\AdminBundle\Event\MenuBuilderEvent;
+use FSi\Bundle\AdminBundle\Event\MenuEvent;
+use FSi\Bundle\AdminBundle\Event\MenuEvents;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class EventedBuilder implements Builder
+class ToolsMenuBuilder implements Builder
 {
     /**
      * @var EventDispatcherInterface
@@ -32,7 +33,7 @@ class EventedBuilder implements Builder
     {
         $menu = new Item();
 
-        $this->eventDispatcher->dispatch(MenuBuilderEvent::TOOLS, new MenuBuilderEvent($menu));
+        $this->eventDispatcher->dispatch(MenuEvents::TOOLS, new MenuEvent($menu));
 
         return $menu;
     }

@@ -12,10 +12,8 @@ namespace FSi\Bundle\AdminBundle\Event;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use Symfony\Component\EventDispatcher\Event;
 
-class MenuBuilderEvent extends Event
+class MenuEvent extends Event
 {
-    const TOOLS = 'fsi_admin.menu.tools';
-
     /**
      * @var Item
      */
