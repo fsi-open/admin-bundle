@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class MenuToolsListenerSpec extends ObjectBehavior
+class LocaleMenuListenerSpec extends ObjectBehavior
 {
     function let(TranslatorInterface $translator)
     {

@@ -1,21 +1,15 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace FSi\Bundle\AdminBundle\Menu\Builder;
+namespace FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
+use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructure;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use Symfony\Component\Yaml\Yaml;
 
-class MainMenuBuilder implements Builder
+class MainMenuListener
 {
     /**
      * @var string
@@ -33,7 +27,7 @@ class MainMenuBuilder implements Builder
     private $manager;
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\ManagerInterface $manager
+     * @param ManagerInterface $manager
      * @param string $configFilePath
      */
     public function __construct(ManagerInterface $manager, $configFilePath)
@@ -44,10 +38,11 @@ class MainMenuBuilder implements Builder
     }
 
     /**
+     * @param MenuEvent $event
      * @return Item
      * @throws InvalidYamlStructure
      */
-    public function buildMenu()
+    public function createMainMenu(MenuEvent $event)
     {
         $config = $this->yaml->parse($this->configFilePath, true, true);
 
@@ -57,7 +52,7 @@ class MainMenuBuilder implements Builder
             );
         }
 
-        $menu = new Item();
+        $menu = $event->getMenu();
         $menu->setOptions(array(
             'attr' => array(
                 'id' => 'top-menu',
