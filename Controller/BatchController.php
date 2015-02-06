@@ -9,30 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
-use FSi\Bundle\AdminBundle\Exception\ContextException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class BatchController
+class BatchController extends ControllerAbstract
 {
-    /**
-     * @var ContextManager
-     */
-    protected $contextManager;
-
-    /**
-     * @param ContextManager $contextManager
-     */
-    function __construct(
-        ContextManager $contextManager
-    ) {
-        $this->contextManager = $contextManager;
-    }
-
     /**
      * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement")
      * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
@@ -41,17 +23,6 @@ class BatchController
      */
     public function batchAction(BatchElement $element, Request $request)
     {
-        $context = $this->contextManager->createContext('fsi_admin_batch', $element);
-
-        if (!isset($context)) {
-            throw new NotFoundHttpException(sprintf('Cant find context builder that supports element with id "%s"', $element->getId()));
-        }
-
-        $response = $context->handleRequest($request);
-        if ($response instanceof Response) {
-            return $response;
-        } else {
-            throw new ContextException("Context which handles batch action must return instance of \\Symfony\\Component\\HttpFoundation\\Response");
-        }
+        return $this->handleRequest($element, $request, 'fsi_admin_batch');
     }
 }
