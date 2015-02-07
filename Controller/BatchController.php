@@ -12,6 +12,7 @@ namespace FSi\Bundle\AdminBundle\Controller;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -33,6 +34,7 @@ class BatchController
     }
 
     /**
+     * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement")
      * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response

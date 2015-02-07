@@ -11,6 +11,7 @@ namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -48,6 +49,7 @@ class ListController
     }
 
     /**
+     * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\ListElement")
      * @param \FSi\Bundle\AdminBundle\Admin\CRUD\ListElement $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
