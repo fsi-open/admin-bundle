@@ -11,6 +11,7 @@ namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\Display;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -38,6 +39,7 @@ class DisplayController
     }
 
     /**
+     * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\Display\Element")
      * @param \FSi\Bundle\AdminBundle\Admin\Display\Element $element
      * @param Request $request
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException

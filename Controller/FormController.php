@@ -11,6 +11,7 @@ namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -33,6 +34,7 @@ class FormController
     }
 
     /**
+     * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\FormElement")
      * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
