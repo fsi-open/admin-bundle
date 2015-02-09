@@ -9,30 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
-class FormController
+class FormController extends ControllerAbstract
 {
-    /**
-     * @param EngineInterface $templating
-     * @param ContextManager $contextManager
-     * @param string $formActionTemplate
-     */
-    function __construct(
-        EngineInterface $templating,
-        ContextManager $contextManager,
-        $formActionTemplate
-    ) {
-        $this->templating = $templating;
-        $this->contextManager = $contextManager;
-        $this->formActionTemplate = $formActionTemplate;
-    }
-
     /**
      * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\FormElement")
      * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
@@ -41,19 +23,6 @@ class FormController
      */
     public function formAction(FormElement $element, Request $request)
     {
-        $context = $this->contextManager->createContext('fsi_admin_form', $element);
-
-        if (!isset($context)) {
-            throw new NotFoundHttpException(sprintf('Cant find context builder that supports element with id "%s"', $element->getId()));
-        }
-
-        if (($response = $context->handleRequest($request)) !== null) {
-            return $response;
-        }
-
-        return $this->templating->renderResponse(
-            $context->hasTemplateName() ? $context->getTemplateName() : $this->formActionTemplate,
-            $context->getData()
-        );
+        return $this->handleRequest($element, $request, 'fsi_admin_form');
     }
 }

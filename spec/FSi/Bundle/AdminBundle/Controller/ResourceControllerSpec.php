@@ -34,7 +34,7 @@ class ResourceControllerSpec extends ObjectBehavior
         $element->getId()->willReturn('my_awesome_resource');
         $manager->createContext(Argument::type('string'), $element)->willReturn(null);
 
-        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports element with id \"my_awesome_resource\""))
+        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
             ->during('resourceAction', array($element, $request));
     }
 

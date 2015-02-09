@@ -15,15 +15,17 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BatchControllerSpec extends ObjectBehavior
 {
-    function let(ContextManager $manager)
+    function let(ContextManager $manager, DelegatingEngine $templating)
     {
         $this->beConstructedWith(
+            $templating,
             $manager
         );
     }
@@ -36,7 +38,7 @@ class BatchControllerSpec extends ObjectBehavior
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
-        $this->shouldThrow(new NotFoundHttpException("Cant find context builder that supports element with id \"admin_element_id\""))
+        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
             ->during('batchAction', array($element, $request));
     }
 
@@ -49,7 +51,7 @@ class BatchControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
 
-        $this->shouldThrow(new ContextException("Context which handles batch action must return instance of \\Symfony\\Component\\HttpFoundation\\Response"))
+        $this->shouldThrow('FSi\Bundle\AdminBundle\Exception\ContextException')
             ->during('batchAction', array($element, $request));
     }
 

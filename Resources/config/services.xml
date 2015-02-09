@@ -96,6 +96,7 @@
         </service>
 
         <service id="admin.controller.batch" class="%admin.controller.batch.class%">
+            <argument type="service" id="templating"/>
             <argument type="service" id="admin.context.manager"/>
         </service>
 
