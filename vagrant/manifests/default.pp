@@ -106,3 +106,17 @@ service { "selenium":
   require => Class['selenium']
 }
 
+file { "/var/www/admin-bundle/features/fixtures/project/web/bundles":
+  ensure => directory,
+  group => "vagrant",
+  owner => vagrant,
+  recurse => true,
+}
+
+file { "/var/www/admin-bundle/features/fixtures/project/web/bundles/fsiadmin":
+   require => File['/var/www/admin-bundle/features/fixtures/project/web/bundles'],
+   ensure => 'link',
+   target => '../../../../../Resources/public',
+   group => "vagrant",
+   owner => vagrant,
+}
