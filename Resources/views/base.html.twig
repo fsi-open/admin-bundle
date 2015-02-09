@@ -32,6 +32,16 @@
             .sort-asc {margin-right: 5px;}
         </style>
     {% endblock %}
+    <script src="{{ asset('bundles/fsiadmin/require.js') }}" type="text/javascript"></script>
+    <script>
+        requirejs.config({
+            shim : {"bootstrap": {"deps" :['jquery']}},
+            paths: {
+                "jquery": "{{ asset('bundles/fsiadmin/jquery-1.11.2.min') }}",
+                "bootstrap":  "{{ asset('bundles/fsiadmin/bootstrap.min') }}"
+            }
+        });
+    </script>
 </head>
 <body>
 {% block themes %}{% endblock %}
@@ -73,19 +83,19 @@
     </div>
 </div>
 {% block javascripts %}
-    <script src="//code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('a.editable').click(function(event) {event.preventDefault();}); 
-            $('a.editable').popover({}).on('shown.bs.popover', function () {
-                var popover = $(this);
-                $('a.editable-close').click(function(event){
-                    event.preventDefault();
-                    popover.popover('hide');
+        require(['jquery', 'bootstrap'], function($) {
+            $(function() {
+                $('a.editable').click(function(event) {event.preventDefault();});
+                $('a.editable').popover({}).on('shown.bs.popover', function () {
+                    var popover = $(this);
+                    $('a.editable-close').click(function(event){
+                        event.preventDefault();
+                        popover.popover('hide');
+                    });
                 });
+                $('a.editable.has-error').popover('show');
             });
-            $('a.editable.has-error').popover('show');
         });
     </script>
 {% endblock %}
