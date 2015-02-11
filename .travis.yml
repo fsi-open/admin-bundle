@@ -14,6 +14,9 @@ env:
 sudo: false
 
 matrix:
+  include:
+  - { php: 5.4, env: "" }
+  - { php: 5.4, env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"' }
   allow_failures:
     - env: SYMFONY_VERSION=dev-master
 
@@ -27,10 +30,11 @@ before_script:
     - export DISPLAY=:99.0
     - java -jar selenium-server-standalone-2.42.2.jar > /dev/null &
     - sleep 5
+    - composer self-update
+    - if [[ "$SYMFONY_VERSION" != "" ]]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-interaction --prefer-source --no-update; fi;
+    - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source --dev
 
 script:
-    - composer self-update
-    - composer require symfony/symfony:${SYMFONY_VERSION} -n --prefer-source
     - ./bin/phpspec run -v
     - ./bin/behat --no-snippets --no-paths --verbose --format=progress --profile=travis -vvv
 
