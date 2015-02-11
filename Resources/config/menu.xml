@@ -41,13 +41,13 @@
         <service id="admin.menu.main" class="%admin.knp.menu.builder.class%"
                  factory-service="admin.menu.knp.builder.main"
                  factory-method="createMenu">
-            <tag name="knp_menu.menu" alias="main"/>
+            <tag name="knp_menu.menu" alias="fsi_admin.menu.main"/>
         </service>
 
         <service id="admin.menu.tools" class="%admin.knp.menu.builder.class%"
                  factory-service="admin.menu.knp.builder.tools"
                  factory-method="createMenu">
-            <tag name="knp_menu.menu" alias="tools"/>
+            <tag name="knp_menu.menu" alias="fsi_admin.menu.tools"/>
         </service>
 
         <service id="admin.menu.listener.main" class="%admin.menu.listener.main.class%">
