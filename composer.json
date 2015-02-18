@@ -23,7 +23,8 @@
         "sensio/framework-extra-bundle": "~3.0",
         "symfony/twig-bundle": "~2.3",
         "fsi/datagrid-bundle" : "~1.1",
-        "fsi/datasource-bundle" : "1.2.*",
+        "fsi/datasource-bundle" : "1.2.*@dev",
+        "fsi/datasource" : "1.2.*@dev",
         "fsi/data-indexer" : "0.9.*",
         "knplabs/knp-menu-bundle": "~2.0",
         "doctrine/annotations": "~1.0"
