@@ -49,6 +49,7 @@ class BatchControllerSpec extends ObjectBehavior
         Request $request
     ) {
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
+        $context->hasTemplateName()->willReturn(false);
         $context->handleRequest($request)->willReturn(null);
 
         $this->shouldThrow('FSi\Bundle\AdminBundle\Exception\ContextException')
