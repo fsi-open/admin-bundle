@@ -13,6 +13,14 @@ Feature: Filtering elements at list
     And I should see between filter "Created at" with "from" and "to" simple text fields
     And I should see choice filter "Active"
 
+  Scenario: Do not display filters if not necessary
+    Given the following services were registered
+      | fixtures_bundle.admin.custom_news | FSi\FixturesBundle\Admin\CustomNews | admin.element |
+    And "custom_news" element has datasource with fields
+    But "custom_news" element has datasource without filters
+    And I am on the "Custom News list" page
+    Then I should not see any filters
+
   Scenario: Fill text filter and press the Search button
     Given I am on the "Subscribers list" page
     When I fill simple text filter "Email" with value "@domain.com"

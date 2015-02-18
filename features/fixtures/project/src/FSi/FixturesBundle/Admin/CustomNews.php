@@ -33,6 +33,8 @@ class CustomNews extends CRUDElement
         /* @var $datasource \FSi\Component\DataSource\DataSource */
         $datasource = $factory->createDataSource('doctrine', array('entity' => $this->getClassName()), 'news');
 
+        $datasource->addField('title', 'text', 'eq', array('form_filter' => false));
+
         return $datasource;
     }
 

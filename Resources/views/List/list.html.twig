@@ -9,7 +9,7 @@
 
 {% block above_content %}
     {% block filter %}
-        {% if datasource_view.getFields()|length > 0 %}
+        {% if datasource_filter_count(datasource_view) > 0 %}
         <div class="row" id="filter">
             <div class="col-lg-12">
                 <form class="form-inline filters" method="GET" action="{{ path(element.route, element.routeParameters) }}">

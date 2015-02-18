@@ -196,6 +196,14 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
+     * @Then /^I should not see any filters$/
+     */
+    public function iShouldNotSeeAnyFilters()
+    {
+        expect($this->getPage('Custom News List')->find('css', 'form.filters') === null)->toBe(true);
+    }
+
+    /**
      * @Then /^I should see simple text filter "([^"]*)"$/
      */
     public function iShouldSeeSimpleTextFilter($filterName)

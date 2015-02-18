@@ -12,6 +12,7 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -71,6 +72,22 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
             expect($adminElement->hasOption($optionRow['Option']))->toBe(true);
             expect($adminElement->getOption($optionRow['Option']))->toBe($optionRow['Value']);
         }
+    }
+
+    /**
+     * @Given /^("[^"]*" element) has datasource with fields$/
+     */
+    public function elementHaveDatasourceWithFields(ListElement $adminElement)
+    {
+        // Any idea how to check this ?
+    }
+
+    /**
+     * @Given /^("[^"]*" element) has datasource without filters$/
+     */
+    public function elementHaveDatasourceWithoutFilters(ListElement $adminElement)
+    {
+        // Any idea how to check this ?
     }
 
     /**
