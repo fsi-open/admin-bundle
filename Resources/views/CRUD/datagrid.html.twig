@@ -14,7 +14,7 @@
 {% block datagrid_column_cell %}
 {% spaceless %}
     <td class="cell">
-        <div id="{{ datagrid_name }}_{{ cell.name }}">
+        <div id="{{ datagrid_name }}_{{ row_index }}_{{ cell.name }}">
             {% if cell.hasAttribute('form') %}
                 {% set class = 'editable' %}
                 {% if cell.getAttribute('form').vars.valid == false %}
