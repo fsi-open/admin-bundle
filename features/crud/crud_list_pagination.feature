@@ -7,9 +7,9 @@ Feature: Pagination
     Given "news" element datasource max results is set 10
 
   Scenario: Display pagination
-    Given the following services were registered
-      | Id                         | Class                         | Tag           |
-      | fixtures_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |
+    Given the following admin elements were registered
+      | Id   | Class                         |
+      | news | FSi\FixturesBundle\Admin\News |
     And translations are enabled in application
     And there are 20 news in database
     And I am on the "News list" page

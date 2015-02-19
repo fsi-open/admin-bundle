@@ -53,13 +53,16 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^the following services were registered$/
+     * @Given /^the following admin elements were registered$/
      */
-    public function theFollowingServicesWereRegistered(TableNode $table)
+    public function theFollowingAdminElementsWereRegistered(TableNode $table)
     {
+        /** @var \FSi\Bundle\AdminBundle\Admin\Manager $manager */
+        $manager = $this->kernel->getContainer()->get('admin.manager');
+
         foreach ($table->getHash() as $serviceRow) {
-            expect($this->kernel->getContainer()->has($serviceRow['Id']))->toBe(true);
-            expect($this->kernel->getContainer()->get($serviceRow['Id']))->toBeAnInstanceOf($serviceRow['Class']);
+            expect($manager->hasElement($serviceRow['Id']))->toBe(true);
+            expect($manager->getElement($serviceRow['Id']))->toBeAnInstanceOf($serviceRow['Class']);
         }
     }
 

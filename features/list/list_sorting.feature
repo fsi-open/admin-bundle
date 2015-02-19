@@ -4,9 +4,9 @@ Feature: Sorting elements at list
   I need to install FSiAdminBundle and configure datasource for newsletter subscribers admin element
 
   Scenario: Display sort links in column header where column name is equal to field name and sortable field option is true
-    Given the following services were registered
-      | Id                               | Class                               | Tag           |
-      | fixtures_bundle.admin.subscriber | FSi\FixturesBundle\Admin\Subscriber | admin.element |
+    Given the following admin elements were registered
+      | Id         | Class                               |
+      | subscriber | FSi\FixturesBundle\Admin\Subscriber |
     And translations are enabled in application
     And I am on the "Subscribers list" page
     Then I should see list with following columns

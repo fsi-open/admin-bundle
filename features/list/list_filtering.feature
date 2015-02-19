@@ -4,9 +4,9 @@ Feature: Filtering elements at list
   I need to install FSiAdminBundle and configure datasource for newsletter subscribers admin element
 
   Scenario: Display filters
-    Given the following services were registered
-      | Id                               | Class                               | Tag           |
-      | fixtures_bundle.admin.subscriber | FSi\FixturesBundle\Admin\Subscriber | admin.element |
+    Given the following admin elements were registered
+      | Id         | Class                               |
+      | subscriber | FSi\FixturesBundle\Admin\Subscriber |
     And I am on the "Subscribers list" page
     And translations are enabled in application
     Then I should see simple text filter "Email"
@@ -14,8 +14,9 @@ Feature: Filtering elements at list
     And I should see choice filter "Active"
 
   Scenario: Do not display filters if not necessary
-    Given the following services were registered
-      | fixtures_bundle.admin.custom_news | FSi\FixturesBundle\Admin\CustomNews | admin.element |
+    Given the following admin elements were registered
+      | Id          | Class                               |
+      | custom_news | FSi\FixturesBundle\Admin\CustomNews |
     And "custom_news" element has datasource with fields
     But "custom_news" element has datasource without filters
     And I am on the "Custom News list" page

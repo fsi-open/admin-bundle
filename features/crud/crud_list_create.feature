@@ -4,9 +4,9 @@ Feature: Creating new object
   I need to install FSiAdminBundle and configure form in news admin element
 
   Scenario: Display create form
-    Given the following services were registered
-      | Id                         | Class                         | Tag           |
-      | fixtures_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |
+    Given the following admin elements were registered
+      | Id   | Class                         |
+      | news | FSi\FixturesBundle\Admin\News |
     And translations are enabled in application
     And I am on the "Admin panel" page
     When I follow "News" menu element

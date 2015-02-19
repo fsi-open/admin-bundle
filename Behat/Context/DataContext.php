@@ -43,6 +43,9 @@ class DataContext extends BehatContext implements KernelAwareInterface
         $tool->createSchema($metadata);
     }
 
+    /**
+     * @AfterScenario
+     */
     public function deleteDatabaseIfExist()
     {
         $dbFilePath = $this->kernel->getRootDir() . '/data.sqlite';

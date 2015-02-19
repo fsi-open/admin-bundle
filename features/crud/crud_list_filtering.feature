@@ -4,9 +4,9 @@ Feature: Filtering elements at list
   I need to install FSiAdminBundle and configure datasource for news admin element
 
   Scenario: Display filters
-    Given the following services were registered
-      | Id                         | Class                         | Tag           |
-      | fixtures_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |
+    Given the following admin elements were registered
+      | Id   | Class                         |
+      | news | FSi\FixturesBundle\Admin\News |
     And I am on the "News list" page
     And translations are enabled in application
     Then I should see simple text filter "Title"

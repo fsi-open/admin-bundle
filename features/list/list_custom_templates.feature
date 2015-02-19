@@ -4,9 +4,9 @@ Feature: Overwriting default list element templates
   I need to install FSiAdminBundle and configure newsletter subscribers admin element
 
   Scenario: Services configuration
-    Given the following services were registered
-      | Id                                      | Class                                     | Tag           |
-      | fixtures_bundle.admin.custom_subscriber | FSi\FixturesBundle\Admin\CustomSubscriber | admin.element |
+    Given the following admin elements were registered
+      | Id                | Class                                     |
+      | custom_subscriber | FSi\FixturesBundle\Admin\CustomSubscriber |
     And "custom_subscriber" element have following options defined
       | Option        | Value                                               |
       | template_list | @FSiFixtures/Admin/subscriber_custom_list.html.twig |

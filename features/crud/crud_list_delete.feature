@@ -11,9 +11,9 @@ Feature: Deleting existing object
       | News 3 |
 
   Scenario: Display delete action
-    Given the following services were registered
-      | Id                         | Class                         | Tag           |
-      | fixtures_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |
+    Given the following admin elements were registered
+      | Id   | Class                         |
+      | news | FSi\FixturesBundle\Admin\News |
     And I am on the "News list" page
     And translations are enabled in application
     Then I should see actions dropdown with following options

@@ -57,7 +57,7 @@
         <span>{{ 'crud.list.datagrid.editable.title'|trans({}, 'FSiAdminBundle') }}</span>
         <a href="#" class="close editable-close">&times;</a>
     </div>
-    <form method="POST" action="{{ path('fsi_admin_crud_list', vars.datasource.getAllParameters()|merge({'element' : vars.element})) }}">
+    <form method="POST">
         {% for child in form.children %}
             {% for subchild in child.children %}
                 <div class="form-group{% if subchild.vars.errors|length %} has-error{% endif %}">

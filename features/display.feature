@@ -4,10 +4,10 @@ Feature: View object
   I need to install FSiAdminBundle and configure display admin element
 
   Scenario: Accessing display object page
-    Given the following services were registered
-      | Id                                 | Class                                | Tag           |
-      | fixtures_bundle.admin.news         | FSi\FixturesBundle\Admin\News        | admin.element |
-      | fixtures_bundle.admin.news_display | FSi\FixturesBundle\Admin\DisplayNews | admin.element |
+    Given the following admin elements were registered
+      | Id           | Class                                |
+      | news         | FSi\FixturesBundle\Admin\News        |
+      | news_display | FSi\FixturesBundle\Admin\DisplayNews |
     And there is 1 news in database
     And translations are enabled in application
     And I am on the "News list" page
