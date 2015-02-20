@@ -82,7 +82,11 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
      */
     public function elementHaveDatasourceWithFields(ListElement $adminElement)
     {
-        // Any idea how to check this ?
+        $dataSource = $adminElement->createDataSource();
+
+        expect(count($dataSource->getFields()) > 0)->toBe(true);
+
+        $this->kernel->getContainer()->get('datasource.factory')->clearDataSource('news');
     }
 
     /**
@@ -90,7 +94,18 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
      */
     public function elementHaveDatasourceWithoutFilters(ListElement $adminElement)
     {
-        // Any idea how to check this ?
+        $dataSource = $adminElement->createDataSource();
+
+        $filters = false;
+        foreach ($dataSource->getFields() as $field) {
+            if ($field->getOption('form_filter')) {
+                $filters = true;
+                break;
+            }
+        }
+        expect($filters)->toBe(false);
+
+        $this->kernel->getContainer()->get('datasource.factory')->clearDataSource('news');
     }
 
     /**

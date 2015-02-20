@@ -57,5 +57,12 @@
         <service id="fixtures_bundle.admin.about_us_page" class="FSi\FixturesBundle\Admin\AboutUsPage">
             <tag name="admin.element" />
         </service>
+
+        <service id="datasource.factory" class="FSi\FixturesBundle\DataSource\DataSourceFactory">
+            <argument type="service" id="datasource.driver.factory.manager"></argument>
+            <argument type="collection">
+                <argument type="service" id="datasource.extension" />
+            </argument>
+        </service>
     </services>
 </container>
