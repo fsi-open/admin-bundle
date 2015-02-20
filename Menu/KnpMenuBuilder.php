@@ -10,8 +10,11 @@
 namespace FSi\Bundle\AdminBundle\Menu;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Menu\Builder\Builder;
+use FSi\Bundle\AdminBundle\Menu\Item\Item;
+use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use Knp\Menu\FactoryInterface;
-use Knp\Menu\MenuItem;
+use Knp\Menu\ItemInterface as KnpItemInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class KnpMenuBuilder
@@ -24,7 +27,12 @@ class KnpMenuBuilder
     /**
      * @var Builder
      */
-    private $builder;
+    protected $builder;
+
+    /**
+     * @var Request
+     */
+    protected $request;
 
     /**
      * @param Builder $builder
@@ -37,7 +45,7 @@ class KnpMenuBuilder
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      */
     public function setRequest(Request $request = null)
     {
@@ -46,59 +54,70 @@ class KnpMenuBuilder
 
     /**
      * @throws \RuntimeException
-     * @return \Knp\Menu\ItemInterface
+     * @return KnpItemInterface
      */
     public function createMenu()
     {
-        $menu = $this->createMenuRoot();
+        $rootMenuItem = $this->builder->buildMenu();
+        $knpMenuItem = $this->createMenuRoot($rootMenuItem);
 
-        if (isset($this->request)) {
-            $menu->setCurrentUri($this->request->getRequestUri());
-        }
+        $this->populateMenu($knpMenuItem, $rootMenuItem->getChildren());
 
-        foreach ($this->builder->buildMenu()->getItems() as $item) {
-            if ($item->hasChildren()) {
-                $menu->addChild($item->getName(), array('uri' => '#'))
-                    ->setAttribute('dropdown', true);
-
-                foreach ($item->getChildren() as $child) {
-                    $this->addMenuItem($child, $menu[$item->getName()]);
-                }
-
-                continue;
-            }
-
-            $this->addMenuItem($item, $menu);
-        }
-
-        return $menu;
+        return $knpMenuItem;
     }
 
     /**
-     * @return \Knp\Menu\ItemInterface
+     * @param Item $rootMenuItem
+     * @return KnpItemInterface
      */
-    protected function createMenuRoot()
+    protected function createMenuRoot(Item $rootMenuItem)
     {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttribute('class', 'nav navbar-nav');
-        $menu->setChildrenAttribute('id', 'top-menu');
+        $menu->setChildrenAttribute('class', $rootMenuItem->getOption('class'));
+        $menu->setChildrenAttribute('id', $rootMenuItem->getOption('id'));
 
         return $menu;
     }
 
-    /**
-     * @param $item
-     * @param $menu
-     */
-    private function addMenuItem(Item $item, MenuItem $menu)
+    protected function populateMenu(KnpItemInterface $menu, array $children)
     {
-        $options = $item->hasElement()
-            ? array(
-                'route' => $item->getElement()->getRoute(),
-                'routeParameters' => $item->getElement()->getRouteParameters()
-            )
-            : array('uri' => '#');
+        foreach ($children as $item) {
+            /** @var $item Item */
+            $knpItem = $this->addMenuItem($menu, $item);
 
-        $menu->addChild($item->getName(), $options)->setAttribute('class', 'admin-element');
+            if ($item->hasChildren()) {
+                $knpItem->setAttribute('dropdown', true);
+                $this->populateMenu($knpItem, $item->getChildren());
+            }
+        }
+    }
+
+    /**
+     * @param KnpItemInterface $menu
+     * @param Item $item
+     * @return KnpItemInterface $menu
+     */
+    protected function addMenuItem(KnpItemInterface $menu, Item $item)
+    {
+        $options = array(
+            'uri' => '#',
+            'attributes' => $item->getOptions(),
+        );
+
+        if ($item instanceof RoutableItem && $item->getRoute()) {
+            $options = array(
+                'route' => $item->getRoute(),
+                'routeParameters' => $item->getRouteParameters(),
+                'attributes' => $item->getOptions(),
+            );
+        }
+
+        $child = $menu->addChild($item->getName(), $options);
+
+        if ($item->getLabel()) {
+            $child->setLabel($item->getLabel());
+        }
+
+        return $child;
     }
 }

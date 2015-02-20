@@ -49,19 +49,8 @@
         </div>
         <div class="collapse navbar-collapse admin-navbar-collapse">
             {% block navigation %}
-                {{ knp_menu_render('menu', {'template': '@FSiAdmin/Admin/knp_menu.html.twig', 'currentClass' : 'active'}) }}
-                {% if admin_display_language_switch == true %}
-                <ul class="nav navbar-nav navbar-right">
-                    <li id="language" class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'admin.language.current'|trans({'%locale%' : app.request.locale}, 'FSiAdminBundle')|raw }} <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ url('fsi_admin_locale', {'_locale': 'en'}) }}">{{ 'admin.language.english'|trans({}, 'FSiAdminBundle') }}</a></li>
-                            <li class="divider"></li>
-                            <li><a href="{{ url('fsi_admin_locale', {'_locale' : 'pl'}) }}">{{ 'admin.language.polish'|trans({}, 'FSiAdminBundle') }}</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                {% endif %}
+                {{ knp_menu_render('fsi_admin.menu.main', {template: '@FSiAdmin/Admin/main_menu_theme.html.twig', currentClass: 'active'}) }}
+                {{ knp_menu_render('fsi_admin.menu.tools', {template: '@FSiAdmin/Admin/tools_menu_theme.html.twig', currentClass: 'active'}) }}
             {% endblock %}
         </div>
     </div>
