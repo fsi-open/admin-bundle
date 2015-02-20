@@ -66,16 +66,104 @@
     <script src="//code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js" type="text/javascript"></script>
     <script type="text/javascript">
+        (function($) {
+            $.fn.formCollection = function(options) {
+
+                options = $.extend({
+                    addLabel: '+',
+                    addClass: 'btn btn-success collection-add',
+                    removeLabel: 'X',
+                    removeClass: 'btn btn-danger collection-remove',
+                    rowSelector: '.form-group',
+                    defaultPrototypeName: '__name__',
+                    defaultAllowAdd: true,
+                    defaultAllowDelete: true,
+                    nestedCollectionsSelector: 'div[data-prototype]'
+                }, options);
+
+                var replacePrototypeName = function(template, prototypeName, index) {
+                    return template
+                        .replace(new RegExp(prototypeName + 'label__', 'gm'), index)
+                        .replace(new RegExp(prototypeName, 'gm'), index);
+                };
+
+                this.each(function(index, element) {
+
+                    var $el = $(element);
+                    var template = $el.data('prototype');
+                    var children = $el.children(options.rowSelector);
+                    $el.data('current_index', children.length);
+
+                    var prototypeName = $el.data('prototype-name') || options.defaultPrototypeName;
+                    var allowAdd = $el.data('allow-add') && options.defaultAllowAdd;
+                    var allowDelete = $el.data('allow-delete') && options.defaultAllowDelete;
+
+                    if (allowAdd) {
+                        var addBtn = $('<button/>')
+                            .text(options.addLabel)
+                            .attr('type', 'button')
+                            .addClass(options.addClass)
+                            .appendTo($el)
+                            .on('click', function (event) {
+                                var nextIndex = $el.data('current_index');
+                                var newRowHtml = replacePrototypeName(template, prototypeName, nextIndex);
+                                var newRow = $(newRowHtml).insertBefore(addBtn);
+
+                                //replace prototype in nested collections and init them
+                                newRow
+                                    .find(options.nestedCollectionsSelector)
+                                    .each(function(index, element) {
+                                        var $el = $(element);
+                                        var template = $el.data('prototype');
+                                        $el.data('prototype', replacePrototypeName(template, prototypeName, nextIndex))
+                                    })
+                                    .formCollection(options);
+
+                                $el.data('current_index', nextIndex + 1);
+
+                                newRow.find('> .col-lg-2').remove();
+                                newRow.find('> .col-lg-10')
+                                    .removeClass('col-lg-10')
+                                    .addClass('col-lg-11')
+                                    .after(removeCol.clone(true));
+
+                                event.preventDefault();
+                            });
+                    }
+
+                    var removeCol = $('<div />').addClass('col-lg-1');
+                    var removeBtn = $('<button/>')
+                        .text(options.removeLabel)
+                        .attr('type', 'button')
+                        .addClass(options.removeClass)
+                        .appendTo(removeCol)
+                        .on('click', function(event) {
+                            $(this).closest(options.rowSelector).remove();
+                            event.preventDefault();
+                        });
+
+                    children.find('> .col-lg-2').remove();
+                    var fieldsColumns = children.find('> .col-lg-10').removeClass('col-lg-10').addClass('col-lg-11');
+
+                    if (allowDelete) {
+                        fieldsColumns.after(removeCol);
+                    }
+                });
+            }
+        })(jQuery);
         $(document).ready(function() {
             $('a.editable').click(function(event) {event.preventDefault();}); 
             $('a.editable').popover({}).on('shown.bs.popover', function () {
                 var popover = $(this);
-                $('a.editable-close').click(function(event){
+                $('a.editable-close').click(function(event) {
                     event.preventDefault();
                     popover.popover('hide');
                 });
             });
             $('a.editable.has-error').popover('show');
+            $('div[data-prototype]').formCollection({
+                'addLabel': '{{ 'crud.form.collection.add'|trans({}, 'FSiAdminBundle') }}'
+            });
         });
     </script>
 {% endblock %}

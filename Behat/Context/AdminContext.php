@@ -9,7 +9,9 @@
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Behat\Behat\Event\StepEvent;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
@@ -189,5 +191,59 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     public function iShouldSeeDetailsAboutNewsAtPage()
     {
         expect($this->getPage('News List')->hasTable('table-bordered'))->toBe(true);
+    }
+
+    /**
+     * @Transform /^"([^"]*)" collection/
+     * @Transform /collection "([^"]*)"/
+     */
+    public function transformToCollection($collectionNames)
+    {
+        return $this->getPage('Page')->getCollection($collectionNames);
+    }
+
+    /**
+     * @Given /^("[^"]*" collection) should have (\d+) elements$/
+     */
+    public function collectionShouldHaveElements(NodeElement $collection, $elementsCount)
+    {
+        $elements = $collection->findAll('xpath', '/*[@class = "form-group"]');
+        expect(count($elements))->toBe($elementsCount);
+    }
+
+    /**
+     * @Given /^(collection "[^"]*") should have "([^"]*)" button$/
+     */
+    public function collectionShouldHaveButton(NodeElement $collection, $buttonName)
+    {
+        expect($collection->findButton($buttonName))->toNotBeNull();
+    }
+
+    /**
+     * @When /^I press "([^"]*)" in (collection "[^"]*")$/
+     */
+    public function iPressInCollection($buttonName, NodeElement $collection)
+    {
+        $collection
+            ->find('xpath', '/*[contains(concat(" ",normalize-space(@class)," ")," collection-add ")]')
+            ->press();
+    }
+
+    /**
+     * @Given /^I fill "([^"]*)" with "([^"]*)" in (collection "[^"]*") at position (\d+)$/
+     */
+    public function iFillWithInCollectionAtPosition($fieldName, $fieldValue, NodeElement $collection, $position)
+    {
+        $collectionRow = $collection->find('xpath', sprintf('/*[@class = "form-group"][%d]', $position));
+        $collectionRow->fillField($fieldName, $fieldValue);
+    }
+
+    /**
+     * @Given /^I press remove (\d+) element in (collection "[^"]*")$/
+     */
+    public function iPressRemoveElementInCollection($index, NodeElement $collection)
+    {
+        $collection->find('xpath', sprintf('/*[@class = "form-group"][%d]', $index))
+             ->pressButton('X');
     }
 }

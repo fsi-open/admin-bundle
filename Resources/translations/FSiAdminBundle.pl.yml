@@ -59,3 +59,5 @@ crud:
         button:
             save: Zapisz
             back: Powrót
+        collection:
+            add: Dodaj wartość
