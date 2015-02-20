@@ -9,6 +9,7 @@
         <parameter key="admin.menu.builder.class">FSi\Bundle\AdminBundle\Menu\Builder\MenuBuilder</parameter>
         <parameter key="admin.menu.listener.locale.class">FSi\Bundle\AdminBundle\EventListener\LocaleMenuListener</parameter>
         <parameter key="admin.menu.listener.main.class">FSi\Bundle\AdminBundle\EventListener\MainMenuListener</parameter>
+        <parameter key="admin.menu.voter.element.class">FSi\Bundle\AdminBundle\Menu\KnpMenuElementVoter</parameter>
     </parameters>
 
     <services>
@@ -63,6 +64,10 @@
                 <argument type="service" id="request" on-invalid="null" strict="false" />
             </call>
             <tag name="kernel.event_listener" event="fsi_admin.menu.main" method="createLocaleMenu" />
+        </service>
+
+        <service id="admin.menu.voter.element" class="%admin.menu.voter.element.class%">
+            <tag name="knp_menu.voter" request="true" />
         </service>
     </services>
 </container>
