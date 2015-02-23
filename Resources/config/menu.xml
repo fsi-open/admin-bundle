@@ -9,17 +9,18 @@
         <parameter key="admin.menu.builder.class">FSi\Bundle\AdminBundle\Menu\Builder\MenuBuilder</parameter>
         <parameter key="admin.menu.listener.locale.class">FSi\Bundle\AdminBundle\EventListener\LocaleMenuListener</parameter>
         <parameter key="admin.menu.listener.main.class">FSi\Bundle\AdminBundle\EventListener\MainMenuListener</parameter>
+        <parameter key="admin.menu.voter.element.class">FSi\Bundle\AdminBundle\Menu\KnpMenuElementVoter</parameter>
     </parameters>
 
     <services>
         <service id="admin.menu.builder.main" class="%admin.menu.builder.class%">
             <argument type="service" id="event_dispatcher" />
-            <argument type="constant">FSi\Bundle\AdminBundle\Event\MenuEvents::TOOLS</argument>
+            <argument type="constant">FSi\Bundle\AdminBundle\Event\MenuEvents::MAIN</argument>
         </service>
 
         <service id="admin.menu.builder.tools" class="%admin.menu.builder.class%">
             <argument type="service" id="event_dispatcher" />
-            <argument type="constant">FSi\Bundle\AdminBundle\Event\MenuEvents::MAIN</argument>
+            <argument type="constant">FSi\Bundle\AdminBundle\Event\MenuEvents::TOOLS</argument>
         </service>
 
         <service id="admin.menu.knp.builder.main" class="%admin.knp.menu.builder.class%">
@@ -53,16 +54,18 @@
         <service id="admin.menu.listener.main" class="%admin.menu.listener.main.class%">
             <argument type="service" id="admin.manager" />
             <argument>%admin.menu_config_path%</argument>
-            <tag name="kernel.event_listener" event="fsi_admin.menu.tools" method="createMainMenu" />
+            <tag name="kernel.event_listener" event="fsi_admin.menu.main" method="createMainMenu" />
         </service>
 
         <service id="admin.menu.listener.locale" class="%admin.menu.listener.locale.class%">
-            <argument type="string">%admin.display_language_switch%</argument>
-            <argument type="service" id="translator"/>
-            <call method="setRequest">
-                <argument type="service" id="request" on-invalid="null" strict="false" />
-            </call>
-            <tag name="kernel.event_listener" event="fsi_admin.menu.main" method="createLocaleMenu" />
+            <argument type="service" id="translator" />
+            <argument type="service" id="request_stack" />
+            <argument type="string">%admin.locales%</argument>
+            <tag name="kernel.event_listener" event="fsi_admin.menu.tools" method="createLocaleMenu" />
+        </service>
+
+        <service id="admin.menu.voter.element" class="%admin.menu.voter.element.class%">
+            <tag name="knp_menu.voter" request="true" />
         </service>
     </services>
 </container>

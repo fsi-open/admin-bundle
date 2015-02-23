@@ -5,14 +5,14 @@ Feature: Change admin panel language
 
   Scenario: Change panel language
     Given I am on the "Admin panel" page
-    Then I should see language dropdown button in navigation bar with text "Language (en)"
+    Then I should see language dropdown button in navigation bar with text "Language (English)"
     And language dropdown button should have following links
-      | Link         |
-      | English (en) |
-      | Polish (pl)  |
-    When I click "Polish (pl)" link from language dropdown button
-    Then I should see language dropdown button with text "Polski (pl)"
+      | Link    |
+      | English |
+      | Polish  |
+    When I click "Polish" link from language dropdown button
+    Then I should see language dropdown button with text "Język (polski)"
     And language dropdown button should have following links
-      | Link         |
-      | Angielski (en) |
-      | Polski (pl)  |
+      | Link      |
+      | angielski |
+      | polski    |

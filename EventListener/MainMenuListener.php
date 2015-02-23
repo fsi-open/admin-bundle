@@ -4,7 +4,7 @@ namespace FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
-use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructure;
+use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use Symfony\Component\Yaml\Yaml;
@@ -40,14 +40,14 @@ class MainMenuListener
     /**
      * @param MenuEvent $event
      * @return Item
-     * @throws InvalidYamlStructure
+     * @throws InvalidYamlStructureException
      */
     public function createMainMenu(MenuEvent $event)
     {
         $config = $this->yaml->parse($this->configFilePath, true, true);
 
         if (!isset($config['menu'])) {
-            throw new InvalidYamlStructure(
+            throw new InvalidYamlStructureException(
                 sprintf('File "%s" should contain top level "menu:" key', $this->configFilePath)
             );
         }

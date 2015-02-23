@@ -4,7 +4,7 @@ namespace spec\FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
-use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructure;
+use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use PhpSpec\ObjectBehavior;
@@ -31,7 +31,7 @@ class MainMenuListenerSpec extends ObjectBehavior
         $menuYaml = __DIR__ . '/invalid_admin_menu.yml';
         $this->beConstructedWith($manager, $menuYaml);
 
-        $this->shouldThrow(new InvalidYamlStructure(
+        $this->shouldThrow(new InvalidYamlStructureException(
             sprintf('File "%s" should contain top level "menu:" key', $menuYaml)
         ))->during('createMainMenu', array($event));
     }

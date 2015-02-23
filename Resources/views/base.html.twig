@@ -49,8 +49,8 @@
         </div>
         <div class="collapse navbar-collapse admin-navbar-collapse">
             {% block navigation %}
-                {{ knp_menu_render('fsi_admin.menu.main', {template: '@FSiAdmin/Admin/main_menu_theme.html.twig', currentClass: 'active'}) }}
-                {{ knp_menu_render('fsi_admin.menu.tools', {template: '@FSiAdmin/Admin/tools_menu_theme.html.twig', currentClass: 'active'}) }}
+                {{ knp_menu_render('fsi_admin.menu.main', {template: '@FSiAdmin/Admin/main_menu_theme.html.twig', currentClass: 'active', ancestorClass: 'active'}) }}
+                {{ knp_menu_render('fsi_admin.menu.tools', {template: '@FSiAdmin/Admin/tools_menu_theme.html.twig', currentClass: 'active', ancestorClass: 'active'}) }}
             {% endblock %}
         </div>
     </div>

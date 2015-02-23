@@ -6,7 +6,7 @@ fsi_admin:
 fsi_admin_locale:
     path: /locale/{_locale}
     defaults:
-        _controller: admin.controller.admin:indexAction
+        _controller: admin.controller.admin:localeAction
 
 
 fsi_admin_list:

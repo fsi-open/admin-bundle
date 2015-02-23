@@ -71,7 +71,7 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
      */
     public function getSuccessRoute()
     {
-        return 'fsi_admin_form';
+        return $this->getRoute();
     }
 
     /**
@@ -79,9 +79,7 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
      */
     public function getSuccessRouteParameters()
     {
-        return array(
-            'element' => $this->getId()
-        );
+        return $this->getRouteParameters();
     }
 
     /**
