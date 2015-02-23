@@ -37,11 +37,11 @@ class LocaleMenuListenerSpec extends ObjectBehavior
         expect($enItem->getLabel())->toBe('Englisch');
         expect($enItem->getRoute())->toBe('fsi_admin_locale');
         expect($enItem->getRouteParameters())->toBe(array('_locale' => 'en', 'redirect_uri' => 'uri_to_redirect_to'));
-        expect($enItem->getOptions())->toBe(array('id' => null, 'class' => null));
+        expect($enItem->getOptions())->toBe(array('attr' => array('id' => null, 'class' => null)));
 
         expect($deItem->getLabel())->toBe('Deutsch');
         expect($deItem->getRoute())->toBe('fsi_admin_locale');
         expect($deItem->getRouteParameters())->toBe(array('_locale' => 'de', 'redirect_uri' => 'uri_to_redirect_to'));
-        expect($deItem->getOptions())->toBe(array('id' => null, 'class' => 'active'));
+        expect($deItem->getOptions())->toBe(array('attr' => array('id' => null, 'class' => 'active')));
     }
 }

@@ -73,8 +73,8 @@ class KnpMenuBuilder
     protected function createMenuRoot(Item $rootMenuItem)
     {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttribute('class', $rootMenuItem->getOption('class'));
-        $menu->setChildrenAttribute('id', $rootMenuItem->getOption('id'));
+        $menu->setChildrenAttribute('class', $rootMenuItem->getOption('attr')['class']);
+        $menu->setChildrenAttribute('id', $rootMenuItem->getOption('attr')['id']);
 
         return $menu;
     }
@@ -101,14 +101,14 @@ class KnpMenuBuilder
     {
         $options = array(
             'uri' => '#',
-            'attributes' => $item->getOptions(),
+            'attributes' => $item->getOption('attr'),
         );
 
         if ($item instanceof RoutableItem && $item->getRoute()) {
             $options = array(
                 'route' => $item->getRoute(),
                 'routeParameters' => $item->getRouteParameters(),
-                'attributes' => $item->getOptions(),
+                'attributes' => $item->getOption('attr'),
             );
         }
 

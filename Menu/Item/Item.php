@@ -128,7 +128,9 @@ class Item
             'class' => array('null', 'string'),
         ));
 
-        $this->options = $attrOptionsResolver->resolve($options['attr']);
+        $options['attr'] = $attrOptionsResolver->resolve($options['attr']);
+
+        $this->options = $options;
     }
 
     public function hasOption($name)

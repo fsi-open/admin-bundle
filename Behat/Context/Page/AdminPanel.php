@@ -59,6 +59,6 @@ class AdminPanel extends Page
 
     public function getLanguageDropdown()
     {
-        return $this->find('css', sprintf('li#language'));
+        return $this->find('css', 'li#language');
     }
 }
