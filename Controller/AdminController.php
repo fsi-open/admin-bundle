@@ -60,7 +60,7 @@ class AdminController
      */
     public function localeAction($_locale, Request $request)
     {
-        $request->getSession()->set('_locale', $_locale);
+        $request->getSession()->set('admin_locale', $_locale);
 
         return new RedirectResponse(
             $request->query->has('redirect_uri') ?

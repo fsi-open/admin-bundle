@@ -38,7 +38,11 @@ class LocaleListener implements EventSubscriberInterface
             return;
         }
 
-        $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
+        if ($request->attributes->has('_locale')) {
+            return;
+        }
+
+        $request->setLocale($request->getSession()->get('admin_locale', $this->defaultLocale));
     }
 
     /**
