@@ -4,10 +4,10 @@ Feature: Creating new object
   I need to install FSiAdminBundle and configure form in news admin element
 
   Scenario: Display form for new element
-    Given the following services were registered
-      | Id                                    | Class                                   | Tag           |
-      | fixtures_bundle.admin.subscriber      | FSi\FixturesBundle\Admin\Subscriber     | admin.element |
-      | fixtures_bundle.admin.subscriber_form | FSi\FixturesBundle\Admin\SubscriberForm | admin.element |
+    Given the following admin elements were registered
+      | Id              | Class                                   |
+      | subscriber      | FSi\FixturesBundle\Admin\Subscriber     |
+      | subscriber_form | FSi\FixturesBundle\Admin\SubscriberForm |
     And translations are enabled in application
     And I am on the "Admin panel" page
     When I follow "Subscribers" menu element
@@ -27,10 +27,10 @@ Feature: Creating new object
     And I should be redirected to "Subscribers List" page
 
   Scenario: Display form for existing element
-    Given the following services were registered
-      | Id                                    | Class                                   | Tag           |
-      | fixtures_bundle.admin.subscriber      | FSi\FixturesBundle\Admin\Subscriber     | admin.element |
-      | fixtures_bundle.admin.subscriber_form | FSi\FixturesBundle\Admin\SubscriberForm | admin.element |
+    Given the following admin elements were registered
+      | Id              | Class                                   |
+      | subscriber      | FSi\FixturesBundle\Admin\Subscriber     |
+      | subscriber_form | FSi\FixturesBundle\Admin\SubscriberForm |
     And there is 1 subscriber in database
     And translations are enabled in application
     And I am on the "Subscribers list" page

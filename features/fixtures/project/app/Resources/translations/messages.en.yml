@@ -17,6 +17,8 @@ admin:
     list:
       email: Email
       created_at: Created at
+      created_at_from: Created at from
+      created_at_to: Created at to
       active: Active
       actions: Actions
   home_page:

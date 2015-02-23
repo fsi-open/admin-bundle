@@ -15,7 +15,6 @@ interface ManagerInterface
 {
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     * @internal string $group
      * @return \FSi\Bundle\AdminBundle\Admin\Manager
      */
     public function addElement(Element $element);

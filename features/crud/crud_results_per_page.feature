@@ -7,9 +7,9 @@ Feature: Changing results per page at list page
     Given "news" element datasource max results is set 10
 
   Scenario: Display list with elements count equal to datasource max results
-    Given the following services were registered
-      | Id                         | Class                         | Tag           |
-      | fixtures_bundle.admin.news | FSi\FixturesBundle\Admin\News | admin.element |
+    Given the following admin elements were registered
+      | Id   | Class                         |
+      | news | FSi\FixturesBundle\Admin\News |
     And there are 20 news in database
     And I am on the "News list" page
     Then there should be 10 elements at list

@@ -4,10 +4,10 @@ Feature: Deleting existing object
   I need to install FSiAdminBundle and configure delete admin element for newsletter subscribers
 
   Background:
-    Given the following services were registered
-      | Id                                      | Class                                     | Tag           |
-      | fixtures_bundle.admin.subscriber        | FSi\FixturesBundle\Admin\Subscriber       | admin.element |
-      | fixtures_bundle.admin.subscriber_delete | FSi\FixturesBundle\Admin\SubscriberDelete | admin.element |
+    Given the following admin elements were registered
+      | Id                | Class                                     |
+      | subscriber        | FSi\FixturesBundle\Admin\Subscriber       |
+      | subscriber_delete | FSi\FixturesBundle\Admin\SubscriberDelete |
     And there are 3 subscribers in database
 
   Scenario: Display delete action

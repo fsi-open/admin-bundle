@@ -4,9 +4,9 @@ Feature: List of elements
   I need to install FSiAdminBundle and configure datagrid for newsletter subscribers admin element
 
   Scenario: Accessing newsletter subscribers list from admin panel main page
-    Given the following services were registered
-      | Id                               | Class                               | Tag           |
-      | fixtures_bundle.admin.subscriber | FSi\FixturesBundle\Admin\Subscriber | admin.element |
+    Given the following admin elements were registered
+      | Id         | Class                               |
+      | subscriber | FSi\FixturesBundle\Admin\Subscriber |
     And translations are enabled in application
     And I am on the "Admin panel" page
     When I follow "Subscribers" url from top bar

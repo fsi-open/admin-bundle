@@ -13,7 +13,7 @@ use FSi\Bundle\AdminBundle\Doctrine\Admin\DisplayElement;
  */
 class DisplayNews extends DisplayElement
 {
-    const ID = 'news-display';
+    const ID = 'news_display';
 
     /**
      * @return string

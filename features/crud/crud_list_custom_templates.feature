@@ -4,9 +4,9 @@ Feature: Overwriting default CRUD element templates
   I need to install FSiAdminBundle and configure admin element
 
   Scenario: Services configuration
-    Given the following services were registered
-      | Id                                | Class                               | Tag           |
-      | fixtures_bundle.admin.custom_news | FSi\FixturesBundle\Admin\CustomNews | admin.element |
+    Given the following admin elements were registered
+      | Id          | Class                               |
+      | custom_news | FSi\FixturesBundle\Admin\CustomNews |
     And "custom_news" element have following options defined
       | Option               | Value                                      |
       | template_crud_list   | @FSiFixtures/Admin/custom_list.html.twig   |

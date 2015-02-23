@@ -70,7 +70,7 @@ abstract class ControllerAbstract
             return $response;
         }
 
-        if (!isset($this->template)) {
+        if (!isset($this->template) && !$context->hasTemplateName()) {
             throw new ContextException(sprintf(
                 "Context %s did not returned any response and controller %s has no template",
                 get_class($context),

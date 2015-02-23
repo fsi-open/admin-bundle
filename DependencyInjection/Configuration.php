@@ -44,7 +44,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('display')->defaultValue('@FSiAdmin/Display/display.html.twig')->end()
                         ->scalarNode('datagrid_theme')->defaultValue('@FSiAdmin/CRUD/datagrid.html.twig')->end()
                         ->scalarNode('datasource_theme')->defaultValue('@FSiAdmin/CRUD/datasource.html.twig')->end()
-                        ->scalarNode('form_theme')->defaultValue('@FSiAdmin/Form/form_div_layout.html.twig')->end()
+                        ->scalarNode('form_theme')->defaultValue('@FSiAdmin/Form/bootstrap_3_horizontal_layout.html.twig')->end()
                     ->end()
                 ->end()
                 ->arrayNode('annotations')

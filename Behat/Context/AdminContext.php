@@ -12,6 +12,7 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -52,13 +53,16 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^the following services were registered$/
+     * @Given /^the following admin elements were registered$/
      */
-    public function theFollowingServicesWereRegistered(TableNode $table)
+    public function theFollowingAdminElementsWereRegistered(TableNode $table)
     {
+        /** @var \FSi\Bundle\AdminBundle\Admin\Manager $manager */
+        $manager = $this->kernel->getContainer()->get('admin.manager');
+
         foreach ($table->getHash() as $serviceRow) {
-            expect($this->kernel->getContainer()->has($serviceRow['Id']))->toBe(true);
-            expect($this->kernel->getContainer()->get($serviceRow['Id']))->toBeAnInstanceOf($serviceRow['Class']);
+            expect($manager->hasElement($serviceRow['Id']))->toBe(true);
+            expect($manager->getElement($serviceRow['Id']))->toBeAnInstanceOf($serviceRow['Class']);
         }
     }
 
@@ -71,6 +75,37 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
             expect($adminElement->hasOption($optionRow['Option']))->toBe(true);
             expect($adminElement->getOption($optionRow['Option']))->toBe($optionRow['Value']);
         }
+    }
+
+    /**
+     * @Given /^("[^"]*" element) has datasource with fields$/
+     */
+    public function elementHaveDatasourceWithFields(ListElement $adminElement)
+    {
+        $dataSource = $adminElement->createDataSource();
+
+        expect(count($dataSource->getFields()) > 0)->toBe(true);
+
+        $this->kernel->getContainer()->get('datasource.factory')->clearDataSource('news');
+    }
+
+    /**
+     * @Given /^("[^"]*" element) has datasource without filters$/
+     */
+    public function elementHaveDatasourceWithoutFilters(ListElement $adminElement)
+    {
+        $dataSource = $adminElement->createDataSource();
+
+        $filters = false;
+        foreach ($dataSource->getFields() as $field) {
+            if ($field->getOption('form_filter')) {
+                $filters = true;
+                break;
+            }
+        }
+        expect($filters)->toBe(false);
+
+        $this->kernel->getContainer()->get('datasource.factory')->clearDataSource('news');
     }
 
     /**

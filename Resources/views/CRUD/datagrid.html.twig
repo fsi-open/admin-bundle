@@ -14,7 +14,7 @@
 {% block datagrid_column_cell %}
 {% spaceless %}
     <td class="cell">
-        <div id="{{ datagrid_name }}_{{ cell.name }}">
+        <div id="{{ datagrid_name }}_{{ row_index }}_{{ cell.name }}">
             {% if cell.hasAttribute('form') %}
                 {% set class = 'editable' %}
                 {% if cell.getAttribute('form').vars.valid == false %}
@@ -57,7 +57,7 @@
         <span>{{ 'crud.list.datagrid.editable.title'|trans({}, 'FSiAdminBundle') }}</span>
         <a href="#" class="close editable-close">&times;</a>
     </div>
-    <form method="POST" action="{{ path('fsi_admin_crud_list', vars.datasource.getAllParameters()|merge({'element' : vars.element})) }}">
+    <form method="POST">
         {% for child in form.children %}
             {% for subchild in child.children %}
                 <div class="form-group{% if subchild.vars.errors|length %} has-error{% endif %}">

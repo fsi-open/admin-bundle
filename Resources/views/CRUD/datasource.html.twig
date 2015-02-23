@@ -1,9 +1,13 @@
+{% extends '@FSiAdmin/Form/bootstrap_3_layout.html.twig' %}
+
 {% block datasource_field %}
     {% spaceless %}
         {% if field.hasAttribute('form') is not empty %}
             {% for child in field.getAttribute('form').children %}
-                {% form_theme child _self %}
-                {{ form_widget(child) }}
+                {% for grandchild in child %}
+                    {% form_theme grandchild _self %}
+                    {{ form_row(grandchild) }}
+                {% endfor %}
             {% endfor %}
         {% endif %}
     {% endspaceless %}
@@ -23,22 +27,19 @@
 </div>
 {% endblock %}
 
-{% block form_widget_compound %}
-{% spaceless %}
-    {{ block('form_rows') }}
-    {{ form_rest(form) }}
-{% endspaceless %}
-{% endblock form_widget_compound %}
+{% block datasource_between_row %}
+    {% spaceless %}
+        {{ form_widget(form) }}
+    {% endspaceless %}
+{% endblock datasource_between_row %}
 
-{% block form_row %}
+{% block datasource_between_widget %}
 {% spaceless %}
-    <div class="form-group{% if errors|length > 0 %} has-error{% endif %}">
-        {{ form_label(form, label|default(null), {'label_attr' : {'class' : 'control-label'} }) }}
-        {{ form_widget(form, {'attr' : {'class' : 'form-control'} }) }}
-        {{ form_errors(form) }}
-    </div>
+    {% for child in form %}
+        {{ form_row(child) }}
+    {% endfor %}
 {% endspaceless %}
-{% endblock form_row %}
+{% endblock datasource_between_widget %}
 
 {% block datasource_pagination %}
 {% spaceless %}

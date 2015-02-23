@@ -7,9 +7,9 @@ Feature: Changing results per page at list page
     Given "subscriber" element datasource max results is set 10
 
   Scenario: Display list with elements count equal to datasource max results
-    Given the following services were registered
-      | Id                               | Class                               | Tag           |
-      | fixtures_bundle.admin.subscriber | FSi\FixturesBundle\Admin\Subscriber | admin.element |
+    Given the following admin elements were registered
+      | Id         | Class                               |
+      | subscriber | FSi\FixturesBundle\Admin\Subscriber |
     And there are 20 subscribers in database
     And I am on the "Subscribers list" page
     Then there should be 10 elements at list
