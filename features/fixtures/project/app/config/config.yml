@@ -1,3 +1,6 @@
+parameters:
+    locale:          en
+
 framework:
     secret:          this_is_secret
     translator:      { fallback: en }
@@ -25,4 +28,4 @@ fsi_resource_repository:
     resource_class: FSi\FixturesBundle\Entity\Resource
 
 fsi_admin:
-    display_language_switch: true
+    locales: [en, pl]

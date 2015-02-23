@@ -102,6 +102,7 @@
 
         <service id="admin.controller.admin" class="%admin.controller.admin.class%">
             <argument type="service" id="templating"/>
+            <argument type="service" id="router"/>
             <argument>%admin.templates.index_page%</argument>
         </service>
 

@@ -58,11 +58,9 @@
         </service>
 
         <service id="admin.menu.listener.locale" class="%admin.menu.listener.locale.class%">
-            <argument type="string">%admin.display_language_switch%</argument>
-            <argument type="service" id="translator"/>
-            <call method="setRequest">
-                <argument type="service" id="request" on-invalid="null" strict="false" />
-            </call>
+            <argument type="service" id="translator" />
+            <argument type="service" id="request_stack" />
+            <argument type="string">%admin.locales%</argument>
             <tag name="kernel.event_listener" event="fsi_admin.menu.tools" method="createLocaleMenu" />
         </service>
 

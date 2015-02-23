@@ -27,7 +27,8 @@ class FSIAdminExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('admin.display_language_switch', $config['display_language_switch']);
+        $container->setParameter('admin.locales', $config['locales']);
+        $container->setParameter('admin.default_locale', $config['default_locale']);
         $container->setParameter('admin.menu_config_path', $config['menu_config_path']);
         $container->setParameter('admin.elements.dirs', $config['annotations']['dirs']);
 
@@ -38,9 +39,7 @@ class FSIAdminExtension extends Extension
         $loader->load('datagrid.xml');
         $loader->load('menu.xml');
 
-        if ($config['display_language_switch']) {
-            $loader->load('locale_listener.xml');
-        }
+        $loader->load('locale_listener.xml');
 
         $loader->load('context/list.xml');
         $loader->load('context/form.xml');

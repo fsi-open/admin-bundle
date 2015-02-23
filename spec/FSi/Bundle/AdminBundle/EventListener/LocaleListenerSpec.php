@@ -10,6 +10,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class LocaleListenerSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('en');
+    }
+
     function it_is_event_subscriber()
     {
         $this->shouldBeAnInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface');
@@ -32,20 +37,6 @@ class LocaleListenerSpec extends ObjectBehavior
         $this->onKernelRequest($event);
     }
 
-    function it_set_locale_to_session_if_it_exist_in_request(
-        GetResponseEvent $event,
-        Request $request,
-        Session $session
-    ) {
-        $event->getRequest()->shouldBeCalled()->willReturn($request);
-        $request->hasPreviousSession()->shouldBeCalled()->willReturn(true);
-        $request->get('_locale')->shouldBeCalled()->willReturn('pl');
-        $request->getSession()->shouldBeCalled()->willReturn($session);
-        $session->set('_locale', 'pl')->shouldBeCalled();
-
-        $this->onKernelRequest($event);
-    }
-
     function it_set_default_locale_if_request_does_not_have_locale_param(
         GetResponseEvent $event,
         Request $request,
@@ -53,7 +44,6 @@ class LocaleListenerSpec extends ObjectBehavior
     ) {
         $event->getRequest()->shouldBeCalled()->willReturn($request);
         $request->hasPreviousSession()->shouldBeCalled()->willReturn(true);
-        $request->get('_locale')->shouldBeCalled()->willReturn(null);
         $request->getSession()->shouldBeCalled()->willReturn($session);
         $session->get('_locale', 'en')->shouldBeCalled()->willReturn('en');
         $request->setLocale('en')->shouldBeCalled();

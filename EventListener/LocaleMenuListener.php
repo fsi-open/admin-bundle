@@ -10,59 +10,96 @@
 namespace FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
+use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Intl\Intl;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class LocaleMenuListener
 {
-    /**
-     * @var bool
-     */
-    private $displayLanguageSwitch;
-
     /**
      * @var TranslatorInterface
      */
     private $translator;
 
     /**
-     * @var Request
+     * @var RequestStack
      */
-    private $request;
-
-    public function __construct($displayLanguageSwitch, TranslatorInterface $translator)
-    {
-        $this->displayLanguageSwitch = $displayLanguageSwitch;
-        $this->translator = $translator;
-    }
+    private $requestStack;
 
     /**
-     * @param Request $request
+     * @var array
      */
-    public function setRequest(Request $request = null)
+    private $locales;
+
+    /**
+     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+     * @param array $locales
+     */
+    public function __construct(TranslatorInterface $translator, RequestStack $requestStack, array $locales)
     {
-        $this->request = $request;
+        $this->translator = $translator;
+        $this->requestStack = $requestStack;
+        $this->locales = $locales;
     }
 
     public function createLocaleMenu(MenuEvent $event)
     {
-        if ($this->displayLanguageSwitch == false) {
+        if (count($this->locales) < 2) {
             return;
         }
 
-        $language = new RoutableItem('admin.language.current');
+        $language = new Item('admin-locale');
         $language->setLabel(
             $this->translator->trans(
                 'admin.language.current',
-                array('%locale%' => $this->request ? $this->request->getLocale() : '---'),
+                array('%locale%' => $this->getLanguageName()),
                 'FSiAdminBundle'
             )
         );
         $language->setOptions(array('attr' => array('id' => 'language')));
-        $language->addChild(new RoutableItem('admin.language.polish', 'fsi_admin_locale', array('_locale' => 'pl')));
-        $language->addChild(new RoutableItem('admin.language.english', 'fsi_admin_locale', array('_locale' => 'en')));
+
+        foreach ($this->locales as $locale) {
+            $localeItem = new RoutableItem(
+                sprintf('admin-locale.%s', $locale),
+                'fsi_admin_locale',
+                array(
+                    '_locale' => $locale,
+                    'redirect_uri' => $this->requestStack->getMasterRequest()->getUri()
+                )
+            );
+
+            $localeItem->setLabel($this->getLanguageName($locale));
+            if ($locale === $this->getCurrentLocale()) {
+                $localeItem->setOptions(array('attr' => array('class' => 'active')));
+            }
+            $language->addChild($localeItem);
+        }
 
         $event->getMenu()->addChild($language);
+    }
+
+    private function getLanguageName($locale = null)
+    {
+        if (!$locale) {
+            $locale = $this->getCurrentLocale();
+        }
+
+        return Intl::getLanguageBundle()
+            ->getLanguageName(
+                $locale,
+                null,
+                $this->getCurrentLocale()
+            );
+    }
+
+    /**
+     * @return string
+     */
+    private function getCurrentLocale()
+    {
+        return $this->requestStack->getMasterRequest()->getLocale();
     }
 }
