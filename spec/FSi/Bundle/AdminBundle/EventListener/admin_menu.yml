@@ -4,3 +4,4 @@ menu:
   - admin.menu.structure:
     - home_page
     - {id: contact, name: "Contact"}
+    - {id: non_existing, name: "Whatever"}

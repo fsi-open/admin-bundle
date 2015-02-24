@@ -17,12 +17,17 @@ class MainMenuListenerSpec extends ObjectBehavior
     {
         $prophet = new Prophet();
         $manager->getElement(Argument::type('string'))->will(function($args) use ($prophet) {
+            if ($args[0] == 'non_existing') {
+                throw new \Exception(sprintf('Element %s does not exist', $args[0]));
+            };
             $element = $prophet->prophesize('FSi\Bundle\AdminBundle\Admin\Element');
             $element->getId()->willReturn($args[0]);
             return $element;
         });
 
-        $manager->hasElement(Argument::type('string'))->willReturn(true);
+        $manager->hasElement(Argument::type('string'))->will(function ($args) {
+            return $args[0] != 'non_existing';
+        });
         $this->beConstructedWith($manager, __DIR__ . '/admin_menu.yml');
     }
 

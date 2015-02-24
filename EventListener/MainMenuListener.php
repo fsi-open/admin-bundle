@@ -74,7 +74,10 @@ class MainMenuListener
                 $item->setOptions(array('attr' => array('class' => 'admin-element',)));
             }
 
-            if (null === $item && is_array($itemConfig)) {
+            if (null === $item) {
+                if ($this->isSingleItem($itemConfig)) {
+                    continue;
+                }
                 $item = new Item(key($itemConfig));
                 $group = array_values($itemConfig);
                 $this->populateMenu($item, $group[0]);
@@ -94,7 +97,7 @@ class MainMenuListener
             return new Item($itemConfig);
         }
 
-        if (!$this->hasEntry($itemConfig, 'id')) {
+        if (!$this->isSingleItem($itemConfig) || !$this->manager->hasElement($itemConfig['id'])) {
             return null;
         }
 
@@ -102,6 +105,11 @@ class MainMenuListener
             ($this->hasEntry($itemConfig, 'name')) ? $itemConfig['name'] : $itemConfig['id'],
             $this->manager->getElement($itemConfig['id'])
         );
+    }
+
+    private function isSingleItem($itemConfig)
+    {
+        return $this->hasEntry($itemConfig, 'id');
     }
 
     private function hasEntry($itemConfig, $keyName)
