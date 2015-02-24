@@ -37,7 +37,7 @@ class AbstractCRUDSpec extends ObjectBehavior
 
     function it_have_default_route()
     {
-        $this->getRoute()->shouldReturn('fsi_admin_crud_list');
+        $this->getRoute()->shouldReturn('fsi_admin_list');
     }
 
     function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid(DataGridFactory $factory)

@@ -12,7 +12,7 @@ Feature: Creating new object
     And I am on the "Admin panel" page
     When I follow "Subscribers" menu element
     And I press "New element" link
-    Then I should see "Subscriber Form" page header "Element form"
+    Then I should see "Subscriber Form" page header "New element"
     And I should see form with following fields
       | Field name    |
       | Email         |
@@ -35,7 +35,7 @@ Feature: Creating new object
     And translations are enabled in application
     And I am on the "Subscribers list" page
     When I press "Edit" link in "Action" column of first element at list
-    Then I should see "Subscriber Form" page header "Element form"
+    Then I should see "Subscriber Form" page header "Edit element"
     And I should see form with following fields
       | Field name    |
       | Email         |

@@ -1,9 +1,2 @@
 {% extends '@FSiAdmin/Form/form.html.twig' %}
 
-{% block header %}
-    {% if app.request.get('id') is not empty %}
-        {{ 'crud.edit.title'|trans({}, 'FSiAdminBundle') }}
-    {% else %}
-        {{ 'crud.create.title'|trans({}, 'FSiAdminBundle') }}
-    {% endif %}
-{% endblock header %}
