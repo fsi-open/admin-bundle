@@ -45,7 +45,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDElement
      */
     public function getRoute()
     {
-        return 'fsi_admin_crud_list';
+        return 'fsi_admin_list';
     }
 
     /**
