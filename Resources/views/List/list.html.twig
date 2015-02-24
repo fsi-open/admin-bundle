@@ -99,7 +99,7 @@
     {{ parent() }}
     {% if datagrid_view.hasColumnType('batch') == true %}
         <script>
-            $(document).ready(function() {
+            require(['jquery', 'bootstrap'], function($) {
                 $('button[data-datagrid-name]').on('click', function(event) {
                     var datagrid_name = $(this).data('datagrid-name'),
                         form = $('form[data-datagrid-name=' + datagrid_name + ']'),
