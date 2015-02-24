@@ -2,9 +2,9 @@
 {% trans_default_domain 'FSiAdminBundle' %}
 
 {% block themes %}
-    {% datasource_route datasource_view 'fsi_admin_list' with {'element' : element.id} %}
+    {% datasource_route datasource_view element.getRoute() with element.getRouteParameters() %}
     {% datasource_theme datasource_view admin_templates_datasource_theme %}
-    {% datagrid_theme datagrid_view admin_templates_datagrid_theme with {'datasource' : datasource_view, 'element' : element.id} %}
+    {% datagrid_theme datagrid_view admin_templates_datagrid_theme with {'datasource' : datasource_view} %}
 {% endblock themes %}
 
 {% block above_content %}
