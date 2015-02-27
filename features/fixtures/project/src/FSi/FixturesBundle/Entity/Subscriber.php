@@ -3,6 +3,7 @@
 namespace FSi\FixturesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -18,6 +19,7 @@ class Subscriber
     protected $id;
 
     /**
+     * @Assert\Email()
      * @ORM\Column(type="string", length=100)
      */
     protected $email;

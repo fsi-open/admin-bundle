@@ -1,6 +1,6 @@
 {% block datagrid %}
 {% spaceless %}
-    <table class="table table-hover table-striped table-bordered" id="{{ datagrid.name }}">
+    <table class="table table-hover table-striped table-bordered table-datagrid" id="{{ datagrid.name }}">
         <thead>
         {{ datagrid_header_widget(datagrid) }}
         </thead>
@@ -42,7 +42,7 @@
         {% if (vars.datasource.hasField(header.name)) %}
             {% set filter = vars.datasource.getField(header.name) %}
             {% if filter.getAttribute('sortable') == true %}
-                &nbsp;{{ datasource_sort_widget(filter) }}
+                {{ datasource_sort_widget(filter) }}
             {% endif %}
         {% endif %}
     </th>
