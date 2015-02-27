@@ -9,4 +9,5 @@ resources:
         header:
             type: text
             form_options:
+                required: true
                 label: admin.home_page.form.header
