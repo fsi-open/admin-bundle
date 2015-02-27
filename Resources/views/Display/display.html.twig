@@ -1,7 +1,6 @@
 {% extends admin_templates_base %}
 
 {% block content %}
-<div class="col-lg-12">
     <h3>
         <span id="page-header">{% block header 'crud.display.title'|trans({}, 'FSiAdminBundle') %}</span>
         <div class="pull-right">
@@ -35,7 +34,6 @@
             </table>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block simple_property %}

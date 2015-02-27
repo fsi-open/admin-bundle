@@ -1,36 +1,7 @@
-{% extends admin_templates_base %}
+{% extends '@FSiAdmin/Form/form.html.twig' %}
 
 {% block themes %}
     {% form_theme form admin_templates_form_theme %}
 {% endblock themes %}
 
-{% block content %}
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h3>
-                    <span id="page-header">{% block header 'resource.title'|trans({}, 'FSiAdminBundle') %}</span>
-                    <div class="pull-right">
-                        {% block top_buttons %}
-                            {% if app.request.query.has('redirect_uri') %}
-                                <a class="btn btn-xs btn-default" href="{{ app.request.query.get('redirect_uri') }}">
-                                    <span class="glyphicon glyphicon-chevron-left"></span>
-                                    {{ 'crud.form.button.back'|trans({}, 'FSiAdminBundle') }}
-                                </a>
-                            {% endif %}
-                        {% endblock top_buttons %}
-                    </div>
-                </h3>
-                {{ form_start(form, { 'attr': form.vars.attr|merge({ class: 'form-horizontal' }) }) }}
-                    {{ form_widget(form) }}
-                    <div class="form-group">
-                        <div class="col-lg-offset-2 col-lg-10">
-                            <button type="submit" class="btn btn-default">{{ 'resource.button.save'|trans({}, 'FSiAdminBundle')  }}</button>
-                            <button type="reset" class="btn btn-primary">{{ 'resource.button.reset'|trans({}, 'FSiAdminBundle')  }}</button>
-                        </div>
-                    </div>
-                {{ form_end(form) }}
-            </div>
-        </div>
-    </div>
-{% endblock %}
+{% block header 'resource.title'|trans({}, 'FSiAdminBundle') %}

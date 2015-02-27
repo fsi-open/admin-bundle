@@ -9,28 +9,13 @@
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" type="text/css" media="all" />
         <style>
             body {position: relative;padding-top: 60px;}
-            #batch_action {margin-right: 5px;width: 155px;}
-            #batch_form {margin-right: 5px;}
-            #filter input[type="text"],
-            #filter input[type="email"],
-            #filter input[type="datetime"],
-            #filter input[type="date"],
-            #filter input[type="time"],
-            #filter select {width:190px; margin-right:5px;margin-left:5px;margin-bottom:5px;}
-            #filter .submit-buttons {float:left; margin-right:5px;margin-left:5px;margin-bottom:5px;}
-            #list-results {float:right;}
-            #delete-wrapper {text-align: center;}
-            #pagination-centered {text-align: center;}
-            @media (max-width: 768px) {
-                #list-results {margin-top:10px;text-align: center;float:none;}
-                #datagrid-wrapper {margin-bottom:20px;}
-                #datagrid-wrapper table {margin-bottom:0px;}
-                #batch_action {margin-left:5px;}
-            }
-            .cell-editable {cursor: pointer;}
-            .cell-value {display: inline;}
-            .sort-asc {margin-right: 5px;}
-            .actions > .btn, .editable-buttons > .btn {margin-left:5px;}
+            .form-horizontal .control-label {text-align: left;}
+            .form-horizontal .control-label .glyphicon {font-size: 11px; vertical-align: baseline;}
+            .datagrid-actions select {width: 155px;}
+            .filters .form-group {width: 155px; margin-right: 5px;}
+            .filters .hidden-xs.filter-buttons {margin-top: 24px;}
+            .table-datagrid thead .btn {margin-left: 5px;}
+            .table-datagrid .actions .btn {margin-left: 5px;}
         </style>
     {% endblock %}
     <script src="{{ asset('bundles/fsiadmin/require.js') }}" type="text/javascript"></script>
@@ -67,27 +52,14 @@
 </div>
 <div class="container">
     <div class="row">
+        <div class="col-lg-12">
         {% block above_content %}{% endblock above_content %}
         {% block content %}{% endblock content %}
         {% block under_content %}{% endblock under_content %}
+        </div>
     </div>
 </div>
 {% block javascripts %}
-    <script type="text/javascript">
-        require(['jquery', 'bootstrap'], function($) {
-            $(function() {
-                $('a.editable').click(function(event) {event.preventDefault();});
-                $('a.editable').popover({}).on('shown.bs.popover', function () {
-                    var popover = $(this);
-                    $('a.editable-close').click(function(event){
-                        event.preventDefault();
-                        popover.popover('hide');
-                    });
-                });
-                $('a.editable.has-error').popover('show');
-            });
-        });
-    </script>
 {% endblock %}
 </body>
 </html>

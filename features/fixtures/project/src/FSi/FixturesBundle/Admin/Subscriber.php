@@ -32,7 +32,8 @@ class Subscriber extends ListElement
         ));
         $datagrid->addColumn('email', 'text', array(
             'label' => 'admin.subscriber.list.email',
-            'editable' => true
+            'editable' => true,
+            'form_type' => array('email' => 'email')
         ));
         $datagrid->addColumn('active', 'boolean', array(
             'label' => 'admin.subscriber.list.active'

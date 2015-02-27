@@ -10,15 +10,15 @@
 {% block above_content %}
     {% block filter %}
         {% if datasource_filter_count(datasource_view) > 0 %}
-        <div class="row" id="filter">
+        <div class="row">
             <div class="col-lg-12">
                 <form class="form-inline filters" method="GET" action="{{ path(element.route, element.routeParameters) }}">
-                    <div class="pull-right hidden-xs">
+                    <div class="pull-right hidden-xs filter-buttons">
                         <button type="submit" class="btn btn-primary">{{ 'crud.list.datasource.search'|trans }}</button>
                         <a href="{{ path(element.route, element.routeParameters) }}" class="btn btn-default">{{ 'crud.list.datasource.clear'|trans }}</a>
                     </div>
                     {{ datasource_filter_widget(datasource_view) }}
-                    <div class="visible-xs submit-buttons">
+                    <div class="visible-xs filter-buttons">
                         <button type="submit" class="btn btn-primary">{{ 'crud.list.datasource.search'|trans }}</button>
                         <a href="{{ path(element.route, element.routeParameters) }}" class="btn btn-default">{{ 'crud.list.datasource.clear'|trans }}</a>
                     </div>
@@ -30,93 +30,96 @@
 {% endblock above_content %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-12">
-        <h3>
-            <span id="page-header">{% block header 'crud.list.title'|trans({}, 'FSiAdminBundle') %}</span>
-            <div class="pull-right">
-                {% block top_buttons %}
-                {% endblock top_buttons %}
-            </div>
-        </h3>
-        {% block datagrid %}
-        <div id="datagrid-wrapper" class="table-responsive">
-            {{ datagrid_widget(datagrid_view) }}
+    <h3>
+        <span id="page-header">{% block header 'crud.list.title'|trans({}, 'FSiAdminBundle') %}</span>
+        <div class="pull-right">
+            {% block top_buttons %}
+            {% endblock top_buttons %}
         </div>
-        {% endblock datagrid %}
+    </h3>
+    {% block datagrid %}
+    <div class="table-responsive">
+        {{ datagrid_widget(datagrid_view) }}
     </div>
-</div>
+    {% endblock datagrid %}
 {% endblock content %}
 
 {% block under_content %}
-<div class="row">
-    <div class="col-lg-12">
-        {% block batch_actions %}
-            {% if datagrid_view.hasColumnType('batch') == true %}
-                {% for column in datagrid_view.getColumns %}
-                    {% if column.type == 'batch' %}
-                        {% set batch_form = column.getAttribute('batch_form') %}
-                        {{ form_widget(batch_form.action, {
-                            'attr': {
-                                'class': 'pull-left form-control',
-                                'data-datagrid-name': datagrid_view.name
-                            }
-                        }) }}
-                        {{ form_widget(batch_form.submit, {
-                            'attr': {
-                                'class': 'btn btn-primary',
-                                'data-datagrid-name': datagrid_view.name
-                            }
-                        }) }}
-                        <form class="form pull-left" method="POST" data-datagrid-name="{{ datagrid_view.name }}">
-                            {% for index in datagrid_view.indexes %}
-                                <input type="checkbox" class="hidden" value="{{ index }}" name="indexes[]">
-                            {% endfor %}
-                            {{ form_rest(batch_form) }}
-                        </form>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        {% endblock batch_actions %}
-        {% block bottom_buttons '' %}
-        {% block results %}
-        <div id="list-results" class="pull-right">
-            <strong>{{ 'crud.list.datagrid.result_count'|trans }} {{ datasource_view.result|length }}</strong>
-            {{ datasource_max_results_widget(datasource_view) }}
-        </div>
-        {% endblock results %}
-        <div class="clearfix"></div>
-        {% block pagination %}
-        <div id="pagination-centered">
-            {{ datasource_pagination_widget(datasource_view, {max_pages: 10}) }}
-        </div>
-        {% endblock pagination %}
+    <div class="pull-left form-inline datagrid-actions">
+    {% block batch_actions %}
+        {% if datagrid_view.hasColumnType('batch') == true %}
+            {% for column in datagrid_view.getColumns %}
+                {% if column.type == 'batch' %}
+                    {% set batch_form = column.getAttribute('batch_form') %}
+                    {% form_theme batch_form admin_templates_form_theme %}
+                    {{ form_widget(batch_form.action, {
+                        'attr': {
+                            'data-datagrid-name': datagrid_view.name
+                        }
+                    }) }}
+                    {{ form_widget(batch_form.submit, {
+                        'attr': {
+                            'class': 'btn-primary',
+                            'data-datagrid-name': datagrid_view.name
+                        }
+                    }) }}
+                    <form class="form hidden" method="POST" data-datagrid-name="{{ datagrid_view.name }}">
+                        {% for index in datagrid_view.indexes %}
+                            <input type="checkbox" class="hidden" value="{{ index }}" name="indexes[]">
+                        {% endfor %}
+                        {{ form_rest(batch_form) }}
+                    </form>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endblock batch_actions %}
+    {% block bottom_buttons '' %}
     </div>
-</div>
+    {% block results %}
+    <div id="list-results" class="pull-right">
+        <strong>{{ 'crud.list.datagrid.result_count'|trans }} {{ datasource_view.result|length }}</strong>
+        {{ datasource_max_results_widget(datasource_view) }}
+    </div>
+    {% endblock results %}
+    <div class="clearfix"></div>
+    {% block pagination %}
+    <div class="text-center">
+        {{ datasource_pagination_widget(datasource_view, {max_pages: 10}) }}
+    </div>
+    {% endblock pagination %}
 {% endblock under_content %}
 
 {% block javascripts %}
     {{ parent() }}
-    {% if datagrid_view.hasColumnType('batch') == true %}
-        <script>
-            require(['jquery', 'bootstrap'], function($) {
-                $('button[data-datagrid-name]').on('click', function(event) {
-                    var datagrid_name = $(this).data('datagrid-name'),
+    <script>
+        require(['jquery', 'bootstrap'], function($) {
+            var $editable = $('a.editable');
+            $editable.click(function(event) {event.preventDefault();});
+            $editable.popover({}).on('shown.bs.popover', function () {
+                var $popover = $(this);
+                $('a.editable-close').click(function(event){
+                    event.preventDefault();
+                    $popover.popover('hide');
+                });
+            });
+            $('a.editable.has-error').popover('show');
+
+            $('button[data-datagrid-name]').on('click', function(event) {
+                var datagrid_name = $(this).data('datagrid-name'),
                         form = $('form[data-datagrid-name=' + datagrid_name + ']'),
                         action = $('select[data-datagrid-name=' + datagrid_name + ']'),
                         checkboxes = $('#' + datagrid_name + ' input.' + datagrid_name + '_batch');
 
-                    if (action[0].selectedIndex && checkboxes.length) {
-                        form.attr('action', action.val());
-                        for (var i = 0; i < checkboxes.length; i++) {
-                            form.find('input[type="checkbox"][value="' + $(checkboxes[i]).val() + '"]')
+                if (action[0].selectedIndex && checkboxes.length) {
+                    form.attr('action', action.val());
+                    for (var i = 0; i < checkboxes.length; i++) {
+                        form.find('input[type="checkbox"][value="' + $(checkboxes[i]).val() + '"]')
                                 .prop('checked', $(checkboxes[i]).prop('checked'));
-                        }
-
-                        form.submit();
                     }
-                });
+
+                    form.submit();
+                }
             });
-        </script>
-    {% endif %}
+        });
+    </script>
 {% endblock javascripts %}
