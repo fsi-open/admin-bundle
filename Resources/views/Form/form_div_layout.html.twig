@@ -1,0 +1,12 @@
+{% extends '@FSiAdmin/Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block form_start %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(['jquery'], function ($) {
+            $('label.required').each(function (index, label) {
+                $(label).append(' <i class="glyphicon glyphicon-asterisk"></i>');
+            });
+        });
+    </script>
+{% endblock form_start %}
