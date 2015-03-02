@@ -240,6 +240,8 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     {
         if ($this->getMasterRequestQuery()->has('redirect_uri')) {
             $additionalParameters['redirect_uri'] = $this->getMasterRequestQuery()->get('redirect_uri');
+        } else {
+            $additionalParameters['redirect_uri'] = $this->requestStack->getMasterRequest()->getRequestUri();
         }
 
         return $additionalParameters;
