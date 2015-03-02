@@ -157,6 +157,58 @@ class BatchActionExtensionSpec extends ObjectBehavior
         $this->buildHeaderView($column, $view);
     }
 
+    function it_adds_redirect_uri_to_actions_when_no_redirect_uri_is_defined(
+        Manager $manager,
+        BatchElement $batchElement,
+        Request $request,
+        ParameterBag $queryAttributes,
+        RouterInterface $router,
+        FormBuilderInterface $formBuilder,
+        FormView $formView,
+        ColumnTypeInterface $column,
+        HeaderViewInterface $view
+    ) {
+        $column->getOption('actions')->willReturn(array(
+            array(
+                'element' => 'some_batch_element_id',
+                'additional_parameters' => array('some_additional_parameter' => 'some_value'),
+                'label' => 'batch_action_label'
+            )
+        ));
+        $manager->hasElement('some_batch_element_id')->willReturn(true);
+        $manager->getElement('some_batch_element_id')->willReturn($batchElement);
+        $batchElement->getId()->willReturn('some_batch_element_id');
+        $batchElement->getRoute()->willReturn('fsi_admin_batch');
+        $batchElement->getRouteParameters()->willReturn(array('element' => 'some_batch_element_id'));
+        $queryAttributes->has('redirect_uri')->willReturn(false);
+        $request->getRequestUri()->willReturn('current_request_uri');
+
+        $router->generate(
+            'fsi_admin_batch',
+            array(
+                'element' => 'some_batch_element_id',
+                'some_additional_parameter' => 'some_value',
+                'redirect_uri' => 'current_request_uri'
+            )
+        )->willReturn('path_to_batch_action');
+
+        $formBuilder->add('action', 'choice', array(
+            'choices' => array(
+                0 => 'crud.list.batch.empty_choice',
+                'path_to_batch_action' => 'batch_action_label'
+            ),
+            'translation_domain' => 'FSiAdminBundle'
+        ))->willReturn();
+        $formBuilder->add('submit', 'submit', array(
+            'label' => 'crud.list.batch.confirm',
+            'translation_domain' => 'FSiAdminBundle'
+        ))->willReturn();
+
+        $view->setAttribute('batch_form', $formView)->shouldBeCalled();
+
+        $this->buildHeaderView($column, $view);
+    }
+
     function it_allows_to_pass_route_name_and_additional_parameters_to_batch_action(
         ParameterBag $queryAttributes,
         RouterInterface $router,

@@ -2,7 +2,7 @@
 
 {% block top_buttons %}
     {% if element.option('allow_add') == true %}
-        <a href="{{ path('fsi_admin_form', element.getRouteParameters()|merge({redirect_uri: app.request.uri})) }}" class="btn btn-xs btn-success">
+        <a href="{{ path('fsi_admin_form', element.getRouteParameters()|merge({redirect_uri: app.request.requestUri})) }}" class="btn btn-xs btn-success">
             <span class="glyphicon glyphicon-plus"></span>
             {{ 'crud.list.button.create'|trans({}, 'FSiAdminBundle') }}
         </a>
@@ -12,7 +12,7 @@
 {% block bottom_buttons %}
     {% block buttons %}
         {% if element.option('allow_add') == true %}
-            <a href="{{ path('fsi_admin_form', element.getRouteParameters()|merge({redirect_uri: app.request.uri})) }}" class="btn btn-success" id="create-element">
+            <a href="{{ path('fsi_admin_form', element.getRouteParameters()|merge({redirect_uri: app.request.requestUri})) }}" class="btn btn-success" id="create-element">
                 <span class="glyphicon glyphicon-plus"></span>
                 {{ 'crud.list.button.create'|trans({}, 'FSiAdminBundle') }}
             </a>
