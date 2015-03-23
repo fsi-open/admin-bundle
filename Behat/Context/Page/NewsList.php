@@ -81,7 +81,7 @@ class NewsList extends Page
 
     public function getPopover()
     {
-        return $this->find('css', 'div.popover-content');
+        return $this->find('css', 'div.popover');
     }
 
     protected function verifyPage()

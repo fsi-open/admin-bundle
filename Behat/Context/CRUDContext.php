@@ -505,6 +505,17 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     }
 
     /**
+     * @Given /^I clicked edit in "([^"]*)" column in first row$/
+     * @When /^I click edit in "([^"]*)" column in first row$/
+     */
+    public function iClickEditInColumnInFirstRow($columnHeader)
+    {
+        $cell = $this->getPage('News list')->getCell($columnHeader, 1);
+        $this->getPage('News list')->getSession()->getDriver()->click($cell->getXPath());
+        $cell->find('css', 'a')->click();
+    }
+
+    /**
      * @Then /^popover with "([^"]*)" field in form should appear$/
      */
     public function popoverWithFieldInFormShouldAppear($newsTitle)

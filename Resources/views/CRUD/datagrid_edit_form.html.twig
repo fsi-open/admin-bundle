@@ -1,0 +1,13 @@
+{% extends admin_templates_form_theme %}
+
+{% block form_label_class %}
+    sr-only
+{% endblock form_label_class %}
+
+{% block form_group_class %}
+    col-sm-12
+{% endblock form_group_class %}
+
+{% block row_row %}
+    {{ form_widget(form) }}
+{% endblock row_row %}

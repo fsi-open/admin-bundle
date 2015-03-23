@@ -13,23 +13,23 @@ Feature: Editing news title directly from list of elements
 
   @javascript
   Scenario: Display popover with news title edit form
-    When I click "News 1" in "Title" column in first row
+    When I click edit in "Title" column in first row
     Then popover with "News 1" field in form should appear
 
   @javascript
   Scenario: Display popover with news date when date is not set
-    When I click "Edit" in "Date" column in first row
+    When I click edit in "Date" column in first row
     Then popover with empty date field in form should appear
 
   @javascript
   Scenario: Hide popover with news title edit form
-    Given I clicked "News 1" in "Title" column in first row
+    Given I clicked edit in "Title" column in first row
     When I click X at popover
     Then popover should not be visible anymore
 
   @javascript
   Scenario: Edit news title via popover form
-    Given I clicked "News 1" in "Title" column in first row
+    Given I clicked edit in "Title" column in first row
     When I fill "Title" field at popover with "News 1 Test" value
     And I press "Save" at popover
     Then there should be news with "News 1 Test" title in database
