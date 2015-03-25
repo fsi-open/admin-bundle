@@ -11,6 +11,7 @@ namespace FSi\Bundle\AdminBundle;
 
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminElementPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextBuilderPass;
+use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\DoctrineExtensionsPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ManagerVisitorPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ResourceRepositoryPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass;

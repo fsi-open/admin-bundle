@@ -15,13 +15,7 @@
 {% spaceless %}
     <td{{ block('datagrid_cell_attributes') }}>
         <div{{ block('datagrid_container_attributes') }}>
-            {% if cell.hasAttribute('form') %}
-                <a href="#" class="{{ block('datagrid_column_cell_form_link') }}"
-                   title="{{ 'crud.list.datagrid.editable.title'|trans({}, 'FSiAdminBundle') }}"
-                   data-toggle="popover" data-html="true" data-placement="right"
-                   data-template="{{ block('datagrid_column_cell_form_popover')|escape }}"
-                   data-content="{{ datagrid_column_cell_form_widget(cell)|escape }}"></a>
-            {% endif %}
+            {{ block('datagrid_column_cell_form_link') }}
             <span{{ block('datagrid_value_attributes') }}>
                 {{ cell.value|raw }}
             </span>
@@ -30,10 +24,20 @@
 {% endspaceless %}
 {% endblock %}
 
-{%- block datagrid_column_cell_form_link -%}
+{% block datagrid_column_cell_form_link %}
+    {% if cell.hasAttribute('form') %}
+        <a href="#" class="{{ block('datagrid_column_cell_form_link_class') }}"
+           title="{{ 'crud.list.datagrid.editable.title'|trans({}, 'FSiAdminBundle') }}"
+           data-toggle="popover" data-html="true" data-placement="right"
+           data-template="{{ block('datagrid_column_cell_form_popover')|escape }}"
+           data-content="{{ datagrid_column_cell_form_widget(cell)|escape }}"></a>
+    {% endif %}
+{% endblock datagrid_column_cell_form_link %}
+
+{%- block datagrid_column_cell_form_link_class -%}
     editable glyphicon glyphicon-edit pull-right
     {% if cell.getAttribute('form').vars.valid == false %} has-error{% endif %}
-{%- endblock datagrid_column_cell_form_link -%}
+{%- endblock datagrid_column_cell_form_link_class -%}
 
 {%- block datagrid_column_cell_form_popover -%}
     <div class="popover" role="tooltip">

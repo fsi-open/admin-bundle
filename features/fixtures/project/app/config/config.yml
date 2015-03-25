@@ -27,5 +27,10 @@ doctrine:
 fsi_resource_repository:
     resource_class: FSi\FixturesBundle\Entity\Resource
 
+fsi_doctrine_extensions:
+    orm:
+        default:
+            uploadable: true
+
 fsi_admin:
     locales: [en, pl]

@@ -17,7 +17,18 @@ class AttributesExtension extends ColumnAbstractTypeExtension
      */
     public function getExtendedColumnTypes()
     {
-        return array('text', 'boolean', 'datetime', 'money', 'number', 'entity', 'collection', 'action');
+        return array(
+            'text',
+            'boolean',
+            'datetime',
+            'money',
+            'number',
+            'entity',
+            'collection',
+            'action',
+            'fsi_file',
+            'fsi_image'
+        );
     }
 
     /**
