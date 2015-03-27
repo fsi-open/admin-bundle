@@ -32,6 +32,7 @@
         "symfony/class-loader": "~2.3",
         "ext-pdo_sqlite": "*",
         "fsi/resource-repository-bundle": "1.1.*@dev",
+        "fsi/doctrine-extensions-bundle": "~1.1,>=1.1.2",
         "doctrine/doctrine-bundle": "dev-master",
         "phpspec/phpspec": "2.0.*@dev",
         "behat/behat": "2.5.*@stable",

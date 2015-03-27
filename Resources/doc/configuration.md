@@ -23,3 +23,14 @@ fsi_admin:
         delete_form_theme: @FSiAdmin/Form/form_div_layout.html.twig
         resource_form_theme: @FSiAdmin/Form/form_div_layout.html.twig
 ```
+
+There is a separate [theme](../view/CRUD/datagrid_fsi_doctrine_extensions.html.twig) for datagrids you can use if
+you register [fsi/doctrine-extensions-bundle](https://github.com/fsi-open/doctrine-extensions-bundle). 
+
+```yml
+# app/config/config.yml
+
+fsi_admin:
+    templates:
+        datagrid_theme: @FSiAdmin/CRUD/datagrid_fsi_doctrine_extensions.html.twig
+```

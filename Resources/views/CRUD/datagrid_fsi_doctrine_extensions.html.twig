@@ -1,0 +1,33 @@
+{% extends '@FSiAdmin/CRUD/datagrid.html.twig' %}
+
+{% block datagrid_column_type_fsi_file_cell %}
+    {% spaceless %}
+        <td{{ block('datagrid_cell_attributes') }}>
+            <div{{ block('datagrid_container_attributes') }}>
+                {{ block('datagrid_column_cell_form_link') }}
+                {% for val in cell.value %}
+                    {% if val is not empty %}
+                        <a href="{{ fsi_file_url(val) }}" target="_blank"{{ block('datagrid_value_attributes') }}>{{ val|fsi_file_basename }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </td>
+    {% endspaceless %}
+{% endblock %}
+
+{% block datagrid_column_type_fsi_image_cell %}
+    {% spaceless %}
+        <td{{ block('datagrid_cell_attributes') }}>
+            <div{{ block('datagrid_container_attributes') }}>
+                {{ block('datagrid_column_cell_form_link') }}
+                {% for val in cell.value %}
+                    {% if val is not empty %}
+                        <a href="{{ fsi_file_url(val) }}" target="_blank"{{ block('datagrid_value_attributes') }}>
+                            <img src="{{ fsi_file_url(val) }}" style="width: {{ cell.attributes.width }}px" />
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </td>
+    {% endspaceless %}
+{% endblock %}

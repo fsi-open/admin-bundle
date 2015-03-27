@@ -3,6 +3,8 @@
 namespace FSi\FixturesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FSi\Bundle\DoctrineExtensionsBundle\Validator\Constraints as UploadableAssert;
+use FSi\DoctrineExtensions\Uploadable\Mapping\Annotation as Uploadable;
 
 /**
  * @ORM\Entity
@@ -41,6 +43,18 @@ class News
      * @ORM\Column(type="text", name="creator_email")
      */
     protected $creatorEmail;
+
+    /**
+     * @ORM\Column(length=255, nullable=true)
+     * @Uploadable\Uploadable(targetField="photo")
+     */
+    protected $photoKey;
+
+    /**
+     * @var \FSi\DoctrineExtensions\Uploadable\File|\SplFileInfo
+     * @UploadableAssert\Image()
+     */
+    protected $photo;
 
     /**
      * @ORM\Column(type="array", name="categories");
@@ -150,6 +164,38 @@ class News
     public function isVisible()
     {
         return $this->visible;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhotoKey()
+    {
+        return $this->photoKey;
+    }
+
+    /**
+     * @param mixed $photoKey
+     */
+    public function setPhotoKey($photoKey)
+    {
+        $this->photoKey = $photoKey;
+    }
+
+    /**
+     * @return \FSi\DoctrineExtensions\Uploadable\File|\SplFileInfo
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    /**
+     * @param \FSi\DoctrineExtensions\Uploadable\File|\SplFileInfo $photo
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
     }
 
     /**

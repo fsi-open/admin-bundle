@@ -111,7 +111,8 @@ class DataContext extends BehatContext implements KernelAwareInterface
 
         $populator->addEntity('FSi\FixturesBundle\Entity\News', $newsCount, array(
             'creatorEmail' => function() use ($generator) { return $generator->email(); },
-            'categories' => function() use($generator) {return array($generator->text(), $generator->text());}
+            'categories' => function() use($generator) {return array($generator->text(), $generator->text());},
+            'photoKey' => null
         ));
         $populator->execute();
 
@@ -128,7 +129,8 @@ class DataContext extends BehatContext implements KernelAwareInterface
 
         $populator->addEntity('FSi\FixturesBundle\Entity\News', 1, array(
             'id' => $id,
-            'creatorEmail' => function() use ($generator) { return $generator->email(); }
+            'creatorEmail' => function() use ($generator) { return $generator->email(); },
+            'photoKey' => null
         ));
         $populator->execute();
 

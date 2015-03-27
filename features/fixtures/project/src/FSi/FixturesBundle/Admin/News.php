@@ -45,6 +45,10 @@ class News extends CRUDElement
         $datagrid->addColumn('creator_email', 'text', array(
             'label' => 'admin.news.list.creator_email'
         ));
+        $datagrid->addColumn('photo', 'fsi_image', array(
+            'label' => 'admin.news.list.photo',
+            'width' => 100
+        ));
         $datagrid->addColumn('actions', 'action', array(
             'label' => 'admin.news.list.actions',
             'field_mapping' => array('id'),
@@ -127,6 +131,9 @@ class News extends CRUDElement
         ));
         $builder->add('creator_email', 'email', array(
             'label' => 'admin.news.list.creator_email'
+        ));
+        $builder->add('photo', 'fsi_image', array(
+            'label' => 'admin.news.list.photo'
         ));
 
         return $builder->getForm();

@@ -7,9 +7,14 @@
     <parameters>
         <parameter key="admin.datagrid.extension.column_type.element_action.class">FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension\ElementActionExtension</parameter>
         <parameter key="admin.datagrid.extension.column_type.batch_action.class">FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension\BatchActionExtension</parameter>
+        <parameter key="admin.datagrid.extension.column_type.attributes.class">FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension\AttributesExtension</parameter>
     </parameters>
 
     <services>
+        <service id="admin.datagrid.extension.column_type.attributes" class="%admin.datagrid.extension.column_type.attributes.class%">
+            <tag name="datagrid.column_extension" alias="admin.attributes" />
+        </service>
+
         <service id="admin.datagrid.extension.column_type.element_action" class="%admin.datagrid.extension.column_type.element_action.class%">
             <argument type="service" id="admin.manager"/>
             <tag name="datagrid.column_extension" alias="admin.element_action" />

@@ -13,72 +13,72 @@
 
 {% block datagrid_column_cell %}
 {% spaceless %}
-    <td class="cell">
-        <div id="{{ datagrid_name }}_{{ row_index }}_{{ cell.name }}">
-            {% if cell.hasAttribute('form') %}
-                {% set class = 'editable' %}
-                {% if cell.getAttribute('form').vars.valid == false %}
-                    {% set class = class ~ ' has-error' %}
-                {% endif %}
-                <a href="#" class="{{ class }}" data-toggle="popover" data-html="true" data-content="{{ datagrid_column_cell_form_widget(cell)|escape }}">
-                    {% if cell.value is empty %}
-                        {{ 'crud.list.datagrid.editable.empty'|trans({}, 'FSiAdminBundle') }}
-                    {% else %}
-                        {{ cell.value|raw }}
-                    {% endif %}
-                </a>
-            {% else %}
+    <td{{ block('datagrid_cell_attributes') }}>
+        <div{{ block('datagrid_container_attributes') }}>
+            {{ block('datagrid_column_cell_form_link') }}
+            <span{{ block('datagrid_value_attributes') }}>
                 {{ cell.value|raw }}
-            {% endif %}
+            </span>
         </div>
     </td>
 {% endspaceless %}
 {% endblock %}
 
-{% block datagrid_column_header %}
+{% block datagrid_column_cell_form_link %}
+    {% if cell.hasAttribute('form') %}
+        <a href="#" class="{{ block('datagrid_column_cell_form_link_class') }}"
+           title="{{ 'crud.list.datagrid.editable.title'|trans({}, 'FSiAdminBundle') }}"
+           data-toggle="popover" data-html="true" data-placement="right"
+           data-template="{{ block('datagrid_column_cell_form_popover')|escape }}"
+           data-content="{{ datagrid_column_cell_form_widget(cell)|escape }}"></a>
+    {% endif %}
+{% endblock datagrid_column_cell_form_link %}
+
+{%- block datagrid_column_cell_form_link_class -%}
+    editable glyphicon glyphicon-edit pull-right
+    {% if cell.getAttribute('form').vars.valid == false %} has-error{% endif %}
+{%- endblock datagrid_column_cell_form_link_class -%}
+
+{%- block datagrid_column_cell_form_popover -%}
+    <div class="popover" role="tooltip">
+        <div class="arrow"></div>
+        <a href="#" class="close editable-close glyphicon glyphicon-remove"></a>
+        <h3 class="popover-title"></h3>
+        <div class="popover-content"></div>
+    </div>
+{%- endblock datagrid_column_cell_form_popover -%}
+
+{% block datagrid_column_cell_form %}
 {% spaceless %}
-    <th>
-        <span>{{ header.label|trans({}, translation_domain) }}</span>
-        {% if (vars.datasource.hasField(header.name)) %}
-            {% set filter = vars.datasource.getField(header.name) %}
-            {% if filter.getAttribute('sortable') == true %}
-                {{ datasource_sort_widget(filter) }}
-            {% endif %}
-        {% endif %}
-    </th>
+    {% form_theme form '@FSiAdmin/CRUD/datagrid_edit_form.html.twig' %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <div class="col-sm-12 form-group editable-buttons">
+        <input type="submit" name="submit" value="{{ 'crud.list.datagrid.editable.save'|trans({}, 'FSiAdminBundle') }}" class="btn btn-sm btn-primary">
+    </div>
+    {{ form_end(form) }}
 {% endspaceless %}
 {% endblock %}
 
-{# pattern: datagrid_column_cell_form #}
-{% block datagrid_column_cell_form %}
-{% spaceless %}
-    {% form_theme form _self %}
-    <div class="editable-title">
-        <span>{{ 'crud.list.datagrid.editable.title'|trans({}, 'FSiAdminBundle') }}</span>
-        <a href="#" class="close editable-close">&times;</a>
-    </div>
-    <form method="POST">
-        {% for child in form.children %}
-            {% for subchild in child.children %}
-                <div class="form-group{% if subchild.vars.errors|length %} has-error{% endif %}">
-                    {{ form_label(subchild, subchild.vars.label|default(null), { 'label_attr': { 'class': 'sr-only' } }) }}
-                    {{ form_widget(subchild, {'attr' : {'class' : 'form-control'} }) }}
-                    {{ form_errors(subchild) }}
-                </div>
-            {% endfor %}
-        {% endfor %}
-        <div class="form-group editable-buttons">
-            <input type="submit" name="submit" value="{{ 'crud.list.datagrid.editable.save'|trans({}, 'FSiAdminBundle') }}" class="btn btn-sm btn-primary">
-        </div>
-    </form>
-{% endspaceless %}
+{% block datagrid_column_header %}
+    {% spaceless %}
+        <th{{ block('datagrid_header_attributes') }}>
+            <span>{{ header.label|trans({}, translation_domain) }}</span>
+            {% if (vars.datasource.hasField(header.name)) %}
+                {% set filter = vars.datasource.getField(header.name) %}
+                {% if filter.getAttribute('sortable') == true %}
+                    {{ datasource_sort_widget(filter) }}
+                {% endif %}
+            {% endif %}
+        </th>
+    {% endspaceless %}
 {% endblock %}
 
 {#  pattern: datagrid_{grid_name}_column_name_{column_name}_cell #}
 {% block datagrid_column_type_action_cell %}
 {% spaceless %}
-    <td class="cell">
-        <div class="text-right actions">
+    <td{{ block('datagrid_cell_attributes') }}>
+        <div{{ block('datagrid_container_attributes') }}>
             {% for action_name, action in cell.value %}
                 {{ datagrid_column_type_action_cell_action_widget(cell, action_name, action.content, action.url_attr|merge({'href' : action.url})) }}
             {% endfor %}
@@ -105,12 +105,48 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block form_errors %}
-{% spaceless %}
-    {% if errors|length > 0 %}
-        {% for error in errors %}
-            <span class="help-block">{{ error.message }}</span>
-        {% endfor %}
-    {% endif %}
-{% endspaceless %}
-{% endblock form_errors %}
+{%- block datagrid_header_class -%}
+    datagrid-header
+{%- endblock datagrid_header_class -%}
+
+{%- block datagrid_cell_class -%}
+    datagrid-cell
+{%- endblock datagrid_cell_class -%}
+
+{%- block datagrid_container_class -%}
+    datagrid-cell-container
+    {%- if cell.type == 'action' %} text-right actions{% endif -%}
+{%- endblock datagrid_container_class -%}
+
+{%- block datagrid_value_class -%}
+    datagrid-cell-value
+{%- endblock datagrid_value_class -%}
+
+{%- block datagrid_value_attributes -%}
+    {% set attr = cell.getAttribute('cell_attr')|merge({class: (cell.getAttribute('cell_attr')['class']|default('') ~ ' ' ~ block('datagrid_value_class'))|trim}) %}
+    {{ block('datagrid_attributes') }}
+{%- endblock datagrid_value_attributes -%}
+
+{%- block datagrid_cell_attributes -%}
+    {% set attr = cell.getAttribute('value_attr')|merge({class: (cell.getAttribute('value_attr')['class']|default('') ~ ' ' ~ block('datagrid_cell_class'))|trim}) %}
+    {{ block('datagrid_attributes') }}
+{%- endblock datagrid_cell_attributes -%}
+
+{%- block datagrid_header_attributes -%}
+    {% set attr = header.getAttribute('header_attr')|merge({class: (header.getAttribute('header_attr')['class']|default('') ~ ' ' ~ block('datagrid_header_class'))|trim}) %}
+    {{ block('datagrid_attributes') }}
+{%- endblock datagrid_header_attributes -%}
+
+{%- block datagrid_container_attributes -%}
+    {% set id = datagrid_name ~ '_' ~ row_index ~ '_' ~ cell.name %}
+    {% set class = (header.getAttribute('container_attr')['class']|default('') ~ ' ' ~ block('datagrid_container_class'))|trim %}
+    {% set attr = {id: id}|merge(cell.getAttribute('container_attr'))|merge({class: class}) %}
+    {{ block('datagrid_attributes') }}
+{%- endblock datagrid_container_attributes -%}
+
+{%- block datagrid_attributes -%}
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {{- attrname }}="{{ attrvalue }}"
+    {%- endfor -%}
+{%- endblock datagrid_attributes -%}

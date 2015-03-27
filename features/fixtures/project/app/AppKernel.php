@@ -13,6 +13,8 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+            new FSi\Bundle\DoctrineExtensionsBundle\FSiDoctrineExtensionsBundle(),
             new FSi\Bundle\DataSourceBundle\DataSourceBundle(),
             new FSi\Bundle\DataGridBundle\DataGridBundle(),
             new FSi\Bundle\AdminBundle\FSiAdminBundle(),

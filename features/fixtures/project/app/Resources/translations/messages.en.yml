@@ -10,6 +10,7 @@ admin:
       created_at_from: Created at from
       created_at_to: Created at to
       visible: Visible
+      photo: Photo
       creator_email: Creator email
       actions: Actions
   subscriber:
