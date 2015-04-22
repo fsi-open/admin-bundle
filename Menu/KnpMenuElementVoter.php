@@ -53,6 +53,10 @@ class KnpMenuElementVoter implements VoterInterface
      */
     private function validateRequestElement()
     {
+        if (empty($this->request->attributes)) {
+            return false;
+        }
+
         if (!$this->request->attributes->has('element')) {
             return false;
         }

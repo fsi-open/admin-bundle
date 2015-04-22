@@ -128,4 +128,12 @@ class KnpMenuElementVoterSpec extends ObjectBehavior
         )));
         $this->matchItem($item)->shouldReturn(true);
     }
+
+    function it_return_false_if_request_is_empty(
+        ItemInterface $item,
+        Request $request
+    ) {
+        $request->attributes = null;
+        $this->matchItem($item)->shouldReturn(null);
+    }
 }
