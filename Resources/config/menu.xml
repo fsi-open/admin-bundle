@@ -8,6 +8,7 @@
         <parameter key="admin.knp.menu.builder.class">FSi\Bundle\AdminBundle\Menu\KnpMenuBuilder</parameter>
         <parameter key="admin.menu.builder.class">FSi\Bundle\AdminBundle\Menu\Builder\MenuBuilder</parameter>
         <parameter key="admin.menu.listener.locale.class">FSi\Bundle\AdminBundle\EventListener\LocaleMenuListener</parameter>
+        <parameter key="admin.menu.listener.cleanup.class">FSi\Bundle\AdminBundle\EventListener\CleanUpMenuListener</parameter>
         <parameter key="admin.menu.listener.main.class">FSi\Bundle\AdminBundle\EventListener\MainMenuListener</parameter>
         <parameter key="admin.menu.voter.element.class">FSi\Bundle\AdminBundle\Menu\KnpMenuElementVoter</parameter>
     </parameters>
@@ -62,6 +63,10 @@
             <argument type="service" id="request_stack" />
             <argument type="string">%admin.locales%</argument>
             <tag name="kernel.event_listener" event="fsi_admin.menu.tools" method="createLocaleMenu" />
+        </service>
+
+        <service id="admin.menu.listener.cleanup" class="%admin.menu.listener.cleanup.class%">
+            <tag name="kernel.event_listener" event="fsi_admin.menu.main" method="cleanUpMenu" priority="-100" />
         </service>
 
         <service id="admin.menu.voter.element" class="%admin.menu.voter.element.class%">
