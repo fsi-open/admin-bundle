@@ -72,7 +72,7 @@ class ElementItem extends RoutableItem
             'elements' => array('array'),
         ));
 
-        $optionsResolver->setNormalizer('elements', function (Options $options, array $value) {
+        $optionsResolver->setNormalizers(array('elements' => function (Options $options, array $value) {
             foreach ($value as $element) {
                 if (!($element instanceof Element)) {
                     throw new InvalidOptionsException(sprintf(
@@ -83,6 +83,6 @@ class ElementItem extends RoutableItem
             }
 
             return $value;
-        });
+        }));
     }
 }

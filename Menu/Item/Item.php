@@ -141,7 +141,7 @@ class Item
             'attr' => array('array'),
         ));
 
-        $optionsResolver->setNormalizer('attr', function (Options $options, array $value) {
+        $optionsResolver->setNormalizers(array('attr' => function (Options $options, array $value) {
             $attrOptionsResolver = new OptionsResolver();
             $attrOptionsResolver->setDefaults(array(
                 'id' => null,
@@ -154,6 +154,6 @@ class Item
             ));
 
             return $attrOptionsResolver->resolve($value);
-        });
+        }));
     }
 }
