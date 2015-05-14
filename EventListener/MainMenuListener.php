@@ -71,7 +71,13 @@ class MainMenuListener
             $item = $this->buildSingleItem($itemConfig);
 
             if (null !== $item) {
-                $item->setOptions(array('attr' => array('class' => 'admin-element',)));
+                $options = array(
+                    'attr' => array(
+                        'class' => 'admin-element'
+                    )
+                );
+                $options['elements'] = $this->buildItemElements($itemConfig);
+                $item->setOptions($options);
             }
 
             if (null === $item) {
@@ -115,5 +121,23 @@ class MainMenuListener
     private function hasEntry($itemConfig, $keyName)
     {
         return is_array($itemConfig) && array_key_exists($keyName, $itemConfig);
+    }
+
+    /**
+     * @param array $itemConfig
+     * @return mixed
+     */
+    private function buildItemElements($itemConfig)
+    {
+        $elements = array();
+
+        if ($this->hasEntry($itemConfig, 'elements')) {
+            $elementIds = (array)$itemConfig['elements'];
+            foreach ($elementIds as $elementId) {
+                $elements[] = $this->manager->getElement($elementId);
+            }
+        }
+
+        return $elements;
     }
 }

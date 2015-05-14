@@ -5,12 +5,18 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="admin.knp.menu.builder.class">FSi\Bundle\AdminBundle\Menu\KnpMenuBuilder</parameter>
+        <parameter key="admin.knp.menu.builder.class">FSi\Bundle\AdminBundle\Menu\KnpMenu\MenuBuilder</parameter>
+        <parameter key="admin.menu.knp.decorator.chain.class">FSi\Bundle\AdminBundle\Menu\KnpMenu\ItemDecoratorChain</parameter>
+        <parameter key="admin.menu.knp.decorator.label.class">FSi\Bundle\AdminBundle\Menu\KnpMenu\ItemLabelDecorator</parameter>
+        <parameter key="admin.menu.knp.decorator.attributes.class">FSi\Bundle\AdminBundle\Menu\KnpMenu\ItemAttributesDecorator</parameter>
+        <parameter key="admin.menu.knp.decorator.route.class">FSi\Bundle\AdminBundle\Menu\KnpMenu\ItemRouteDecorator</parameter>
+        <parameter key="admin.menu.knp.decorator.elements.class">FSi\Bundle\AdminBundle\Menu\KnpMenu\ItemElementsDecorator</parameter>
+        <parameter key="admin.knp.menu.class">Knp\Menu\ItemInterface</parameter>
         <parameter key="admin.menu.builder.class">FSi\Bundle\AdminBundle\Menu\Builder\MenuBuilder</parameter>
         <parameter key="admin.menu.listener.locale.class">FSi\Bundle\AdminBundle\EventListener\LocaleMenuListener</parameter>
         <parameter key="admin.menu.listener.cleanup.class">FSi\Bundle\AdminBundle\EventListener\CleanUpMenuListener</parameter>
         <parameter key="admin.menu.listener.main.class">FSi\Bundle\AdminBundle\EventListener\MainMenuListener</parameter>
-        <parameter key="admin.menu.voter.element.class">FSi\Bundle\AdminBundle\Menu\KnpMenuElementVoter</parameter>
+        <parameter key="admin.menu.voter.element.class">FSi\Bundle\AdminBundle\Menu\KnpMenu\ElementVoter</parameter>
     </parameters>
 
     <services>
@@ -24,32 +30,45 @@
             <argument type="constant">FSi\Bundle\AdminBundle\Event\MenuEvents::TOOLS</argument>
         </service>
 
-        <service id="admin.menu.knp.builder.main" class="%admin.knp.menu.builder.class%">
-            <argument type="service" id="admin.menu.builder.main"/>
-            <argument type="service" id="knp_menu.factory"/>
-            <call method="setRequest">
-                <argument type="service" id="request" on-invalid="null" strict="false" />
-            </call>
+        <service id="admin.menu.knp.decorator.chain" class="%admin.menu.knp.decorator.chain.class%">
+            <argument type="collection"></argument>
         </service>
 
-        <service id="admin.menu.knp.builder.tools" class="%admin.knp.menu.builder.class%">
-            <argument type="service" id="admin.menu.builder.tools"/>
-            <argument type="service" id="knp_menu.factory"/>
-            <call method="setRequest">
-                <argument type="service" id="request" on-invalid="null" strict="false" />
-            </call>
+        <service id="admin.menu.knp.decorator.label" class="%admin.menu.knp.decorator.label.class%">
+            <tag name="admin.menu.knp_decorator" />
         </service>
 
-        <service id="admin.menu.main" class="%admin.knp.menu.builder.class%"
-                 factory-service="admin.menu.knp.builder.main"
+        <service id="admin.menu.knp.decorator.attributes" class="%admin.menu.knp.decorator.attributes.class%">
+            <tag name="admin.menu.knp_decorator" />
+        </service>
+
+        <service id="admin.menu.knp.decorator.route" class="%admin.menu.knp.decorator.route.class%">
+            <argument type="service" id="router" />
+            <tag name="admin.menu.knp_decorator" />
+        </service>
+
+        <service id="admin.menu.knp.decorator.elements" class="%admin.menu.knp.decorator.elements.class%">
+            <argument type="service" id="router" />
+            <tag name="admin.menu.knp_decorator" />
+        </service>
+
+        <service id="admin.menu.knp.builder" class="%admin.knp.menu.builder.class%">
+            <argument type="service" id="knp_menu.factory"/>
+            <argument type="service" id="admin.menu.knp.decorator.chain"/>
+        </service>
+
+        <service id="admin.menu.main" class="%admin.knp.menu.class%"
+                 factory-service="admin.menu.knp.builder"
                  factory-method="createMenu">
             <tag name="knp_menu.menu" alias="fsi_admin.menu.main"/>
+            <argument type="service" id="admin.menu.builder.main"/>
         </service>
 
-        <service id="admin.menu.tools" class="%admin.knp.menu.builder.class%"
-                 factory-service="admin.menu.knp.builder.tools"
+        <service id="admin.menu.tools" class="%admin.knp.menu.class%"
+                 factory-service="admin.menu.knp.builder"
                  factory-method="createMenu">
             <tag name="knp_menu.menu" alias="fsi_admin.menu.tools"/>
+            <argument type="service" id="admin.menu.builder.tools"/>
         </service>
 
         <service id="admin.menu.listener.main" class="%admin.menu.listener.main.class%">

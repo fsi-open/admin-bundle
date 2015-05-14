@@ -43,11 +43,18 @@ class MainMenuListenerSpec extends ObjectBehavior
 
     function it_build_menu()
     {
-        $this->createMainMenu(new MenuEvent(new Item()))->shouldHaveItem('News', 'news');
-        $this->createMainMenu(new MenuEvent(new Item()))->shouldHaveItem('article', 'article');
-        $this->createMainMenu(new MenuEvent(new Item()))->shouldHaveItem('admin.menu.structure', false);
-        $this->createMainMenu(new MenuEvent(new Item()))->shouldHaveItemThatHaveChild('admin.menu.structure', 'home_page', 'home_page');
-        $this->createMainMenu(new MenuEvent(new Item()))->shouldHaveItemThatHaveChild ('admin.menu.structure', 'Contact', 'contact');
+        $menu = $this->createMainMenu(new MenuEvent(new Item()));
+
+        $menu->shouldHaveItem('News', 'news');
+        $menu->shouldHaveItem('article', 'article');
+        $menu->shouldHaveItem('admin.menu.structure', false);
+        $menu->shouldHaveItemThatHaveChild('admin.menu.structure', 'home_page', 'home_page');
+        $menu->shouldHaveItemThatHaveChild ('admin.menu.structure', 'Contact', 'contact');
+        $menu->shouldHaveItemThatHaveChild ('admin.menu.structure', 'Offer', 'offer');
+
+        $offerItem = $menu->getChildren()['admin.menu.structure']->getChildren()['Offer'];
+        $offerItem->getOption('elements')[0]->getId()->shouldReturn('category');
+        $offerItem->getOption('elements')[1]->getId()->shouldReturn('product');
     }
 
     public function getMatchers()
