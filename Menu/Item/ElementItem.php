@@ -10,6 +10,9 @@
 namespace FSi\Bundle\AdminBundle\Menu\Item;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ElementItem extends RoutableItem
 {
@@ -55,5 +58,31 @@ class ElementItem extends RoutableItem
     public function getRouteParameters()
     {
         return $this->element->getRouteParameters();
+    }
+
+    protected function configureOptions(OptionsResolver $optionsResolver)
+    {
+        parent::configureOptions($optionsResolver);
+
+        $optionsResolver->setDefaults(array(
+            'elements' => array(),
+        ));
+
+        $optionsResolver->setAllowedTypes(array(
+            'elements' => array('array'),
+        ));
+
+        $optionsResolver->setNormalizers(array('elements' => function (Options $options, array $value) {
+            foreach ($value as $element) {
+                if (!($element instanceof Element)) {
+                    throw new InvalidOptionsException(sprintf(
+                        'Instance of FSi\Bundle\AdminBundle\Admin\Element expected but got %s',
+                        is_object($element) ? get_class($element) : gettype($element)
+                    ));
+                }
+            }
+
+            return $value;
+        }));
     }
 }

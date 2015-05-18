@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\FSi\Bundle\AdminBundle\Menu;
+namespace spec\FSi\Bundle\AdminBundle\Menu\KnpMenu;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
@@ -10,7 +10,7 @@ use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
-class KnpMenuElementVoterSpec extends ObjectBehavior
+class ElementVoterSpec extends ObjectBehavior
 {
     function let(Request $request, ParameterBag $requestAttributes)
     {

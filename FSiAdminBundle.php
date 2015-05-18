@@ -11,7 +11,7 @@ namespace FSi\Bundle\AdminBundle;
 
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminElementPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextBuilderPass;
-use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\DoctrineExtensionsPass;
+use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\KnpMenuBuilderPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ManagerVisitorPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ResourceRepositoryPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass;
@@ -33,6 +33,7 @@ class FSiAdminBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new AdminElementPass(), PassConfig::TYPE_BEFORE_REMOVING);
+        $container->addCompilerPass(new KnpMenuBuilderPass());
         $container->addCompilerPass(new ResourceRepositoryPass());
         $container->addCompilerPass(new ManagerVisitorPass());
         $container->addCompilerPass(new ContextBuilderPass());

@@ -3,6 +3,7 @@
 namespace FSi\Bundle\AdminBundle\Menu\Item;
 
 use FSi\Bundle\AdminBundle\Exception\MissingOptionException;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Item
@@ -107,30 +108,8 @@ class Item
     public function setOptions(array $options)
     {
         $optionsResolver = new OptionsResolver();
-        $optionsResolver->setDefaults(array(
-            'attr' => array(),
-        ));
-
-        $optionsResolver->setAllowedTypes(array(
-            'attr' => array('array'),
-        ));
-
-        $options = $optionsResolver->resolve($options);
-
-        $attrOptionsResolver = new OptionsResolver();
-        $attrOptionsResolver->setDefaults(array(
-            'id' => null,
-            'class' => null,
-        ));
-
-        $attrOptionsResolver->setAllowedTypes(array(
-            'id' => array('null', 'string'),
-            'class' => array('null', 'string'),
-        ));
-
-        $options['attr'] = $attrOptionsResolver->resolve($options['attr']);
-
-        $this->options = $options;
+        $this->configureOptions($optionsResolver);
+        $this->options = $optionsResolver->resolve($options);
     }
 
     public function hasOption($name)
@@ -150,5 +129,31 @@ class Item
     public function getOptions()
     {
         return $this->options;
+    }
+
+    protected function configureOptions(OptionsResolver $optionsResolver)
+    {
+        $optionsResolver->setDefaults(array(
+            'attr' => array(),
+        ));
+
+        $optionsResolver->setAllowedTypes(array(
+            'attr' => array('array'),
+        ));
+
+        $optionsResolver->setNormalizers(array('attr' => function (Options $options, array $value) {
+            $attrOptionsResolver = new OptionsResolver();
+            $attrOptionsResolver->setDefaults(array(
+                'id' => null,
+                'class' => null,
+            ));
+
+            $attrOptionsResolver->setAllowedTypes(array(
+                'id' => array('null', 'string'),
+                'class' => array('null', 'string'),
+            ));
+
+            return $attrOptionsResolver->resolve($value);
+        }));
     }
 }
