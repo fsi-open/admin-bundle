@@ -36,7 +36,10 @@ class SubscriberForm extends FormElement
 
     public function getSuccessRouteParameters()
     {
-        return array('element' => 'subscriber');
+        return array(
+            'element' => 'subscriber',
+            'current_uri' => $this->getRequestStack()->getCurrentRequest()->getUri()
+        );
     }
 
     protected function initForm(FormFactoryInterface $factory, $data = null)

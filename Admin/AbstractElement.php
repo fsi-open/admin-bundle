@@ -9,18 +9,25 @@
 
 namespace FSi\Bundle\AdminBundle\Admin;
 
+use FSi\Bundle\AdminBundle\Admin\CRUD\RequestStackAware;
 use FSi\Bundle\AdminBundle\Exception\MissingOptionException;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-abstract class AbstractElement implements Element
+abstract class AbstractElement implements Element, RequestStackAware
 {
     /**
      * @var array
      */
     protected $options;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
 
     /**
      * @param array $options
@@ -30,6 +37,16 @@ abstract class AbstractElement implements Element
         $optionsResolver = new OptionsResolver();
         $this->setDefaultOptions($optionsResolver);
         $this->options = $optionsResolver->resolve($options);
+    }
+
+    public function setRequestStack(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
+
+    public function getRequestStack()
+    {
+        return $this->requestStack;
     }
 
     /**
