@@ -30,7 +30,7 @@ crud:
                 display: Display
                 delete: Delete
         datasource:
-            results_per_page: Results at page
+            results_per_page: Results per page
             search: Search
             clear: Clear
         button:
