@@ -35,8 +35,8 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
     {
         $this->validateColumn($column);
 
-        $column->getActionOptionsResolver()->setOptional(array('element'));
-        $column->getActionOptionsResolver()->setAllowedTypes(array('element' => 'string'));
+        $column->getActionOptionsResolver()->setDefined(array('element'));
+        $column->getActionOptionsResolver()->setAllowedTypes('element', 'string');
     }
 
     public function filterValue(ColumnTypeInterface $column, $value)

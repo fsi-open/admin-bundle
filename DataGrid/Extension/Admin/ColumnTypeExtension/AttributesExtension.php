@@ -36,13 +36,11 @@ class AttributesExtension extends ColumnAbstractTypeExtension
      */
     public function initOptions(ColumnTypeInterface $column)
     {
-        $column->getOptionsResolver()->setOptional(array('header_attr', 'cell_attr', 'container_attr', 'value_attr'));
-        $column->getOptionsResolver()->setAllowedTypes(array(
-            'header_attr' => 'array',
-            'cell_attr' => 'array',
-            'container_attr' => 'array',
-            'value_attr' => 'array'
-        ));
+        $column->getOptionsResolver()->setDefined(array('header_attr', 'cell_attr', 'container_attr', 'value_attr'));
+        $column->getOptionsResolver()->setAllowedTypes('header_attr', 'array');
+        $column->getOptionsResolver()->setAllowedTypes('cell_attr', 'array');
+        $column->getOptionsResolver()->setAllowedTypes('container_attr', 'array');
+        $column->getOptionsResolver()->setAllowedTypes('value_attr', 'array');
         $column->getOptionsResolver()->setDefaults(array(
             'header_attr' => array(),
             'cell_attr' => array(),
