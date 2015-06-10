@@ -4,9 +4,9 @@ namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
-use FSi\Component\DataGrid\Extension\Symfony\ColumnType\Action;
 
 class ElementActionExtension extends ColumnAbstractTypeExtension
 {
@@ -67,7 +67,7 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
     {
         if (!($column instanceof Action)) {
             throw new RuntimeException(sprintf(
-                '%s can extend only FSi\Component\DataGrid\Extension\Symfony\ColumnType\Action, but got %s',
+                '%s can extend only FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action, but got %s',
                 get_class($this),
                 get_class($column)
             ));
