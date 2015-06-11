@@ -1,0 +1,18 @@
+---
+# Project
+project_name: fsi-admin-bundle.dev
+project_root: /var/www/admin-bundle
+project_web_root: "{{ project_root }}/features/fixtures/project/web"
+
+# Composer
+composer_download_url: https://getcomposer.org/composer.phar
+
+# MySQL
+mysql_port: 3306
+mysql_root_db_pass: ""
+
+# PHP
+php_version: 5.4
+
+display_number: 99
+selenium_version: 2.43

@@ -1,0 +1,1 @@
+cur_dir: "{{lookup('pipe','pwd')}}"

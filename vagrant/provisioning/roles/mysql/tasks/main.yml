@@ -1,0 +1,29 @@
+---
+
+- name: Install Mysql package
+  apt: name={{ item }} state=installed
+  with_items:
+   - mysql-server
+   - python-mysqldb
+   - python-selinux
+
+- name: Create Mysql configuration file
+  template: src=my.cnf.j2 dest=/etc/my.cnf
+  notify: 
+  - restart mysql
+
+- name: Start Mysql Service
+  service: name=mysql state=started enabled=true
+
+- name: Copy .my.cnf file with root password credentials
+  template: src=.my.cnf.j2 dest=~/.my.cnf mode=0600
+
+- name: Update mysql root password for all root accounts
+  mysql_user: name=root host={{ item }} password={{ mysql_root_db_pass }}
+  with_items:
+   - 127.0.0.1
+   - ::1
+   - localhost
+
+- name: Remove the test database
+  mysql_db: name=test state=absent

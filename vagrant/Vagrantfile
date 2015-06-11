@@ -11,17 +11,11 @@ Vagrant.configure("2") do |config|
     v.customize ["modifyvm", :id, "--name", "FSi Admin Bundle"]
   end
 
-  nfs_setting = RUBY_PLATFORM =~ /darwin/ || RUBY_PLATFORM =~ /linux/
-  config.vm.synced_folder "./../", "/var/www/admin-bundle", id: "vagrant-root" , :nfs => nfs_setting
-  config.vm.synced_folder "./modules", "/tmp/puppet/modules", id: "puppet-modules" , :nfs => nfs_setting
+  config.vm.synced_folder "./../", "/var/www/admin-bundle", id: "vagrant-root" , :type => "nfs"
 
-  config.vm.provision :shell do |shell|
-    shell.path = "bootstrap.sh"
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "provisioning/site.yml"
+    ansible.inventory_path = "provisioning/hosts"
+    ansible.limit = "all"
   end
-
-  config.vm.provision :puppet do |puppet|
-    puppet.manifests_path = "manifests"
-    puppet.options = ['--verbose', '--modulepath \'/etc/puppet/modules:/tmp/puppet/modules\'']
-  end
-
 end

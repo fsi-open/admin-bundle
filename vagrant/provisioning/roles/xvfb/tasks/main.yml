@@ -1,0 +1,19 @@
+- name: Install xvfb
+  apt: name={{item}}
+  with_items:
+    - xvfb
+    - x11-xkb-utils
+    - xfonts-100dpi
+    - xfonts-75dpi
+    - xfonts-scalable
+    - xfonts-cyrillic
+    - x11-apps
+
+- name: Install init script
+  template: src=xvfb.j2 dest=/etc/init.d/xvfb owner=root group=root mode=755
+
+- name: Link installation
+  shell: update-rc.d xvfb defaults
+
+- name: start xvfb
+  service: name=xvfb state=started enabled=yes
