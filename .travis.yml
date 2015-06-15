@@ -8,8 +8,6 @@ php:
   - hhvm
 
 env:
-  - SYMFONY_VERSION=2.4.*
-  - SYMFONY_VERSION=2.5.*
   - SYMFONY_VERSION=2.6.*
   - SYMFONY_VERSION=2.7.*
   - SYMFONY_VERSION=2.8.*@dev
@@ -19,13 +17,16 @@ sudo: false
 
 matrix:
   allow_failures:
-    - env: SYMFONY_VERSION=2.8.*@dev
     - env: SYMFONY_VERSION=dev-master
     - php: 7.0
     - php: hhvm
   exclude:
     - env: SYMFONY_VERSION=dev-master
       php: 5.4
+
+before_install:
+    - composer self-update
+    - composer require symfony/symfony:${SYMFONY_VERSION} -n --prefer-source
 
 install:
     - wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
@@ -40,8 +41,6 @@ before_script:
     - cp Resources/public/* features/fixtures/project/web/bundles/fsiadmin
 
 script:
-    - composer self-update
-    - composer require symfony/symfony:${SYMFONY_VERSION} -n --prefer-source
     - ./bin/phpspec run -v
     - ./bin/behat --no-snippets --no-paths --verbose --format=progress --profile=travis -vvv
 
