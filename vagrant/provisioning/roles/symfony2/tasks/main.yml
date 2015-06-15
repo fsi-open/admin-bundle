@@ -24,7 +24,7 @@
         mode=0775
 
 - name: symlink public folder
-  file: dest=/var/www/content-block-bundle/features/fixtures/project/web/bundles/fsicontentblock
+  file: dest=/var/www/content-block-bundle/features/fixtures/project/web/bundles/fsiadmin
         src=../../../../../Resources/public
         state=link
         force=yes
