@@ -10,7 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class GenericBatchElement extends AbstractElement implements BatchElement
 {
@@ -25,7 +25,7 @@ abstract class GenericBatchElement extends AbstractElement implements BatchEleme
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
     }
 

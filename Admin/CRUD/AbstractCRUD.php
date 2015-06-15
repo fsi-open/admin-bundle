@@ -18,7 +18,7 @@ use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -67,7 +67,7 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDElement
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'allow_delete' => true,
@@ -76,34 +76,30 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDElement
             'template_crud_create' => null,
             'template_crud_edit' => null,
             'template_list' => function (Options $options) {
-                return $options->get('template_crud_list');
+                return $options['template_crud_list'];
             },
             'template_form' => function (Options $options) {
-                return $options->get('template_crud_edit');
+                return $options['template_crud_edit'];
             }
         ));
 
-        $resolver->setNormalizers(array(
-            'template_crud_create' => function (Options $options, $value) {
-                if ($value !== $options->get('template_crud_edit')) {
-                    throw new RuntimeException(
-                        'CRUD admin element options "template_crud_create" and "template_crud_edit" have both to have the same value'
-                    );
-                }
-
-                return $value;
+        $resolver->setNormalizer('template_crud_create', function (Options $options, $value) {
+            if ($value !== $options['template_crud_edit']) {
+                throw new RuntimeException(
+                    'CRUD admin element options "template_crud_create" and "template_crud_edit" have both to have the same value'
+                );
             }
-        ));
 
-        $resolver->setAllowedTypes(array(
-            'allow_delete' => 'bool',
-            'allow_add' => 'bool',
-            'template_crud_list' => array('null', 'string'),
-            'template_crud_create' => array('null', 'string'),
-            'template_crud_edit' => array('null', 'string'),
-            'template_list' =>  array('null', 'string'),
-            'template_form' =>  array('null', 'string'),
-        ));
+            return $value;
+        });
+
+        $resolver->setAllowedTypes('allow_delete', 'bool');
+        $resolver->setAllowedTypes('allow_add', 'bool');
+        $resolver->setAllowedTypes('template_crud_list', array('null', 'string'));
+        $resolver->setAllowedTypes('template_crud_create', array('null', 'string'));
+        $resolver->setAllowedTypes('template_crud_edit', array('null', 'string'));
+        $resolver->setAllowedTypes('template_list', array('null', 'string'));
+        $resolver->setAllowedTypes('template_form', array('null', 'string'));
     }
 
     /**

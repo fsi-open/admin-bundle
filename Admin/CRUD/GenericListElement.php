@@ -15,7 +15,7 @@ use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class GenericListElement extends AbstractElement implements ListElement
 {
@@ -40,15 +40,13 @@ abstract class GenericListElement extends AbstractElement implements ListElement
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'template_list' => null,
         ));
 
-        $resolver->setAllowedTypes(array(
-            'template_list' => array('null', 'string'),
-        ));
+        $resolver->setAllowedTypes('template_list', array('null', 'string'));
     }
 
     /**

@@ -10,26 +10,18 @@
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Behat\Symfony2Extension\Context\KernelAwareContext;
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class AdminContext extends PageObjectContext implements KernelAwareInterface
+class AdminContext extends PageObjectContext implements KernelAwareContext
 {
     /**
      * @var KernelInterface
      */
     protected $kernel;
-
-    function __construct()
-    {
-        $this->useContext('CRUD', new CRUDContext());
-        $this->useContext('resource', new ResourceContext());
-        $this->useContext('display', new DisplayContext());
-        $this->useContext('data', new DataContext());
-    }
 
     public function setKernel(KernelInterface $kernel)
     {
@@ -184,7 +176,7 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
      */
     public function translationsAreEnabledInApplication()
     {
-        expect($this->kernel->getContainer()->get('translator'))->toBeAnInstanceOf('Symfony\Bundle\FrameworkBundle\Translation\Translator');
+        expect($this->kernel->getContainer()->get('translator'))->toBeAnInstanceOf('Symfony\Component\Translation\TranslatorInterface');
     }
 
 

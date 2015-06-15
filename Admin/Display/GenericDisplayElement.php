@@ -12,7 +12,7 @@ namespace FSi\Bundle\AdminBundle\Admin\Display;
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Display\Display;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class GenericDisplayElement extends AbstractElement implements Element
 {
@@ -25,18 +25,16 @@ abstract class GenericDisplayElement extends AbstractElement implements Element
     }
 
     /**
-     * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
      * @return mixed
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'template' => null,
         ));
 
-        $resolver->setAllowedTypes(array(
-            'template' => array('null', 'string'),
-        ));
+        $resolver->setAllowedTypes('template', array('null', 'string'));
     }
 
     /**

@@ -10,11 +10,11 @@
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Behat\Symfony2Extension\Context\KernelAwareContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class ResourceContext extends PageObjectContext implements KernelAwareInterface
+class ResourceContext extends PageObjectContext implements KernelAwareContext
 {
     /**
      * @var KernelInterface

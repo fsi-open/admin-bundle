@@ -52,7 +52,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
         $column->getOptionsResolver()->willReturn($optionsResolver);
 
         $optionsResolver->setDefaults(array('actions' => array()))->shouldBeCalled();
-        $optionsResolver->setAllowedTypes(array('actions' => array('array', 'null')))->shouldBeCalled();
+        $optionsResolver->setAllowedTypes('actions', array('array', 'null'))->shouldBeCalled();
 
         $this->initOptions($column);
     }

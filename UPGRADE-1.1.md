@@ -13,6 +13,9 @@ almost never should have been used in real use cases. For full list of changes g
 # ...
 ```
 
+**Version 1.1 drops support for symfony lower than 2.6 so if you are still using symfony < 2.6 you will have
+to upgrade it too.**
+
 ## Build admin menu (always)
 
 Method ``ElementInterface::getName()`` has been removed, so you must create ``app/config/admin_menu.yml``

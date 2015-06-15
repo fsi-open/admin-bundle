@@ -13,7 +13,7 @@ use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class GenericFormElement extends AbstractElement implements FormElement
 {
@@ -33,15 +33,13 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'template_form' => null,
         ));
 
-        $resolver->setAllowedTypes(array(
-            'template_form' => array('null', 'string'),
-        ));
+        $resolver->setAllowedTypes('template_form', array('null', 'string'));
     }
 
     /**

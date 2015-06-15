@@ -137,23 +137,19 @@ class Item
             'attr' => array(),
         ));
 
-        $optionsResolver->setAllowedTypes(array(
-            'attr' => array('array'),
-        ));
+        $optionsResolver->setAllowedTypes('attr', array('array'));
 
-        $optionsResolver->setNormalizers(array('attr' => function (Options $options, array $value) {
+        $optionsResolver->setNormalizer('attr', function (Options $options, array $value) {
             $attrOptionsResolver = new OptionsResolver();
             $attrOptionsResolver->setDefaults(array(
                 'id' => null,
                 'class' => null,
             ));
 
-            $attrOptionsResolver->setAllowedTypes(array(
-                'id' => array('null', 'string'),
-                'class' => array('null', 'string'),
-            ));
+            $attrOptionsResolver->setAllowedTypes('id', array('null', 'string'));
+            $attrOptionsResolver->setAllowedTypes('class', array('null', 'string'));
 
             return $attrOptionsResolver->resolve($value);
-        }));
+        });
     }
 }

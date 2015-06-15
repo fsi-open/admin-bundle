@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Admin;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 interface Element
 {
@@ -39,10 +39,10 @@ interface Element
     public function getRouteParameters();
 
     /**
-     * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
      * @return mixed
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver);
+    public function setDefaultOptions(OptionsResolver $resolver);
 
     /**
      * Get option by name.

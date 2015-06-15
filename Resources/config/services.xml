@@ -50,7 +50,8 @@
             <argument type="collection"></argument>
         </service>
 
-        <service id="admin.form.builder.batch" class="%admin.form.builder.batch.class%" factory-service="form.factory" factory-method="createNamedBuilder">
+        <service id="admin.form.builder.batch" class="%admin.form.builder.batch.class%">
+            <factory service="form.factory" method="createNamedBuilder"/>
             <argument type="string">batch_action</argument>
             <argument type="string">form</argument>
             <argument type="collection">

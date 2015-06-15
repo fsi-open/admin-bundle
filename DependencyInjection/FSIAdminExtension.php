@@ -38,6 +38,7 @@ class FSIAdminExtension extends Extension
         $loader->load('services.xml');
         $loader->load('datagrid.xml');
         $loader->load('menu.xml');
+        $loader->load('knp-menu.xml');
 
         $loader->load('locale_listener.xml');
 

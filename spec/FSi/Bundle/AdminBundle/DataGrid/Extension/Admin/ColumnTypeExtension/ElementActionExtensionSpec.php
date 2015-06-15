@@ -11,16 +11,16 @@ namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtensi
 
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\Manager;
-use FSi\Component\DataGrid\Extension\Symfony\ColumnType\Action;
+use FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ElementActionExtensionSpec extends ObjectBehavior
 {
     function let(
         Manager $manager,
         Action $column,
-        OptionsResolverInterface $actionOptionsResolver
+        OptionsResolver $actionOptionsResolver
     ) {
         $column->getActionOptionsResolver()->willReturn($actionOptionsResolver);
         $this->beConstructedWith($manager);
@@ -38,10 +38,10 @@ class ElementActionExtensionSpec extends ObjectBehavior
 
     function it_adds_element_id_action_option(
         Action $column,
-        OptionsResolverInterface $actionOptionsResolver
+        OptionsResolver $actionOptionsResolver
     ) {
-        $actionOptionsResolver->setOptional(array('element'))->shouldBeCalled();
-        $actionOptionsResolver->setAllowedTypes(array('element' => 'string'))->shouldBeCalled();
+        $actionOptionsResolver->setDefined(array('element'))->shouldBeCalled();
+        $actionOptionsResolver->setAllowedTypes('element', 'string')->shouldBeCalled();
 
         $this->initOptions($column);
     }

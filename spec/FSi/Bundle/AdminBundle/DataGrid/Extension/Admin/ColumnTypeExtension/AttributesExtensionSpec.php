@@ -7,7 +7,7 @@ use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AttributesExtensionSpec extends ObjectBehavior
 {
@@ -16,18 +16,16 @@ class AttributesExtensionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface');
     }
 
-    function it_adds_actions_options(ColumnTypeInterface $column, OptionsResolverInterface $optionsResolver)
+    function it_adds_actions_options(ColumnTypeInterface $column, OptionsResolver $optionsResolver)
     {
         $column->getOptionsResolver()->willReturn($optionsResolver);
 
-        $optionsResolver->setOptional(array('header_attr', 'cell_attr', 'container_attr', 'value_attr'))
+        $optionsResolver->setDefined(array('header_attr', 'cell_attr', 'container_attr', 'value_attr'))
             ->shouldBeCalled();
-        $optionsResolver->setAllowedTypes(array(
-            'header_attr' => 'array',
-            'cell_attr' => 'array',
-            'container_attr' => 'array',
-            'value_attr' => 'array'
-        ))->shouldBeCalled();
+        $optionsResolver->setAllowedTypes('header_attr', 'array')->shouldBeCalled();
+        $optionsResolver->setAllowedTypes('cell_attr', 'array')->shouldBeCalled();
+        $optionsResolver->setAllowedTypes('container_attr', 'array')->shouldBeCalled();
+        $optionsResolver->setAllowedTypes('value_attr', 'array')->shouldBeCalled();
         $optionsResolver->setDefaults(array(
             'header_attr' => array(),
             'cell_attr' => array(),

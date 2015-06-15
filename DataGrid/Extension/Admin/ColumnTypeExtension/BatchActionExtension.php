@@ -70,9 +70,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     public function initOptions(ColumnTypeInterface $column)
     {
         $column->getOptionsResolver()->setDefaults(array('actions' => array()));
-        $column->getOptionsResolver()->setAllowedTypes(array(
-            'actions' => array('array', 'null')
-        ));
+        $column->getOptionsResolver()->setAllowedTypes('actions', array('array', 'null'));
     }
 
     public function buildHeaderView(ColumnTypeInterface $column, HeaderViewInterface $view)
@@ -90,7 +88,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         $this->actionOptionsResolver->setRequired(array(
             'route_name'
         ));
-        $this->actionOptionsResolver->setOptional(array(
+        $this->actionOptionsResolver->setDefined(array(
             'element'
         ));
         $self = $this;
@@ -101,17 +99,16 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
             'additional_parameters' => array(),
             'label' => null
         ));
-        $this->actionOptionsResolver->setNormalizers(array(
-            'additional_parameters' => function(Options $options, $value) use ($self) {
+        $this->actionOptionsResolver->setNormalizer(
+            'additional_parameters',
+            function(Options $options, $value) use ($self) {
                 return $self->normalizeAdditionalParameters($options, $value);
-            },
-        ));
-        $this->actionOptionsResolver->setAllowedTypes(array(
-            'element' => 'string',
-            'route_name' => 'string',
-            'additional_parameters' => 'array',
-            'label' => array('string', 'null')
-        ));
+            }
+        );
+        $this->actionOptionsResolver->setAllowedTypes('element', 'string');
+        $this->actionOptionsResolver->setAllowedTypes('route_name', 'string');
+        $this->actionOptionsResolver->setAllowedTypes('additional_parameters', 'array');
+        $this->actionOptionsResolver->setAllowedTypes('label', array('string', 'null'));
     }
 
     /**
@@ -167,7 +164,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      */
     private function getDefaultRouteName(Options $options)
     {
-        if ($options->has('element')) {
+        if (isset($options['element'])) {
             $this->validateElementFromOptions($options);
 
             return $this->getElementFromOption($options)->getRoute();
@@ -183,7 +180,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      */
     private function normalizeAdditionalParameters(Options $options, array $additionalParameters)
     {
-        if ($options->has('element')) {
+        if (isset($options['element'])) {
             $this->validateElementFromOptions($options);
 
             $additionalParameters = $this->mergeAdditionalParametersWithElementFromOptions(
@@ -200,10 +197,10 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      */
     private function validateElementFromOptions(Options $options)
     {
-        if (!$this->manager->hasElement($options->get('element'))) {
+        if (!$this->manager->hasElement($options['element'])) {
             throw new RuntimeException(sprintf(
                 'Unknown element "%s" specified in batch action',
-                $options->get('element')
+                $options['element']
             ));
         }
     }
@@ -229,7 +226,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      */
     private function getElementFromOption(Options $options)
     {
-        return $this->manager->getElement($options->get('element'));
+        return $this->manager->getElement($options['element']);
     }
 
     /**

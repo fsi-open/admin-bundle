@@ -10,7 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class GenericResourceElement extends AbstractElement implements Element
 {
@@ -64,14 +64,12 @@ abstract class GenericResourceElement extends AbstractElement implements Element
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'template' => null,
         ));
 
-        $resolver->setAllowedTypes(array(
-            'template' => array('null', 'string')
-        ));
+        $resolver->setAllowedTypes('template', array('null', 'string'));
     }
 }

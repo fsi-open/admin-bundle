@@ -44,7 +44,7 @@ class MainMenuListener
      */
     public function createMainMenu(MenuEvent $event)
     {
-        $config = $this->yaml->parse($this->configFilePath, true, true);
+        $config = $this->yaml->parse(file_get_contents($this->configFilePath), true, true);
 
         if (!isset($config['menu'])) {
             throw new InvalidYamlStructureException(
