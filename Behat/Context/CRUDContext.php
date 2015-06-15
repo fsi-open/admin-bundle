@@ -9,17 +9,16 @@
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
-use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Faker\Factory;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use PhpSpec\Exception\Example\PendingException;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class CRUDContext extends PageObjectContext implements KernelAwareInterface
+class CRUDContext extends PageObjectContext implements KernelAwareContext
 {
     /**
      * @var KernelInterface
@@ -138,7 +137,7 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
                 expect($list->isColumnDescSortActive($column))->toBe(false);
                 break;
             default :
-                throw new BehaviorException(sprintf("Unknown sorting type %s", $sort));
+                throw new \Exception(sprintf("Unknown sorting type %s", $sort));
                 break;
         }
     }
@@ -158,7 +157,7 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
                 expect($list->isColumnDescSortActive($column))->toBe(true);
                 break;
             default :
-                throw new BehaviorException(sprintf("Unknown sorting type %s", $sort));
+                throw new \Exception(sprintf("Unknown sorting type %s", $sort));
                 break;
         }
     }
@@ -301,7 +300,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
      */
     public function iFillAllFormFieldProperly()
     {
-        expect($this->getMainContext()->getSubcontext('data')->getNewsCount())->toBe(0);
         $generator = Factory::create();
         $form = $this->getElement('Form');
         if ($form->hasField('Title')) {
@@ -330,22 +328,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
     public function iPressFormButton($button)
     {
         $this->getElement('Form')->pressButton($button);
-    }
-
-    /**
-     * @Then /^new news should be created$/
-     */
-    public function newNewsShouldBeCreated()
-    {
-        expect($this->getMainContext()->getSubcontext('data')->getNewsCount())->toBe(1);
-    }
-
-    /**
-     * @Then /^new subscriber should be created$/
-     */
-    public function newSubscriberShouldBeCreated()
-    {
-        expect($this->getMainContext()->getSubcontext('data')->getSubscribersCount())->toBe(1);
     }
 
     /**
@@ -389,7 +371,7 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
      */
     public function newsWithIdShouldHaveChangedTitle($id)
     {
-        expect($this->getMainContext()->getSubcontext('data')->findNewsById($id)->getTitle())->toBe($this->newsTitle);
+        expect($this->kernel->getContainer()->get('doctrine')->getManager()->getRepository('FSi\FixturesBundle\Entity\News')->findOneById($id)->getTitle())->toBe($this->newsTitle);
     }
 
     /**
@@ -397,7 +379,7 @@ class CRUDContext extends PageObjectContext implements KernelAwareInterface
      */
     public function subscriberWithIdShouldHaveChangedEmail($id)
     {
-        expect($this->getMainContext()->getSubcontext('data')->findSubscriberById($id)->getEmail())->toBe($this->subscriberEmail);
+        expect($this->kernel->getContainer()->get('doctrine')->getManager()->getRepository('FSi\FixturesBundle\Entity\Subscriber')->findOneById($id)->getEmail())->toBe($this->subscriberEmail);
     }
 
     /**

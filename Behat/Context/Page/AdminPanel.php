@@ -11,7 +11,7 @@ namespace FSi\Bundle\AdminBundle\Behat\Context\Page;
 
 class AdminPanel extends Page
 {
-    protected $path = '/admin';
+    protected $path = '/admin/';
 
     public function hasMenuElement($name, $group = null)
     {

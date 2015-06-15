@@ -8,16 +8,15 @@
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
-use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Doctrine\ORM\Tools\SchemaTool;
 use Faker\Factory;
 use Faker\ORM\Doctrine\Populator;
 use FSi\FixturesBundle\Entity\News;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class DataContext extends BehatContext implements KernelAwareInterface
+class DataContext implements KernelAwareContext
 {
     /**
      * @var KernelInterface
@@ -55,24 +54,28 @@ class DataContext extends BehatContext implements KernelAwareInterface
         }
     }
 
-    public function getNewsCount()
+    /**
+     * @Then /^new news should be created$/
+     */
+    public function newNewsShouldBeCreated()
     {
-        return count($this->getDoctrine()->getManager()->getRepository('FSi\FixturesBundle\Entity\News')->findAll());
+        $this->thereShouldBeNewsInDatabase(1);
     }
 
-    public function getSubscribersCount()
+    /**
+     * @Then /^new subscriber should be created$/
+     */
+    public function newSubscriberShouldBeCreated()
     {
-        return count($this->getDoctrine()->getManager()->getRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll());
+        $this->thereShouldBeSubscribersInDatabase(1);
     }
 
-    public function findNewsById($id)
+    /**
+     * @Then /^there should be (\d+) news in database$/
+     */
+    public function thereShouldBeNewsInDatabase($newsCount)
     {
-        return $this->getDoctrine()->getManager()->getRepository('FSi\FixturesBundle\Entity\News')->findOneById($id);
-    }
-
-    public function findSubscriberById($id)
-    {
-        return $this->getDoctrine()->getManager()->getRepository('FSi\FixturesBundle\Entity\Subscriber')->findOneById($id);
+        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe($newsCount);
     }
 
     /**
