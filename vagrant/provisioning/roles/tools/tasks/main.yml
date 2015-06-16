@@ -1,0 +1,12 @@
+--- 
+- name: Update apt
+  apt: update_cache=yes
+
+- name: Install common tools
+  apt: name={{ item }} state=latest
+  with_items:
+    - git-core
+    - vim
+    - curl
+    - mc
+    - acl

@@ -1,0 +1,21 @@
+- name: Download selenium
+  connection: local
+  sudo: False
+  get_url: url=http://selenium-release.storage.googleapis.com/{{selenium_version}}/{{selenium_file}} dest={{cur_dir}}/{{selenium_file}} force=no
+
+- name: Copy selenium
+  copy: src={{selenium_file}} dest=/usr/local/bin/{{selenium_file}} owner=root group=root mode=644
+
+- name: Install init script
+  template: src=selenium.j2 dest=/etc/init.d/selenium owner=root group=root mode=755
+
+- name: Link installation
+  shell: update-rc.d selenium defaults
+
+- name: Install browser
+  apt: name={{item}}
+  with_items:
+    - firefox
+
+- name: start selenium
+  service: name=selenium state=started enabled=yes

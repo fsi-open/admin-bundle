@@ -1,0 +1,3 @@
+selenium_file: selenium-server-standalone-{{selenium_version}}.0.jar
+display_number: "{{display_number}}"
+

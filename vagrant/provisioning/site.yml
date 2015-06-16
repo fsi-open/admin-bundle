@@ -1,0 +1,17 @@
+--- 
+- name: Prepare basic env for php apps on all nodes
+  hosts: all
+  remote_user: vagrant
+  sudo: yes
+  vars_files:
+    - variables.yml
+  roles:
+    - tools
+    - apache
+    - php5
+    - mysql
+    - composer
+    - symfony2
+    - java
+    - xvfb
+    - selenium

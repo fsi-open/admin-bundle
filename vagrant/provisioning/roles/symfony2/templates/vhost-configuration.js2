@@ -1,0 +1,9 @@
+<VirtualHost *:80>
+    ServerAdmin webmaster@{{ project_name }}
+    DocumentRoot {{ project_web_root }}
+    ServerName {{ project_name }}
+    ServerAlias www.{{ project_name }}
+
+    ErrorLog  /var/log/apache2/{{ project_name }}-error_log
+    CustomLog /var/log/apache2/{{ project_name }}-access_log common
+</VirtualHost>

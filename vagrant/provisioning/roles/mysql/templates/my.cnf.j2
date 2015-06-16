@@ -1,0 +1,26 @@
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+user=mysql
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+port={{ mysql_port }}
+
+key_buffer                        = 16K
+max_allowed_packet                = 1M
+table_cache                       = 4
+sort_buffer_size                  = 64K
+read_buffer_size                  = 256K
+read_rnd_buffer_size              = 256K
+net_buffer_length                 = 2K
+thread_stack                      = 64K
+innodb_buffer_pool_size           = 16M
+innodb_additional_mem_pool_size   = 2M
+innodb_log_file_size              = 5M
+innodb_log_buffer_size            = 8M
+innodb_flush_log_at_trx_commit    = 1
+innodb_lock_wait_timeout          = 50
+
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid

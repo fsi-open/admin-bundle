@@ -1,0 +1,26 @@
+---
+- name: Install Apache
+  sudo: yes
+  apt: pkg=apache2 state=latest
+
+- name: Install Apache Modules
+  shell: a2enmod {{ item }}
+  notify: restart apache
+  with_items:
+    - rewrite
+    - vhost_alias
+    - headers
+    - expires
+    - filter
+  
+- name: Chown /var/log/apache2 to vagrant
+  file: owner=vagrant group=vagrant path=/var/log/apache2 state=directory
+  
+- name: Chown /var/lock/apache2 to vagrant
+  file: owner=vagrant group=vagrant path=/var/lock/apache2 state=directory
+  
+- name: Change APACHE_RUN_USER in envvars to vagrant
+  lineinfile: dest=/etc/apache2/envvars regexp="^.*RUN_USER\=" line="export APACHE_RUN_USER=vagrant"
+  
+- name: Change APACHE_RUN_GROUP in envvars to vagrant
+  lineinfile: dest=/etc/apache2/envvars regexp="^.*RUN_GROUP\=" line="export APACHE_RUN_GROUP=vagrant"
