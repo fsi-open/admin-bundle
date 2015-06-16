@@ -23,6 +23,8 @@ class FSiAdminBundleSpec extends ObjectBehavior
 
     function it_add_compiler_pass(ContainerBuilder $builder)
     {
+        $builder->addCompilerPass(Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminAnnotatedElementPass'))
+            ->shouldBeCalled();
         $builder->addCompilerPass(
                 Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminElementPass'),
                 PassConfig::TYPE_BEFORE_REMOVING

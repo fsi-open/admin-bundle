@@ -9,13 +9,9 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Manager;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
-use FSi\Bundle\AdminBundle\Annotation\Element;
-use FSi\Bundle\AdminBundle\Factory\ElementFactory;
 use FSi\Bundle\AdminBundle\Factory\ProductionLine;
-use FSi\Bundle\AdminBundle\Finder\AdminClassFinder;
 
 class ElementCollectionVisitor implements Visitor
 {
