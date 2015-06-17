@@ -26,6 +26,17 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('fsi_admin');
 
         $rootNode
+            ->validate()
+                ->always(function($v) {
+                    if (!isset($v['templates']['crud_list'])) {
+                        $v['templates']['crud_list'] = $v['templates']['list'];
+                    }
+                    if (!isset($v['templates']['crud_form'])) {
+                        $v['templates']['crud_form'] = $v['templates']['form'];
+                    }
+                    return $v;
+                })
+            ->end()
             ->children()
                 ->scalarNode('default_locale')->defaultValue('%locale%')->end()
                 ->arrayNode('locales')
@@ -41,8 +52,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('list')->defaultValue('@FSiAdmin/List/list.html.twig')->end()
                         ->scalarNode('form')->defaultValue('@FSiAdmin/Form/form.html.twig')->end()
                         ->scalarNode('crud_list')->defaultValue('@FSiAdmin/CRUD/list.html.twig')->end()
-                        ->scalarNode('crud_create')->defaultValue('@FSiAdmin/CRUD/create.html.twig')->end()
-                        ->scalarNode('crud_edit')->defaultValue('@FSiAdmin/CRUD/edit.html.twig')->end()
+                        ->scalarNode('crud_form')->defaultNull()->end()
                         ->scalarNode('resource')->defaultValue('@FSiAdmin/Resource/resource.html.twig')->end()
                         ->scalarNode('display')->defaultValue('@FSiAdmin/Display/display.html.twig')->end()
                         ->scalarNode('datagrid_theme')->defaultValue('@FSiAdmin/CRUD/datagrid.html.twig')->end()
