@@ -12,9 +12,6 @@
     </parameters>
     <services>
         <service id="fixtures_bundle.admin.news" class="%fixtures_bundle.admin.news.class%">
-            <argument type="collection">
-                <argument key="template_list" type="string">@FSiAdmin/CRUD/list.html.twig</argument>
-            </argument>
             <tag name="admin.element" />
         </service>
 
