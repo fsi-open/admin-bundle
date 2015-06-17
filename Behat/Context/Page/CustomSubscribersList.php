@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Behat\Context\Page;
 
-use Behat\Behat\Exception\BehaviorException;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
 class CustomSubscribersList extends Page
 {
@@ -18,7 +18,7 @@ class CustomSubscribersList extends Page
     protected function verifyPage()
     {
         if (!$this->has('css', 'h1#page-header:contains("Custom subscribers list")')) {
-            throw new BehaviorException(sprintf("%s page is missing \"Custom subscribers list\" header", $this->path));
+            throw new UnexpectedPageException(sprintf("%s page is missing \"Custom subscribers list\" header", $this->path));
         }
     }
 }
