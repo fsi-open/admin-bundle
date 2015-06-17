@@ -109,9 +109,10 @@ to have the same value since there are no longer different contexts handling cre
 - ``Resources/views/CRUD/list.html.twig`` - it extends ``Resources/views/List/list.html.twig``. Since batch actions are
   added thought datagrid batch column's options, there are no longer ``batch_action`` and ``batch_form`` blocks to
   overwrite. There is a new block ``batch_actions`` containing the whole batch action selection form. 
-- ``Resources/views/CRUD/edit.html.twig`` - it extends ``Resources/views/Form/form.html.twig``.
-- ``Resources/views/CRUD/create.html.twig`` - it extends  ``Resources/views/CRUD/edit.html.twig`` and is preserved only
-  for compatibility when someone overwrites it in their app.
+- ``Resources/views/CRUD/edit.html.twig`` - was removed in favour of ``Resources/views/CRUD/form.html.twig`` and
+  overwriting it in ``app/Resources`` has no longer any effect.
+- ``Resources/views/CRUD/create.html.twig`` - was removed in favour of ``Resources/views/CRUD/form.html.twig`` and
+  overwriting it in ``app/Resources`` has no longer any effect.
 
 ## Contexts' changes
 
@@ -231,10 +232,23 @@ Additional notes:
 
 ## Bundle configuration changes
 
+### Configuring admin menu
+
+Admin menu is read from %kernel.root_dir%/config/admin_menu.yml by default but the path to menu file can be changed by
+setting ``fsi_admin.menu_config_path`` configuration option.
+
+### Configuring language switch
+
+If you want your admin to be multilingual you must set the array of supported locales in ``fsi_admin.locales``
+configuration option.
+
 ### Removed configuration options
 
 The following bundle configuration options have been removed due to removal of their underlying functionality:
 
+- ``fsi_admin.display_language_switch``
+- ``fsi_admin.templates.crud_create``
+- ``fsi_admin.templates.crud_edit`` was renamed to ``fsi_admin.templates.crud_form``
 - ``fsi_admin.templates.crud_delete``
 - ``fsi_admin.templates.edit_form_theme``
 - ``fsi_admin.templates.create_form_theme``
