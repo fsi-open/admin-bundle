@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Behat\Context\Page;
 
-use Behat\Behat\Exception\BehaviorException;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
 class SubscriberEdit extends Page
 {
@@ -23,7 +23,7 @@ class SubscriberEdit extends Page
     protected function verifyPage()
     {
         if (!$this->has('css', '#page-header:contains("Edit element")')) {
-            throw new BehaviorException(sprintf("%s page is missing \"Edit element\" header", $this->path));
+            throw new UnexpectedPageException(sprintf("%s page is missing \"Edit element\" header", $this->path));
         }
     }
 }

@@ -9,6 +9,8 @@
 
 namespace FSi\Bundle\AdminBundle;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminAnnotatedElementPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminElementPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextBuilderPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\KnpMenuBuilderPass;
@@ -16,6 +18,7 @@ use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ManagerVisitorPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ResourceRepositoryPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\FSIAdminExtension;
+use FSi\Bundle\AdminBundle\Finder\AdminClassFinder;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -32,6 +35,10 @@ class FSiAdminBundle extends Bundle
     {
         parent::build($container);
 
+        $container->addCompilerPass(new AdminAnnotatedElementPass(
+            new AnnotationReader(),
+            new AdminClassFinder()
+        ));
         $container->addCompilerPass(new AdminElementPass(), PassConfig::TYPE_BEFORE_REMOVING);
         $container->addCompilerPass(new KnpMenuBuilderPass());
         $container->addCompilerPass(new ResourceRepositoryPass());
