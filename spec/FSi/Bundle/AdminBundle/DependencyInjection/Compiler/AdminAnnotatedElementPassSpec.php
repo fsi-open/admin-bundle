@@ -54,6 +54,18 @@ class AdminAnnotatedElementPassSpec extends ObjectBehavior
             'FSi\\Bundle\\AdminBundle\\Annotation\\Element'
         )->willReturn(new Element(array()));
 
+        $container->addResource(Argument::allOf(
+            Argument::type('Symfony\Component\Config\Resource\DirectoryResource'),
+            Argument::which('getResource', realpath($baseDir . '/spec/fixtures/Admin')),
+            Argument::which('getPattern', '/\.php$/')
+        ))->shouldBeCalled();
+
+        $container->addResource(Argument::allOf(
+            Argument::type('Symfony\Component\Config\Resource\DirectoryResource'),
+            Argument::which('getResource', realpath($baseDir . '/Admin')),
+            Argument::which('getPattern', '/\.php$/')
+        ))->shouldBeCalled();
+
         $container->addDefinitions(Argument::that(function ($definitions) {
             if (count($definitions) !== 1) {
                 return false;

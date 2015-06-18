@@ -13,6 +13,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use FSi\Bundle\AdminBundle\Annotation\Element;
 use FSi\Bundle\AdminBundle\Extractor\BundlePathExtractor;
 use FSi\Bundle\AdminBundle\Finder\AdminClassFinder;
+use Symfony\Component\Config\Resource\DirectoryResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Definition;
@@ -68,6 +69,7 @@ class AdminAnnotatedElementPass implements CompilerPassInterface
             $bundleClassReflector = new \ReflectionClass($bundleClass);
             $bundleAdminPath = dirname($bundleClassReflector->getFileName()) . '/Admin';
             if (is_dir($bundleAdminPath)) {
+                $container->addResource(new DirectoryResource($bundleAdminPath, '/\.php$/'));
                 $paths[] = $bundleAdminPath;
             }
         }
