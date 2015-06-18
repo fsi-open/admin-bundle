@@ -37,8 +37,7 @@ before_script:
     - export DISPLAY=:99.0
     - java -jar selenium-server-standalone-2.42.2.jar > /dev/null &
     - sleep 5
-    - mkdir -p features/fixtures/project/web/bundles/fsiadmin
-    - cp Resources/public/* features/fixtures/project/web/bundles/fsiadmin
+    - features/fixtures/project/app/console assets:install features/fixtures/project/web --relative --symlink
 
 script:
     - ./bin/phpspec run -v
