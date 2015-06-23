@@ -532,7 +532,7 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext
      */
     public function popoverShouldNotBeVisibleAnymore()
     {
-        expect($this->getPage('News list')->getPopover()->isVisible())->toBe(false);
+        expect($this->getPage('News list')->getPopover())->toBe(null);
     }
 
     /**
