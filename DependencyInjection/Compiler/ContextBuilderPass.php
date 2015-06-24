@@ -26,12 +26,19 @@ class ContextBuilderPass implements CompilerPassInterface
             return;
         }
 
-        $elementServices = $container->findTaggedServiceIds('admin.context.builder');
-
         $builders = array();
-        foreach ($elementServices as $id => $tag) {
-            $builders[] = $container->findDefinition($id);
+        foreach ($container->findTaggedServiceIds('admin.context.builder') as $id => $attributes) {
+            $priority = isset($attributes[0]['priority']) ? $attributes[0]['priority'] : 0;
+            $builders[$priority][] = $container->findDefinition($id);
         }
+
+        if (empty($builders)) {
+            return;
+        }
+
+        krsort($builders);
+
+        $builders = call_user_func_array('array_merge', $builders);
 
         $container->findDefinition('admin.context.manager')->replaceArgument(0, $builders);
     }

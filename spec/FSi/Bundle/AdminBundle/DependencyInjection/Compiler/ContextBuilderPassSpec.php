@@ -32,4 +32,25 @@ class ContextBuilderPassSpec extends ObjectBehavior
 
         $this->process($container);
     }
+
+    public function it_add_builders_in_priority_order(
+        ContainerBuilder $container,
+        Definition $def,
+        Definition $fooDef,
+        Definition $barDef,
+        Definition $bazDef
+    ) {
+        $container->findTaggedServiceIds('admin.context.builder')->willReturn(array(
+            'builder_foo' => array(array('priority' => 5)),
+            'builder_bar' => array(array()),
+            'builder_baz' => array(array('priority' => -10)),
+        ));
+
+        $container->findDefinition('builder_foo')->willReturn($fooDef);
+        $container->findDefinition('builder_bar')->willReturn($barDef);
+        $container->findDefinition('builder_baz')->willReturn($bazDef);
+        $def->replaceArgument(0, array($fooDef, $barDef, $bazDef))->shouldBeCalled();
+
+        $this->process($container);
+    }
 }
