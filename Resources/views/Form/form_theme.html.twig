@@ -5,14 +5,16 @@
         {%- set attr = attr|merge({'data-prototype': block('collection_prototype') }) -%}
     {% endif %}
     <div {{ block('widget_container_attributes') }}>
-        {%- if form.parent is empty -%}
-            {{ form_errors(form) }}
-        {%- endif -%}
-        {% set collection = form %}
-        {% for form in collection %}
-            {{ block('collection_item') }}
-        {% endfor %}
-        {{- form_rest(form) -}}
+        <div class="collection-items">
+            {%- if form.parent is empty -%}
+                {{ form_errors(form) }}
+            {%- endif -%}
+            {% set collection = form %}
+            {% for form in collection %}
+                {{ block('collection_item') }}
+            {% endfor %}
+            {{- form_rest(form) -}}
+        </div>
         <a class="btn btn-success collection-add" title="{{ 'crud.form.collection.add'|trans({}, 'FSiAdminBundle') }}"><i class="glyphicon glyphicon-plus"></i></a>
     </div>
 {% endblock %}

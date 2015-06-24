@@ -245,7 +245,7 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
      */
     public function collectionShouldHaveElements(NodeElement $collection, $elementsCount)
     {
-        $elements = $collection->findAll('xpath', '/*[@class = "form-group"]');
+        $elements = $collection->findAll('xpath', '/*/*[@class = "form-group"]');
         expect(count($elements))->toBe($elementsCount);
     }
 
@@ -272,7 +272,7 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
      */
     public function iFillWithInCollectionAtPosition($fieldName, $fieldValue, NodeElement $collection, $position)
     {
-        $collectionRow = $collection->find('xpath', sprintf('/*[@class = "form-group"][%d]', $position));
+        $collectionRow = $collection->find('xpath', sprintf('/*/*[@class = "form-group"][%d]', $position));
         $collectionRow->fillField($fieldName, $fieldValue);
     }
 
@@ -281,7 +281,7 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
      */
     public function iRemoveElementInCollection($index, NodeElement $collection)
     {
-        $collection->find('xpath', sprintf('/*[@class = "form-group"][%d]', $index))
+        $collection->find('xpath', sprintf('/*/*[@class = "form-group"][%d]', $index))
              ->find('css', '.collection-remove')->click();
     }
 }

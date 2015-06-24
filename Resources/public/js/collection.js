@@ -4,8 +4,9 @@ define(['jquery'], function($) {
 
         options = $.extend({
             addButtonSelector: '> .collection-add',
-            removeButtonSelector: '> div > div > .collection-remove',
-            rowSelector: '.form-group',
+            removeButtonSelector: '> div > div > div > .collection-remove',
+            itemsContainerSelector: '> .collection-items',
+            itemSelector: '.form-group',
             collectionsSelector: 'div[data-prototype]'
         }, options);
 
@@ -17,7 +18,7 @@ define(['jquery'], function($) {
 
         var removeCollectionItem = function(e) {
             e.preventDefault();
-            var $removedItem = $(e.target).closest(options.rowSelector);
+            var $removedItem = $(e.target).closest(options.itemSelector);
             $removedItem.trigger('remove.collection-item');
         };
 
@@ -32,7 +33,7 @@ define(['jquery'], function($) {
             var newItemHtml = replacePrototypeName(template, prototypeName, nextIndex);
             var $newItem = $(newItemHtml);
 
-            $el.find(options.addButtonSelector).before($newItem);
+            $el.find(options.itemsContainerSelector).append($newItem);
             $el.data('current-index', nextIndex + 1);
             $el.trigger('add.collection-item', [$newItem]);
         };
@@ -43,7 +44,7 @@ define(['jquery'], function($) {
                 return;
             }
 
-            var items = $el.children(options.rowSelector);
+            var items = $el.find(options.itemsContainerSelector).children(options.itemSelector);
             $el.data('current-index', items.length);
 
             if ($el.data('allow-delete')) {
