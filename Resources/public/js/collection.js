@@ -46,11 +46,11 @@ define(['jquery'], function($) {
             var items = $el.children(options.rowSelector);
             $el.data('current-index', items.length);
 
-            if ($el.data('allow-delete') == true) {
+            if ($el.data('allow-delete')) {
                 $el.on('click', options.removeButtonSelector, removeCollectionItem);
             }
 
-            if ($el.data('allow-add') == true) {
+            if ($el.data('allow-add')) {
                 $el.find(options.addButtonSelector).on('click', addCollectionItem);
             }
         });

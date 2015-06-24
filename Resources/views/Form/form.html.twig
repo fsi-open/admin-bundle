@@ -42,14 +42,19 @@
     {{ parent() }}
     <script type="text/javascript">
         require(['jquery', 'collection'], function ($) {
-            $('label.required').each(function (index, label) {
-                $(label).append(' <i class="glyphicon glyphicon-asterisk"></i>');
-            });
-            $('div[data-prototype]')
-                .formCollection()
-                .on('add.collection-item', function(event, item) {
-                    $(item).find('div[data-prototype]').formCollection();
+            function initForms($context) {
+                $context.find('label.required').each(function (index, label) {
+                    if (!$(label).find('.glyphicon-asterisk').length) {
+                        $(label).append(' <i class="glyphicon glyphicon-asterisk"></i>');
+                    }
                 });
+                $context.find('div[data-prototype]')
+                    .formCollection()
+                    .on('add.collection-item', function(event, item) {
+                        initForms($(item));
+                    });
+            }
+            initForms($('body'));
         });
     </script>
 {% endblock javascripts %}
