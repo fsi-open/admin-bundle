@@ -45,6 +45,11 @@ All partials ``Resources/views/CRUD/List/*.html.twig`` have been removed so over
 longer any effect. Alternatively you can set another template for in application config and overwrite some of its
 blocks.
 
+### Custom form themes
+
+Template ``Resources/views/Form/form_div_layout.html.twig`` was renamed to ``Resources/views/Form/form_theme.html.twig``
+so if you have any custom form theme which extends the old one, it must be adjusted.
+
 ### CRUD delete template
 
 This template has been removed so overwriting it has no longer any effect.
