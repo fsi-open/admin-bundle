@@ -59,6 +59,9 @@ crud:
         button:
             save: Save
             back: Back
+        collection:
+            add: Add value
+            remove: Remove
     display:
         title: Display element
         button:

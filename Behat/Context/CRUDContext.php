@@ -309,7 +309,11 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext
             $this->getElement('Form')->fillField('Created at', $generator->date());
         }
         if ($form->hasField('Visible')) {
-            $this->getElement('Form')->fillField('Visible', $generator->boolean());
+            if ($generator->boolean()) {
+                $this->getElement('Form')->checkField('Visible');
+            } else {
+                $this->getElement('Form')->uncheckField('Visible');
+            }
         }
         if ($form->hasField('Active')) {
             $this->getElement('Form')->fillField('Active', $generator->boolean());

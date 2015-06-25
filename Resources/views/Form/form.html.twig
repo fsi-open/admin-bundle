@@ -41,10 +41,20 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        require(['jquery'], function ($) {
-            $('label.required').each(function (index, label) {
-                $(label).append(' <i class="glyphicon glyphicon-asterisk"></i>');
-            });
+        require(['jquery', 'collection'], function ($) {
+            function initForms($context) {
+                $context.find('label.required').each(function (index, label) {
+                    if (!$(label).find('.glyphicon-asterisk').length) {
+                        $(label).append(' <i class="glyphicon glyphicon-asterisk"></i>');
+                    }
+                });
+                $context.find('div[data-prototype]')
+                    .formCollection()
+                    .on('add.collection-item', function(event, item) {
+                        initForms($(item));
+                    });
+            }
+            initForms($('body'));
         });
     </script>
 {% endblock javascripts %}

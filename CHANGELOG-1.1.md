@@ -113,6 +113,7 @@ to have the same value since there are no longer different contexts handling cre
   overwriting it in ``app/Resources`` has no longer any effect.
 - ``Resources/views/CRUD/create.html.twig`` - was removed in favour of ``Resources/views/CRUD/form.html.twig`` and
   overwriting it in ``app/Resources`` has no longer any effect.
+- ``Resources/views/Form/form_div_layout.html.twig`` - was renamed to ``Resources/views/Form/form_theme.html.twig``.
 
 ## Contexts' changes
 

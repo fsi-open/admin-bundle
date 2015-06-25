@@ -58,3 +58,10 @@ crud:
         button:
             save: Zapisz
             back: Powrót
+        collection:
+            add: Dodaj wartość
+            remove: Usuń
+    display:
+        title: Podgląd elementu
+        button:
+            back: Powrót
