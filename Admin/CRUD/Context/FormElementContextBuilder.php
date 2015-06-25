@@ -12,8 +12,6 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
-use FSi\Bundle\AdminBundle\Exception\ContextBuilderException;
-use Symfony\Component\HttpFoundation\Request;
 
 class FormElementContextBuilder implements ContextBuilderInterface
 {
@@ -23,24 +21,11 @@ class FormElementContextBuilder implements ContextBuilderInterface
     private $context;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Request
-     */
-    protected $request;
-
-    /**
      * @param FormElementContext $context
      */
     public function __construct(FormElementContext $context)
     {
         $this->context = $context;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->request = $request;
     }
 
     /**
@@ -53,14 +38,6 @@ class FormElementContextBuilder implements ContextBuilderInterface
         }
 
         if ($element instanceof FormElement) {
-            if (!$this->getObjectId()) {
-                return true;
-            }
-
-            if (!$this->hasObject($element)) {
-                throw new ContextBuilderException(sprintf("Can't find object with id %s", $this->getObjectId()));
-            }
-
             return true;
         }
 
@@ -72,7 +49,7 @@ class FormElementContextBuilder implements ContextBuilderInterface
      */
     public function buildContext(Element $element)
     {
-        $this->context->setElement($element, $this->getObject($element));
+        $this->context->setElement($element);
 
         return $this->context;
     }
@@ -83,38 +60,5 @@ class FormElementContextBuilder implements ContextBuilderInterface
     protected function getSupportedRoute()
     {
         return 'fsi_admin_form';
-    }
-
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
-     * @return bool
-     */
-    protected function hasObject(FormElement $element)
-    {
-        $data = $element->getDataIndexer()->getData($this->getObjectId());
-
-        return isset($data);
-    }
-
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
-     * @return mixed
-     */
-    protected function getObject(FormElement $element)
-    {
-        $objectId = $this->getObjectId();
-        if (!$objectId) {
-            return null;
-        }
-
-        return $element->getDataIndexer()->getData($objectId);
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function getObjectId()
-    {
-        return $this->request->get('id', null);
     }
 }

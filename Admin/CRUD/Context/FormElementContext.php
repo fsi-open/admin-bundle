@@ -15,6 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FormElementContext implements ContextInterface
 {
@@ -44,10 +45,9 @@ class FormElementContext implements ContextInterface
     /**
      * @param FormElement $element
      */
-    public function setElement(FormElement $element, $formData = null)
+    public function setElement(FormElement $element)
     {
         $this->element = $element;
-        $this->form = $this->element->createForm($formData);
     }
 
     /**
@@ -88,6 +88,7 @@ class FormElementContext implements ContextInterface
      */
     public function handleRequest(Request $request)
     {
+        $this->form = $this->element->createForm($this->getObject($request));
         $event = new FormEvent($this->element, $request, $this->form);
 
         foreach ($this->requestHandlers as $handler) {
@@ -96,5 +97,24 @@ class FormElementContext implements ContextInterface
                 return $response;
             }
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return object|null
+     */
+    private function getObject(Request $request)
+    {
+        $id = $request->get('id');
+        if (empty($id)) {
+            return null;
+        }
+
+        $object = $this->element->getDataIndexer()->getData($id);
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('Can\'t find object with id %s', $id));
+        }
+
+        return $object;
     }
 }

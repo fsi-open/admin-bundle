@@ -16,11 +16,7 @@
     <services>
         <service id="admin.context_builder.crud_form" class="%admin.context_builder.crud_form.class%">
             <argument type="service" id="admin.context.crud_form"/>
-            <argument type="service" id="router" />
             <tag name="admin.context.builder" />
-            <call method="setRequest">
-                <argument type="service" id="request" on-invalid="null" strict="false" />
-            </call>
         </service>
 
         <service id="admin.context.crud_form" class="%admin.context.crud_form.class%">
@@ -33,11 +29,7 @@
 
         <service id="admin.context_builder.form" class="%admin.context_builder.form.class%">
             <argument type="service" id="admin.context.form"/>
-            <argument type="service" id="router" />
             <tag name="admin.context.builder" />
-            <call method="setRequest">
-                <argument type="service" id="request" on-invalid="null" strict="false" />
-            </call>
         </service>
 
         <service id="admin.context.form" class="%admin.context.form.class%">

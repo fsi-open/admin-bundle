@@ -14,13 +14,14 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Component\DataIndexer\DataIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class FormElementContextBuilderSpec extends ObjectBehavior
 {
-    function let(FormElementContext $context, Request $request)
+    function let(FormElementContext $context, RequestStack $requestStack, Request $request)
     {
-        $this->beConstructedWith($context);
-        $this->setRequest($request);
+        $this->beConstructedWith($context, $requestStack);
+        $requestStack->getCurrentRequest()->willReturn($request);
     }
 
     function it_is_context_builder()
