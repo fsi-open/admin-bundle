@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class ContextBuilderPassSpec extends ObjectBehavior
+class ContextPassSpec extends ObjectBehavior
 {
     function let(ContainerBuilder $container, Definition $def)
     {
@@ -23,7 +23,7 @@ class ContextBuilderPassSpec extends ObjectBehavior
 
     function it_add_context_builders_into_context_manager(ContainerBuilder $container, Definition $def, Definition $fooDef)
     {
-        $container->findTaggedServiceIds('admin.context.builder')->willReturn(array(
+        $container->findTaggedServiceIds('admin.context')->willReturn(array(
             'builder_foo' => array(array()),
         ));
 
@@ -40,7 +40,7 @@ class ContextBuilderPassSpec extends ObjectBehavior
         Definition $barDef,
         Definition $bazDef
     ) {
-        $container->findTaggedServiceIds('admin.context.builder')->willReturn(array(
+        $container->findTaggedServiceIds('admin.context')->willReturn(array(
             'builder_foo' => array(array('priority' => 5)),
             'builder_bar' => array(array()),
             'builder_baz' => array(array('priority' => -10)),

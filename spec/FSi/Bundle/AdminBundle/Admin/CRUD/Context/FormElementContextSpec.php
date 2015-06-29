@@ -23,8 +23,8 @@ class FormElementContextSpec extends ObjectBehavior
     function let(FormElement $element, Form $form, HandlerInterface $handler)
     {
         $this->beConstructedWith(array($handler));
-        $element->createForm(array())->willReturn($form);
-        $this->setElement($element, array());
+        $element->createForm(null)->willReturn($form);
+        $this->setElement($element);
     }
 
     function it_is_context()
@@ -32,11 +32,12 @@ class FormElementContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_array_data(Form $form, FormElement $element, DataIndexerInterface $dataIndexer)
+    function it_have_array_data(Form $form, FormElement $element, DataIndexerInterface $dataIndexer, Request $request)
     {
         $form->createView()->willReturn('form_view');
-
         $form->getData()->willReturn(null);
+
+        $this->handleRequest($request)->shouldReturn(null);
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('form');
         $this->getData()->shouldHaveKeyInArray('element');

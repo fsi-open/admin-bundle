@@ -15,11 +15,6 @@
     </parameters>
 
     <services>
-        <service id="admin.context_builder.crud_list" class="%admin.context_builder.crud_list.class%">
-            <argument type="service" id="admin.context.crud_list"/>
-            <tag name="admin.context.builder" />
-        </service>
-
         <service id="admin.context.crud_list" class="%admin.context.crud_list.class%">
             <argument type="collection">
                 <argument type="service" id="admin.context.list.request_handler.datasource_bind_params"/>
@@ -28,11 +23,7 @@
             </argument>
             <argument type="string">%admin.templates.crud_list%</argument>
             <argument type="service" id="form.factory" />
-        </service>
-
-        <service id="admin.context_builder.list" class="%admin.context_builder.list.class%">
-            <argument type="service" id="admin.context.list"/>
-            <tag name="admin.context.builder" />
+            <tag name="admin.context" />
         </service>
 
         <service id="admin.context.list" class="%admin.context.list.class%">
@@ -42,6 +33,7 @@
                 <argument type="service" id="admin.context.list.request_handler.datagrid_bind_data"/>
             </argument>
             <argument type="service" id="form.factory" />
+            <tag name="admin.context" />
         </service>
 
         <service id="admin.context.list.request_handler.datasource_bind_params"

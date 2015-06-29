@@ -9,6 +9,10 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
+use FSi\Bundle\AdminBundle\Admin\Element;
+
 class CRUDFormElementContext extends FormElementContext
 {
     /**
@@ -17,14 +21,22 @@ class CRUDFormElementContext extends FormElementContext
     private $formTemplate;
 
     /**
-     * @param array $requestHandlers
+     * @param HandlerInterface[]|array $requestHandlers
      * @param string $formTemplate
      */
-    public function __construct($requestHandlers, $formTemplate)
+    public function __construct(array $requestHandlers, $formTemplate)
     {
         parent::__construct($requestHandlers);
 
         $this->formTemplate = $formTemplate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supportsElement(Element $element)
+    {
+        return $element instanceof AbstractCRUD;
     }
 
     /**

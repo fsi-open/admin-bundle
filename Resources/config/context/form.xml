@@ -14,22 +14,13 @@
     </parameters>
 
     <services>
-        <service id="admin.context_builder.crud_form" class="%admin.context_builder.crud_form.class%">
-            <argument type="service" id="admin.context.crud_form"/>
-            <tag name="admin.context.builder" />
-        </service>
-
         <service id="admin.context.crud_form" class="%admin.context.crud_form.class%">
             <argument type="collection">
                 <argument type="service" id="admin.context.form.request_handler.form_submit"/>
                 <argument type="service" id="admin.context.form.request_handler.form_valid_request"/>
             </argument>
             <argument type="string">%admin.templates.crud_form%</argument>
-        </service>
-
-        <service id="admin.context_builder.form" class="%admin.context_builder.form.class%">
-            <argument type="service" id="admin.context.form"/>
-            <tag name="admin.context.builder" />
+            <tag name="admin.context" />
         </service>
 
         <service id="admin.context.form" class="%admin.context.form.class%">
@@ -37,6 +28,7 @@
                 <argument type="service" id="admin.context.form.request_handler.form_submit"/>
                 <argument type="service" id="admin.context.form.request_handler.form_valid_request"/>
             </argument>
+            <tag name="admin.context" />
         </service>
 
         <service id="admin.context.form.request_handler.form_submit"

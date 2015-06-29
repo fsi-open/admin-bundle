@@ -9,65 +9,24 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Display\Context;
 
-use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
-use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
 use FSi\Bundle\AdminBundle\Admin\Display\GenericDisplayElement;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\DisplayEvent;
-use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class DisplayContext implements ContextInterface
+class DisplayContext extends ContextAbstract
 {
-    /**
-     * @var HandlerInterface[]
-     */
-    private $requestHandlers;
-
     /**
      * @var GenericDisplayElement
      */
-    private $element;
+    protected $element;
 
     /**
      * @var \FSi\Bundle\AdminBundle\Display\Display
      */
     private $display;
-
-    /**
-     * @param $requestHandlers
-     */
-    function __construct($requestHandlers)
-    {
-        $this->requestHandlers = $requestHandlers;
-    }
-
-    /**
-     * @param GenericDisplayElement $element
-     */
-    public function setElement(GenericDisplayElement $element)
-    {
-        $this->element = $element;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function handleRequest(Request $request)
-    {
-        if (!$this->hasObject($request)) {
-            throw new RuntimeException(sprintf("Cant find element \"%s\" in request", $this->element->getClassName()));
-        }
-
-        $this->display = $this->element->createDisplayElement($this->getObject($request));
-        $event = new DisplayEvent($this->element, $request, $this->display);
-
-        foreach ($this->requestHandlers as $handler) {
-            $response = $handler->handleRequest($event, $request);
-            if (isset($response)) {
-                return $response;
-            }
-        }
-    }
 
     /**
      * @return boolean
@@ -97,14 +56,37 @@ class DisplayContext implements ContextInterface
     }
 
     /**
-     * @param Request $request
-     * @return bool
+     * {@inheritdoc}
      */
-    private function hasObject(Request $request)
+    public function setElement(Element $element)
     {
-        $data = $this->element->getDataIndexer()->getData($this->getObjectId($request));
+        $this->element = $element;
+    }
 
-        return isset($data);
+    /**
+     * {@inheritdoc}
+     */
+    protected function createEvent(Request $request)
+    {
+        $this->display = $this->element->createDisplay($this->getObject($request));
+
+        return new DisplayEvent($this->element, $request, $this->display);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSupportedRoute()
+    {
+        return 'fsi_admin_display';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supportsElement(Element $element)
+    {
+        return $element instanceof GenericDisplayElement;
     }
 
     /**
@@ -113,17 +95,13 @@ class DisplayContext implements ContextInterface
      */
     private function getObject(Request $request)
     {
-        $data = $this->element->getDataIndexer()->getData($this->getObjectId($request));
+        $id = $request->get('id', null);
 
-        return $data;
-    }
+        $object = $this->element->getDataIndexer()->getData($id);
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf("Can't find object with id %s", $id));
+        }
 
-    /**
-     * @param Request $request
-     * @return mixed
-     */
-    private function getObjectId(Request $request)
-    {
-        return $request->get('id', null);
+        return $object;
     }
 }

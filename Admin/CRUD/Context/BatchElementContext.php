@@ -9,22 +9,18 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
-use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class BatchElementContext implements ContextInterface
+class BatchElementContext extends ContextAbstract
 {
-    /**
-     * @var HandlerInterface[]
-     */
-    private $requestHandlers;
-
     /**
      * @var FormElement
      */
@@ -41,39 +37,16 @@ class BatchElementContext implements ContextInterface
     protected $indexes;
 
     /**
-     * @param array $requestHandlers
+     * @param HandlerInterface[]|array $requestHandlers
      * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
      */
     public function __construct(
-        $requestHandlers,
+        array $requestHandlers,
         FormBuilderInterface $formBuilder
     ) {
-        $this->requestHandlers = $requestHandlers;
+        parent::__construct($requestHandlers);
+
         $this->form = $formBuilder->getForm();
-    }
-
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
-     */
-    public function setElement(BatchElement $element)
-    {
-        $this->element = $element;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasTemplateName()
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTemplateName()
-    {
-        return null;
     }
 
     /**
@@ -93,16 +66,34 @@ class BatchElementContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function handleRequest(Request $request)
+    public function setElement(Element $element)
     {
-        $event = new FormEvent($this->element, $request, $this->form);
+        $this->element = $element;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createEvent(Request $request)
+    {
         $this->indexes = $request->request->get('indexes', array());
 
-        foreach ($this->requestHandlers as $handler) {
-            $response = $handler->handleRequest($event, $request);
-            if (isset($response)) {
-                return $response;
-            }
-        }
+        return new FormEvent($this->element, $request, $this->form);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSupportedRoute()
+    {
+        return 'fsi_admin_batch';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supportsElement(Element $element)
+    {
+        return $element instanceof BatchElement;
     }
 }

@@ -9,22 +9,16 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
-use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
-use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Component\DataGrid\DataGrid;
 use FSi\Component\DataSource\DataSource;
 use Symfony\Component\HttpFoundation\Request;
 
-class ListElementContext implements ContextInterface
+class ListElementContext extends ContextAbstract
 {
-    /**
-     * @var HandlerInterface[]
-     */
-    private $requestHandlers;
-
     /**
      * @var ListElement
      */
@@ -41,17 +35,9 @@ class ListElementContext implements ContextInterface
     protected $dataGrid;
 
     /**
-     * @param array $requestHandlers
+     * {@inheritdoc}
      */
-    public function __construct($requestHandlers)
-    {
-        $this->requestHandlers = $requestHandlers;
-    }
-
-    /**
-     * @param ListElement $element
-     */
-    public function setElement(ListElement $element)
+    public function setElement(Element $element)
     {
         $this->element = $element;
         $this->dataSource = $this->element->createDataSource();
@@ -89,15 +75,24 @@ class ListElementContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function handleRequest(Request $request)
+    protected function createEvent(Request $request)
     {
-        $event = new ListEvent($this->element, $request, $this->dataSource, $this->dataGrid);
+        return new ListEvent($this->element, $request, $this->dataSource, $this->dataGrid);
+    }
 
-        foreach ($this->requestHandlers as $handler) {
-            $response = $handler->handleRequest($event, $request);
-            if (isset($response)) {
-                return $response;
-            }
-        }
+    /**
+     * @return string
+     */
+    protected function getSupportedRoute()
+    {
+        return 'fsi_admin_list';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supportsElement(Element $element)
+    {
+        return $element instanceof ListElement;
     }
 }

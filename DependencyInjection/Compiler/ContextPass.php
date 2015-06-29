@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-class ContextBuilderPass implements CompilerPassInterface
+class ContextPass implements CompilerPassInterface
 {
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
@@ -26,20 +26,18 @@ class ContextBuilderPass implements CompilerPassInterface
             return;
         }
 
-        $builders = array();
-        foreach ($container->findTaggedServiceIds('admin.context.builder') as $id => $attributes) {
+        $contexts = array();
+        foreach ($container->findTaggedServiceIds('admin.context') as $id => $tag) {
             $priority = isset($attributes[0]['priority']) ? $attributes[0]['priority'] : 0;
-            $builders[$priority][] = $container->findDefinition($id);
+            $contexts[$priority][] = $container->findDefinition($id);
         }
 
-        if (empty($builders)) {
+        if (empty($contexts)) {
             return;
         }
+        krsort($contexts);
+        $contexts = call_user_func_array('array_merge', $contexts);
 
-        krsort($builders);
-
-        $builders = call_user_func_array('array_merge', $builders);
-
-        $container->findDefinition('admin.context.manager')->replaceArgument(0, $builders);
+        $container->findDefinition('admin.context.manager')->replaceArgument(0, $contexts);
     }
 }
