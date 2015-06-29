@@ -8,3 +8,4 @@
 - [Menu](menu.md)
 - [Bundle Configuration](configuration.md)
 - [Admin Panel Translation](admin_panel_translation.md)
+- [Contexts, Context builders and manager](contexts.md)
