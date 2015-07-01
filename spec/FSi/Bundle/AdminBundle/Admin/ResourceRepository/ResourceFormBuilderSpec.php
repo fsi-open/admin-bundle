@@ -2,27 +2,21 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
-use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
-use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
-use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
-use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\TextType;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\Test\FormBuilderInterface;
 
 class ResourceFormBuilderSpec extends ObjectBehavior
 {
-    function let(
-        MapBuilder $mapBuilder,
-        FormFactoryInterface $formFactory,
-        GenericResourceElement $element,
-        ResourceValueRepository $valueRepository,
-        TextType $resource
-    ) {
+    /**
+     * @param \FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder $mapBuilder
+     * @param \Symfony\Component\Form\FormFactoryInterface $formFactory
+     * @param \FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement $element
+     * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository $valueRepository
+     * @param \FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\TextType $resource
+     */
+    function let($mapBuilder, $formFactory, $element, $valueRepository, $resource)
+    {
         $mapBuilder->getMap()->willReturn(array(
             'resources' => array(
                 'resource_key' => $resource
@@ -36,9 +30,11 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         $this->beConstructedWith($formFactory, $mapBuilder);
     }
 
-    function it_throw_exception_when_resource_key_is_not_resource_group_key(
-        GenericResourceElement $element
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement $element
+     */
+    function it_throw_exception_when_resource_key_is_not_resource_group_key($element)
+    {
         $element->getKey()->willReturn('resources.resource_key');
 
         $this->shouldThrow(
@@ -49,13 +45,21 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         );
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormFactoryInterface $formFactory
+     * @param \Symfony\Component\Form\Test\FormBuilderInterface $formBuilder
+     * @param \FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement $element
+     * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository $valueRepository
+     * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue $resourceValue
+     * @param \Symfony\Component\Form\FormInterface $form
+     */
     function it_builds_form_for_resource_group(
-        FormFactoryInterface $formFactory,
-        FormBuilderInterface $formBuilder,
-        GenericResourceElement $element,
-        ResourceValueRepository $valueRepository,
-        ResourceValue $resourceValue,
-        FormInterface $form
+        $formFactory,
+        $formBuilder,
+        $element,
+        $valueRepository,
+        $resourceValue,
+        $form
     ) {
         $element->getKey()->willReturn('resources');
         $valueRepository->get('resources.resource_key')->willReturn($resourceValue);

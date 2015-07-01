@@ -5,7 +5,6 @@ namespace spec\FSi\Bundle\AdminBundle\Display;
 use FSi\Bundle\AdminBundle\Display\Property;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class ObjectDisplaySpec extends ObjectBehavior
 {

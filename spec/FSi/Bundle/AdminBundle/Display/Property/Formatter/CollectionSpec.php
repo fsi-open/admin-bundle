@@ -2,13 +2,15 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Display\Property\Formatter;
 
-use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class CollectionSpec extends ObjectBehavior
 {
-    function let(ValueFormatter $formatter)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Display\Property\ValueFormatter $formatter
+     */
+    function let($formatter)
     {
         $this->beConstructedWith(array($formatter));
     }
@@ -26,7 +28,10 @@ class CollectionSpec extends ObjectBehavior
             ->during('format', array(new \stdClass()));
     }
 
-    function it_format_each_element_of_collection_using_formatters(ValueFormatter $formatter)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Display\Property\ValueFormatter $formatter
+     */
+    function it_format_each_element_of_collection_using_formatters($formatter)
     {
         $value = array(
             'first-date' => new \DateTime(),
@@ -36,7 +41,10 @@ class CollectionSpec extends ObjectBehavior
         $this->format($value)->shouldReturn($value);
     }
 
-    function it_format_each_element_of_iterator_using_formatters(ValueFormatter $formatter)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Display\Property\ValueFormatter $formatter
+     */
+    function it_format_each_element_of_iterator_using_formatters($formatter)
     {
         $value = array(
             'first-date' => new \DateTime(),

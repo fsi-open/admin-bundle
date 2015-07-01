@@ -9,19 +9,16 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
-use FSi\Bundle\AdminBundle\Admin\CRUD\Context\FormElementContext;
-use FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FormControllerSpec extends ObjectBehavior
 {
-    function let(ContextManager $manager, EngineInterface $templating)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
+     */
+    function let($manager, $templating)
     {
         $this->beConstructedWith(
             $templating,
@@ -30,10 +27,15 @@ class FormControllerSpec extends ObjectBehavior
         );
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
     function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
-        GenericFormElement $element,
-        ContextManager $manager,
-        Request $request
+        $element,
+        $manager,
+        $request
     ) {
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
@@ -42,13 +44,21 @@ class FormControllerSpec extends ObjectBehavior
             ->during('formAction', array($element, $request));
     }
 
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\Context\FormElementContext $context
+     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
+     */
     function it_render_default_template_in_form_action(
-        Request $request,
-        Response $response,
-        GenericFormElement $element,
-        ContextManager $manager,
-        FormElementContext $context,
-        EngineInterface $templating
+        $request,
+        $response,
+        $element,
+        $manager,
+        $context,
+        $templating
     ) {
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -59,13 +69,21 @@ class FormControllerSpec extends ObjectBehavior
         $this->formAction($element, $request)->shouldReturn($response);
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\Context\FormElementContext $context
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     */
     function it_render_template_from_element_in_form_action(
-        ContextManager $manager,
-        GenericFormElement $element,
-        FormElementContext $context,
-        Request $request,
-        EngineInterface $templating,
-        Response $response
+        $manager,
+        $element,
+        $context,
+        $request,
+        $templating,
+        $response
     ) {
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -77,12 +95,19 @@ class FormControllerSpec extends ObjectBehavior
         $this->formAction($element, $request)->shouldReturn($response);
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\Context\FormElementContext $context
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     */
     function it_return_response_from_context_in_form_action(
-        ContextManager $manager,
-        GenericFormElement $element,
-        FormElementContext $context,
-        Request $request,
-        Response $response
+        $manager,
+        $element,
+        $context,
+        $request,
+        $response
     ) {
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn($response);

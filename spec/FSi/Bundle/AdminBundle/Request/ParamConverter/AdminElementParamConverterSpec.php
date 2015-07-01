@@ -11,22 +11,30 @@ namespace spec\FSi\Bundle\AdminBundle\Request\ParamConverter;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use PhpSpec\ObjectBehavior;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class AdminElementParamConverterSpec extends ObjectBehavior
 {
-    function let(Manager $manager)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
+     */
+    function let($manager)
     {
         $this->beConstructedWith($manager);
     }
 
-    function it_handle_only_fully_qualified_class_names(ParamConverter $configuration)
+    /**
+     * @param \Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter $configuration
+     */
+    function it_handle_only_fully_qualified_class_names($configuration)
     {
         $configuration->getClass()->willReturn('FSiDemoBundle:News');
         $this->supports($configuration)->shouldReturn(false);
     }
 
-    function it_supports_any_object_that_implements_element_interface(ParamConverter $configuration)
+    /**
+     * @param \Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter $configuration
+     */
+    function it_supports_any_object_that_implements_element_interface($configuration)
     {
         $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement');
         $this->supports($configuration)->shouldReturn(true);

@@ -9,29 +9,27 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
-use FSi\Bundle\AdminBundle\Admin\Display;
-use FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContext;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\Context\Read\Context;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DisplayControllerSpec extends ObjectBehavior
 {
-    function let(ContextManager $manager, DelegatingEngine $templating)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine $templating
+     */
+    function let($manager, $templating)
     {
         $this->beConstructedWith($templating, $manager, 'default_display');
     }
 
-    function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
-        Display\Element $element,
-        ContextManager $manager,
-        Request $request
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Display\Element $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element($element, $manager, $request)
+    {
         $element->getId()->willReturn('my_awesome_display');
         $manager->createContext(Argument::type('string'), $element)->willReturn(null);
 
@@ -39,13 +37,21 @@ class DisplayControllerSpec extends ObjectBehavior
             ->during('displayAction', array($element, $request));
     }
 
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param \FSi\Bundle\AdminBundle\Admin\Display\Element $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContext $context
+     * @param \Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine $templating
+     */
     function it_render_default_template_in_display_action(
-        Request $request,
-        Response $response,
-        Display\Element $element,
-        ContextManager $manager,
-        DisplayContext $context,
-        DelegatingEngine $templating
+        $request,
+        $response,
+        $element,
+        $manager,
+        $context,
+        $templating
     ) {
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -56,13 +62,21 @@ class DisplayControllerSpec extends ObjectBehavior
         $this->displayAction($element, $request)->shouldReturn($response);
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\Display\Element $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContext $context
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine $templating
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     */
     function it_render_template_from_element_in_display_action(
-        ContextManager $manager,
-        Display\Element $element,
-        DisplayContext $context,
-        Request $request,
-        DelegatingEngine $templating,
-        Response $response
+        $manager,
+        $element,
+        $context,
+        $request,
+        $templating,
+        $response
     ) {
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -74,12 +88,19 @@ class DisplayControllerSpec extends ObjectBehavior
         $this->displayAction($element, $request)->shouldReturn($response);
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\Display\Element $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContext $context
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     */
     function it_return_response_from_context_in_display_action(
-        ContextManager $manager,
-        Display\Element $element,
-        DisplayContext $context,
-        Request $request,
-        Response $response
+        $manager,
+        $element,
+        $context,
+        $request,
+        $response
     ) {
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn($response);

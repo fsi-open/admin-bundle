@@ -2,7 +2,6 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Finder;
 
-use FSi\Bundle\AdminBundle\Extractor\BundlePathExtractor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

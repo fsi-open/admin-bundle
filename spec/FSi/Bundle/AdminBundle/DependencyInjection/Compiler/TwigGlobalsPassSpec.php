@@ -11,18 +11,24 @@ namespace spec\FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 
 class TwigGlobalsPassSpec extends ObjectBehavior
 {
-    function let(ContainerBuilder $container, Definition $def)
+    /**
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param \Symfony\Component\DependencyInjection\Definition $def
+     */
+    function let($container, $def)
     {
         $container->hasDefinition('twig')->willReturn(true);
         $container->findDefinition('twig')->willReturn($def);
     }
 
-    function it_adds_globals(ContainerBuilder $container, Definition $def)
+    /**
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param \Symfony\Component\DependencyInjection\Definition $def
+     */
+    function it_adds_globals($container, $def)
     {
         $container->getParameter(Argument::any())->willReturn('test');
         $def->addMethodCall('addGlobal', Argument::containing('test'))->shouldBeCalled();

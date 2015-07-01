@@ -9,21 +9,26 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
-use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 class ResourceElementSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $registry)
+    /**
+     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
+     */
+    function let($registry)
     {
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyResourceElement');
         $this->setManagerRegistry($registry);
     }
 
-    function it_return_repository(ManagerRegistry $registry, ObjectManager $om, ResourceValueRepository $repository)
+    /**
+     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
+     * @param \Doctrine\Common\Persistence\ObjectManager $om
+     * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository $repository
+     */
+    function it_return_repository($registry, $om, $repository)
     {
         $registry->getManagerForClass('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($om);
         $om->getRepository('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($repository);
@@ -31,8 +36,13 @@ class ResourceElementSpec extends ObjectBehavior
         $this->getRepository()->shouldReturn($repository);
     }
 
+    /**
+     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
+     * @param \Doctrine\Common\Persistence\ObjectManager $om
+     * @param \Doctrine\Common\Persistence\ObjectRepository $repository
+     */
     function it_throws_exception_when_repository_does_not_implement_resource_value_repository(
-        ManagerRegistry $registry, ObjectManager $om, ObjectRepository $repository
+        $registry, $om, $repository
     ) {
         $registry->getManagerForClass('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($om);
         $registry->getRepository('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($repository);

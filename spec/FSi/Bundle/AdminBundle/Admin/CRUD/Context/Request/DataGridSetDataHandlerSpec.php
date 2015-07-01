@@ -2,21 +2,19 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
-use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
-use FSi\Component\DataGrid\DataGrid;
-use FSi\Component\DataSource\DataSource;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DataGridSetDataHandlerSpec extends ObjectBehavior
 {
-    function let(EventDispatcher $eventDispatcher, ListEvent $event)
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \FSi\Bundle\AdminBundle\Event\ListEvent $event
+     */
+    function let($eventDispatcher, $event)
     {
         $event->hasResponse()->willReturn(false);
         $this->beConstructedWith($eventDispatcher);
@@ -27,7 +25,11 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface');
     }
 
-    function it_throw_exception_for_non_list_event(AdminEvent $event, Request $request)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    function it_throw_exception_for_non_list_event($event, $request)
     {
         $this->shouldThrow(
                 new RequestHandlerException(
@@ -36,12 +38,20 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
             )->during('handleRequest', array($event, $request));
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\ListEvent $event
+     * @param \FSi\Component\DataSource\DataSource $dataSource
+     * @param \FSi\Component\DataGrid\DataGrid $dataGrid
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @throws \FSi\Component\DataSource\Exception\DataSourceException
+     */
     function it_set_data_at_datagrid_and_dispatch_events(
-        ListEvent $event,
-        DataSource $dataSource,
-        DataGrid $dataGrid,
-        Request $request,
-        EventDispatcher $eventDispatcher
+        $event,
+        $dataSource,
+        $dataGrid,
+        $request,
+        $eventDispatcher
     ) {
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_PRE_BIND, $event)->shouldBeCalled();
 
@@ -56,11 +66,13 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
 
-    function it_return_response_from_datagrid_pre_bind_data(
-        EventDispatcher $eventDispatcher,
-        ListEvent $event,
-        Request $request
-    ){
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \FSi\Bundle\AdminBundle\Event\ListEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    function it_return_response_from_datagrid_pre_bind_data($eventDispatcher, $event, $request)
+    {
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_PRE_BIND, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
@@ -71,13 +83,21 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \FSi\Bundle\AdminBundle\Event\ListEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \FSi\Component\DataGrid\DataGrid $dataGrid
+     * @param \FSi\Component\DataSource\DataSource $dataSource
+     * @throws \FSi\Component\DataSource\Exception\DataSourceException
+     */
     function it_return_response_from_datagrid_post_bind_data(
-        EventDispatcher $eventDispatcher,
-        ListEvent $event,
-        Request $request,
-        DataGrid $dataGrid,
-        DataSource $dataSource
-    ){
+        $eventDispatcher,
+        $event,
+        $request,
+        $dataGrid,
+        $dataSource
+    ) {
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_PRE_BIND, $event)->shouldBeCalled();
 
         $event->getDataGrid()->willReturn($dataGrid);

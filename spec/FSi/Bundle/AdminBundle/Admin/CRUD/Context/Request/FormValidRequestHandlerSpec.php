@@ -2,23 +2,20 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
-use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
-use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvents;
-use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class FormValidRequestHandlerSpec extends ObjectBehavior
 {
-    function let(EventDispatcher $eventDispatcher, FormEvent $event, Router $router)
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
+     */
+    function let($eventDispatcher, $event, $router)
     {
         $event->hasResponse()->willReturn(false);
         $this->beConstructedWith($eventDispatcher, $router);
@@ -29,7 +26,11 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface');
     }
 
-    function it_throw_exception_for_non_form_event(ListEvent $listEvent, Request $request)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\ListEvent $listEvent
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    function it_throw_exception_for_non_form_event($listEvent, $request)
     {
         $this->shouldThrow(
             new RequestHandlerException(
@@ -38,7 +39,11 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         )->during('handleRequest', array($listEvent, $request));
     }
 
-    function it_throw_exception_for_non_redirectable_element(FormEvent $formEvent, Request $request)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $formEvent
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    function it_throw_exception_for_non_redirectable_element($formEvent, $request)
     {
         $formEvent->getElement()->willReturn(new \stdClass());
 
@@ -49,12 +54,14 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         )->during('handleRequest', array($formEvent, $request));
     }
 
-    function it_do_nothing_on_non_POST_request(
-        FormEvent $event,
-        FormElement $element,
-        Request $request,
-        EventDispatcher $eventDispatcher
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     */
+    function it_do_nothing_on_non_POST_request($event, $element, $request, $eventDispatcher)
+    {
         $request->isMethod('POST')->willReturn(false);
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
             ->shouldBeCalled();
@@ -63,14 +70,23 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $queryParameterbag
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \Symfony\Component\Form\Form $form
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
+     * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
+     */
     function it_handle_POST_request(
-        FormEvent $event,
-        Request $request,
-        ParameterBag $queryParameterbag,
-        EventDispatcher $eventDispatcher,
-        Form $form,
-        FormElement $element,
-        Router $router
+        $event,
+        $request,
+        $queryParameterbag,
+        $eventDispatcher,
+        $form,
+        $element,
+        $router
     ) {
         $request->isMethod('POST')->willReturn(true);
         $request->query = $queryParameterbag;
@@ -97,13 +113,21 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $queryParameterbag
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \Symfony\Component\Form\Form $form
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
+     */
     function it_return_redirect_response_with_redirect_uri_passed_by_request(
-        FormEvent $event,
-        Request $request,
-        ParameterBag $queryParameterbag,
-        EventDispatcher $eventDispatcher,
-        Form $form,
-        FormElement $element
+        $event,
+        $request,
+        $queryParameterbag,
+        $eventDispatcher,
+        $form,
+        $element
     ) {
         $request->isMethod('POST')->willReturn(true);
         $request->query = $queryParameterbag;
@@ -131,12 +155,14 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $response->getTargetUrl()->shouldReturn('some_redirect_uri');
     }
 
-    function it_return_response_from_pre_render_event(
-        FormEvent $event,
-        FormElement $element,
-        Request $request,
-        EventDispatcher $eventDispatcher
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     */
+    function it_return_response_from_pre_render_event($event, $element, $request, $eventDispatcher)
+    {
         $request->isMethod('POST')->willReturn(false);
 
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
@@ -150,13 +176,15 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
-    function it_return_response_from_pre_data_save_event(
-        FormEvent $event,
-        FormElement $element,
-        Request $request,
-        EventDispatcher $eventDispatcher,
-        Form $form
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \Symfony\Component\Form\Form $form
+     */
+    function it_return_response_from_pre_data_save_event($event, $element, $request, $eventDispatcher, $form)
+    {
         $request->isMethod('POST')->willReturn(true);
 
         $event->getForm()->willReturn($form);
@@ -172,13 +200,15 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
-    function it_return_response_from_post_data_save_event(
-        FormEvent $event,
-        Request $request,
-        EventDispatcher $eventDispatcher,
-        Form $form,
-        FormElement $element
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \Symfony\Component\Form\Form $form
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
+     */
+    function it_return_response_from_post_data_save_event($event, $request, $eventDispatcher, $form, $element)
+    {
         $request->isMethod('POST')->willReturn(true);
 
         $event->getForm()->willReturn($form);
