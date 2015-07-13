@@ -9,30 +9,20 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context;
 
-use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use FSi\Bundle\AdminBundle\Exception\ContextException;
-use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
-use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class ResourceRepositoryContext implements ContextInterface
+class ResourceRepositoryContext extends ContextAbstract
 {
-    /**
-     * @var HandlerInterface[]
-     */
-    private $requestHandlers;
-
     /**
      * @var GenericResourceElement
      */
-    private $element;
+    protected $element;
 
     /**
      * @var \FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder
@@ -45,37 +35,23 @@ class ResourceRepositoryContext implements ContextInterface
     private $form;
 
     /**
-     * @param $requestHandlers
-     * @param \FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder $resourceFormBuilder
+     * @param HandlerInterface[]|$requestHandlers
+     * @param ResourceFormBuilder $resourceFormBuilder
      */
     function __construct($requestHandlers, ResourceFormBuilder $resourceFormBuilder)
     {
-        $this->requestHandlers = $requestHandlers;
-        $this->resourceFormBuilder = $resourceFormBuilder;
-    }
+        parent::__construct($requestHandlers);
 
-    /**
-     * @param GenericResourceElement $element
-     */
-    public function setElement(GenericResourceElement $element)
-    {
-        $this->element = $element;
-        $this->form = $this->resourceFormBuilder->build($this->element);
+        $this->resourceFormBuilder = $resourceFormBuilder;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function handleRequest(Request $request)
+    public function setElement(Element $element)
     {
-        $event = new FormEvent($this->element, $request, $this->form);
-
-        foreach ($this->requestHandlers as $handler) {
-            $response = $handler->handleRequest($event, $request);
-            if (isset($response)) {
-                return $response;
-            }
-        }
+        $this->element = $element;
+        $this->form = $this->resourceFormBuilder->build($this->element);
     }
 
     /**
@@ -103,5 +79,29 @@ class ResourceRepositoryContext implements ContextInterface
             'form' => $this->form->createView(),
             'element' => $this->element
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createEvent(Request $request)
+    {
+        return new FormEvent($this->element, $request, $this->form);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSupportedRoute()
+    {
+        return 'fsi_admin_resource';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supportsElement(Element $element)
+    {
+        return $element instanceof GenericResourceElement;
     }
 }

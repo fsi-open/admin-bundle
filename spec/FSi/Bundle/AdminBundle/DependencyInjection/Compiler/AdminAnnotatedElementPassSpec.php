@@ -2,27 +2,29 @@
 
 namespace spec\FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use FSi\Bundle\AdminBundle\Annotation\Element;
-use FSi\Bundle\AdminBundle\Finder\AdminClassFinder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 
 class AdminAnnotatedElementPassSpec extends ObjectBehavior
 {
-    function let(AnnotationReader $annotationReader, AdminClassFinder $adminClassFinder)
+    /**
+     * @param \Doctrine\Common\Annotations\AnnotationReader $annotationReader
+     * @param \FSi\Bundle\AdminBundle\Finder\AdminClassFinder $adminClassFinder
+     */
+    function let($annotationReader, $adminClassFinder)
     {
         $this->beConstructedWith($annotationReader, $adminClassFinder);
 
     }
 
-    function it_registers_annotated_admin_classes_as_services(
-        ContainerBuilder $container,
-        AnnotationReader $annotationReader,
-        AdminClassFinder $adminClassFinder
-    ) {
+    /**
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param \Doctrine\Common\Annotations\AnnotationReader $annotationReader
+     * @param \FSi\Bundle\AdminBundle\Finder\AdminClassFinder $adminClassFinder
+     */
+    function it_registers_annotated_admin_classes_as_services($container, $annotationReader, $adminClassFinder)
+    {
         $container->getParameter('kernel.bundles')->willReturn(array(
             'FSi\Bundle\AdminBundle\spec\fixtures\MyBundle',
             'FSi\Bundle\AdminBundle\FSiAdminBundle',
@@ -71,7 +73,7 @@ class AdminAnnotatedElementPassSpec extends ObjectBehavior
                 return false;
             }
 
-            /** @var Definition $definition */
+            /** @var \Symfony\Component\DependencyInjection\Definition $definition */
             $definition = $definitions[0];
             if ($definition->getClass() !== 'FSi\Bundle\AdminBundle\spec\fixtures\Admin\SimpleAdminElement') {
                 return false;

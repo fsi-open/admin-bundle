@@ -9,35 +9,38 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Context;
 
-use FSi\Bundle\AdminBundle\Admin\Element;
-use FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface;
-use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use PhpSpec\ObjectBehavior;
 
 class ContextManagerSpec extends ObjectBehavior
 {
-    function let(ContextBuilderInterface $builder)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface $context
+     */
+    function let($context)
     {
-        $this->beConstructedWith(array($builder));
+        $this->beConstructedWith(array($context));
     }
 
-    function it_build_context_for_element(
-        Element $element,
-        ContextBuilderInterface $builder,
-        ContextInterface $context
-    ) {
-        $builder->supports('route_name', $element)->willReturn(true);
-        $builder->buildContext($element)->willReturn($context);
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface $context
+     */
+    function it_build_context_for_element($element, $context)
+    {
+        $context->supports('route_name', $element)->willReturn(true);
+        $context->setElement($element)->shouldBeCalled();
 
         $this->createContext('route_name', $element)->shouldReturn($context);
     }
 
-    function it_return_null_when_context_builders_do_not_support_element(
-        Element $element,
-        ContextBuilderInterface $builder
-    ) {
-        $builder->supports('route_name', $element)->willReturn(false);
-        $builder->buildContext($element)->shouldNotBeCalled();
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface $context
+     */
+    function it_return_null_when_context_builders_do_not_support_element($element, $context)
+    {
+        $context->supports('route_name', $element)->willReturn(false);
+        $context->setElement($element)->shouldNotBeCalled();
 
         $this->createContext('route_name', $element)->shouldReturn(null);
     }

@@ -10,12 +10,8 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Component\DataGrid\DataGrid;
-use FSi\Component\DataGrid\DataGridFactory;
-use FSi\Component\DataSource\DataSourceFactory;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
 
 class AbstractCRUDSpec extends ObjectBehavior
 {
@@ -40,7 +36,11 @@ class AbstractCRUDSpec extends ObjectBehavior
         $this->getRoute()->shouldReturn('fsi_admin_list');
     }
 
-    function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid(DataGridFactory $factory)
+    /**
+     * @param \FSi\Component\DataGrid\DataGridFactory $factory
+     * @throws \FSi\Component\DataGrid\Exception\DataGridColumnException
+     */
+    function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid($factory)
     {
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
@@ -49,7 +49,13 @@ class AbstractCRUDSpec extends ObjectBehavior
             ->during('createDataGrid');
     }
 
-    function it_add_batch_column_to_datagrid_when_element_allow_delete_objects(DataGridFactory $factory, DataGrid $datagrid)
+    /**
+     * @param \FSi\Component\DataGrid\DataGridFactory $factory
+     * @param \FSi\Component\DataGrid\DataGrid $datagrid
+     * @throws \FSi\Component\DataGrid\Exception\DataGridColumnException
+     * @throws \FSi\Component\DataGrid\Exception\UnexpectedTypeException
+     */
+    function it_add_batch_column_to_datagrid_when_element_allow_delete_objects($factory, $datagrid)
     {
         $factory->createDataGrid('my_datagrid')->shouldBeCalled()->willReturn($datagrid);
         $datagrid->hasColumnType('batch')->shouldBeCalled()->willReturn(false);
@@ -69,7 +75,11 @@ class AbstractCRUDSpec extends ObjectBehavior
         $this->createDataGrid()->shouldReturn($datagrid);
     }
 
-    function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource(DataSourceFactory $factory)
+    /**
+     * @param \FSi\Component\DataSource\DataSourceFactory $factory
+     * @throws \FSi\Component\DataSource\Exception\DataSourceException
+     */
+    function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource($factory)
     {
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
@@ -78,7 +88,10 @@ class AbstractCRUDSpec extends ObjectBehavior
             ->during('createDataSource');
     }
 
-    function it_throw_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory)
+    /**
+     * @param \Symfony\Component\Form\FormFactoryInterface $factory
+     */
+    function it_throw_exception_when_init_form_does_not_return_instance_of_form($factory)
     {
         $this->setFormFactory($factory);
         $factory->create(Argument::cetera())->willReturn(null);

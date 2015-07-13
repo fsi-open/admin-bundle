@@ -12,7 +12,6 @@ namespace spec\FSi\Bundle\AdminBundle;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class FSiAdminBundleSpec extends ObjectBehavior
 {
@@ -21,7 +20,10 @@ class FSiAdminBundleSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\HttpKernel\Bundle\Bundle');
     }
 
-    function it_add_compiler_pass(ContainerBuilder $builder)
+    /**
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $builder
+     */
+    function it_add_compiler_pass($builder)
     {
         $builder->addCompilerPass(Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminAnnotatedElementPass'))
             ->shouldBeCalled();
@@ -35,7 +37,7 @@ class FSiAdminBundleSpec extends ObjectBehavior
             ->shouldBeCalled();
         $builder->addCompilerPass(Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ManagerVisitorPass'))
             ->shouldBeCalled();
-        $builder->addCompilerPass(Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextBuilderPass'))
+        $builder->addCompilerPass(Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextPass'))
             ->shouldBeCalled();
         $builder->addCompilerPass(Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass'))
             ->shouldBeCalled();

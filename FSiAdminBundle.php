@@ -12,7 +12,7 @@ namespace FSi\Bundle\AdminBundle;
 use Doctrine\Common\Annotations\AnnotationReader;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminAnnotatedElementPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminElementPass;
-use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextBuilderPass;
+use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\KnpMenuBuilderPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ManagerVisitorPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ResourceRepositoryPass;
@@ -43,7 +43,7 @@ class FSiAdminBundle extends Bundle
         $container->addCompilerPass(new KnpMenuBuilderPass());
         $container->addCompilerPass(new ResourceRepositoryPass());
         $container->addCompilerPass(new ManagerVisitorPass());
-        $container->addCompilerPass(new ContextBuilderPass());
+        $container->addCompilerPass(new ContextPass());
         $container->addCompilerPass(new TwigGlobalsPass());
     }
 

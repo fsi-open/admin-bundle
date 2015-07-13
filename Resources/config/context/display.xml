@@ -11,15 +11,11 @@
     </parameters>
 
     <services>
-        <service id="admin.display.context_builder" class="%admin.display.context_builder.class%">
-            <argument type="service" id="admin.display.context"/>
-            <tag name="admin.context.builder" />
-        </service>
-
         <service id="admin.display.context" class="%admin.display.context.class%">
             <argument type="collection">
                 <argument type="service" id="admin.display.context.request_handler"/>
             </argument>
+            <tag name="admin.context" />
         </service>
 
         <service id="admin.display.context.request_handler" class="%admin.display.context.request_handler.class%">

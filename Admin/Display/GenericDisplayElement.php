@@ -40,10 +40,10 @@ abstract class GenericDisplayElement extends AbstractElement implements Element
     /**
      * {@inheritdoc}
      */
-    public function createDisplayElement($object)
+    public function createDisplay($object)
     {
         if (!is_object($object)) {
-            throw new RuntimeException("createDisplayElement method accepts only objects.");
+            throw new RuntimeException("createDisplay method accepts only objects.");
         }
 
         $display = $this->initDisplay($object);

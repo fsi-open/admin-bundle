@@ -2,23 +2,21 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request;
 
-use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
-use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvents;
-use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use FSi\Bundle\AdminBundle\spec\fixtures\Entity\Resource;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class FormValidRequestHandlerSpec extends ObjectBehavior
 {
-    function let(EventDispatcher $eventDispatcher, FormEvent $event, Router $router)
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
+     */
+    function let($eventDispatcher, $event, $router)
     {
         $event->hasResponse()->willReturn(false);
         $this->beConstructedWith($eventDispatcher, $router);
@@ -29,7 +27,11 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface');
     }
 
-    function it_throw_exception_for_non_list_event(ListEvent $listEvent, Request $request)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\ListEvent $listEvent
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    function it_throw_exception_for_non_list_event($listEvent, $request)
     {
         $this->shouldThrow(
                 new RequestHandlerException(
@@ -38,12 +40,14 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             )->during('handleRequest', array($listEvent, $request));
     }
 
-    function it_do_nothing_on_non_POST_request(
-        FormEvent $event,
-        Request $request,
-        ResourceElement $element,
-        EventDispatcher $eventDispatcher
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement $element
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     */
+    function it_do_nothing_on_non_POST_request($event, $request, $element, $eventDispatcher)
+    {
         $event->getElement()->willReturn($element);
         $request->isMethod('POST')->willReturn(false);
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
@@ -52,14 +56,16 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
 
-    function it_handle_POST_request(
-        FormEvent $event,
-        Request $request,
-        EventDispatcher $eventDispatcher,
-        Form $form,
-        ResourceElement $element,
-        Router $router
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \Symfony\Component\Form\Form $form
+     * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement $element
+     * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
+     */
+    function it_handle_POST_request($event, $request, $eventDispatcher, $form, $element, $router)
+    {
         $request->isMethod('POST')->willReturn(true);
 
         $event->getForm()->willReturn($form);
@@ -83,12 +89,14 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
     }
 
-    function it_return_response_from_pre_render_event(
-        FormEvent $event,
-        Request $request,
-        ResourceElement $element,
-        EventDispatcher $eventDispatcher
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement $element
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     */
+    function it_return_response_from_pre_render_event($event, $request, $element, $eventDispatcher)
+    {
         $request->isMethod('POST')->willReturn(false);
         $event->getElement()->willReturn($element);
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
@@ -101,13 +109,15 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
-    function it_return_response_from_pre_entity_save_event(
-        FormEvent $event,
-        Request $request,
-        ResourceElement $element,
-        EventDispatcher $eventDispatcher,
-        Form $form
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement $element
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \Symfony\Component\Form\Form $form
+     */
+    function it_return_response_from_pre_entity_save_event($event, $request, $element, $eventDispatcher, $form)
+    {
         $request->isMethod('POST')->willReturn(true);
 
         $event->getForm()->willReturn($form);
@@ -123,13 +133,15 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
-    function it_return_response_from_post_entity_save_event(
-        FormEvent $event,
-        Request $request,
-        EventDispatcher $eventDispatcher,
-        Form $form,
-        ResourceElement $element
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \Symfony\Component\Form\Form $form
+     * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement $element
+     */
+    function it_return_response_from_post_entity_save_event($event, $request, $eventDispatcher, $form, $element)
+    {
         $request->isMethod('POST')->willReturn(true);
 
         $event->getForm()->willReturn($form);

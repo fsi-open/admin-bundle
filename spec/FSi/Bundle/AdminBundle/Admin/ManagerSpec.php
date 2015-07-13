@@ -9,14 +9,15 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Admin\Element;
-use FSi\Bundle\AdminBundle\Admin\Manager\Visitor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ManagerSpec extends ObjectBehavior
 {
-    function it_remove_element_by_id(Element $element)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
+     */
+    function it_remove_element_by_id($element)
     {
         $element->getId()->willReturn('foo');
         $this->addElement($element);
@@ -26,7 +27,10 @@ class ManagerSpec extends ObjectBehavior
         $this->hasElement('foo')->shouldReturn(false);
     }
 
-    function it_accept_visitors(Visitor $visitor)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Manager\Visitor $visitor
+     */
+    function it_accept_visitors($visitor)
     {
         $visitor->visitManager($this)->shouldBeCalled();
         $this->accept($visitor);

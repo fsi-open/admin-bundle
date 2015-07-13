@@ -9,22 +9,18 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
-use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
-use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
-use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class FormElementContext implements ContextInterface
+class FormElementContext extends ContextAbstract
 {
     /**
-     * @var HandlerInterface[]
-     */
-    private $requestHandlers;
-
-    /**
-     * @var FormElement
+     * @var GenericFormElement
      */
     protected $element;
 
@@ -32,23 +28,6 @@ class FormElementContext implements ContextInterface
      * @var FormInterface
      */
     protected $form;
-
-    /**
-     * @param array $requestHandlers
-     */
-    public function __construct($requestHandlers)
-    {
-        $this->requestHandlers = $requestHandlers;
-    }
-
-    /**
-     * @param FormElement $element
-     */
-    public function setElement(FormElement $element, $formData = null)
-    {
-        $this->element = $element;
-        $this->form = $this->element->createForm($formData);
-    }
 
     /**
      * {@inheritdoc}
@@ -86,15 +65,53 @@ class FormElementContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function handleRequest(Request $request)
+    public function setElement(Element $element)
     {
-        $event = new FormEvent($this->element, $request, $this->form);
+        $this->element = $element;
+    }
 
-        foreach ($this->requestHandlers as $handler) {
-            $response = $handler->handleRequest($event, $request);
-            if (isset($response)) {
-                return $response;
-            }
+    /**
+     * {@inheritdoc}
+     */
+    protected function createEvent(Request $request)
+    {
+        $this->form = $this->element->createForm($this->getObject($request));
+
+        return new FormEvent($this->element, $request, $this->form);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getSupportedRoute()
+    {
+        return 'fsi_admin_form';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supportsElement(Element $element)
+    {
+        return $element instanceof GenericFormElement;
+    }
+
+    /**
+     * @param Request $request
+     * @return object|null
+     */
+    private function getObject(Request $request)
+    {
+        $id = $request->get('id');
+        if (empty($id)) {
+            return null;
         }
+
+        $object = $this->element->getDataIndexer()->getData($id);
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('Can\'t find object with id %s', $id));
+        }
+
+        return $object;
     }
 }

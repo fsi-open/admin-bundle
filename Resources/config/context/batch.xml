@@ -12,18 +12,13 @@
     </parameters>
 
     <services>
-        <service id="admin.context_builder.batch" class="%admin.context_builder.batch.class%">
-            <argument type="service" id="admin.context.batch"/>
-            <argument type="service" id="router" />
-            <tag name="admin.context.builder" />
-        </service>
-
         <service id="admin.context.batch" class="%admin.context.batch.class%">
             <argument type="collection">
                 <argument type="service" id="admin.context.batch.request_handler.form_submit"/>
                 <argument type="service" id="admin.context.batch.request_handler.form_valid_request"/>
             </argument>
             <argument type="service" id="admin.form.builder.batch" />
+            <tag name="admin.context" />
         </service>
 
         <service id="admin.context.batch.request_handler.form_submit"

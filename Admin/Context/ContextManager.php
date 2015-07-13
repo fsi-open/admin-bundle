@@ -17,28 +17,28 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 class ContextManager
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface[]
+     * @var \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface[]
      */
-    protected $builders;
+    protected $contexts;
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface[] $builders
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface[] $contexts
      */
-    public function __construct($builders = array())
+    public function __construct($contexts = array())
     {
-        $this->builders = array();
+        $this->contexts = array();
 
-        foreach($builders as $builder) {
-            $this->addContextBuilder($builder);
+        foreach($contexts as $context) {
+            $this->addContext($context);
         }
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextBuilderInterface $builder
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface $builder
      */
-    public function addContextBuilder(ContextBuilderInterface $builder)
+    public function addContext(ContextInterface $builder)
     {
-        $this->builders[] = $builder;
+        $this->contexts[] = $builder;
     }
 
     /**
@@ -48,9 +48,10 @@ class ContextManager
      */
     public function createContext($route, Element $element)
     {
-        foreach ($this->builders as $builder) {
-            if ($builder->supports($route, $element)) {
-                return $builder->buildContext($element);
+        foreach ($this->contexts as $context) {
+            if ($context->supports($route, $element)) {
+                $context->setElement($element);
+                return $context;
             }
         }
 

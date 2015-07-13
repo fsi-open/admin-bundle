@@ -9,20 +9,16 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
-use FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext;
-use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
-use FSi\Bundle\AdminBundle\Exception\ContextException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BatchControllerSpec extends ObjectBehavior
 {
-    function let(ContextManager $manager, DelegatingEngine $templating)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine $templating
+     */
+    function let($manager, $templating)
     {
         $this->beConstructedWith(
             $templating,
@@ -30,10 +26,15 @@ class BatchControllerSpec extends ObjectBehavior
         );
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
     function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
-        BatchElement $element,
-        ContextManager $manager,
-        Request $request
+        $element,
+        $manager,
+        $request
     ) {
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
@@ -42,12 +43,14 @@ class BatchControllerSpec extends ObjectBehavior
             ->during('batchAction', array($element, $request));
     }
 
-    function it_throws_exception_when_context_does_not_return_response(
-        ContextManager $manager,
-        BatchElement $element,
-        BatchElementContext $context,
-        Request $request
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext $context
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    function it_throws_exception_when_context_does_not_return_response($manager, $element, $context, $request)
+    {
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->hasTemplateName()->willReturn(false);
         $context->handleRequest($request)->willReturn(null);
@@ -56,13 +59,15 @@ class BatchControllerSpec extends ObjectBehavior
             ->during('batchAction', array($element, $request));
     }
 
-    function it_return_response_from_context_in_batch_action(
-        ContextManager $manager,
-        BatchElement $element,
-        BatchElementContext $context,
-        Request $request,
-        Response $response
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext $context
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     */
+    function it_return_response_from_context_in_batch_action($manager, $element, $context, $request, $response)
+    {
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 

@@ -9,6 +9,10 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
+use FSi\Bundle\AdminBundle\Admin\Element;
+
 class CRUDListElementContext extends ListElementContext
 {
     /**
@@ -17,14 +21,22 @@ class CRUDListElementContext extends ListElementContext
     private $listTemplate;
 
     /**
-     * @param array $requestHandlers
+     * @param HandlerInterface[]|array $requestHandlers
      * @param string $listTemplate
      */
-    public function __construct($requestHandlers, $listTemplate)
+    public function __construct(array $requestHandlers, $listTemplate)
     {
         parent::__construct($requestHandlers);
 
         $this->listTemplate = $listTemplate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supportsElement(Element $element)
+    {
+        return $element instanceof AbstractCRUD;
     }
 
     /**

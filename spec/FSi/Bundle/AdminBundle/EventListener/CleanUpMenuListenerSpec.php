@@ -2,25 +2,24 @@
 
 namespace spec\FSi\Bundle\AdminBundle\EventListener;
 
-use FSi\Bundle\AdminBundle\Event\MenuEvent;
-use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
-use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use FSi\Bundle\AdminBundle\Menu\Item\Item as MenuItem;
 
 class CleanUpMenuListenerSpec extends ObjectBehavior
 {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\MenuEvent $event
+     * @param \FSi\Bundle\AdminBundle\Menu\Item\Item $menu
+     * @param \FSi\Bundle\AdminBundle\Menu\Item\ElementItem $childItem1
+     * @param \FSi\Bundle\AdminBundle\Menu\Item\RoutableItem $childItem2
+     * @param \FSi\Bundle\AdminBundle\Menu\Item\Item $childItem3
+     * @param \FSi\Bundle\AdminBundle\Menu\Item\RoutableItem $childItem31
+     * @param \FSi\Bundle\AdminBundle\Menu\Item\Item $childItem4
+     * @param \FSi\Bundle\AdminBundle\Menu\Item\Item $childItem41
+     * @param \FSi\Bundle\AdminBundle\Menu\Item\Item $childItem411
+     */
     public function it_remove_empty_menus(
-        MenuEvent $event,
-        MenuItem $menu,
-        ElementItem $childItem1,
-        RoutableItem $childItem2,
-        MenuItem $childItem3,
-        RoutableItem $childItem31,
-        MenuItem $childItem4,
-        MenuItem $childItem41,
-        MenuItem $childItem411
+        $event, $menu, $childItem1, $childItem2, $childItem3, $childItem31, $childItem4, $childItem41, $childItem411
     ) {
         $event->getMenu()->willReturn($menu);
 

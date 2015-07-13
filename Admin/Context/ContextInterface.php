@@ -9,6 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Element;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -16,6 +17,18 @@ use Symfony\Component\HttpFoundation\Request;
  */
 interface ContextInterface
 {
+    /**
+     * @param string $route
+     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
+     * @return boolean
+     */
+    public function supports($route, Element $element);
+
+    /**
+     * @param Element $element
+     */
+    public function setElement(Element $element);
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return null|\Symfony\Component\HttpFoundation\Response

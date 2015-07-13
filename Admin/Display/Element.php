@@ -17,7 +17,7 @@ interface Element extends BaseElement
      * @param mixed $object
      * @return \FSi\Bundle\AdminBundle\Display\Display
      */
-    public function createDisplayElement($object);
+    public function createDisplay($object);
 
     /**
      * @return \FSi\Component\DataIndexer\DataIndexerInterface

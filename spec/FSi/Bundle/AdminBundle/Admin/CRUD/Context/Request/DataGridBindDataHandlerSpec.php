@@ -2,22 +2,19 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
-use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
-use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
-use FSi\Component\DataGrid\DataGrid;
-use FSi\Component\DataSource\DataSource;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DataGridBindDataHandlerSpec extends ObjectBehavior
 {
-    function let(EventDispatcher $eventDispatcher, ListEvent $event)
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \FSi\Bundle\AdminBundle\Event\ListEvent $event
+     */
+    function let($eventDispatcher, $event)
     {
         $event->hasResponse()->willReturn(false);
         $this->beConstructedWith($eventDispatcher);
@@ -28,7 +25,11 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface');
     }
 
-    function it_throw_exception_for_non_list_event(AdminEvent $event, Request $request)
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    function it_throw_exception_for_non_list_event($event, $request)
     {
         $this->shouldThrow(
                 new RequestHandlerException(
@@ -37,21 +38,28 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
             )->during('handleRequest', array($event, $request));
     }
 
-    function it_do_nothing_when_request_is_not_a_POST(
-        ListEvent $event,
-        Request $request,
-        EventDispatcher $eventDispatcher
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\ListEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     */
+    function it_do_nothing_when_request_is_not_a_POST($event, $request, $eventDispatcher)
+    {
         $request->isMethod('POST')->willReturn(false);
         $eventDispatcher->dispatch(ListEvents::LIST_RESPONSE_PRE_RENDER, $event)->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\ListEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     */
     function it_do_nothing_when_request_is_not_a_POST_and_return_respone_from_pre_render_event(
-        ListEvent $event,
-        Request $request,
-        EventDispatcher $eventDispatcher
+        $event,
+        $request,
+        $eventDispatcher
     ) {
         $request->isMethod('POST')->willReturn(false);
         $eventDispatcher->dispatch(ListEvents::LIST_RESPONSE_PRE_RENDER, $event)
@@ -64,13 +72,22 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\ListEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \FSi\Component\DataGrid\DataGrid $dataGrid
+     * @param \FSi\Component\DataSource\DataSource $dataSource
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\ListElement $element
+     * @throws \FSi\Component\DataSource\Exception\DataSourceException
+     */
     function it_bind_data_at_datagrid_for_POST_request(
-        ListEvent $event,
-        Request $request,
-        EventDispatcher $eventDispatcher,
-        DataGrid $dataGrid,
-        DataSource $dataSource,
-        ListElement $element
+        $event,
+        $request,
+        $eventDispatcher,
+        $dataGrid,
+        $dataSource,
+        $element
     ) {
         $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND, $event)
@@ -93,11 +110,13 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
 
-    function it_return_response_from_datagrid_pre_bind_request_event(
-        ListEvent $event,
-        Request $request,
-        EventDispatcher $eventDispatcher
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\ListEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     */
+    function it_return_response_from_datagrid_pre_bind_request_event($event, $request, $eventDispatcher)
+    {
         $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND, $event)
             ->will(function() use ($event) {
@@ -109,12 +128,14 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
-    function it_return_response_from_datagrid_post_bind_request_event(
-        ListEvent $event,
-        Request $request,
-        EventDispatcher $eventDispatcher,
-        DataGrid $dataGrid
-    ) {
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\ListEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
+     * @param \FSi\Component\DataGrid\DataGrid $dataGrid
+     */
+    function it_return_response_from_datagrid_post_bind_request_event($event, $request, $eventDispatcher, $dataGrid)
+    {
         $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND, $event)
             ->shouldBeCalled();
