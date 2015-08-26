@@ -11,9 +11,11 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Faker\Factory;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
+use FSi\Bundle\AdminBundle\Behat\Context\Page\NewsList;
 use PhpSpec\Exception\Example\PendingException;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -526,9 +528,14 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext
      */
     public function iClickXAtPopover()
     {
-        $popover = $this->getPage('News list')->getPopover();
-        $popover->find('css', 'a.editable-close')->click();
-        $this->getPage('News list')->getSession()->wait(1000);
+        /** @var NewsList $page */
+        $page = $this->getPage('News list');
+        $session = $page->getSession();
+        /** @var NodeElement $popover */
+        $session->wait(1000, 'jQuery(".popover").length > 0');
+        $popover = $page->getPopover();
+        $popover->find('css', '.editable-close')->click();
+        $session->wait(1000, 'jQuery(".popover").length === 0');
     }
 
     /**
