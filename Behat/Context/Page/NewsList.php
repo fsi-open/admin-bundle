@@ -9,7 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Behat\Context\Page;
 
-use Behat\Behat\Exception\BehaviorException;
+use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
 class NewsList extends Page
@@ -63,6 +63,7 @@ class NewsList extends Page
     {
         $headers = $this->findAll('css', 'th');
         foreach ($headers as $index => $header) {
+            /** @var NodeElement $header */
             if ($header->has('css', 'span')) {
                 if ($header->find('css', 'span')->getText() == $columnHeader) {
                     return $index + 1;
@@ -81,7 +82,7 @@ class NewsList extends Page
 
     public function getPopover()
     {
-        return $this->find('css', 'div.popover');
+        return $this->find('css', '.popover');
     }
 
     protected function verifyPage()

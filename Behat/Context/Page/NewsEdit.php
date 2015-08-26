@@ -14,10 +14,17 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageExce
 class NewsEdit extends Page
 {
     protected $path = '/admin/form/news/{id}';
+    protected $elements = array(
+        'page header' => '#page-header',
+    );
 
     public function getHeader()
     {
-        return $this->find('css', '#page-header')->getText();
+        if (!$this->hasElement('page header')) {
+            throw new \Exception('Unable to find page header');
+        }
+
+        return $this->getElement('page header')->getText();
     }
 
     protected function verifyPage()

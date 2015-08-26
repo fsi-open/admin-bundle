@@ -45,8 +45,10 @@ class BatchActionExtensionSpec extends ObjectBehavior
     {
         $column->getOptionsResolver()->willReturn($optionsResolver);
 
-        $optionsResolver->setDefaults(array('actions' => array()))->shouldBeCalled();
+        $optionsResolver->setDefaults(array('actions' => array(), 'translation_domain' => 'FSiAdminBundle'))
+            ->shouldBeCalled();
         $optionsResolver->setAllowedTypes('actions', array('array', 'null'))->shouldBeCalled();
+        $optionsResolver->setAllowedTypes('translation_domain', array('string'))->shouldBeCalled();
 
         $this->initOptions($column);
     }
@@ -133,6 +135,9 @@ class BatchActionExtensionSpec extends ObjectBehavior
                 'label' => 'batch_action_label'
             )
         ));
+
+        $column->getOption('translation_domain')->willReturn('FSiAdminBundle');
+
         $manager->hasElement('some_batch_element_id')->willReturn(true);
         $manager->getElement('some_batch_element_id')->willReturn($batchElement);
         $batchElement->getId()->willReturn('some_batch_element_id');
@@ -157,6 +162,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
             ),
             'translation_domain' => 'FSiAdminBundle'
         ))->willReturn();
+
         $formBuilder->add('submit', 'submit', array(
             'label' => 'crud.list.batch.confirm',
             'translation_domain' => 'FSiAdminBundle'
@@ -196,6 +202,9 @@ class BatchActionExtensionSpec extends ObjectBehavior
                 'label' => 'batch_action_label'
             )
         ));
+
+        $column->getOption('translation_domain')->willReturn('FSiAdminBundle');
+
         $manager->hasElement('some_batch_element_id')->willReturn(true);
         $manager->getElement('some_batch_element_id')->willReturn($batchElement);
         $batchElement->getId()->willReturn('some_batch_element_id');
@@ -252,6 +261,9 @@ class BatchActionExtensionSpec extends ObjectBehavior
                 'additional_parameters' => array('element' => 'some_batch_element_id', 'param' => 'value')
             )
         ));
+
+        $column->getOption('translation_domain')->willReturn('FSiAdminBundle');
+
         $queryAttributes->has('redirect_uri')->willReturn(true);
         $queryAttributes->get('redirect_uri')->willReturn('some_redirect_uri');
 
