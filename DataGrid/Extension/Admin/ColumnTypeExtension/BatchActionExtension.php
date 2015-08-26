@@ -41,7 +41,10 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     protected $actionOptionsResolver;
 
     /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
+     * @param Manager $manager
+     * @param RequestStack $requestStack
+     * @param RouterInterface $router
+     * @param FormBuilderInterface $formBuilder
      */
     public function __construct(
         Manager $manager,
@@ -69,13 +72,18 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      */
     public function initOptions(ColumnTypeInterface $column)
     {
-        $column->getOptionsResolver()->setDefaults(array('actions' => array()));
+        $column->getOptionsResolver()->setDefaults(array(
+            'actions' => array(),
+            'translation_domain' => 'FSiAdminBundle'
+        ));
         $column->getOptionsResolver()->setAllowedTypes('actions', array('array', 'null'));
+        $column->getOptionsResolver()->setAllowedTypes('translation_domain', array('string'));
     }
 
     public function buildHeaderView(ColumnTypeInterface $column, HeaderViewInterface $view)
     {
         $this->buildBatchForm(
+            $column,
             $this->buildBatchActions($column)
         );
 
@@ -142,14 +150,15 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     }
 
     /**
+     * @param ColumnTypeInterface $column
      * @param array $batchActions
      */
-    private function buildBatchForm(array $batchActions)
+    private function buildBatchForm(ColumnTypeInterface $column, array $batchActions)
     {
         if (count($batchActions) > 1) {
             $this->formBuilder->add('action', 'choice', array(
                 'choices' => $batchActions,
-                'translation_domain' => 'FSiAdminBundle'
+                'translation_domain' => $column->getOption('translation_domain')
             ));
             $this->formBuilder->add('submit', 'submit', array(
                 'label' => 'crud.list.batch.confirm',
