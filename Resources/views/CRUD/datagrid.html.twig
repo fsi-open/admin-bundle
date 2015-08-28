@@ -80,7 +80,13 @@
     <td{{ block('datagrid_cell_attributes') }}>
         <div{{ block('datagrid_container_attributes') }}>
             {% for action_name, action in cell.value %}
-                {{ datagrid_column_type_action_cell_action_widget(cell, action_name, action.content, action.url_attr) }}
+                {{ datagrid_column_type_action_cell_action_widget(
+                    cell,
+                    action_name,
+                    action.content,
+                    action.url_attr,
+                    action.field_mapping_values
+                ) }}
             {% endfor %}
         </div>
     </td>
