@@ -15,6 +15,7 @@
         <parameter key="admin.element.factory.worker.list.class">FSi\Bundle\AdminBundle\Factory\Worker\ListWorker</parameter>
         <parameter key="admin.element.factory.worker.form.class">FSi\Bundle\AdminBundle\Factory\Worker\FormWorker</parameter>
         <parameter key="admin.element.factory.worker.doctrine.class">FSi\Bundle\AdminBundle\Factory\Worker\DoctrineWorker</parameter>
+        <parameter key="admin.element.factory.worker.request_stack.class">FSi\Bundle\AdminBundle\Factory\Worker\RequestStackWorker</parameter>
         <parameter key="admin.controller.resource.class">FSi\Bundle\AdminBundle\Controller\ResourceController</parameter>
         <parameter key="admin.controller.display.class">FSi\Bundle\AdminBundle\Controller\DisplayController</parameter>
         <parameter key="admin.controller.list.class">FSi\Bundle\AdminBundle\Controller\ListController</parameter>
@@ -36,6 +37,7 @@
                 <argument type="service" id="admin.element.factory.worker.list"/>
                 <argument type="service" id="admin.element.factory.worker.form" />
                 <argument type="service" id="admin.element.factory.worker.doctrine"/>
+                <argument type="service" id="admin.element.factory.worker.request_stack"/>
             </argument>
         </service>
 
@@ -66,6 +68,9 @@
         </service>
         <service id="admin.element.factory.worker.doctrine" class="%admin.element.factory.worker.doctrine.class%">
             <argument type="service" id="doctrine" />
+        </service>
+        <service id="admin.element.factory.worker.request_stack" class="%admin.element.factory.worker.request_stack.class%">
+            <argument type="service" id="request_stack" />
         </service>
 
         <!-- Controllers -->
