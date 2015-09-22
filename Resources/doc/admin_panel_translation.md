@@ -6,7 +6,7 @@ This bundle is translated into following languages
 
 To enable admin panel translation you need to add following lines to ``app/config/config.yml`` file
 
-```
+```yaml
 # app/config/config.yml
 
 fsi_admin:

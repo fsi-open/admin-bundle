@@ -3,7 +3,7 @@
 Menu is displayed in the upper part of admin panel, on the black navigation bar.
 By default menu is empty and you should configure it in ``app/config/admin_menu.yml`` file
 
-```
+```yaml
 # app/config/admin_menu.yml
 
 menu:
@@ -14,13 +14,13 @@ menu:
 ```
 
 About menu will display link to admin element with id "news" and dropdown button that
-have links to elements with "home_page" and "about_us_page" id.
+have links to elements with `home_page` and `about_us_page` id.
 
 ## Translating groups
 
 Group names are translated so you can also use translations key:
 
-```
+```yaml
 # app/config/admin_menu.yml
 
 menu:
@@ -30,7 +30,7 @@ menu:
     - about_us_page
 ```
 
-```
+```yaml
 # app/Resources/translations/messages.en.yml
 
 admin:

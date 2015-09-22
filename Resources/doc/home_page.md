@@ -10,7 +10,7 @@ You can customize it to fit your needs.
 If you don't need any extra logic, you can just override the home page template
 file with your own.
 
-```
+```yaml
 #app/config/config.yml
 
 fsi_admin:
@@ -21,7 +21,7 @@ fsi_admin:
 It is a good idea to let your custom home page template file extend the FSi
 Admin Bundle base template file.
 
-```
+```twig
 # YourAdminBundle/Resources/views/Admin/index.html.twig
 
 {% extends admin_templates_base %}

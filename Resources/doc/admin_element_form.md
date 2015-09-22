@@ -65,7 +65,7 @@ class SubscriberFormElement extends FormElement
 ## 2. Add your form element to some list element
 
 Assume you already have some list element defined like [here](admin_element_list.md).
-You can easily attach your new form element into datagrid actions column:
+You can easily attach your new form element to datagrid actions column:
  
 ```
 # src/FSi/Bundle/DemoBundle/Resources/config/datasource/admin_subscribers.yml

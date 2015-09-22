@@ -109,7 +109,7 @@ fields:
 
 ## 4. Add element into menu
 
-By default elements are not visible in menu. You need to add it into menu manually.
+By default elements are not visible in menu. You need to add them to menu manually.
 
 ```
 # app/config/admin_menu.yml

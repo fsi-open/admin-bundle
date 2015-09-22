@@ -2,13 +2,12 @@
 
 ## 1. Installation
 
-**This element type require to install fsi/resource-repository-bundle before using it.**
-**You can read more about it [here](https://github.com/fsi-open/resource-repository-bundle)**
+**Before using Resource element you need to install []fsi/resource-repository-bundle](https://github.com/fsi-open/resource-repository-bundle).**
 **This step should be done only once**
 
 Add to your composer.json following lines
 
-```
+```json
 "require": {
     "doctrine/doctrine-bundle" : "1.2.*@dev"
     "fsi/resource-repository-bundle" : "1.0.*"
@@ -134,9 +133,9 @@ class MainPage extends ResourceElement
 
 ## 4. Add element into menu
 
-By default elements are not visible in menu. You need to add it into menu manually.
+By default elements are not visible in menu. You need to add them manually to menu.
 
-```
+```yaml
 # app/config/admin_menu.yml
 
 menu:

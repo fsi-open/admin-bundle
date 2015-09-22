@@ -2,7 +2,7 @@
 
 Display element is used to display single object of specific type at page.
 For example invoices. It's good to have list of invoices but some parts of data are just too big
-to display them at list. Like customer address od full list of products. That's why there is a Display object
+to display them at list. Like customer address or full list of products. That's why there is a Display object
 that allows you to show all interesting data without using form with "disabled" attributes.
 
 ## 1. Create admin element class
@@ -72,9 +72,9 @@ class DisplayNewsElement extends DisplayElement
 }
 ```
 
-## 2. Add display action into news list
+## 2. Add display action to news datagrid definition
 
-```
+```yaml
 # src/FSi/Bundle/DemoBundle/Resources/config/datagrid/news.yml
 
 columns:
