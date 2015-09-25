@@ -45,7 +45,7 @@ class UserElement extends CRUDElement
 You can register your admin element as a symfony2 tagged service
 
 XML Example:
-```
+```xml
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
@@ -62,7 +62,7 @@ XML Example:
 ```
 
 YML Example:
-```
+```yaml
 services:
     tc_api.admin.element.admin_user:
         class: FSi\Bundle\DemoBundle\Admin\UserElement
@@ -70,5 +70,27 @@ services:
             - { name: admin.element }
 ```
 
+# Injecting request stack to admin element
+
+```php
+namespace FSi\Bundle\DemoBundle\Admin;
+
+use FSi\Bundle\AdminBundle\Admin\RequestStackAware;
+
+/**
+ * @Admin\Element
+ */
+class UserElement extends CRUDElement implements RequestStackAware
+{
+    private $requestStack;
+
+    public function setRequestStack(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
+}
+```
+
+This technique is particular useful when you register admin elements by annotations.
 
 [Back to index](index.md)

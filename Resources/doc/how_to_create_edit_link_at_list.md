@@ -8,7 +8,7 @@ There are some predefined templates for actions like "edit" and "display", you c
 
 Following configuration of action column will add edit and display actions into it.
 
-```
+```yaml
 # src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yml
 
 columns:

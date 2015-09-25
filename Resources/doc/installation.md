@@ -4,7 +4,7 @@
 
 Add to composer.json
 
-```
+```json
 "require": {
     "fsi/admin-bundle": "1.0.*"
 }
@@ -30,7 +30,7 @@ public function registerBundles()
 
 ## 3. Set route path to AdminController
 
-```
+```yaml
 # app/config/routing.yml
 
 admin:
@@ -40,7 +40,7 @@ admin:
 
 ## 4. Enable translations
 
-```
+```yaml
 # app/config/config.yml
 
 framework:

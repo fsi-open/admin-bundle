@@ -86,7 +86,7 @@ class UserElement extends CRUDElement
 
 Just remember to set file name equal to datagrid name (create by factory)
 
-```
+```yaml
 # src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yml
 
 columns:
@@ -113,7 +113,7 @@ understand what's going on under the hood.
 
 ## 3. Configure datasource
 
-```
+```yaml
 # src/FSi/Bundle/DemoBundle/Resources/config/datasource/admin_users.yml
 
 fields:
@@ -127,11 +127,11 @@ fields:
 
 [DataSource column types reference](https://github.com/fsi-open/datasource-bundle/blob/master/Resources/docs/columns.md)
 
-## 4. Add element into menu
+## 4. Add element to main menu
 
-By default elements are not visible in menu. You need to add it into menu manually.
+By default elements are not visible in menu. You need to add it to menu manually.
 
-```
+```yaml
 # app/config/admin_menu.yml
 
 menu:
@@ -139,7 +139,7 @@ menu:
 
 ```
 
-Remember to use id of element that is returned by ``UserElement::getId`` method in menu configuration.
+Remember to use id of element that is returned by ``UserElement::getId`` method.
 You can read more about menu configuration in [Menu section](menu.md)
 
 ## 5. Admin element options

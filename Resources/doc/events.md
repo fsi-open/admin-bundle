@@ -93,7 +93,7 @@ class CRUDEventListener
 
 Next and last step is event listener registration
 
-```
+```xml
 <!-- src/FSi/Bundle/DemoBundle/Resources/config/services.xml --> 
 
 <?xml version="1.0" ?>

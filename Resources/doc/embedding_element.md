@@ -412,7 +412,7 @@ user admin element service options.
 
 And ``@AcmeDemo/Admin/user_edit.html.twig`` file
 
-```
+```twig
 {# src/Acme/DemoBundle/Resources/views/Admin/user_edit.html.twig #}
 {% extends '@FSiAdmin/CRUD/edit.html.twig' %}
 
@@ -427,7 +427,7 @@ And ``@AcmeDemo/Admin/user_edit.html.twig`` file
 
 We are almost ready! Next step is to create template for UserInvoice element list. ``@AcmeDemo/Admin/user_invoices_list.html.twig``
 
-```
+```twig
 {% extends '@FSiAdmin/List/list.html.twig' %}
 
 {% block themes %}
