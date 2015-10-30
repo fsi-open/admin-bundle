@@ -56,7 +56,16 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-        {% block above_content %}{% endblock above_content %}
+        {% block above_content %}
+            {% set typeClass = {success:'success',error:'danger',info:'info'} %}
+            {% for type,typeMessages in fsi_admin_messages() %}
+                {% for message in typeMessages %}
+                    <div class="alert alert-{{ typeClass[type] }}">
+                        {{ (message.text)|trans({}, message.domain) }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endblock above_content %}
         {% block content %}{% endblock content %}
         {% block under_content %}{% endblock under_content %}
         </div>

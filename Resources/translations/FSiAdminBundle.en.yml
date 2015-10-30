@@ -66,3 +66,10 @@ crud:
         title: Display element
         button:
             back: Back
+
+messages:
+  form:
+    save: Data has been saved.
+    error: Form is invalid.
+  batch:
+    success: Operation has been made.
