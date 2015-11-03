@@ -43,23 +43,21 @@
 {{ parent() }}
 {% if element.option('allow_delete') == true and datagrid_view.hasColumnType('batch') == true %}
 <script>
-    require(['jquery', 'bootstrap'], function($) {
-        $(function() {
-            $('#batch_form').submit(function(event) {
-                var self = $(this),
-                        action = $('#batch_action'),
-                        elements = $('.{{ datagrid_view.name }}_batch'),
-                        i = 0;
+    $(document).ready(function() {
+        $('#batch_form').submit(function(event) {
+            var self = $(this),
+                action = $('#batch_action'),
+                elements = $('.{{ datagrid_view.name }}_batch'),
+                i = 0;
 
-                if (action[0].selectedIndex && $('.{{ datagrid_view.name }}_batch:checked').length) {
-                    self.attr('action', action.val());
-                    for (i; i < elements.length; i++) {
-                        $('#index_' + $(elements[i]).val()).prop('checked', $(elements[i]).prop('checked'));
-                    }
-                } else {
-                    event.preventDefault();
+            if (action[0].selectedIndex && $('.{{ datagrid_view.name }}_batch:checked').length) {
+                self.attr('action', action.val());
+                for (i; i < elements.length; i++) {
+                    $('#index_' + $(elements[i]).val()).prop('checked', $(elements[i]).prop('checked'));
                 }
-            });
+            } else {
+                event.preventDefault();
+            }
         });
     });
 </script>
