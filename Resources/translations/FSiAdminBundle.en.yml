@@ -69,7 +69,7 @@ crud:
 
 messages:
   form:
-    save: Data has been saved.
+    save: Data has been successfully saved.
     error: Form is invalid.
   batch:
-    success: Operation has been made.
+    success: Operation has been completed successfully.

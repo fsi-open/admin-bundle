@@ -68,7 +68,7 @@ crud:
 
 messages:
   form:
-    save: Dane zostały zapisane.
+    save: Dane zostały poprawnie zapisane.
     error: Formularz został wypełniony nieprawidłowo.
   batch:
-    success: Operacja została wykonana.
+    success: Operacja zakończona powodzeniem.
