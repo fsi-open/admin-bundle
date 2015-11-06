@@ -1,6 +1,6 @@
 framework:
     secret:          this_is_secret
-    translator:      { fallbacks: [en] }
+    translator:      { fallback: en }
     router:          { resource: "%kernel.root_dir%/config/routing.yml" }
     form:            true
     csrf_protection: true
