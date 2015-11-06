@@ -1,14 +1,13 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
   - 5.5
+  - 5.6
 
 env:
   - SYMFONY_VERSION=2.4.*
   - SYMFONY_VERSION=2.5.*
-  - SYMFONY_VERSION=dev-master
+  - SYMFONY_VERSION=~2.4
 
 matrix:
   allow_failures:
@@ -25,13 +24,14 @@ install:
     - sudo sed -i -e "s/export APACHE_RUN_USER=.*/export APACHE_RUN_USER=travis/ ; s/export APACHE_RUN_GROUP=.*/export APACHE_RUN_GROUP=travis/" /etc/apache2/envvars
     - sudo chown -R travis:travis /var/lock/apache2
     - echo '' > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
-    - wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
+    - wget http://selenium-release.storage.googleapis.com/2.47/selenium-server-standalone-2.47.1.jar
+
 
 before_script:
     - sudo /etc/init.d/apache2 restart
     - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99.0
-    - java -jar selenium-server-standalone-2.42.2.jar > /dev/null &
+    - java -jar selenium-server-standalone-2.47.1.jar > /dev/null &
     - sleep 5
 
 script:

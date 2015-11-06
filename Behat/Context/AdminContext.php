@@ -148,7 +148,7 @@ class AdminContext extends PageObjectContext implements KernelAwareInterface
      */
     public function translationsAreEnabledInApplication()
     {
-        expect($this->kernel->getContainer()->get('translator'))->toBeAnInstanceOf('Symfony\Bundle\FrameworkBundle\Translation\Translator');
+        expect($this->kernel->getContainer()->get('translator'))->toBeAnInstanceOf('Symfony\Component\Translation\TranslatorInterface');
     }
 
 

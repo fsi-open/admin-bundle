@@ -13,6 +13,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -72,11 +73,13 @@ class CRUDElementSpec extends ObjectBehavior
         $this->saveDataGrid();
     }
 
-    public function it_should_have_doctrine_data_indexer(ManagerRegistry $registry, ObjectManager $om, ObjectRepository $repository, ClassMetadata $metadata)
+    public function it_should_have_doctrine_data_indexer(ManagerRegistry $registry, ObjectManager $om, ObjectRepository $repository)
     {
         $registry->getManagerForClass('FSiDemoBundle:Entity')->shouldBeCalled()->willReturn($om);
         $registry->getManagerForClass('FSi/Bundle/DemoBundle/Entity/Entity')->shouldBeCalled()->willReturn($om);
         $om->getRepository('FSiDemoBundle:Entity')->shouldBeCalledTimes(1)->willReturn($repository);
+        
+        $metadata = new ClassMetadataInfo('FSi/Bundle/DemoBundle/Entity/Entity');
         $metadata->isMappedSuperclass = false;
         $metadata->rootEntityName = 'FSi/Bundle/DemoBundle/Entity/Entity';
         $om->getClassMetadata('FSi/Bundle/DemoBundle/Entity/Entity')->willReturn($metadata);

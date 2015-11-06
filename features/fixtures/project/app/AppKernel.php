@@ -11,6 +11,8 @@ class AppKernel extends Kernel
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
+            new Symfony\Bundle\MonologBundle\MonologBundle(),
+            
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new FSi\Bundle\DataSourceBundle\DataSourceBundle(),
@@ -28,11 +30,11 @@ class AppKernel extends Kernel
 
     public function getCacheDir()
     {
-        return sys_get_temp_dir() . '/FSiAdminBundle/cache';
+        return __DIR__ . '/cache';
     }
 
     public function getLogDir()
     {
-        return sys_get_temp_dir() . '/FSiAdminBundle/logs';
+        return __DIR__ . '/logs';
     }
 }
