@@ -35,6 +35,6 @@ class AppKernel extends Kernel
 
     public function getLogDir()
     {
-        return __DIR__ . '/FSiAdminBundle/logs';
+        return __DIR__ . '/logs';
     }
 }
