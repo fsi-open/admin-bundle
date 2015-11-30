@@ -65,3 +65,10 @@ crud:
         title: Podgląd elementu
         button:
             back: Powrót
+
+messages:
+  form:
+    save: Dane zostały poprawnie zapisane.
+    error: Formularz został wypełniony nieprawidłowo.
+  batch:
+    success: Operacja zakończona powodzeniem.

@@ -116,5 +116,25 @@
             <argument type="service" id="admin.element.factory.production_line" />
             <tag name="admin.manager.visitor" />
         </service>
+
+        <service id="admin.messages.flash" class="FSi\Bundle\AdminBundle\Message\FlashMessages">
+            <argument type="service">
+                <service class="Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface">
+                    <factory service="session" method="getFlashBag"/>
+                </service>
+            </argument>
+            <argument type="string">fsi_admin</argument>
+        </service>
+
+        <service id="admin.listener.messages" class="FSi\Bundle\AdminBundle\EventListener\MessagesListener">
+            <argument type="service" id="admin.messages.flash"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="admin.twig.messages_extension" class="FSi\Bundle\AdminBundle\Twig\MessageTwigExtension" public="false">
+            <argument type="service" id="admin.messages.flash"/>
+            <tag name="twig.extension"/>
+        </service>
+
     </services>
 </container>
