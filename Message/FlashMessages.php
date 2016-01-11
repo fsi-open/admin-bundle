@@ -39,6 +39,11 @@ class FlashMessages
         $this->add('error', $message, $domain);
     }
 
+    public function warning($message, $domain = 'FSiAdminBundle')
+    {
+        $this->add('warning', $message, $domain);
+    }
+
     public function info($message, $domain = 'FSiAdminBundle')
     {
         $this->add('info', $message, $domain);
