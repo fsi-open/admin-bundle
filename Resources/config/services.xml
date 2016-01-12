@@ -117,7 +117,7 @@
             <tag name="admin.manager.visitor" />
         </service>
 
-        <service id="admin.messages.flash" class="FSi\Bundle\AdminBundle\Message\FlashMessages">
+        <service id="admin.messages.flash" class="FSi\Bundle\AdminBundle\Message\FlashMessages" lazy="true">
             <argument type="service">
                 <service class="Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface">
                     <factory service="session" method="getFlashBag"/>

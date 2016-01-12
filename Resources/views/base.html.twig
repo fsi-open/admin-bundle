@@ -57,7 +57,7 @@
     <div class="row">
         <div class="col-lg-12">
         {% block messages %}
-            {% set typeClass = {success: 'success', error: 'danger', info: 'info'} %}
+            {% set typeClass = {success: 'success', warning: 'warning', error: 'danger', info: 'info'} %}
             {% for type,typeMessages in fsi_admin_messages() %}
                 {% for message in typeMessages %}
                     <div class="alert alert-{{ typeClass[type] }}">
