@@ -26,17 +26,19 @@ class FlashMessages
     private $prefix;
 
     /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
      * FlashMessages constructor.
      * @param SessionInterface $session
      * @param $prefix
      */
     public function __construct(SessionInterface $session, $prefix)
     {
-        $this->flashBag = $session->isStarted() && method_exists($session, 'getFlashBag')
-            ? $session->getFlashBag()
-            : new FlashBag();
-
         $this->prefix = $prefix;
+        $this->session = $session;
     }
 
     public function success($message, $domain = 'FSiAdminBundle')
@@ -61,13 +63,13 @@ class FlashMessages
 
     public function all()
     {
-        return $this->flashBag->get($this->prefix);
+        return $this->getFlashBag()->get($this->prefix);
     }
 
     private function add($type, $message, $domain)
     {
-        if ($this->flashBag->has($this->prefix)) {
-            $messages = $this->flashBag->get($this->prefix);
+        if ($this->getFlashBag()->has($this->prefix)) {
+            $messages = $this->getFlashBag()->get($this->prefix);
         } else {
             $messages = [];
         }
@@ -75,5 +77,21 @@ class FlashMessages
         $messages[$type][] = ['text' => $message, 'domain' => $domain];
 
         $this->flashBag->set($this->prefix, $messages);
+    }
+
+    /**
+     * @return FlashBagInterface
+     */
+    private function getFlashBag()
+    {
+        if ($this->flashBag instanceof FlashBagInterface) {
+            return $this->flashBag;
+        }
+
+        $this->flashBag = method_exists($this->session, 'getFlashBag')
+            ? $this->session->getFlashBag()
+            : new FlashBag();
+
+        return $this->flashBag;
     }
 }
