@@ -9,7 +9,9 @@
 
 namespace FSi\Bundle\AdminBundle\Message;
 
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FlashMessages
 {
@@ -23,9 +25,17 @@ class FlashMessages
      */
     private $prefix;
 
-    public function __construct(FlashBagInterface $flashBag, $prefix)
+    /**
+     * FlashMessages constructor.
+     * @param SessionInterface $session
+     * @param $prefix
+     */
+    public function __construct(SessionInterface $session, $prefix)
     {
-        $this->flashBag = $flashBag;
+        $this->flashBag = $session->isStarted() && method_exists($session, 'getFlashBag')
+            ? $session->getFlashBag()
+            : new FlashBag();
+
         $this->prefix = $prefix;
     }
 

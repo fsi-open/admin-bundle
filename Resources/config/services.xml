@@ -118,11 +118,7 @@
         </service>
 
         <service id="admin.messages.flash" class="FSi\Bundle\AdminBundle\Message\FlashMessages" lazy="true">
-            <argument type="service">
-                <service class="Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface">
-                    <factory service="session" method="getFlashBag"/>
-                </service>
-            </argument>
+            <argument type="service" id="session" />
             <argument type="string">fsi_admin</argument>
         </service>
 
