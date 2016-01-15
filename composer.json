@@ -17,32 +17,42 @@
     "require": {
         "php": ">=5.4.0",
         "twig/twig": "~1.7",
-        "symfony/framework-bundle" : "~2.4",
-        "symfony/form" : "~2.3",
-        "symfony/options-resolver": "~2.6",
-        "symfony/expression-language": "~2.6",
-        "symfony/dependency-injection": "~2.6,>=2.6.2",
+        "symfony/framework-bundle" : "^2.4",
+        "symfony/form" : "^2.3",
+        "symfony/intl" : "^2.6",
+        "symfony/options-resolver": "^2.6",
+        "symfony/expression-language": "^2.6",
+        "symfony/dependency-injection": "^2.6,>=2.6.2",
+        "symfony/validator": "^2.3",
+        "symfony/proxy-manager-bridge": "^2.3",
+        "symfony/doctrine-bridge": "^2.3",
+        "symfony/twig-bridge": "^2.6",
+        "symfony/translation": "^2.4",
         "sensio/framework-extra-bundle": "~3.0",
-        "symfony/twig-bundle": "~2.3",
+        "symfony/twig-bundle": "^2.3",
         "fsi/datagrid-bundle" : "~1.2",
-        "fsi/datasource-bundle" : "~1.2,>=1.2.4",
+        "fsi/datasource-bundle": "^1.2,>=1.2.6",
+        "fsi/datasource": "^1.2,>=1.2.8",
         "fsi/data-indexer" : "0.9.*",
+        "fsi/property-observer" : "^0.9,>=0.9.1",
         "knplabs/knp-menu-bundle": "~2.0",
-        "doctrine/annotations": "~1.0"
+        "doctrine/annotations": "~1.0",
+        "doctrine/orm": "^2.4,>=2.4.5"
     },
     "require-dev": {
-        "symfony/class-loader": "~2.3",
+        "symfony/class-loader": "^2.3",
+        "symfony/monolog-bundle": "^2.3",
         "ext-pdo_sqlite": "*",
-        "fsi/resource-repository-bundle": "~1.1",
-        "fsi/doctrine-extensions-bundle": "~1.1,>=1.1.2",
+        "fsi/resource-repository-bundle": "~1.1,>=1.1.5",
+        "fsi/doctrine-extensions-bundle": "^1.1,>=1.1.2",
         "doctrine/doctrine-bundle": "~1.4",
-        "phpspec/phpspec": "~2.2",
-        "behat/behat": "~3.0",
+        "phpspec/phpspec": "^2.2",
+        "behat/behat": "^3.0,>=3.0.10",
         "behat/symfony2-extension": "~2.0",
         "behat/mink-extension": "~2.0",
-        "behat/mink-browserkit-driver": "~1.2",
+        "behat/mink-browserkit-driver": "~1.3@dev",
         "behat/mink-selenium2-driver": "~1.2",
-        "sensiolabs/behat-page-object-extension": "~2.0@dev",
+        "sensiolabs/behat-page-object-extension": "dev-master#faf0a08d55cb8179fb66317fc8f66a9896be0332",
         "bossa/phpspec2-expect": "~1.0",
         "fzaninotto/faker": "1.2.*"
     },
@@ -56,7 +66,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "2.0-dev"
         }
     }
 }
