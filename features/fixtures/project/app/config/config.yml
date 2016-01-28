@@ -34,3 +34,11 @@ fsi_doctrine_extensions:
 
 fsi_admin:
     locales: [en, pl]
+
+monolog:
+    handlers:
+        main:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+            channels: [!event]

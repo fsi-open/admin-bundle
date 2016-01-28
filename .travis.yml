@@ -1,51 +1,48 @@
 language: php
 
-php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - hhvm
-
-env:
-  - SYMFONY_VERSION=2.6.*
-  - SYMFONY_VERSION=2.7.*
-  - SYMFONY_VERSION=2.8.*
-  - SYMFONY_VERSION=dev-master
-
 sudo: false
 
-matrix:
-  allow_failures:
-    - env: SYMFONY_VERSION=dev-master
-    - php: hhvm
-  exclude:
-    - env: SYMFONY_VERSION=dev-master
-      php: 5.4
-    - env: SYMFONY_VERSION=2.6.*
-      php: 7.0
+cache:
+    directories:
+        - $HOME/.composer/cache
 
+matrix:
+    include:
+        - php: 5.4
+          env: 
+              - DEPENDENCIES='low'
+        - php: 5.5
+        - php: 5.6
+          env:
+              - SYMFONY_VERSION=2.6.*
+        - php: 5.6
+          env:
+              - SYMFONY_VERSION=2.7.*    
+        - php: 5.6
+          env:
+              - SYMFONY_VERSION=2.8.*
+        - php: 7.0
+    
 before_install:
     - composer self-update
-    - composer require symfony/symfony:${SYMFONY_VERSION} -n --prefer-source
+    - if [[ "$DEPENDENCIES" != "low" && ! $SYMFONY_VERSION ]]; then composer update; fi;
+    - if [[ "$DEPENDENCIES" != "low" && $SYMFONY_VERSION ]]; then composer require symfony/symfony:${SYMFONY_VERSION} -n --prefer-source; fi;
+    - if [[ "$DEPENDENCIES" == "low" ]]; then composer update --prefer-lowest; fi;
 
 install:
     - wget http://selenium-release.storage.googleapis.com/2.47/selenium-server-standalone-2.47.1.jar
 
 before_script:
-    - nohup php -S localhost:8080 -t features/fixtures/project/web > server.log 2>&1 &
+    - php -S localhost:8080 -t features/fixtures/project/web > /dev/null 2>&1 &
     - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99.0
-    - java -jar selenium-server-standalone-2.47.1.jar > /dev/null &
+    - java -jar selenium-server-standalone-2.47.1.jar > /dev/null 2>&1 &
     - sleep 5
     - features/fixtures/project/app/console assets:install features/fixtures/project/web --relative --symlink
 
 script:
-    - ./bin/phpspec run -v
-    - ./bin/behat --no-snippets --verbose --format=progress --profile=travis -v
-
-after_failure:
-    - cat server.log
+    - ./bin/phpspec run --format=pretty
+    - ./bin/behat --no-snippets --format=progress --profile=travis
 
 notifications:
-  irc:   "irc.freenode.org#fsi-open"
+    irc: "irc.freenode.org#fsi-open"
