@@ -3,3 +3,5 @@ composer.lock
 composer.phar
 autoload.php
 bin
+features/fixtures/project/web/bundles/*
+features/fixtures/project/app/data.sqlite
