@@ -27,3 +27,7 @@ Feature: Editing existing object
     And I press form "Save" button
     Then news with id 1 should have changed title
     And I should be redirected to "News List" page
+    And I should see a success message saying:
+    """
+    Data has been successfully saved.
+    """

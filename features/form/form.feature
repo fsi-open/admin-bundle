@@ -25,6 +25,10 @@ Feature: Creating new object
     And I press form "Save" button
     Then new subscriber should be created
     And I should be redirected to "Subscribers List" page
+    And I should see a success message saying:
+    """
+    Data has been successfully saved.
+    """
 
   Scenario: Display form for existing element
     Given the following admin elements were registered
@@ -49,3 +53,7 @@ Feature: Creating new object
     And I press form "Save" button
     Then subscriber with id 1 should have changed email
     And I should be redirected to "Subscribers List" page
+    And I should see a success message saying:
+    """
+    Data has been successfully saved.
+    """
