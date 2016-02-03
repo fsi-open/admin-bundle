@@ -57,3 +57,14 @@ Feature: Creating new object
     """
     Data has been successfully saved.
     """
+
+  Scenario: Editing an element with invalid data
+    Given there is subscriber with id 1 in database
+    And I am on the "Subscriber Edit" page with id 1
+    When I fill the "Email" field with invalid data
+    And I press form "Save" button
+    Then subscriber with id 1 should not have his email changed to invalid one
+    And I should see an error message saying:
+    """
+    Form is invalid.
+    """

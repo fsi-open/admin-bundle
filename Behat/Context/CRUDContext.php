@@ -48,6 +48,11 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext
     protected $subscriberEmail;
 
     /**
+     * @var string
+     */
+    protected $invalidEmail = 'not_a_valid_email#email.';
+
+    /**
      * @param KernelInterface $kernel
      */
     public function setKernel(KernelInterface $kernel)
@@ -373,6 +378,19 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext
     }
 
     /**
+     * @When /^I fill the "([^"]*)" field with invalid data$/
+     */
+    public function iFillFormValueWithInvalidData($field)
+    {
+        switch ($field) {
+            case 'Email':
+                expect($this->invalidEmail)->toNotBe($this->getElement('Form')->findField($field)->getValue());
+                $this->getElement('Form')->fillField($field, $this->invalidEmail);
+                break;
+        }
+    }
+
+    /**
      * @Then /^news with id (\d+) should have changed title$/
      */
     public function newsWithIdShouldHaveChangedTitle($id)
@@ -386,6 +404,23 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext
     public function subscriberWithIdShouldHaveChangedEmail($id)
     {
         expect($this->kernel->getContainer()->get('doctrine')->getManager()->getRepository('FSi\FixturesBundle\Entity\Subscriber')->findOneById($id)->getEmail())->toBe($this->subscriberEmail);
+    }
+
+    /**
+     * @Then /^subscriber with id (\d+) should not have his email changed to invalid one$/
+     */
+    public function subscriberWithIdShouldNotHaveChangedEmailToInvalid($id)
+    {
+        $manager = $this->kernel->getContainer()
+            ->get('doctrine')
+            ->getManager()
+        ;
+        $subsciber = $manager
+            ->getRepository('FSi\FixturesBundle\Entity\Subscriber')
+            ->findOneById($id)
+        ;
+        $manager->refresh($subsciber);
+        expect($subsciber->getEmail())->notToBe($this->invalidEmail);
     }
 
     /**
