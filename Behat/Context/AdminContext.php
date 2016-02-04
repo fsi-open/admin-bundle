@@ -232,6 +232,16 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
     }
 
     /**
+     * @Transform /"([^"]*)" non-editable collection/
+     * @Transform /non-editable collection "([^"]*)"/
+     */
+    public function transformToNoneditableCollection($collectionNames)
+    {
+        return $this->getPage('Page')->getNoneditableCollection($collectionNames);
+    }
+
+
+    /**
      * @Transform /^"([^"]*)" collection/
      * @Transform /collection "([^"]*)"/
      */
@@ -239,9 +249,9 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
     {
         return $this->getPage('Page')->getCollection($collectionNames);
     }
-
     /**
      * @Given /^("[^"]*" collection) should have (\d+) elements$/
+     * @Given /^(non-editable collection "[^"]*") should have (\d+) elements$/
      */
     public function collectionShouldHaveElements(NodeElement $collection, $elementsCount)
     {
@@ -256,6 +266,24 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
     {
         expect($collection->findButton($buttonName))->toNotBeNull();
     }
+
+    /**
+     * @Then /^all buttons for adding and removing items in (non-editable collection "[^"]*") should be disabled$/
+     */
+    public function allCollectionButtonsDisabled(NodeElement $collection)
+    {
+        $removeButtons = $collection->findAll('css', '.collection-remove');
+        expect(count($removeButtons))->notToBe(0);
+        foreach ($removeButtons as $removeButton) {
+            expect($removeButton->hasClass('disabled'))->toBe(true);
+        }
+        $addButtons = $collection->findAll('css', '.collection-add');
+        expect(count($addButtons))->notToBe(0);
+        foreach ($addButtons as $addButton) {
+            expect($addButton->hasClass('disabled'))->toBe(true);
+        }
+    }
+
 
     /**
      * @When /^I press "([^"]*)" in (collection "[^"]*")$/

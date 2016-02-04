@@ -27,6 +27,11 @@ class News
     protected $title;
 
     /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    protected $subtitle;
+
+    /**
      * @ORM\Column(type="date", nullable=true)
      */
     protected $date;
@@ -141,6 +146,22 @@ class News
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @param mixed $subtitle
+     */
+    public function setSubtitle($subtitle)
+    {
+        $this->subtitle = $subtitle;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSubtitle()
+    {
+        return $this->subtitle;
     }
 
     /**

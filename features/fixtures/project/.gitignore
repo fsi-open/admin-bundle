@@ -2,3 +2,4 @@
 /app/cache
 /app/logs
 /web/bundles
+/web/uploaded/*

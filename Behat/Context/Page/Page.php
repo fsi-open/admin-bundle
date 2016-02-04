@@ -17,4 +17,9 @@ class Page extends BasePage
     {
         return $this->find('xpath', sprintf('//div[@data-prototype]/ancestor::*[@class = "form-group"]/label[text() = "%s"]/..//div[@data-prototype]', $label));
     }
+
+    public function getNoneditableCollection($label)
+    {
+        return $this->find('xpath', sprintf('//div[@data-prototype-name]/ancestor::*[@class = "form-group"]/label[text() = "%s"]/..//div[@data-prototype-name]', $label));
+    }
 }
