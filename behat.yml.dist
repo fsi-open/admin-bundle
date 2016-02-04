@@ -7,6 +7,7 @@ default: &default
                 - FSi\Bundle\AdminBundle\Behat\Context\ResourceContext
                 - FSi\Bundle\AdminBundle\Behat\Context\DisplayContext
                 - FSi\Bundle\AdminBundle\Behat\Context\DataContext
+                - FSi\Bundle\AdminBundle\Behat\Context\MessageContext
     extensions:
         Behat\MinkExtension:
             sessions:

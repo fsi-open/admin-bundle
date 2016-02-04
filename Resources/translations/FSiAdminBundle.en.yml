@@ -5,6 +5,7 @@ admin:
         english: English (en)
         polish: Polish (pl)
     menu:
+        toggle: Toggle navigation
         header: Menu
 resource:
     title: Edit resources
@@ -24,7 +25,7 @@ crud:
                 title: Edit
                 save: Save
                 reset: Reset
-            result_count: Number of records:
+            result_count: 'Number of records:'
             action:
                 edit: Edit
                 display: Display

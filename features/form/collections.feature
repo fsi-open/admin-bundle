@@ -20,6 +20,10 @@ Feature: Managing form collections
     And I press form "Save" button
     Then new news should be created
     And I should be redirected to "News List" page
+    And I should see a success message saying:
+    """
+    Data has been successfully saved.
+    """
 
   @javascript
   Scenario: Add element to existing collection
@@ -35,6 +39,10 @@ Feature: Managing form collections
     And I press form "Save" button
     Then I should be redirected to "News List" page
     And news should have 2 elements in collection "Tags"
+    And I should see a success message saying:
+    """
+    Data has been successfully saved.
+    """
 
   @javascript
   Scenario: remove element from collection
@@ -49,3 +57,7 @@ Feature: Managing form collections
     And I press form "Save" button
     Then I should be redirected to "News List" page
     And news should have 0 elements in collection "Tags"
+    And I should see a success message saying:
+    """
+    Data has been successfully saved.
+    """

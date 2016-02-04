@@ -27,6 +27,10 @@ Feature: Deleting existing object
     And I press confirmation button "Ok"
     Then I should be redirected to "Subscribers list" page
     And there should be 2 subscribers in database
+    And I should see a success message saying:
+    """
+    Operation has been completed successfully.
+    """
 
   @javascript
   Scenario: Delete all elements from page
@@ -36,3 +40,7 @@ Feature: Deleting existing object
     And I press confirmation button "Ok"
     Then I should be redirected to "Subscribers list" page
     And there should not be any subscribers in database
+    And I should see a success message saying:
+    """
+    Operation has been completed successfully.
+    """

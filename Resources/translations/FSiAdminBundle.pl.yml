@@ -6,6 +6,7 @@ admin:
         polish: Polski (pl)
     menu:
         header: Menu
+        toggle: Przełącz nawigację
 resource:
     title: Edytuj zasoby
     button:
@@ -23,7 +24,7 @@ crud:
                 title: Edytuj
                 save: Zapisz
                 reset: Zresetuj
-            result_count: Liczba znalezionych rekordów:
+            result_count: 'Liczba znalezionych rekordów:'
             action:
                 edit: Edytuj
                 display: Wyświetl
