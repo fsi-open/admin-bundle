@@ -61,3 +61,13 @@ Feature: Managing form collections
     """
     Data has been successfully saved.
     """
+
+  @javascript
+  Scenario: disabled buttons in collections not allowing adding or deleting items
+    And there is 1 news in database
+    And I am on the "Admin panel" page
+    And I follow "News" menu element
+    When I press "Edit" link in "Action" column of first element at list
+    And I should see "News Edit" page header "Edit element"
+    And non-editable collection "Non-editable tags" should have 3 elements
+    Then all buttons for adding and removing items in non-editable collection "Non-editable tags" should be disabled

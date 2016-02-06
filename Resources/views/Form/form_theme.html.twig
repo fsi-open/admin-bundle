@@ -15,7 +15,7 @@
             {% endfor %}
             {{- form_rest(form) -}}
         </div>
-        <a class="btn btn-success collection-add" title="{{ 'crud.form.collection.add'|trans({}, 'FSiAdminBundle') }}"><i class="glyphicon glyphicon-plus"></i></a>
+        <a class="{{ attr['data-allow-add'] ? '' : 'disabled ' }}btn btn-success collection-add" title="{{ 'crud.form.collection.add'|trans({}, 'FSiAdminBundle') }}"><i class="glyphicon glyphicon-plus"></i></a>
     </div>
 {% endblock %}
 
@@ -33,7 +33,7 @@
             {{ form_errors(form) }}
         </div>
         <div class="col-sm-1">
-            <a class="pull-right btn btn-danger collection-remove" title="{{ 'crud.form.collection.remove'|trans({}, 'FSiAdminBundle') }}"><i class="glyphicon glyphicon-trash"></i></a>
+            <a class="{{ attr['data-allow-delete'] ? '' : 'disabled ' }}pull-right btn btn-danger collection-remove" title="{{ 'crud.form.collection.remove'|trans({}, 'FSiAdminBundle') }}"><i class="glyphicon glyphicon-trash"></i></a>
         </div>
     </div>
 {% endblock %}

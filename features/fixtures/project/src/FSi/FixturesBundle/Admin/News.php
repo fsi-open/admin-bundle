@@ -2,9 +2,11 @@
 
 namespace FSi\FixturesBundle\Admin;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\FixturesBundle\Entity\News as NewsEntity;
 use FSi\FixturesBundle\Form\TagType;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -26,6 +28,8 @@ class News extends CRUDElement
         $datagrid = $factory->createDataGrid('news');
         $datagrid->addColumn('title', 'text', array(
             'label' => 'admin.news.list.title',
+            'field_mapping' => array('title', 'subtitle'),
+            'value_glue' => '<br/>',
             'editable' => true
         ));
         $datagrid->addColumn('date', 'datetime', array(
@@ -143,6 +147,15 @@ class News extends CRUDElement
             'allow_add' => true,
             'allow_delete' => true,
             'by_reference' => false,
+        ));
+        $builder->add('nonEditableTags', 'collection', array(
+            'type' => 'text',
+            'data' => new ArrayCollection(['Tag 1', 'Tag 2', 'Tag 3']),
+            'label' => 'admin.news.list.non_editable_tags',
+            'allow_add' => false,
+            'allow_delete' => false,
+            'mapped' => false,
+            'required' => false
         ));
 
         return $builder->getForm();

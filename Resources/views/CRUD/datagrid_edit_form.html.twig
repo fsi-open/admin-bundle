@@ -1,7 +1,7 @@
 {% extends admin_templates_form_theme %}
 
 {% block form_label_class %}
-    sr-only
+    {{ form.parent | length > 1 ? 'col-sm-12' : 'sr-only' }}
 {% endblock form_label_class %}
 
 {% block form_group_class %}
@@ -11,3 +11,25 @@
 {% block row_row %}
     {{ form_widget(form) }}
 {% endblock row_row %}
+
+{% block collection_widget %}
+    <div {{ block('widget_container_attributes') }}>
+        {%- if form.parent is empty -%}
+            {{ form_errors(form) }}
+        {%- endif -%}
+        {% set collection = form %}
+        {% for form in collection %}
+            {{ block('collection_item') }}
+        {% endfor %}
+        {{- form_rest(form) -}}
+    </div>
+{% endblock %}
+
+{% block collection_item %}
+    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        <div class="col-sm-12">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{% endblock %}
