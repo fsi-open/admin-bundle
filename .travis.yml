@@ -24,6 +24,7 @@ matrix:
         - php: 7.0
 
 before_install:
+    - phpenv config-rm xdebug.ini
     - composer self-update
     - if [[ "$DEPENDENCIES" != "low" && ! $SYMFONY_VERSION ]]; then composer update; fi;
     - if [[ "$DEPENDENCIES" != "low" && $SYMFONY_VERSION ]]; then composer require symfony/symfony:${SYMFONY_VERSION} -n --prefer-source; fi;
