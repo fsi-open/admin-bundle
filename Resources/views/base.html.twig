@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block head_title %}{{ 'admin.title'|trans({}, 'FSiAdminBundle')  }}{% endblock %}</title>
+    <title>{% block head_title 'admin.title'|trans({}, 'FSiAdminBundle') %}</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex"/>
@@ -57,18 +57,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-        {% block messages %}
-            <div id="messages">
-                {% set typeClass = {success: 'success', warning: 'warning', error: 'danger', info: 'info'} %}
-                {% for type,typeMessages in fsi_admin_messages() %}
-                    {% for message in typeMessages %}
-                        <div class="alert alert-{{ typeClass[type] }}">
-                            {{ (message.text)|trans({}, message.domain) }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-            </div>
-        {% endblock %}
+        {% block messages %}{% include '@FSiAdmin/flash_messages.html.twig' %}{% endblock %}
         {% block above_content %}{% endblock above_content %}
         {% block content %}{% endblock content %}
         {% block under_content %}{% endblock under_content %}
