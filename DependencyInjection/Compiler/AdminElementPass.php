@@ -11,6 +11,7 @@ namespace FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
@@ -29,7 +30,7 @@ class AdminElementPass implements CompilerPassInterface
         $elements = array();
         $elementServices = $container->findTaggedServiceIds('admin.element');
         foreach ($elementServices as $id => $tag) {
-            $elements[] = $container->findDefinition($id);
+            $elements[] = new Reference($id);
         }
 
         $container->findDefinition('admin.manager.visitor.element_collection')->replaceArgument(0, $elements);
