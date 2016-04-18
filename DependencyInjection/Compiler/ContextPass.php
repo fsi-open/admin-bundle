@@ -27,8 +27,8 @@ class ContextPass implements CompilerPassInterface
         }
 
         $contexts = array();
-        foreach ($container->findTaggedServiceIds('admin.context') as $id => $tag) {
-            $priority = isset($attributes[0]['priority']) ? $attributes[0]['priority'] : 0;
+        foreach ($container->findTaggedServiceIds('admin.context') as $id => $tags) {
+            $priority = isset($tags[0]['priority']) ? $tags[0]['priority'] : 0;
             $contexts[$priority][] = $container->findDefinition($id);
         }
 
