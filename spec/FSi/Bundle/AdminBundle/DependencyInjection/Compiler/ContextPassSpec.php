@@ -50,9 +50,9 @@ class ContextPassSpec extends ObjectBehavior
     public function it_add_builders_in_priority_order($container, $def, $fooDef, $barDef, $bazDef)
     {
         $container->findTaggedServiceIds('admin.context')->willReturn(array(
-            'builder_foo' => array(array('priority' => 5)),
-            'builder_bar' => array(array()),
             'builder_baz' => array(array('priority' => -10)),
+            'builder_bar' => array(array()),
+            'builder_foo' => array(array('priority' => 5)),
         ));
 
         $container->findDefinition('builder_foo')->willReturn($fooDef);
