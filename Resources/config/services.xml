@@ -77,30 +77,35 @@
         <service id="admin.controller.resource" class="%admin.controller.resource.class%">
             <argument type="service" id="templating"/>
             <argument type="service" id="admin.context.manager"/>
+            <argument type="service" id="event_dispatcher"/>
             <argument>%admin.templates.resource%</argument>
         </service>
 
         <service id="admin.controller.display" class="%admin.controller.display.class%">
             <argument type="service" id="templating"/>
             <argument type="service" id="admin.context.manager"/>
+            <argument type="service" id="event_dispatcher"/>
             <argument>%admin.templates.display%</argument>
         </service>
 
         <service id="admin.controller.list" class="%admin.controller.list.class%">
             <argument type="service" id="templating"/>
             <argument type="service" id="admin.context.manager"/>
+            <argument type="service" id="event_dispatcher"/>
             <argument>%admin.templates.list%</argument>
         </service>
 
         <service id="admin.controller.form" class="%admin.controller.form.class%">
             <argument type="service" id="templating"/>
             <argument type="service" id="admin.context.manager"/>
+            <argument type="service" id="event_dispatcher"/>
             <argument>%admin.templates.form%</argument>
         </service>
 
         <service id="admin.controller.batch" class="%admin.controller.batch.class%">
             <argument type="service" id="templating"/>
             <argument type="service" id="admin.context.manager"/>
+            <argument type="service" id="event_dispatcher"/>
         </service>
 
         <service id="admin.controller.admin" class="%admin.controller.admin.class%">

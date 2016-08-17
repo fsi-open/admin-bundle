@@ -9,6 +9,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
+use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -17,10 +18,17 @@ class ResourceControllerSpec extends ObjectBehavior
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
      * @param \Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine $templating
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      */
-    function let($manager, $templating)
+    function let($manager, $templating, $dispatcher)
     {
-        $this->beConstructedWith($templating, $manager, 'default_resource');
+        $this->beConstructedWith($templating, $manager, $dispatcher, 'default_resource');
+
+        //always
+        $dispatcher->dispatch(
+            AdminEvents::CONTEXT_PRE_CREATE,
+            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+        )->shouldBeCalled();
     }
 
     /**

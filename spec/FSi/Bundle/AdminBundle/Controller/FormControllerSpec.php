@@ -9,6 +9,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
+use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -17,14 +18,22 @@ class FormControllerSpec extends ObjectBehavior
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      */
-    function let($manager, $templating)
+    function let($manager, $templating, $dispatcher)
     {
         $this->beConstructedWith(
             $templating,
             $manager,
+            $dispatcher,
             'default_form'
         );
+
+        //always
+        $dispatcher->dispatch(
+            AdminEvents::CONTEXT_PRE_CREATE,
+            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+        )->shouldBeCalled();
     }
 
     /**

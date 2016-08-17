@@ -12,8 +12,11 @@ namespace FSi\Bundle\AdminBundle\Controller;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -35,6 +38,11 @@ abstract class ControllerAbstract
     protected $template;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $contextManager
      * @param string|null $resourceActionTemplate
@@ -42,11 +50,13 @@ abstract class ControllerAbstract
     function __construct(
         EngineInterface $templating,
         ContextManager $contextManager,
+        EventDispatcherInterface $eventDispatcher,
         $resourceActionTemplate = null
     ) {
         $this->templating = $templating;
         $this->contextManager = $contextManager;
         $this->template = $resourceActionTemplate;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -57,6 +67,12 @@ abstract class ControllerAbstract
      */
     protected function handleRequest(Element $element, Request $request, $route)
     {
+        $event = new AdminEvent($element, $request);
+        $this->eventDispatcher->dispatch(AdminEvents::CONTEXT_PRE_CREATE, $event);
+        if ($event->hasResponse()) {
+            return $event->getResponse();
+        }
+        
         $context = $this->contextManager->createContext($route, $element);
 
         if (!($context instanceof ContextInterface)) {
