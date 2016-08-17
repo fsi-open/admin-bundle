@@ -50,12 +50,18 @@ abstract class ControllerAbstract
     function __construct(
         EngineInterface $templating,
         ContextManager $contextManager,
-        EventDispatcherInterface $eventDispatcher,
         $resourceActionTemplate = null
     ) {
         $this->templating = $templating;
         $this->contextManager = $contextManager;
         $this->template = $resourceActionTemplate;
+    }
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function setEventDispatcher($eventDispatcher)
+    {
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -67,10 +73,12 @@ abstract class ControllerAbstract
      */
     protected function handleRequest(Element $element, Request $request, $route)
     {
-        $event = new AdminEvent($element, $request);
-        $this->eventDispatcher->dispatch(AdminEvents::CONTEXT_PRE_CREATE, $event);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
+        if ($this->eventDispatcher) {
+            $event = new AdminEvent($element, $request);
+            $this->eventDispatcher->dispatch(AdminEvents::CONTEXT_PRE_CREATE, $event);
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
         }
         
         $context = $this->contextManager->createContext($route, $element);
