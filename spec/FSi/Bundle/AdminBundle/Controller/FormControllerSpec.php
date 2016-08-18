@@ -9,6 +9,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
+use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -18,13 +19,47 @@ class FormControllerSpec extends ObjectBehavior
      * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      */
-    function let($manager, $templating)
+    function let($manager, $templating, $dispatcher)
     {
         $this->beConstructedWith(
             $templating,
             $manager,
             'default_form'
         );
+    }
+
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\Context\FormElementContext $context
+     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
+     */
+    function it_dispatch_event_if_displatcher_present(
+        $dispatcher,
+        $request,
+        $response,
+        $element,
+        $manager,
+        $context,
+        $templating
+    ) {
+        $this->setEventDispatcher($dispatcher);
+
+        $dispatcher->dispatch(
+            AdminEvents::CONTEXT_PRE_CREATE,
+            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+        )->shouldBeCalled();
+
+        $manager->createContext('fsi_admin_form', $element)->willReturn($context);
+        $context->handleRequest($request)->willReturn(null);
+        $context->hasTemplateName()->willReturn(false);
+        $context->getData()->willReturn(array());
+
+        $templating->renderResponse('default_form', array(), null)->willReturn($response);
+        $this->formAction($element, $request)->shouldReturn($response);
     }
 
     /**

@@ -9,6 +9,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
+use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -24,6 +25,35 @@ class BatchControllerSpec extends ObjectBehavior
             $templating,
             $manager
         );
+    }
+
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext $context
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     */
+    function it_dispatch_event_if_displatcher_present(
+        $dispatcher,
+        $manager,
+        $element,
+        $context,
+        $request,
+        $response
+    ) {
+        $this->setEventDispatcher($dispatcher);
+
+        $dispatcher->dispatch(
+            AdminEvents::CONTEXT_PRE_CREATE,
+            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+        )->shouldBeCalled();
+
+        $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
+        $context->handleRequest($request)->willReturn($response);
+
+        $this->batchAction($element, $request)->shouldReturn($response);
     }
 
     /**

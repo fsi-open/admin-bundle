@@ -9,6 +9,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
+use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -21,6 +22,40 @@ class DisplayControllerSpec extends ObjectBehavior
     function let($manager, $templating)
     {
         $this->beConstructedWith($templating, $manager, 'default_display');
+    }
+
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param \FSi\Bundle\AdminBundle\Admin\Display\Element $element
+     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContext $context
+     * @param \Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine $templating
+     */
+    function it_dispatch_event_if_displatcher_present(
+        $dispatcher,
+        $request,
+        $response,
+        $element,
+        $manager,
+        $context,
+        $templating
+    ) {
+        $this->setEventDispatcher($dispatcher);
+
+        $dispatcher->dispatch(
+            AdminEvents::CONTEXT_PRE_CREATE,
+            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+        )->shouldBeCalled();
+
+        $manager->createContext('fsi_admin_display', $element)->willReturn($context);
+        $context->handleRequest($request)->willReturn(null);
+        $context->hasTemplateName()->willReturn(false);
+        $context->getData()->willReturn(array());
+
+        $templating->renderResponse('default_display', array(), null)->willReturn($response);
+        $this->displayAction($element, $request)->shouldReturn($response);
     }
 
     /**
