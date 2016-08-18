@@ -3,6 +3,7 @@
 Admin bundle provide several events that can be handled in application.
 List of available events can be found in following classes (along with their argument type):
 
+- [AdminEvents](/Event/AdminEvents.php), type of argument: [AdminEvent](/Event/AdminEvent.php)
 - [CRUDEvents](/Event/CRUDEvents.php), type of argument: [ListEvent](/Event/ListEvent.php) for ``CRUD_LIST_*`` and [FormEvent](/Event/FormEvent.php) for all the others
 - [ListEvents](/Event/ListEvents.php), type of argument: [ListEvent](/Event/ListEvent.php)
 - [FormEvents](/Event/FormEvents.php), type of argument: [FormEvent](/Event/FormEvent.php)
