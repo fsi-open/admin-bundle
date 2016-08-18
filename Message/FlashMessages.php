@@ -41,24 +41,24 @@ class FlashMessages
         $this->session = $session;
     }
 
-    public function success($message, $domain = 'FSiAdminBundle')
+    public function success($message, $domain = 'FSiAdminBundle', array $params = [])
     {
-        $this->add('success', $message, $domain);
+        $this->add('success', $message, $domain, $params);
     }
 
-    public function error($message, $domain = 'FSiAdminBundle')
+    public function error($message, $domain = 'FSiAdminBundle', array $params = [])
     {
-        $this->add('error', $message, $domain);
+        $this->add('error', $message, $domain, $params);
     }
 
-    public function warning($message, $domain = 'FSiAdminBundle')
+    public function warning($message, $domain = 'FSiAdminBundle', array $params = [])
     {
-        $this->add('warning', $message, $domain);
+        $this->add('warning', $message, $domain, $params);
     }
 
-    public function info($message, $domain = 'FSiAdminBundle')
+    public function info($message, $domain = 'FSiAdminBundle', array $params = [])
     {
-        $this->add('info', $message, $domain);
+        $this->add('info', $message, $domain, $params);
     }
 
     public function all()
@@ -66,7 +66,7 @@ class FlashMessages
         return $this->getFlashBag()->get($this->prefix);
     }
 
-    private function add($type, $message, $domain)
+    private function add($type, $message, $domain, array $params = [])
     {
         if ($this->getFlashBag()->has($this->prefix)) {
             $messages = $this->getFlashBag()->get($this->prefix);
@@ -74,7 +74,7 @@ class FlashMessages
             $messages = [];
         }
 
-        $messages[$type][] = ['text' => $message, 'domain' => $domain];
+        $messages[$type][] = ['text' => $message, 'domain' => $domain, 'params' => $params];
 
         $this->flashBag->set($this->prefix, $messages);
     }
