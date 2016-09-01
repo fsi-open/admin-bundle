@@ -3,7 +3,7 @@
     {% for type, typeMessages in fsi_admin_messages() %}
         {% for message in typeMessages %}
             <div class="alert alert-{{ typeClass[type] }}">
-                {{ (message.text)|trans({}, message.domain) }}
+                {{ (message.text)|trans(message.params, message.domain) }}
             </div>
         {% endfor %}
     {% endfor %}
