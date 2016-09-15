@@ -240,6 +240,68 @@ class BatchActionExtensionSpec extends ObjectBehavior
     }
 
     /**
+     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $batchElement
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $queryAttributes
+     * @param \Symfony\Component\Routing\RouterInterface $router
+     * @param \Symfony\Component\Form\Test\FormBuilderInterface $formBuilder
+     * @param \Symfony\Component\Form\FormView $formView
+     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
+     * @param \FSi\Component\DataGrid\Column\HeaderViewInterface $view
+     */
+    function it_does_not_add_redirect_uri_to_actions_when_redirect_uri_option_is_set_to_false(
+        $manager,
+        $batchElement,
+        $router,
+        $formBuilder,
+        $formView,
+        $column,
+        $view
+    ) {
+        $column->getOption('actions')->willReturn(array(
+            array(
+                'element' => 'some_batch_element_id',
+                'additional_parameters' => array('some_additional_parameter' => 'some_value'),
+                'label' => 'batch_action_label',
+                'redirect_uri' => false,
+            )
+        ));
+
+        $column->getOption('translation_domain')->willReturn('FSiAdminBundle');
+
+        $manager->hasElement('some_batch_element_id')->willReturn(true);
+        $manager->getElement('some_batch_element_id')->willReturn($batchElement);
+        $batchElement->getId()->willReturn('some_batch_element_id');
+        $batchElement->getRoute()->willReturn('fsi_admin_batch');
+        $batchElement->getRouteParameters()->willReturn(array('element' => 'some_batch_element_id'));
+
+        $router->generate(
+            'fsi_admin_batch',
+            array(
+                'element' => 'some_batch_element_id',
+                'some_additional_parameter' => 'some_value'
+            )
+        )->willReturn('path_to_batch_action');
+
+        $formBuilder->add('action', 'choice', array(
+            'choices' => array(
+                0 => 'crud.list.batch.empty_choice',
+                'path_to_batch_action' => 'batch_action_label'
+            ),
+            'translation_domain' => 'FSiAdminBundle'
+        ))->willReturn();
+        $formBuilder->add('submit', 'submit', array(
+            'label' => 'crud.list.batch.confirm',
+            'translation_domain' => 'FSiAdminBundle'
+        ))->willReturn();
+
+        $view->setAttribute('batch_form', $formView)->shouldBeCalled();
+
+        $this->buildHeaderView($column, $view);
+    }
+
+    /**
      * @param \Symfony\Component\HttpFoundation\ParameterBag $queryAttributes
      * @param \Symfony\Component\Routing\RouterInterface $router
      * @param \Symfony\Component\Form\Test\FormBuilderInterface $formBuilder

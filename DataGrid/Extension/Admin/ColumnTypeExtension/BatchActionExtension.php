@@ -105,7 +105,8 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
                 return $self->getDefaultRouteName($options);
             },
             'additional_parameters' => array(),
-            'label' => null
+            'label' => null,
+            'redirect_uri' => true,
         ));
         $this->actionOptionsResolver->setNormalizer(
             'additional_parameters',
@@ -117,6 +118,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         $this->actionOptionsResolver->setAllowedTypes('route_name', 'string');
         $this->actionOptionsResolver->setAllowedTypes('additional_parameters', 'array');
         $this->actionOptionsResolver->setAllowedTypes('label', array('string', 'null'));
+        $this->actionOptionsResolver->setAllowedTypes('redirect_uri', array('string', 'bool'));
     }
 
     /**
@@ -198,7 +200,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
             );
         }
 
-        return $this->mergeAdditionalParametersWithRedirectUri($additionalParameters);
+        return $this->mergeAdditionalParametersWithRedirectUri($options, $additionalParameters);
     }
 
     /**
@@ -239,11 +241,18 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     }
 
     /**
+     * @param Options $options
      * @param array $additionalParameters
      * @return mixed
      */
-    private function mergeAdditionalParametersWithRedirectUri(array $additionalParameters)
+    private function mergeAdditionalParametersWithRedirectUri(Options $options, array $additionalParameters)
     {
+        if (is_string($options['redirect_uri'])) {
+            $additionalParameters['redirect_uri'] = $options['redirect_uri'];
+        } elseif ($options['redirect_uri'] === false) {
+            return $additionalParameters;
+        }
+
         if ($this->getMasterRequestQuery()->has('redirect_uri')) {
             $additionalParameters['redirect_uri'] = $this->getMasterRequestQuery()->get('redirect_uri');
         } else {
