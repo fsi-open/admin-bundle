@@ -3,6 +3,7 @@
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Bundle\AdminBundle\Form\FeatureHelper;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -32,7 +33,7 @@ class ResourceFormBuilder
         $resources = $this->getResourceGroup($element->getKey());
 
         $builder = $this->formFactory->createBuilder(
-            'form',
+            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
             $this->createFormData($element, $element->getRepository(), $resources),
             $element->getResourceFormOptions()
         );
@@ -111,7 +112,7 @@ class ResourceFormBuilder
             $resourceName = $this->buildResourceName($element, $resourceKey);
             $builder->add(
                 $this->normalizeKey($resourceName),
-                'resource',
+                FeatureHelper::getFormType('FSi\Bundle\ResourceRepositoryBundle\Form\Type\ResourceType', 'resource'),
                 array(
                     'resource_key' => $resourceName,
                 )

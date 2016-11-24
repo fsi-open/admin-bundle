@@ -3,6 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Bundle\AdminBundle\Form\FeatureHelper;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -39,7 +40,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
     /**
      * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $optionsResolver
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $optionsResolver
      */
     function it_adds_actions_options($column, $optionsResolver)
     {
@@ -155,18 +156,35 @@ class BatchActionExtensionSpec extends ObjectBehavior
             )
         )->willReturn('path_to_batch_action');
 
-        $formBuilder->add('action', 'choice', array(
-            'choices' => array(
+        if (FeatureHelper::isChoicesAsValuesOptionTrueByDefault()) {
+            $expectedChoices = array(
+                'crud.list.batch.empty_choice' => '',
+                'batch_action_label' => 'path_to_batch_action'
+            );
+        } else {
+            $expectedChoices = array(
                 0 => 'crud.list.batch.empty_choice',
                 'path_to_batch_action' => 'batch_action_label'
-            ),
-            'translation_domain' => 'FSiAdminBundle'
-        ))->willReturn();
+            );
+        }
 
-        $formBuilder->add('submit', 'submit', array(
-            'label' => 'crud.list.batch.confirm',
-            'translation_domain' => 'FSiAdminBundle'
-        ))->willReturn();
+        $formBuilder->add(
+            'action',
+            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+            array(
+                'choices' => $expectedChoices,
+                'translation_domain' => 'FSiAdminBundle'
+            )
+        )->willReturn();
+
+        $formBuilder->add(
+            'submit',
+            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+            array(
+                'label' => 'crud.list.batch.confirm',
+                'translation_domain' => 'FSiAdminBundle'
+            )
+        )->willReturn();
 
         $view->setAttribute('batch_form', $formView)->shouldBeCalled();
 
@@ -222,17 +240,34 @@ class BatchActionExtensionSpec extends ObjectBehavior
             )
         )->willReturn('path_to_batch_action');
 
-        $formBuilder->add('action', 'choice', array(
-            'choices' => array(
+        if (FeatureHelper::isChoicesAsValuesOptionTrueByDefault()) {
+            $expectedChoices = array(
+                'crud.list.batch.empty_choice' => '',
+                'batch_action_label' => 'path_to_batch_action'
+            );
+        } else {
+            $expectedChoices = array(
                 0 => 'crud.list.batch.empty_choice',
                 'path_to_batch_action' => 'batch_action_label'
-            ),
-            'translation_domain' => 'FSiAdminBundle'
-        ))->willReturn();
-        $formBuilder->add('submit', 'submit', array(
-            'label' => 'crud.list.batch.confirm',
-            'translation_domain' => 'FSiAdminBundle'
-        ))->willReturn();
+            );
+        }
+
+        $formBuilder->add(
+            'action',
+            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+            array(
+                'choices' => $expectedChoices,
+                'translation_domain' => 'FSiAdminBundle'
+            )
+        )->willReturn();
+        $formBuilder->add(
+            'submit',
+            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+            array(
+                'label' => 'crud.list.batch.confirm',
+                'translation_domain' => 'FSiAdminBundle'
+            )
+        )->willReturn();
 
         $view->setAttribute('batch_form', $formView)->shouldBeCalled();
 
@@ -284,17 +319,34 @@ class BatchActionExtensionSpec extends ObjectBehavior
             )
         )->willReturn('path_to_batch_action');
 
-        $formBuilder->add('action', 'choice', array(
-            'choices' => array(
+        if (FeatureHelper::isChoicesAsValuesOptionTrueByDefault()) {
+            $expectedChoices = array(
+                'crud.list.batch.empty_choice' => '',
+                'batch_action_label' => 'path_to_batch_action'
+            );
+        } else {
+            $expectedChoices = array(
                 0 => 'crud.list.batch.empty_choice',
                 'path_to_batch_action' => 'batch_action_label'
-            ),
-            'translation_domain' => 'FSiAdminBundle'
-        ))->willReturn();
-        $formBuilder->add('submit', 'submit', array(
-            'label' => 'crud.list.batch.confirm',
-            'translation_domain' => 'FSiAdminBundle'
-        ))->willReturn();
+            );
+        }
+
+        $formBuilder->add(
+            'action',
+            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+            array(
+                'choices' => $expectedChoices,
+                'translation_domain' => 'FSiAdminBundle'
+            )
+        )->willReturn();
+        $formBuilder->add(
+            'submit',
+            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+            array(
+                'label' => 'crud.list.batch.confirm',
+                'translation_domain' => 'FSiAdminBundle'
+            )
+        )->willReturn();
 
         $view->setAttribute('batch_form', $formView)->shouldBeCalled();
 
@@ -338,17 +390,34 @@ class BatchActionExtensionSpec extends ObjectBehavior
             )
         )->willReturn('path_to_batch_action');
 
-        $formBuilder->add('action', 'choice', array(
-            'choices' => array(
+        if (FeatureHelper::isChoicesAsValuesOptionTrueByDefault()) {
+            $expectedChoices = array(
+                'crud.list.batch.empty_choice' => '',
+                'action_name' => 'path_to_batch_action'
+            );
+        } else {
+            $expectedChoices = array(
                 0 => 'crud.list.batch.empty_choice',
                 'path_to_batch_action' => 'action_name'
-            ),
-            'translation_domain' => 'FSiAdminBundle'
-        ))->willReturn();
-        $formBuilder->add('submit', 'submit', array(
-            'label' => 'crud.list.batch.confirm',
-            'translation_domain' => 'FSiAdminBundle'
-        ))->willReturn();
+            );
+        }
+
+        $formBuilder->add(
+            'action',
+            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+            array(
+                'choices' => $expectedChoices,
+                'translation_domain' => 'FSiAdminBundle'
+            )
+        )->willReturn();
+        $formBuilder->add(
+            'submit',
+            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+            array(
+                'label' => 'crud.list.batch.confirm',
+                'translation_domain' => 'FSiAdminBundle'
+            )
+        )->willReturn();
 
         $view->setAttribute('batch_form', $formView)->shouldBeCalled();
 

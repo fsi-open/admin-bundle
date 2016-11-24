@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="admin.form.builder.batch" class="%admin.form.builder.batch.class%">
+            <factory service="form.factory" method="createNamedBuilder"/>
+            <argument type="string">batch_action</argument>
+            <argument type="string">Symfony\Component\Form\Extension\Core\Type\FormType</argument>
+            <argument type="collection">
+                <argument key="translation_domain" type="string">FSiAdminBundle</argument>
+            </argument>
+        </service>
+
+        <service id="admin.form.collection_type_extension" class="%admin.form.collection_extension.class%">
+            <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\CollectionType" />
+        </service>
+    </services>
+</container>
