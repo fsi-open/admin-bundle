@@ -10,7 +10,7 @@ matrix:
     include:
         - php: 5.4
           env:
-              - DEPENDENCIES='low'
+              - COMPOSER_FLAGS='--prefer-lowest'
         - php: 5.5
         - php: 5.6
           env:
@@ -28,9 +28,8 @@ matrix:
 before_install:
     - phpenv config-rm xdebug.ini || true
     - composer self-update
-    - if [[ "$DEPENDENCIES" != "low" && ! $SYMFONY_VERSION ]]; then composer update; fi;
-    - if [[ "$DEPENDENCIES" != "low" && $SYMFONY_VERSION ]]; then composer require symfony/symfony:${SYMFONY_VERSION} -n; fi;
-    - if [[ "$DEPENDENCIES" == "low" ]]; then composer update --prefer-lowest; fi;
+    - if [[ $SYMFONY_VERSION ]]; then composer require symfony/symfony:${SYMFONY_VERSION} -n --no-update; fi;
+    - composer update $COMPOSER_FLAGS
 
 install:
     - wget http://selenium-release.storage.googleapis.com/2.50/selenium-server-standalone-2.50.1.jar
