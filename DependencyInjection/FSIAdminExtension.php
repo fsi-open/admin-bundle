@@ -9,6 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\DependencyInjection;
 
+use FSi\Bundle\AdminBundle\Form\FeatureHelper;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -48,7 +49,7 @@ class FSIAdminExtension extends Extension
         $loader->load('context/batch.xml');
         $loader->load('context/display.xml');
 
-        if (version_compare(Kernel::VERSION, '3.0.0', '>=')) {
+        if (version_compare(Kernel::VERSION, '2.8.0', '>=')) {
             $loader->load('services-3.0.xml');
         }
     }
