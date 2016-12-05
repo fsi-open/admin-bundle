@@ -10,7 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Admin\Display\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
-use FSi\Bundle\AdminBundle\Admin\Display\GenericDisplayElement;
+use FSi\Bundle\AdminBundle\Admin\Display;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\DisplayEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class DisplayContext extends ContextAbstract
 {
     /**
-     * @var GenericDisplayElement
+     * @var Display\Element
      */
     protected $element;
 
@@ -86,7 +86,7 @@ class DisplayContext extends ContextAbstract
      */
     protected function supportsElement(Element $element)
     {
-        return $element instanceof GenericDisplayElement;
+        return $element instanceof Display\Element;
     }
 
     /**

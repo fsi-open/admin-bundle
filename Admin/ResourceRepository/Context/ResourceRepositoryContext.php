@@ -12,7 +12,7 @@ namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Element;
-use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,12 +20,12 @@ use Symfony\Component\HttpFoundation\Request;
 class ResourceRepositoryContext extends ContextAbstract
 {
     /**
-     * @var GenericResourceElement
+     * @var ResourceRepository\Element
      */
     protected $element;
 
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder
+     * @var ResourceRepository\ResourceFormBuilder
      */
     private $resourceFormBuilder;
 
@@ -36,9 +36,9 @@ class ResourceRepositoryContext extends ContextAbstract
 
     /**
      * @param HandlerInterface[]|$requestHandlers
-     * @param ResourceFormBuilder $resourceFormBuilder
+     * @param ResourceRepository\ResourceFormBuilder $resourceFormBuilder
      */
-    function __construct($requestHandlers, ResourceFormBuilder $resourceFormBuilder)
+    function __construct($requestHandlers, ResourceRepository\ResourceFormBuilder $resourceFormBuilder)
     {
         parent::__construct($requestHandlers);
 
@@ -102,6 +102,6 @@ class ResourceRepositoryContext extends ContextAbstract
      */
     protected function supportsElement(Element $element)
     {
-        return $element instanceof GenericResourceElement;
+        return $element instanceof ResourceRepository\Element;
     }
 }

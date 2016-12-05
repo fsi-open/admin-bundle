@@ -10,7 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
-use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
+use FSi\Bundle\AdminBundle\Admin\CRUD\CRUDElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 
 class CRUDListElementContext extends ListElementContext
@@ -36,7 +36,7 @@ class CRUDListElementContext extends ListElementContext
      */
     protected function supportsElement(Element $element)
     {
-        return $element instanceof AbstractCRUD;
+        return $element instanceof CRUDElement;
     }
 
     /**
