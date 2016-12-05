@@ -6,9 +6,7 @@
 
     <parameters>
         <parameter key="admin.context.list.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\ListElementContext</parameter>
-        <parameter key="admin.context_builder.list.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\ListElementContextBuilder</parameter>
         <parameter key="admin.context.crud_list.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\CRUDListElementContext</parameter>
-        <parameter key="admin.context_builder.crud_list.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\CRUDListElementContextBuilder</parameter>
         <parameter key="admin.context.list.request_handler.datasource_bind_parameters.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\DataSourceBindParametersHandler</parameter>
         <parameter key="admin.context.list.request_handler.datagrid_set_data.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\DataGridSetDataHandler</parameter>
         <parameter key="admin.context.list.request_handler.datagrid_bind_data.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\DataGridBindDataHandler</parameter>

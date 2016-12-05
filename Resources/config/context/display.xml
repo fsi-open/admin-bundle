@@ -6,7 +6,6 @@
 
     <parameters>
         <parameter key="admin.display.context.class">FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContext</parameter>
-        <parameter key="admin.display.context_builder.class">FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContextBuilder</parameter>
         <parameter key="admin.display.context.request_handler.class">FSi\Bundle\AdminBundle\Admin\Display\Context\Request\Handler</parameter>
     </parameters>
 
