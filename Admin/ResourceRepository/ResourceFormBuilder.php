@@ -27,7 +27,7 @@ class ResourceFormBuilder
         $this->mapBuilder = $mapBuilder;
     }
 
-    public function build(GenericResourceElement $element)
+    public function build(Element $element)
     {
         $resources = $this->getResourceGroup($element->getKey());
 
@@ -77,13 +77,13 @@ class ResourceFormBuilder
     }
 
     /**
-     * @param GenericResourceElement $element
+     * @param Element $element
      * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository $valueRepository
      * @param array|\FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface[] $resources
      * @return array
      */
     private function createFormData(
-        GenericResourceElement $element,
+        Element $element,
         ResourceValueRepository $valueRepository,
         array $resources
     ) {
@@ -98,12 +98,12 @@ class ResourceFormBuilder
     }
 
     /**
-     * @param GenericResourceElement $element
+     * @param Element $element
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array|\FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface[] $resources
      */
     private function buildForm(
-        GenericResourceElement $element,
+        Element $element,
         FormBuilderInterface $builder,
         array $resources
     ) {
@@ -129,11 +129,11 @@ class ResourceFormBuilder
     }
 
     /**
-     * @param GenericResourceElement $element
+     * @param Element $element
      * @param string $resourceKey
      * @return string
      */
-    private function buildResourceName(GenericResourceElement $element, $resourceKey)
+    private function buildResourceName(Element $element, $resourceKey)
     {
         return sprintf("%s.%s", $element->getKey(), $resourceKey);
     }

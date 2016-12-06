@@ -7,7 +7,6 @@
     <parameters>
         <parameter key="admin.resource.context.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\ResourceRepositoryContext</parameter>
         <parameter key="admin.resource.context.form_builder.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder</parameter>
-        <parameter key="admin.resource.context_builder.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\ResourceRepositoryContextBuilder</parameter>
         <parameter key="admin.resource.context.request_handler.form_submit.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request\FormSubmitHandler</parameter>
         <parameter key="admin.resource.context.request_handler.form_valid_request.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request\FormValidRequestHandler</parameter>
     </parameters>

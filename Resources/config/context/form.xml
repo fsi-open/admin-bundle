@@ -6,9 +6,7 @@
 
     <parameters>
         <parameter key="admin.context.form.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\FormElementContext</parameter>
-        <parameter key="admin.context_builder.form.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\FormElementContextBuilder</parameter>
         <parameter key="admin.context.crud_form.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\CRUDFormElementContext</parameter>
-        <parameter key="admin.context_builder.crud_form.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\CRUDFormElementContextBuilder</parameter>
         <parameter key="admin.context.form.request_handler.form_submit.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\FormSubmitHandler</parameter>
         <parameter key="admin.context.form.request_handler.form_valid_request.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\FormValidRequestHandler</parameter>
     </parameters>

@@ -10,7 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
-use FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Component\Form\FormInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class FormElementContext extends ContextAbstract
 {
     /**
-     * @var GenericFormElement
+     * @var FormElement
      */
     protected $element;
 
@@ -93,7 +93,7 @@ class FormElementContext extends ContextAbstract
      */
     protected function supportsElement(Element $element)
     {
-        return $element instanceof GenericFormElement;
+        return $element instanceof FormElement;
     }
 
     /**

@@ -6,7 +6,6 @@
 
     <parameters>
         <parameter key="admin.context.batch.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext</parameter>
-        <parameter key="admin.context_builder.batch.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContextBuilder</parameter>
         <parameter key="admin.context.batch.request_handler.form_submit.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormSubmitHandler</parameter>
         <parameter key="admin.context.batch.request_handler.form_valid_request.class">FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler</parameter>
     </parameters>
