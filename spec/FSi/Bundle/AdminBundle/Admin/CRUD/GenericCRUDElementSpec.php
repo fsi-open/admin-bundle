@@ -10,24 +10,19 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Component\DataGrid\DataGridFactoryInterface;
-use FSi\Component\DataGrid\DataGridInterface;
-use FSi\Component\DataSource\DataSourceFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
 
-class AbstractCRUDSpec extends ObjectBehavior
+class GenericCRUDElementSpec extends ObjectBehavior
 {
     function let()
     {
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyCRUD');
-        $this->beConstructedWith([]);
+        $this->beConstructedWith(array());
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD');
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement');
     }
 
@@ -41,7 +36,11 @@ class AbstractCRUDSpec extends ObjectBehavior
         $this->getRoute()->shouldReturn('fsi_admin_list');
     }
 
-    function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid(DataGridFactoryInterface $factory)
+    /**
+     * @param \FSi\Component\DataGrid\DataGridFactory $factory
+     * @throws \FSi\Component\DataGrid\Exception\DataGridColumnException
+     */
+    function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid($factory)
     {
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
@@ -50,29 +49,37 @@ class AbstractCRUDSpec extends ObjectBehavior
             ->during('createDataGrid');
     }
 
-    function it_add_batch_column_to_datagrid_when_element_allow_delete_objects(
-        DataGridFactoryInterface $factory,
-        DataGridInterface $datagrid
-    ) {
+    /**
+     * @param \FSi\Component\DataGrid\DataGridFactory $factory
+     * @param \FSi\Component\DataGrid\DataGrid $datagrid
+     * @throws \FSi\Component\DataGrid\Exception\DataGridColumnException
+     * @throws \FSi\Component\DataGrid\Exception\UnexpectedTypeException
+     */
+    function it_add_batch_column_to_datagrid_when_element_allow_delete_objects($factory, $datagrid)
+    {
         $factory->createDataGrid('my_datagrid')->shouldBeCalled()->willReturn($datagrid);
         $datagrid->hasColumnType('batch')->shouldBeCalled()->willReturn(false);
-        $datagrid->addColumn('batch', 'batch', [
-            'actions' => [
-                'delete' => [
+        $datagrid->addColumn('batch', 'batch', array(
+            'actions' => array(
+                'delete' => array(
                     'route_name' => 'fsi_admin_batch',
-                    'additional_parameters' => ['element' => $this->getId()],
+                    'additional_parameters' => array('element' => $this->getId()),
                     'label' => 'crud.list.batch.delete'
-                ]
-            ],
+                )
+            ),
             'display_order' => -1000
-        ])->shouldBeCalled();
+        ))->shouldBeCalled();
 
         $this->setDataGridFactory($factory);
 
         $this->createDataGrid()->shouldReturn($datagrid);
     }
 
-    function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource(DataSourceFactoryInterface $factory)
+    /**
+     * @param \FSi\Component\DataSource\DataSourceFactory $factory
+     * @throws \FSi\Component\DataSource\Exception\DataSourceException
+     */
+    function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource($factory)
     {
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
@@ -81,13 +88,16 @@ class AbstractCRUDSpec extends ObjectBehavior
             ->during('createDataSource');
     }
 
-    function it_throw_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory)
+    /**
+     * @param \Symfony\Component\Form\FormFactoryInterface $factory
+     */
+    function it_throw_exception_when_init_form_does_not_return_instance_of_form($factory)
     {
         $this->setFormFactory($factory);
         $factory->create(Argument::cetera())->willReturn(null);
 
         $this->shouldThrow(new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface"))
-            ->during('createForm', [null]);
+            ->during('createForm', array(null));
     }
 
     function it_has_default_options_values()
