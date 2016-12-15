@@ -9,12 +9,24 @@
 
 namespace FSi\Bundle\AdminBundle\Admin;
 
-interface DependentElement extends Element
+interface DependentElement extends Element, RequestStackAware
 {
+    const REQUEST_PARENT_PARAMETER = 'parent';
+
     /**
      * ID of parent element
      *
      * @return string
      */
     public function getParentId();
+
+    /**
+     * @param Element $element
+     */
+    public function setParentElement(Element $element);
+
+    /**
+     * @return mixed
+     */
+    public function getParentObject();
 }
