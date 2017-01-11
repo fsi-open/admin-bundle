@@ -1,41 +1,52 @@
 # Admin panel menu
 
-Menu is displayed in the upper part of admin panel, on the black navigation bar.
-By default menu is empty and you should configure it in ``app/config/admin_menu.yml`` file
+By default, the menu is displayed on the top navigation bar and has no elements.
+You can add these through the ``app/config/admin_menu.yml`` file:
 
 ```yaml
 # app/config/admin_menu.yml
 
 menu:
   - news
-  - Structure:
-    - home_page
-    - about_us_page
+  - { "id": files, "name": "Files element" }
 ```
 
-About menu will display link to admin element with id "news" and dropdown button that
-have links to elements with `home_page` and `about_us_page` id.
+This will add two elements, one identified by `news` and with label `news`, the
+other identified by `files` and with the `"Files element"` label. We recommend using
+the latter, more verbose method.
 
 ## Translating groups
 
-Group names are translated so you can also use translations key:
+Group names are translated, so you can also use translations keys:
 
 ```yaml
 # app/config/admin_menu.yml
 
 menu:
-  - news
-  - admin.page.structure:
-    - home_page
-    - about_us_page
+  - { "id": news, "name": admin.menu.news }
+  # "admin.menu.files" will only exists as a non-clickable root for the submenu,
+  # containing two elements
+  - admin.menu.files:
+    - { "id": public_files, "name": admin.menu.files.public }
+    - { "id": private_files, "name": admin.menu.files.private }
 ```
 
 ```yaml
 # app/Resources/translations/messages.en.yml
 
 admin:
-  page:
-    structure: Structure
+  menu:
+    news: News
+    files:
+      public: Public files
+      private: Private files
 ```
+
+# Troubleshooting
+
+If you add a position to the ``app/config/admin_menu.yml`` and it is not being
+displayed, make sure you've given the proper ID and the element is actually registered.
+All values which do not correspond to IDs of properly registered elements are removed during
+the creation of the menu - with the exception of roots of submenus.
 
 [Back to index](index.md)

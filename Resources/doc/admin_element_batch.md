@@ -1,6 +1,6 @@
-# How to create batch action element in 2 steps
+# How to create a batch action element in 2 steps
 
-## 1. Create admin batch element class
+## 1. Create the element's class
 
 ```php
 <?php
@@ -12,7 +12,7 @@ use FSi\Bundle\AdminBundle\Doctrine\Admin\BatchElement;
 use FSi\Bundle\AdminBundle\Annotation as Admin;
 
 /**
- * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
+ * IMPORTANT - Without the "Element" annotation, the element will not be registered in admin elements manager!
  *
  * @Admin\Element
  */
@@ -23,7 +23,7 @@ class SubscriberDeactivateElement extends BatchElement
      */
     public function getClassName()
     {
-        return 'FSi\Bundle\DemoBundle\Entity\Subscriber'; // Doctrine class name
+        return 'FSi\Bundle\DemoBundle\Entity\Subscriber'; // Doctrine entity's class name
     }
 
     /**
@@ -31,7 +31,7 @@ class SubscriberDeactivateElement extends BatchElement
      */
     public function getId()
     {
-        return 'subscribers_deactivate'; // id is used in url generation http://domain.com/admin/batch/{id}
+        return 'subscribers_deactivate'; // ID is used in url generation http://domain.com/admin/batch/{id}
     }
 
     /**
@@ -39,7 +39,7 @@ class SubscriberDeactivateElement extends BatchElement
      */
     public function apply($object)
     {
-        $object->setActive(false);
+        $object->setActive(false); // this is where the element logic is being applied
         $this->getObjectManager()->flush();
     }
 }
@@ -65,7 +65,7 @@ columns:
 
 ## 3. Doctrine delete admin element
 
-This is the only predefined batch admin element class which can be used to delete entities/documents in batch mode.
+This is the only predefined batch admin element class, which can be used to delete entities/documents in batch mode.
 
 ```php
 <?php
@@ -88,7 +88,7 @@ class SubscriberDeleteElement extends DeleteElement
      */
     public function getClassName()
     {
-        return 'FSi\Bundle\DemoBundle\Entity\Subscriber'; // Doctrine class name
+        return 'FSi\Bundle\DemoBundle\Entity\Subscriber'; // Doctrine entity's class name
     }
 
     /**

@@ -1,25 +1,25 @@
-# How to create simple resource element in 4 steps
+# How to create a simple resource element in 4 steps
 
 ## 1. Installation
 
-**Before using Resource element you need to install []fsi/resource-repository-bundle](https://github.com/fsi-open/resource-repository-bundle).**
-**This step should be done only once**
+**Before using Resource elements you need to install [fsi/resource-repository-bundle](https://github.com/fsi-open/resource-repository-bundle).**
+**This step should only be done once**
 
-Add to your composer.json following lines
+### Add the following line to your composer.json and run update:
 
 ```json
 "require": {
-    "doctrine/doctrine-bundle" : "1.2.*@dev"
-    "fsi/resource-repository-bundle" : "1.0.*"
+    "fsi/resource-repository-bundle": "^1.1"
 }
 ```
 
-Update AppKernel.php
+### Update the AppKernel.php file, adding the `FSiResourceRepositoryBundle`:
 
 ```php
 public function registerBundles()
 {
     $bundles = array(
+        # Add this line
         new FSi\Bundle\ResourceRepositoryBundle\FSiResourceRepositoryBundle(),
         // Admin Bundle
         new Knp\Bundle\MenuBundle\KnpMenuBundle(),
@@ -30,10 +30,9 @@ public function registerBundles()
 }
 ```
 
-Create Resource entity 
+### Create a Resource entity class
 
 ```php
-
 <?php
 
 namespace FSi\Bundle\DemoBundle\Entity;
@@ -50,26 +49,28 @@ class Resource extends BaseResource
 }
 ```
 
-Modify app/config/config.yml
+### Modify app/config/config.yml
 
-```
+```yaml
 # app/config/config.yml
 
 fsi_resource_repository:
     resource_class: FSi\Bundle\DemoBundle\Entity\Resource
 ```
 
-Update database with following console command 
+### Update your database schema
 
-```
+```sh
 $ php app/console doctrine:schema:update --force
 ```
 
 ## 2. Resources configuration
 
-Lets assume we have following configuration in ``resource_map.yml``
+Let's assume we have the following configuration in ``resource_map.yml``
 
 ```yml
+# app/config/resource_map.yml
+
 resources:
     type: group
     main_page:
@@ -80,7 +81,9 @@ resources:
                 label: Main page content
 ```
 
-## 3. Create admin resource element class
+This will define a `resources` group with a single key `main_page`.
+
+## 3. Create a resource element class
 
 ```php
 <?php
@@ -102,7 +105,7 @@ class MainPage extends ResourceElement
      */
     public function getKey()
     {
-        return 'resources.main_page'; // must be a group type key
+        return 'resources.main_page'; // must be a group type key, defined in the `resource_map.yml`
     }
 
     /**
@@ -116,14 +119,6 @@ class MainPage extends ResourceElement
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'Main Page';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getClassName()
     {
         return 'FSi\Bundle\DemoBundle\Entity\Resource';
@@ -131,21 +126,25 @@ class MainPage extends ResourceElement
 }
 ```
 
-## 4. Add element into menu
+## 4. Add element to the main menu
 
-By default elements are not visible in menu. You need to add them manually to menu.
+By default elements are not visible in menu. You need to add them manually in the `admin_menu.yml` file:
 
 ```yaml
 # app/config/admin_menu.yml
 
 menu:
-  - main_page
+  - main_page # This will use the element's ID as the label
+  # This will add an element with ID "main_page" and label "Main Page" - you can also
+  # use translation keys as names
+  - { "id": main_page, "name": "Main Page" }
+
 ```
 
 ## Admin element options
 
-There are also several options that you can use to configure admin element.
-This can be easily done by overwriting ``setDefaultOptions`` method in admin element class.
+There are also several options that you can use to configure the element.
+This can be easily done by overwriting ``setDefaultOptions`` method in the element's class.
 Following example contains all available options with default values:
 
 ```php

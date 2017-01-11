@@ -1,6 +1,6 @@
-# How to create simple form element in 2 simple steps
+# How to create a simple form element in 2 steps
 
-## 1. Create admin form element class which builds your form
+## 1. Create the form element class
 
 ```php
 <?php
@@ -24,7 +24,7 @@ class SubscriberFormElement extends FormElement
      */
     public function getClassName()
     {
-        return 'FSi\Bundle\DemoBundle\Entity\Subscriber'; // Doctrine class name
+        return 'FSi\Bundle\DemoBundle\Entity\Subscriber'; // Doctrine entity's class name
     }
 
     /**
@@ -32,7 +32,7 @@ class SubscriberFormElement extends FormElement
      */
     public function getId()
     {
-        return 'subscriber_form'; // id is used in url generation http://domain.com/admin/form/{id}
+        return 'subscriber_form'; // ID is used in url generation http://domain.com/admin/form/{id}
     }
 
     /**
@@ -40,6 +40,9 @@ class SubscriberFormElement extends FormElement
      */
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
+        // You can either build your form here or use a dedicated class.
+        // Basically all ways of creating forms from the Symfony2 Form component
+        // are valid.
         $builder = $factory->createNamedBuilder('subscriber', 'form', $data, array(
             'data_class' => $this->getClassName()
         ));
@@ -62,12 +65,12 @@ class SubscriberFormElement extends FormElement
 
 [Symfony Form building guide](http://symfony.com/doc/current/book/forms.html#building-the-form)
 
-## 2. Add your form element to some list element
+## 2. Add your form element to a list element
 
-Assume you already have some list element defined like [here](admin_element_list.md).
-You can easily attach your new form element to datagrid actions column:
- 
-```
+Assuming you already defined a list element (more [here](admin_element_list.md)),
+you can easily attach your new form element to the datagrid actions column:
+
+```yaml
 # src/FSi/Bundle/DemoBundle/Resources/config/datasource/admin_subscribers.yml
 
 columns:

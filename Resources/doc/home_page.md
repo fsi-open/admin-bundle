@@ -1,9 +1,7 @@
 # Home page
 
 By default the admin panel home page (index page) is just a blank page with
-navigation bar, but without any content.
-
-You can customize it to fit your needs.
+navigation bar, but you can customize it to fit your needs.
 
 ## Override the template file
 
@@ -15,11 +13,10 @@ file with your own.
 
 fsi_admin:
     templates:
-        index_page: YourAdminBundle:Admin:index.html.twig
+        index_page: @YourAdmin/Admin/index.html.twig
 ```
 
-It is a good idea to let your custom home page template file extend the FSi
-Admin Bundle base template file.
+It is a good idea to have your custom template file extend the FSi Admin Bundle base template file.
 
 ```twig
 # YourAdminBundle/Resources/views/Admin/index.html.twig
@@ -36,7 +33,7 @@ Admin Bundle base template file.
 If you want to have your own controller with custom logic, you can override the
 home page route (just like any other route in Symfony 2).
 
-```
+```yaml
 # app/config/routing.yml
 
 fsi_admin:

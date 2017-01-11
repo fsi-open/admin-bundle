@@ -1,9 +1,9 @@
 # Admin elements
 
-Admin panel is build from admin elements. Admin element is nothing more that object that allows you to modify
-your website resources.
+The panel is created by defining admin elements. An element is nothing more than an object that allows for
+modification and/or display of your website resources.
 
-Admin elements have different types, at the moment you can choose from
+Currently there are many different types of elements available and you can choose from:
 
 * [Doctrine CRUD (Create Read Update Delete)](admin_element_crud.md)
 * [Doctrine List](admin_element_list.md)
@@ -12,17 +12,17 @@ Admin elements have different types, at the moment you can choose from
 * [Doctrine Resource](admin_element_resource.md)
 * [Doctrine Display](admin_element_display.md)
 
-If default element types are not enough you can use [event system](events.md) to modify admin elements
-behavior.
+Should you wish to extend any of the elements behaviour, the [event system](events.md) is there to suit
+your needs.
 
 # Admin elements registration
 
-Each admin element must be registered in admin elements manager. In other way admin bundle will not be
-able to handle it properly. There are few ways to do it:
+In order for the admin element to be properly recognized by the bundle, you need to register it in the
+admin element manager. There are two ways to do this:
 
 ### Annotation
 
-Probably the simplest way
+Probably the simplest way is to annotate your element class like so:
 
 ```php
 <?php
@@ -40,9 +40,13 @@ class UserElement extends CRUDElement
 }
 ```
 
+This is fast and easy, but currently there is no way to inject any dependencies
+using this method. You will either have to register your element as a service or
+use interfaces to modify what dependecies are being injected into the element.
+
 ### Service
 
-You can register your admin element as a symfony2 tagged service
+The other way is to register your admin element as a Symfony2 tagged service:
 
 XML Example:
 ```xml
@@ -72,6 +76,9 @@ services:
 
 # Injecting request stack to admin element
 
+If your element requires the request object, there is an interface which will
+provide automatical injection of the request stack service:
+
 ```php
 namespace FSi\Bundle\DemoBundle\Admin;
 
@@ -91,6 +98,6 @@ class UserElement extends CRUDElement implements RequestStackAware
 }
 ```
 
-This technique is particular useful when you register admin elements by annotations.
+This technique is especially useful when you register admin elements through annotations.
 
 [Back to index](index.md)
