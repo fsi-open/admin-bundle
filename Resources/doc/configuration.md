@@ -1,7 +1,6 @@
 # FSiAdminBundle configuration
 
-There are some things that can be configured globally for all admin elements.
-This is reference for admin bundle configuration with all default options.
+Below is reference for configuration of all bundle parameters, with default values:
 
 ```yml
 # app/config/config.yml
@@ -26,7 +25,7 @@ fsi_admin:
 ```
 
 There is a separate [theme](../view/CRUD/datagrid_fsi_doctrine_extensions.html.twig) for datagrids you can use if
-you register [fsi/doctrine-extensions-bundle](https://github.com/fsi-open/doctrine-extensions-bundle). 
+you register the [fsi/doctrine-extensions-bundle](https://github.com/fsi-open/doctrine-extensions-bundle).
 
 ```yml
 # app/config/config.yml

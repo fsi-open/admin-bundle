@@ -1,6 +1,6 @@
-# How to create simple CRUD element in 5 steps
+# How to create a simple CRUD element in 5 steps
 
-## 1. Create admin element class
+## 1. Create the element's class
 
 ```php
 <?php
@@ -27,7 +27,7 @@ class UserElement extends CRUDElement
      */
     public function getClassName()
     {
-        return 'FSi\Bundle\DemoBundle\Entity\User'; // Doctrine class name
+        return 'FSi\Bundle\DemoBundle\Entity\User'; // Doctrine entity's class name
     }
 
     /**
@@ -44,9 +44,11 @@ class UserElement extends CRUDElement
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
         /* @var $datasource \FSi\Component\DataSource\DataSource */
-        $datasource = $factory->createDataSource('doctrine', array(
-            'entity' => $this->getClassName()
-        ), 'admin_users');
+        $datasource = $factory->createDataSource(
+            'doctrine',
+            array('entity' => $this->getClassName()),
+            'admin_users' // this is the ID of the element's datasource
+        );
 
         $datasource->setMaxResults(10);
 
@@ -61,7 +63,9 @@ class UserElement extends CRUDElement
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
         /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
-        $datagrid = $factory->createDataGrid('admin_users');
+        $datagrid = $factory->createDataGrid(
+            'admin_users' // this is the ID of the element's datagrid
+        );
 
         // To get more information about datagrid you should visit https://github.com/fsi-open/datagrid-bundle/blob/master/Resources/docs/basic_usage.md
 
@@ -84,7 +88,10 @@ class UserElement extends CRUDElement
 
 ## 2. Configure datagrid
 
-Just remember to set file name equal to datagrid name (create by factory)
+Datagrid configuration is read from your bundle's `Resources/config/datagrid`
+directory. Each element's datagrid configuration needs to be stored in a file,
+whose name needs to correspond to the value passed as the datagrid's ID in the
+`initDataGrid` method.
 
 ```yaml
 # src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yml
@@ -113,6 +120,9 @@ understand what's going on under the hood.
 
 ## 3. Configure datasource
 
+The configuration is almost identical to datagrid's. Files are read from `Resources/config/datasource`
+directory and their names need to correspond to the ID passed in the `initDataSource` method.
+
 ```yaml
 # src/FSi/Bundle/DemoBundle/Resources/config/datasource/admin_users.yml
 
@@ -127,25 +137,28 @@ fields:
 
 [DataSource column types reference](https://github.com/fsi-open/datasource-bundle/blob/master/Resources/docs/columns.md)
 
-## 4. Add element to main menu
+## 4. Add element to the main menu
 
-By default elements are not visible in menu. You need to add it to menu manually.
+By default elements are not visible in menu. You need to add them manually in the `admin_menu.yml` file:
 
 ```yaml
 # app/config/admin_menu.yml
 
 menu:
-  - users
+  - users # This will use the element's ID as the label
+  # This will add an element with ID "users" and label "Users Element" - you can also
+  # use translation keys as names
+  - { "id": users, "name": "Users Element" }
 
 ```
 
-Remember to use id of element that is returned by ``UserElement::getId`` method.
+Remember to use the ID of element that is returned by the ``UserElement::getId`` method.
 You can read more about menu configuration in [Menu section](menu.md)
 
 ## 5. Admin element options
 
-There are also several options that you can use to configure admin element.
-This can be easily done by overwriting ``setDefaultOptions`` method in admin element class.
+There are also several options that you can use to configure an element.
+This can be easily done by overwriting ``setDefaultOptions`` method in the element's class.
 Following example contains all available options with default values:
 
 ```php
@@ -168,9 +181,9 @@ class UserElement extends CRUDElement
             "allow_add" => true,
             "template_list" => "@FSiDemo/Admin/user_list.html.twig",
             "template_form" => "@FSiDemo/Admin/user_form.html.twig",
-            "template_crud_list" => "@FSiDemo/Admin/user_list.html.twig", # deprecated since version 1.1, will be removed in version 1.2
-            "template_crud_create" => "@FSiDemo/Admin/user_create.html.twig", # deprecated since version 1.1, will be removed in version 1.2
-            "template_crud_edit" => "@FSiDemo/Admin/user_edit.html.twig", # deprecated since version 1.1, will be removed in version 1.2
+            "template_crud_list" => "@FSiDemo/Admin/user_list.html.twig", # deprecated since version 1.1, will be removed in version 2.0
+            "template_crud_create" => "@FSiDemo/Admin/user_create.html.twig", # deprecated since version 1.1, will be removed in version 2.0
+            "template_crud_edit" => "@FSiDemo/Admin/user_edit.html.twig", # deprecated since version 1.1, will be removed in version 2.0
         ));
     }
 }

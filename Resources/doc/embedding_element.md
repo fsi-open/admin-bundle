@@ -1,10 +1,10 @@
-# Embedding element
+# Embedding elements
 
-This section will show you how to embed CRUD list under edit form of other admin element.
-Lets assume that we have a [User admin element](admin_element_crud.md) and we need to display
-list of user invoices under edit form.
+This section will show you how to embed a CRUD list under an edit form of another admin element.
+Let's assume we have a [User admin element](admin_element_crud.md) and need to display a
+list of user invoices under the edit form.
 
-First of all we need to prepare entities.
+First of all we need to prepare the relative entity classes:
 
 ## User entity
 
@@ -15,8 +15,9 @@ First of all we need to prepare entities.
 namespace Acme\DemoBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use FOS\UserBundle\Entity\User as BaseUser;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Entity\User as BaseUser;
 
 /**
  * @ORM\Entity
@@ -43,7 +44,7 @@ class User extends BaseUser
     }
 
     /**
-     * @return mixed
+     * @return Collection|UserInvoice[]
      */
     public function getInvoices()
     {
@@ -95,7 +96,7 @@ class UserInvoice
     protected $user;
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {
@@ -103,7 +104,7 @@ class UserInvoice
     }
 
     /**
-     * @param mixed $title
+     * @param string $title
      */
     public function setTitle($title)
     {
@@ -111,7 +112,7 @@ class UserInvoice
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTitle()
     {
@@ -119,7 +120,7 @@ class UserInvoice
     }
 
     /**
-     * @param mixed $user
+     * @param User $user
      */
     public function setUser(User $user)
     {
@@ -127,7 +128,7 @@ class UserInvoice
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getUser()
     {
@@ -136,14 +137,18 @@ class UserInvoice
 }
 ```
 
+Having that, you need to update your database schema. To do that, you can use the command below:
+
 ```
 $ php app/console doctrine:schema:update --force
 ```
 
-Database is ready. Now we need to create admin element for UserInvoices. This element is specific because it should
-not be displayed in menu and should not allow you to delete/add/edit invoices.
-Because of those requirements we can't create it as a service with tag "admin.element". Also this element
-should be created only for specific User. Ok, so lets start with ``UserInvoice`` element.
+Now that the database is ready, we need to create an admin element for `UserInvoice`s.
+This element is pretty peculiar - it should not be displayed in menu nor should it allow for deleting/adding/editing invoices.
+Because of that, we cannot mark it as an admin element with neither service tag or class annotation.
+Also, it should only work for specific instances of the `User` entity.
+
+Here's how an `UserInvoice` element can look like:
 
 ```php
 <?php
@@ -231,14 +236,15 @@ class UserInvoice extends CRUDElement
      */
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        // because this element don't allow you create/edit invoices this method can be empty
+        // Because this element doesn't allow creating or editing invoices,
+        // this method should be empty
     }
 }
 ```
 
-If element require from us ``user`` option we need to create it somewhere where user object is available and where
-we can set DataGridFactory, DataSourceFactory and Doctrine ManagerRegistry. Probably the best place for this action
-is inside of User admin element. Lets modify it:
+Since the element requires the ``user`` option, we need to create it somewhere where a `User` instance is available.
+The best place would be inside of `User` admin element, since there we have the access to the `DataGridFactory`,
+`DataSourceFactory` and Doctrine `ManagerRegistry`:
 
 ```php
 <?php
@@ -301,7 +307,7 @@ class User extends CRUDElement
         $datasource->addField('email', 'text', 'like');
         $datasource->addField('username', 'text', 'like');
 
-        // Here you can add some fields or filters into datasource
+        // Add more fields if you need them
         // To get more information about datasource you should visit https://github.com/fsi-open/datasource
 
         return $datasource;
@@ -318,22 +324,27 @@ class User extends CRUDElement
         $datagrid->addColumn('email', 'text', array(
             'label' => 'Eamil'
         ));
+
         $datagrid->addColumn('username', 'text', array(
             'label' => 'Username',
             'editable' => true,
         ));
+
         $datagrid->addColumn('enabled', 'boolean', array(
             'label' => 'Enabled'
         ));
+
         $datagrid->addColumn('locked', 'boolean', array(
             'label' => 'Locked'
         ));
+
         $datagrid->addColumn('roles', 'text', array(
             'label' => 'Roles',
             'value_format' => function($data) {
                 return implode(', ', $data['roles']);
             }
         ));
+
         $datagrid->addColumn('action', 'action', array(
             'label' => 'Action',
             'field_mapping' => array('id'),
@@ -364,7 +375,7 @@ class User extends CRUDElement
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
         $form = $factory->create('form', $data, array(
-            'data_class' => 'Acme\DemoBundle\Entity\User' // this option is important for create form
+            'data_class' => 'Acme\DemoBundle\Entity\User' // this option is important for creation form
         ));
 
         $form->add('email', 'email');
@@ -388,8 +399,22 @@ class User extends CRUDElement
 
 ```
 
-Now we must modify a bit User edit form template. This can be done by passing path to modified template via
-user admin element service options.
+Next, we have to modify the template for the `User` edit form:
+
+```twig
+{# src/Acme/DemoBundle/Resources/views/Admin/user_edit.html.twig #}
+{% extends '@FSiAdmin/CRUD/edit.html.twig' %}
+
+{% block content %}
+    {{ parent() }}
+    <div class="col-lg-12">
+        <h1>User invoices</h1>
+        {% render(controller('admin.controller.list:listAction', {'element': element.invoices(form.vars.data)})) %}
+    </div>
+{% endblock %}
+```
+
+and add it to the elment's service options:
 
 ```xml
 <!-- src/Acme/DemoBundle/Resources/config/services.xml -->
@@ -410,41 +435,26 @@ user admin element service options.
 </container>
 ```
 
-And ``@AcmeDemo/Admin/user_edit.html.twig`` file
-
-```twig
-{# src/Acme/DemoBundle/Resources/views/Admin/user_edit.html.twig #}
-{% extends '@FSiAdmin/CRUD/edit.html.twig' %}
-
-{% block content %}
-{{ parent() }}
-<div class="col-lg-12">
-    <h1>User invoices</h1>
-    {% render(controller('admin.controller.list:listAction', {'element': element.invoices(form.vars.data)})) %}
-</div>
-{% endblock %}
-```
-
-We are almost ready! Next step is to create template for UserInvoice element list. ``@AcmeDemo/Admin/user_invoices_list.html.twig``
+Then, we have to prepare the `UserInvoice` element list template:
 
 ```twig
 {% extends '@FSiAdmin/List/list.html.twig' %}
 
 {% block themes %}
-{% datasource_route datasource_view 'fsi_admin_form' with {'element' : 'users', 'id' : element.userId} %}
-{% datasource_theme datasource_view admin_templates_datasource_theme %}
-{% datagrid_theme datagrid_view admin_templates_datagrid_theme with {'datasource' : datasource_view, 'element' : element.id} %}
+    {% datasource_route datasource_view 'fsi_admin_form' with {'element' : 'users', 'id' : element.userId} %}
+    {% datasource_theme datasource_view admin_templates_datasource_theme %}
+    {% datagrid_theme datagrid_view admin_templates_datagrid_theme with {'datasource' : datasource_view, 'element' : element.id} %}
 {% endblock themes %}
 ```
 
-Ok this should be enough to display user invoices under user edit form (of course if user have any invoices).
-But pagination or set max result is still not working because controller that is rendered with ``render(controller( .. ))``
-don't have access to main app request.
+This is enough for displaying a list of user invoices under his/hers edition form (assuming he/she has any).
+But since we rendered it through the ``render(controller( .. ))`` method, the pagination will not
+work - it does not have the acces to the application's main request object.
 
-So how we are going to take data from main request and pass it into datasource rendered in sub request? This can be done
-with admin bundle events.
+So, how we are going to take data from the main request and pass it to the datasource
+rendered in a subrequest? Via the admin bundle events, of course!
 
-First we need to create event class
+First, we need to create an event listener class:
 
 ```php
 <?php
@@ -453,13 +463,9 @@ namespace Acme\DemoBundle\EventListener\Admin;
 
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 class UserListener
 {
-    protected $manager;
-
     protected $invoicesDatasource;
 
     public function __construct()
@@ -483,7 +489,7 @@ class UserListener
 }
 ```
 
-And finally we must register it in services.xml file
+Then we register it in the `services.xml` file:
 
 ```xml
 <!-- src/Acme/DemoBundle/Resources/config/services.xml -->
@@ -508,5 +514,7 @@ And finally we must register it in services.xml file
     </services>
 </container>
 ```
+
+And everything should work now!
 
 [Back to index](index.md)

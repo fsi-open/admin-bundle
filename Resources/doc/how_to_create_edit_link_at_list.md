@@ -1,12 +1,12 @@
-# How to create "Edit" and/or "Display" links at list
+# How to create "Edit" and/or "Display" links in the list row
 
-So the simplest way to create "edit" and/or "display" link from list of elements is to use
+The simplest way to create "edit" and/or "display" links for elements on list is to use the
 [action](https://github.com/fsi-open/datagrid/blob/master/doc/en/columns/action.md) column type.
-Action column type have "actions" option that takes actions displayed in cell.
-There are some predefined templates for actions like "edit" and "display", you can find them in
-[datagrid template](/Resources/views/CRUD/datagrid.html.twig)
+This type has an `actions` option that renders the defined actions in a cell of each row.
+There are some predefined templates for actions like "edit" and "display", which you can find in
+the [datagrid template](/Resources/views/CRUD/datagrid.html.twig).
 
-Following configuration of action column will add edit and display actions into it.
+Bellow is an example configuration of two actions, editing and displaying:
 
 ```yaml
 # src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yml
@@ -28,8 +28,9 @@ columns:
           parameters_field_mapping: { id: id }
 ```
 
-To prevent setting this every single time you can use ``element`` option of each action
-which is shortcut to create action pointing to that element. So following configuration works exactly like above one
+Instead of setting this every single time, you can use the ``element`` option of each action,
+which is a shortcut for creating an action pointing to that element. Following configuration
+works exactly like the one above:
 
 ```
 # src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yml
@@ -47,7 +48,7 @@ columns:
           element: admin_users_display
 ```
 
-*You should not use this shortcut option if entity that is edited or displayed by admin element is identified by other
-field than "id"*
+*You should not use this shortcut option if the entity that is edited or displayed by the admin element
+is identified by any other field than `id`*
 
 [Back to admin element configuration](admin_element_crud.md)

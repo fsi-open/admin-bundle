@@ -1,7 +1,7 @@
-#Events 
+# Events
 
-Admin bundle provide several events that can be handled in application.
-List of available events can be found in following classes (along with their argument type):
+Admin bundle provides several events that can be listened for. Their full list,
+along with their argument types, can be found in the following classes:
 
 - [AdminEvents](/Event/AdminEvents.php), type of argument: [AdminEvent](/Event/AdminEvent.php)
 - [CRUDEvents](/Event/CRUDEvents.php), type of argument: [ListEvent](/Event/ListEvent.php) for ``CRUD_LIST_*`` and [FormEvent](/Event/FormEvent.php) for all the others
@@ -11,12 +11,13 @@ List of available events can be found in following classes (along with their arg
 - [BatchEvents](/Event/BatchEvents.php), type of argument: [FormEvent](/Event/FormEvent.php)
 - [ResourceEvents](/Event/ResourceEvents.php), type of argument: [FormEvent](/Event/FormEvent.php)
 
-Following example will show you how to handle dynamically added/removed relation elements for doctrine entity.
-Just like in http://symfony.com/doc/current/cookbook/form/form_collections.html#allowing-tags-to-be-removed
-> This exsmple is only proof of concept, you should use orphanRemoval doctrine relation option instead of building complicated 
-> event listener.
+Following example will show you how to handle dynamically added/removed relation elements for a Doctrine entity,
+similarly to http://symfony.com/doc/current/cookbook/form/form_collections.html#allowing-tags-to-be-removed
 
-First you need to create event listener class
+> This example is only a proof of concept - in this you should use the `orphanRemoval` Doctrine
+> relation option instead of a custom event listener.
+
+For starters, we create an event listener class:
 
 ```php
 
@@ -24,9 +25,9 @@ First you need to create event listener class
 
 namespace FSi\Bundle\DemoBundle\EventListener;
 
+use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\DemoBundle\Entity\News;
 use FSi\Bundle\DemoBundle\Entity\Tag;
-use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class CRUDEventListener
@@ -34,12 +35,12 @@ class CRUDEventListener
     /**
      * @var \Symfony\Bridge\Doctrine\ManagerRegistry
      */
-    protected $registry;
+    private $registry;
 
     /**
      * @var array
      */
-    protected $tags;
+    private $tags;
 
     /**
      * @param ManagerRegistry $registry
@@ -92,10 +93,11 @@ class CRUDEventListener
 
 ```
 
-Next and last step is event listener registration
+Then we register the event listener as a service, adding relevant tags for each
+event we want to listen for:
 
 ```xml
-<!-- src/FSi/Bundle/DemoBundle/Resources/config/services.xml --> 
+<!-- src/FSi/Bundle/DemoBundle/Resources/config/services.xml -->
 
 <?xml version="1.0" ?>
 
@@ -113,5 +115,8 @@ Next and last step is event listener registration
     </services>
 </container>
 ```
+
+You can of course use a subscriber and move the event configuration inside the class
+itself, the choice is entirely up to you.
 
 [Back to index](index.md)
