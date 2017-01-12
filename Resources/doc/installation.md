@@ -1,16 +1,18 @@
 # Installation in 4 simple steps
 
-## 1. Download Admin Bundle
+## 1. Add FSiAdminBundle to your project
 
-Add to composer.json
+Add the following line to your `composer.json` and run update:
 
 ```json
 "require": {
-    "fsi/admin-bundle": "1.0.*"
+    "fsi/admin-bundle": "2.0.*"
 }
 ```
 
-## 2. Register bundles
+## 2. Register required bundles
+
+Update your `AppKernel.php` file with the following bundles:
 
 ```php
 <?php
@@ -28,7 +30,7 @@ public function registerBundles()
 }
 ```
 
-## 3. Set route path to AdminController
+## 3. Import the routing configuraton
 
 ```yaml
 # app/config/routing.yml
@@ -47,6 +49,6 @@ framework:
     translator:      { fallback: %locale% }
 ```
 
-It's time to register your first [admin element](admin_element.md)
+Congratulations! Now you can register your first [admin element](admin_element.md).
 
 [Back to index](index.md)
