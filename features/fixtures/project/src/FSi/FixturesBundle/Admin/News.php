@@ -4,7 +4,7 @@ namespace FSi\FixturesBundle\Admin;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
-use FSi\Bundle\AdminBundle\Form\FeatureHelper;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\FixturesBundle\Form\TagType;
@@ -37,7 +37,7 @@ class News extends CRUDElement
             'datetime_format' => 'Y-m-d',
             'editable' => true,
             'form_type' => array(
-                'date' => FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date')
+                'date' => TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date')
             ),
             'form_options' => array(
                 'date' => array('widget' => 'single_text')
@@ -119,7 +119,7 @@ class News extends CRUDElement
     {
         $builder = $factory->createNamedBuilder(
             'news',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
             $data,
             array(
                 'data_class' => $this->getClassName()
@@ -128,7 +128,7 @@ class News extends CRUDElement
 
         $builder->add(
             'title',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\TextType', 'text'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\TextType', 'text'),
             array(
                 'label' => 'admin.news.list.title',
             )
@@ -136,7 +136,7 @@ class News extends CRUDElement
 
         $builder->add(
             'date',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date'),
             array(
                 'label' => 'admin.news.list.date',
                 'widget' => 'single_text',
@@ -146,7 +146,7 @@ class News extends CRUDElement
 
         $builder->add(
             'created_at',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date'),
             array(
                 'label' => 'admin.news.list.created_at',
                 'widget' => 'single_text'
@@ -155,7 +155,7 @@ class News extends CRUDElement
 
         $builder->add(
             'visible',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\CheckboxType', 'checkbox'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CheckboxType', 'checkbox'),
             array(
                 'label' => 'admin.news.list.visible',
                 'required' => false,
@@ -164,7 +164,7 @@ class News extends CRUDElement
 
         $builder->add(
             'creator_email',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email'),
             array(
                 'label' => 'admin.news.list.creator_email'
             )
@@ -172,7 +172,7 @@ class News extends CRUDElement
 
         $builder->add(
             'photo',
-            FeatureHelper::getFormType('FSi\Bundle\DoctrineExtensionsBundle\Form\Type\FSi\ImageType', 'fsi_image'),
+            TypeSolver::getFormType('FSi\Bundle\DoctrineExtensionsBundle\Form\Type\FSi\ImageType', 'fsi_image'),
             array(
                 'label' => 'admin.news.list.photo'
             )
@@ -180,10 +180,10 @@ class News extends CRUDElement
 
         $builder->add(
             'tags',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\CollectionType', 'collection'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CollectionType', 'collection'),
             array(
-                FeatureHelper::hasCollectionEntryTypeOption() ? 'entry_type' : 'type' =>
-                    FeatureHelper::getFormType('FSi\FixturesBundle\Form\TagType', new TagType()),
+                TypeSolver::hasCollectionEntryTypeOption() ? 'entry_type' : 'type' =>
+                    TypeSolver::getFormType('FSi\FixturesBundle\Form\TagType', new TagType()),
                 'label' => 'admin.news.list.tags',
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -193,10 +193,10 @@ class News extends CRUDElement
 
         $builder->add(
             'nonEditableTags',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\CollectionType', 'collection'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CollectionType', 'collection'),
             array(
-                FeatureHelper::hasCollectionEntryTypeOption() ? 'entry_type' : 'type' =>
-                    FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\TextType', 'text'),
+                TypeSolver::hasCollectionEntryTypeOption() ? 'entry_type' : 'type' =>
+                    TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\TextType', 'text'),
                 'data' => new ArrayCollection(['Tag 1', 'Tag 2', 'Tag 3']),
                 'label' => 'admin.news.list.non_editable_tags',
                 'allow_add' => false,

@@ -2,7 +2,7 @@
 
 namespace FSi\FixturesBundle\Form;
 
-use FSi\Bundle\AdminBundle\Form\FeatureHelper;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,10 +15,10 @@ class TagType extends AbstractType
         $builder->add('name');
         $builder->add(
             'elements',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\CollectionType', 'collection'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CollectionType', 'collection'),
             array(
-                FeatureHelper::hasCollectionEntryTypeOption() ? 'entry_type' : 'type' =>
-                    FeatureHelper::getFormType('FSi\FixturesBundle\Form\TagElementType', new TagElementType()),
+                TypeSolver::hasCollectionEntryTypeOption() ? 'entry_type' : 'type' =>
+                    TypeSolver::getFormType('FSi\FixturesBundle\Form\TagElementType', new TagElementType()),
                 'label' => 'admin.news.list.tag_elements',
                 'allow_add' => true,
                 'allow_delete' => true,

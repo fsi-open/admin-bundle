@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormTypeInterface;
 /**
  * @internal
  */
-class FeatureHelper
+class TypeSolver
 {
     /**
      * Return FQCN form type or old style form type

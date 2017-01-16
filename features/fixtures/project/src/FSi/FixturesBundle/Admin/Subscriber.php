@@ -3,7 +3,7 @@
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ListElement;
-use FSi\Bundle\AdminBundle\Form\FeatureHelper;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 
@@ -35,7 +35,7 @@ class Subscriber extends ListElement
             'label' => 'admin.subscriber.list.email',
             'editable' => true,
             'form_type' => array(
-                'email' => FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email')
+                'email' => TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email')
             )
         ));
         $datagrid->addColumn('active', 'boolean', array(

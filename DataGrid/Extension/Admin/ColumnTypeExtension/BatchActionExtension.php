@@ -4,7 +4,7 @@ namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Bundle\AdminBundle\Form\FeatureHelper;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
@@ -128,7 +128,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      */
     private function buildBatchActions(ColumnTypeInterface $column)
     {
-        if (FeatureHelper::isChoicesAsValuesOptionTrueByDefault()) {
+        if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
             $batchActions = array('crud.list.batch.empty_choice' => '');
         } else {
             $batchActions = array('crud.list.batch.empty_choice');
@@ -140,7 +140,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
             $batchActionUrl = $this->getBatchActionUrl($actionOptions);
             $batchActionLabel = isset($actionOptions['label']) ? $actionOptions['label'] : $name;
 
-            if (FeatureHelper::isChoicesAsValuesOptionTrueByDefault()) {
+            if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
                 $batchActions[$batchActionLabel] = $batchActionUrl;
             } else {
                 $batchActions[$batchActionUrl] = $batchActionLabel;
@@ -171,7 +171,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         if (count($batchActions) > 1) {
             $this->formBuilder->add(
                 'action',
-                FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+                TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
                 array(
                     'choices' => $batchActions,
                     'translation_domain' => $column->getOption('translation_domain')
@@ -179,7 +179,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
             );
             $this->formBuilder->add(
                 'submit',
-                FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+                TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
                 array(
                     'label' => 'crud.list.batch.confirm',
                     'translation_domain' => 'FSiAdminBundle'

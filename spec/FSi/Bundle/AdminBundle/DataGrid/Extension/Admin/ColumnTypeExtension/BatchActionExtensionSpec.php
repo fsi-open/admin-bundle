@@ -3,7 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Bundle\AdminBundle\Form\FeatureHelper;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -156,7 +156,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
             )
         )->willReturn('path_to_batch_action');
 
-        if (FeatureHelper::isChoicesAsValuesOptionTrueByDefault()) {
+        if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
             $expectedChoices = array(
                 'crud.list.batch.empty_choice' => '',
                 'batch_action_label' => 'path_to_batch_action'
@@ -170,7 +170,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
         $formBuilder->add(
             'action',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
             array(
                 'choices' => $expectedChoices,
                 'translation_domain' => 'FSiAdminBundle'
@@ -179,7 +179,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
         $formBuilder->add(
             'submit',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
             array(
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'
@@ -240,7 +240,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
             )
         )->willReturn('path_to_batch_action');
 
-        if (FeatureHelper::isChoicesAsValuesOptionTrueByDefault()) {
+        if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
             $expectedChoices = array(
                 'crud.list.batch.empty_choice' => '',
                 'batch_action_label' => 'path_to_batch_action'
@@ -254,7 +254,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
         $formBuilder->add(
             'action',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
             array(
                 'choices' => $expectedChoices,
                 'translation_domain' => 'FSiAdminBundle'
@@ -262,7 +262,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
         )->willReturn();
         $formBuilder->add(
             'submit',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
             array(
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'
@@ -319,7 +319,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
             )
         )->willReturn('path_to_batch_action');
 
-        if (FeatureHelper::isChoicesAsValuesOptionTrueByDefault()) {
+        if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
             $expectedChoices = array(
                 'crud.list.batch.empty_choice' => '',
                 'batch_action_label' => 'path_to_batch_action'
@@ -333,7 +333,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
         $formBuilder->add(
             'action',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
             array(
                 'choices' => $expectedChoices,
                 'translation_domain' => 'FSiAdminBundle'
@@ -341,7 +341,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
         )->willReturn();
         $formBuilder->add(
             'submit',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
             array(
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'
@@ -390,7 +390,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
             )
         )->willReturn('path_to_batch_action');
 
-        if (FeatureHelper::isChoicesAsValuesOptionTrueByDefault()) {
+        if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
             $expectedChoices = array(
                 'crud.list.batch.empty_choice' => '',
                 'action_name' => 'path_to_batch_action'
@@ -404,7 +404,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
         $formBuilder->add(
             'action',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
             array(
                 'choices' => $expectedChoices,
                 'translation_domain' => 'FSiAdminBundle'
@@ -412,7 +412,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
         )->willReturn();
         $formBuilder->add(
             'submit',
-            FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
             array(
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'

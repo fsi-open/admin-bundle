@@ -3,7 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Bundle\AdminBundle\Form\FeatureHelper;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -67,7 +67,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
 
         $formFactory
             ->createBuilder(
-                FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+                TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
                 array('resources_resource_key' => $resourceValue),
                 array('form_options')
             )
@@ -76,7 +76,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         $formBuilder
             ->add(
                 'resources_resource_key',
-                FeatureHelper::getFormType('FSi\Bundle\ResourceRepositoryBundle\Form\Type\ResourceType', 'resource'),
+                TypeSolver::getFormType('FSi\Bundle\ResourceRepositoryBundle\Form\Type\ResourceType', 'resource'),
                 array('resource_key' => 'resources.resource_key')
             )
             ->shouldBeCalled();

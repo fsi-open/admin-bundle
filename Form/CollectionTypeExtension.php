@@ -20,6 +20,6 @@ class CollectionTypeExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return FeatureHelper::getFormType('Symfony\Component\Form\Extension\Core\Type\CollectionType', 'collection');
+        return TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CollectionType', 'collection');
     }
 }
