@@ -39,6 +39,7 @@
     "require-dev": {
         "symfony/class-loader": "^2.3|^3.0",
         "symfony/monolog-bundle": "^2.3|^3.0",
+        "symfony/asset": "^2.7|^3.0",
         "ext-pdo_sqlite": "*",
         "fsi/resource-repository-bundle": "^1.1.5|^2.0@dev",
         "fsi/doctrine-extensions-bundle": "^1.1.4",
