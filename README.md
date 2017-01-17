@@ -5,20 +5,22 @@ FSi Admin Bundle is a complete solution that provides mechanisms to generate an 
 > **Important** - the bundle is not integrated with Symfony's security component. By default the path /admin is not protected
 > and you need to secure it on your own. It's recommended to use [FSiAdminSecurityBundle](https://github.com/fsi-open/admin-security-bundle)
 
-Build Status:
-[![Build Status](https://travis-ci.org/fsi-open/admin-bundle.svg?branch=master)](https://travis-ci.org/fsi-open/admin-bundle) - Master
-[![Build Status](https://travis-ci.org/fsi-open/admin-bundle.svg?branch=2.0)](https://travis-ci.org/fsi-open/admin-bundle) - 2.0
-[![Build Status](https://travis-ci.org/fsi-open/admin-bundle.svg?branch=1.0)](https://travis-ci.org/fsi-open/admin-bundle) - 1.0
+Build Status:  
+[![Build Status](https://travis-ci.org/fsi-open/admin-bundle.svg?branch=master)](https://travis-ci.org/fsi-open/admin-bundle) - Master  
+[![Build Status](https://travis-ci.org/fsi-open/admin-bundle.svg?branch=2.1)](https://travis-ci.org/fsi-open/admin-bundle) - 2.1  
+[![Build Status](https://travis-ci.org/fsi-open/admin-bundle.svg?branch=2.0)](https://travis-ci.org/fsi-open/admin-bundle) - 2.0  
+[![Build Status](https://travis-ci.org/fsi-open/admin-bundle.svg?branch=1.0)](https://travis-ci.org/fsi-open/admin-bundle) - 1.0  
 
-[![Latest Stable Version](https://poser.pugx.org/fsi/admin-bundle/v/stable.png)](https://packagist.org/packages/fsi/admin-bundle)
+[![Latest Stable Version](https://poser.pugx.org/fsi/admin-bundle/v/stable.png)](https://packagist.org/packages/fsi/admin-bundle)  
 
-Code quality:
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/fsi-open/admin-bundle/badges/quality-score.png?s=fbe212a23fd11b49c05ac4e837d3de0a2cbadfd6)](https://scrutinizer-ci.com/g/fsi-open/admin-bundle/)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/82a9e680-cff7-460b-973c-67a2fc7adac0/mini.png)](https://insight.sensiolabs.com/projects/82a9e680-cff7-460b-973c-67a2fc7adac0)
+Code quality:  
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/fsi-open/admin-bundle/badges/quality-score.png?s=fbe212a23fd11b49c05ac4e837d3de0a2cbadfd6)](https://scrutinizer-ci.com/g/fsi-open/admin-bundle/)  
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/82a9e680-cff7-460b-973c-67a2fc7adac0/mini.png)](https://insight.sensiolabs.com/projects/82a9e680-cff7-460b-973c-67a2fc7adac0) 
 
 Documentation:
 
 - [For master](Resources/doc/index.md)
+- [For version 2.0](https://github.com/fsi-open/admin-bundle/blob/2.0/README.md)
 - [For version 1.0](https://github.com/fsi-open/admin-bundle/blob/1.0/README.md)
 
 # Features
