@@ -1,3 +1,0 @@
-admin:
-    resource: "@FSiAdminBundle/Resources/config/routing/admin.yml"
-    prefix: /admin

@@ -1,0 +1,42 @@
+{% extends 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block collection_widget %}
+    {% if prototype is defined %}
+        {%- set attr = attr|merge({'data-prototype': block('collection_prototype') }) -%}
+    {% endif %}
+    <div {{ block('widget_container_attributes') }}>
+        <div class="collection-items">
+            {%- if form.parent is empty -%}
+                {{ form_errors(form) }}
+            {%- endif -%}
+            {% set collection = form %}
+            {% for form in collection %}
+                {{ block('collection_item') }}
+            {% endfor %}
+            {{- form_rest(form) -}}
+        </div>
+        <a class="{{ attr['data-allow-add'] ? '' : 'disabled ' }}btn btn-success collection-add"
+           title="{{ 'crud.form.collection.add'|trans({}, 'FSiAdminBundle') }}"><i class="glyphicon glyphicon-plus"></i></a>
+    </div>
+{% endblock %}
+
+{% block collection_prototype -%}
+    {% spaceless %}
+        {% set form = prototype %}
+        {{ block('collection_item') }}
+    {% endspaceless %}
+{%- endblock %}
+
+{% block collection_item %}
+    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        <div class="col-sm-11">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </div>
+        <div class="col-sm-1">
+            <a class="{{ attr['data-allow-delete'] ? '' : 'disabled ' }}pull-right btn btn-danger collection-remove"
+               title="{{ 'crud.form.collection.remove'|trans({}, 'FSiAdminBundle') }}"><i
+                        class="glyphicon glyphicon-trash"></i></a>
+        </div>
+    </div>
+{% endblock %}

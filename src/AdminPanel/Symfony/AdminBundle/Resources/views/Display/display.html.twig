@@ -1,0 +1,51 @@
+{% extends admin_templates_base %}
+
+{% block content %}
+    <h3>
+        <span id="page-header">{% block header 'crud.display.title'|trans({}, 'FSiAdminBundle') %}</span>
+        <div class="pull-right">
+            {% block top_buttons %}
+                {% if app.request.query.has('redirect_uri') %}
+                    <a class="btn btn-xs btn-default" href="{{ app.request.query.get('redirect_uri') }}">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        {{ 'crud.display.button.back'|trans({}, 'FSiAdminBundle') }}
+                    </a>
+                {% endif %}
+            {% endblock top_buttons %}
+        </div>
+    </h3>
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8">
+            <table class="table table-bordered">
+                {% for property in display %}
+                    <tr>
+                        <td>
+                            {{ property.label|trans|default(property.path|humanize) }}
+                        </td>
+                        <td>
+                            {% if property.value is iterable %}
+                                {{ block('iterable_property') }}
+                            {% else %}
+                                {{ block('simple_property') }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block simple_property %}
+    {{ property.value }}
+{% endblock %}
+
+{% block iterable_property %}
+    {% if property.value|length %}
+        <ul class="list-unstyled">
+            {% for value in property.value %}
+                <li>{{ value }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

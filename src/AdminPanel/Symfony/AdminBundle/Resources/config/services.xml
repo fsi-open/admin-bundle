@@ -1,0 +1,166 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="admin.manager.class">AdminPanel\Symfony\AdminBundle\Admin\Manager</parameter>
+        <parameter key="admin.manager.visitor.element_collection.class">
+            AdminPanel\Symfony\AdminBundle\Admin\Manager\ElementCollectionVisitor
+        </parameter>
+        <parameter key="admin.context.manager.class">AdminPanel\Symfony\AdminBundle\Admin\Context\ContextManager
+        </parameter>
+        <parameter key="admin.form.builder.batch.class">Symfony\Component\Form\FormBuilder</parameter>
+        <parameter key="admin.form.collection_extension.class">
+            AdminPanel\Symfony\AdminBundle\Form\CollectionTypeExtension
+        </parameter>
+        <parameter key="admin.element.param.converter.class">
+            AdminPanel\Symfony\AdminBundle\Request\ParamConverter\AdminElementParamConverter
+        </parameter>
+        <parameter key="admin.element.factory.production_line.class">
+            AdminPanel\Symfony\AdminBundle\Factory\ProductionLine
+        </parameter>
+        <parameter key="admin.element.factory.worker.list.class">
+            AdminPanel\Symfony\AdminBundle\Factory\Worker\ListWorker
+        </parameter>
+        <parameter key="admin.element.factory.worker.form.class">
+            AdminPanel\Symfony\AdminBundle\Factory\Worker\FormWorker
+        </parameter>
+        <parameter key="admin.element.factory.worker.doctrine.class">
+            AdminPanel\Symfony\AdminBundle\Factory\Worker\DoctrineWorker
+        </parameter>
+        <parameter key="admin.element.factory.worker.request_stack.class">
+            AdminPanel\Symfony\AdminBundle\Factory\Worker\RequestStackWorker
+        </parameter>
+        <parameter key="admin.controller.resource.class">AdminPanel\Symfony\AdminBundle\Controller\ResourceController
+        </parameter>
+        <parameter key="admin.controller.display.class">AdminPanel\Symfony\AdminBundle\Controller\DisplayController
+        </parameter>
+        <parameter key="admin.controller.list.class">AdminPanel\Symfony\AdminBundle\Controller\ListController
+        </parameter>
+        <parameter key="admin.controller.form.class">AdminPanel\Symfony\AdminBundle\Controller\FormController
+        </parameter>
+        <parameter key="admin.controller.batch.class">AdminPanel\Symfony\AdminBundle\Controller\BatchController
+        </parameter>
+        <parameter key="admin.controller.admin.class">AdminPanel\Symfony\AdminBundle\Controller\AdminController
+        </parameter>
+    </parameters>
+
+    <services>
+        <service id="admin.manager" class="%admin.manager.class%"/>
+
+        <service id="admin.element.param.converter" class="%admin.element.param.converter.class%">
+            <argument type="service" id="admin.manager"/>
+            <tag name="request.param_converter" converter="admin.element" priority="10"/>
+        </service>
+
+        <service id="admin.element.factory.production_line" class="%admin.element.factory.production_line.class%">
+            <argument type="collection">
+                <argument type="service" id="admin.element.factory.worker.list"/>
+                <argument type="service" id="admin.element.factory.worker.form"/>
+                <argument type="service" id="admin.element.factory.worker.doctrine"/>
+                <argument type="service" id="admin.element.factory.worker.request_stack"/>
+            </argument>
+        </service>
+
+        <service id="admin.context.manager" class="%admin.context.manager.class%">
+            <argument type="collection"></argument>
+        </service>
+
+        <service id="admin.form.builder.batch" class="%admin.form.builder.batch.class%">
+            <factory service="form.factory" method="createNamedBuilder"/>
+            <argument type="string">batch_action</argument>
+            <argument type="string">form</argument>
+            <argument type="collection">
+                <argument key="translation_domain" type="string">FSiAdminBundle</argument>
+            </argument>
+        </service>
+
+        <service id="admin.form.collection_type_extension" class="%admin.form.collection_extension.class%">
+            <tag name="form.type_extension" alias="collection"/>
+        </service>
+
+        <!-- ProductionLine Workers -->
+        <service id="admin.element.factory.worker.list" class="%admin.element.factory.worker.list.class%">
+            <argument type="service" id="datasource.factory"/>
+            <argument type="service" id="datagrid.factory"/>
+        </service>
+        <service id="admin.element.factory.worker.form" class="%admin.element.factory.worker.form.class%">
+            <argument type="service" id="form.factory"/>
+        </service>
+        <service id="admin.element.factory.worker.doctrine" class="%admin.element.factory.worker.doctrine.class%">
+            <argument type="service" id="doctrine"/>
+        </service>
+        <service id="admin.element.factory.worker.request_stack"
+                 class="%admin.element.factory.worker.request_stack.class%">
+            <argument type="service" id="request_stack"/>
+        </service>
+
+        <!-- Controllers -->
+        <service id="admin.controller.resource" class="%admin.controller.resource.class%">
+            <argument type="service" id="templating"/>
+            <argument type="service" id="admin.context.manager"/>
+            <argument>%admin.templates.resource%</argument>
+            <tag name="admin.event_dispatcher_aware"/>
+        </service>
+
+        <service id="admin.controller.display" class="%admin.controller.display.class%">
+            <argument type="service" id="templating"/>
+            <argument type="service" id="admin.context.manager"/>
+            <argument>%admin.templates.display%</argument>
+            <tag name="admin.event_dispatcher_aware"/>
+        </service>
+
+        <service id="admin.controller.list" class="%admin.controller.list.class%">
+            <argument type="service" id="templating"/>
+            <argument type="service" id="admin.context.manager"/>
+            <argument>%admin.templates.list%</argument>
+            <tag name="admin.event_dispatcher_aware"/>
+        </service>
+
+        <service id="admin.controller.form" class="%admin.controller.form.class%">
+            <argument type="service" id="templating"/>
+            <argument type="service" id="admin.context.manager"/>
+            <argument>%admin.templates.form%</argument>
+            <tag name="admin.event_dispatcher_aware"/>
+        </service>
+
+        <service id="admin.controller.batch" class="%admin.controller.batch.class%">
+            <argument type="service" id="templating"/>
+            <argument type="service" id="admin.context.manager"/>
+            <tag name="admin.event_dispatcher_aware"/>
+        </service>
+
+        <service id="admin.controller.admin" class="%admin.controller.admin.class%">
+            <argument type="service" id="templating"/>
+            <argument type="service" id="router"/>
+            <argument>%admin.templates.index_page%</argument>
+        </service>
+
+        <!-- Manager Visitors -->
+        <service id="admin.manager.visitor.element_collection" class="%admin.manager.visitor.element_collection.class%">
+            <!-- This collection is replaced in AdminElementPass -->
+            <argument type="collection"/>
+            <argument type="service" id="admin.element.factory.production_line"/>
+            <tag name="admin.manager.visitor"/>
+        </service>
+
+        <service id="admin.messages.flash" class="AdminPanel\Symfony\AdminBundle\Message\FlashMessages" lazy="true">
+            <argument type="service" id="session"/>
+            <argument type="string">fsi_admin</argument>
+        </service>
+
+        <service id="admin.listener.messages" class="AdminPanel\Symfony\AdminBundle\EventListener\MessagesListener">
+            <argument type="service" id="admin.messages.flash"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="admin.twig.messages_extension" class="AdminPanel\Symfony\AdminBundle\Twig\MessageTwigExtension"
+                 public="false">
+            <argument type="service" id="admin.messages.flash"/>
+            <tag name="twig.extension"/>
+        </service>
+
+    </services>
+</container>

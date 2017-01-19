@@ -1,0 +1,61 @@
+{% extends admin_templates_base %}
+
+{% block themes %}
+    {% form_theme form admin_templates_form_theme %}
+{% endblock themes %}
+
+{% block content %}
+    <h3>
+        <span id="page-header">
+            {% block header %}
+                {% if app.request.get('id') is not empty %}
+                    {{ 'crud.edit.title'|trans({}, 'FSiAdminBundle') }}
+                {% else %}
+                    {{ 'crud.create.title'|trans({}, 'FSiAdminBundle') }}
+                {% endif %}
+            {% endblock header %}</span>
+        <div class="pull-right">
+            {% block top_buttons %}
+                {% if app.request.query.has('redirect_uri') %}
+                    <a class="btn btn-xs btn-default" href="{{ app.request.query.get('redirect_uri') }}">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        {{ 'crud.form.button.back'|trans({}, 'FSiAdminBundle') }}
+                    </a>
+                {% endif %}
+            {% endblock top_buttons %}
+        </div>
+    </h3>
+    {{ form_start(form, { attr: form.vars.attr|merge({ class: 'form-horizontal' }) } ) }}
+    {{ form_widget(form) }}
+    <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+                {{ 'crud.form.button.save'|trans({}, 'FSiAdminBundle') }}
+            </button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(['jquery', 'collection'], function ($) {
+            function initForms($context) {
+                $context.find('label.required').each(function (index, label) {
+                    if (!$(label).find('.glyphicon-asterisk').length) {
+                        $(label).append(' <i class="glyphicon glyphicon-asterisk"></i>');
+                    }
+                });
+                $context.find('div[data-prototype]')
+                    .formCollection()
+                    .on('add.collection-item', function (event, item) {
+                        initForms($(item));
+                    });
+            }
+
+            initForms($('body'));
+        });
+    </script>
+{% endblock javascripts %}

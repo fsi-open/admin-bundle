@@ -1,0 +1,27 @@
+<?php
+
+namespace spec\AdminPanel\Symfony\AdminBundle\Factory\Worker;
+
+use PhpSpec\ObjectBehavior;
+
+class RequestStackWorkerSpec extends ObjectBehavior
+{
+    /**
+     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+     */
+    function let($requestStack)
+    {
+        $this->beConstructedWith($requestStack);
+    }
+
+    /**
+     * @param \AdminPanel\Symfony\AdminBundle\Tests\Doubles\Admin\RequestStackAwareElement $element
+     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+     */
+    function it_mount_request_stack_to_elements_that_are_request_stack_aware($element, $requestStack)
+    {
+        $element->setRequestStack($requestStack)->shouldBeCalled();
+
+        $this->mount($element);
+    }
+}
