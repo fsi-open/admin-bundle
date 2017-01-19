@@ -13,7 +13,7 @@ matrix:
 before_install:
     - phpenv config-rm xdebug.ini
     - composer self-update
-
+    - composer update
 
 script:
     - ./bin/phpspec run --format=pretty
