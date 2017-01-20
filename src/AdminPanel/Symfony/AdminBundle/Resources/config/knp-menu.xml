@@ -5,26 +5,14 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="admin.menu.knp.builder.class">AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\MenuBuilder
-        </parameter>
-        <parameter key="admin.menu.knp.decorator.chain.class">
-            AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ItemDecoratorChain
-        </parameter>
-        <parameter key="admin.menu.knp.decorator.label.class">
-            AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ItemLabelDecorator
-        </parameter>
-        <parameter key="admin.menu.knp.decorator.attributes.class">
-            AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ItemAttributesDecorator
-        </parameter>
-        <parameter key="admin.menu.knp.decorator.route.class">
-            AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ItemRouteDecorator
-        </parameter>
-        <parameter key="admin.menu.knp.decorator.elements.class">
-            AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ItemElementsDecorator
-        </parameter>
+        <parameter key="admin.menu.knp.builder.class">AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\MenuBuilder</parameter>
+        <parameter key="admin.menu.knp.decorator.chain.class">AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ItemDecoratorChain</parameter>
+        <parameter key="admin.menu.knp.decorator.label.class">AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ItemLabelDecorator</parameter>
+        <parameter key="admin.menu.knp.decorator.attributes.class">AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ItemAttributesDecorator</parameter>
+        <parameter key="admin.menu.knp.decorator.route.class">AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ItemRouteDecorator</parameter>
+        <parameter key="admin.menu.knp.decorator.elements.class">AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ItemElementsDecorator</parameter>
         <parameter key="admin.menu.knp.class">Knp\Menu\ItemInterface</parameter>
-        <parameter key="admin.menu.knp.voter.element.class">AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ElementVoter
-        </parameter>
+        <parameter key="admin.menu.knp.voter.element.class">AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ElementVoter</parameter>
     </parameters>
 
     <services>

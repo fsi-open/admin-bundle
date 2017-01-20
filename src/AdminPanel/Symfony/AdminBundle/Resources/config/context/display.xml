@@ -5,11 +5,8 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="admin.display.context.class">AdminPanel\Symfony\AdminBundle\Admin\Display\Context\DisplayContext
-        </parameter>
-        <parameter key="admin.display.context.request_handler.class">
-            AdminPanel\Symfony\AdminBundle\Admin\Display\Context\Request\Handler
-        </parameter>
+        <parameter key="admin.display.context.class">AdminPanel\Symfony\AdminBundle\Admin\Display\Context\DisplayContext</parameter>
+        <parameter key="admin.display.context.request_handler.class">AdminPanel\Symfony\AdminBundle\Admin\Display\Context\Request\Handler</parameter>
     </parameters>
 
     <services>

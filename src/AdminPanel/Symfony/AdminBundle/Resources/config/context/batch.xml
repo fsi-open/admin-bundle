@@ -5,14 +5,9 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="admin.context.batch.class">AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\BatchElementContext
-        </parameter>
-        <parameter key="admin.context.batch.request_handler.form_submit.class">
-            AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\Request\BatchFormSubmitHandler
-        </parameter>
-        <parameter key="admin.context.batch.request_handler.form_valid_request.class">
-            AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler
-        </parameter>
+        <parameter key="admin.context.batch.class">AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\BatchElementContext</parameter>
+        <parameter key="admin.context.batch.request_handler.form_submit.class">AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\Request\BatchFormSubmitHandler</parameter>
+        <parameter key="admin.context.batch.request_handler.form_valid_request.class">AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler</parameter>
     </parameters>
 
     <services>

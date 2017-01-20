@@ -5,17 +5,10 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="admin.context.form.class">AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\FormElementContext
-        </parameter>
-        <parameter key="admin.context.crud_form.class">
-            AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\CRUDFormElementContext
-        </parameter>
-        <parameter key="admin.context.form.request_handler.form_submit.class">
-            AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\Request\FormSubmitHandler
-        </parameter>
-        <parameter key="admin.context.form.request_handler.form_valid_request.class">
-            AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\Request\FormValidRequestHandler
-        </parameter>
+        <parameter key="admin.context.form.class">AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\FormElementContext</parameter>
+        <parameter key="admin.context.crud_form.class">AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\CRUDFormElementContext</parameter>
+        <parameter key="admin.context.form.request_handler.form_submit.class">AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\Request\FormSubmitHandler</parameter>
+        <parameter key="admin.context.form.request_handler.form_valid_request.class">AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\Request\FormValidRequestHandler</parameter>
     </parameters>
 
     <services>

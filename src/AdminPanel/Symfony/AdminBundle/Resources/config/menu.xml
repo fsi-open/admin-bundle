@@ -6,14 +6,9 @@
 
     <parameters>
         <parameter key="admin.menu.builder.class">AdminPanel\Symfony\AdminBundle\Menu\Builder\MenuBuilder</parameter>
-        <parameter key="admin.menu.listener.locale.class">
-            AdminPanel\Symfony\AdminBundle\EventListener\LocaleMenuListener
-        </parameter>
-        <parameter key="admin.menu.listener.cleanup.class">
-            AdminPanel\Symfony\AdminBundle\EventListener\CleanUpMenuListener
-        </parameter>
-        <parameter key="admin.menu.listener.main.class">AdminPanel\Symfony\AdminBundle\EventListener\MainMenuListener
-        </parameter>
+        <parameter key="admin.menu.listener.locale.class">AdminPanel\Symfony\AdminBundle\EventListener\LocaleMenuListener</parameter>
+        <parameter key="admin.menu.listener.cleanup.class">AdminPanel\Symfony\AdminBundle\EventListener\CleanUpMenuListener</parameter>
+        <parameter key="admin.menu.listener.main.class">AdminPanel\Symfony\AdminBundle\EventListener\MainMenuListener</parameter>
     </parameters>
 
     <services>
