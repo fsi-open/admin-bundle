@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex"/>
     {% block head_meta %}{% endblock %}
     {% block head_css %}
-        <link rel="stylesheet" href="{{ asset('bundles/fsiadmin/css/bootstrap.min.css') }}" type="text/css"
+        <link rel="stylesheet" href="{{ asset('bundles/adminpanel/css/bootstrap.min.css') }}" type="text/css"
               media="all"/>
         <style>
             body {
@@ -90,7 +90,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            {% block messages %}{% include '@FSiAdmin/flash_messages.html.twig' %}{% endblock %}
+            {% block messages %}{% include '@AdminPanel/flash_messages.html.twig' %}{% endblock %}
             {% block above_content %}{% endblock above_content %}
             {% block content %}{% endblock content %}
             {% block under_content %}{% endblock under_content %}
