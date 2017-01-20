@@ -1,0 +1,121 @@
+{% block datagrid_column_type_batch_header %}
+    {% spaceless %}
+        <th>
+            <input type="checkbox" id="{{ header.attribute('datagrid_name') }}_{{ header.type }}"/>
+            <script type="text/javascript">
+                (function (w) {
+                    var header = w.document.getElementById('{{ header.attribute('datagrid_name') }}_{{ header.type }}');
+
+                    header.onclick = function() {
+                        var elements = w.document.getElementsByClassName('{{ header.attribute('datagrid_name') }}_{{ header.type }}'),
+                            i = 0;
+
+                        for (i; i < elements.length; i++) {
+                            elements[i].checked = this.checked;
+                        }
+                    }
+                }(window));
+            </script>
+        </th>
+    {% endspaceless %}
+{% endblock %}
+
+{% block datagrid_column_type_batch_cell %}
+{% spaceless %}
+    <td>
+        <input type="checkbox" name="{{ cell.attribute('datagrid_name') }}_{{ cell.type }}[]" value="{{ cell.value }}" class="{{ cell.attribute('datagrid_name') }}_{{ cell.type }}" />
+    </td>
+{% endspaceless %}
+{% endblock %}
+
+{% block datagrid_column_type_action_cell_action %}
+<a {% for attrname, attrvalue in attr %}{% if attrname == 'title' %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}>{{ content|trans({}, translation_domain)|raw }}</a>
+{% endblock %}
+
+{% block datagrid_column_type_action_cell %}
+{% spaceless %}
+    <td>
+        <div>
+            {% for action_name, action in cell.value %}
+                {{ datagrid_column_type_action_cell_action_widget(
+                    cell,
+                    action_name,
+                    action.content,
+                    action.url_attr,
+                    action.field_mapping_values
+                ) }}
+            {% endfor %}
+        </div>
+    </td>
+{% endspaceless %}
+{% endblock %}
+
+{% block datagrid_column_header %}
+{% spaceless %}
+{% if header.label == header.name %}
+    {% set label =  header.label|humanize|trans({}, translation_domain)  %}
+{% else %}
+    {% set label =  header.label|trans({}, translation_domain)  %}
+{% endif %}
+    <th>
+        <span>{{ label }}</span>
+    </th>
+{% endspaceless %}
+{% endblock %}
+
+{% block datagrid_header %}
+{% spaceless %}
+<tr>
+    {% for header in headers %}
+        {{ datagrid_column_header_widget(header) }}
+    {% endfor %}
+</tr>
+{% endspaceless %}
+{% endblock %}
+
+{% block datagrid_column_cell_form %}
+<div>
+{% for child in form.children %}
+    {% for subchild in child.children %}
+        {{ form_label(subchild) }}
+        {{ form_errors(subchild) }}
+        {{ form_widget(subchild) }}
+    {% endfor %}
+{% endfor %}
+</div>
+{% endblock %}
+
+{% block datagrid_column_cell %}
+{% spaceless %}
+<td>
+    <div>
+        {% endspaceless %}{{ cell.value|raw }}{{ datagrid_column_cell_form_widget(cell) }}{% spaceless %}
+    </div>
+</td>
+{% endspaceless %}
+{% endblock %}
+
+{% block datagrid_rowset %}
+{% spaceless %}
+    {% for index, row in datagrid %}
+        <tr>
+            {% for cell in row %}
+                {{ datagrid_column_cell_widget(cell) }}
+            {% endfor %}
+        </tr>
+    {% endfor %}
+{% endspaceless %}
+{% endblock %}
+
+{% block datagrid %}
+{% spaceless %}
+    <table>
+        <thead>
+            {{ datagrid_header_widget(datagrid) }}
+        </thead>
+        <tbody>
+            {{ datagrid_rowset_widget(datagrid) }}
+        </tbody>
+    </table>
+{% endspaceless %}
+{% endblock %}

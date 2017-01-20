@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="datasource.driver.collection.factory.class">FSi\Component\DataSource\Driver\Collection\CollectionFactory</parameter>
+    </parameters>
+
+    <services>
+        <!-- Collection extensions -->
+        <service id="datasource.driver.collection.extension" class="%datasource.driver.extension.class%">
+            <argument type="service" id="service_container" />
+            <argument type="string">collection</argument>
+            <!-- All services with tag "datasource.driver.collection.field" are inserted here by DataSourcePass -->
+            <argument type="collection" />
+            <!-- All services with tag "datasource.driver.collection.field.subscriber" are inserted here by DataSourcePass -->
+            <argument type="collection" />
+            <!-- All services with tag "datasource.driver.collection.subscriber" are inserted here by DataSourcePass -->
+            <argument type="collection" />
+            <tag name="datasource.driver.extension" alias="collection" />
+        </service>
+
+        <!-- CollectionFactory -->
+        <service id="datasource.driver.collection.factory" class="%datasource.driver.collection.factory.class%">
+            <argument type="collection">
+                <!--
+                We don't need to be able to add more extensions.
+                 * more fields can be registered with the datasource.driver.doctrine.field tag
+                 * more field subscribers can be registered with the datasource.driver.doctrine.field.subscriber tag
+                 * more listeners can be registered with the datasource.listener tag
+                -->
+                <argument type="service" id="datasource.driver.collection.extension" />
+            </argument>
+            <tag name="datasource.driver.factory"/>
+        </service>
+
+        <!-- Collection/CoreExtension -->
+        <service id="datasource.driver.collection.field.date" class="FSi\Component\DataSource\Driver\Collection\Extension\Core\Field\Date">
+            <tag name="datasource.driver.collection.field" alias="date" />
+        </service>
+        <service id="datasource.driver.collection.field.datetime" class="FSi\Component\DataSource\Driver\Collection\Extension\Core\Field\DateTime">
+            <tag name="datasource.driver.collection.field" alias="datetime" />
+        </service>
+        <service id="datasource.driver.collection.field.number" class="FSi\Component\DataSource\Driver\Collection\Extension\Core\Field\Number">
+            <tag name="datasource.driver.collection.field" alias="number" />
+        </service>
+        <service id="datasource.driver.collection.field.text" class="FSi\Component\DataSource\Driver\Collection\Extension\Core\Field\Text">
+            <tag name="datasource.driver.collection.field" alias="text" />
+        </service>
+        <service id="datasource.driver.collection.field.time" class="FSi\Component\DataSource\Driver\Collection\Extension\Core\Field\Time">
+            <tag name="datasource.driver.collection.field" alias="time" />
+        </service>
+        <service id="datasource.driver.collection.field.boolean" class="FSi\Component\DataSource\Driver\Collection\Extension\Core\Field\Boolean">
+            <tag name="datasource.driver.collection.field" alias="boolean" />
+        </service>
+
+        <!-- OrderingExtension -->
+        <service id="datasource.driver.collection.subscriber.ordering" class="FSi\Component\DataSource\Extension\Core\Ordering\Driver\CollectionExtension">
+            <tag name="datasource.driver.collection.subscriber" alias="ordering" />
+        </service>
+        <service id="datasource.driver.collection.field.subscriber.ordering" class="FSi\Component\DataSource\Extension\Core\Ordering\Field\FieldExtension">
+            <tag name="datasource.driver.collection.field.subscriber" alias="ordering" />
+        </service>
+
+        <!-- Symfony/FormExtension -->
+        <service id="datasource.driver.collection.field.subscriber.symfonyform" class="FSi\Component\DataSource\Extension\Symfony\Form\Field\FormFieldExtension">
+            <tag name="datasource.driver.collection.field.subscriber" alias="symfonyform" />
+            <argument type="service" id="form.factory" />
+        </service>
+        <service id="datasource.driver.collection.field.subscriber.symfony_null_form" class="FSi\Bundle\DataSourceBundle\DataSource\Extension\Symfony\Form\Field\FormFieldExtension">
+            <tag name="datasource.driver.collection.field.subscriber" alias="symfony_null_form" />
+            <argument type="service" id="translator" />
+        </service>
+    </services>
+</container>

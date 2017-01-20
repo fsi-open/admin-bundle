@@ -1,0 +1,7 @@
+{% block resource_row %}
+    {% spaceless %}
+        {% for element in form %}
+            {{ form_row(element) }}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock %}

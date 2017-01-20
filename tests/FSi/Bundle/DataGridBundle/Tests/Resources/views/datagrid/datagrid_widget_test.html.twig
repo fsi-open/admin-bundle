@@ -1,0 +1,16 @@
+{% datagrid_theme datagrid_with_theme 'datagrid/themes.html.twig' %}
+
+{# datagrid_widget test #}
+{{ datagrid_widget(datagrid) }}
+
+{{ datagrid_widget(datagrid_with_theme) }}
+
+{# datagrid_header_widget test #}
+{{ datagrid_header_widget(datagrid) }}
+
+{{ datagrid_header_widget(datagrid_with_theme) }}
+
+{# datagrid_rowset_widget test - should be empty in this test #}
+{{ datagrid_rowset_widget(datagrid) }}
+
+{{ datagrid_rowset_widget(datagrid_with_theme) }}

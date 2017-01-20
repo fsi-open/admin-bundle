@@ -1,0 +1,6 @@
+vendor/
+bin/
+src/
+
+composer.phar
+composer.lock

@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="datasource.factory.class">FSi\Component\DataSource\DataSourceFactory</parameter>
+        <parameter key="datasource.extension.class">FSi\Component\DataSource\Extension\Symfony\DependencyInjection\DependencyInjectionExtension</parameter>
+        <parameter key="datasource.driver.factory.manager.class">FSi\Component\DataSource\Driver\DriverFactoryManager</parameter>
+        <parameter key="datasource.driver.extension.class">FSi\Component\DataSource\Extension\Symfony\DependencyInjection\Driver\DriverExtension</parameter>
+        <parameter key="datasource.extension.form.type.between.class">FSi\Component\DataSource\Extension\Symfony\Form\Type\BetweenType</parameter>
+    </parameters>
+
+    <services>
+        <!-- Form types -->
+        <service id="datasource.extension.form.type.between" class="%datasource.extension.form.type.between.class%">
+            <tag name="form.type" alias="datasource_between" />
+        </service>
+
+        <!-- DataSource extensions -->
+        <service id="datasource.extension" class="%datasource.extension.class%">
+            <argument type="service" id="service_container" />
+            <!-- All services with tag "datasource.driver.extension" are inserted here by DataSourcePass -->
+            <argument type="collection" />
+            <!-- All services with tag "datasource.subscriber" are inserted here by DataSourcePass -->
+            <argument type="collection" />
+        </service>
+
+        <!-- DriverFactoryManager -->
+        <service id="datasource.driver.factory.manager" class="%datasource.driver.factory.manager.class%">
+            <argument type="collection">
+            </argument>
+        </service>
+
+        <!-- DataSourceFactory -->
+        <service id="datasource.factory" class="%datasource.factory.class%">
+            <argument type="service" id="datasource.driver.factory.manager"></argument>
+            <argument type="collection">
+                <!--
+                We don't need to be able to add more extensions.
+                 * more driver extensions can be registered with the datasource.driver.extension tag
+                 * more listeners can be registered with the datasource.subscriber tag
+                -->
+                <argument type="service" id="datasource.extension" />
+            </argument>
+        </service>
+
+        <!-- PaginationExtension -->
+        <service id="datasource.subscriber.pagination" class="FSi\Component\DataSource\Extension\Core\Pagination\EventSubscriber\Events">
+            <tag name="datasource.subscriber" alias="pagination" />
+        </service>
+
+        <!-- OrderingExtension -->
+        <service id="datasource.subscriber.ordering" class="FSi\Component\DataSource\Extension\Core\Ordering\EventSubscriber\Events">
+            <tag name="datasource.subscriber" alias="ordering" />
+        </service>
+
+        <!-- Symfony/CoreExtension -->
+        <service id="datasource.subscriber.symfonyrequest" class="FSi\Component\DataSource\Extension\Symfony\Core\EventSubscriber\BindParameters">
+            <tag name="datasource.subscriber" alias="symfonyrequest" />
+        </service>
+
+        <!-- Symfony/FormExtension -->
+        <service id="datasource.subscriber.symfonyform" class="FSi\Component\DataSource\Extension\Symfony\Form\EventSubscriber\Events">
+            <tag name="datasource.subscriber" alias="symfonyform" />
+        </service>
+    </services>
+</container>

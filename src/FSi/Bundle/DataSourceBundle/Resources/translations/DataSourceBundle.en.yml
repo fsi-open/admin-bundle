@@ -1,0 +1,12 @@
+datasource:
+    pagination:
+        first: "first"
+        prev: "previous"
+        next: "next"
+        last: "last"
+    form:
+        choices:
+            is_null: "empty"
+            is_not_null: "not empty"
+            yes: "yes"
+            no: "no"

@@ -1,0 +1,17 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="fsi_resource_repository.resource.value.repository.class">FSi\Bundle\ResourceRepositoryBundle\Doctrine\ResourceRepository</parameter>
+    </parameters>
+
+    <services>
+        <service id="fsi_resource_repository.resource.value.repository" class="%fsi_resource_repository.resource.value.repository.class%">
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
+            <argument>%fsi_resource_repository.resource.value.class%</argument>
+        </service>
+
+        <service id="fsi_resource_repository.entity.repository" alias="fsi_resource_repository.resource.value.repository" />
+    </services>
+</container>

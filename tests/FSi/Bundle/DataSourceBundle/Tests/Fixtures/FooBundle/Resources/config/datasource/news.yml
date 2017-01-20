@@ -1,0 +1,6 @@
+fields:
+  title:
+    type: text
+    comparison: like
+    options:
+      label: Title

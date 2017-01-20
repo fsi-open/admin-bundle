@@ -1,0 +1,7 @@
+fields:
+  title:
+    type: text
+    comparison: like
+    options:
+      label: News Title
+  author: []

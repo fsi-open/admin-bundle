@@ -1,0 +1,4 @@
+datagrid:
+    boolean:
+        yes: "Yes"
+        no: "No"

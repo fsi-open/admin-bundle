@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<!-- Deprecated since 1.4 -->
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="datasource.driver.doctrine.factory.class">FSi\Component\DataSource\Driver\Doctrine\DoctrineFactory</parameter>
+    </parameters>
+
+    <services>
+        <!-- Doctrine extensions -->
+        <service id="datasource.driver.doctrine.extension" class="%datasource.driver.extension.class%">
+            <argument type="service" id="service_container" />
+            <argument type="string">doctrine</argument>
+            <!-- All services with tag "datasource.driver.doctrine.field" are inserted here by DataSourcePass -->
+            <argument type="collection" />
+            <!-- All services with tag "datasource.driver.doctrine.field.subscriber" are inserted here by DataSourcePass -->
+            <argument type="collection" />
+            <!-- All services with tag "datasource.driver.doctrine.subscriber" are inserted here by DataSourcePass -->
+            <argument type="collection" />
+            <tag name="datasource.driver.extension" alias="doctrine" />
+        </service>
+
+        <!-- DoctrineFactory -->
+        <service id="datasource.driver.doctrine.factory" class="%datasource.driver.doctrine.factory.class%">
+            <argument type="service" id="doctrine" />
+            <argument type="collection">
+                <!--
+                We don't need to be able to add more extensions.
+                 * more fields can be registered with the datasource.driver.doctrine.field tag
+                 * more field subscribers can be registered with the datasource.driver.doctrine.field.subscriber tag
+                 * more listeners can be registered with the datasource.listener tag
+                -->
+                <argument type="service" id="datasource.driver.doctrine.extension" />
+            </argument>
+            <tag name="datasource.driver.factory"/>
+        </service>
+
+        <!-- Doctrine/CoreExtension -->
+        <service id="datasource.driver.doctrine.field.date" class="FSi\Component\DataSource\Driver\Doctrine\Extension\Core\Field\Date">
+            <tag name="datasource.driver.doctrine.field" alias="date" />
+        </service>
+        <service id="datasource.driver.doctrine.field.datetime" class="FSi\Component\DataSource\Driver\Doctrine\Extension\Core\Field\DateTime">
+            <tag name="datasource.driver.doctrine.field" alias="datetime" />
+        </service>
+        <service id="datasource.driver.doctrine.field.entity" class="FSi\Component\DataSource\Driver\Doctrine\Extension\Core\Field\Entity">
+            <tag name="datasource.driver.doctrine.field" alias="entity" />
+        </service>
+        <service id="datasource.driver.doctrine.field.number" class="FSi\Component\DataSource\Driver\Doctrine\Extension\Core\Field\Number">
+            <tag name="datasource.driver.doctrine.field" alias="number" />
+        </service>
+        <service id="datasource.driver.doctrine.field.text" class="FSi\Component\DataSource\Driver\Doctrine\Extension\Core\Field\Text">
+            <tag name="datasource.driver.doctrine.field" alias="text" />
+        </service>
+        <service id="datasource.driver.doctrine.field.time" class="FSi\Component\DataSource\Driver\Doctrine\Extension\Core\Field\Time">
+            <tag name="datasource.driver.doctrine.field" alias="time" />
+        </service>
+        <service id="datasource.driver.doctrine.field.boolean" class="FSi\Component\DataSource\Driver\Doctrine\Extension\Core\Field\Boolean">
+            <tag name="datasource.driver.doctrine.field" alias="boolean" />
+        </service>
+        <service id="datasource.driver.doctrine.subscriber.result_indexer" class="FSi\Component\DataSource\Driver\Doctrine\Extension\Core\EventSubscriber\ResultIndexer">
+            <tag name="datasource.driver.doctrine.subscriber" alias="result_indexer" />
+            <argument type="service" id="doctrine" />
+        </service>
+
+        <!-- OrderingExtension -->
+        <service id="datasource.driver.doctrine.subscriber.ordering" class="FSi\Component\DataSource\Extension\Core\Ordering\Driver\DoctrineExtension">
+            <tag name="datasource.driver.doctrine.subscriber" alias="ordering" />
+        </service>
+        <service id="datasource.driver.doctrine.field.subscriber.ordering" class="FSi\Component\DataSource\Extension\Core\Ordering\Field\FieldExtension">
+            <tag name="datasource.driver.doctrine.field.subscriber" alias="ordering" />
+        </service>
+
+        <!-- Symfony/FormExtension -->
+        <service id="datasource.driver.doctrine.field.subscriber.symfonyform" class="FSi\Component\DataSource\Extension\Symfony\Form\Field\FormFieldExtension">
+            <tag name="datasource.driver.doctrine.field.subscriber" alias="symfonyform" />
+            <argument type="service" id="form.factory" />
+        </service>
+        <service id="datasource.driver.doctrine.field.subscriber.symfony_null_form" class="FSi\Bundle\DataSourceBundle\DataSource\Extension\Symfony\Form\Field\FormFieldExtension">
+            <tag name="datasource.driver.doctrine.field.subscriber" alias="symfony_null_form" />
+            <argument type="service" id="translator" />
+        </service>
+    </services>
+</container>

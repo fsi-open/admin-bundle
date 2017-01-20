@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="FSi\Bundle\ResourceRepositoryBundle\Model\Resource" table="fsi_resource">
+        <id name="key" column="id" type="string" length="255" />
+        <field name="textValue" column="text_value" type="text" nullable="true"/>
+        <field name="datetimeValue" column="datetime_value" type="datetime" nullable="true"/>
+        <field name="dateValue" column="date_value" type="date" nullable="true"/>
+        <field name="timeValue" column="time_value" type="time" nullable="true"/>
+        <field name="numberValue" column="number_value" type="decimal" precision="20" scale="4" nullable="true"/>
+        <field name="integerValue" column="integer_value" type="integer" nullable="true"/>
+        <field name="boolValue" column="bool_value" type="boolean" />
+    </mapped-superclass>
+
+</doctrine-mapping>

@@ -1,0 +1,68 @@
+{% block datasource_filter %}
+{% spaceless %}
+    {% for field in datasource.fields %}
+        {{ datasource_field_widget(field, vars) }}
+    {% endfor %}
+{% endspaceless %}
+{% endblock %}
+
+{% block datasource_field %}
+{% spaceless %}
+    {% if field.hasAttribute('form') is not empty %}
+        <div>
+            {% for child in field.getAttribute('form').children %}
+                {% for subchild in child.children %}
+                    {{ form_label(subchild) }}
+                    {{ form_errors(subchild) }}
+                    {{ form_widget(subchild) }}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock %}
+
+{% block datasource_sort %}
+{% spaceless %}
+    {% if (field.getAttribute('sorted_ascending')) %}
+    <span>{{ ascending|raw }}</span>
+    {% else %}
+    <a href="{{ ascending_url }}">{{ ascending|raw }}</a>
+    {% endif %}
+    {% if (field.getAttribute('sorted_descending')) %}
+    <span>{{ descending|raw }}</span>
+    {% else %}
+    <a href="{{ descending_url }}">{{ descending|raw }}</a>
+    {% endif %}
+{% endspaceless %}
+{% endblock %}
+
+{% block datasource_pagination %}
+{% spaceless %}
+<ul>
+    <li{% if current == first %} class="{{ disabled_class }}"{% endif %}>
+        <a href="{% if current != first %}{{ first_url }}{% else %}#{% endif %}">{{ 'datasource.pagination.first'|trans({}, translation_domain) }}</a>
+    </li>
+    <li{% if current == first %} class="{{ disabled_class }}"{% endif %}>
+        <a href="{% if current != first %}{{ prev_url }}{% else %}#{% endif %}">{{ 'datasource.pagination.prev'|trans({}, translation_domain) }}</a>
+    </li>
+    {% for page, url in pages_urls %}
+        <li{% if current == page %} class="{{ active_class }}"{% endif %}>
+            <a href="{% if current != page %}{{ url }}{% else %}#{% endif %}">{{ page }}</a>
+        </li>
+    {% endfor %}
+    <li{% if current == last %} class="{{ disabled_class }}"{% endif %}>
+        <a href="{% if current != last %}{{ next_url }}{% else %}#{% endif %}">{{ 'datasource.pagination.next'|trans({}, translation_domain) }}</a>
+    </li>
+    <li{% if current == last %} class="{{ disabled_class }}"{% endif %}>
+        <a href="{% if current != last %}{{ last_url }}{% else %}#{% endif %}">{{ 'datasource.pagination.last'|trans({}, translation_domain) }}</a>
+    </li>
+</ul>
+{% endspaceless %}
+{% endblock %}
+
+{% block datasource_max_results_widget %}
+    {% for result_num, result_url in results %}
+        <a href="{{ result_url }}"{% if max_results == result_num %} class="{{ active_class }}"{% endif %}>{{ result_num }}</a>
+    {% endfor %}
+{% endblock %}

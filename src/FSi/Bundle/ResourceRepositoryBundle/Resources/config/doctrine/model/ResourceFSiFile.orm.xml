@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:fsi="http://fsi.pl/schemas/orm/doctrine-extensions-mapping"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="FSi\Bundle\ResourceRepositoryBundle\Model\ResourceFSiFile" table="fsi_resource">
+        <field type="string" name="fileKeyValue" nullable="true">
+            <fsi:uploadable targetField="fileValue" />
+        </field>
+    </mapped-superclass>
+
+</doctrine-mapping>

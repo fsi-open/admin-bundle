@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+This routing file is DEPRECATED. You should use routing/positionable.xml instead
+-->
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="fsi_admin_positionable_increase_position" path="/admin/{element}/{id}/position/increase">
+        <default key="_controller">fsi_admin_positionable.controller.positionable:increasePositionAction</default>
+    </route>
+
+    <route id="fsi_admin_positionable_decrease_position" path="/admin/{element}/{id}/position/decrease">
+        <default key="_controller">fsi_admin_positionable.controller.positionable:decreasePositionAction</default>
+    </route>
+</routes>
