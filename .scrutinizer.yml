@@ -1,6 +1,6 @@
 ---
 filter:
-    excluded_paths: [vendor/*, app/*, web/*]
+    excluded_paths: [vendor/*, app/*, web/*, Behat/*, spec/*]
 
 checks:
     php:
