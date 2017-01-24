@@ -133,7 +133,7 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="admin.twig.messages_extension" class="AdminPanel\Symfony\AdminBundle\Twig\MessageTwigExtension"
+        <service id="admin.twig.messages_extension" class="AdminPanel\Symfony\AdminBundle\Twig\Extension\MessageTwigExtension"
                  public="false">
             <argument type="service" id="admin.messages.flash"/>
             <tag name="twig.extension"/>

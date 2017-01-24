@@ -36,6 +36,10 @@ class AdminPanelBundleSpec extends ObjectBehavior
             ->shouldBeCalled();
         $builder->addCompilerPass(Argument::type('AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\SetEventDispatcherPass'))
             ->shouldBeCalled();
+        $builder->addCompilerPass(Argument::type('AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\DataGridPass'))
+            ->shouldBeCalled();
+        $builder->addCompilerPass(Argument::type('AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\TemplatePathPass'))
+            ->shouldBeCalled();
 
         $this->build($builder);
     }

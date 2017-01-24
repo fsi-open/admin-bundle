@@ -9,7 +9,7 @@ class ElementActionExtensionSpec extends ObjectBehavior
 {
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Manager $manager
-     * @param \FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action $column
+     * @param \AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Symfony\ColumnType\Action $column
      * @param \Symfony\Component\OptionsResolver\OptionsResolver $actionOptionsResolver
      */
     function let($manager, $column, $actionOptionsResolver)
@@ -29,7 +29,7 @@ class ElementActionExtensionSpec extends ObjectBehavior
     }
 
     /**
-     * @param \FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action $column
+     * @param \AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Symfony\ColumnType\Action $column
      * @param \Symfony\Component\OptionsResolver\OptionsResolver $actionOptionsResolver
      */
     function it_adds_element_id_action_option($column, $actionOptionsResolver)
@@ -43,7 +43,7 @@ class ElementActionExtensionSpec extends ObjectBehavior
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Manager $manager
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Element $element
-     * @param \FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action $column
+     * @param \AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Symfony\ColumnType\Action $column
      * @throws \FSi\Component\DataGrid\Exception\UnknownOptionException
      */
     function it_initializes_action_route_and_parameters_based_on_element_id($manager, $element, $column)

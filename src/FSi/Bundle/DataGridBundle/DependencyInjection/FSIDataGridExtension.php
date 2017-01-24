@@ -36,10 +36,4 @@ class FSIDataGridExtension extends Extension
             $this->registerTwigConfiguration($config['twig'], $container, $loader);
         }
     }
-
-    public function registerTwigConfiguration(array $config, ContainerBuilder $container, XmlFileLoader $loader)
-    {
-        $loader->load('twig.xml');
-        $container->setParameter('datagrid.twig.themes', $config['themes']);
-    }
 }

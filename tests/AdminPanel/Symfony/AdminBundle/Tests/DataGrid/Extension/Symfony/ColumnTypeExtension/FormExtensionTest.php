@@ -1,20 +1,22 @@
 <?php
 
-namespace FSi\Component\DataGrid\Tests\Extension\Symfony\ColumnTypeExtension;
+namespace AdminPanel\Symfony\AdminBundleBundle\Tests\DataGrid\Extension\Symfony\ColumnTypeExtension;
 
-use AdminPanel\Symfony\AdminBundleBundle\Tests\Fixtures\EntityCategory;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
-use FSi\Component\DataGrid\Extension\Symfony\ColumnTypeExtension\FormExtension;
+use AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Symfony\ColumnTypeExtension\FormExtension;
+use AdminPanel\Symfony\AdminBundleBundle\Tests\Fixtures\Entity;
+use AdminPanel\Symfony\AdminBundleBundle\Tests\Fixtures\EntityCategory;
+use FSi\Component\DataGrid\DataGrid;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
-use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
-use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
-use Symfony\Component\Form\FormRegistry;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\Form\ResolvedFormTypeFactory;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
-use FSi\Component\DataGrid\Tests\Fixtures\Entity;
+use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
+use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider;
+use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormRegistry;
+use Symfony\Component\Form\ResolvedFormTypeFactory;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\ValidatorBuilder;
@@ -26,12 +28,13 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
+    /**
+     * @var DataGrid
+     */
+    private $dataGrid;
+
     protected function setUp()
     {
-        if (!class_exists('Symfony\Component\Form\FormRegistry')) {
-            $this->markTestSkipped('Symfony Column Extension require Symfony\Component\Form\FormRegistry class.');
-        }
-
         $entities = array(
             new EntityCategory(1, 'category name 1'),
             new EntityCategory(2, 'category name 2'),
@@ -39,7 +42,7 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
 
         $configuration = $this->getMock('Doctrine\ORM\Configuration');
 
-        $objectManager = $this->getMock('Doctrine\ORM\EntityManagerInterface');
+        $objectManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')->disableOriginalConstructor()->getMock();
         $objectManager->expects($this->any())
             ->method('getConfiguration')
             ->will($this->returnValue($configuration));
@@ -71,7 +74,7 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
         $queryBuilder = new QueryBuilder($objectManager);
 
         $entityClass = EntityCategory::class;
-        $classMetadata = new ClassMetadata(EntityCategory::class);
+        $classMetadata = new ClassMetadata($entityClass);
         $classMetadata->identifier = array('id');
         $classMetadata->fieldMappings = array(
             'id' => array(
@@ -111,27 +114,60 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getManagers')
             ->will($this->returnValue(array()));
 
+        if ($this->isSymfonyForm27()) {
+            $tokenManager = new CsrfTokenManager();
+        } else {
+            $tokenManager = new DefaultCsrfProvider('tests');
+        }
+
         $validatorBuilder = new ValidatorBuilder();
         $resolvedTypeFactory = new ResolvedFormTypeFactory();
         $formRegistry = new FormRegistry(array(
-                new CoreExtension(),
-                new DoctrineOrmExtension($managerRegistry),
-                new CsrfExtension(new CsrfTokenManager()),
-                new ValidatorExtension($validatorBuilder->getValidator())
-            ),
+            new CoreExtension(),
+            new DoctrineOrmExtension($managerRegistry),
+            new CsrfExtension(new CsrfTokenManager()),
+            new ValidatorExtension($validatorBuilder->getValidator())
+        ),
             $resolvedTypeFactory
         );
 
         $formFactory = new FormFactory($formRegistry, $resolvedTypeFactory);
 
-        $dataGrid = $this->getMock('FSi\Component\DataGrid\DataGridInterface');
-        $dataGrid->expects($this->any())
+        $this->dataGrid = $this->getMock('FSi\Component\DataGrid\DataGridInterface');
+        $this->dataGrid->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('grid'));
 
         $this->extension = new FormExtension($formFactory);
-        $this->extension->setDataGrid($dataGrid);
     }
+
+    public function testSimpleBindData()
+    {
+        $column = $this->createColumnMock();
+        $this->setColumnId($column, 'text');
+        $this->setColumnOptions($column, array(
+            'field_mapping' => array('name', 'author'),
+            'editable' => true,
+            'form_options' => array(),
+            'form_type' => array(
+                'name' => array('type' => $this->isSymfonyForm28() ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text'),
+                'author' => array('type' => $this->isSymfonyForm28() ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text'),
+            )
+        ));
+
+        $object = new Entity('old_name');
+        $data = array(
+            'name' => 'object',
+            'author' => 'norbert@fsi.pl',
+            'invalid_data' => 'test'
+        );
+
+        $this->extension->bindData($column, $data, $object, 1);
+
+        $this->assertSame('norbert@fsi.pl', $object->getAuthor());
+        $this->assertSame('object', $object->getName());
+    }
+
 
     public function testAvoidBindingDataWhenFormIsNotValid()
     {
@@ -148,8 +184,8 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
                 ]
             ),
             'form_type' => array(
-                'name' => array('type' => $this->isSymfony3() ? 'Symfony\Component\Form\Extension\Core\Type\TextTyp' : 'text'),
-                'author' => array('type' => $this->isSymfony3() ? 'Symfony\Component\Form\Extension\Core\Type\TextTyp' : 'text'),
+                'name' => array('type' => $this->isSymfonyForm28() ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text'),
+                'author' => array('type' => $this->isSymfonyForm28() ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text'),
             )
         ));
 
@@ -164,33 +200,6 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($object->getAuthor());
         $this->assertSame('old_name', $object->getName());
-    }
-
-    public function testSimpleBindData()
-    {
-        $column = $this->createColumnMock();
-        $this->setColumnId($column, 'text');
-        $this->setColumnOptions($column, array(
-            'field_mapping' => array('name', 'author'),
-            'editable' => true,
-            'form_options' => array(),
-            'form_type' => array(
-                'name' => array('type' => $this->isSymfony3() ? 'Symfony\Component\Form\Extension\Core\Type\TextTyp' : 'text'),
-                'author' => array('type' => $this->isSymfony3() ? 'Symfony\Component\Form\Extension\Core\Type\TextTyp' : 'text'),
-            )
-        ));
-
-        $object = new Entity('old_name');
-        $data = array(
-            'name' => 'object',
-            'author' => 'norbert@fsi.pl',
-            'invalid_data' => 'test'
-        );
-
-        $this->extension->bindData($column, $data, $object, 1);
-
-        $this->assertSame('norbert@fsi.pl', $object->getAuthor());
-        $this->assertSame('object', $object->getName());
     }
 
     public function testEntityBindData()
@@ -231,6 +240,10 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
         $column->expects($this->any())
             ->method('getDataMapper')
             ->will($this->getDataMapperReturnCallback());
+
+        $column->expects($this->any())
+            ->method('getDataGrid')
+            ->will($this->returnValue($this->dataGrid));
 
         return $column;
     }
@@ -273,7 +286,15 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
         });
     }
 
-    private function isSymfony3()
+    /**
+     * @return bool
+     */
+    private function isSymfonyForm27()
+    {
+        return method_exists('Symfony\Component\Form\FormTypeInterface', 'configureOptions');
+    }
+
+    private function isSymfonyForm28()
     {
         return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
     }

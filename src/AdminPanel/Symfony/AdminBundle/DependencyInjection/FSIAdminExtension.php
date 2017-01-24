@@ -40,6 +40,25 @@ class FSIAdminExtension extends Extension
         $loader->load('context/form.xml');
         $loader->load('context/batch.xml');
         $loader->load('context/display.xml');
+
+        if (isset($config['data_grid']['yaml_configuration']) && $config['data_grid']['yaml_configuration']) {
+            $loader->load('datagrid_yaml_configuration.xml');
+        }
+
+        if (isset($config['data_grid']['twig']['enabled']) && $config['data_grid']['twig']['enabled']) {
+            $this->registerDataGridTwigConfiguration($config['data_grid']['twig'], $container, $loader);
+        }
+    }
+
+    /**
+     * @param array $config
+     * @param ContainerBuilder $container
+     * @param XmlFileLoader $loader
+     */
+    protected function registerDataGridTwigConfiguration(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    {
+        $loader->load('twig.xml');
+        $container->setParameter('datagrid.twig.themes', $config['themes']);
     }
 
     /**

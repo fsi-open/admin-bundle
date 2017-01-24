@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;

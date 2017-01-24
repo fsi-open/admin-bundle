@@ -4,7 +4,7 @@ namespace AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExte
 
 use AdminPanel\Symfony\AdminBundle\Admin\Manager;
 use AdminPanel\Symfony\AdminBundle\Exception\RuntimeException;
-use FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action;
+use AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Symfony\ColumnType\Action;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 
