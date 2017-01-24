@@ -13,6 +13,11 @@ resource:
         save: Save
         reset: Reset
 
+datagrid:
+    boolean:
+        yes: "Yes"
+        no: "No"
+
 crud:
     list:
         title: List of elements

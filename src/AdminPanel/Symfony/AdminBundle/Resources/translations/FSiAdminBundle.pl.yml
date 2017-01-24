@@ -12,6 +12,11 @@ resource:
     button:
         save: Zapisz
         reset: Wyczyść
+
+datagrid:
+    boolean:
+        yes: "Tak"
+        no: "Nie"
 crud:
     list:
         title: Lista elementów
