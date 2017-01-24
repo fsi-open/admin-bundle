@@ -2,6 +2,7 @@
 
 namespace spec\AdminPanel\Symfony\AdminBundle;
 
+use AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\AdminAnnotatedElementPass;
 use AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\AdminElementPass;
 use AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\ContextPass;
 use AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\DataGridPass;
@@ -28,7 +29,7 @@ class AdminPanelBundleSpec extends ObjectBehavior
      */
     function it_add_compiler_pass($builder)
     {
-        $builder->addCompilerPass(Argument::type('AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\AdminAnnotatedElementPass'))
+        $builder->addCompilerPass(Argument::type(AdminAnnotatedElementPass::class))
             ->shouldBeCalled();
         $builder->addCompilerPass(
             Argument::type(AdminElementPass::class),
