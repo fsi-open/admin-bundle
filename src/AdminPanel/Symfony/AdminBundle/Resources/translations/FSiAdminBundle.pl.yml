@@ -17,6 +17,19 @@ datagrid:
     boolean:
         yes: "Tak"
         no: "Nie"
+
+datasource:
+    pagination:
+        first: "pierwsza"
+        prev: "poprzednia"
+        next: "następna"
+        last: "ostatnia"
+    form:
+        choices:
+            is_null: "puste"
+            is_not_null: "niepuste"
+            yes: "tak"
+            no: "nie"
 crud:
     list:
         title: Lista elementów

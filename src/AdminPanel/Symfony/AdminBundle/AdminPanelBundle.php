@@ -4,6 +4,7 @@
 namespace AdminPanel\Symfony\AdminBundle;
 
 use AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\DataGridPass;
+use AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\DataSourcePass;
 use AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\TemplatePathPass;
 use Doctrine\Common\Annotations\AnnotationReader;
 use AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\AdminAnnotatedElementPass;
@@ -44,6 +45,7 @@ class AdminPanelBundle extends Bundle
         $container->addCompilerPass(new TwigGlobalsPass());
         $container->addCompilerPass(new SetEventDispatcherPass());
         $container->addCompilerPass(new DataGridPass());
+        $container->addCompilerPass(new DataSourcePass());
         $container->addCompilerPass(new TemplatePathPass());
     }
 

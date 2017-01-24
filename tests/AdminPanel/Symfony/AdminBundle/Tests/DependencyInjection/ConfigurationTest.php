@@ -135,7 +135,14 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             ],
             'annotations' => [
                 'dirs' => []
-            ]
+            ],
+            'data_source' => [
+                'yaml_configuration' => true,
+                'twig' => [
+                    'enabled' => true,
+                    'template' => 'datasource.html.twig'
+                ]
+            ],
         ];
     }
 }

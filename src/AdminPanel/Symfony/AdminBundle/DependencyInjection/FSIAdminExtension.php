@@ -31,11 +31,10 @@ class FSIAdminExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
         $loader->load('datagrid.xml');
+        $loader->load('datasource.xml');
         $loader->load('menu.xml');
         $loader->load('knp-menu.xml');
-
         $loader->load('locale_listener.xml');
-
         $loader->load('context/list.xml');
         $loader->load('context/form.xml');
         $loader->load('context/batch.xml');
@@ -47,6 +46,16 @@ class FSIAdminExtension extends Extension
 
         if (isset($config['data_grid']['twig']['enabled']) && $config['data_grid']['twig']['enabled']) {
             $this->registerDataGridTwigConfiguration($config['data_grid']['twig'], $container, $loader);
+        }
+
+        $this->registerDataSourceDrivers($loader);
+
+        if (isset($config['data_source']['yaml_configuration']) && $config['data_source']['yaml_configuration']) {
+            $loader->load('datasource_yaml_configuration.xml');
+        }
+
+        if(isset($config['data_source']['twig']['enabled']) && $config['data_source']['twig']['enabled']) {
+            $this->registerDataSourceTwigConfiguration($config['data_source']['twig'], $container, $loader);
         }
     }
 
@@ -62,6 +71,17 @@ class FSIAdminExtension extends Extension
     }
 
     /**
+     * @param array $config
+     * @param ContainerBuilder $container
+     * @param XmlFileLoader $loader
+     */
+    protected function registerDataSourceTwigConfiguration(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    {
+        $loader->load('twig.xml');
+        $container->setParameter('datasource.twig.template', $config['template']);
+    }
+
+    /**
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @param array $config
      */
@@ -69,6 +89,19 @@ class FSIAdminExtension extends Extension
     {
         foreach ($config as $key => $value) {
             $container->setParameter(sprintf('admin.templates.%s', $key), $value);
+        }
+    }
+
+    /**
+     * @param $loader
+     */
+    private function registerDataSourceDrivers($loader)
+    {
+        $loader->load('driver/collection.xml');
+        /* doctrine driver is deprecated since version 1.4 */
+        $loader->load('driver/doctrine.xml');
+        if (class_exists('FSi\Component\DataSource\Driver\Doctrine\ORM\DoctrineDriver')) {
+            $loader->load('driver/doctrine-orm.xml');
         }
     }
 }
