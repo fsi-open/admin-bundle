@@ -1,14 +1,8 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Extension\Core\Ordering\EventSubscriber;
-
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use FSi\Component\DataSource\Event\DataSourceEvents;
@@ -26,17 +20,17 @@ class Events implements EventSubscriberInterface
     /**
      * @var array
      */
-    private $ordering = array();
+    private $ordering = [];
 
     /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            DataSourceEvents::PRE_BIND_PARAMETERS => array('preBindParameters'),
-            DataSourceEvents::POST_GET_PARAMETERS => array('postGetParameters'),
-        );
+        return [
+            DataSourceEvents::PRE_BIND_PARAMETERS => ['preBindParameters'],
+            DataSourceEvents::POST_GET_PARAMETERS => ['postGetParameters'],
+        ];
     }
 
     /**
@@ -52,12 +46,12 @@ class Events implements EventSubscriberInterface
         if (isset($parameters[$datasourceName][OrderingExtension::PARAMETER_SORT]) && is_array($parameters[$datasourceName][OrderingExtension::PARAMETER_SORT])) {
             $priority = 0;
             foreach ($parameters[$datasourceName][OrderingExtension::PARAMETER_SORT] as $fieldName => $direction) {
-                if (!in_array($direction, array('asc', 'desc'))) {
+                if (!in_array($direction, ['asc', 'desc'])) {
                     throw new DataSourceException(sprintf("Unknown sorting direction %s specified", $direction));
                 }
                 $field = $datasource->getField($fieldName);
                 $fieldExtension = $this->getFieldExtension($field);
-                $fieldExtension->setOrdering($field, array('priority' => $priority, 'direction' => $direction));
+                $fieldExtension->setOrdering($field, ['priority' => $priority, 'direction' => $direction]);
                 $priority++;
             }
             $this->ordering[$datasource_oid] = $parameters[$datasourceName][OrderingExtension::PARAMETER_SORT];
@@ -74,8 +68,9 @@ class Events implements EventSubscriberInterface
         $datasourceName = $datasource->getName();
         $parameters = $event->getParameters();
 
-        if (isset($this->ordering[$datasource_oid]))
+        if (isset($this->ordering[$datasource_oid])) {
             $parameters[$datasourceName][OrderingExtension::PARAMETER_SORT] = $this->ordering[$datasource_oid];
+        }
 
         $event->setParameters($parameters);
     }

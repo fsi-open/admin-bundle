@@ -1,13 +1,11 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Admin\Context;
 
 use AdminPanel\Symfony\AdminBundle\Admin\Element;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class ContextManager
 {
     /**
@@ -18,9 +16,9 @@ class ContextManager
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Context\ContextInterface[] $contexts
      */
-    public function __construct($contexts = array())
+    public function __construct($contexts = [])
     {
-        $this->contexts = array();
+        $this->contexts = [];
 
         foreach ($contexts as $context) {
             $this->addContext($context);

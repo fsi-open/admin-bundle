@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) Fabryka Stron Internetowych sp. z o.o <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\Metadata;
 
@@ -47,7 +42,7 @@ class MetadataFactory
      *
      * @var array
      */
-    protected $loadedMetadata = array();
+    protected $loadedMetadata = [];
 
     /**
      * Create metadataFactory. Sometimes it might be usefull to create own ClassMetadata.

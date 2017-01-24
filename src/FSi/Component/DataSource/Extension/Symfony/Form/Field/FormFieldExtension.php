@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Extension\Symfony\Form\Field;
 
@@ -30,25 +25,25 @@ class FormFieldExtension extends FieldAbstractExtension
     /**
      * @var array
      */
-    protected $forms = array();
+    protected $forms = [];
 
     /**
      * Original values of input parameters for each supported field.
      *
      * @var array
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            FieldEvents::PRE_BIND_PARAMETER => array('preBindParameter'),
-            FieldEvents::POST_BUILD_VIEW => array('postBuildView'),
-            FieldEvents::POST_GET_PARAMETER => array('preGetParameter'),
-        );
+        return [
+            FieldEvents::PRE_BIND_PARAMETER => ['preBindParameter'],
+            FieldEvents::POST_BUILD_VIEW => ['postBuildView'],
+            FieldEvents::POST_GET_PARAMETER => ['preGetParameter'],
+        ];
     }
 
     /**
@@ -64,7 +59,7 @@ class FormFieldExtension extends FieldAbstractExtension
      */
     public function getExtendedFieldTypes()
     {
-        return array('text', 'number', 'date', 'time', 'datetime', 'entity', 'boolean');
+        return ['text', 'number', 'date', 'time', 'datetime', 'entity', 'boolean'];
     }
 
     /**
@@ -73,16 +68,16 @@ class FormFieldExtension extends FieldAbstractExtension
     public function initOptions(FieldTypeInterface $field)
     {
         $field->getOptionsResolver()
-            ->setDefaults(array(
+            ->setDefaults([
                 'form_filter' => true,
-                'form_options' => array(),
-                'form_from_options' => array(),
-                'form_to_options' =>array()
-            ))
-            ->setDefined(array(
+                'form_options' => [],
+                'form_from_options' => [],
+                'form_to_options' =>[]
+            ])
+            ->setDefined([
                 'form_type',
                 'form_order'
-            ))
+            ])
             ->setAllowedTypes('form_filter', 'bool')
             ->setAllowedTypes('form_options', 'array')
             ->setAllowedTypes('form_from_options', 'array')
@@ -129,11 +124,11 @@ class FormFieldExtension extends FieldAbstractExtension
         }
 
         if (isset($parameter[$datasourceName][DataSourceInterface::PARAMETER_FIELDS][$field->getName()])) {
-            $dataToBind = array(
-                DataSourceInterface::PARAMETER_FIELDS => array(
+            $dataToBind = [
+                DataSourceInterface::PARAMETER_FIELDS => [
                     $field->getName() => $parameter[$datasourceName][DataSourceInterface::PARAMETER_FIELDS][$field->getName()],
-                ),
-            );
+                ],
+            ];
             $this->parameters[$field_oid] = $parameter[$datasourceName][DataSourceInterface::PARAMETER_FIELDS][$field->getName()];
 
             $form->submit($dataToBind);
@@ -159,13 +154,13 @@ class FormFieldExtension extends FieldAbstractExtension
 
         $datasourceName = $field->getDataSource() ? $field->getDataSource()->getName() : null;
         if (isset($this->parameters[$field_oid])) {
-            $parameters = array(
-                $datasourceName => array(
-                    DataSourceInterface::PARAMETER_FIELDS => array(
+            $parameters = [
+                $datasourceName => [
+                    DataSourceInterface::PARAMETER_FIELDS => [
                         $field->getName() => $this->parameters[$field_oid]
-                    )
-                )
-            );
+                    ]
+                ]
+            ];
             $event->setParameter($parameters);
         }
     }
@@ -194,10 +189,10 @@ class FormFieldExtension extends FieldAbstractExtension
         }
 
         $options = $field->getOption('form_options');
-        $options = array_merge($options, array('required' => false, 'auto_initialize' => false));
+        $options = array_merge($options, ['required' => false, 'auto_initialize' => false]);
 
-        $form = $this->formFactory->createNamed($datasource->getName(), 'collection', null, array('csrf_protection' => false));
-        $fieldsForm = $this->formFactory->createNamed(DataSourceInterface::PARAMETER_FIELDS, 'form', null, array('auto_initialize' => false));
+        $form = $this->formFactory->createNamed($datasource->getName(), 'collection', null, ['csrf_protection' => false]);
+        $fieldsForm = $this->formFactory->createNamed(DataSourceInterface::PARAMETER_FIELDS, 'form', null, ['auto_initialize' => false]);
 
         switch ($field->getComparison()) {
             case 'between':
@@ -231,7 +226,7 @@ class FormFieldExtension extends FieldAbstractExtension
      * @param \FSi\Component\DataSource\Field\FieldTypeInterface $field
      * @param array $options
      */
-    protected function buildBetweenComparisonForm(FormInterface $form, FieldTypeInterface $field, $options = array())
+    protected function buildBetweenComparisonForm(FormInterface $form, FieldTypeInterface $field, $options = [])
     {
         $betweenBuilder = $this->getFormFactory()->createNamedBuilder($field->getName(), 'datasource_between', null, $options);
 
@@ -256,16 +251,16 @@ class FormFieldExtension extends FieldAbstractExtension
      * @param \FSi\Component\DataSource\Field\FieldTypeInterface $field
      * @param array $options
      */
-    protected function buildIsNullComparisonForm(FormInterface $form, FieldTypeInterface $field, $options = array())
+    protected function buildIsNullComparisonForm(FormInterface $form, FieldTypeInterface $field, $options = [])
     {
-        $defaultOptions = array(
-            'choices' => array(
+        $defaultOptions = [
+            'choices' => [
                 'null' => 'empty',
                 'notnull' => 'not empty',
-            ),
+            ],
             'multiple' => false,
             'empty_value' => ''
-        );
+        ];
 
         if (isset($options['choices'])) {
             $options['choices'] = array_merge(
@@ -283,16 +278,16 @@ class FormFieldExtension extends FieldAbstractExtension
      * @param \FSi\Component\DataSource\Field\FieldTypeInterface $field
      * @param array $options
      */
-    protected function buildBooleanForm(FormInterface $form, FieldTypeInterface $field, $options = array())
+    protected function buildBooleanForm(FormInterface $form, FieldTypeInterface $field, $options = [])
     {
-        $defaultOptions = array(
-            'choices' => array(
+        $defaultOptions = [
+            'choices' => [
                 '1' => 'yes',
                 '0' => 'no'
-            ),
+            ],
             'multiple' => false,
             'empty_value' => ''
-        );
+        ];
 
         if (isset($options['choices'])) {
             $options['choices'] = array_intersect_key($options['choices'], $defaultOptions['choices']);

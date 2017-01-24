@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid;
 
@@ -121,7 +116,7 @@ abstract class DataGridAbstractExtension implements DataGridExtensionInterface
      */
     protected function loadColumnTypes()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -132,7 +127,7 @@ abstract class DataGridAbstractExtension implements DataGridExtensionInterface
      */
     protected function loadSubscribers()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -144,7 +139,7 @@ abstract class DataGridAbstractExtension implements DataGridExtensionInterface
      */
     protected function loadColumnTypesExtensions()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -152,7 +147,7 @@ abstract class DataGridAbstractExtension implements DataGridExtensionInterface
      */
     private function initColumnTypes()
     {
-        $this->columnTypes = array();
+        $this->columnTypes = [];
 
         $columnTypes = $this->loadColumnTypes();
 
@@ -179,7 +174,7 @@ abstract class DataGridAbstractExtension implements DataGridExtensionInterface
             $types = $extension->getExtendedColumnTypes();
             foreach ($types as $type) {
                 if (!isset($this->columnTypesExtensions)) {
-                    $this->columnTypesExtensions[$type] = array();
+                    $this->columnTypesExtensions[$type] = [];
                 }
                 $this->columnTypesExtensions[$type][] = $extension;
             }

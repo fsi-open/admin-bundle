@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Driver\Collection;
 
@@ -33,7 +28,7 @@ class CollectionFactory implements DriverFactoryInterface
     /**
      * @param array $extensions
      */
-    public function __construct($extensions = array())
+    public function __construct($extensions = [])
     {
         $this->extensions = $extensions;
         $this->optionsResolver = new OptionsResolver();
@@ -54,7 +49,7 @@ class CollectionFactory implements DriverFactoryInterface
      * @param array $options
      * @return \FSi\Component\DataSource\Driver\Collection\CollectionDriver
      */
-    public function createDriver($options = array())
+    public function createDriver($options = [])
     {
         $options = $this->optionsResolver->resolve($options);
 
@@ -66,9 +61,9 @@ class CollectionFactory implements DriverFactoryInterface
      */
     private function initOptions()
     {
-        $this->optionsResolver->setDefaults(array(
-            'collection' => array(),
-        ));
+        $this->optionsResolver->setDefaults([
+            'collection' => [],
+        ]);
 
         $this->optionsResolver->setAllowedTypes('collection', 'array');
     }

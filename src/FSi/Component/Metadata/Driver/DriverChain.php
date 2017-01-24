@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) Fabryka Stron Internetowych sp. z o.o <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\Metadata\Driver;
 
@@ -19,14 +14,14 @@ class DriverChain implements DriverInterface
      *
      * @var array
      */
-    protected $drivers = array();
+    protected $drivers = [];
 
     /**
      * Accepts an array of DriverInterface instances indexed by class namespace
      *
      * @param \FSi\Component\Metadata\Driver\DriverInterface[] $drivers
      */
-    public function __construct(array $drivers = array())
+    public function __construct(array $drivers = [])
     {
         foreach ($drivers as $namespace => $driver) {
             $this->addDriver($driver, $namespace);
@@ -40,9 +35,11 @@ class DriverChain implements DriverInterface
      * @param string $namespace
      * @return \FSi\Component\Metadata\Driver\DriverChain
      */
-    public function addDriver(DriverInterface $driver, $namespace) {
-        if (!isset($this->drivers[$namespace]))
-            $this->drivers[$namespace] = array();
+    public function addDriver(DriverInterface $driver, $namespace)
+    {
+        if (!isset($this->drivers[$namespace])) {
+            $this->drivers[$namespace] = [];
+        }
         $this->drivers[$namespace][] = $driver;
         return $this;
     }
@@ -55,8 +52,9 @@ class DriverChain implements DriverInterface
         $className = $metadata->getClassName();
         foreach ($this->drivers as $namespace => $drivers) {
             if (strpos($className, $namespace) === 0) {
-                foreach ($drivers as $driver)
+                foreach ($drivers as $driver) {
                     $driver->loadClassMetadata($metadata);
+                }
             }
         }
     }

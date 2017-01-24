@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Event;
 
@@ -8,9 +9,6 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class AdminEvent extends Event
 {
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Doctrine\Admin;
 
 use PhpSpec\ObjectBehavior;
@@ -11,10 +13,10 @@ class ListElementSpec extends ObjectBehavior
      * @param \Symfony\Bridge\Doctrine\ManagerRegistry $registry
      * @param \Doctrine\Common\Persistence\ObjectManager $om
      */
-    function let($registry, $om)
+    public function let($registry, $om)
     {
         $this->beAnInstanceOf('AdminPanel\Symfony\AdminBundle\Tests\Doubles\Doctrine\MyListElement');
-        $this->beConstructedWith(array());
+        $this->beConstructedWith([]);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
         $this->setManagerRegistry($registry);

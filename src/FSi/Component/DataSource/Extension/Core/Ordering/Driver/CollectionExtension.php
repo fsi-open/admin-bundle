@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Extension\Core\Ordering\Driver;
 
@@ -25,7 +20,7 @@ class CollectionExtension extends DriverExtension implements EventSubscriberInte
      */
     public function getExtendedDriverTypes()
     {
-        return array('collection');
+        return ['collection'];
     }
 
     /**
@@ -33,9 +28,9 @@ class CollectionExtension extends DriverExtension implements EventSubscriberInte
      */
     protected function loadFieldTypesExtensions()
     {
-        return array(
+        return [
             new FieldExtension(),
-        );
+        ];
     }
 
     /**
@@ -43,9 +38,9 @@ class CollectionExtension extends DriverExtension implements EventSubscriberInte
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            DriverEvents::PRE_GET_RESULT => array('preGetResult'),
-        );
+        return [
+            DriverEvents::PRE_GET_RESULT => ['preGetResult'],
+        ];
     }
 
     /**
@@ -58,7 +53,7 @@ class CollectionExtension extends DriverExtension implements EventSubscriberInte
 
         $driver = $event->getDriver();
         $c = $driver->getCriteria();
-        $orderings = array();
+        $orderings = [];
         foreach ($sortedFields as $fieldName => $direction) {
             $field = $fields[$fieldName];
             $fieldName = $field->hasOption('field')?$field->getOption('field'):$field->getName();

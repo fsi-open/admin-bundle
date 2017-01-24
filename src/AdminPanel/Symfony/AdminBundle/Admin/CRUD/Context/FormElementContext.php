@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context;
 
@@ -44,10 +45,10 @@ class FormElementContext extends ContextAbstract
      */
     public function getData()
     {
-        $data = array(
+        $data = [
             'form' => $this->form->createView(),
             'element' => $this->element
-        );
+        ];
 
         if ($this->form->getData()) {
             $data['id'] = $this->element->getDataIndexer()->getIndex($this->form->getData());

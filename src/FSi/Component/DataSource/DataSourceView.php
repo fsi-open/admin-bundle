@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource;
 
@@ -25,19 +20,19 @@ class DataSourceView extends AttributesContainer implements DataSourceViewInterf
     /**
      * @var array
      */
-    private $parameters = array();
+    private $parameters = [];
 
     /**
      * @var array
      */
-    private $otherParameters = array();
+    private $otherParameters = [];
 
     /**
      * Array of field views.
      *
      * @var array
      */
-    private $fields = array();
+    private $fields = [];
 
     /**
      * Fields iterator.
@@ -138,7 +133,7 @@ class DataSourceView extends AttributesContainer implements DataSourceViewInterf
      */
     public function clearFields()
     {
-        $this->fields = array();
+        $this->fields = [];
 
         return $this;
     }
@@ -163,7 +158,7 @@ class DataSourceView extends AttributesContainer implements DataSourceViewInterf
      */
     public function setFields(array $fields)
     {
-        $this->fields = array();
+        $this->fields = [];
 
         foreach ($fields as $field) {
             if (!$field instanceof Field\FieldViewInterface) {

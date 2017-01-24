@@ -1,11 +1,9 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Exception;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {
 }

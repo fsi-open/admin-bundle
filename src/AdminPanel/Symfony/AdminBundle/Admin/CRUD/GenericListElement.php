@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Admin\CRUD;
 
@@ -36,11 +37,11 @@ abstract class GenericListElement extends AbstractElement implements ListElement
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'template_list' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('template_list', array('null', 'string'));
+        $resolver->setAllowedTypes('template_list', ['null', 'string']);
     }
 
     /**

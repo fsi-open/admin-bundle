@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Tests;
 
@@ -30,7 +25,7 @@ class DataGridViewTest extends \PHPUnit_Framework_TestCase
         $column = $this->getMock('FSi\Component\DataGrid\Column\ColumnTypeInterface');
         $column->expects($this->any())
             ->method('createHeaderView')
-            ->will($this->returnCallback(function() use ($self) {
+            ->will($this->returnCallback(function () use ($self) {
                 $headerView = $self->getMock('FSi\Component\DataGrid\Column\HeaderViewInterface');
                 $headerView->expects($self->any())
                     ->method('getName')
@@ -60,7 +55,7 @@ class DataGridViewTest extends \PHPUnit_Framework_TestCase
             ->method('setDataGridView');
 
         $this->rowset = $this->getMock('FSi\Component\DataGrid\Data\DataRowsetInterface');
-        $this->gridView = new DataGridView('test-grid-view', array($column) , $this->rowset);
+        $this->gridView = new DataGridView('test-grid-view', [$column], $this->rowset);
 
         $this->assertSame('test-grid-view', $this->gridView->getName());
 

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Extension\Doctrine\ColumnTypeExtension;
 
@@ -21,7 +16,7 @@ class ValueFormatColumnOptionsExtension extends ColumnAbstractTypeExtension
      */
     public function buildCellView(ColumnTypeInterface $column, CellViewInterface $view)
     {
-        $value = array();
+        $value = [];
         $values = $view->getValue();
         if (($emptyValue = $column->getOption('empty_value')) !== null) {
             $values = $this->populateValues($values, $emptyValue);
@@ -38,7 +33,7 @@ class ValueFormatColumnOptionsExtension extends ColumnAbstractTypeExtension
 
             if (isset($format)) {
                 if (isset($glue)) {
-                    $formatedValues = array();
+                    $formatedValues = [];
                     foreach ($val as $fieldValue) {
                         $formatedValues[] = sprintf($format, $fieldValue);
                     }
@@ -62,9 +57,9 @@ class ValueFormatColumnOptionsExtension extends ColumnAbstractTypeExtension
      */
      public function getExtendedColumnTypes()
      {
-         return array(
+         return [
              'entity',
-         );
+         ];
      }
 
     /**
@@ -72,17 +67,17 @@ class ValueFormatColumnOptionsExtension extends ColumnAbstractTypeExtension
      */
     public function initOptions(ColumnTypeInterface $column)
     {
-        $column->getOptionsResolver()->setDefaults(array(
+        $column->getOptionsResolver()->setDefaults([
             'glue_multiple' => ' ',
             'value_glue' => ' ',
             'value_format' => '%s',
             'empty_value' => null
-        ));
+        ]);
 
-        $column->getOptionsResolver()->setAllowedTypes('glue_multiple', array('string'));
-        $column->getOptionsResolver()->setAllowedTypes('value_glue', array('string', 'null'));
-        $column->getOptionsResolver()->setAllowedTypes('value_format', array('string', 'null'));
-        $column->getOptionsResolver()->setAllowedTypes('empty_value', array('array', 'string', 'null'));
+        $column->getOptionsResolver()->setAllowedTypes('glue_multiple', ['string']);
+        $column->getOptionsResolver()->setAllowedTypes('value_glue', ['string', 'null']);
+        $column->getOptionsResolver()->setAllowedTypes('value_format', ['string', 'null']);
+        $column->getOptionsResolver()->setAllowedTypes('empty_value', ['array', 'string', 'null']);
     }
 
     /**

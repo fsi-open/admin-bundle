@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Controller;
 
@@ -8,9 +9,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class AdminController
 {
     /**
@@ -32,7 +30,7 @@ class AdminController
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      * @param string $indexActionTemplate
      */
-    function __construct(EngineInterface $templating, RouterInterface $router, $indexActionTemplate)
+    public function __construct(EngineInterface $templating, RouterInterface $router, $indexActionTemplate)
     {
         $this->templating = $templating;
         $this->router = $router;

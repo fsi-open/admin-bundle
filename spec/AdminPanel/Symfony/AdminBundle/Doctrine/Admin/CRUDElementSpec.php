@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace spec\AdminPanel\Symfony\AdminBundle\Doctrine\Admin;
 
@@ -12,10 +13,10 @@ class CRUDElementSpec extends ObjectBehavior
      * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
      * @param \Doctrine\Common\Persistence\ObjectManager $om
      */
-    function let($registry, $om)
+    public function let($registry, $om)
     {
         $this->beAnInstanceOf('AdminPanel\Symfony\AdminBundle\Tests\Doubles\Doctrine\MyCrudElement');
-        $this->beConstructedWith(array());
+        $this->beConstructedWith([]);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
         $this->setManagerRegistry($registry);

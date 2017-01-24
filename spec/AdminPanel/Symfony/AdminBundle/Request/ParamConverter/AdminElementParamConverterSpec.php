@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace spec\AdminPanel\Symfony\AdminBundle\Request\ParamConverter;
 
@@ -11,7 +12,7 @@ class AdminElementParamConverterSpec extends ObjectBehavior
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Manager $manager
      */
-    function let($manager)
+    public function let($manager)
     {
         $this->beConstructedWith($manager);
     }
@@ -19,7 +20,7 @@ class AdminElementParamConverterSpec extends ObjectBehavior
     /**
      * @param \Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter $configuration
      */
-    function it_handle_only_fully_qualified_class_names($configuration)
+    public function it_handle_only_fully_qualified_class_names($configuration)
     {
         $configuration->getClass()->willReturn('FSiDemoBundle:News');
         $this->supports($configuration)->shouldReturn(false);
@@ -28,7 +29,7 @@ class AdminElementParamConverterSpec extends ObjectBehavior
     /**
      * @param \Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter $configuration
      */
-    function it_supports_any_object_that_implements_element_interface($configuration)
+    public function it_supports_any_object_that_implements_element_interface($configuration)
     {
         $configuration->getClass()->willReturn('AdminPanel\Symfony\AdminBundle\Doctrine\Admin\CRUDElement');
         $this->supports($configuration)->shouldReturn(true);

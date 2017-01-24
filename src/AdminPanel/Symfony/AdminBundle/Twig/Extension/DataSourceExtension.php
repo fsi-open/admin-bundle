@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Twig\Extension;
 
 use AdminPanel\Symfony\AdminBundle\Twig\TokenParser\DataSourceRouteTokenParser;
@@ -54,8 +56,8 @@ class DataSourceExtension extends \Twig_Extension
 
     public function __construct(ContainerInterface $container, $template)
     {
-        $this->themes = array();
-        $this->themesVars = array();
+        $this->themes = [];
+        $this->themesVars = [];
         $this->container = $container;
         $this->baseTemplate = $template;
     }
@@ -76,14 +78,14 @@ class DataSourceExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('datasource_filter_widget', array($this, 'datasourceFilter'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFunction('datasource_filter_count', array($this, 'datasourceFilterCount'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFunction('datasource_field_widget', array($this, 'datasourceField'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFunction('datasource_sort_widget', array($this, 'datasourceSort'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFunction('datasource_pagination_widget', array($this, 'datasourcePagination'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFunction('datasource_max_results_widget', array($this, 'datasourceMaxResults'), array('is_safe' => array('html'))),
-        );
+        return [
+            new \Twig_SimpleFunction('datasource_filter_widget', [$this, 'datasourceFilter'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('datasource_filter_count', [$this, 'datasourceFilterCount'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('datasource_field_widget', [$this, 'datasourceField'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('datasource_sort_widget', [$this, 'datasourceSort'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('datasource_pagination_widget', [$this, 'datasourcePagination'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('datasource_max_results_widget', [$this, 'datasourceMaxResults'], ['is_safe' => ['html']]),
+        ];
     }
 
     /**
@@ -91,10 +93,10 @@ class DataSourceExtension extends \Twig_Extension
      */
     public function getTokenParsers()
     {
-        return array(
+        return [
             new DataSourceThemeTokenParser(),
             new DataSourceRouteTokenParser(),
-        );
+        ];
     }
 
     /**
@@ -105,7 +107,7 @@ class DataSourceExtension extends \Twig_Extension
      * @param $theme
      * @param array $vars
      */
-    public function setTheme(DataSourceViewInterface $dataSource, $theme, array $vars = array())
+    public function setTheme(DataSourceViewInterface $dataSource, $theme, array $vars = [])
     {
         $this->themes[$dataSource->getName()] = ($theme instanceof \Twig_Template)
             ? $theme
@@ -120,26 +122,26 @@ class DataSourceExtension extends \Twig_Extension
      * @param $route
      * @param array $additional_parameters
      */
-    public function setRoute(DataSourceViewInterface $dataSource, $route, array $additional_parameters = array())
+    public function setRoute(DataSourceViewInterface $dataSource, $route, array $additional_parameters = [])
     {
         $this->routes[$dataSource->getName()] = $route;
         $this->additional_parameters[$dataSource->getName()] = $additional_parameters;
     }
 
-    public function datasourceFilter(DataSourceViewInterface $view, array $vars = array())
+    public function datasourceFilter(DataSourceViewInterface $view, array $vars = [])
     {
-        $blockNames = array(
+        $blockNames = [
             'datasource_' . $view->getName() . '_filter',
             'datasource_filter',
-        );
+        ];
 
-        $viewData = array(
+        $viewData = [
             'datasource' => $view,
             'vars' => array_merge(
                 $this->getVars($view),
                 $vars
             )
-        );
+        ];
 
         return $this->renderTheme($view, $viewData, $blockNames);
     }
@@ -157,25 +159,25 @@ class DataSourceExtension extends \Twig_Extension
         return $count;
     }
 
-    public function datasourceField(FieldViewInterface $fieldView, array $vars = array())
+    public function datasourceField(FieldViewInterface $fieldView, array $vars = [])
     {
         $dataSourceView = $fieldView->getDataSourceView();
-        $blockNames = array(
+        $blockNames = [
             'datasource_' . $dataSourceView->getName() . '_field_name_' . $fieldView->getName(),
             'datasource_' . $dataSourceView->getName() . '_field_type_' . $fieldView->getType(),
             'datasource_field_name_' . $fieldView->getName(),
             'datasource_field_type_' . $fieldView->getType(),
             'datasource_' . $dataSourceView->getName() . '_field',
             'datasource_field',
-        );
+        ];
 
-        $viewData = array(
+        $viewData = [
             'field' => $fieldView,
             'vars' => array_merge(
                 $this->getVars($fieldView->getDataSourceView()),
                 $vars
             )
-        );
+        ];
 
         return $this->renderTheme($dataSourceView, $viewData, $blockNames);
     }
@@ -184,12 +186,12 @@ class DataSourceExtension extends \Twig_Extension
     {
         $optionsResolver = new OptionsResolver();
         $optionsResolver
-            ->setDefaults(array(
+            ->setDefaults([
                 'route' => $this->getCurrentRoute($dataSource),
-                'additional_parameters' => array(),
+                'additional_parameters' => [],
                 'ascending' => '&uarr;',
                 'descending' => '&darr;',
-            ))
+            ])
             ->setAllowedTypes('route', 'string')
             ->setAllowedTypes('additional_parameters', 'array')
             ->setAllowedTypes('ascending', 'string')
@@ -198,22 +200,23 @@ class DataSourceExtension extends \Twig_Extension
         return $options;
     }
 
-    public function datasourceSort(FieldViewInterface $fieldView, array $options = array(), array $vars = array())
+    public function datasourceSort(FieldViewInterface $fieldView, array $options = [], array $vars = [])
     {
-        if (!$fieldView->getAttribute('sortable'))
+        if (!$fieldView->getAttribute('sortable')) {
             return;
+        }
 
         $dataSourceView = $fieldView->getDataSourceView();
-        $blockNames = array(
+        $blockNames = [
             'datasource_' . $dataSourceView->getName() . '_sort',
             'datasource_sort',
-        );
+        ];
 
         $options = $this->validateSortOptions($options, $dataSourceView);
         $ascendingUrl = $this->getUrl($dataSourceView, $options, $fieldView->getAttribute('parameters_sort_ascending'));
         $descendingUrl = $this->getUrl($dataSourceView, $options, $fieldView->getAttribute('parameters_sort_descending'));
 
-        $viewData = array(
+        $viewData = [
             'field' => $fieldView,
             'ascending_url' => $ascendingUrl,
             'descending_url' => $descendingUrl,
@@ -223,7 +226,7 @@ class DataSourceExtension extends \Twig_Extension
                 $this->getVars($fieldView->getDataSourceView()),
                 $vars
             )
-        );
+        ];
 
         return $this->renderTheme($dataSourceView, $viewData, $blockNames);
     }
@@ -232,14 +235,14 @@ class DataSourceExtension extends \Twig_Extension
     {
         $optionsResolver = new OptionsResolver();
         $optionsResolver
-            ->setDefined(array('max_pages'))
-            ->setDefaults(array(
+            ->setDefined(['max_pages'])
+            ->setDefaults([
                 'route' => $this->getCurrentRoute($dataSource),
-                'additional_parameters' => array(),
+                'additional_parameters' => [],
                 'active_class' => 'active',
                 'disabled_class' => 'disabled',
                 'translation_domain' => 'DataSourceBundle'
-            ))
+            ])
             ->setAllowedTypes('route', 'string')
             ->setAllowedTypes('additional_parameters', 'array')
             ->setAllowedTypes('max_pages', 'int')
@@ -250,20 +253,21 @@ class DataSourceExtension extends \Twig_Extension
         return $options;
     }
 
-    public function datasourcePagination(DataSourceViewInterface $view, $options = array(), $vars = array())
+    public function datasourcePagination(DataSourceViewInterface $view, $options = [], $vars = [])
     {
-        $blockNames = array(
+        $blockNames = [
             'datasource_' . $view->getName() . '_pagination',
             'datasource_pagination',
-        );
+        ];
 
         $options = $this->validatePaginationOptions($options, $view);
 
         $pagesParams = $view->getAttribute('parameters_pages');
         $current = $view->getAttribute('page');
         $pageCount = count($pagesParams);
-        if ($pageCount < 2)
+        if ($pageCount < 2) {
             return;
+        }
 
         if (isset($options['max_pages'])) {
             $delta = ceil($options['max_pages'] / 2);
@@ -281,13 +285,13 @@ class DataSourceExtension extends \Twig_Extension
         } else {
             $pages = range(1, $pageCount);
         }
-        $pagesAnchors = array();
-        $pagesUrls = array();
+        $pagesAnchors = [];
+        $pagesUrls = [];
         foreach ($pages as $page) {
             $pagesUrls[$page] = $this->getUrl($view, $options, $pagesParams[$page]);
         }
 
-        $viewData = array(
+        $viewData = [
             'datasource' => $view,
             'page_anchors' => $pagesAnchors,
             'pages_urls' => $pagesUrls,
@@ -300,7 +304,7 @@ class DataSourceExtension extends \Twig_Extension
             'disabled_class' => $options['disabled_class'],
             'translation_domain' => $options['translation_domain'],
             'vars' => array_merge($this->getVars($view), $vars),
-        );
+        ];
         if ($current != 1) {
             $viewData['prev'] = $current - 1;
             $viewData['prev_url'] = $this->getUrl($view, $options, $pagesParams[$current - 1]);
@@ -323,12 +327,12 @@ class DataSourceExtension extends \Twig_Extension
     {
         $optionsResolver = new OptionsResolver();
         $optionsResolver
-            ->setDefaults(array(
+            ->setDefaults([
                 'route' => $this->getCurrentRoute($dataSource),
                 'active_class' => 'active',
-                'additional_parameters' => array(),
-                'results' => array(5, 10, 20, 50, 100)
-            ))
+                'additional_parameters' => [],
+                'results' => [5, 10, 20, 50, 100]
+            ])
             ->setAllowedTypes('route', 'string')
             ->setAllowedTypes('active_class', 'string')
             ->setAllowedTypes('additional_parameters', 'array')
@@ -339,32 +343,32 @@ class DataSourceExtension extends \Twig_Extension
         return $options;
     }
 
-    public function datasourceMaxResults(DataSourceViewInterface $view, $options = array(), $vars = array())
+    public function datasourceMaxResults(DataSourceViewInterface $view, $options = [], $vars = [])
     {
         $options = $this->validateMaxResultsOptions($options, $view);
-        $blockNames = array(
+        $blockNames = [
             'datasource_' . $view->getName() . '_max_results',
             'datasource_max_results',
-        );
+        ];
 
         $baseParameters = $view->getAllParameters();
         if (!isset($baseParameters[$view->getName()])) {
-            $baseParameters[$view->getName()] = array();
+            $baseParameters[$view->getName()] = [];
         }
 
-        $results = array();
+        $results = [];
         foreach ($options['results'] as $resultsPerPage) {
             $baseParameters[$view->getName()][PaginationExtension::PARAMETER_MAX_RESULTS] = $resultsPerPage;
             $results[$resultsPerPage] = $this->getUrl($view, $options, $baseParameters);
         }
 
-        $viewData = array(
+        $viewData = [
             'datasource' => $view,
             'results' => $results,
             'active_class' => $options['active_class'],
             'max_results' => $view->getAttribute('max_results'),
             'vars' => array_merge($this->getVars($view), $vars),
-        );
+        ];
 
         return $this->renderTheme($view, $viewData, $blockNames);
     }
@@ -395,7 +399,7 @@ class DataSourceExtension extends \Twig_Extension
      */
     private function getTemplates(DataSourceViewInterface $dataSource)
     {
-        $templates = array();
+        $templates = [];
 
         if (isset($this->themes[$dataSource->getName()])) {
             $templates[] = $this->themes[$dataSource->getName()];
@@ -418,7 +422,7 @@ class DataSourceExtension extends \Twig_Extension
             return $this->themesVars[$dataSource->getName()];
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -427,7 +431,7 @@ class DataSourceExtension extends \Twig_Extension
      * @param DataSourceViewInterface $dataSource
      * @return array
      */
-    private function getUrl(DataSourceViewInterface $dataSource, array $options = array(), array $parameters = array())
+    private function getUrl(DataSourceViewInterface $dataSource, array $options = [], array $parameters = [])
     {
         $router = $this->container->get('router');
 
@@ -436,10 +440,10 @@ class DataSourceExtension extends \Twig_Extension
             array_merge(
                 isset($this->additional_parameters[$dataSource->getName()])
                     ? $this->additional_parameters[$dataSource->getName()]
-                    : array(),
+                    : [],
                 isset($options['additional_parameters'])
                     ? $options['additional_parameters']
-                    : array(),
+                    : [],
                 $parameters
             )
         );
@@ -451,7 +455,7 @@ class DataSourceExtension extends \Twig_Extension
      * @param $availableBlocks
      * @return string
      */
-    private function renderTheme(DataSourceViewInterface $view, array $contextVars = array(), $availableBlocks = array())
+    private function renderTheme(DataSourceViewInterface $view, array $contextVars = [], $availableBlocks = [])
     {
         $templates = $this->getTemplates($view);
 
@@ -484,7 +488,7 @@ class DataSourceExtension extends \Twig_Extension
         }
 
         // Check parents
-        if (false !== ($parent = $template->getParent(array()))) {
+        if (false !== ($parent = $template->getParent([]))) {
             return $this->findTemplateWithBlock($parent, $blockName);
         }
 

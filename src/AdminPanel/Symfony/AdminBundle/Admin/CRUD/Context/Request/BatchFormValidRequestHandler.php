@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\Request;
 
@@ -36,8 +37,8 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
      */
     private function getObjects(BatchElement $element, Request $request)
     {
-        $objects = array();
-        $indexes = $request->request->get('indexes', array());
+        $objects = [];
+        $indexes = $request->request->get('indexes', []);
 
         if (!count($indexes)) {
             throw new RequestHandlerException('There must be at least one object to execute batch action');

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Extension\Doctrine;
 
@@ -19,9 +14,9 @@ class DoctrineExtension extends DataGridAbstractExtension
      */
     protected function loadColumnTypes()
     {
-        return array(
+        return [
             new ColumnType\Entity(),
-        );
+        ];
     }
 
     /**
@@ -29,8 +24,8 @@ class DoctrineExtension extends DataGridAbstractExtension
      */
     protected function loadColumnTypesExtensions()
     {
-        return array(
+        return [
             new ColumnTypeExtension\ValueFormatColumnOptionsExtension(),
-        );
+        ];
     }
 }

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Extension\Core\EventSubscriber;
 
@@ -20,7 +15,7 @@ class ColumnOrder implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(DataGridEvents::POST_BUILD_VIEW => array('postBuildView', 128));
+        return [DataGridEvents::POST_BUILD_VIEW => ['postBuildView', 128]];
     }
 
     /**
@@ -32,11 +27,11 @@ class ColumnOrder implements EventSubscriberInterface
         $columns = $view->getColumns();
 
         if (count($columns)) {
-            $positive = array();
-            $negative = array();
-            $neutral = array();
+            $positive = [];
+            $negative = [];
+            $neutral = [];
 
-            $indexedColumns = array();
+            $indexedColumns = [];
             foreach ($columns as $column) {
                 if ($column->hasAttribute('display_order')) {
                     if (($order = $column->getAttribute('display_order')) >= 0) {
@@ -53,7 +48,7 @@ class ColumnOrder implements EventSubscriberInterface
             asort($positive);
             asort($negative);
 
-            $columns = array();
+            $columns = [];
             foreach ($negative as $name => $order) {
                 $columns[] = $indexedColumns[$name];
             }

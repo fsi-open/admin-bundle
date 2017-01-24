@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler;
 
@@ -7,9 +8,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class AdminElementPass implements CompilerPassInterface
 {
     /**
@@ -21,7 +19,7 @@ class AdminElementPass implements CompilerPassInterface
             return;
         }
 
-        $elements = array();
+        $elements = [];
         $elementServices = $container->findTaggedServiceIds('admin.element');
         foreach ($elementServices as $id => $tag) {
             $elements[] = new Reference($id);

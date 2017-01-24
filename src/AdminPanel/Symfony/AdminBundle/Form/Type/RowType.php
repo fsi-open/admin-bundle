@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -15,7 +17,7 @@ class RowType extends AbstractType
     /**
      * @param array $fields
      */
-    public function __construct($fields = array())
+    public function __construct($fields = [])
     {
         $this->fields = $fields;
     }

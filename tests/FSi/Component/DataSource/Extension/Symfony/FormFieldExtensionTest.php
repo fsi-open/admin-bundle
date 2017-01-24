@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Tests\Extension\Symfony;
 
@@ -43,23 +38,23 @@ class FormFieldExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo('name'),
                 $this->equalTo('choice'),
                 $this->equalTo(
-                    array(
-                        'choices' => array(
+                    [
+                        'choices' => [
                             '1' => 'tak',
                             '0' => 'nie',
-                        ),
+                        ],
                         'multiple' => false,
                         'empty_value' => ''
-                    )
+                    ]
                 )
             );
 
-        $options =  array(
-            'choices' => array(
+        $options =  [
+            'choices' => [
                 '1' => 'tak',
                 '0' => 'nie'
-            )
-        );
+            ]
+        ];
 
         $method->invoke(
             $formFielExtension,
@@ -98,18 +93,18 @@ class FormFieldExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo('name'),
                 $this->equalTo('choice'),
                 $this->equalTo(
-                    array(
-                        'choices' => array(
+                    [
+                        'choices' => [
                             '1' => 'yes',
                             '0' => 'no',
-                        ),
+                        ],
                         'multiple' => false,
                         'empty_value' => ''
-                    )
+                    ]
                 )
             );
 
-        $options =  array();
+        $options =  [];
 
         $method->invoke(
             $formFielExtension,

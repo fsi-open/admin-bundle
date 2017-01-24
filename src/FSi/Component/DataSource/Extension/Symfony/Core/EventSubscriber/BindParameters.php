@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Extension\Symfony\Core\EventSubscriber;
 
@@ -24,7 +19,7 @@ class BindParameters implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(DataSourceEvents::PRE_BIND_PARAMETERS => array('preBindParameters', 1024));
+        return [DataSourceEvents::PRE_BIND_PARAMETERS => ['preBindParameters', 1024]];
     }
 
     /**

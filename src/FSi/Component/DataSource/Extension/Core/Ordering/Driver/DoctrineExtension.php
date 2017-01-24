@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Extension\Core\Ordering\Driver;
 
@@ -28,10 +23,10 @@ class DoctrineExtension extends DriverExtension implements EventSubscriberInterf
      */
     public function getExtendedDriverTypes()
     {
-        return array(
+        return [
             'doctrine', // deprecated since version 1.4
             'doctrine-orm'
-        );
+        ];
     }
 
     /**
@@ -39,9 +34,9 @@ class DoctrineExtension extends DriverExtension implements EventSubscriberInterf
      */
     protected function loadFieldTypesExtensions()
     {
-        return array(
+        return [
             new FieldExtension(),
-        );
+        ];
     }
 
     /**
@@ -49,9 +44,9 @@ class DoctrineExtension extends DriverExtension implements EventSubscriberInterf
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            DriverEvents::PRE_GET_RESULT => array('preGetResult'),
-        );
+        return [
+            DriverEvents::PRE_GET_RESULT => ['preGetResult'],
+        ];
     }
 
     /**

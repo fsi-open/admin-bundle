@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Tests\Data;
 
@@ -30,10 +25,10 @@ class DataRowsetTest extends \PHPUnit_Framework_TestCase
         $e1->name = 'entity2';
         $e2->name = 'entity2';
 
-        $data = array(
+        $data = [
             'e1' => $e1,
             'e2' => $e2
-        );
+        ];
 
         $rowset = new DataRowset($data);
 

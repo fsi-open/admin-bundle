@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Tests\Fixtures;
 
@@ -21,19 +16,19 @@ class FieldExtension extends FieldAbstractExtension implements EventSubscriberIn
     /**
      * @var array
      */
-    private $calls = array();
+    private $calls = [];
 
     /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            FieldEvents::PRE_BIND_PARAMETER => array('preBindParameter', 128),
-            FieldEvents::POST_BIND_PARAMETER => array('postBindParameter', 128),
-            FieldEvents::POST_BUILD_VIEW => array('postBuildView', 128),
-            FieldEvents::POST_GET_PARAMETER => array('postGetParameter', 128),
-        );
+        return [
+            FieldEvents::PRE_BIND_PARAMETER => ['preBindParameter', 128],
+            FieldEvents::POST_BIND_PARAMETER => ['postBindParameter', 128],
+            FieldEvents::POST_BUILD_VIEW => ['postBuildView', 128],
+            FieldEvents::POST_GET_PARAMETER => ['postGetParameter', 128],
+        ];
     }
 
     /**
@@ -51,7 +46,7 @@ class FieldExtension extends FieldAbstractExtension implements EventSubscriberIn
      */
     public function resetCalls()
     {
-        $this->calls = array();
+        $this->calls = [];
     }
 
     /**
@@ -72,6 +67,6 @@ class FieldExtension extends FieldAbstractExtension implements EventSubscriberIn
      */
     public function loadSubscribers()
     {
-        return array($this);
+        return [$this];
     }
 }

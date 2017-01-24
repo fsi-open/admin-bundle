@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\HttpFundation;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -70,18 +72,18 @@ class CSVExport extends ExportAbstract
         $fp = fopen('php://temp', 'r+');
         // BOM
         fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
-        $columns = array();
+        $columns = [];
 
         foreach ($dataGrid->getColumns() as $column) {
             $columns[] = isset($this->translator)
-                ? $this->translator->trans($column->getLabel(), array(), $column->getAttribute('translation_domain'))
+                ? $this->translator->trans($column->getLabel(), [], $column->getAttribute('translation_domain'))
                 : $column->getLabel();
         }
 
         fputcsv($fp, $columns, $this->delimiter, $this->enclosure);
 
         foreach ($dataGrid as $row) {
-            $rowArray = array();
+            $rowArray = [];
             foreach ($row as $cell) {
                 $rowArray[] = $cell->getValue();
             }

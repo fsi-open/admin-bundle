@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Component\Reflection\Tests\Fixture;
 
 interface ClassAInterface
@@ -10,7 +12,7 @@ interface ClassAInterface
 class ClassAParentParent
 {
     public $publicProperty3;
-    
+
     public function publicMethod3($paramE, $paramF)
     {
         return $paramE . '=' .$paramF;
@@ -19,8 +21,8 @@ class ClassAParentParent
 
 class ClassAParent extends ClassAParentParent
 {
-    public $publicProperty2; 
-    
+    public $publicProperty2;
+
     public function publicMethod2($paramE, $paramF)
     {
         return $paramE . '=' .$paramF;
@@ -37,7 +39,6 @@ class ClassA extends ClassAParent implements ClassAInterface
 
     public function __construct($constructorParam)
     {
-
     }
 
     private function privateMethod($paramA, $paramB)

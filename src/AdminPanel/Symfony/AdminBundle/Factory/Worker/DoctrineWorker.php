@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Factory\Worker;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -18,7 +20,7 @@ class DoctrineWorker implements Worker
     /**
      * @param ManagerRegistry $managerRegistry
      */
-    function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
         $this->managerRegistry = $managerRegistry;
     }

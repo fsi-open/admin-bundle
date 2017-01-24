@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource;
 
@@ -34,14 +29,14 @@ class DataSourceFactory implements DataSourceFactoryInterface
      *
      * @var array
      */
-    protected $extensions = array();
+    protected $extensions = [];
 
     /**
      * @param \FSi\Component\DataSource\Driver\DriverFactoryManagerInterface $driverFactoryManager
      * @param array $extensions
      * @throws \FSi\Component\DataSource\Exception\DataSourceException
      */
-    public function __construct(DriverFactoryManagerInterface $driverFactoryManager, $extensions = array())
+    public function __construct(DriverFactoryManagerInterface $driverFactoryManager, $extensions = [])
     {
         $this->driverFactoryManager = $driverFactoryManager;
 
@@ -57,7 +52,7 @@ class DataSourceFactory implements DataSourceFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createDataSource($driver, $driverOptions = array(), $name = 'datasource')
+    public function createDataSource($driver, $driverOptions = [], $name = 'datasource')
     {
         $name = (string) $name;
 
@@ -103,7 +98,7 @@ class DataSourceFactory implements DataSourceFactoryInterface
      */
     public function getAllParameters()
     {
-        $result = array();
+        $result = [];
         foreach ($this->datasources as $datasource) {
             $result[] = $datasource->getParameters();
         }
@@ -120,7 +115,7 @@ class DataSourceFactory implements DataSourceFactoryInterface
      */
     public function getOtherParameters(DataSourceInterface $except)
     {
-        $result = array();
+        $result = [];
         foreach ($this->datasources as $datasource) {
             if ($datasource !== $except) {
                 $result[] = $datasource->getParameters();

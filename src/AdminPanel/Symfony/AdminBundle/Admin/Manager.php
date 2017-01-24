@@ -1,13 +1,11 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Admin;
 
 use AdminPanel\Symfony\AdminBundle\Admin\Manager\Visitor;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class Manager implements ManagerInterface
 {
     /**
@@ -17,7 +15,7 @@ class Manager implements ManagerInterface
 
     public function __construct()
     {
-        $this->elements = array();
+        $this->elements = [];
     }
 
     /**

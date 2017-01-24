@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Menu\Item;
 
 use PhpSpec\ObjectBehavior;
@@ -9,13 +11,13 @@ class ElementItemSpec extends ObjectBehavior
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Element $element
      */
-    function let($element)
+    public function let($element)
     {
         $this->beConstructedWith('some name', $element);
     }
 
-    function it_has_default_options()
+    public function it_has_default_options()
     {
-        $this->getOptions()->shouldReturn(array('attr' => array('id' => null, 'class' => null), 'elements' => array()));
+        $this->getOptions()->shouldReturn(['attr' => ['id' => null, 'class' => null], 'elements' => []]);
     }
 }

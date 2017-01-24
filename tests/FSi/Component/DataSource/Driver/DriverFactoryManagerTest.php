@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Tests\Driver;
 
@@ -36,10 +31,10 @@ class DriverFactoryManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('collection'));
 
 
-        $manager = new DriverFactoryManager(array(
+        $manager = new DriverFactoryManager([
             $doctrineFactory,
             $collectionFactory
-        ));
+        ]);
 
         $this->assertTrue($manager->hasFactory('doctrine'));
         $this->assertTrue($manager->hasFactory('collection'));
@@ -55,8 +50,8 @@ class DriverFactoryManagerTest extends \PHPUnit_Framework_TestCase
     {
         $notFactory = new \DateTime();
 
-        $manager = new DriverFactoryManager(array(
+        $manager = new DriverFactoryManager([
             $notFactory,
-        ));
+        ]);
     }
 }

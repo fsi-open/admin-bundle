@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Extension\Core\ColumnType;
 
@@ -30,7 +25,7 @@ class DateTime extends ColumnAbstractType
         $format = $this->getOption('datetime_format');
         $inputValues = $this->getInputData($value);
 
-        $return = array();
+        $return = [];
         foreach ($inputValues as $field => $value) {
             if (empty($value)) {
                 $return[$field]  = null;
@@ -59,21 +54,21 @@ class DateTime extends ColumnAbstractType
      */
     public function initOptions()
     {
-        $this->getOptionsResolver()->setDefaults(array(
+        $this->getOptionsResolver()->setDefaults([
             'datetime_format' => 'Y-m-d H:i:s',
             'input_type' => null,
             'input_field_format' => null
-        ));
+        ]);
 
-        $this->getOptionsResolver()->setAllowedTypes('input_field_format', array('null', 'array', 'string'));
+        $this->getOptionsResolver()->setAllowedTypes('input_field_format', ['null', 'array', 'string']);
 
-        $this->getOptionsResolver()->setAllowedValues('input_type', array(
+        $this->getOptionsResolver()->setAllowedValues('input_type', [
             null,
             'string',
             'timestamp',
             'datetime',
             'array'
-        ));
+        ]);
     }
 
     private function getInputData($value)
@@ -86,7 +81,7 @@ class DateTime extends ColumnAbstractType
         }
 
         $mappingFields = $this->getOption('field_mapping');
-        $inputData = array();
+        $inputData = [];
         foreach ($mappingFields as $field) {
             $inputData[$field] = null;
         }

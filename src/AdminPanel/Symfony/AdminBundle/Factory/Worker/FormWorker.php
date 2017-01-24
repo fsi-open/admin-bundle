@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Factory\Worker;
 
 use AdminPanel\Symfony\AdminBundle\Admin\CRUD\FormAwareInterface;
@@ -18,7 +20,7 @@ class FormWorker implements Worker
     /**
      * @param FormFactoryInterface $formFactory
      */
-    function __construct(FormFactoryInterface $formFactory)
+    public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
     }

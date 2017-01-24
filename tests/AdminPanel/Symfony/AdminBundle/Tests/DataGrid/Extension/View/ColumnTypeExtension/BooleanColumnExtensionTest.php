@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundleBundle\Tests\DataGrid\Extension\View\ColumnTypeExtension;
 
 use AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Symfony\ColumnTypeExtension\FormExtension;
@@ -27,12 +29,12 @@ class BooleanColumnExtensionTest extends \PHPUnit_Framework_TestCase
 
         $translator->expects($this->at(0))
             ->method('trans')
-            ->with('datagrid.boolean.yes', array(), 'FSiAdminBundle')
+            ->with('datagrid.boolean.yes', [], 'FSiAdminBundle')
             ->will($this->returnValue('YES'));
 
         $translator->expects($this->at(1))
             ->method('trans')
-            ->with('datagrid.boolean.no', array(), 'FSiAdminBundle')
+            ->with('datagrid.boolean.no', [], 'FSiAdminBundle')
             ->will($this->returnValue('NO'));
 
         return $translator;

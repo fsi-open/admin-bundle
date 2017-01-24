@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\Request;
 
 use AdminPanel\Symfony\AdminBundle\Event\ListEvents;
@@ -14,13 +16,13 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
      * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
      * @param \AdminPanel\Symfony\AdminBundle\Event\ListEvent $event
      */
-    function let($eventDispatcher, $event)
+    public function let($eventDispatcher, $event)
     {
         $event->hasResponse()->willReturn(false);
         $this->beConstructedWith($eventDispatcher);
     }
 
-    function it_is_context_request_handler()
+    public function it_is_context_request_handler()
     {
         $this->shouldHaveType('AdminPanel\Symfony\AdminBundle\Admin\Context\Request\HandlerInterface');
     }
@@ -29,13 +31,13 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Event\AdminEvent $event
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    function it_throw_exception_for_non_list_event($event, $request)
+    public function it_throw_exception_for_non_list_event($event, $request)
     {
         $this->shouldThrow(
             new RequestHandlerException(
                 "AdminPanel\\Symfony\\AdminBundle\\Admin\\CRUD\\Context\\Request\\DataGridBindDataHandler require ListEvent"
             )
-        )->during('handleRequest', array($event, $request));
+        )->during('handleRequest', [$event, $request]);
     }
 
     /**
@@ -43,7 +45,7 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
      */
-    function it_do_nothing_when_request_is_not_a_POST($event, $request, $eventDispatcher)
+    public function it_do_nothing_when_request_is_not_a_POST($event, $request, $eventDispatcher)
     {
         $request->isMethod('POST')->willReturn(false);
         $eventDispatcher->dispatch(ListEvents::LIST_RESPONSE_PRE_RENDER, $event)->shouldBeCalled();
@@ -56,12 +58,11 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
      */
-    function it_do_nothing_when_request_is_not_a_POST_and_return_respone_from_pre_render_event(
+    public function it_do_nothing_when_request_is_not_a_POST_and_return_respone_from_pre_render_event(
         $event,
         $request,
         $eventDispatcher
-    )
-    {
+    ) {
         $request->isMethod('POST')->willReturn(false);
         $eventDispatcher->dispatch(ListEvents::LIST_RESPONSE_PRE_RENDER, $event)
             ->will(function () use ($event) {
@@ -82,15 +83,14 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\CRUD\ListElement $element
      * @throws \FSi\Component\DataSource\Exception\DataSourceException
      */
-    function it_bind_data_at_datagrid_for_POST_request(
+    public function it_bind_data_at_datagrid_for_POST_request(
         $event,
         $request,
         $eventDispatcher,
         $dataGrid,
         $dataSource,
         $element
-    )
-    {
+    ) {
         $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND, $event)
             ->shouldBeCalled();
@@ -104,8 +104,8 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         $element->saveDataGrid()->shouldBeCalled();
         $event->getDataSource()->willReturn($dataSource);
         $dataSource->bindParameters($request)->shouldBeCalled();
-        $dataSource->getResult()->willReturn(array(1));
-        $dataGrid->setData(array(1))->shouldBeCalled();
+        $dataSource->getResult()->willReturn([1]);
+        $dataGrid->setData([1])->shouldBeCalled();
 
         $eventDispatcher->dispatch(ListEvents::LIST_RESPONSE_PRE_RENDER, $event)->shouldBeCalled();
 
@@ -117,7 +117,7 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
      */
-    function it_return_response_from_datagrid_pre_bind_request_event($event, $request, $eventDispatcher)
+    public function it_return_response_from_datagrid_pre_bind_request_event($event, $request, $eventDispatcher)
     {
         $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND, $event)
@@ -136,7 +136,7 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
      * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
      * @param \FSi\Component\DataGrid\DataGrid $dataGrid
      */
-    function it_return_response_from_datagrid_post_bind_request_event($event, $request, $eventDispatcher, $dataGrid)
+    public function it_return_response_from_datagrid_post_bind_request_event($event, $request, $eventDispatcher, $dataGrid)
     {
         $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND, $event)

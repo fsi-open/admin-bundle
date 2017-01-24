@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\EventListener;
 
@@ -49,25 +50,25 @@ class LocaleMenuListener
         $language->setLabel(
             $this->translator->trans(
                 'admin.language.current',
-                array('%locale%' => $this->getLanguageName()),
+                ['%locale%' => $this->getLanguageName()],
                 'FSiAdminBundle'
             )
         );
-        $language->setOptions(array('attr' => array('id' => 'language')));
+        $language->setOptions(['attr' => ['id' => 'language']]);
 
         foreach ($this->locales as $locale) {
             $localeItem = new RoutableItem(
                 sprintf('admin-locale.%s', $locale),
                 'fsi_admin_locale',
-                array(
+                [
                     '_locale' => $locale,
                     'redirect_uri' => $this->requestStack->getMasterRequest()->getUri()
-                )
+                ]
             );
 
             $localeItem->setLabel($this->getLanguageName($locale));
             if ($locale === $this->getCurrentLocale()) {
-                $localeItem->setOptions(array('attr' => array('class' => 'active')));
+                $localeItem->setOptions(['attr' => ['class' => 'active']]);
             }
             $language->addChild($localeItem);
         }

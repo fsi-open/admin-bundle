@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Twig\Node;
 
 class DataGridThemeNode extends \Twig_Node
 {
     public function __construct(\Twig_NodeInterface $dataGrid, \Twig_NodeInterface $theme, \Twig_Node_Expression_Array $vars, $lineno, $tag = null)
     {
-        parent::__construct(array('datagrid' => $dataGrid, 'theme' => $theme, 'vars' => $vars), array(), $lineno, $tag);
+        parent::__construct(['datagrid' => $dataGrid, 'theme' => $theme, 'vars' => $vars], [], $lineno, $tag);
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Doctrine\Admin;
 
@@ -8,9 +9,6 @@ use AdminPanel\Symfony\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 abstract class ResourceElement extends GenericResourceElement implements Element
 {
     use ElementImpl {

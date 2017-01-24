@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Tests\Extension\Symfony;
 
@@ -35,8 +30,8 @@ class CoreExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $extension = new CoreExtension();
         $driver = $this->getMock('FSi\Component\DataSource\Driver\DriverInterface');
-        $datasource = $this->getMock('FSi\Component\DataSource\DataSource', array(), array($driver));
-        $data1 = array('key1' => 'value1', 'key2' => 'value2');
+        $datasource = $this->getMock('FSi\Component\DataSource\DataSource', [], [$driver]);
+        $data1 = ['key1' => 'value1', 'key2' => 'value2'];
         $data2 = $data1;
 
         $subscribers = $extension->loadSubscribers();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\Request;
 
 use AdminPanel\Symfony\AdminBundle\Event\BatchEvents;
@@ -15,13 +17,13 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Event\FormEvent $event
      * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
      */
-    function let($eventDispatcher, $event, $router)
+    public function let($eventDispatcher, $event, $router)
     {
         $event->hasResponse()->willReturn(false);
         $this->beConstructedWith($eventDispatcher, $router);
     }
 
-    function it_is_context_request_handler()
+    public function it_is_context_request_handler()
     {
         $this->shouldHaveType('AdminPanel\Symfony\AdminBundle\Admin\Context\Request\HandlerInterface');
     }
@@ -30,20 +32,20 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Event\ListEvent $listEvent
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    function it_throw_exception_for_non_form_event($listEvent, $request)
+    public function it_throw_exception_for_non_form_event($listEvent, $request)
     {
         $this->shouldThrow(
             new RequestHandlerException(
                 "AdminPanel\\Symfony\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler require FormEvent"
             )
-        )->during('handleRequest', array($listEvent, $request));
+        )->during('handleRequest', [$listEvent, $request]);
     }
 
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Event\FormEvent $formEvent
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    function it_throw_exception_for_non_redirectable_element($formEvent, $request)
+    public function it_throw_exception_for_non_redirectable_element($formEvent, $request)
     {
         $formEvent->getElement()->willReturn(new \stdClass());
 
@@ -51,7 +53,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             new RequestHandlerException(
                 "AdminPanel\\Symfony\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler require RedirectableElement"
             )
-        )->during('handleRequest', array($formEvent, $request));
+        )->during('handleRequest', [$formEvent, $request]);
     }
 
     /**
@@ -65,7 +67,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
      * @param \FSi\Component\DataIndexer\DataIndexerInterface $dataIndexer
      * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
      */
-    function it_handle_POST_request(
+    public function it_handle_POST_request(
         $event,
         $request,
         $requestParameterbag,
@@ -75,12 +77,11 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $element,
         $dataIndexer,
         $router
-    )
-    {
+    ) {
         $request->isMethod('POST')->willReturn(true);
         $request->request = $requestParameterbag;
         $request->query = $queryParameterbag;
-        $requestParameterbag->get('indexes', array())->willReturn(array('index'));
+        $requestParameterbag->get('indexes', [])->willReturn(['index']);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
@@ -95,14 +96,14 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
-        $element->getSuccessRouteParameters()->willReturn(array('element' => 'element_list_id'));
+        $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');
         $element->getDataIndexer()->willReturn($dataIndexer);
 
         $dataIndexer->getData('index')->willReturn(new \stdClass());
 
         $queryParameterbag->has('redirect_uri')->willReturn(false);
-        $router->generate('fsi_admin_list', array('element' => 'element_list_id'))->willReturn('/list/page');
+        $router->generate('fsi_admin_list', ['element' => 'element_list_id'])->willReturn('/list/page');
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
@@ -118,7 +119,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\CRUD\BatchElement $element
      * @param \FSi\Component\DataIndexer\DataIndexerInterface $dataIndexer
      */
-    function it_return_redirect_response_with_redirect_uri_passed_by_request(
+    public function it_return_redirect_response_with_redirect_uri_passed_by_request(
         $event,
         $request,
         $requestParameterbag,
@@ -127,12 +128,11 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $form,
         $element,
         $dataIndexer
-    )
-    {
+    ) {
         $request->isMethod('POST')->willReturn(true);
         $request->request = $requestParameterbag;
         $request->query = $queryParameterbag;
-        $requestParameterbag->get('indexes', array())->willReturn(array('index'));
+        $requestParameterbag->get('indexes', [])->willReturn(['index']);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
@@ -147,7 +147,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
-        $element->getSuccessRouteParameters()->willReturn(array('element' => 'element_list_id'));
+        $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');
         $element->getDataIndexer()->willReturn($dataIndexer);
 
@@ -168,7 +168,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
      * @param \Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher
      * @param \Symfony\Component\Form\Form $form
      */
-    function it_return_response_from_pre_apply_event($event, $element, $request, $eventDispatcher, $form)
+    public function it_return_response_from_pre_apply_event($event, $element, $request, $eventDispatcher, $form)
     {
         $request->isMethod('POST')->willReturn(true);
         $event->getForm()->willReturn($form);
@@ -193,7 +193,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\CRUD\BatchElement $element
      * @param \FSi\Component\DataIndexer\DataIndexerInterface $dataIndexer
      */
-    function it_return_response_from_post_apply_event(
+    public function it_return_response_from_post_apply_event(
         $event,
         $request,
         $requestParameterbag,
@@ -201,11 +201,10 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $form,
         $element,
         $dataIndexer
-    )
-    {
+    ) {
         $request->isMethod('POST')->willReturn(true);
         $request->request = $requestParameterbag;
-        $requestParameterbag->get('indexes', array())->willReturn(array('index'));
+        $requestParameterbag->get('indexes', [])->willReturn(['index']);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);

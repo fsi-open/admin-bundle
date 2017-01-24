@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type;
 
@@ -33,8 +28,8 @@ class FSiRemovableFileType extends AbstractType
 
         if (isset($options['constraints'])) {
             $options['file_options'] = array_merge(
-                isset($options['file_options']) ? $options['file_options'] : array(),
-                array('constraints' => $options['constraints'])
+                isset($options['file_options']) ? $options['file_options'] : [],
+                ['constraints' => $options['constraints']]
             );
             unset($options['constraints']);
         }

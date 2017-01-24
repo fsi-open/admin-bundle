@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundleBundle\Tests\DataSource\Extension\Symfony\Form\Field;
 
 use AdminPanel\Symfony\AdminBundle\DataSource\Extension\Symfony\Form\Field\FormFieldExtension;
@@ -11,14 +13,14 @@ class FormFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $optionResolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolver');
         $optionResolver->expects($this->once())
             ->method('setDefaults')
-            ->with(array(
-                'form_options' => array(
-                    'choices' => array(
+            ->with([
+                'form_options' => [
+                    'choices' => [
                         'null' => 'is_null_translated',
                         'no_null' => 'is_not_null_translated'
-                    )
-                )
-            ));
+                    ]
+                ]
+            ]);
 
         $fieldType = $this->getMock('FSi\Component\DataSource\Field\FieldTypeInterface');
         $fieldType->expects($this->atLeastOnce())
@@ -48,7 +50,7 @@ class FormFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $extension = new FormFieldExtension($translator);
 
         $this->assertSame(
-            array('text', 'number', 'date', 'time', 'datetime', 'entity', 'boolean'),
+            ['text', 'number', 'date', 'time', 'datetime', 'entity', 'boolean'],
             $extension->getExtendedFieldTypes()
         );
 
@@ -60,14 +62,14 @@ class FormFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $optionResolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolver');
         $optionResolver->expects($this->once())
             ->method('setDefaults')
-            ->with(array(
-                'form_options' => array(
-                    'choices' => array(
+            ->with([
+                'form_options' => [
+                    'choices' => [
                         '1' => 'yes_translated',
                         '0' => 'no_translated'
-                    )
-                )
-            ));
+                    ]
+                ]
+            ]);
 
         $fieldType = $this->getMock('FSi\Component\DataSource\Field\FieldTypeInterface');
         $fieldType->expects($this->atLeastOnce())
@@ -97,7 +99,7 @@ class FormFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $extension = new FormFieldExtension($translator);
 
         $this->assertSame(
-            array('text', 'number', 'date', 'time', 'datetime', 'entity', 'boolean'),
+            ['text', 'number', 'date', 'time', 'datetime', 'entity', 'boolean'],
             $extension->getExtendedFieldTypes()
         );
 

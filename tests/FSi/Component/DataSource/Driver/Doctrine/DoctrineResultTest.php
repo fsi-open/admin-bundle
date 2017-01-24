@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Tests\Driver\Doctrine;
 
@@ -22,7 +17,7 @@ class DoctrineResultTest extends \PHPUnit_Framework_TestCase
 
         $paginator->expects($this->any())
             ->method('getIterator')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $result = new DoctrineResult($registry, $paginator);
     }
@@ -36,25 +31,25 @@ class DoctrineResultTest extends \PHPUnit_Framework_TestCase
 
         $paginator->expects($this->any())
             ->method('getIterator')
-            ->will($this->returnValue(array(
-                '0' => array(
+            ->will($this->returnValue([
+                '0' => [
                     'foo',
                     'bar'
-                ),
-                '1' => array(
+                ],
+                '1' => [
                     'foo1',
                     'bar1'
-                )
-            )));
+                ]
+            ]));
 
         $result = new DoctrineResult($registry, $paginator);
-        $this->assertSame($result['0'], array(
+        $this->assertSame($result['0'], [
             'foo',
             'bar'
-        ));
-        $this->assertSame($result['1'], array(
+        ]);
+        $this->assertSame($result['1'], [
             'foo1',
             'bar1'
-        ));
+        ]);
     }
 }

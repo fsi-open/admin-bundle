@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Bundle\ResourceRepositoryBundle\Twig\Extension;
 
@@ -39,10 +34,10 @@ class ResourceRepository extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('has_resource', array($this, 'hasResource')),
-            new \Twig_SimpleFunction('get_resource', array($this, 'getResource'))
-        );
+        return [
+            new \Twig_SimpleFunction('has_resource', [$this, 'hasResource']),
+            new \Twig_SimpleFunction('get_resource', [$this, 'getResource'])
+        ];
     }
 
     /**

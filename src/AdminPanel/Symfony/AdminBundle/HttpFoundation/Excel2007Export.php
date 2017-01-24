@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\HttpFundation;
 
 use Symfony\Component\HttpFoundation\Response;

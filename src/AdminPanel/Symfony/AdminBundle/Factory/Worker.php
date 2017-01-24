@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Factory;
 
 use AdminPanel\Symfony\AdminBundle\Admin\Element;

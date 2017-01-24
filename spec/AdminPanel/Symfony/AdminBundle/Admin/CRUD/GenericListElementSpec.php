@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Admin\CRUD;
 
 use AdminPanel\Symfony\AdminBundle\Exception\RuntimeException;
@@ -8,28 +10,28 @@ use Prophecy\Argument;
 
 class GenericListElementSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beAnInstanceOf('AdminPanel\Symfony\AdminBundle\Tests\Doubles\MyList');
-        $this->beConstructedWith(array());
+        $this->beConstructedWith([]);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('AdminPanel\Symfony\AdminBundle\Admin\CRUD\GenericListElement');
     }
 
-    function it_is_list_element()
+    public function it_is_list_element()
     {
         $this->shouldHaveType('AdminPanel\Symfony\AdminBundle\Admin\CRUD\ListElement');
     }
 
-    function it_is_admin_element()
+    public function it_is_admin_element()
     {
         $this->shouldHaveType('AdminPanel\Symfony\AdminBundle\Admin\Element');
     }
 
-    function it_have_default_route()
+    public function it_have_default_route()
     {
         $this->getRoute()->shouldReturn('fsi_admin_list');
     }
@@ -38,7 +40,7 @@ class GenericListElementSpec extends ObjectBehavior
      * @param \FSi\Component\DataGrid\DataGridFactory $factory
      * @throws \FSi\Component\DataGrid\Exception\DataGridColumnException
      */
-    function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid($factory)
+    public function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid($factory)
     {
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
@@ -51,7 +53,7 @@ class GenericListElementSpec extends ObjectBehavior
      * @param \FSi\Component\DataSource\DataSourceFactory $factory
      * @throws \FSi\Component\DataSource\Exception\DataSourceException
      */
-    function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource($factory)
+    public function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource($factory)
     {
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
@@ -60,10 +62,10 @@ class GenericListElementSpec extends ObjectBehavior
             ->during('createDataSource');
     }
 
-    function it_has_default_options_values()
+    public function it_has_default_options_values()
     {
-        $this->getOptions()->shouldReturn(array(
+        $this->getOptions()->shouldReturn([
             'template_list' => null,
-        ));
+        ]);
     }
 }

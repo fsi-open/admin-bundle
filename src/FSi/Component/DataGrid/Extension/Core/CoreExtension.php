@@ -1,15 +1,8 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Extension\Core;
-
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 use FSi\Component\DataGrid\DataGridAbstractExtension;
 use FSi\Component\DataGrid\Extension\Core\ColumnType;
@@ -23,15 +16,13 @@ class CoreExtension extends DataGridAbstractExtension
      */
     protected function loadColumnTypes()
     {
-        return array(
+        return [
             new ColumnType\Text(),
             new ColumnType\Number(),
             new ColumnType\Collection(),
             new ColumnType\DateTime(),
-            new ColumnType\Action(),
             new ColumnType\Money(),
-            new ColumnType\Action(),
-        );
+        ];
     }
 
     /**
@@ -39,10 +30,10 @@ class CoreExtension extends DataGridAbstractExtension
      */
     protected function loadColumnTypesExtensions()
     {
-        return array(
+        return [
             new ColumnTypeExtension\DefaultColumnOptionsExtension(),
             new ColumnTypeExtension\ValueFormatColumnOptionsExtension(),
-        );
+        ];
     }
 
     /**
@@ -50,8 +41,8 @@ class CoreExtension extends DataGridAbstractExtension
      */
     protected function loadSubscribers()
     {
-        return array(
+        return [
             new EventSubscriber\ColumnOrder(),
-        );
+        ];
     }
 }

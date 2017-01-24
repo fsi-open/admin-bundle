@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context;
 
 use PhpSpec\ObjectBehavior;
@@ -14,19 +16,19 @@ class BatchElementContextSpec extends ObjectBehavior
      * @param \Symfony\Component\Form\Form $batchForm
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Context\Request\HandlerInterface $handler
      */
-    function let($element, $formBuilder, $batchForm, $handler)
+    public function let($element, $formBuilder, $batchForm, $handler)
     {
-        $this->beConstructedWith(array($handler), $formBuilder);
+        $this->beConstructedWith([$handler], $formBuilder);
         $formBuilder->getForm()->willReturn($batchForm);
         $this->setElement($element);
     }
 
-    function it_is_context()
+    public function it_is_context()
     {
         $this->shouldBeAnInstanceOf('AdminPanel\Symfony\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_array_data()
+    public function it_have_array_data()
     {
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('form');
@@ -34,7 +36,7 @@ class BatchElementContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('indexes');
     }
 
-    function it_does_not_have_template_name()
+    public function it_does_not_have_template_name()
     {
         $this->hasTemplateName()->shouldReturn(false);
         $this->getTemplateName()->shouldReturn(null);
@@ -45,13 +47,13 @@ class BatchElementContextSpec extends ObjectBehavior
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Symfony\Component\HttpFoundation\ParameterBag $requestParameterBag
      */
-    function it_handle_request_with_request_handlers($handler, $request, $requestParameterBag)
+    public function it_handle_request_with_request_handlers($handler, $request, $requestParameterBag)
     {
         $handler->handleRequest(Argument::type('AdminPanel\Symfony\AdminBundle\Event\FormEvent'), $request)
             ->shouldBeCalled();
 
         $request->request = $requestParameterBag;
-        $requestParameterBag->get('indexes', array())->willReturn(array());
+        $requestParameterBag->get('indexes', [])->willReturn([]);
 
         $this->handleRequest($request)->shouldReturn(null);
     }
@@ -61,13 +63,13 @@ class BatchElementContextSpec extends ObjectBehavior
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Symfony\Component\HttpFoundation\ParameterBag $requestParameterBag
      */
-    function it_return_response_from_handler($handler, $request, $requestParameterBag)
+    public function it_return_response_from_handler($handler, $request, $requestParameterBag)
     {
         $handler->handleRequest(Argument::type('AdminPanel\Symfony\AdminBundle\Event\FormEvent'), $request)
             ->willReturn(new Response());
 
         $request->request = $requestParameterBag;
-        $requestParameterBag->get('indexes', array())->willReturn(array());
+        $requestParameterBag->get('indexes', [])->willReturn([]);
 
         $this->handleRequest($request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
@@ -75,7 +77,7 @@ class BatchElementContextSpec extends ObjectBehavior
 
     public function getMatchers()
     {
-        return array(
+        return [
             'haveKeyInArray' => function ($subject, $key) {
                 if (!is_array($subject)) {
                     return false;
@@ -83,6 +85,6 @@ class BatchElementContextSpec extends ObjectBehavior
 
                 return array_key_exists($key, $subject);
             },
-        );
+        ];
     }
 }

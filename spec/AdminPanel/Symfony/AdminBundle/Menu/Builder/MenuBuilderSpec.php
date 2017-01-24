@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Menu\Builder;
 
 use PhpSpec\ObjectBehavior;
@@ -10,7 +12,7 @@ class MenuBuilderSpec extends ObjectBehavior
     /**
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      */
-    function let($dispatcher)
+    public function let($dispatcher)
     {
         $this->beConstructedWith($dispatcher, 'fsi_admin.menu.tools');
     }

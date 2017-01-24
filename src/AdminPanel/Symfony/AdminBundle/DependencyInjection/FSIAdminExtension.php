@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\DependencyInjection;
 
@@ -8,9 +9,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class FSIAdminExtension extends Extension
 {
     /**
@@ -54,7 +52,7 @@ class FSIAdminExtension extends Extension
             $loader->load('datasource_yaml_configuration.xml');
         }
 
-        if(isset($config['data_source']['twig']['enabled']) && $config['data_source']['twig']['enabled']) {
+        if (isset($config['data_source']['twig']['enabled']) && $config['data_source']['twig']['enabled']) {
             $this->registerDataSourceTwigConfiguration($config['data_source']['twig'], $container, $loader);
         }
     }
@@ -85,7 +83,7 @@ class FSIAdminExtension extends Extension
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @param array $config
      */
-    protected function setTemplateParameters(ContainerBuilder $container, $config = array())
+    protected function setTemplateParameters(ContainerBuilder $container, $config = [])
     {
         foreach ($config as $key => $value) {
             $container->setParameter(sprintf('admin.templates.%s', $key), $value);

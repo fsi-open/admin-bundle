@@ -1,13 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Admin;
 
 use AdminPanel\Symfony\AdminBundle\Exception\MissingOptionException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 abstract class AbstractElement implements Element
 {
     /**
@@ -18,7 +17,7 @@ abstract class AbstractElement implements Element
     /**
      * @param array $options
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $optionsResolver = new OptionsResolver();
         $this->setDefaultOptions($optionsResolver);
@@ -30,9 +29,9 @@ abstract class AbstractElement implements Element
      */
     public function getRouteParameters()
     {
-        return array(
+        return [
             'element' => $this->getId(),
-        );
+        ];
     }
 
     /**

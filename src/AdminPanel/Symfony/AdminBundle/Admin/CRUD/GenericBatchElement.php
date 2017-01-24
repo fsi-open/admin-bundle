@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Admin\CRUD;
 
@@ -36,6 +37,6 @@ abstract class GenericBatchElement extends AbstractElement implements BatchEleme
      */
     public function getSuccessRouteParameters()
     {
-        return array();
+        return [];
     }
 }

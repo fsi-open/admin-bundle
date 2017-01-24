@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\PropertyObserver\Tests;
 
@@ -112,7 +107,7 @@ class PropertyObserverTest extends \PHPUnit_Framework_TestCase
     public function testSaveMultipleValues()
     {
         $observer = new MultiplePropertyObserver();
-        $properties = array('property1', 'property2', 'property3');
+        $properties = ['property1', 'property2', 'property3'];
 
         $object = new TestObject();
         $object->property1 = 'original value 1';

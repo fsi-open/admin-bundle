@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Menu\KnpMenu;
 
 use PhpSpec\ObjectBehavior;
@@ -10,7 +12,7 @@ class MenuBuilderSpec extends ObjectBehavior
      * @param \Knp\Menu\FactoryInterface $factory
      * @param \AdminPanel\Symfony\AdminBundle\Menu\KnpMenu\ItemDecorator $itemDecorator
      */
-    function let($factory, $itemDecorator)
+    public function let($factory, $itemDecorator)
     {
         $this->beConstructedWith($factory, $itemDecorator);
     }
@@ -28,7 +30,7 @@ class MenuBuilderSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Menu\Item\Item $secondItem
      * @param \AdminPanel\Symfony\AdminBundle\Menu\Item\Item $childOfSecondItem
      */
-    function it_builds_knp_menu_and_decorates_items(
+    public function it_builds_knp_menu_and_decorates_items(
         $factory,
         $knpRootItem,
         $knpFirstItem,
@@ -40,8 +42,7 @@ class MenuBuilderSpec extends ObjectBehavior
         $firstItem,
         $secondItem,
         $childOfSecondItem
-    )
-    {
+    ) {
         $builder->buildMenu()->willReturn($rootItem);
         $firstItem->getName()->willReturn('first item');
         $firstItem->hasChildren()->willReturn(false);
@@ -49,14 +50,14 @@ class MenuBuilderSpec extends ObjectBehavior
         $secondItem->hasChildren()->willReturn(true);
         $childOfSecondItem->getName()->willReturn('child of second item');
         $childOfSecondItem->hasChildren()->willReturn(false);
-        $rootItem->getChildren()->willReturn(array($firstItem, $secondItem));
-        $secondItem->getChildren()->willReturn(array($childOfSecondItem));
-        $rootItem->getOption('attr')->willReturn(array('id' => null, 'class' => 'some class'));
+        $rootItem->getChildren()->willReturn([$firstItem, $secondItem]);
+        $secondItem->getChildren()->willReturn([$childOfSecondItem]);
+        $rootItem->getOption('attr')->willReturn(['id' => null, 'class' => 'some class']);
 
         $factory->createItem('root')->willReturn($knpRootItem);
-        $knpRootItem->addChild('first item', array())->willReturn($knpFirstItem);
-        $knpRootItem->addChild('second item', array())->willReturn($knpSecondItem);
-        $knpSecondItem->addChild('child of second item', array())->willReturn($knpChildOfSecondItem);
+        $knpRootItem->addChild('first item', [])->willReturn($knpFirstItem);
+        $knpRootItem->addChild('second item', [])->willReturn($knpSecondItem);
+        $knpSecondItem->addChild('child of second item', [])->willReturn($knpChildOfSecondItem);
 
         $knpRootItem->setChildrenAttribute('id', null)->shouldBeCalled();
         $knpRootItem->setChildrenAttribute('class', 'some class')->shouldBeCalled();

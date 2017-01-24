@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Display\Property\Formatter;
 
 use PhpSpec\ObjectBehavior;
@@ -10,33 +12,33 @@ class CollectionSpec extends ObjectBehavior
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Display\Property\ValueFormatter $formatter
      */
-    function let($formatter)
+    public function let($formatter)
     {
-        $this->beConstructedWith(array($formatter));
+        $this->beConstructedWith([$formatter]);
     }
 
-    function it_ignore_empty_values()
+    public function it_ignore_empty_values()
     {
         $this->format(0)->shouldReturn(0);
         $this->format(null)->shouldReturn(null);
-        $this->format(array())->shouldReturn(array());
+        $this->format([])->shouldReturn([]);
     }
 
-    function it_throw_exception_when_value_is_not_an_array()
+    public function it_throw_exception_when_value_is_not_an_array()
     {
         $this->shouldThrow(new \InvalidArgumentException("Collection decorator require value to be an array or implement \\Iterator"))
-            ->during('format', array(new \stdClass()));
+            ->during('format', [new \stdClass()]);
     }
 
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Display\Property\ValueFormatter $formatter
      */
-    function it_format_each_element_of_collection_using_formatters($formatter)
+    public function it_format_each_element_of_collection_using_formatters($formatter)
     {
-        $value = array(
+        $value = [
             'first-date' => new \DateTime(),
             'second-date' => new \DateTime()
-        );
+        ];
         $formatter->format(Argument::any())->will(function ($argument) {
             return $argument[0];
         });
@@ -46,12 +48,12 @@ class CollectionSpec extends ObjectBehavior
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Display\Property\ValueFormatter $formatter
      */
-    function it_format_each_element_of_iterator_using_formatters($formatter)
+    public function it_format_each_element_of_iterator_using_formatters($formatter)
     {
-        $value = array(
+        $value = [
             'first-date' => new \DateTime(),
             'second-date' => new \DateTime()
-        );
+        ];
         $formatter->format(Argument::any())->will(function ($argument) {
             return $argument[0];
         });

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Driver;
 
@@ -25,21 +20,21 @@ abstract class DriverAbstract implements DriverInterface
      *
      * @var array
      */
-    protected $extensions = array();
+    protected $extensions = [];
 
     /**
      * Field types.
      *
      * @var array
      */
-    protected $fieldTypes = array();
+    protected $fieldTypes = [];
 
     /**
      * Fields extensions.
      *
      * @var array
      */
-    protected $fieldExtensions = array();
+    protected $fieldExtensions = [];
 
     /**
      * @var \Symfony\Component\EventDispatcher\EventDispatcher
@@ -50,7 +45,7 @@ abstract class DriverAbstract implements DriverInterface
      * @param $extensions array with extensions
      * @throws \FSi\Component\DataSource\Exception\DataSourceException
      */
-    public function __construct(array $extensions = array())
+    public function __construct(array $extensions = [])
     {
         foreach ($extensions as $extension) {
             if (!$extension instanceof DriverExtensionInterface) {
@@ -129,7 +124,7 @@ abstract class DriverAbstract implements DriverInterface
 
         $this->fieldTypes[$type] = $typeInstance;
 
-        $ext = array();
+        $ext = [];
         foreach ($this->extensions as $extension) {
             if ($extension->hasFieldTypeExtensions($type)) {
                 $fieldExtensions = $extension->getFieldTypeExtensions($type);
@@ -155,11 +150,13 @@ abstract class DriverAbstract implements DriverInterface
      */
     public function addExtension(DriverExtensionInterface $extension)
     {
-        if (!in_array($this->getType(), $extension->getExtendedDriverTypes()))
+        if (!in_array($this->getType(), $extension->getExtendedDriverTypes())) {
             throw new DataSourceException(sprintf('DataSource driver extension of class %s does not support %s driver', get_class($extension), $this->getType()));
+        }
 
-        if (in_array($extension, $this->extensions, true))
+        if (in_array($extension, $this->extensions, true)) {
             return;
+        }
 
         $eventDispatcher = $this->getEventDispatcher();
         foreach ($extension->loadSubscribers() as $subscriber) {

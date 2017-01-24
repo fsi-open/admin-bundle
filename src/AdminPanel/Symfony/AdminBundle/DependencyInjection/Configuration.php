@@ -1,14 +1,12 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class Configuration implements ConfigurationInterface
 {
     /**
@@ -35,7 +33,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('default_locale')->defaultValue('%locale%')->end()
                 ->arrayNode('locales')
                     ->prototype('scalar')->end()
-                    ->defaultValue(array('%locale%'))
+                    ->defaultValue(['%locale%'])
                 ->end()
                 ->scalarNode('menu_config_path')->defaultValue("%kernel.root_dir%/config/admin_menu.yml")->end()
                 ->arrayNode('templates')
@@ -58,7 +56,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('dirs')
-                            ->prototype('scalar')->defaultValue(array())->end()
+                            ->prototype('scalar')->defaultValue([])->end()
                         ->end()
                     ->end()
                 ->end()
@@ -81,7 +79,9 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('yaml_configuration')->defaultTrue()->end()
                         ->arrayNode('twig')
                             ->beforeNormalization()
-                                ->ifTrue(function ($v) { return isset($v['template']); })
+                                ->ifTrue(function ($v) {
+                                    return isset($v['template']);
+                                })
                                 ->then(function ($v) {
                                     trigger_error('The fsi_admin.data_grid.twig.template configuration key is deprecated since version 1.1 and will be removed in 1.2. Use the fsi_data_grid.twig.themes configuration key instead.', E_USER_DEPRECATED);
                                     return $v;
@@ -92,7 +92,7 @@ class Configuration implements ConfigurationInterface
                                     return isset($v['template']) && ($v['template'] !== null);
                                 })
                                 ->then(function ($v) {
-                                    $v['themes'] = array($v['template']);
+                                    $v['themes'] = [$v['template']];
                                     unset($v['template']);
                                     return $v;
                                 })
@@ -103,7 +103,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('template')->end()
                             ->arrayNode('themes')
                             ->prototype('scalar')->end()
-                                ->defaultValue(array('datagrid.html.twig'))
+                                ->defaultValue(['datagrid.html.twig'])
                             ->end()
                         ->end()
                     ->end()

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundleBundle\Tests\DataGrid\Extension\Symfony;
 
 use AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Symfony\RouterExtension;

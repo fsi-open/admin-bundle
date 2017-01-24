@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Tests\Fixtures;
 
@@ -64,7 +59,7 @@ class TestManagerRegistry implements ManagerRegistry
      */
     public function getConnections()
     {
-        return array($this->em);
+        return [$this->em];
     }
 
     /**
@@ -72,14 +67,14 @@ class TestManagerRegistry implements ManagerRegistry
      */
     public function getConnectionNames()
     {
-        return array(self::NAME);
+        return [self::NAME];
     }
 
 
     /**
      * {@inheritdoc}
      */
-    function getManager($name = null)
+    public function getManager($name = null)
     {
         return $this->em;
     }
@@ -87,37 +82,37 @@ class TestManagerRegistry implements ManagerRegistry
     /**
      * {@inheritdoc}
      */
-    function getManagers()
+    public function getManagers()
     {
-        return array($this->em);
+        return [$this->em];
     }
 
     /**
      * {@inheritdoc}
      */
-    function resetManager($name = null)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    function getAliasNamespace($alias)
+    public function resetManager($name = null)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    function getManagerNames()
+    public function getAliasNamespace($alias)
     {
-        return array(self::NAME);
     }
 
     /**
      * {@inheritdoc}
      */
-    function getRepository($persistentObject, $persistentManagerName = null)
+    public function getManagerNames()
+    {
+        return [self::NAME];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRepository($persistentObject, $persistentManagerName = null)
     {
         return $this->em;
     }
@@ -125,7 +120,7 @@ class TestManagerRegistry implements ManagerRegistry
     /**
      * {@inheritdoc}
      */
-    function getManagerForClass($class)
+    public function getManagerForClass($class)
     {
         return $this->em;
     }

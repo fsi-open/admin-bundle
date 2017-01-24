@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Menu\Item;
 
@@ -20,7 +21,7 @@ class RoutableItem extends Item
      * @param $route
      * @param $routeParameters
      */
-    public function __construct($name, $route = null, $routeParameters = array())
+    public function __construct($name, $route = null, $routeParameters = [])
     {
         parent::__construct($name);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,7 +20,7 @@ class KnpMenuBuilderPass implements CompilerPassInterface
 
         $decoratorServices = $container->findTaggedServiceIds('admin.menu.knp_decorator');
 
-        $decorators = array();
+        $decorators = [];
         foreach ($decoratorServices as $id => $tag) {
             $decorators[] = $container->findDefinition($id);
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Menu\KnpMenu;
 
 use AdminPanel\Symfony\AdminBundle\Admin\Element;
@@ -26,14 +28,14 @@ class ItemElementsDecorator implements ItemDecorator
     public function decorate(KnpMenuItem $knpMenuItem, AdminMenuItem $adminMenuItem)
     {
         if ($adminMenuItem instanceof ElementItem && $adminMenuItem->hasOption('elements')) {
-            $routes = $knpMenuItem->getExtra('routes', array());
+            $routes = $knpMenuItem->getExtra('routes', []);
 
             /** @var Element $element */
             foreach ($adminMenuItem->getOption('elements') as $element) {
-                $routes[] = array(
+                $routes[] = [
                     'route' => $element->getRoute(),
                     'parameters' => $element->getRouteParameters()
-                );
+                ];
             }
 
             $knpMenuItem->setExtra('routes', $routes);

@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Menu\Item;
 
 use PhpSpec\ObjectBehavior;
 
 class ItemSpec extends ObjectBehavior
 {
-    function it_has_default_options()
+    public function it_has_default_options()
     {
-        $this->getOptions()->shouldReturn(array('attr' => array('id' => null, 'class' => null)));
+        $this->getOptions()->shouldReturn(['attr' => ['id' => null, 'class' => null]]);
     }
 }

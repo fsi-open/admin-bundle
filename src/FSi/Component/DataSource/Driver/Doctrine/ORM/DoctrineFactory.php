@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Driver\Doctrine\ORM;
 
@@ -40,7 +35,7 @@ class DoctrineFactory implements DriverFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(ManagerRegistry $registry, $extensions = array())
+    public function __construct(ManagerRegistry $registry, $extensions = [])
     {
         $this->registry = $registry;
         $this->extensions = $extensions;
@@ -59,7 +54,7 @@ class DoctrineFactory implements DriverFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createDriver($options = array())
+    public function createDriver($options = [])
     {
         $options = $this->optionsResolver->resolve($options);
 
@@ -81,19 +76,19 @@ class DoctrineFactory implements DriverFactoryInterface
      */
     private function initOptions()
     {
-        $this->optionsResolver->setDefaults(array(
+        $this->optionsResolver->setDefaults([
             'entity' => null,
             'qb' => null,
             'alias' => null,
             'em' => null,
-        ));
+        ]);
 
-        $this->optionsResolver->setAllowedTypes('entity', array('string', 'null'));
-        $this->optionsResolver->setAllowedTypes('qb', array('\Doctrine\ORM\QueryBuilder', 'null'));
-        $this->optionsResolver->setAllowedTypes('alias', array('null', 'string'));
-        $this->optionsResolver->setAllowedTypes('em', array('null', 'string'));
+        $this->optionsResolver->setAllowedTypes('entity', ['string', 'null']);
+        $this->optionsResolver->setAllowedTypes('qb', ['\Doctrine\ORM\QueryBuilder', 'null']);
+        $this->optionsResolver->setAllowedTypes('alias', ['null', 'string']);
+        $this->optionsResolver->setAllowedTypes('em', ['null', 'string']);
 
-        $entityNormalizer = function(Options $options, $value) {
+        $entityNormalizer = function (Options $options, $value) {
             if (is_null($options['qb']) && is_null($value)) {
                 throw new InvalidOptionsException('You must specify at least one option, "qb" or "entity".');
             }

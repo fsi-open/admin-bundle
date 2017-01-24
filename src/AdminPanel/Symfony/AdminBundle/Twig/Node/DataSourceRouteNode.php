@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Twig\Node;
 
 class DataSourceRouteNode extends \Twig_Node
 {
     public function __construct(\Twig_Node $dataGrid, \Twig_Node $route, \Twig_Node_Expression $additional_parameters, $lineno, $tag = null)
     {
-        parent::__construct(array('datasource' => $dataGrid, 'route' => $route, 'additional_parameters' => $additional_parameters), array(), $lineno, $tag);
+        parent::__construct(['datasource' => $dataGrid, 'route' => $route, 'additional_parameters' => $additional_parameters], [], $lineno, $tag);
     }
 
     /**

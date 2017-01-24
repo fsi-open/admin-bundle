@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Extension\Symfony\Form\Driver;
 
@@ -36,10 +31,10 @@ class DriverExtension extends DriverAbstractExtension
      */
     public function getExtendedDriverTypes()
     {
-        return array(
+        return [
             'doctrine', //deprecated since version 1.4
             'doctrine-orm'
-        );
+        ];
     }
 
     /**
@@ -47,8 +42,8 @@ class DriverExtension extends DriverAbstractExtension
      */
     protected function loadFieldTypesExtensions()
     {
-        return array(
+        return [
             new Field\FormFieldExtension($this->formFactory),
-        );
+        ];
     }
 }

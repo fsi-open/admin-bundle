@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context;
 
@@ -37,8 +38,7 @@ class BatchElementContext extends ContextAbstract
     public function __construct(
         array $requestHandlers,
         FormBuilderInterface $formBuilder
-    )
-    {
+    ) {
         parent::__construct($requestHandlers);
 
         $this->form = $formBuilder->getForm();
@@ -49,11 +49,11 @@ class BatchElementContext extends ContextAbstract
      */
     public function getData()
     {
-        $data = array(
+        $data = [
             'element' => $this->element,
             'indexes' => $this->indexes,
             'form' => $this->form->createView()
-        );
+        ];
 
         return $data;
     }
@@ -71,7 +71,7 @@ class BatchElementContext extends ContextAbstract
      */
     protected function createEvent(Request $request)
     {
-        $this->indexes = $request->request->get('indexes', array());
+        $this->indexes = $request->request->get('indexes', []);
 
         return new FormEvent($this->element, $request, $this->form);
     }

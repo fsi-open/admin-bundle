@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Admin\Display\Context;
 
@@ -43,10 +44,10 @@ class DisplayContext extends ContextAbstract
      */
     public function getData()
     {
-        return array(
+        return [
             'display' => $this->display->createView(),
             'element' => $this->element,
-        );
+        ];
     }
 
     /**

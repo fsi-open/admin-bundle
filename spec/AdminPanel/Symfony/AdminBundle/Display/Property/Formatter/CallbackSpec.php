@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Display\Property\Formatter;
 
 use PhpSpec\ObjectBehavior;
@@ -7,21 +9,21 @@ use Prophecy\Argument;
 
 class CallbackSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith(function ($value) {
             return $value . '+';
         });
     }
 
-    function it_ignore_empty_values()
+    public function it_ignore_empty_values()
     {
         $this->format(0)->shouldReturn(0);
         $this->format(null)->shouldReturn(null);
-        $this->format(array())->shouldReturn(array());
+        $this->format([])->shouldReturn([]);
     }
 
-    function it_form_value_using_callback_funciton()
+    public function it_form_value_using_callback_funciton()
     {
         $value = 'value';
         $this->format($value)->shouldReturn('value+');

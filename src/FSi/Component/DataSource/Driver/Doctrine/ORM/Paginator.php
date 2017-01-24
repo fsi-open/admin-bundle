@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace FSi\Component\DataSource\Driver\Doctrine\ORM;
 
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;

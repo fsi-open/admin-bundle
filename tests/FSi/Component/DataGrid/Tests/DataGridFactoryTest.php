@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Tests;
 
@@ -18,9 +13,9 @@ class DataGridFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $extensions = array(
+        $extensions = [
             new FooExtension(),
-        );
+        ];
 
         $dataMapper = $this->getMock('FSi\Component\DataGrid\DataMapper\DataMapperInterface');
         $indexingStrategy = $this->getMock('FSi\Component\DataGrid\Data\IndexingStrategyInterface');
@@ -31,7 +26,7 @@ class DataGridFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateGrids()
     {
         $grid = $this->factory->createDataGrid();
-        $this->assertSame('grid',$grid->getName());
+        $this->assertSame('grid', $grid->getName());
 
         $this->setExpectedException('FSi\Component\DataGrid\Exception\DataGridColumnException');
         $grid = $this->factory->createDataGrid('grid');

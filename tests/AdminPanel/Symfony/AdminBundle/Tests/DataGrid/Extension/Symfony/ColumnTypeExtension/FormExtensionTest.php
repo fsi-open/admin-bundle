@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundleBundle\Tests\DataGrid\Extension\Symfony\ColumnTypeExtension;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -35,10 +37,10 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $entities = array(
+        $entities = [
             new EntityCategory(1, 'category name 1'),
             new EntityCategory(2, 'category name 2'),
-        );
+        ];
 
         $configuration = $this->getMock('Doctrine\ORM\Configuration');
 
@@ -52,8 +54,8 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new Expr()));
 
         $query = $this->getMock('Doctrine\ORM\AbstractQuery',
-            array('execute', '_doExecute', 'getSql', 'setFirstResult', 'setMaxResults'),
-            array($objectManager));
+            ['execute', '_doExecute', 'getSql', 'setFirstResult', 'setMaxResults'],
+            [$objectManager]);
         $query->expects($this->any())
             ->method('execute')
             ->will($this->returnValue($entities));
@@ -75,18 +77,18 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
 
         $entityClass = EntityCategory::class;
         $classMetadata = new ClassMetadata($entityClass);
-        $classMetadata->identifier = array('id');
-        $classMetadata->fieldMappings = array(
-            'id' => array(
+        $classMetadata->identifier = ['id'];
+        $classMetadata->fieldMappings = [
+            'id' => [
                 'fieldName' => 'id',
                 'type' => 'integer',
-            )
-        );
-        $classMetadata->reflFields = array(
+            ]
+        ];
+        $classMetadata->reflFields = [
             'id' => new \ReflectionProperty($entityClass, 'id'),
-        );
+        ];
 
-        $repository = $this->getMock('Doctrine\ORM\EntityRepository', array(), array($objectManager, $classMetadata));
+        $repository = $this->getMock('Doctrine\ORM\EntityRepository', [], [$objectManager, $classMetadata]);
         $repository->expects($this->any())
             ->method('createQueryBuilder')
             ->withAnyParameters()
@@ -112,7 +114,7 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($objectManager));
         $managerRegistry->expects($this->any())
             ->method('getManagers')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         if ($this->isSymfonyForm27()) {
             $tokenManager = new CsrfTokenManager();
@@ -122,12 +124,12 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
 
         $validatorBuilder = new ValidatorBuilder();
         $resolvedTypeFactory = new ResolvedFormTypeFactory();
-        $formRegistry = new FormRegistry(array(
+        $formRegistry = new FormRegistry([
             new CoreExtension(),
             new DoctrineOrmExtension($managerRegistry),
             new CsrfExtension(new CsrfTokenManager()),
             new ValidatorExtension($validatorBuilder->getValidator())
-        ),
+        ],
             $resolvedTypeFactory
         );
 
@@ -145,22 +147,22 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $column = $this->createColumnMock();
         $this->setColumnId($column, 'text');
-        $this->setColumnOptions($column, array(
-            'field_mapping' => array('name', 'author'),
+        $this->setColumnOptions($column, [
+            'field_mapping' => ['name', 'author'],
             'editable' => true,
-            'form_options' => array(),
-            'form_type' => array(
-                'name' => array('type' => $this->isSymfonyForm28() ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text'),
-                'author' => array('type' => $this->isSymfonyForm28() ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text'),
-            )
-        ));
+            'form_options' => [],
+            'form_type' => [
+                'name' => ['type' => $this->isSymfonyForm28() ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text'],
+                'author' => ['type' => $this->isSymfonyForm28() ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text'],
+            ]
+        ]);
 
         $object = new Entity('old_name');
-        $data = array(
+        $data = [
             'name' => 'object',
             'author' => 'norbert@fsi.pl',
             'invalid_data' => 'test'
-        );
+        ];
 
         $this->extension->bindData($column, $data, $object, 1);
 
@@ -173,28 +175,28 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $column = $this->createColumnMock();
         $this->setColumnId($column, 'text');
-        $this->setColumnOptions($column, array(
-            'field_mapping' => array('name', 'author'),
+        $this->setColumnOptions($column, [
+            'field_mapping' => ['name', 'author'],
             'editable' => true,
-            'form_options' => array(
+            'form_options' => [
                 'author' => [
                     'constraints' => [
                         new Email()
                     ]
                 ]
-            ),
-            'form_type' => array(
-                'name' => array('type' => $this->isSymfonyForm28() ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text'),
-                'author' => array('type' => $this->isSymfonyForm28() ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text'),
-            )
-        ));
+            ],
+            'form_type' => [
+                'name' => ['type' => $this->isSymfonyForm28() ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text'],
+                'author' => ['type' => $this->isSymfonyForm28() ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text'],
+            ]
+        ]);
 
         $object = new Entity('old_name');
 
-        $data = array(
+        $data = [
             'name' => 'object',
             'author' => 'invalid_value',
-        );
+        ];
 
         $this->extension->bindData($column, $data, $object, 1);
 
@@ -208,22 +210,22 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
 
         $column = $this->createColumnMock();
         $this->setColumnId($column, 'entity');
-        $this->setColumnOptions($column, array(
+        $this->setColumnOptions($column, [
             'editable' => true,
             'relation_field' => 'category',
-            'field_mapping' => array('name'),
-            'form_options' => array(
-                'category' => array(
+            'field_mapping' => ['name'],
+            'form_options' => [
+                'category' => [
                     'class' => $nestedEntityClass,
-                )
-            ),
-            'form_type' => array(),
-        ));
+                ]
+            ],
+            'form_type' => [],
+        ]);
 
         $object = new Entity('name123');
-        $data = array(
+        $data = [
             'category' => 1,
-        );
+        ];
 
         $this->assertSame($object->getCategory(), null);
 
@@ -259,7 +261,7 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $column->expects($this->any())
             ->method('getOption')
-            ->will($this->returnCallback(function($option) use($optionsMap) {
+            ->will($this->returnCallback(function ($option) use ($optionsMap) {
                 return $optionsMap[$option];
             }));
     }
@@ -269,19 +271,19 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
         $dataMapper = $this->getMock('FSi\Component\DataGrid\DataMapper\DataMapperInterface');
         $dataMapper->expects($this->any())
             ->method('getData')
-            ->will($this->returnCallback(function($field, $object){
+            ->will($this->returnCallback(function ($field, $object) {
                 $method = 'get' . ucfirst($field);
                 return $object->$method();
             }));
 
         $dataMapper->expects($this->any())
             ->method('setData')
-            ->will($this->returnCallback(function($field, $object, $value){
+            ->will($this->returnCallback(function ($field, $object, $value) {
                 $method = 'set' . ucfirst($field);
                 return $object->$method($value);
             }));
 
-        return $this->returnCallback(function() use ($dataMapper) {
+        return $this->returnCallback(function () use ($dataMapper) {
             return $dataMapper;
         });
     }

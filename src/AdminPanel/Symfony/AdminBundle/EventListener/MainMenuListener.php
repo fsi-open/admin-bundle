@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\EventListener;
 
 use AdminPanel\Symfony\AdminBundle\Admin\ManagerInterface;
@@ -53,12 +55,12 @@ class MainMenuListener
         }
 
         $menu = $event->getMenu();
-        $menu->setOptions(array(
-            'attr' => array(
+        $menu->setOptions([
+            'attr' => [
                 'id' => 'top-menu',
                 'class' => 'nav navbar-nav',
-            )
-        ));
+            ]
+        ]);
 
         $this->populateMenu($menu, $config['menu']);
 
@@ -71,11 +73,11 @@ class MainMenuListener
             $item = $this->buildSingleItem($itemConfig);
 
             if (null !== $item) {
-                $options = array(
-                    'attr' => array(
+                $options = [
+                    'attr' => [
                         'class' => 'admin-element'
-                    )
-                );
+                    ]
+                ];
                 $options['elements'] = $this->buildItemElements($itemConfig);
                 $item->setOptions($options);
             }
@@ -129,10 +131,10 @@ class MainMenuListener
      */
     private function buildItemElements($itemConfig)
     {
-        $elements = array();
+        $elements = [];
 
         if ($this->hasEntry($itemConfig, 'elements')) {
-            $elementIds = (array)$itemConfig['elements'];
+            $elementIds = (array) $itemConfig['elements'];
             foreach ($elementIds as $elementId) {
                 $elements[] = $this->manager->getElement($elementId);
             }

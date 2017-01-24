@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Driver\Collection;
 
@@ -23,7 +18,7 @@ class CollectionResult extends ArrayCollection
      * @param array $elements
      * @param \Doctrine\Common\Collections\Criteria $criteria
      */
-    public function __construct(array $elements = array(), Criteria $criteria)
+    public function __construct(array $elements = [], Criteria $criteria)
     {
         $collection = new ArrayCollection($elements);
         $firstResult = $criteria->getFirstResult();

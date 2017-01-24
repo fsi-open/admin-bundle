@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Admin\Manager;
 
 use PhpSpec\ObjectBehavior;
@@ -11,9 +13,9 @@ class ElementCollectionVisitorSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Element $adminElement
      * @param \AdminPanel\Symfony\AdminBundle\Factory\ProductionLine $productionLine
      */
-    function let($adminElement, $productionLine)
+    public function let($adminElement, $productionLine)
     {
-        $this->beConstructedWith(array($adminElement), $productionLine);
+        $this->beConstructedWith([$adminElement], $productionLine);
     }
 
     /**
@@ -21,7 +23,7 @@ class ElementCollectionVisitorSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Factory\ProductionLine $productionLine
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Element $adminElement
      */
-    function it_visit_manager_and_add_into_it_elements($manager, $productionLine, $adminElement)
+    public function it_visit_manager_and_add_into_it_elements($manager, $productionLine, $adminElement)
     {
         $productionLine->workOn($adminElement)->shouldBeCalled();
         $manager->addElement($adminElement)->shouldBeCalled();

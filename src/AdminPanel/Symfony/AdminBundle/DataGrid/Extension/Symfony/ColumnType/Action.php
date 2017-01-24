@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Symfony\ColumnType;
 
 use FSi\Component\DataGrid\Column\ColumnAbstractType;
@@ -53,13 +55,13 @@ class Action extends ColumnAbstractType
      */
     public function filterValue($value)
     {
-        $return = array();
+        $return = [];
         $actions = $this->getOption('actions');
 
         foreach ($actions as $name => $options) {
             $options = $this->actionOptionsResolver->resolve((array) $options);
-            $return[$name] = array();
-            $parameters = array();
+            $return[$name] = [];
+            $parameters = [];
             $urlAttributes = $options['url_attr'];
             $content = $options['content'];
 
@@ -120,27 +122,27 @@ class Action extends ColumnAbstractType
      */
     public function initOptions()
     {
-        $this->getOptionsResolver()->setDefaults(array(
-            'actions' => array(),
-        ));
+        $this->getOptionsResolver()->setDefaults([
+            'actions' => [],
+        ]);
 
         $this->getOptionsResolver()->setAllowedTypes('actions', 'array');
 
-        $this->actionOptionsResolver->setDefaults(array(
+        $this->actionOptionsResolver->setDefaults([
             'redirect_uri' => true,
             'absolute' => false,
-            'url_attr' => array(),
+            'url_attr' => [],
             'content' => null,
-            'parameters_field_mapping' => array(),
-            'additional_parameters' => array(),
-        ));
+            'parameters_field_mapping' => [],
+            'additional_parameters' => [],
+        ]);
 
-        $this->actionOptionsResolver->setAllowedTypes('url_attr', array('array', 'Closure'));
-        $this->actionOptionsResolver->setAllowedTypes('content', array('null', 'string', 'Closure'));
+        $this->actionOptionsResolver->setAllowedTypes('url_attr', ['array', 'Closure']);
+        $this->actionOptionsResolver->setAllowedTypes('content', ['null', 'string', 'Closure']);
 
-        $this->actionOptionsResolver->setRequired(array(
+        $this->actionOptionsResolver->setRequired([
             'route_name',
-        ));
+        ]);
     }
 
     /**

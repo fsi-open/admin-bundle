@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Menu\KnpMenu;
 
@@ -65,7 +66,7 @@ class MenuBuilder
     protected function populateMenu(KnpItemInterface $menu, array $children)
     {
         foreach ($children as $item) {
-            $knpItem = $menu->addChild($item->getName(), array());
+            $knpItem = $menu->addChild($item->getName(), []);
 
             if ($item->hasChildren()) {
                 $this->populateMenu($knpItem, $item->getChildren());

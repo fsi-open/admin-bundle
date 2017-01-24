@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Extension\Core\Ordering\Field;
 
@@ -24,14 +19,14 @@ class FieldExtension extends FieldAbstractExtension
     /**
      * @var array
      */
-    private $ordering = array();
+    private $ordering = [];
 
     /**
      * {@inheritdoc}
      */
     public function getExtendedFieldTypes()
     {
-        return array('text', 'number', 'date', 'time', 'datetime', 'boolean');
+        return ['text', 'number', 'date', 'time', 'datetime', 'boolean'];
     }
 
     /**
@@ -39,9 +34,9 @@ class FieldExtension extends FieldAbstractExtension
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            FieldEvents::POST_BUILD_VIEW => array('postBuildView')
-        );
+        return [
+            FieldEvents::POST_BUILD_VIEW => ['postBuildView']
+        ];
     }
 
     /**
@@ -50,14 +45,14 @@ class FieldExtension extends FieldAbstractExtension
     public function initOptions(FieldTypeInterface $field)
     {
         $field->getOptionsResolver()
-            ->setDefined(array('default_sort_priority'))
-            ->setDefaults(array(
+            ->setDefined(['default_sort_priority'])
+            ->setDefaults([
                 'default_sort' => null,
                 'sortable' => true
-            ))
+            ])
             ->setAllowedTypes('default_sort_priority', 'integer')
             ->setAllowedTypes('sortable', 'bool')
-            ->setAllowedValues('default_sort', array(null, 'asc', 'desc'));
+            ->setAllowedValues('default_sort', [null, 'asc', 'desc']);
         ;
     }
 
@@ -108,10 +103,12 @@ class FieldExtension extends FieldAbstractExtension
             $view->setAttribute('sorted_descending', false);
         }
 
-        if (isset($parameters[$dataSourceName][OrderingExtension::PARAMETER_SORT][$field->getName()]))
+        if (isset($parameters[$dataSourceName][OrderingExtension::PARAMETER_SORT][$field->getName()])) {
             unset($parameters[$dataSourceName][OrderingExtension::PARAMETER_SORT][$field->getName()]);
-        if (!isset($parameters[$dataSourceName][OrderingExtension::PARAMETER_SORT]))
-            $parameters[$dataSourceName][OrderingExtension::PARAMETER_SORT] = array();
+        }
+        if (!isset($parameters[$dataSourceName][OrderingExtension::PARAMETER_SORT])) {
+            $parameters[$dataSourceName][OrderingExtension::PARAMETER_SORT] = [];
+        }
         // Little hack: we do not know if PaginationExtension is loaded but if it is we don't want page number in sorting URLs.
         unset($parameters[$dataSourceName][PaginationExtension::PARAMETER_PAGE]);
         $fields = array_keys($parameters[$dataSourceName][OrderingExtension::PARAMETER_SORT]);

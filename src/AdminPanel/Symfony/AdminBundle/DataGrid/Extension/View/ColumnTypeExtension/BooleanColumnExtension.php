@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\DataGrid\Extension\View\ColumnTypeExtension;
 
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
@@ -29,7 +31,7 @@ class BooleanColumnExtension extends ColumnAbstractTypeExtension
      */
     public function getExtendedColumnTypes()
     {
-        return array('boolean');
+        return ['boolean'];
     }
 
     /**
@@ -37,27 +39,27 @@ class BooleanColumnExtension extends ColumnAbstractTypeExtension
      */
     public function initOptions(ColumnTypeInterface $column)
     {
-        $column->getOptionsResolver()->setDefaults(array(
-            'true_value' => $this->translator->trans('datagrid.boolean.yes', array(), 'FSiAdminBundle'),
-            'false_value' => $this->translator->trans('datagrid.boolean.no', array(), 'FSiAdminBundle')
-        ));
+        $column->getOptionsResolver()->setDefaults([
+            'true_value' => $this->translator->trans('datagrid.boolean.yes', [], 'FSiAdminBundle'),
+            'false_value' => $this->translator->trans('datagrid.boolean.no', [], 'FSiAdminBundle')
+        ]);
 
         $translator = $this->translator;
         $column->getOptionsResolver()->setNormalizer(
             'form_options',
-            function(Options $options, $value) use ($translator) {
+            function (Options $options, $value) use ($translator) {
                 if ($options['editable'] && count($options['field_mapping']) == 1) {
                     $field = $options['field_mapping'][0];
 
                     return array_merge(
-                        array(
-                            $field => array(
-                                'choices' => array(
-                                    0 => $translator->trans('datagrid.boolean.no', array(), 'FSiAdminBundle'),
-                                    1 => $translator->trans('datagrid.boolean.yes', array(), 'FSiAdminBundle')
-                                )
-                            )
-                        ),
+                        [
+                            $field => [
+                                'choices' => [
+                                    0 => $translator->trans('datagrid.boolean.no', [], 'FSiAdminBundle'),
+                                    1 => $translator->trans('datagrid.boolean.yes', [], 'FSiAdminBundle')
+                                ]
+                            ]
+                        ],
                         $value
                     );
                 }
@@ -67,13 +69,12 @@ class BooleanColumnExtension extends ColumnAbstractTypeExtension
         );
         $column->getOptionsResolver()->setNormalizer(
             'form_type',
-            function(Options $options, $value) {
+            function (Options $options, $value) {
                 if ($options['editable'] && count($options['field_mapping']) == 1) {
-
                     $field = $options['field_mapping'][0];
 
                     return array_merge(
-                        array($field => 'choice'),
+                        [$field => 'choice'],
                         $value
                     );
                 }

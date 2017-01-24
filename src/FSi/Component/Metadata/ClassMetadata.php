@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) Fabryka Stron Internetowych sp. z o.o <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\Metadata;
 
@@ -16,21 +11,21 @@ class ClassMetadata extends AbstractClassMetadata
      *
      * @var array
      */
-    protected $classMetadata = array();
+    protected $classMetadata = [];
 
     /**
      * Metadata for properties
      *
      * @var array
      */
-    protected $propertyMetadata = array();
+    protected $propertyMetadata = [];
 
     /**
      * Methods metadata
      *
      * @var array
      */
-    protected $methodMetadata = array();
+    protected $methodMetadata = [];
 
     /**
      * Add value for class metadata under $index
@@ -90,7 +85,7 @@ class ClassMetadata extends AbstractClassMetadata
     public function addPropertyMetadata($property, $index, $value)
     {
         if (!isset($this->propertyMetadata[$property])) {
-            $this->propertyMetadata[$property] = array($index => $value);
+            $this->propertyMetadata[$property] = [$index => $value];
         } else {
             $this->propertyMetadata[$property][$index] = $value;
         }
@@ -149,7 +144,7 @@ class ClassMetadata extends AbstractClassMetadata
     public function addMethodMetadata($method, $index, $value)
     {
         if (!isset($this->methodMetadata[$method])) {
-            $this->methodMetadata[$method] = array($index => $value);
+            $this->methodMetadata[$method] = [$index => $value];
         } else {
             $this->methodMetadata[$method][$index] = $value;
         }

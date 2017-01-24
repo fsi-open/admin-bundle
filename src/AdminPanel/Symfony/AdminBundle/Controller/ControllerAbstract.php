@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Controller;
 
@@ -41,12 +42,11 @@ abstract class ControllerAbstract
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Context\ContextManager $contextManager
      * @param string|null $resourceActionTemplate
      */
-    function __construct(
+    public function __construct(
         EngineInterface $templating,
         ContextManager $contextManager,
         $resourceActionTemplate = null
-    )
-    {
+    ) {
         $this->templating = $templating;
         $this->contextManager = $contextManager;
         $this->template = $resourceActionTemplate;

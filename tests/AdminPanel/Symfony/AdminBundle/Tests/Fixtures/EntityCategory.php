@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundleBundle\Tests\Fixtures;
 
 class EntityCategory
@@ -23,7 +25,7 @@ class EntityCategory
         $this->name = $name;
     }
 
-    function __toString()
+    public function __toString()
     {
         return $this->name;
     }

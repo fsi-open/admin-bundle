@@ -1,14 +1,12 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class ContextPass implements CompilerPassInterface
 {
     /**
@@ -20,7 +18,7 @@ class ContextPass implements CompilerPassInterface
             return;
         }
 
-        $contexts = array();
+        $contexts = [];
         foreach ($container->findTaggedServiceIds('admin.context') as $id => $tags) {
             $priority = isset($tags[0]['priority']) ? $tags[0]['priority'] : 0;
             $contexts[$priority][] = $container->findDefinition($id);

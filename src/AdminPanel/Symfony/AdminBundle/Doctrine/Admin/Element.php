@@ -1,13 +1,11 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Doctrine\Admin;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 interface Element extends CRUDInterface, DoctrineAwareInterface
 {
     /**

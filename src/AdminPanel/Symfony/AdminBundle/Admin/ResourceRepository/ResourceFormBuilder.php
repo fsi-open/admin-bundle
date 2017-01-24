@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Admin\ResourceRepository;
 
 use AdminPanel\Symfony\AdminBundle\Exception\RuntimeException;
@@ -86,9 +88,8 @@ class ResourceFormBuilder
         Element $element,
         ResourceValueRepository $valueRepository,
         array $resources
-    )
-    {
-        $data = array();
+    ) {
+        $data = [];
 
         foreach ($resources as $resourceKey => $resource) {
             $resourceName = $this->buildResourceName($element, $resourceKey);
@@ -107,16 +108,15 @@ class ResourceFormBuilder
         Element $element,
         FormBuilderInterface $builder,
         array $resources
-    )
-    {
+    ) {
         foreach ($resources as $resourceKey => $resource) {
             $resourceName = $this->buildResourceName($element, $resourceKey);
             $builder->add(
                 $this->normalizeKey($resourceName),
                 'resource',
-                array(
+                [
                     'resource_key' => $resourceName,
-                )
+                ]
             );
         }
     }

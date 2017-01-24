@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Admin\CRUD;
 
 use AdminPanel\Symfony\AdminBundle\Exception\RuntimeException;
@@ -11,24 +13,24 @@ class GenericFormElementSpec extends ObjectBehavior
     /**
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
      */
-    function let($factory)
+    public function let($factory)
     {
         $this->beAnInstanceOf('AdminPanel\Symfony\AdminBundle\Tests\Doubles\MyForm');
-        $this->beConstructedWith(array());
+        $this->beConstructedWith([]);
         $this->setFormFactory($factory);
     }
 
-    function it_is_form_element()
+    public function it_is_form_element()
     {
         $this->shouldHaveType('AdminPanel\Symfony\AdminBundle\Admin\CRUD\FormElement');
     }
 
-    function it_is_admin_element()
+    public function it_is_admin_element()
     {
         $this->shouldHaveType('AdminPanel\Symfony\AdminBundle\Admin\Element');
     }
 
-    function it_have_default_route()
+    public function it_have_default_route()
     {
         $this->getRoute()->shouldReturn('fsi_admin_form');
     }
@@ -36,7 +38,7 @@ class GenericFormElementSpec extends ObjectBehavior
     /**
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
      */
-    function it_throw_exception_when_init_form_does_not_return_instance_of_form($factory)
+    public function it_throw_exception_when_init_form_does_not_return_instance_of_form($factory)
     {
         $factory->create(Argument::cetera())->willReturn(null);
 
@@ -44,10 +46,10 @@ class GenericFormElementSpec extends ObjectBehavior
             ->during('createForm');
     }
 
-    function it_has_default_options_values()
+    public function it_has_default_options_values()
     {
-        $this->getOptions()->shouldReturn(array(
+        $this->getOptions()->shouldReturn([
             'template_form' => null,
-        ));
+        ]);
     }
 }

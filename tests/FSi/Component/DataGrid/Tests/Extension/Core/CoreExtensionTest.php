@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Tests\Extension\Core;
 
@@ -20,9 +15,7 @@ class CoreExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($extension->hasColumnType('text'));
         $this->assertTrue($extension->hasColumnType('number'));
         $this->assertTrue($extension->hasColumnType('datetime'));
-        $this->assertTrue($extension->hasColumnType('action'));
         $this->assertTrue($extension->hasColumnType('money'));
-        $this->assertTrue($extension->hasColumnType('action'));
 
         $this->assertFalse($extension->hasColumnType('foo'));
     }
@@ -34,7 +27,6 @@ class CoreExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($extension->hasColumnTypeExtensions('text'));
         $this->assertTrue($extension->hasColumnTypeExtensions('number'));
         $this->assertTrue($extension->hasColumnTypeExtensions('datetime'));
-        $this->assertTrue($extension->hasColumnTypeExtensions('action'));
         $this->assertTrue($extension->hasColumnTypeExtensions('money'));
         $this->assertTrue($extension->hasColumnTypeExtensions('gedmo_tree'));
         $this->assertTrue($extension->hasColumnTypeExtensions('entity'));
@@ -44,9 +36,9 @@ class CoreExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $subscriber = new ColumnOrder();
 
-        $cases = array(
-            array(
-                'columns' => array(
+        $cases = [
+            [
+                'columns' => [
                     'negative2' => -2,
                     'neutral1' => null,
                     'negative1' => -1,
@@ -54,8 +46,8 @@ class CoreExtensionTest extends \PHPUnit_Framework_TestCase
                     'positive1' => 1,
                     'neutral3' => null,
                     'positive2' => 2,
-                ),
-                'sorted' => array(
+                ],
+                'sorted' => [
                     'negative2',
                     'negative1',
                     'neutral1',
@@ -63,26 +55,26 @@ class CoreExtensionTest extends \PHPUnit_Framework_TestCase
                     'neutral3',
                     'positive1',
                     'positive2',
-                )
-            ),
-            array(
-                'columns' => array(
+                ]
+            ],
+            [
+                'columns' => [
                     'neutral1' => null,
                     'neutral2' => null,
                     'neutral3' => null,
                     'neutral4' => null,
-                ),
-                'sorted' => array(
+                ],
+                'sorted' => [
                     'neutral1',
                     'neutral2',
                     'neutral3',
                     'neutral4',
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         foreach ($cases as $case) {
-            $columns = array();
+            $columns = [];
 
             foreach ($case['columns'] as $name => $order) {
                 $columnHeader = $this->getMock('FSi\Component\DataGrid\Column\HeaderViewInterface');
@@ -130,7 +122,7 @@ class CoreExtensionTest extends \PHPUnit_Framework_TestCase
                 ->expects($this->once())
                 ->method('setColumns')
                 ->will($this->returnCallback(function (array $columns) use ($self, $case) {
-                    $sorted = array();
+                    $sorted = [];
                     foreach ($columns as $column) {
                         $sorted[] = $column->getName();
                     }

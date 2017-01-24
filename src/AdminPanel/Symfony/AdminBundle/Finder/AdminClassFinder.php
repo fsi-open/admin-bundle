@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Finder;
 
 use Symfony\Component\Finder\Finder;
@@ -8,7 +10,7 @@ class AdminClassFinder
 {
     const ADMIN_ELEMENT_INTERFACE = 'AdminPanel\\Symfony\\AdminBundle\\Admin\\Element';
 
-    public function findClasses($paths = array())
+    public function findClasses($paths = [])
     {
         $classes = $this->findClassesInPaths($paths);
 
@@ -21,7 +23,7 @@ class AdminClassFinder
      */
     private function filterAdminClasses($classes)
     {
-        $adminClasses = array();
+        $adminClasses = [];
         foreach ($classes as $className) {
             $classImplements = class_implements($className);
             if (in_array(self::ADMIN_ELEMENT_INTERFACE, $classImplements)) {
@@ -39,7 +41,7 @@ class AdminClassFinder
     private function findClassesInPaths($searchPaths)
     {
         $finder = new Finder();
-        $includedFiles = array();
+        $includedFiles = [];
         foreach ($searchPaths as $path) {
             foreach ($finder->files()->name('*.php')->in($path) as $file) {
                 require_once $file->getRealpath();
@@ -49,7 +51,7 @@ class AdminClassFinder
 
         $declared = get_declared_classes();
 
-        $classes = array();
+        $classes = [];
         foreach ($declared as $className) {
             $reflection = new \ReflectionClass($className);
             if (in_array($reflection->getFileName(), $includedFiles)) {

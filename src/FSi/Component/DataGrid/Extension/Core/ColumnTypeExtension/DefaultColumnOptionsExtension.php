@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Extension\Core\ColumnTypeExtension;
 
@@ -32,7 +27,7 @@ class DefaultColumnOptionsExtension extends ColumnAbstractTypeExtension
      */
     public function getExtendedColumnTypes()
     {
-        return array(
+        return [
             'batch',
             'text',
             'boolean',
@@ -43,7 +38,7 @@ class DefaultColumnOptionsExtension extends ColumnAbstractTypeExtension
             'gedmo_tree',
             'entity',
             'action',
-        );
+        ];
     }
 
     /**
@@ -51,14 +46,14 @@ class DefaultColumnOptionsExtension extends ColumnAbstractTypeExtension
      */
     public function initOptions(ColumnTypeInterface $column)
     {
-        $column->getOptionsResolver()->setDefaults(array(
+        $column->getOptionsResolver()->setDefaults([
             'label' => $column->getName(),
             'display_order' => null,
-            'field_mapping' => array($column->getName())
-        ));
+            'field_mapping' => [$column->getName()]
+        ]);
 
         $column->getOptionsResolver()->setAllowedTypes('label', 'string');
         $column->getOptionsResolver()->setAllowedTypes('field_mapping', 'array');
-        $column->getOptionsResolver()->setAllowedTypes('display_order', array('integer', 'null'));
+        $column->getOptionsResolver()->setAllowedTypes('display_order', ['integer', 'null']);
     }
 }

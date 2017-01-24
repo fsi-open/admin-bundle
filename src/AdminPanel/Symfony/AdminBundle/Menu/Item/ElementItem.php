@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Menu\Item;
 
@@ -15,7 +16,7 @@ class ElementItem extends RoutableItem
      */
     private $element;
 
-    function __construct($name, Element $element)
+    public function __construct($name, Element $element)
     {
         parent::__construct($name);
 
@@ -58,11 +59,11 @@ class ElementItem extends RoutableItem
     {
         parent::configureOptions($optionsResolver);
 
-        $optionsResolver->setDefaults(array(
-            'elements' => array(),
-        ));
+        $optionsResolver->setDefaults([
+            'elements' => [],
+        ]);
 
-        $optionsResolver->setAllowedTypes('elements', array('array'));
+        $optionsResolver->setAllowedTypes('elements', ['array']);
 
         $optionsResolver->setNormalizer('elements', function (Options $options, array $value) {
             foreach ($value as $element) {

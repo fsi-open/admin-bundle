@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace spec\AdminPanel\Symfony\AdminBundle\Controller;
 
@@ -13,7 +14,7 @@ class FormControllerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Context\ContextManager $manager
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      */
-    function let($manager, $templating, $dispatcher)
+    public function let($manager, $templating, $dispatcher)
     {
         $this->beConstructedWith(
             $templating,
@@ -31,7 +32,7 @@ class FormControllerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\FormElementContext $context
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      */
-    function it_dispatch_event_if_displatcher_present(
+    public function it_dispatch_event_if_displatcher_present(
         $dispatcher,
         $request,
         $response,
@@ -39,8 +40,7 @@ class FormControllerSpec extends ObjectBehavior
         $manager,
         $context,
         $templating
-    )
-    {
+    ) {
         $this->setEventDispatcher($dispatcher);
 
         $dispatcher->dispatch(
@@ -51,9 +51,9 @@ class FormControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
-        $context->getData()->willReturn(array());
+        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_form', array(), null)->willReturn($response);
+        $templating->renderResponse('default_form', [], null)->willReturn($response);
         $this->formAction($element, $request)->shouldReturn($response);
     }
 
@@ -62,17 +62,16 @@ class FormControllerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Context\ContextManager $manager
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
+    public function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
         $element,
         $manager,
         $request
-    )
-    {
+    ) {
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
         $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
-            ->during('formAction', array($element, $request));
+            ->during('formAction', [$element, $request]);
     }
 
     /**
@@ -83,21 +82,20 @@ class FormControllerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context\FormElementContext $context
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      */
-    function it_render_default_template_in_form_action(
+    public function it_render_default_template_in_form_action(
         $request,
         $response,
         $element,
         $manager,
         $context,
         $templating
-    )
-    {
+    ) {
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
-        $context->getData()->willReturn(array());
+        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_form', array(), null)->willReturn($response);
+        $templating->renderResponse('default_form', [], null)->willReturn($response);
         $this->formAction($element, $request)->shouldReturn($response);
     }
 
@@ -109,22 +107,21 @@ class FormControllerSpec extends ObjectBehavior
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      * @param \Symfony\Component\HttpFoundation\Response $response
      */
-    function it_render_template_from_element_in_form_action(
+    public function it_render_template_from_element_in_form_action(
         $manager,
         $element,
         $context,
         $request,
         $templating,
         $response
-    )
-    {
+    ) {
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('custom_template');
-        $context->getData()->willReturn(array());
+        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('custom_template', array(), null)->willReturn($response);
+        $templating->renderResponse('custom_template', [], null)->willReturn($response);
         $this->formAction($element, $request)->shouldReturn($response);
     }
 
@@ -135,14 +132,13 @@ class FormControllerSpec extends ObjectBehavior
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Symfony\Component\HttpFoundation\Response $response
      */
-    function it_return_response_from_context_in_form_action(
+    public function it_return_response_from_context_in_form_action(
         $manager,
         $element,
         $context,
         $request,
         $response
-    )
-    {
+    ) {
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 

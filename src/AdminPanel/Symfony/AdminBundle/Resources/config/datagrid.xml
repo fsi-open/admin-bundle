@@ -12,7 +12,7 @@
         <parameter key="datagrid.data_mapper.chain.class">FSi\Component\DataGrid\DataMapper\ChainMapper</parameter>
         <parameter key="datagrid.data_mapper.reflection.class">FSi\Component\DataGrid\DataMapper\ReflectionMapper</parameter>
         <parameter key="datagrid.data_mapper.property_accessor.class">FSi\Component\DataGrid\DataMapper\PropertyAccessorMapper</parameter>
-        <parameter key="datagrid.extension.class">FSi\Component\DataGrid\Extension\Symfony\DependencyInjectionExtension</parameter>
+        <parameter key="datagrid.extension.class">AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Symfony\DependencyInjectionExtension</parameter>
     </parameters>
 
     <services>

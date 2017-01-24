@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Tests\DataMapper;
 
@@ -20,7 +15,7 @@ class ReflectionMapperTest extends \PHPUnit_Framework_TestCase
         $entity = new EntityMapper();
         $entity->setName('fooname');
 
-        $this->assertSame('fooname',$mapper->getData('name', $entity));
+        $this->assertSame('fooname', $mapper->getData('name', $entity));
     }
 
     public function testProtectedGetter()
@@ -77,7 +72,7 @@ class ReflectionMapperTest extends \PHPUnit_Framework_TestCase
         $entity = new EntityMapper();
         $entity->setId('bar');
 
-        $this->assertSame('bar',$mapper->getData('id', $entity));
+        $this->assertSame('bar', $mapper->getData('id', $entity));
     }
 
     public function testPrivateProperty()
@@ -96,7 +91,7 @@ class ReflectionMapperTest extends \PHPUnit_Framework_TestCase
         $entity = new EntityMapper();
 
         $mapper->setData('name', $entity, 'fooname');
-        $this->assertSame('fooname',$entity->getName());
+        $this->assertSame('fooname', $entity->getName());
     }
 
     public function testProtectedSetter()
@@ -114,7 +109,7 @@ class ReflectionMapperTest extends \PHPUnit_Framework_TestCase
         $entity = new EntityMapper();
 
         $mapper->setData('tag', $entity, 'bar');
-        $this->assertSame(array('bar'),$entity->getTags());
+        $this->assertSame(['bar'], $entity->getTags());
     }
 
     public function testProtectedAdder()

@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace spec\AdminPanel\Symfony\AdminBundle\Admin\Context;
 
@@ -10,16 +11,16 @@ class ContextManagerSpec extends ObjectBehavior
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Context\ContextInterface $context
      */
-    function let($context)
+    public function let($context)
     {
-        $this->beConstructedWith(array($context));
+        $this->beConstructedWith([$context]);
     }
 
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Element $element
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Context\ContextInterface $context
      */
-    function it_build_context_for_element($element, $context)
+    public function it_build_context_for_element($element, $context)
     {
         $context->supports('route_name', $element)->willReturn(true);
         $context->setElement($element)->shouldBeCalled();
@@ -31,7 +32,7 @@ class ContextManagerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Element $element
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Context\ContextInterface $context
      */
-    function it_return_null_when_context_builders_do_not_support_element($element, $context)
+    public function it_return_null_when_context_builders_do_not_support_element($element, $context)
     {
         $context->supports('route_name', $element)->willReturn(false);
         $context->setElement($element)->shouldNotBeCalled();

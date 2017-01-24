@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Symfony;
 
 use FSi\Component\DataGrid\DataGridAbstractExtension;
@@ -36,9 +38,9 @@ class RouterExtension extends DataGridAbstractExtension
      */
     protected function loadColumnTypes()
     {
-        return array(
+        return [
             new ColumnType\Action($this->router, $this->requestStack),
-        );
+        ];
     }
 
     /**
@@ -46,8 +48,8 @@ class RouterExtension extends DataGridAbstractExtension
      */
     protected function loadSubscribers()
     {
-        return array(
+        return [
             new EventSubscriber\BindRequest(),
-        );
+        ];
     }
 }

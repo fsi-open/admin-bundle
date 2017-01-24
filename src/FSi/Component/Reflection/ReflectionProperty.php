@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Component\Reflection;
 
 class ReflectionProperty extends \ReflectionProperty
 {
-    protected static $properties = array();
+    protected static $properties = [];
 
     /**
      * Constructs a new ReflectionProperty object.
-     * 
+     *
      * @param string|object $class
      * @param string $name
      * @throws ReflectionException
@@ -17,8 +19,9 @@ class ReflectionProperty extends \ReflectionProperty
     final public function __construct($class, $name)
     {
         $bt = debug_backtrace();
-        if (!isset($bt[1]['class']) || ($bt[1]['class'] !== __CLASS__))
+        if (!isset($bt[1]['class']) || ($bt[1]['class'] !== __CLASS__)) {
             throw new ReflectionException('ReflectionClass\' constructor cannot be called from outside the class');
+        }
         parent::__construct($class, $name);
     }
     
@@ -26,20 +29,21 @@ class ReflectionProperty extends \ReflectionProperty
      * Constructs a new ReflectionProperty object from property and class name.
      * If object already exists in cache it will taken from there instead of creating
      * new object
-     * 
+     *
      * @param string|object $class
      * @param string $property
      * @return ReflectionProperty
      */
     public static function factory($class, $property = null)
     {
-        if (is_object($class))
+        if (is_object($class)) {
             $class = get_class($class);
-        $class = (string)$class;
+        }
+        $class = (string) $class;
         if (!isset(self::$properties[$class])) {
             $classReflection = new \ReflectionClass($class);
             $properties = $classReflection->getProperties();
-            self::$properties[$class] = array();
+            self::$properties[$class] = [];
             foreach ($properties as $propertyReflection) {
                 if ($propertyReflection->class != $class) {
                     self::$properties[$class][$propertyReflection->name] = self::factory($propertyReflection->class, $propertyReflection->name);
@@ -55,13 +59,14 @@ class ReflectionProperty extends \ReflectionProperty
                 self::$properties[$class][$property]->setAccessible(true);
             }
             return self::$properties[$class][$property];
-        } else
+        } else {
             return array_values(self::$properties[$class]);
+        }
     }
 
     /**
-     * Get class ReflectionObject using ReflectionClass::factory method. 
-     * 
+     * Get class ReflectionObject using ReflectionClass::factory method.
+     *
      * @return ReflectionClass
      */
     public function getDeclaringClass()

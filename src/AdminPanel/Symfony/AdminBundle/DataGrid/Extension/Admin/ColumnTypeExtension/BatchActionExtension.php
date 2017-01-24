@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
 use AdminPanel\Symfony\AdminBundle\Admin\Manager;
@@ -51,8 +53,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         RequestStack $requestStack,
         RouterInterface $router,
         FormBuilderInterface $formBuilder
-    )
-    {
+    ) {
         $this->manager = $manager;
         $this->requestStack = $requestStack;
         $this->router = $router;
@@ -65,7 +66,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      */
     public function getExtendedColumnTypes()
     {
-        return array('batch');
+        return ['batch'];
     }
 
     /**
@@ -73,12 +74,12 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      */
     public function initOptions(ColumnTypeInterface $column)
     {
-        $column->getOptionsResolver()->setDefaults(array(
-            'actions' => array(),
+        $column->getOptionsResolver()->setDefaults([
+            'actions' => [],
             'translation_domain' => 'FSiAdminBundle'
-        ));
-        $column->getOptionsResolver()->setAllowedTypes('actions', array('array', 'null'));
-        $column->getOptionsResolver()->setAllowedTypes('translation_domain', array('string'));
+        ]);
+        $column->getOptionsResolver()->setAllowedTypes('actions', ['array', 'null']);
+        $column->getOptionsResolver()->setAllowedTypes('translation_domain', ['string']);
     }
 
     public function buildHeaderView(ColumnTypeInterface $column, HeaderViewInterface $view)
@@ -94,21 +95,21 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     private function initActionOptions()
     {
         $this->actionOptionsResolver = new OptionsResolver();
-        $this->actionOptionsResolver->setRequired(array(
+        $this->actionOptionsResolver->setRequired([
             'route_name'
-        ));
-        $this->actionOptionsResolver->setDefined(array(
+        ]);
+        $this->actionOptionsResolver->setDefined([
             'element'
-        ));
+        ]);
         $self = $this;
-        $this->actionOptionsResolver->setDefaults(array(
+        $this->actionOptionsResolver->setDefaults([
             'route_name' => function (Options $options) use ($self) {
                 return $self->getDefaultRouteName($options);
             },
-            'additional_parameters' => array(),
+            'additional_parameters' => [],
             'label' => null,
             'redirect_uri' => true,
-        ));
+        ]);
         $this->actionOptionsResolver->setNormalizer(
             'additional_parameters',
             function (Options $options, $value) use ($self) {
@@ -118,8 +119,8 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         $this->actionOptionsResolver->setAllowedTypes('element', 'string');
         $this->actionOptionsResolver->setAllowedTypes('route_name', 'string');
         $this->actionOptionsResolver->setAllowedTypes('additional_parameters', 'array');
-        $this->actionOptionsResolver->setAllowedTypes('label', array('string', 'null'));
-        $this->actionOptionsResolver->setAllowedTypes('redirect_uri', array('string', 'bool'));
+        $this->actionOptionsResolver->setAllowedTypes('label', ['string', 'null']);
+        $this->actionOptionsResolver->setAllowedTypes('redirect_uri', ['string', 'bool']);
     }
 
     /**
@@ -128,7 +129,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      */
     private function buildBatchActions(ColumnTypeInterface $column)
     {
-        $batchActions = array('crud.list.batch.empty_choice');
+        $batchActions = ['crud.list.batch.empty_choice'];
 
         foreach ($column->getOption('actions') as $name => $action) {
             $actionOptions = $this->actionOptionsResolver->resolve($action);
@@ -159,14 +160,14 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     private function buildBatchForm(ColumnTypeInterface $column, array $batchActions)
     {
         if (count($batchActions) > 1) {
-            $this->formBuilder->add('action', 'choice', array(
+            $this->formBuilder->add('action', 'choice', [
                 'choices' => $batchActions,
                 'translation_domain' => $column->getOption('translation_domain')
-            ));
-            $this->formBuilder->add('submit', 'submit', array(
+            ]);
+            $this->formBuilder->add('submit', 'submit', [
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'
-            ));
+            ]);
         }
     }
 
@@ -225,7 +226,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     private function mergeAdditionalParametersWithElementFromOptions(Options $options, array $additionalParameters)
     {
         $additionalParameters = array_merge(
-            array('element' => $this->getElementFromOption($options)->getId()),
+            ['element' => $this->getElementFromOption($options)->getId()],
             $this->getElementFromOption($options)->getRouteParameters(),
             $additionalParameters
         );

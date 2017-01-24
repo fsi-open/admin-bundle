@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid;
 
@@ -23,14 +18,14 @@ class DataGridFactory implements DataGridFactoryInterface
      *
      * @var array
      */
-    protected $dataGrids = array();
+    protected $dataGrids = [];
 
     /**
      * Currently loaded column types.
      *
      * @var array
      */
-    protected $columnTypes = array();
+    protected $columnTypes = [];
 
     /**
      * @var \FSi\Component\DataGrid\DataMapper\DataMapperInterface
@@ -42,7 +37,7 @@ class DataGridFactory implements DataGridFactoryInterface
      *
      * @var array
      */
-    protected $extensions = array();
+    protected $extensions = [];
 
     /**
      * @var \FSi\Component\DataGrid\Data\IndexingStrategyInterface

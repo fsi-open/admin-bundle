@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Admin\CRUD;
 
 use AdminPanel\Symfony\AdminBundle\Exception\RuntimeException;
@@ -8,23 +10,23 @@ use Prophecy\Argument;
 
 class AbstractCRUDSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beAnInstanceOf('AdminPanel\Symfony\AdminBundle\Tests\Doubles\MyCRUD');
-        $this->beConstructedWith(array());
+        $this->beConstructedWith([]);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('AdminPanel\Symfony\AdminBundle\Admin\CRUD\AbstractCRUD');
     }
 
-    function it_is_admin_element()
+    public function it_is_admin_element()
     {
         $this->shouldHaveType('AdminPanel\Symfony\AdminBundle\Admin\Element');
     }
 
-    function it_have_default_route()
+    public function it_have_default_route()
     {
         $this->getRoute()->shouldReturn('fsi_admin_list');
     }
@@ -33,7 +35,7 @@ class AbstractCRUDSpec extends ObjectBehavior
      * @param \FSi\Component\DataGrid\DataGridFactory $factory
      * @throws \FSi\Component\DataGrid\Exception\DataGridColumnException
      */
-    function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid($factory)
+    public function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid($factory)
     {
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
@@ -48,20 +50,20 @@ class AbstractCRUDSpec extends ObjectBehavior
      * @throws \FSi\Component\DataGrid\Exception\DataGridColumnException
      * @throws \FSi\Component\DataGrid\Exception\UnexpectedTypeException
      */
-    function it_add_batch_column_to_datagrid_when_element_allow_delete_objects($factory, $datagrid)
+    public function it_add_batch_column_to_datagrid_when_element_allow_delete_objects($factory, $datagrid)
     {
         $factory->createDataGrid('my_datagrid')->shouldBeCalled()->willReturn($datagrid);
         $datagrid->hasColumnType('batch')->shouldBeCalled()->willReturn(false);
-        $datagrid->addColumn('batch', 'batch', array(
-            'actions' => array(
-                'delete' => array(
+        $datagrid->addColumn('batch', 'batch', [
+            'actions' => [
+                'delete' => [
                     'route_name' => 'fsi_admin_batch',
-                    'additional_parameters' => array('element' => $this->getId()),
+                    'additional_parameters' => ['element' => $this->getId()],
                     'label' => 'crud.list.batch.delete'
-                )
-            ),
+                ]
+            ],
             'display_order' => -1000
-        ))->shouldBeCalled();
+        ])->shouldBeCalled();
 
         $this->setDataGridFactory($factory);
 
@@ -72,7 +74,7 @@ class AbstractCRUDSpec extends ObjectBehavior
      * @param \FSi\Component\DataSource\DataSourceFactory $factory
      * @throws \FSi\Component\DataSource\Exception\DataSourceException
      */
-    function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource($factory)
+    public function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource($factory)
     {
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
@@ -84,16 +86,16 @@ class AbstractCRUDSpec extends ObjectBehavior
     /**
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
      */
-    function it_throw_exception_when_init_form_does_not_return_instance_of_form($factory)
+    public function it_throw_exception_when_init_form_does_not_return_instance_of_form($factory)
     {
         $this->setFormFactory($factory);
         $factory->create(Argument::cetera())->willReturn(null);
 
         $this->shouldThrow(new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface"))
-            ->during('createForm', array(null));
+            ->during('createForm', [null]);
     }
 
-    function it_has_default_options_values()
+    public function it_has_default_options_values()
     {
         $options = $this->getOptions();
         $options->shouldHaveKey('allow_delete');

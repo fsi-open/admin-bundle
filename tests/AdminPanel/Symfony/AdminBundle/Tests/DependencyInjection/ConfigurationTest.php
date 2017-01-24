@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundleBundle\Tests\DependencyInjection;
 
 use AdminPanel\Symfony\AdminBundle\DependencyInjection\Configuration;
@@ -98,10 +100,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $config['data_grid'],
             [
-                'twig' => array(
-                    'themes' => array('custom_datagrid.html.twig'),
+                'twig' => [
+                    'themes' => ['custom_datagrid.html.twig'],
                     'enabled' => true
-                ),
+                ],
                 'yaml_configuration' => true
             ]
         );

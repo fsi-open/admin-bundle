@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Driver\Collection;
 
@@ -25,9 +20,9 @@ abstract class CollectionAbstractField extends FieldAbstractType implements Coll
     {
         $field = $this;
         $this->getOptionsResolver()
-            ->setDefined(array('field'))
-            ->setAllowedTypes('field', array('string', 'null'))
-            ->setNormalizer('field', function($options, $value) use ($field) {
+            ->setDefined(['field'])
+            ->setAllowedTypes('field', ['string', 'null'])
+            ->setNormalizer('field', function ($options, $value) use ($field) {
                 if (!isset($value) && $field->getName()) {
                     return $field->getName();
                 } else {
@@ -44,7 +39,7 @@ abstract class CollectionAbstractField extends FieldAbstractType implements Coll
     {
         $data = $this->getCleanParameter();
 
-        if (($data === array()) || ($data === '') || ($data === null)) {
+        if (($data === []) || ($data === '') || ($data === null)) {
             return;
         }
 
@@ -87,7 +82,7 @@ abstract class CollectionAbstractField extends FieldAbstractType implements Coll
             }
         }
 
-        if (in_array($comparison, array('in', 'nin')) && !is_array($data)) {
+        if (in_array($comparison, ['in', 'nin']) && !is_array($data)) {
             throw new CollectionDriverException('Fields with \'in\' and \'nin\' comparisons require to bind an array.');
         }
 

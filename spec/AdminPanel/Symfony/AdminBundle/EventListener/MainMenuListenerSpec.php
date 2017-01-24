@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\EventListener;
 
 use AdminPanel\Symfony\AdminBundle\Event\MenuEvent;
@@ -14,7 +16,7 @@ class MainMenuListenerSpec extends ObjectBehavior
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Manager $manager
      */
-    function let($manager)
+    public function let($manager)
     {
         $prophet = new Prophet();
         $manager->getElement(Argument::type('string'))->will(function ($args) use ($prophet) {
@@ -36,17 +38,17 @@ class MainMenuListenerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Manager $manager
      * @param \AdminPanel\Symfony\AdminBundle\Event\MenuEvent $event
      */
-    function it_throws_exception_when_yaml_definition_of_menu_is_invalid($manager, $event)
+    public function it_throws_exception_when_yaml_definition_of_menu_is_invalid($manager, $event)
     {
         $menuYaml = __DIR__ . '/invalid_admin_menu.yml';
         $this->beConstructedWith($manager, $menuYaml);
 
         $this->shouldThrow(new InvalidYamlStructureException(
             sprintf('File "%s" should contain top level "menu:" key', $menuYaml)
-        ))->during('createMainMenu', array($event));
+        ))->during('createMainMenu', [$event]);
     }
 
-    function it_build_menu()
+    public function it_build_menu()
     {
         $menu = $this->createMainMenu(new MenuEvent(new Item()));
 
@@ -64,7 +66,7 @@ class MainMenuListenerSpec extends ObjectBehavior
 
     public function getMatchers()
     {
-        return array(
+        return [
             'haveItem' => function (Item $menu, $itemName, $elementId = false) {
                 $items = $menu->getChildren();
                 foreach ($items as $item) {
@@ -96,6 +98,6 @@ class MainMenuListenerSpec extends ObjectBehavior
                 }
                 return false;
             }
-        );
+        ];
     }
 }

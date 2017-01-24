@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler;
 
@@ -21,7 +22,7 @@ class ManagerVisitorPass implements CompilerPassInterface
         foreach ($elementServices as $id => $tag) {
             $visitor = $container->findDefinition($id);
 
-            $container->findDefinition('admin.manager')->addMethodCall('accept', array($visitor));
+            $container->findDefinition('admin.manager')->addMethodCall('accept', [$visitor]);
         }
     }
 }

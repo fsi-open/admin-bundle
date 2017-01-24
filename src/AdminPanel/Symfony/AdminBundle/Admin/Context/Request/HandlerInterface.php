@@ -1,14 +1,12 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Admin\Context\Request;
 
 use AdminPanel\Symfony\AdminBundle\Event\AdminEvent;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 interface HandlerInterface
 {
     /**

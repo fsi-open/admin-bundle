@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Request\ParamConverter;
 
 use AdminPanel\Symfony\AdminBundle\Admin\Manager;
@@ -9,9 +11,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInte
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class AdminElementParamConverter implements ParamConverterInterface
 {
     /**

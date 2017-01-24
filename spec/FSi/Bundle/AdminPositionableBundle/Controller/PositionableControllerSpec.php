@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminPositionableBundle\Controller;
 
 use AdminPanel\Symfony\AdminBundle\Doctrine\Admin\CRUDElement;
@@ -17,7 +19,7 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class PositionableControllerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         RouterInterface $router,
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
@@ -30,12 +32,12 @@ class PositionableControllerSpec extends ObjectBehavior
         $element->getDataIndexer()->willReturn($indexer);
         $element->getObjectManager()->willReturn($om);
         $element->getRoute()->willReturn('fsi_admin_crud_list');
-        $element->getRouteParameters()->willReturn(array('element' => 'slides'));
+        $element->getRouteParameters()->willReturn(['element' => 'slides']);
 
         $this->beConstructedWith($router);
     }
 
-    function it_throws_runtime_exception_when_entity_doesnt_implement_proper_interface(
+    public function it_throws_runtime_exception_when_entity_doesnt_implement_proper_interface(
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
         Request $request
@@ -49,7 +51,7 @@ class PositionableControllerSpec extends ObjectBehavior
             ->duringDecreasePositionAction($element, 666, $request);
     }
 
-    function it_throws_runtime_exception_when_specified_entity_doesnt_exist(
+    public function it_throws_runtime_exception_when_specified_entity_doesnt_exist(
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
         Request $request
@@ -63,7 +65,7 @@ class PositionableControllerSpec extends ObjectBehavior
             ->duringDecreasePositionAction($element, 666, $request);
     }
 
-    function it_decrease_position_when_decrease_position_action_called(
+    public function it_decrease_position_when_decrease_position_action_called(
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,
@@ -78,7 +80,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $om->persist($positionableEntity)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
-        $router->generate('fsi_admin_crud_list', array('element' => 'slides'))
+        $router->generate('fsi_admin_crud_list', ['element' => 'slides'])
                ->willReturn('sample-path');
 
         $response = $this->decreasePositionAction($element, 1, $request);
@@ -86,7 +88,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $response->getTargetUrl()->shouldReturn('sample-path');
     }
 
-    function it_increase_position_when_increase_position_action_called(
+    public function it_increase_position_when_increase_position_action_called(
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,
@@ -101,7 +103,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $om->persist($positionableEntity)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
-        $router->generate('fsi_admin_crud_list', array('element' => 'slides'))
+        $router->generate('fsi_admin_crud_list', ['element' => 'slides'])
                ->willReturn('sample-path');
 
         $response = $this->increasePositionAction($element, 1, $request);
@@ -109,7 +111,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $response->getTargetUrl()->shouldReturn('sample-path');
     }
 
-    function it_redirects_to_redirect_uri_parameter_after_operation(
+    public function it_redirects_to_redirect_uri_parameter_after_operation(
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,

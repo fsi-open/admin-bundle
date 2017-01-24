@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Admin\ResourceRepository\Context;
 
@@ -32,7 +33,7 @@ class ResourceRepositoryContext extends ContextAbstract
      * @param HandlerInterface[]|$requestHandlers
      * @param ResourceRepository\ResourceFormBuilder $resourceFormBuilder
      */
-    function __construct($requestHandlers, ResourceRepository\ResourceFormBuilder $resourceFormBuilder)
+    public function __construct($requestHandlers, ResourceRepository\ResourceFormBuilder $resourceFormBuilder)
     {
         parent::__construct($requestHandlers);
 
@@ -69,10 +70,10 @@ class ResourceRepositoryContext extends ContextAbstract
      */
     public function getData()
     {
-        return array(
+        return [
             'form' => $this->form->createView(),
             'element' => $this->element
-        );
+        ];
     }
 
     /**

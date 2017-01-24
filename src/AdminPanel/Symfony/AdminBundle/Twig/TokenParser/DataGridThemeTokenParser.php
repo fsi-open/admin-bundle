@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Twig\TokenParser;
 
 use AdminPanel\Symfony\AdminBundle\Twig\Node\DataGridThemeNode;
@@ -14,7 +16,7 @@ class DataGridThemeTokenParser extends \Twig_TokenParser
         $stream = $this->parser->getStream();
         $dataGrid = $this->parser->getExpressionParser()->parseExpression();
         $theme = $this->parser->getExpressionParser()->parseExpression();
-        $vars = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
+        $vars = new \Twig_Node_Expression_Array([], $stream->getCurrent()->getLine());
 
         if ($this->parser->getStream()->test(\Twig_Token::NAME_TYPE, 'with')) {
             $this->parser->getStream()->next();
@@ -37,4 +39,3 @@ class DataGridThemeTokenParser extends \Twig_TokenParser
         return 'datagrid_theme';
     }
 }
-

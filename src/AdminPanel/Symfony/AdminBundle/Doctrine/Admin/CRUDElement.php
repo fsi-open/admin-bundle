@@ -1,13 +1,11 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Doctrine\Admin;
 
 use AdminPanel\Symfony\AdminBundle\Admin\CRUD\AbstractCRUD;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 abstract class CRUDElement extends AbstractCRUD implements Element
 {
     use DataIndexerElementImpl;

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Field;
 
@@ -26,7 +21,7 @@ abstract class FieldAbstractType implements FieldTypeInterface
      *
      * @var array
      */
-    protected $comparisons = array();
+    protected $comparisons = [];
 
     /**
      * Name of element.
@@ -47,7 +42,7 @@ abstract class FieldAbstractType implements FieldTypeInterface
      *
      * @var array
      */
-    private $options = array();
+    private $options = [];
 
     /**
      * Given parameter.
@@ -81,7 +76,7 @@ abstract class FieldAbstractType implements FieldTypeInterface
     /**
      * @var array
      */
-    private $extensions = array();
+    private $extensions = [];
 
     /**
      * {@inheritdoc}
@@ -205,15 +200,15 @@ abstract class FieldAbstractType implements FieldTypeInterface
     {
         $datasourceName = $this->getDataSource() ? $this->getDataSource()->getName() : null;
         if (!empty($datasourceName)) {
-            $parameter = array(
-                $datasourceName => array(
-                    DataSourceInterface::PARAMETER_FIELDS => array(
+            $parameter = [
+                $datasourceName => [
+                    DataSourceInterface::PARAMETER_FIELDS => [
                         $this->getName() => $this->getCleanParameter(),
-                    ),
-                ),
-            );
+                    ],
+                ],
+            ];
         } else {
-            $parameter = array();
+            $parameter = [];
         }
 
         //PostGetParameter event.

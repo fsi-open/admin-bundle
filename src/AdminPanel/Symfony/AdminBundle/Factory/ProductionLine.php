@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Factory;
 
 use AdminPanel\Symfony\AdminBundle\Admin\Element;
@@ -14,11 +16,11 @@ class ProductionLine
     /**
      * @param Worker[] $workers
      */
-    public function __construct($workers = array())
+    public function __construct($workers = [])
     {
-        $this->workers = array();
+        $this->workers = [];
 
-        foreach ((array)$workers as $worker) {
+        foreach ((array) $workers as $worker) {
             $this->addWorker($worker);
         }
     }

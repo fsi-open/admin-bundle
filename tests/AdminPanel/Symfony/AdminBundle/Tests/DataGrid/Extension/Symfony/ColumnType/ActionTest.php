@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundleBundle\Tests\DataGrid\Extension\Symfony\ColumnType;
 
@@ -56,7 +51,7 @@ class ActionTest extends \PHPUnit_Framework_TestCase
     public function testFilterValueWrongActionsOptionType()
     {
         $this->column->setOption('actions', 'boo');
-        $this->column->filterValue(array());
+        $this->column->filterValue([]);
     }
 
     /**
@@ -64,15 +59,15 @@ class ActionTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterValueInvalidActionInActionsOption()
     {
-        $this->column->setOption('actions', array('edit' => 'asdasd'));
-        $this->column->filterValue(array());
+        $this->column->setOption('actions', ['edit' => 'asdasd']);
+        $this->column->filterValue([]);
     }
 
     public function testFilterValueRequiredActionInActionsOption()
     {
         $this->router->expects($this->any())
             ->method('generate')
-            ->with('foo', array('redirect_uri' => Request::RELATIVE_URI), false)
+            ->with('foo', ['redirect_uri' => Request::RELATIVE_URI], false)
             ->will($this->returnValue('/test/bar?redirect_uri=' . urlencode(Request::ABSOLUTE_URI)));
 
         $this->column->setName('action');
@@ -82,28 +77,28 @@ class ActionTest extends \PHPUnit_Framework_TestCase
         $extension->initOptions($this->column);
 
 
-        $this->column->setOption('actions', array(
-            'edit' => array(
+        $this->column->setOption('actions', [
+            'edit' => [
                 'route_name' => 'foo',
                 'absolute' => false
-            )
-        ));
+            ]
+        ]);
 
-       $this->assertSame(
-           array(
-               'edit' => array(
+        $this->assertSame(
+           [
+               'edit' => [
                    'content' => 'edit',
-                   'field_mapping_values' => array(
+                   'field_mapping_values' => [
                            'foo' => 'bar'
-                   ),
-                   'url_attr' => Array (
+                   ],
+                   'url_attr' =>  [
                        'href' => '/test/bar?redirect_uri=http%3A%2F%2Fexample.com%2F%3Ftest%3D1%26test%3D2'
-                   )
-               )
-           ),
-           $this->column->filterValue(array(
+                   ]
+               ]
+           ],
+           $this->column->filterValue([
                'foo' => 'bar'
-           ))
+           ])
        );
     }
 
@@ -111,7 +106,7 @@ class ActionTest extends \PHPUnit_Framework_TestCase
     {
         $this->router->expects($this->once())
             ->method('generate')
-            ->with('foo', array('foo' => 'bar', 'redirect_uri' => Request::RELATIVE_URI), true)
+            ->with('foo', ['foo' => 'bar', 'redirect_uri' => Request::RELATIVE_URI], true)
             ->will($this->returnValue('https://fsi.pl/test/bar?redirect_uri=' . urlencode(Request::RELATIVE_URI)));
 
         $this->column->setName('action');
@@ -120,30 +115,30 @@ class ActionTest extends \PHPUnit_Framework_TestCase
         $extension = new DefaultColumnOptionsExtension();
         $extension->initOptions($this->column);
 
-        $this->column->setOption('field_mapping', array('foo'));
-        $this->column->setOption('actions', array(
-            'edit' => array(
+        $this->column->setOption('field_mapping', ['foo']);
+        $this->column->setOption('actions', [
+            'edit' => [
                 'route_name' => 'foo',
-                'parameters_field_mapping' => array('foo' => 'foo'),
+                'parameters_field_mapping' => ['foo' => 'foo'],
                 'absolute' => true
-            )
-        ));
+            ]
+        ]);
 
-       $this->assertSame(
-           array(
-               'edit' => array(
+        $this->assertSame(
+           [
+               'edit' => [
                    'content' => 'edit',
-                   'field_mapping_values' => array(
+                   'field_mapping_values' => [
                            'foo' => 'bar'
-                   ),
-                   'url_attr' => array (
+                   ],
+                   'url_attr' =>  [
                        'href' => 'https://fsi.pl/test/bar?redirect_uri=' . urlencode(Request::RELATIVE_URI)
-                   )
-               )
-           ),
-           $this->column->filterValue(array(
+                   ]
+               ]
+           ],
+           $this->column->filterValue([
                'foo' => 'bar'
-           ))
+           ])
        );
     }
 
@@ -152,7 +147,7 @@ class ActionTest extends \PHPUnit_Framework_TestCase
     {
         $this->router->expects($this->once())
             ->method('generate')
-            ->with('foo', array(), false)
+            ->with('foo', [], false)
             ->will($this->returnValue('/test/bar'));
 
         $this->column->setName('action');
@@ -161,29 +156,29 @@ class ActionTest extends \PHPUnit_Framework_TestCase
         $extension = new DefaultColumnOptionsExtension();
         $extension->initOptions($this->column);
 
-        $this->column->setOption('actions', array(
-            'edit' => array(
+        $this->column->setOption('actions', [
+            'edit' => [
                 'route_name' => 'foo',
                 'absolute' => false,
                 'redirect_uri' => false
-            )
-        ));
+            ]
+        ]);
 
         $this->assertSame(
-            array(
-                'edit' => array(
+            [
+                'edit' => [
                     'content' => 'edit',
-                    'field_mapping_values' => array(
+                    'field_mapping_values' => [
                         'foo' => 'bar'
-                    ),
-                    'url_attr' => array (
+                    ],
+                    'url_attr' =>  [
                         'href' => '/test/bar'
-                    )
-                )
-            ),
-            $this->column->filterValue(array(
+                    ]
+                ]
+            ],
+            $this->column->filterValue([
                 'foo' => 'bar'
-            ))
+            ])
         );
     }
 }

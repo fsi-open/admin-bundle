@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Finder;
 
 use PhpSpec\ObjectBehavior;
@@ -9,9 +11,9 @@ class AdminClassFinderSpec extends ObjectBehavior
 {
     const DOUBLES_BUNDLE_PATH = '/../../../../../src/AdminPanel/Symfony/AdminBundle/Tests/Doubles';
 
-    function it_find_admin_classes_in_default_path()
+    public function it_find_admin_classes_in_default_path()
     {
-        $paths = array(__DIR__ . self::DOUBLES_BUNDLE_PATH . '/Admin');
+        $paths = [__DIR__ . self::DOUBLES_BUNDLE_PATH . '/Admin'];
         /* We can't just check if result is an array with following values because it might be in other order */
         $this->findClasses($paths)->shouldHaveCount(6);
         $this->findClasses($paths)->shouldContain("AdminPanel\\Symfony\\AdminBundle\\Tests\\Doubles\\Admin\\CRUDElement");
@@ -22,12 +24,12 @@ class AdminClassFinderSpec extends ObjectBehavior
         $this->findClasses($paths)->shouldContain("AdminPanel\\Symfony\\AdminBundle\\Tests\\Doubles\\Admin\\RequestStackAwareElement");
     }
 
-    function it_find_admin_classes_in_additional_paths()
+    public function it_find_admin_classes_in_additional_paths()
     {
-        $paths = array(
+        $paths = [
             __DIR__ . self::DOUBLES_BUNDLE_PATH . '/Admin',
             __DIR__ . self::DOUBLES_BUNDLE_PATH . '/CustomAdmin'
-        );
+        ];
 
         $this->findClasses($paths)->shouldHaveCount(7);
         $this->findClasses($paths)->shouldContain("AdminPanel\\Symfony\\AdminBundle\\Tests\\Doubles\\Admin\\CRUDElement");

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Driver\Doctrine\ORM;
 
@@ -66,7 +61,7 @@ class DoctrineDriver extends DriverAbstract
 
         if (isset($alias)) {
             $this->alias = (string) $alias;
-        } else if ($entity instanceof QueryBuilder) {
+        } elseif ($entity instanceof QueryBuilder) {
             $this->alias = $entity->getRootAlias();
         } else {
             $this->alias = self::DEFAULT_ENTITY_ALIAS;

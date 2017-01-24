@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Event;
 
@@ -28,5 +29,4 @@ class MenuEvent extends Event
     {
         return $this->menu;
     }
-
 }

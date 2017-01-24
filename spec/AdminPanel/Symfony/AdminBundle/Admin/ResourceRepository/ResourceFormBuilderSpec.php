@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Admin\ResourceRepository;
 
 use AdminPanel\Symfony\AdminBundle\Exception\RuntimeException;
@@ -15,17 +17,17 @@ class ResourceFormBuilderSpec extends ObjectBehavior
      * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository $valueRepository
      * @param \FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\TextType $resource
      */
-    function let($mapBuilder, $formFactory, $element, $valueRepository, $resource)
+    public function let($mapBuilder, $formFactory, $element, $valueRepository, $resource)
     {
-        $mapBuilder->getMap()->willReturn(array(
-            'resources' => array(
+        $mapBuilder->getMap()->willReturn([
+            'resources' => [
                 'resource_key' => $resource
-            )
-        ));
+            ]
+        ]);
         $resource->getName()->willReturn('resources.resource_key');
 
         $element->getRepository()->willReturn($valueRepository);
-        $element->getResourceFormOptions()->willReturn(array('form_options'));
+        $element->getResourceFormOptions()->willReturn(['form_options']);
 
         $this->beConstructedWith($formFactory, $mapBuilder);
     }
@@ -33,7 +35,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Admin\ResourceRepository\GenericResourceElement $element
      */
-    function it_throw_exception_when_resource_key_is_not_resource_group_key($element)
+    public function it_throw_exception_when_resource_key_is_not_resource_group_key($element)
     {
         $element->getKey()->willReturn('resources.resource_key');
 
@@ -41,7 +43,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
             new RuntimeException("resources.resource_key its not a resource group key")
         )->during(
             'build',
-            array($element)
+            [$element]
         );
     }
 
@@ -53,24 +55,23 @@ class ResourceFormBuilderSpec extends ObjectBehavior
      * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue $resourceValue
      * @param \Symfony\Component\Form\FormInterface $form
      */
-    function it_builds_form_for_resource_group(
+    public function it_builds_form_for_resource_group(
         $formFactory,
         $formBuilder,
         $element,
         $valueRepository,
         $resourceValue,
         $form
-    )
-    {
+    ) {
         $element->getKey()->willReturn('resources');
         $valueRepository->get('resources.resource_key')->willReturn($resourceValue);
 
         $formFactory
-            ->createBuilder('form', array('resources_resource_key' => $resourceValue), array('form_options'))
+            ->createBuilder('form', ['resources_resource_key' => $resourceValue], ['form_options'])
             ->willReturn($formBuilder);
 
         $formBuilder
-            ->add('resources_resource_key', 'resource', array('resource_key' => 'resources.resource_key'))
+            ->add('resources_resource_key', 'resource', ['resource_key' => 'resources.resource_key'])
             ->shouldBeCalled();
 
         $formBuilder->getForm()->willReturn($form);

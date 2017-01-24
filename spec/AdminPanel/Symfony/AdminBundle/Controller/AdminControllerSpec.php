@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Controller;
 
 use PhpSpec\ObjectBehavior;
@@ -11,7 +13,7 @@ class AdminControllerSpec extends ObjectBehavior
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      * @param \Symfony\Component\Routing\RouterInterface $router
      */
-    function let($templating, $router)
+    public function let($templating, $router)
     {
         $this->beConstructedWith($templating, $router, 'template');
     }
@@ -22,7 +24,7 @@ class AdminControllerSpec extends ObjectBehavior
      * @param \Symfony\Component\DependencyInjection\ParameterBag\ParameterBag $requestQuery
      * @param \Symfony\Component\Routing\RouterInterface $router
      */
-    function it_stores_locale_in_session($request, $session, $requestQuery, $router)
+    public function it_stores_locale_in_session($request, $session, $requestQuery, $router)
     {
         $request->getSession()->willReturn($session);
         $request->query = $requestQuery;
@@ -39,7 +41,7 @@ class AdminControllerSpec extends ObjectBehavior
      * @param \Symfony\Component\HttpFoundation\Session\Session $session
      * @param \Symfony\Component\DependencyInjection\ParameterBag\ParameterBag $requestQuery
      */
-    function it_redirects_to_passed_redirect_uri($request, $session, $requestQuery)
+    public function it_redirects_to_passed_redirect_uri($request, $session, $requestQuery)
     {
         $request->getSession()->willReturn($session);
         $request->query = $requestQuery;

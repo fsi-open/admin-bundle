@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Menu\KnpMenu;
 
 use AdminPanel\Symfony\AdminBundle\Menu\Item\Item as AdminMenuItem;
@@ -30,11 +32,11 @@ class ItemRouteDecorator implements ItemDecorator
                 $adminMenuItem->getRouteParameters()
             ));
 
-            $routes = $knpMenuItem->getExtra('routes', array());
-            $routes[] = array(
+            $routes = $knpMenuItem->getExtra('routes', []);
+            $routes[] = [
                 'route' => $adminMenuItem->getRoute(),
                 'parameters' => $adminMenuItem->getRouteParameters()
-            );
+            ];
             $knpMenuItem->setExtra('routes', $routes);
         }
     }

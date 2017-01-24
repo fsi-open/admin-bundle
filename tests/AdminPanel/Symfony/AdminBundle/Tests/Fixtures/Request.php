@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundleBundle\Tests\Fixtures;
 
 use Symfony\Component\HttpFoundation\Request as BaseRequest;

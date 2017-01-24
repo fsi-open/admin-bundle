@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Symfony\ColumnTypeExtension;
 
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
@@ -20,32 +22,32 @@ class ActionColumnExtension extends ColumnAbstractTypeExtension
      *
      * @var array
      */
-    protected $actionOptionsDefault = array(
+    protected $actionOptionsDefault = [
         'absolute' => false,
-    );
+    ];
 
     /**
      * Available action options.
      *
      * @var array
      */
-    protected $actionOptionsAvailable = array(
+    protected $actionOptionsAvailable = [
         'parameters',
         'parameters_values',
         'anchor',
         'route_name',
         'absolute',
-    );
+    ];
 
     /**
      * Options required in action.
      *
      * @var array
      */
-    protected $actionOptionsRequired = array(
+    protected $actionOptionsRequired = [
         'anchor',
         'route_name',
-    );
+    ];
 
     /**
      * @param \Symfony\Component\Routing\RouterInterface $router
@@ -62,16 +64,16 @@ class ActionColumnExtension extends ColumnAbstractTypeExtension
     {
         $this->validateOptions($column);
 
-        $return = array();
+        $return = [];
         $actions = $column->getOption('actions');
 
         foreach ($actions as $name => $options) {
-            $return[$name] = array(
+            $return[$name] = [
                 'name' => $name,
                 'anchor' => $options['anchor'],
-            );
+            ];
 
-            $parameters = array();
+            $parameters = [];
             if (isset($options['parameters'])) {
                 foreach ($options['parameters'] as $mappingField => $parameterName) {
                     $parameters[$parameterName] = $value[$mappingField];
@@ -97,7 +99,7 @@ class ActionColumnExtension extends ColumnAbstractTypeExtension
      */
     public function getExtendedColumnTypes()
     {
-        return array('action');
+        return ['action'];
     }
 
     /**
@@ -105,7 +107,7 @@ class ActionColumnExtension extends ColumnAbstractTypeExtension
      */
     public function getRequiredOptions(ColumnTypeInterface $column)
     {
-        return array('actions');
+        return ['actions'];
     }
 
     /**
@@ -113,7 +115,7 @@ class ActionColumnExtension extends ColumnAbstractTypeExtension
      */
     public function getAvailableOptions(ColumnTypeInterface $column)
     {
-        return array('actions');
+        return ['actions'];
     }
 
     /**

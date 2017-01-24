@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler;
 
@@ -17,16 +18,16 @@ class TwigGlobalsPass implements CompilerPassInterface
             return;
         }
 
-        $parameters = array(
+        $parameters = [
             'admin_templates_base' => $container->getParameter('admin.templates.base'),
             'admin_templates_form_theme' => $container->getParameter('admin.templates.form_theme'),
             'admin_templates_datagrid_theme' => $container->getParameter('admin.templates.datagrid_theme'),
             'admin_templates_datasource_theme' => $container->getParameter('admin.templates.datasource_theme'),
-        );
+        ];
 
         $twig = $container->findDefinition('twig');
         foreach ($parameters as $name => $parameter) {
-            $twig->addMethodCall('addGlobal', array($name, $parameter));
+            $twig->addMethodCall('addGlobal', [$name, $parameter]);
         }
     }
 }

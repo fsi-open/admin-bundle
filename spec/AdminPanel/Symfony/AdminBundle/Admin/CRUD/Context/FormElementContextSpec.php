@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace spec\AdminPanel\Symfony\AdminBundle\Admin\CRUD\Context;
 
@@ -14,14 +15,14 @@ class FormElementContextSpec extends ObjectBehavior
      * @param \Symfony\Component\Form\Form $form
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Context\Request\HandlerInterface $handler
      */
-    function let($element, $form, $handler)
+    public function let($element, $form, $handler)
     {
-        $this->beConstructedWith(array($handler));
+        $this->beConstructedWith([$handler]);
         $element->createForm(null)->willReturn($form);
         $this->setElement($element);
     }
 
-    function it_is_context()
+    public function it_is_context()
     {
         $this->shouldBeAnInstanceOf('AdminPanel\Symfony\AdminBundle\Admin\Context\ContextInterface');
     }
@@ -32,7 +33,7 @@ class FormElementContextSpec extends ObjectBehavior
      * @param \FSi\Component\DataIndexer\DataIndexerInterface $dataIndexer
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    function it_have_array_data($form, $element, $dataIndexer, $request)
+    public function it_have_array_data($form, $element, $dataIndexer, $request)
     {
         $form->createView()->willReturn('form_view');
         $form->getData()->willReturn(null);
@@ -42,16 +43,16 @@ class FormElementContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('form');
         $this->getData()->shouldHaveKeyInArray('element');
 
-        $form->getData()->willReturn(array('object'));
+        $form->getData()->willReturn(['object']);
         $element->getDataIndexer()->willReturn($dataIndexer);
-        $dataIndexer->getIndex(array('object'))->willReturn('id');
+        $dataIndexer->getIndex(['object'])->willReturn('id');
         $this->getData()->shouldHaveKeyInArray('id');
     }
 
     /**
      * @param \AdminPanel\Symfony\AdminBundle\Admin\CRUD\FormElement $element
      */
-    function it_has_template($element)
+    public function it_has_template($element)
     {
         $element->hasOption('template_form')->willReturn(true);
         $element->getOption('template_form')->willReturn('this_is_form_template.html.twig');
@@ -63,7 +64,7 @@ class FormElementContextSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Context\Request\HandlerInterface $handler
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    function it_handle_request_with_request_handlers($handler, $request)
+    public function it_handle_request_with_request_handlers($handler, $request)
     {
         $handler->handleRequest(Argument::type('AdminPanel\Symfony\AdminBundle\Event\FormEvent'), $request)
             ->shouldBeCalled();
@@ -75,7 +76,7 @@ class FormElementContextSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\Context\Request\HandlerInterface $handler
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    function it_return_response_from_handler($handler, $request)
+    public function it_return_response_from_handler($handler, $request)
     {
         $handler->handleRequest(Argument::type('AdminPanel\Symfony\AdminBundle\Event\FormEvent'), $request)
             ->willReturn(new Response());
@@ -86,7 +87,7 @@ class FormElementContextSpec extends ObjectBehavior
 
     public function getMatchers()
     {
-        return array(
+        return [
             'haveKeyInArray' => function ($subject, $key) {
                 if (!is_array($subject)) {
                     return false;
@@ -94,6 +95,6 @@ class FormElementContextSpec extends ObjectBehavior
 
                 return array_key_exists($key, $subject);
             },
-        );
+        ];
     }
 }

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Driver\Doctrine\ORM\Extension\Core\EventSubscriber;
 
@@ -39,7 +34,7 @@ class ResultIndexer implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(DriverEvents::POST_GET_RESULT => array('postGetResult', 1024));
+        return [DriverEvents::POST_GET_RESULT => ['postGetResult', 1024]];
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Factory\Worker;
 
 use AdminPanel\Symfony\AdminBundle\Admin\CRUD\DataGridAwareInterface;
@@ -25,11 +27,10 @@ class ListWorker implements Worker
     /**
      * @param DataSourceFactoryInterface $dataSourceFactory
      */
-    function __construct(
+    public function __construct(
         DataSourceFactoryInterface $dataSourceFactory,
         DataGridFactoryInterface $dataGridFactory
-    )
-    {
+    ) {
         $this->dataSourceFactory = $dataSourceFactory;
         $this->dataGridFactory = $dataGridFactory;
     }

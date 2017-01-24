@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Symfony\ColumnTypeExtension;
 
 use AdminPanel\Symfony\AdminBundle\Form\Type\RowType;
@@ -25,7 +27,7 @@ class FormExtension extends ColumnAbstractTypeExtension
      *
      * @var array
      */
-    protected $forms = array();
+    protected $forms = [];
 
     /**
      * @param \Symfony\Component\Form\FormFactoryInterface $formFactory
@@ -44,7 +46,7 @@ class FormExtension extends ColumnAbstractTypeExtension
             return;
         }
 
-        $formData = array();
+        $formData = [];
         switch ($column->getId()) {
             case 'entity':
                 $relationField = $column->getOption('relation_field');
@@ -68,7 +70,7 @@ class FormExtension extends ColumnAbstractTypeExtension
 
         /** @var FormInterface $form */
         $form = $this->createForm($column, $index, $object);
-        $form->submit(array($index => $formData));
+        $form->submit([$index => $formData]);
         if ($form->isValid()) {
             $data = $form->getData();
             foreach ($data as $fields) {
@@ -100,14 +102,14 @@ class FormExtension extends ColumnAbstractTypeExtension
      */
     public function getExtendedColumnTypes()
     {
-        return array(
+        return [
             'text',
             'boolean',
             'number',
             'datetime',
             'entity',
             'gedmo_tree',
-        );
+        ];
     }
 
     /**
@@ -115,11 +117,11 @@ class FormExtension extends ColumnAbstractTypeExtension
      */
     public function initOptions(ColumnTypeInterface $column)
     {
-        $column->getOptionsResolver()->setDefaults(array(
+        $column->getOptionsResolver()->setDefaults([
             'editable' => false,
-            'form_options' => array(),
-            'form_type' => array(),
-        ));
+            'form_options' => [],
+            'form_type' => [],
+        ]);
 
         $column->getOptionsResolver()->setAllowedTypes('editable', 'bool');
         $column->getOptionsResolver()->setAllowedTypes('form_options', 'array');
@@ -136,32 +138,32 @@ class FormExtension extends ColumnAbstractTypeExtension
      */
     private function createForm(ColumnTypeInterface $column, $index, $object)
     {
-        $formId = implode(array($column->getName(),$column->getId(), $index));
+        $formId = implode([$column->getName(),$column->getId(), $index]);
         if (array_key_exists($formId, $this->forms)) {
             return $this->forms[$formId];
         }
 
         //Create fields array. There are column types like entity where field_mapping
         //should not be used to build field array.
-        $fields = array();
+        $fields = [];
         switch ($column->getId()) {
             case 'entity':
-                $field = array(
+                $field = [
                     'name' => $column->getOption('relation_field'),
                     'type' => $this->isSymfony3() ? $this->getEntityTypeName() : 'entity',
-                    'options' => array(),
-                );
+                    'options' => [],
+                ];
 
                 $fields[$column->getOption('relation_field')] = $field;
                 break;
 
             default:
                 foreach ($column->getOption('field_mapping') as $fieldName) {
-                    $field = array(
+                    $field = [
                         'name' => $fieldName,
                         'type' => null,
-                        'options' => array(),
-                    );
+                        'options' => [],
+                    ];
                     $fields[$fieldName] = $field;
                 }
         }
@@ -211,15 +213,15 @@ class FormExtension extends ColumnAbstractTypeExtension
         }
 
         if ($this->isSymfony3()) {
-            $formBuilderOptions = array(
+            $formBuilderOptions = [
                 'entry_type' => $this->getRowTypeName(),
                 'csrf_protection' => false,
-            );
+            ];
         } else {
-            $formBuilderOptions = array(
+            $formBuilderOptions = [
                 'type' => new RowType($fields),
                 'csrf_protection' => false,
-            );
+            ];
         }
 
         if ($this->isSymfony3()) {
@@ -237,7 +239,7 @@ class FormExtension extends ColumnAbstractTypeExtension
             ($this->isSymfony3())
                 ? $this->getCollectionTypeName()
                 : 'collection',
-            array($index => $formData),
+            [$index => $formData],
             $formBuilderOptions
         );
 
@@ -283,5 +285,4 @@ class FormExtension extends ColumnAbstractTypeExtension
     {
         return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
     }
-
 }

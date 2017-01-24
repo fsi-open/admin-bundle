@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource;
 
@@ -50,7 +45,7 @@ interface DataSourceInterface
      * @return \FSi\Component\DataSource\DataSourceInterface
      * @throws \FSi\Component\DataSource\Exception\DataSourceException
      */
-    public function addField($name, $type = null, $comparison = null, $options = array());
+    public function addField($name, $type = null, $comparison = null, $options = []);
 
     /**
      * Removes given field.
@@ -126,7 +121,7 @@ interface DataSourceInterface
      *
      * @param array $parameters
      */
-    public function bindParameters($parameters = array());
+    public function bindParameters($parameters = []);
 
     /**
      * Returns collection with result.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\Factory\Worker;
 
 use PhpSpec\ObjectBehavior;
@@ -10,7 +12,7 @@ class FormWorkerSpec extends ObjectBehavior
     /**
      * @param \Symfony\Component\Form\FormFactory $formFactory
      */
-    function let($formFactory)
+    public function let($formFactory)
     {
         $this->beConstructedWith($formFactory);
     }
@@ -19,7 +21,7 @@ class FormWorkerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\CRUD\AbstractCRUD $element
      * @param \Symfony\Component\Form\FormFactory $formFactory
      */
-    function it_mount_form_factory_to_elements_that_are_form_aware($element, $formFactory)
+    public function it_mount_form_factory_to_elements_that_are_form_aware($element, $formFactory)
     {
         $element->setFormFactory($formFactory)->shouldBeCalled();
 
@@ -30,7 +32,7 @@ class FormWorkerSpec extends ObjectBehavior
      * @param \AdminPanel\Symfony\AdminBundle\Admin\CRUD\FormElement $element
      * @param \Symfony\Component\Form\FormFactory $formFactory
      */
-    function it_mount_form_factory_to_elements_that_implements_form_element($element, $formFactory)
+    public function it_mount_form_factory_to_elements_that_implements_form_element($element, $formFactory)
     {
         $element->setFormFactory($formFactory)->shouldBeCalled();
 

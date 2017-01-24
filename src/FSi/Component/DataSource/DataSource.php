@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource;
 
@@ -40,14 +35,14 @@ class DataSource implements DataSourceInterface
      *
      * @var array
      */
-    private $fields = array();
+    private $fields = [];
 
     /**
      * Extensions of DataSource.
      *
      * @var array
      */
-    private $extensions = array();
+    private $extensions = [];
 
     /**
      * @var \FSi\Component\DataSource\DataSourceView
@@ -78,7 +73,7 @@ class DataSource implements DataSourceInterface
      *
      * @var array
      */
-    private $cache = array();
+    private $cache = [];
 
     /**
      * Flag set as true when fields or their data is modifying, or even new extension is added.
@@ -126,7 +121,7 @@ class DataSource implements DataSourceInterface
     /**
      * {@inheritdoc}
      */
-    public function addField($name, $type = null, $comparison = null, $options = array())
+    public function addField($name, $type = null, $comparison = null, $options = [])
     {
         if ($name instanceof FieldTypeInterface) {
             $field = $name;
@@ -201,7 +196,7 @@ class DataSource implements DataSourceInterface
      */
     public function clearFields()
     {
-        $this->fields = array();
+        $this->fields = [];
         $this->dirty = true;
 
         return $this;
@@ -210,7 +205,7 @@ class DataSource implements DataSourceInterface
     /**
      * {@inheritdoc}
      */
-    public function bindParameters($parameters = array())
+    public function bindParameters($parameters = [])
     {
         $this->dirty = true;
 
@@ -271,11 +266,11 @@ class DataSource implements DataSourceInterface
         $result = $event->getResult();
 
         //Creating cache.
-        $this->cache['result'] = array(
+        $this->cache['result'] = [
             'result' => $result,
             'firstresult' => $this->getFirstResult(),
             'maxresults' => $this->getMaxResults(),
-        );
+        ];
 
         return $result;
     }
@@ -380,7 +375,7 @@ class DataSource implements DataSourceInterface
             return $this->cache['parameters'];
         }
 
-        $parameters = array();
+        $parameters = [];
 
         //PreGetParameters event.
         $event = new DataSourceEvent\ParametersEventArgs($this, $parameters);
@@ -396,8 +391,8 @@ class DataSource implements DataSourceInterface
         $this->eventDispatcher->dispatch(DataSourceEvents::POST_GET_PARAMETERS, $event);
         $parameters = $event->getParameters();
 
-        $cleanfunc = function(array $array) use (&$cleanfunc) {
-            $newArray = array();
+        $cleanfunc = function (array $array) use (&$cleanfunc) {
+            $newArray = [];
             foreach ($array as $key => $value) {
                 if (is_array($value)) {
                     $newValue = $cleanfunc($value);
@@ -437,7 +432,7 @@ class DataSource implements DataSourceInterface
         if ($this->factory) {
             return $this->factory->getOtherParameters($this);
         }
-        return array();
+        return [];
     }
 
     /**
@@ -471,7 +466,7 @@ class DataSource implements DataSourceInterface
 
         //If flag was set to dirty, or any of fields was dirty, reset cache.
         if ($dirty) {
-            $this->cache = array();
+            $this->cache = [];
             $this->dirty = false;
         }
     }

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Tests\DataMapper;
 
@@ -17,19 +12,19 @@ class ChainMapperTest extends \PHPUnit_Framework_TestCase
     public function testMappersInChainWithInvalidMappers()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $chain = new ChainMapper(array(
+        $chain = new ChainMapper([
             'foo',
             'bar'
-        ));
+        ]);
     }
 
     public function testMappersInChainWithEmptyMappersArray()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $chain = new ChainMapper(array(
+        $chain = new ChainMapper([
             'foo',
             'bar'
-        ));
+        ]);
     }
 
     public function testGetDataFromTwoMappers()
@@ -45,7 +40,7 @@ class ChainMapperTest extends \PHPUnit_Framework_TestCase
                ->method('getData')
                ->will($this->returnValue('foo'));
 
-        $chain = new ChainMapper(array($mapper, $mapper1));
+        $chain = new ChainMapper([$mapper, $mapper1]);
 
         $this->assertSame(
             'foo',
@@ -67,7 +62,7 @@ class ChainMapperTest extends \PHPUnit_Framework_TestCase
                ->with('foo', 'bar', 'test')
                ->will($this->returnValue(true));
 
-        $chain = new ChainMapper(array($mapper, $mapper1));
+        $chain = new ChainMapper([$mapper, $mapper1]);
 
         $this->assertTrue($chain->setData('foo', 'bar', 'test'));
     }

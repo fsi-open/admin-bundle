@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Driver;
 
@@ -20,9 +15,9 @@ class DriverFactoryManager implements DriverFactoryManagerInterface
      * @param array $factories
      * @throws \InvalidArgumentException
      */
-    public function __construct($factories = array())
+    public function __construct($factories = [])
     {
-        $this->factories = array();
+        $this->factories = [];
 
         foreach ($factories as $factory) {
             if (!$factory instanceof DriverFactoryInterface) {

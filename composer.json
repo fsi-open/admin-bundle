@@ -5,8 +5,8 @@
     "keywords": ["admin", "panel", "symfony2", "bundle"],
     "license": "MIT",
     "require": {
-        "php": ">=5.4.0",
-        "twig/twig": "~1.7",
+        "php": "^7.0",
+        "twig/twig": "^1.7",
         "symfony/framework-bundle" : "^2.4",
         "symfony/form" : "^2.3",
         "symfony/intl" : "^2.6",
@@ -18,20 +18,20 @@
         "symfony/doctrine-bridge": "^2.3",
         "symfony/twig-bridge": "^2.6",
         "symfony/translation": "^2.4",
-        "sensio/framework-extra-bundle": "~3.0",
+        "sensio/framework-extra-bundle": "^3.0",
         "symfony/twig-bundle": "^2.3",
-        "knplabs/knp-menu-bundle": "~2.0",
-        "doctrine/annotations": "~1.0",
+        "knplabs/knp-menu-bundle": "^2.0",
         "doctrine/orm": "^2.4,>=2.4.5"
     },
     "require-dev": {
         "symfony/class-loader": "^2.3",
         "symfony/monolog-bundle": "^2.3",
         "phpunit/phpunit": "^4.0",
-        "doctrine/doctrine-bundle": "~1.4",
+        "doctrine/doctrine-bundle": "^1.4",
         "phpspec/phpspec": "^2.2",
-        "bossa/phpspec2-expect": "~1.0",
-        "fzaninotto/faker": "1.2.*"
+        "bossa/phpspec2-expect": "^1.0",
+        "fzaninotto/faker": "^1.2",
+        "friendsofphp/php-cs-fixer": "^2.0"
     },
     "config": {
         "bin-dir": "bin"

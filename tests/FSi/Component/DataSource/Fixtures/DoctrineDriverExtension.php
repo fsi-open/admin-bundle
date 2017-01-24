@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Tests\Fixtures;
 
@@ -21,7 +16,7 @@ class DoctrineDriverExtension extends DriverAbstractExtension implements EventSu
     /**
      * @var array
      */
-    private $calls = array();
+    private $calls = [];
 
     /**
      * @var Doctrine\ORM\QueryBuilder
@@ -30,7 +25,7 @@ class DoctrineDriverExtension extends DriverAbstractExtension implements EventSu
 
     public function getExtendedDriverTypes()
     {
-        return array('doctrine', 'doctrine-orm');
+        return ['doctrine', 'doctrine-orm'];
     }
 
     /**
@@ -38,10 +33,10 @@ class DoctrineDriverExtension extends DriverAbstractExtension implements EventSu
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            DriverEvents::PRE_GET_RESULT => array('preGetResult', 128),
-            DriverEvents::POST_GET_RESULT => array('postGetResult', 128),
-        );
+        return [
+            DriverEvents::PRE_GET_RESULT => ['preGetResult', 128],
+            DriverEvents::POST_GET_RESULT => ['postGetResult', 128],
+        ];
     }
 
     /**
@@ -59,7 +54,7 @@ class DoctrineDriverExtension extends DriverAbstractExtension implements EventSu
      */
     public function resetCalls()
     {
-        $this->calls = array();
+        $this->calls = [];
     }
 
     /**
@@ -84,7 +79,7 @@ class DoctrineDriverExtension extends DriverAbstractExtension implements EventSu
      */
     public function loadSubscribers()
     {
-        return array($this);
+        return [$this];
     }
 
     /**

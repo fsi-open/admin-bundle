@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Data;
 
@@ -58,7 +53,7 @@ class EntityIndexingStrategy implements IndexingStrategyInterface
             throw new \RuntimeException('Entity indexing strategy can\'t resolve the index from object.');
         }
 
-        $indexes = array();
+        $indexes = [];
         foreach ($identifiers as $identifier) {
             $indexes[] = $dataMapper->getData($identifier, $object);
         }
@@ -79,7 +74,7 @@ class EntityIndexingStrategy implements IndexingStrategyInterface
         if (count($identifiers) == 1) {
             $key = current($identifiers);
 
-            return array($key => $index);
+            return [$key => $index];
         }
 
         $indexPieces = explode($this->separator, $index);
@@ -88,7 +83,7 @@ class EntityIndexingStrategy implements IndexingStrategyInterface
             throw new \RuntimeException(sprintf('Entity indexing strategy can\'t revert the index: "%s"', $index));
         }
 
-        $reverted = array();
+        $reverted = [];
 
         foreach ($indexPieces as $pos => $piece) {
             if (!isset($identifiers[$pos])) {

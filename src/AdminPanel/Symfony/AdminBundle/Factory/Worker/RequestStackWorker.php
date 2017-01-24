@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Factory\Worker;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -18,7 +20,7 @@ class RequestStackWorker implements Worker
     /**
      * @param RequestStack $requestStack
      */
-    function __construct(RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack)
     {
         $this->requestStack = $requestStack;
     }

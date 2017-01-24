@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Extension\Symfony\DependencyInjection;
 
@@ -49,7 +44,7 @@ class DependencyInjectionExtension extends DataSourceAbstractExtension
      */
     public function loadDriverExtensions()
     {
-        $extensions = array();
+        $extensions = [];
 
         foreach ($this->driverExtensionServiceIds as $alias => $extensionName) {
             $extension = $this->container->get($this->driverExtensionServiceIds[$alias]);
@@ -64,7 +59,7 @@ class DependencyInjectionExtension extends DataSourceAbstractExtension
      */
     public function loadSubscribers()
     {
-        $subscribers = array();
+        $subscribers = [];
 
         foreach ($this->subscriberServiceIds as $alias => $subscriberName) {
             $subscriber = $this->container->get($this->subscriberServiceIds[$alias]);

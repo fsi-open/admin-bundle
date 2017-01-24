@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle;
 
 use AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler\AdminAnnotatedElementPass;
@@ -19,7 +21,7 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 class AdminPanelBundleSpec extends ObjectBehavior
 {
-    function it_is_bundle()
+    public function it_is_bundle()
     {
         $this->shouldBeAnInstanceOf('Symfony\Component\HttpKernel\Bundle\Bundle');
     }
@@ -27,7 +29,7 @@ class AdminPanelBundleSpec extends ObjectBehavior
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $builder
      */
-    function it_add_compiler_pass($builder)
+    public function it_add_compiler_pass($builder)
     {
         $builder->addCompilerPass(Argument::type(AdminAnnotatedElementPass::class))
             ->shouldBeCalled();

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Bundle\ResourceRepositoryBundle\Repository;
 
@@ -48,10 +43,10 @@ class MapBuilder
      * @param string $mapPath
      * @param string[] $resourceTypes
      */
-    public function __construct($mapPath, $resourceTypes = array())
+    public function __construct($mapPath, $resourceTypes = [])
     {
-        $this->resourceTypes = array();
-        $this->resources = array();
+        $this->resourceTypes = [];
+        $this->resources = [];
 
         foreach ($resourceTypes as $type => $class) {
             $this->resourceTypes[$type] = $class;
@@ -99,9 +94,9 @@ class MapBuilder
      * @throws \FSi\Bundle\ResourceRepositoryBundle\Exception\ConfigurationException
      * @return array
      */
-    protected function recursiveParseRawMap($rawMap = array(), $parentPath = null)
+    protected function recursiveParseRawMap($rawMap = [], $parentPath = null)
     {
-        $map = array();
+        $map = [];
 
         if (!is_array($rawMap)) {
             return $map;
@@ -198,7 +193,6 @@ class MapBuilder
                 sprintf('Missing "type" declaration in "%s" element configuration', $path)
             );
         }
-
     }
 
     /**
@@ -207,10 +201,10 @@ class MapBuilder
      */
     protected function validateResourceConfiguration($configuration)
     {
-        $validKeys = array(
+        $validKeys = [
             'form_options',
             'constraints'
-        );
+        ];
 
         foreach ($configuration as $key => $options) {
             if ($key === 'type') {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\EventListener;
 
 use PhpSpec\ObjectBehavior;
@@ -20,8 +22,7 @@ class CleanUpMenuListenerSpec extends ObjectBehavior
      */
     public function it_remove_empty_menus(
         $event, $menu, $childItem1, $childItem2, $childItem3, $childItem31, $childItem4, $childItem41, $childItem411
-    )
-    {
+    ) {
         $event->getMenu()->willReturn($menu);
 
         $menu->hasChildren()->willReturn(true);

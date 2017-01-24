@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Column;
 
@@ -26,7 +21,7 @@ abstract class ColumnAbstractType implements ColumnTypeInterface
     /**
      * @var array
      */
-    protected $extensions = array();
+    protected $extensions = [];
 
     /**
      * @var array
@@ -148,7 +143,7 @@ abstract class ColumnAbstractType implements ColumnTypeInterface
      */
     public function getValue($object)
     {
-        $values = array();
+        $values = [];
         if (!$this->hasOption('field_mapping') || !count($this->getOption('field_mapping'))) {
             throw new DataGridColumnException(
                 sprintf('"field_mapping" option is missing in column "%s"', $this->getName())
@@ -233,8 +228,8 @@ abstract class ColumnAbstractType implements ColumnTypeInterface
         $this->options = $this->getOptionsResolver()->resolve(array_merge(
             is_array($this->options)
                 ? $this->options
-                : array(),
-            array($name => $value)
+                : [],
+            [$name => $value]
         ));
 
         return $this;
@@ -256,7 +251,7 @@ abstract class ColumnAbstractType implements ColumnTypeInterface
     public function getOption($name)
     {
         if (!isset($this->options)) {
-            $this->options = array();
+            $this->options = [];
         }
 
         if (!array_key_exists($name, $this->options)) {

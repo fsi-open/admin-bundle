@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Tests;
 
@@ -27,9 +22,9 @@ class DataGridRowViewTest extends \PHPUnit_Framework_TestCase
                 ->with($source, 0)
                 ->will($this->returnValue($cellView));
 
-        $columns = array(
+        $columns = [
             'foo' =>$column
-        );
+        ];
 
         $gridRow = new DataGridRowView($dataGridView, $columns, $source, 0);
         $this->assertSame($gridRow->current(), $cellView);

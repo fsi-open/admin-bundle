@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Extension\Core\Ordering\Driver;
 
@@ -24,9 +19,9 @@ abstract class DriverExtension extends DriverAbstractExtension
      */
     protected function loadFieldTypesExtensions()
     {
-        return array(
+        return [
             new FieldExtension(),
-        );
+        ];
     }
 
     /**
@@ -34,9 +29,9 @@ abstract class DriverExtension extends DriverAbstractExtension
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            DriverEvents::PRE_GET_RESULT => array('preGetResult'),
-        );
+        return [
+            DriverEvents::PRE_GET_RESULT => ['preGetResult'],
+        ];
     }
 
     /**
@@ -59,10 +54,10 @@ abstract class DriverExtension extends DriverAbstractExtension
      */
     protected function sortFields(array $fields)
     {
-        $sortedFields = array();
-        $orderingDirection = array();
+        $sortedFields = [];
+        $orderingDirection = [];
 
-        $tmpFields = array();
+        $tmpFields = [];
         foreach ($fields as $field) {
             if ($fieldExtension = $this->getFieldExtension($field)) {
                 $fieldOrdering = $fieldExtension->getOrdering($field);
@@ -78,7 +73,7 @@ abstract class DriverExtension extends DriverAbstractExtension
         }
 
         $tmpFields = $fields;
-        usort($tmpFields, function(FieldTypeInterface $a, FieldTypeInterface $b) {
+        usort($tmpFields, function (FieldTypeInterface $a, FieldTypeInterface $b) {
             switch (true) {
                 case $a->hasOption('default_sort') && !$b->hasOption('default_sort'):
                     return -1;

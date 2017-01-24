@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Controller;
 
@@ -7,9 +8,6 @@ use AdminPanel\Symfony\AdminBundle\Admin\ResourceRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class ResourceController extends ControllerAbstract
 {
     /**

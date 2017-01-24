@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Admin\Display;
 
@@ -24,11 +25,11 @@ abstract class GenericDisplayElement extends AbstractElement implements Element
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'template' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('template', array('null', 'string'));
+        $resolver->setAllowedTypes('template', ['null', 'string']);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
 use AdminPanel\Symfony\AdminBundle\Admin\Manager;
@@ -25,7 +27,7 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
      */
     public function getExtendedColumnTypes()
     {
-        return array('action');
+        return ['action'];
     }
 
     /**
@@ -35,7 +37,7 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
     {
         $this->validateColumn($column);
 
-        $column->getActionOptionsResolver()->setDefined(array('element'));
+        $column->getActionOptionsResolver()->setDefined(['element']);
         $column->getActionOptionsResolver()->setAllowedTypes('element', 'string');
     }
 
@@ -44,9 +46,8 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
         $this->validateColumn($column);
 
         $actions = $column->getOption('actions');
-        $generatedActions = array();
+        $generatedActions = [];
         foreach ($actions as $action => $actionOptions) {
-
             if (!$this->validateActionOptions($column, $action, $actionOptions)) {
                 continue;
             }
@@ -106,15 +107,15 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
         $element = $this->manager->getElement($actionOptions['element']);
 
         $additionalParameters = array_merge(
-            array('element' => $element->getId()),
+            ['element' => $element->getId()],
             $element->getRouteParameters(),
-            isset($actionOptions['additional_parameters']) ? $actionOptions['additional_parameters'] : array()
+            isset($actionOptions['additional_parameters']) ? $actionOptions['additional_parameters'] : []
         );
 
-        return array(
+        return [
             'route_name' => $element->getRoute(),
             'additional_parameters' => $additionalParameters,
-            'parameters_field_mapping' => array('id' => 'id')
-        );
+            'parameters_field_mapping' => ['id' => 'id']
+        ];
     }
 }

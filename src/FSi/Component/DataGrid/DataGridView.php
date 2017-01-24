@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid;
 
@@ -22,12 +17,12 @@ class DataGridView implements DataGridViewInterface
      *
      * @var array
      */
-    protected $columns = array();
+    protected $columns = [];
 
     /**
      * @var array
      */
-    protected $columnsHeaders = array();
+    protected $columnsHeaders = [];
 
     /**
      * Unique data grid name.
@@ -49,7 +44,7 @@ class DataGridView implements DataGridViewInterface
      * @param \FSi\Component\DataGrid\Data\DataRowsetInterface $rowset
      * @throws \InvalidArgumentException
      */
-    public function __construct($name, array $columns = array(), DataRowsetInterface $rowset)
+    public function __construct($name, array $columns = [], DataRowsetInterface $rowset)
     {
         foreach ($columns as $column) {
             if (!$column instanceof ColumnTypeInterface) {
@@ -134,7 +129,7 @@ class DataGridView implements DataGridViewInterface
      */
     public function clearColumns()
     {
-        $this->columnsHeaders = array();
+        $this->columnsHeaders = [];
         return $this;
     }
 
@@ -156,7 +151,7 @@ class DataGridView implements DataGridViewInterface
      */
     public function setColumns(array $columns)
     {
-        $this->columnsHeaders = array();
+        $this->columnsHeaders = [];
 
         foreach ($columns as $column) {
             if (!$column instanceof HeaderViewInterface) {
@@ -179,7 +174,7 @@ class DataGridView implements DataGridViewInterface
      */
     public function getIndexes()
     {
-        $indexes = array();
+        $indexes = [];
         foreach ($this->rowset as $index => $row) {
             $indexes[] = $index;
         }
@@ -315,7 +310,7 @@ class DataGridView implements DataGridViewInterface
      */
     protected function getOriginColumns()
     {
-        $columns = array();
+        $columns = [];
         foreach ($this->columnsHeaders as $name => $header) {
             $columns[$name] = $this->columns[$name];
         }

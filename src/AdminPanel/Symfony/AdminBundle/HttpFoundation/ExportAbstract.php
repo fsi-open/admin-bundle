@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\HttpFundation;
 
 use FSi\Component\DataGrid\DataGridViewInterface;
@@ -35,7 +37,7 @@ abstract class ExportAbstract extends Response
         DataGridViewInterface $datagrid,
         $filename,
         $status = 200,
-        $headers = array(),
+        $headers = [],
         TranslatorInterface $translator = null
     ) {
         parent::__construct('', $status, $headers);
@@ -68,5 +70,5 @@ abstract class ExportAbstract extends Response
     /**
      * @return ExportAbstract
      */
-    public abstract function setData();
+    abstract public function setData();
 }

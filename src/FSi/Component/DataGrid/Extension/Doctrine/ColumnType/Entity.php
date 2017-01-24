@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Extension\Doctrine\ColumnType;
 
@@ -41,8 +36,8 @@ class Entity extends ColumnAbstractType
             $value = $value->toArray();
         }
 
-        $values = array();
-        $objectValues = array();
+        $values = [];
+        $objectValues = [];
         $mappingFields = $this->getOption('field_mapping');
 
         if (is_array($value)) {
@@ -71,9 +66,9 @@ class Entity extends ColumnAbstractType
      */
     public function initOptions()
     {
-        $this->getOptionsResolver()->setDefaults(array(
+        $this->getOptionsResolver()->setDefaults([
             'relation_field' => $this->getName(),
-        ));
+        ]);
 
         $this->getOptionsResolver()->setAllowedTypes('relation_field', 'string');
     }

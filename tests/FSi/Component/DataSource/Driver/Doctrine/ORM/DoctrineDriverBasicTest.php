@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Tests\Driver\Doctrine\ORM;
 
@@ -39,15 +34,15 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
      */
     public static function fieldNameProvider()
     {
-        return array(
-            array('text'),
-            array('number'),
-            array('entity'),
-            array('date'),
-            array('time'),
-            array('datetime'),
-            array('boolean'),
-        );
+        return [
+            ['text'],
+            ['number'],
+            ['entity'],
+            ['date'],
+            ['time'],
+            ['datetime'],
+            ['boolean'],
+        ];
     }
 
     /**
@@ -70,7 +65,7 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
      */
     private function getQueryBuilderMock(EntityManager $em)
     {
-        $qb = $this->getMock('Doctrine\ORM\QueryBuilder', array(), array($em));
+        $qb = $this->getMock('Doctrine\ORM\QueryBuilder', [], [$em]);
 
         $em
             ->expects($this->any())
@@ -97,9 +92,9 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
      * @param \PHPUnit_Framework_MockObject_MockObject|EntityManager $em
      * @param \PHPUnit_Framework_MockObject_MockObject|\Doctrine\ORM\QueryBuilder $qb
      */
-    private function extendWithRootEntities($em, $qb, array $map = array(array('entity', true)))
+    private function extendWithRootEntities($em, $qb, array $map = [['entity', true]])
     {
-        $returnMap = array();
+        $returnMap = [];
         foreach ($map as $info) {
             /** @var \PHPUnit_Framework_MockObject_MockObject|\Doctrine\ORM\Mapping\ClassMetadata $metadata */
             $metadata = $this
@@ -108,13 +103,13 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
             $metadata->isIdentifierComposite = $info[1];
 
-            $returnMap[] = array($info[0], $metadata);
+            $returnMap[] = [$info[0], $metadata];
         }
 
         $qb
             ->expects($this->any())
             ->method('getRootEntities')
-            ->will($this->returnValue(array('entity')))
+            ->will($this->returnValue(['entity']))
         ;
         $qb->expects($this->any())
             ->method('getEntityManager')
@@ -135,8 +130,8 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
     {
         $em = $this->getEntityManagerMock();
         $qb = $this->getQueryBuilderMock($em);
-        new DoctrineDriver(array(), $em, 'entity');
-        new DoctrineDriver(array(), $em, $qb);
+        new DoctrineDriver([], $em, 'entity');
+        new DoctrineDriver([], $em, $qb);
     }
 
     /**
@@ -147,7 +142,7 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('FSi\Component\DataSource\Exception\DataSourceException');
         $em = $this->getEntityManagerMock();
         $qb = $this->getQueryBuilderMock($em);
-        new DoctrineDriver(array(new \stdClass()), $em, 'entity');
+        new DoctrineDriver([new \stdClass()], $em, 'entity');
     }
 
     /**
@@ -158,7 +153,7 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('FSi\Component\DataSource\Driver\Doctrine\ORM\Exception\DoctrineDriverException');
         $em = $this->getEntityManagerMock();
         $qb = $this->getQueryBuilderMock($em);
-        new DoctrineDriver(array(), $em, null);
+        new DoctrineDriver([], $em, null);
     }
 
     /**
@@ -166,7 +161,7 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetResult()
     {
-        $fields = array();
+        $fields = [];
 
         for ($x = 0; $x < 6; $x++) {
             $field = $this->getMock('FSi\Component\DataSource\Driver\Doctrine\ORM\DoctrineAbstractField');
@@ -183,7 +178,7 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
         $qb = $this->getQueryBuilderMock($em);
         $this->extendWithRootEntities($em, $qb);
 
-        $driver = new DoctrineDriver(array(), $em, 'entity');
+        $driver = new DoctrineDriver([], $em, 'entity');
         $driver->getResult($fields, 0, 20);
     }
 
@@ -192,10 +187,10 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetResultException1()
     {
-        $fields = array($this->getMock('FSi\Component\DataSource\Field\FieldTypeInterface'));
+        $fields = [$this->getMock('FSi\Component\DataSource\Field\FieldTypeInterface')];
 
         $em = $this->getEntityManagerMock();
-        $qb = $this->getMock('Doctrine\ORM\QueryBuilder', array(), array($em));
+        $qb = $this->getMock('Doctrine\ORM\QueryBuilder', [], [$em]);
 
         $em
             ->expects($this->any())
@@ -209,7 +204,7 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($qb))
         ;
 
-        $driver = new DoctrineDriver(array(), $em, 'entity');
+        $driver = new DoctrineDriver([], $em, 'entity');
         $this->setExpectedException('FSi\Component\DataSource\Driver\Doctrine\ORM\Exception\DoctrineDriverException');
         $driver->getResult($fields, 0, 20);
     }
@@ -222,7 +217,7 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
         $em = $this->getEntityManagerMock();
         $qb = $this->getQueryBuilderMock($em);
 
-        $driver = new DoctrineDriver(array(), $em, 'entity');
+        $driver = new DoctrineDriver([], $em, 'entity');
         $this->setExpectedException('FSi\Component\DataSource\Driver\Doctrine\ORM\Exception\DoctrineDriverException');
         $driver->getQueryBuilder();
     }
@@ -234,7 +229,7 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
     {
         $em = $this->getEntityManagerMock();
         $qb = $this->getQueryBuilderMock($em);
-        $driver = new DoctrineDriver(array(new CoreExtension()), $em, 'entity');
+        $driver = new DoctrineDriver([new CoreExtension()], $em, 'entity');
 
         $this->assertTrue($driver->hasFieldType('text'));
         $this->assertTrue($driver->hasFieldType('number'));
@@ -262,7 +257,7 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
         $qb = $this->getQueryBuilderMock($em);
         $this->extendWithRootEntities($em, $qb);
 
-        $driver = new DoctrineDriver(array(new CoreExtension()), $em, 'entity');
+        $driver = new DoctrineDriver([new CoreExtension()], $em, 'entity');
         $this->assertTrue($driver->hasFieldType($type));
         $field = $driver->getFieldType($type);
         $this->assertTrue($field instanceof \FSi\Component\DataSource\Field\FieldTypeInterface);
@@ -277,7 +272,7 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
             $field = $driver->getFieldType($type);
             $field->setName('name');
             $field->setComparison($cmp);
-            $field->setOptions(array());
+            $field->setOptions([]);
         }
 
         $this->assertEquals($field->getOption('field'), $field->getName());
@@ -297,11 +292,11 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
         $this->extendWithRootEntities($em, $qb);
 
         $extension = new DoctrineDriverExtension();
-        $driver = new DoctrineDriver(array(), $em, 'entity');
+        $driver = new DoctrineDriver([], $em, 'entity');
         $driver->addExtension($extension);
 
-        $driver->getResult(array(), 0, 20);
-        $this->assertEquals(array('preGetResult', 'postGetResult'), $extension->getCalls());
+        $driver->getResult([], 0, 20);
+        $this->assertEquals(['preGetResult', 'postGetResult'], $extension->getCalls());
 
         $this->setExpectedException('FSi\Component\DataSource\Driver\Doctrine\ORM\Exception\DoctrineDriverException');
         $driver->getQueryBuilder();
@@ -313,21 +308,21 @@ class DoctrineDriverBasicTest extends \PHPUnit_Framework_TestCase
     public function testFieldsExtensionsCalls()
     {
         $extension = new FieldExtension();
-        $parameter = array();
+        $parameter = [];
 
-        foreach (array(new Field\Text(), new Field\Number(), new Field\Date(), new Field\Time(), new Field\DateTime(), new Field\Entity()) as $field) {
+        foreach ([new Field\Text(), new Field\Number(), new Field\Date(), new Field\Time(), new Field\DateTime(), new Field\Entity()] as $field) {
             $field->addExtension($extension);
 
-            $field->bindParameter(array());
-            $this->assertEquals(array('preBindParameter', 'postBindParameter'), $extension->getCalls());
+            $field->bindParameter([]);
+            $this->assertEquals(['preBindParameter', 'postBindParameter'], $extension->getCalls());
             $extension->resetCalls();
 
             $field->getParameter($parameter);
-            $this->assertEquals(array('postGetParameter'), $extension->getCalls());
+            $this->assertEquals(['postGetParameter'], $extension->getCalls());
             $extension->resetCalls();
 
-            $field->createView(array());
-            $this->assertEquals(array('postBuildView'), $extension->getCalls());
+            $field->createView([]);
+            $this->assertEquals(['postBuildView'], $extension->getCalls());
             $extension->resetCalls();
         }
     }

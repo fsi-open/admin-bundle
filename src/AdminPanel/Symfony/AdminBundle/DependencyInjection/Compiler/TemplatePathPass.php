@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler;
 
 use AdminPanel\Symfony\AdminBundle\AdminPanelBundle;

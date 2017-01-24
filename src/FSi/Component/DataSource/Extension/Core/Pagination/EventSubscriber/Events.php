@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Extension\Core\Pagination\EventSubscriber;
 
@@ -24,11 +19,11 @@ class Events implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             DataSourceEvents::PRE_BIND_PARAMETERS => 'preBindParameters',
-            DataSourceEvents::POST_GET_PARAMETERS => array('postGetParameters', -1024),
+            DataSourceEvents::POST_GET_PARAMETERS => ['postGetParameters', -1024],
             DataSourceEvents::POST_BUILD_VIEW => 'postBuildView',
-        );
+        ];
     }
 
     /**
@@ -109,7 +104,7 @@ class Events implements EventSubscriberInterface
         }
 
         unset($parameters[$datasourceName][PaginationExtension::PARAMETER_PAGE]);
-        $pages = array();
+        $pages = [];
 
         for ($i = 1; $i <= $all; $i++) {
             if ($i > 1) {

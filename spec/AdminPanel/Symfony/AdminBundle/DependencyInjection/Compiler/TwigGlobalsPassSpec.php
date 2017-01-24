@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace spec\AdminPanel\Symfony\AdminBundle\DependencyInjection\Compiler;
 
@@ -12,7 +13,7 @@ class TwigGlobalsPassSpec extends ObjectBehavior
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @param \Symfony\Component\DependencyInjection\Definition $def
      */
-    function let($container, $def)
+    public function let($container, $def)
     {
         $container->hasDefinition('twig')->willReturn(true);
         $container->findDefinition('twig')->willReturn($def);
@@ -22,7 +23,7 @@ class TwigGlobalsPassSpec extends ObjectBehavior
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @param \Symfony\Component\DependencyInjection\Definition $def
      */
-    function it_adds_globals($container, $def)
+    public function it_adds_globals($container, $def)
     {
         $container->getParameter(Argument::any())->willReturn('test');
         $def->addMethodCall('addGlobal', Argument::containing('test'))->shouldBeCalled();

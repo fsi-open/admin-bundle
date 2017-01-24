@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataIndexer;
 
@@ -212,11 +207,11 @@ class DoctrineDataIndexer implements DataIndexerInterface
      */
     private function buildMultipleSearchCriteria($indexes)
     {
-        $multipleSearchCriteria = array();
+        $multipleSearchCriteria = [];
         foreach ($indexes as $index) {
             foreach ($this->buildSearchCriteria($index) as $identifier => $indexPart) {
                 if (!array_key_exists($identifier, $multipleSearchCriteria)) {
-                    $multipleSearchCriteria[$identifier] = array();
+                    $multipleSearchCriteria[$identifier] = [];
                 }
 
                 $multipleSearchCriteria[$identifier][] = $indexPart;

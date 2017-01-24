@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminPanel\Symfony\AdminBundle\Tests\Doubles;
 
 use AdminPanel\Symfony\AdminBundle\Admin\CRUD\GenericFormElement;

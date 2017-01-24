@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Tests\Field;
 
@@ -61,8 +56,8 @@ class DataSourceViewTest extends \PHPUnit_Framework_TestCase
     public function testSetDataSourceView()
     {
         $driver = $this->getMock('FSi\Component\DataSource\Driver\DriverInterface');
-        $datasource = $this->getMock('FSi\Component\DataSource\DataSource', array(), array($driver));
-        $view = $this->getMock('FSi\Component\DataSource\DataSourceView', array(), array($datasource));
+        $datasource = $this->getMock('FSi\Component\DataSource\DataSource', [], [$driver]);
+        $view = $this->getMock('FSi\Component\DataSource\DataSourceView', [], [$datasource]);
         $field = $this->getMock('FSi\Component\DataSource\Field\FieldTypeInterface');
         $fieldView = new FieldView($field);
 
@@ -94,7 +89,7 @@ class DataSourceViewTest extends \PHPUnit_Framework_TestCase
         $view->setAttribute('option3', 'value3');
         $view->setAttribute('option4', 'value4');
 
-        $this->assertEquals(array('option2' => null, 'option3' => 'value3', 'option4' => 'value4'), $view->getAttributes());
+        $this->assertEquals(['option2' => null, 'option3' => 'value3', 'option4' => 'value4'], $view->getAttributes());
 
         $this->assertEquals(null, $view->getAttribute('option5'));
     }

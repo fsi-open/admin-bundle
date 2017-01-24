@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\AdminPanel\Symfony\AdminBundle\EventListener;
 
 use AdminPanel\Symfony\AdminBundle\Menu\Item\Item;
@@ -12,9 +14,9 @@ class LocaleMenuListenerSpec extends ObjectBehavior
      * @param \Symfony\Component\Translation\TranslatorInterface $translator
      * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
      */
-    function let($translator, $requestStack)
+    public function let($translator, $requestStack)
     {
-        $this->beConstructedWith($translator, $requestStack, array('en', 'de'));
+        $this->beConstructedWith($translator, $requestStack, ['en', 'de']);
     }
 
     /**
@@ -22,7 +24,7 @@ class LocaleMenuListenerSpec extends ObjectBehavior
      * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    function it_should_build_locale_menu($event, $requestStack, $request)
+    public function it_should_build_locale_menu($event, $requestStack, $request)
     {
         $menu = new Item();
         $event->getMenu()->willReturn($menu);
@@ -41,12 +43,12 @@ class LocaleMenuListenerSpec extends ObjectBehavior
 
         expect($enItem->getLabel())->toBe('Englisch');
         expect($enItem->getRoute())->toBe('fsi_admin_locale');
-        expect($enItem->getRouteParameters())->toBe(array('_locale' => 'en', 'redirect_uri' => 'uri_to_redirect_to'));
-        expect($enItem->getOptions())->toBe(array('attr' => array('id' => null, 'class' => null)));
+        expect($enItem->getRouteParameters())->toBe(['_locale' => 'en', 'redirect_uri' => 'uri_to_redirect_to']);
+        expect($enItem->getOptions())->toBe(['attr' => ['id' => null, 'class' => null]]);
 
         expect($deItem->getLabel())->toBe('Deutsch');
         expect($deItem->getRoute())->toBe('fsi_admin_locale');
-        expect($deItem->getRouteParameters())->toBe(array('_locale' => 'de', 'redirect_uri' => 'uri_to_redirect_to'));
-        expect($deItem->getOptions())->toBe(array('attr' => array('id' => null, 'class' => 'active')));
+        expect($deItem->getRouteParameters())->toBe(['_locale' => 'de', 'redirect_uri' => 'uri_to_redirect_to']);
+        expect($deItem->getOptions())->toBe(['attr' => ['id' => null, 'class' => 'active']]);
     }
 }

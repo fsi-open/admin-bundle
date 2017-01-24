@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Display;
 
@@ -14,7 +15,7 @@ class DisplayView implements \IteratorAggregate
 
     public function __construct()
     {
-        $this->properties = array();
+        $this->properties = [];
     }
 
     /**

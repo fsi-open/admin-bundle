@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminPositionableBundle\Controller;
 
 use AdminPanel\Symfony\AdminBundle\Admin\CRUD\DataIndexerElement;

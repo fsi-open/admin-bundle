@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataGrid\Tests\Extension\Doctrine\ColumnType;
 
@@ -25,7 +20,7 @@ class EntityTypeTest extends \PHPUnit_Framework_TestCase
         $extension->initOptions($column);
 
         // Call resolve at OptionsResolver.
-        $column->setOptions(array());
+        $column->setOptions([]);
 
         $object = new Fixture('object');
 
@@ -34,7 +29,7 @@ class EntityTypeTest extends \PHPUnit_Framework_TestCase
 
         $dataMapper->expects($this->once())
                    ->method('getData')
-                   ->will($this->returnValue(array('foo' => 'bar')));
+                   ->will($this->returnValue(['foo' => 'bar']));
 
         $dataGrid->expects($this->any())
                  ->method('getDataMapper')

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Tests;
 
@@ -75,12 +70,12 @@ class DataSourceTest extends \PHPUnit_Framework_TestCase
         $extension1
             ->expects($this->once())
             ->method('loadDriverExtensions')
-            ->will($this->returnValue(array()))
+            ->will($this->returnValue([]))
         ;
         $extension2
             ->expects($this->once())
             ->method('loadDriverExtensions')
-            ->will($this->returnValue(array()))
+            ->will($this->returnValue([]))
         ;
 
         $datasource->addExtension($extension1);
@@ -214,7 +209,7 @@ class DataSourceTest extends \PHPUnit_Framework_TestCase
     {
         $driver = $this->getMock('FSi\Component\DataSource\Driver\DriverInterface');
         $datasource = new DataSource($driver);
-        $datasource->bindParameters(array());
+        $datasource->bindParameters([]);
         $this->setExpectedException('FSi\Component\DataSource\Exception\DataSourceException');
         $datasource->bindParameters('nonarray');
     }
@@ -229,16 +224,16 @@ class DataSourceTest extends \PHPUnit_Framework_TestCase
         $field = $this->getMock('FSi\Component\DataSource\Field\FieldTypeInterface');
         $testResult = new TestResult();
 
-        $firstData = array(
-            $datasource->getName() => array(
-                DataSourceInterface::PARAMETER_FIELDS => array('field' => 'value', 'other' => 'notimportant'),
-            ),
-        );
-        $secondData = array(
-            $datasource->getName() => array(
-                DataSourceInterface::PARAMETER_FIELDS => array('somefield' => 'somevalue'),
-            ),
-        );
+        $firstData = [
+            $datasource->getName() => [
+                DataSourceInterface::PARAMETER_FIELDS => ['field' => 'value', 'other' => 'notimportant'],
+            ],
+        ];
+        $secondData = [
+            $datasource->getName() => [
+                DataSourceInterface::PARAMETER_FIELDS => ['somefield' => 'somevalue'],
+            ],
+        ];
 
         $field
             ->expects($this->any())
@@ -254,7 +249,7 @@ class DataSourceTest extends \PHPUnit_Framework_TestCase
         $driver
             ->expects($this->once())
             ->method('getResult')
-            ->with(array('field' => $field))
+            ->with(['field' => $field])
             ->will($this->returnValue($testResult))
         ;
 
@@ -337,7 +332,7 @@ class DataSourceTest extends \PHPUnit_Framework_TestCase
         $field
             ->expects($this->atLeastOnce())
             ->method('getParameter')
-            ->with(array())
+            ->with([])
         ;
 
         $field2
@@ -349,7 +344,7 @@ class DataSourceTest extends \PHPUnit_Framework_TestCase
         $field2
             ->expects($this->atLeastOnce())
             ->method('getParameter')
-            ->with(array())
+            ->with([])
         ;
 
         $datasource->addField($field);
@@ -425,13 +420,13 @@ class DataSourceTest extends \PHPUnit_Framework_TestCase
         $extension
             ->expects($this->once())
             ->method('loadDriverExtensions')
-            ->will($this->returnValue(array($driverExtension)))
+            ->will($this->returnValue([$driverExtension]))
         ;
 
         $driverExtension
             ->expects($this->once())
             ->method('getExtendedDriverTypes')
-            ->will($this->returnValue(array('fake')))
+            ->will($this->returnValue(['fake']))
         ;
 
         $driver
@@ -467,19 +462,19 @@ class DataSourceTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($testResult))
         ;
 
-        $datasource->bindParameters(array());
-        $this->assertEquals(array('preBindParameters', 'postBindParameters'), $extension->getCalls());
+        $datasource->bindParameters([]);
+        $this->assertEquals(['preBindParameters', 'postBindParameters'], $extension->getCalls());
         $extension->resetCalls();
 
         $datasource->getResult();
-        $this->assertEquals(array('preGetResult', 'postGetResult'), $extension->getCalls());
+        $this->assertEquals(['preGetResult', 'postGetResult'], $extension->getCalls());
         $extension->resetCalls();
 
         $datasource->getParameters();
-        $this->assertEquals(array('preGetParameters', 'postGetParameters'), $extension->getCalls());
+        $this->assertEquals(['preGetParameters', 'postGetParameters'], $extension->getCalls());
         $extension->resetCalls();
 
         $datasource->createView();
-        $this->assertEquals(array('preBuildView', 'postBuildView'), $extension->getCalls());
+        $this->assertEquals(['preBuildView', 'postBuildView'], $extension->getCalls());
     }
 }

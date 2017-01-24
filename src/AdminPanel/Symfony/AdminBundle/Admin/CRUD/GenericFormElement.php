@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Admin\CRUD;
 
@@ -29,11 +30,11 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'template_form' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('template_form', array('null', 'string'));
+        $resolver->setAllowedTypes('template_form', ['null', 'string']);
     }
 
     /**

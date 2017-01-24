@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Component\DataSource\Tests\Extension\Core;
 
@@ -29,20 +24,20 @@ class OrderingExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $extension = new OrderingExtension();
         $driver = $this->getMock('FSi\Component\DataSource\Driver\DriverInterface');
-        $datasource = $this->getMock('FSi\Component\DataSource\DataSourceInterface', array(), array($driver));
+        $datasource = $this->getMock('FSi\Component\DataSource\DataSourceInterface', [], [$driver]);
         $field = $this->getMock('FSi\Component\DataSource\Field\FieldTypeInterface');
         $fieldExtension = new FieldExtension();
 
         $field
             ->expects($this->atLeastOnce())
             ->method('getExtensions')
-            ->will($this->returnValue(array($fieldExtension)))
+            ->will($this->returnValue([$fieldExtension]))
         ;
 
         $datasource
             ->expects($this->any())
             ->method('getFields')
-            ->will($this->returnValue(array('test' => $field)))
+            ->will($this->returnValue(['test' => $field]))
         ;
 
         $datasource
@@ -61,26 +56,26 @@ class OrderingExtensionTest extends \PHPUnit_Framework_TestCase
         $subscribers = $extension->loadSubscribers();
         $subscriber = array_shift($subscribers);
 
-        $parameters = array(
-            'ds'    => array(
-                OrderingExtension::PARAMETER_SORT    => array(
+        $parameters = [
+            'ds'    => [
+                OrderingExtension::PARAMETER_SORT    => [
                     'test'    => 'asc'
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $subscriber->preBindParameters(new DataSourceEvent\ParametersEventArgs($datasource, $parameters));
 
         //Assert that request parameters are properly stored in FieldExtension.
         $this->assertEquals(
-            array(
+            [
                 'priority'    => 0,
                 'direction'   => 'asc'
-            ),
+            ],
             $fieldExtension->getOrdering($field)
         );
 
-        $event = new DataSourceEvent\ParametersEventArgs($datasource, array());
+        $event = new DataSourceEvent\ParametersEventArgs($datasource, []);
         $subscriber->postGetParameters($event);
 
         $this->assertEquals(
@@ -100,210 +95,210 @@ class OrderingExtensionTest extends \PHPUnit_Framework_TestCase
          * array which should be sorted in terms of priority of sorting results. Expected array contain sorting passed in
          * parameters first and then default sorting passed in options.
          */
-        $input = array(
-            array(
-                'fields' => array(
-                    array('name' => 'field1'),
-                    array('name' => 'field2'),
-                    array('name' => 'field3'),
-                ),
-                'parameters' => array(
+        $input = [
+            [
+                'fields' => [
+                    ['name' => 'field1'],
+                    ['name' => 'field2'],
+                    ['name' => 'field3'],
+                ],
+                'parameters' => [
                     'field1' => 'asc'
-                ),
-                'expected_ordering' => array(
+                ],
+                'expected_ordering' => [
                     'field1' => 'asc'
-                ),
-                'expected_parameters' => array(
-                    'field1' => array(
-                        'ordering_ascending' => array('field1' => 'asc'),
-                        'ordering_descending' => array('field1' => 'desc')
-                    ),
-                    'field2' => array(
-                        'ordering_ascending' => array(
+                ],
+                'expected_parameters' => [
+                    'field1' => [
+                        'ordering_ascending' => ['field1' => 'asc'],
+                        'ordering_descending' => ['field1' => 'desc']
+                    ],
+                    'field2' => [
+                        'ordering_ascending' => [
                             'field2' => 'asc',
                             'field1' => 'asc'
-                        ),
-                        'ordering_descending' => array(
+                        ],
+                        'ordering_descending' => [
                             'field2' => 'desc',
                             'field1' => 'asc'
-                        )
-                    ),
-                    'field3' => array(
-                        'ordering_ascending' => array(
+                        ]
+                    ],
+                    'field3' => [
+                        'ordering_ascending' => [
                             'field3' => 'asc',
                             'field1' => 'asc'
-                        ),
-                        'ordering_descending' => array(
+                        ],
+                        'ordering_descending' => [
                             'field3' => 'desc',
                             'field1' => 'asc'
-                        )
-                    ),
-                )
-            ),
-            array(
-                'fields' => array(
-                    array('name' => 'field1'),
-                    array('name' => 'field2'),
-                    array('name' => 'field3'),
-                ),
-                'parameters'  => array(
+                        ]
+                    ],
+                ]
+            ],
+            [
+                'fields' => [
+                    ['name' => 'field1'],
+                    ['name' => 'field2'],
+                    ['name' => 'field3'],
+                ],
+                'parameters'  => [
                     'field2' => 'asc',
                     'field1' => 'desc'
-                ),
-                'expected_ordering' => array(
+                ],
+                'expected_ordering' => [
                     'field2' => 'asc',
                     'field1' => 'desc'
-                ),
-                'expected_parameters' => array(
-                    'field1' => array(
-                        'ordering_ascending' => array(
+                ],
+                'expected_parameters' => [
+                    'field1' => [
+                        'ordering_ascending' => [
                             'field1' => 'asc',
                             'field2' => 'asc'
-                        ),
-                        'ordering_descending' => array(
+                        ],
+                        'ordering_descending' => [
                             'field1' => 'desc',
                             'field2' => 'asc'
-                        )
-                    ),
-                    'field2' => array(
-                        'ordering_ascending' => array(
+                        ]
+                    ],
+                    'field2' => [
+                        'ordering_ascending' => [
                             'field2' => 'asc',
                             'field1' => 'desc'
-                        ),
-                        'ordering_descending' => array(
+                        ],
+                        'ordering_descending' => [
                             'field2' => 'desc',
                             'field1' => 'desc'
-                        )
-                    ),
-                    'field3' => array(
-                        'ordering_ascending' => array(
+                        ]
+                    ],
+                    'field3' => [
+                        'ordering_ascending' => [
                             'field3' => 'asc',
                             'field2' => 'asc',
                             'field1' => 'desc'
-                        ),
-                        'ordering_descending' => array(
+                        ],
+                        'ordering_descending' => [
                             'field3' => 'desc',
                             'field2' => 'asc',
                             'field1' => 'desc'
-                        )
-                    ),
-                )
-            ),
-            array(
-                'fields' => array(
-                    array(
+                        ]
+                    ],
+                ]
+            ],
+            [
+                'fields' => [
+                    [
                         'name' => 'field1',
-                        'options' => array('default_sort' => 'asc', 'default_sort_priority' => 1)
-                    ),
-                    array(
+                        'options' => ['default_sort' => 'asc', 'default_sort_priority' => 1]
+                    ],
+                    [
                         'name' => 'field2',
-                        'options' => array('default_sort' => 'desc', 'default_sort_priority' => 2)
-                    ),
-                    array(
+                        'options' => ['default_sort' => 'desc', 'default_sort_priority' => 2]
+                    ],
+                    [
                         'name' => 'field3',
-                        'options' => array('default_sort' => 'asc')
-                    ),
-                ),
-                'parameters' => array('field3' => 'desc'),
-                'expected_ordering' => array(
+                        'options' => ['default_sort' => 'asc']
+                    ],
+                ],
+                'parameters' => ['field3' => 'desc'],
+                'expected_ordering' => [
                     'field3' => 'desc',
                     'field2' => 'desc',
                     'field1' => 'asc'
-                ),
-                'expected_parameters' => array(
-                    'field1' => array(
-                        'ordering_ascending' => array(
+                ],
+                'expected_parameters' => [
+                    'field1' => [
+                        'ordering_ascending' => [
                             'field1' => 'asc',
                             'field3' => 'desc'
-                        ),
-                        'ordering_descending' => array(
+                        ],
+                        'ordering_descending' => [
                             'field1' => 'desc',
                             'field3' => 'desc'
-                        )
-                    ),
-                    'field2' => array(
-                        'ordering_ascending' => array(
+                        ]
+                    ],
+                    'field2' => [
+                        'ordering_ascending' => [
                             'field2' => 'asc',
                             'field3' => 'desc'
-                        ),
-                        'ordering_descending' => array(
+                        ],
+                        'ordering_descending' => [
                             'field2' => 'desc',
                             'field3' => 'desc'
-                        )
-                    ),
-                    'field3' => array(
-                        'ordering_ascending' => array('field3' => 'asc'),
-                        'ordering_descending' => array('field3' => 'desc')
-                    ),
-                )
-            ),
-            array(
-                'fields' => array(
-                    array(
+                        ]
+                    ],
+                    'field3' => [
+                        'ordering_ascending' => ['field3' => 'asc'],
+                        'ordering_descending' => ['field3' => 'desc']
+                    ],
+                ]
+            ],
+            [
+                'fields' => [
+                    [
                         'name' => 'field1',
-                        'options' => array('default_sort' => 'asc', 'default_sort_priority' => 1)
-                    ),
-                    array(
+                        'options' => ['default_sort' => 'asc', 'default_sort_priority' => 1]
+                    ],
+                    [
                         'name' => 'field2',
-                        'options' => array('default_sort' => 'desc', 'default_sort_priority' => 2)
-                    ),
-                    array(
+                        'options' => ['default_sort' => 'desc', 'default_sort_priority' => 2]
+                    ],
+                    [
                         'name' => 'field3',
-                        'options' => array('default_sort' => 'asc')
-                    ),
-                ),
-                'parameters' => array(
+                        'options' => ['default_sort' => 'asc']
+                    ],
+                ],
+                'parameters' => [
                     'field1' => 'asc',
                     'field3' => 'desc'
-                ),
-                'expected_ordering' => array(
+                ],
+                'expected_ordering' => [
                     'field1' => 'asc',
                     'field3' => 'desc',
                     'field2' => 'desc'
-                ),
-                'expected_parameters' => array(
-                    'field1' => array(
-                        'ordering_ascending' => array(
+                ],
+                'expected_parameters' => [
+                    'field1' => [
+                        'ordering_ascending' => [
                             'field1' => 'asc',
                             'field3' => 'desc'
-                        ),
-                        'ordering_descending' => array(
+                        ],
+                        'ordering_descending' => [
                             'field1' => 'desc',
                             'field3' => 'desc'
-                        )
-                    ),
-                    'field2' => array(
-                        'ordering_ascending' => array(
+                        ]
+                    ],
+                    'field2' => [
+                        'ordering_ascending' => [
                             'field2' => 'asc',
                             'field1' => 'asc',
                             'field3' => 'desc'
-                        ),
-                        'ordering_descending' => array(
+                        ],
+                        'ordering_descending' => [
                             'field2' => 'desc',
                             'field1' => 'asc',
                             'field3' => 'desc'
-                        )
-                    ),
-                    'field3' => array(
-                        'ordering_ascending' => array(
+                        ]
+                    ],
+                    'field3' => [
+                        'ordering_ascending' => [
                             'field3' => 'asc',
                             'field1' => 'asc'
-                        ),
-                        'ordering_descending' => array(
+                        ],
+                        'ordering_descending' => [
                             'field3' => 'desc',
                             'field1' => 'asc'
-                        )
-                    ),
-                )
-            ),
-        );
+                        ]
+                    ],
+                ]
+            ],
+        ];
 
         foreach ($input as $case) {
             $datasource = $this->getMock('FSi\Component\DataSource\DataSourceInterface');
 
             $fieldExtension = new FieldExtension();
 
-            $fields = array();
+            $fields = [];
             foreach ($case['fields'] as $fieldData) {
                 //Using fake class object instead of mock object is helpfull because we need functionality from AbstractFieldType.
                 $field = new FakeFieldType();
@@ -339,7 +334,7 @@ class OrderingExtensionTest extends \PHPUnit_Framework_TestCase
             $datasource
                 ->expects($this->any())
                 ->method('getParameters')
-                ->will($this->returnValue(array('ds' => array(OrderingExtension::PARAMETER_SORT => $case['parameters']))))
+                ->will($this->returnValue(['ds' => [OrderingExtension::PARAMETER_SORT => $case['parameters']]]))
             ;
 
             $extension = new OrderingExtension();
@@ -347,7 +342,7 @@ class OrderingExtensionTest extends \PHPUnit_Framework_TestCase
             $subscriber = array_shift($subscribers);
             $subscriber->preBindParameters(new DataSourceEvent\ParametersEventArgs(
                 $datasource,
-                array('ds' => array(OrderingExtension::PARAMETER_SORT => $case['parameters']))
+                ['ds' => [OrderingExtension::PARAMETER_SORT => $case['parameters']]]
             ));
 
             //We use fake driver extension instead of specific driver extension because we want to test common DriverExtension functionality.
@@ -379,22 +374,22 @@ class OrderingExtensionTest extends \PHPUnit_Framework_TestCase
 
                             case 'parameters_sort_ascending':
                                 $self->assertSame(
-                                    array(
-                                        'ds' => array(
+                                    [
+                                        'ds' => [
                                             OrderingExtension::PARAMETER_SORT => $case['expected_parameters'][$field->getName()]['ordering_ascending']
-                                        )
-                                    ),
+                                        ]
+                                    ],
                                     $value
                                 );
                                 break;
 
                             case 'parameters_sort_descending':
                                 $self->assertSame(
-                                    array(
-                                        'ds' => array(
+                                    [
+                                        'ds' => [
                                             OrderingExtension::PARAMETER_SORT => $case['expected_parameters'][$field->getName()]['ordering_descending']
-                                        )
-                                    ),
+                                        ]
+                                    ],
                                     $value
                                 );
                                 break;
@@ -420,7 +415,7 @@ class FakeDriverExtension extends DriverExtension
 {
     public function getExtendedDriverTypes()
     {
-        return array();
+        return [];
     }
 
     public function sort(array $fields)

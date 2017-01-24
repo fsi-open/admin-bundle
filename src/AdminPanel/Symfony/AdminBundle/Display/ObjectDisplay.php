@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AdminPanel\Symfony\AdminBundle\Display;
 
@@ -30,13 +31,13 @@ class ObjectDisplay implements Display
         }
 
         $this->object = $object;
-        $this->properties = array();
+        $this->properties = [];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function add($path, $label = null, $valueFormatters = array())
+    public function add($path, $label = null, $valueFormatters = [])
     {
         $this->properties[] = new Property($path, $label, $valueFormatters);
 

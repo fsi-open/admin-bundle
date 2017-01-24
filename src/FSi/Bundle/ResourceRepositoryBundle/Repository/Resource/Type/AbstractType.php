@@ -1,11 +1,6 @@
 <?php
 
-/**
- * (c) FSi sp. z o.o. <info@fsi.pl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type;
 
@@ -40,8 +35,8 @@ abstract class AbstractType implements ResourceInterface
     public function __construct($name)
     {
         $this->name = $name;
-        $this->constraints = array();
-        $this->formOptions = array();
+        $this->constraints = [];
+        $this->formOptions = [];
     }
 
     /**
@@ -103,19 +98,19 @@ abstract class AbstractType implements ResourceInterface
      */
     protected function buildFormOptions()
     {
-        $options = array(
+        $options = [
             'required' => false,
             'label' => false,
-        );
+        ];
 
         $options = array_merge($options, $this->formOptions);
 
         if (count($this->constraints)) {
             $options = array_merge(
                 $options,
-                array(
+                [
                     'constraints' => $this->constraints
-                )
+                ]
             );
         }
 
