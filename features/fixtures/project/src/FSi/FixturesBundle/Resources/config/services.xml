@@ -54,6 +54,10 @@
             <tag name="admin.element" />
         </service>
 
+        <service id="fixtures_bundle.admin.dto_form" class="FSi\FixturesBundle\Admin\DTOFormElement">
+            <tag name="admin.element" />
+        </service>
+
         <service id="datasource.factory" class="FSi\FixturesBundle\DataSource\DataSourceFactory">
             <argument type="service" id="datasource.driver.factory.manager"></argument>
             <argument type="collection">
