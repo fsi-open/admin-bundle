@@ -2,7 +2,6 @@
 
 namespace FSi\Bundle\AdminBundle\Factory\Worker;
 
-use FSi\Bundle\AdminBundle\Admin\CRUD\FormAwareInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Factory\Worker;
@@ -28,7 +27,7 @@ class FormWorker implements Worker
      */
     public function mount(Element $element)
     {
-        if ($element instanceof FormAwareInterface || $element instanceof FormElement) {
+        if ($element instanceof FormElement) {
             $element->setFormFactory($this->formFactory);
         }
     }

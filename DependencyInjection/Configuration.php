@@ -52,7 +52,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('list')->defaultValue('@FSiAdmin/List/list.html.twig')->end()
                         ->scalarNode('form')->defaultValue('@FSiAdmin/Form/form.html.twig')->end()
                         ->scalarNode('crud_list')->defaultValue('@FSiAdmin/CRUD/list.html.twig')->end()
-                        ->scalarNode('crud_form')->defaultNull()->end()
+                        ->scalarNode('crud_form')->defaultValue('@FSiAdmin/CRUD/form.html.twig')->end()
                         ->scalarNode('resource')->defaultValue('@FSiAdmin/Resource/resource.html.twig')->end()
                         ->scalarNode('display')->defaultValue('@FSiAdmin/Display/display.html.twig')->end()
                         ->scalarNode('datagrid_theme')->defaultValue('@FSiAdmin/CRUD/datagrid.html.twig')->end()

@@ -9,14 +9,11 @@
 
 namespace FSi\Bundle\AdminBundle\spec\fixtures\Admin;
 
-use FSi\Bundle\AdminBundle\Admin\CRUD\DataGridAwareInterface;
-use FSi\Bundle\AdminBundle\Admin\CRUD\DataSourceAwareInterface;
-use FSi\Bundle\AdminBundle\Admin\CRUD\FormAwareInterface;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class CRUDElement extends SimpleAdminElement implements DataGridAwareInterface, DataSourceAwareInterface, FormAwareInterface
+class CRUDElement extends SimpleAdminElement
 {
     private $dataGridFactory;
     private $dataSourceFactory;

@@ -3,7 +3,6 @@
 namespace spec\FSi\Bundle\AdminBundle\Factory\Worker;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FormWorkerSpec extends ObjectBehavior
 {

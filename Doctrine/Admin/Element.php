@@ -14,7 +14,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-interface Element extends CRUDInterface, DoctrineAwareInterface
+interface Element
 {
     /**
      * Class name that represent entity. It might be returned in Symfony2 style:
