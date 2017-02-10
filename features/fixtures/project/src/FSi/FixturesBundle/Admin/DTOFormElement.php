@@ -10,6 +10,7 @@
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\FormElement;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class DTOFormElement extends FormElement
@@ -30,10 +31,20 @@ class DTOFormElement extends FormElement
 
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        $builder = $factory->createNamedBuilder('dto_form', 'form', $data, [
-            'data_class' => $this->getClassName()
-        ]);
-        $builder->add('email', 'email', ['label' => 'admin.email']);
+        $builder = $factory->createNamedBuilder(
+            'dto_form',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+            $data,
+            ['data_class' => $this->getClassName()]
+        );
+
+        $builder->add(
+            'email',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email'),
+            array(
+                'label' => 'admin.email',
+            )
+        );
 
         return $builder->getForm();
     }
