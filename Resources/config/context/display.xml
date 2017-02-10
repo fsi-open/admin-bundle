@@ -5,20 +5,29 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="admin.context.display.class">%admin.display.context.class%</parameter>
+        <parameter key="admin.context.display.request_handler.class">%admin.display.context.request_handler.class%</parameter>
+
+        <!-- Deprecated parameters -->
         <parameter key="admin.display.context.class">FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContext</parameter>
         <parameter key="admin.display.context.request_handler.class">FSi\Bundle\AdminBundle\Admin\Display\Context\Request\Handler</parameter>
     </parameters>
 
     <services>
-        <service id="admin.display.context" class="%admin.display.context.class%">
+        <service id="admin.context.display" class="%admin.context.display.class%">
             <argument type="collection">
-                <argument type="service" id="admin.display.context.request_handler"/>
+                <argument type="service" id="admin.context.display.request_handler"/>
             </argument>
             <tag name="admin.context" />
         </service>
 
-        <service id="admin.display.context.request_handler" class="%admin.display.context.request_handler.class%">
+        <service id="admin.context.display.request_handler" class="%admin.context.display.request_handler.class%">
             <argument type="service" id="event_dispatcher" />
         </service>
+
+        <!-- Aliases for deprecated services IDs -->
+        <service id="admin.display.context" alias="admin.context.display" />
+        <service id="admin.display.context.request_handler" alias="admin.context.display.request_handler" />
+
     </services>
 </container>
