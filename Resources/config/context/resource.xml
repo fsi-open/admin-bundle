@@ -5,6 +5,12 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="admin.context.resource.class">%admin.resource.context.class%</parameter>
+        <parameter key="admin.context.resource.form_builder.class">%admin.resource.context.form_builder.class%</parameter>
+        <parameter key="admin.context.resource.request_handler.form_submit.class">%admin.resource.context.request_handler.form_submit.class%</parameter>
+        <parameter key="admin.context.resource.request_handler.form_valid_request.class">%admin.resource.context.request_handler.form_valid_request.class%</parameter>
+
+        <!-- Deprecated parameters -->
         <parameter key="admin.resource.context.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\ResourceRepositoryContext</parameter>
         <parameter key="admin.resource.context.form_builder.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder</parameter>
         <parameter key="admin.resource.context.request_handler.form_submit.class">FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request\FormSubmitHandler</parameter>
@@ -12,29 +18,35 @@
     </parameters>
 
     <services>
-        <service id="admin.resource.context.form_builder" class="%admin.resource.context.form_builder.class%">
+        <service id="admin.context.resource.form_builder" class="%admin.context.resource.form_builder.class%">
             <argument type="service" id="form.factory"/>
             <argument type="service" id="fsi_resource_repository.resource.map_builder"/>
         </service>
 
-        <service id="admin.resource.context" class="%admin.resource.context.class%">
+        <service id="admin.context.resource" class="%admin.context.resource.class%">
             <argument type="collection">
-                <argument type="service" id="admin.resource.context.request_handler.form_submit"/>
-                <argument type="service" id="admin.resource.context.request_handler.form_valid_request"/>
+                <argument type="service" id="admin.context.resource.request_handler.form_submit"/>
+                <argument type="service" id="admin.context.resource.request_handler.form_valid_request"/>
             </argument>
-            <argument type="service" id="admin.resource.context.form_builder" />
+            <argument type="service" id="admin.context.resource.form_builder" />
             <tag name="admin.context" />
         </service>
 
-        <service id="admin.resource.context.request_handler.form_submit"
-                 class="%admin.resource.context.request_handler.form_submit.class%">
+        <service id="admin.context.resource.request_handler.form_submit"
+                 class="%admin.context.resource.request_handler.form_submit.class%">
             <argument type="service" id="event_dispatcher" />
         </service>
 
-        <service id="admin.resource.context.request_handler.form_valid_request"
-                 class="%admin.resource.context.request_handler.form_valid_request.class%">
+        <service id="admin.context.resource.request_handler.form_valid_request"
+                 class="%admin.context.resource.request_handler.form_valid_request.class%">
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="router" />
         </service>
+
+        <!-- Aliases for deprecated services -->
+        <service id="admin.resource.context.form_builder" alias="admin.context.resource.form_builder" />
+        <service id="admin.resource.context" alias="admin.context.resource" />
+        <service id="admin.resource.context.request_handler.form_submit" alias="admin.context.resource.request_handler.form_submit" />
+        <service id="admin.resource.context.request_handler.form_valid_request" alias="admin.context.resource.request_handler.form_valid_request" />
     </services>
 </container>
