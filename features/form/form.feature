@@ -68,3 +68,13 @@ Feature: Creating new object
     """
     Form is invalid.
     """
+
+  Scenario: Submitting a DTO form element
+    Given I am on the "DTO Form" page
+    When I change form "Email" field value
+    And I press form "Save" button
+    Then I should be redirected to "DTO Form" page
+    And I should see a success message saying:
+    """
+    Data has been successfully saved.
+    """

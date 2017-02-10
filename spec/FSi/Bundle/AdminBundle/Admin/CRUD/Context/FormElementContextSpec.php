@@ -47,11 +47,6 @@ class FormElementContextSpec extends ObjectBehavior
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('form');
         $this->getData()->shouldHaveKeyInArray('element');
-
-        $form->getData()->willReturn(array('object'));
-        $element->getDataIndexer()->willReturn($dataIndexer);
-        $dataIndexer->getIndex(array('object'))->willReturn('id');
-        $this->getData()->shouldHaveKeyInArray('id');
     }
 
     /**

@@ -50,16 +50,10 @@ class FormElementContext extends ContextAbstract
      */
     public function getData()
     {
-        $data = array(
+        return array(
             'form' => $this->form->createView(),
-            'element' => $this->element
+            'element' => $this->element,
         );
-
-        if ($this->form->getData()) {
-            $data['id'] = $this->element->getDataIndexer()->getIndex($this->form->getData());
-        }
-
-        return $data;
     }
 
     /**
