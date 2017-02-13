@@ -68,3 +68,12 @@ Feature: Creating new object
     """
     Form is invalid.
     """
+
+  Scenario: Opening new object form page for edit only element
+    Given there is a person with id 1 in database
+    And I am on the "Person edit form" page with id 1
+    Then I should see form with following fields
+      | Field name    |
+      | Email         |
+    Given I try to open the "Person add form" page
+    Then page "Person add form" should display not found exception

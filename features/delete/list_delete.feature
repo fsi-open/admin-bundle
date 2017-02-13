@@ -44,3 +44,11 @@ Feature: Deleting existing object
     """
     Operation has been completed successfully.
     """
+
+  Scenario: Deleting object with an element not allowing deletion
+    Given there is a person with id 1 in database
+    And I am on the "Person list" page
+    When I press checkbox in first column in first row
+    And I perform action "Delete"
+    Then page "Person list" should throw an error exception
+    And there should be a person with id 1 in database
