@@ -3,6 +3,7 @@
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -39,10 +40,14 @@ class CustomNews extends CRUDElement
 
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-
-        $builder = $factory->createNamedBuilder('news', 'form', $data, array(
-            'data_class' => $this->getClassName()
-        ));
+        $builder = $factory->createNamedBuilder(
+            'news',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+            $data,
+            array(
+                'data_class' => $this->getClassName()
+            )
+        );
 
         return $builder->getForm();
     }

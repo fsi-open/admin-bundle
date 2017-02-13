@@ -10,7 +10,7 @@ matrix:
     include:
         - php: 5.4
           env:
-              - DEPENDENCIES='low'
+              - COMPOSER_FLAGS='--prefer-lowest'
         - php: 5.5
         - php: 5.6
           env:
@@ -21,14 +21,17 @@ matrix:
         - php: 5.6
           env:
               - SYMFONY_VERSION=2.8.*
+        - php: 5.6
         - php: 7.0
+        - php: 7.1
 
 before_install:
-    - phpenv config-rm xdebug.ini
+    - phpenv config-rm xdebug.ini || true
     - composer self-update
-    - if [[ "$DEPENDENCIES" != "low" && ! $SYMFONY_VERSION ]]; then composer update; fi;
-    - if [[ "$DEPENDENCIES" != "low" && $SYMFONY_VERSION ]]; then composer require symfony/symfony:${SYMFONY_VERSION} -n --prefer-source; fi;
-    - if [[ "$DEPENDENCIES" == "low" ]]; then composer update --prefer-lowest; fi;
+    - if [[ $SYMFONY_VERSION ]]; then composer require symfony/symfony:${SYMFONY_VERSION} -n --no-update; fi;
+    # Avoid issues on composer update
+    - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+    - composer update $COMPOSER_FLAGS
 
 install:
     - wget http://selenium-release.storage.googleapis.com/2.50/selenium-server-standalone-2.50.1.jar

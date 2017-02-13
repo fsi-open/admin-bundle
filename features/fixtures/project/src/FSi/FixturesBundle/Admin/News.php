@@ -4,9 +4,9 @@ namespace FSi\FixturesBundle\Admin;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
-use FSi\FixturesBundle\Entity\News as NewsEntity;
 use FSi\FixturesBundle\Form\TagType;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -36,7 +36,9 @@ class News extends CRUDElement
             'label' => 'admin.news.list.date',
             'datetime_format' => 'Y-m-d',
             'editable' => true,
-            'form_type' => array('date' => 'date'),
+            'form_type' => array(
+                'date' => TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date')
+            ),
             'form_options' => array(
                 'date' => array('widget' => 'single_text')
             )
@@ -115,48 +117,94 @@ class News extends CRUDElement
 
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        $builder = $factory->createNamedBuilder('news', 'form', $data, array(
-            'data_class' => $this->getClassName()
-        ));
+        $builder = $factory->createNamedBuilder(
+            'news',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+            $data,
+            array(
+                'data_class' => $this->getClassName()
+            )
+        );
 
-        $builder->add('title', 'text', array(
-            'label' => 'admin.news.list.title',
-        ));
-        $builder->add('date', 'date', array(
-            'label' => 'admin.news.list.date',
-            'widget' => 'single_text',
-            'required' => false,
-        ));
-        $builder->add('created_at', 'date', array(
-            'label' => 'admin.news.list.created_at',
-            'widget' => 'single_text'
-        ));
-        $builder->add('visible', 'checkbox', array(
-            'label' => 'admin.news.list.visible',
-            'required' => false,
-        ));
-        $builder->add('creator_email', 'email', array(
-            'label' => 'admin.news.list.creator_email'
-        ));
-        $builder->add('photo', 'fsi_image', array(
-            'label' => 'admin.news.list.photo'
-        ));
-        $builder->add('tags', 'collection', array(
-            'type' => new TagType(),
-            'label' => 'admin.news.list.tags',
-            'allow_add' => true,
-            'allow_delete' => true,
-            'by_reference' => false,
-        ));
-        $builder->add('nonEditableTags', 'collection', array(
-            'type' => 'text',
-            'data' => new ArrayCollection(['Tag 1', 'Tag 2', 'Tag 3']),
-            'label' => 'admin.news.list.non_editable_tags',
-            'allow_add' => false,
-            'allow_delete' => false,
-            'mapped' => false,
-            'required' => false
-        ));
+        $builder->add(
+            'title',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\TextType', 'text'),
+            array(
+                'label' => 'admin.news.list.title',
+            )
+        );
+
+        $builder->add(
+            'date',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date'),
+            array(
+                'label' => 'admin.news.list.date',
+                'widget' => 'single_text',
+                'required' => false,
+            )
+        );
+
+        $builder->add(
+            'created_at',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date'),
+            array(
+                'label' => 'admin.news.list.created_at',
+                'widget' => 'single_text'
+            )
+        );
+
+        $builder->add(
+            'visible',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CheckboxType', 'checkbox'),
+            array(
+                'label' => 'admin.news.list.visible',
+                'required' => false,
+            )
+        );
+
+        $builder->add(
+            'creator_email',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email'),
+            array(
+                'label' => 'admin.news.list.creator_email'
+            )
+        );
+
+        $builder->add(
+            'photo',
+            TypeSolver::getFormType('FSi\Bundle\DoctrineExtensionsBundle\Form\Type\FSi\ImageType', 'fsi_image'),
+            array(
+                'label' => 'admin.news.list.photo'
+            )
+        );
+
+        $builder->add(
+            'tags',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CollectionType', 'collection'),
+            array(
+                TypeSolver::hasCollectionEntryTypeOption() ? 'entry_type' : 'type' =>
+                    TypeSolver::getFormType('FSi\FixturesBundle\Form\TagType', new TagType()),
+                'label' => 'admin.news.list.tags',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            )
+        );
+
+        $builder->add(
+            'nonEditableTags',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CollectionType', 'collection'),
+            array(
+                TypeSolver::hasCollectionEntryTypeOption() ? 'entry_type' : 'type' =>
+                    TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\TextType', 'text'),
+                'data' => new ArrayCollection(['Tag 1', 'Tag 2', 'Tag 3']),
+                'label' => 'admin.news.list.non_editable_tags',
+                'allow_add' => false,
+                'allow_delete' => false,
+                'mapped' => false,
+                'required' => false
+            )
+        );
 
         return $builder->getForm();
     }

@@ -10,6 +10,7 @@
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\FormElement;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class SubscriberForm extends FormElement
@@ -41,20 +42,39 @@ class SubscriberForm extends FormElement
 
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        $builder = $factory->createNamedBuilder('subscriber', 'form', $data, array(
-            'data_class' => $this->getClassName()
-        ));
+        $builder = $factory->createNamedBuilder(
+            'subscriber',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+            $data,
+            array(
+                'data_class' => $this->getClassName()
+            )
+        );
 
-        $builder->add('email', 'email', array(
-            'label' => 'admin.subscriber.list.email',
-        ));
-        $builder->add('created_at', 'date', array(
-            'label' => 'admin.subscriber.list.created_at',
-            'widget' => 'single_text'
-        ));
-        $builder->add('active', 'checkbox', array(
-            'label' => 'admin.subscriber.list.active',
-        ));
+        $builder->add(
+            'email',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email'),
+            array(
+                'label' => 'admin.subscriber.list.email',
+            )
+        );
+
+        $builder->add(
+            'created_at',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date'),
+            array(
+                'label' => 'admin.subscriber.list.created_at',
+                'widget' => 'single_text'
+            )
+        );
+
+        $builder->add(
+            'active',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CheckboxType', 'checkbox'),
+            array(
+                'label' => 'admin.subscriber.list.active',
+            )
+        );
 
         return $builder->getForm();
     }

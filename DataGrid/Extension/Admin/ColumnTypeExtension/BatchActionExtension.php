@@ -4,6 +4,7 @@ namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
 use FSi\Bundle\AdminBundle\Admin\Manager;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
@@ -127,13 +128,23 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      */
     private function buildBatchActions(ColumnTypeInterface $column)
     {
-        $batchActions = array('crud.list.batch.empty_choice');
+        if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
+            $batchActions = array('crud.list.batch.empty_choice' => '');
+        } else {
+            $batchActions = array('crud.list.batch.empty_choice');
+        }
 
         foreach ($column->getOption('actions') as $name => $action) {
             $actionOptions = $this->actionOptionsResolver->resolve($action);
 
-            $batchActions[$this->getBatchActionUrl($actionOptions)] =
-                isset($actionOptions['label']) ? $actionOptions['label'] : $name;
+            $batchActionUrl = $this->getBatchActionUrl($actionOptions);
+            $batchActionLabel = isset($actionOptions['label']) ? $actionOptions['label'] : $name;
+
+            if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
+                $batchActions[$batchActionLabel] = $batchActionUrl;
+            } else {
+                $batchActions[$batchActionUrl] = $batchActionLabel;
+            }
         }
 
         return $batchActions;
@@ -158,14 +169,22 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     private function buildBatchForm(ColumnTypeInterface $column, array $batchActions)
     {
         if (count($batchActions) > 1) {
-            $this->formBuilder->add('action', 'choice', array(
-                'choices' => $batchActions,
-                'translation_domain' => $column->getOption('translation_domain')
-            ));
-            $this->formBuilder->add('submit', 'submit', array(
-                'label' => 'crud.list.batch.confirm',
-                'translation_domain' => 'FSiAdminBundle'
-            ));
+            $this->formBuilder->add(
+                'action',
+                TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+                array(
+                    'choices' => $batchActions,
+                    'translation_domain' => $column->getOption('translation_domain')
+                )
+            );
+            $this->formBuilder->add(
+                'submit',
+                TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+                array(
+                    'label' => 'crud.list.batch.confirm',
+                    'translation_domain' => 'FSiAdminBundle'
+                )
+            );
         }
     }
 

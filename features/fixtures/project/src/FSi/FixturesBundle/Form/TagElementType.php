@@ -4,6 +4,7 @@ namespace FSi\FixturesBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TagElementType extends AbstractType
@@ -19,6 +20,13 @@ class TagElementType extends AbstractType
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'FSi\FixturesBundle\Entity\TagElement',
+        ));
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'FSi\FixturesBundle\Entity\TagElement',
