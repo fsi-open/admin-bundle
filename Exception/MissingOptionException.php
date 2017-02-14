@@ -15,3 +15,4 @@ namespace FSi\Bundle\AdminBundle\Exception;
 class MissingOptionException extends \InvalidArgumentException implements ExceptionInterface
 {
 }
+

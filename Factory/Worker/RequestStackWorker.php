@@ -2,7 +2,6 @@
 
 namespace FSi\Bundle\AdminBundle\Factory\Worker;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\RequestStackAware;
 use FSi\Bundle\AdminBundle\Factory\Worker;
@@ -18,7 +17,7 @@ class RequestStackWorker implements Worker
     /**
      * @param RequestStack $requestStack
      */
-    function __construct(RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack)
     {
         $this->requestStack = $requestStack;
     }
