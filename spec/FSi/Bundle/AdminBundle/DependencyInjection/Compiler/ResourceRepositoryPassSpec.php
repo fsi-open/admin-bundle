@@ -5,24 +5,21 @@ namespace spec\FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class ResourceRepositoryPassSpec extends ObjectBehavior
 {
-    /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     */
-    public function it_does_nothing_when_there_is_no_resource_extension($container)
+    public function it_does_nothing_when_there_is_no_resource_extension(ContainerBuilder $container)
     {
         $container->hasExtension('fsi_resource_repository')->willReturn(false);
         $this->process($container);
     }
 
-    /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param \Symfony\Component\DependencyInjection\ParameterBag\ParameterBag $bag
-     */
-    public function it_loads_resources_config_only_if_resource_repository_extension_exists($container, $bag)
-    {
+    public function it_loads_resources_config_only_if_resource_repository_extension_exists(
+        ContainerBuilder $container,
+        ParameterBag $bag
+    ) {
         $container->hasExtension(Argument::type('string'))->willReturn(false);
         $container->hasExtension('fsi_resource_repository')->willReturn(true);
 

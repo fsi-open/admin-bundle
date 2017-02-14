@@ -3,7 +3,6 @@
 namespace spec\FSi\Bundle\AdminBundle\Display\Property\Formatter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class EmptyValueSpec extends ObjectBehavior
 {
