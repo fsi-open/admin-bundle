@@ -2,14 +2,12 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Menu\Item;
 
+use FSi\Bundle\AdminBundle\Admin\Element;
 use PhpSpec\ObjectBehavior;
 
 class ElementItemSpec extends ObjectBehavior
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     */
-    function let($element)
+    function let(Element $element)
     {
         $this->beConstructedWith('some name', $element);
     }
