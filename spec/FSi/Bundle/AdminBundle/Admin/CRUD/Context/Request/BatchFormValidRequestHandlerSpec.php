@@ -225,4 +225,25 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
+
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $requestParameterbag
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\DeleteElement $element
+     */
+    function it_throws_exception_when_delete_not_allowed(
+        $event,
+        $request,
+        $requestParameterbag,
+        $element
+    ) {
+        $request->request = $requestParameterbag;
+        $requestParameterbag->get('indexes', [])->willReturn(['index']);
+        $event->getElement()->willReturn($element);
+        $element->hasOption('allow_delete')->willReturn(true);
+        $element->getOption('allow_delete')->willReturn(false);
+
+        $this->shouldThrow('\LogicException')->during('handleRequest', [$event, $request]);
+    }
 }

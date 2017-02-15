@@ -23,6 +23,8 @@ class FormElementContextSpec extends ObjectBehavior
     function let($element, $form, $handler)
     {
         $this->beConstructedWith(array($handler));
+        $element->hasOption('allow_add')->willReturn(true);
+        $element->getOption('allow_add')->willReturn(true);
         $element->createForm(null)->willReturn($form);
         $this->setElement($element);
     }
@@ -34,11 +36,11 @@ class FormElementContextSpec extends ObjectBehavior
 
     /**
      * @param \Symfony\Component\Form\Form $form
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
      * @param \FSi\Component\DataIndexer\DataIndexerInterface $dataIndexer
-     * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    function it_have_array_data($form, $element, $dataIndexer, $request)
+    function it_has_array_data($form, $request, $element, $dataIndexer)
     {
         $form->createView()->willReturn('form_view');
         $form->getData()->willReturn(null);
@@ -88,6 +90,17 @@ class FormElementContextSpec extends ObjectBehavior
 
         $this->handleRequest($request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
+     */
+    function it_throws_exception_when_adding_is_not_allowed($request, $element)
+    {
+        $request->get('id')->willReturn(false);
+        $element->getOption('allow_add')->willReturn(false);
+        $this->shouldThrow('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException')->during('handleRequest', [$request]);
     }
 
     public function getMatchers()

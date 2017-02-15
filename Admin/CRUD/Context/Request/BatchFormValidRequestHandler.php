@@ -11,9 +11,11 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractFormValidRequestHandler;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\DeleteElement;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
+use LogicException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -60,6 +62,27 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         }
 
         return $objects;
+    }
+
+    /**
+     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return bool
+     */
+    protected function isValidPostRequest(FormEvent $event, Request $request)
+    {
+        $element = $event->getElement();
+        if ($element instanceof DeleteElement
+            && $element->hasOption('allow_delete')
+            && !$element->getOption('allow_delete')
+        ) {
+            throw new LogicException(sprintf(
+                'Tried to delete objects through element "%s", which has option "allow_delete" set to false',
+                get_class($element)
+            ));
+        }
+
+        return parent::isValidPostRequest($event, $request);
     }
 
     /**

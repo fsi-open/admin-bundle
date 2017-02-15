@@ -54,6 +54,14 @@
             <tag name="admin.element" />
         </service>
 
+        <service id="fixtures_bundle.admin.person" class="FSi\FixturesBundle\Admin\Person">
+            <argument type="collection">
+                <argument key="allow_add">false</argument>
+                <argument key="allow_delete">false</argument>
+            </argument>
+            <tag name="admin.element" />
+        </service>
+
         <service id="datasource.factory" class="FSi\FixturesBundle\DataSource\DataSourceFactory">
             <argument type="service" id="datasource.driver.factory.manager"></argument>
             <argument type="collection">
