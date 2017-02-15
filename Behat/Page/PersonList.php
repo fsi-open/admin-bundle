@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Behat\Context\Page;
+namespace FSi\Bundle\AdminBundle\Behat\Page;
 
-class PersonEditForm extends Page
+class PersonList extends Page
 {
-    protected $path = '/admin/form/person/{id}';
+    protected $path = '/admin/list/person';
 }
