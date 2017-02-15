@@ -48,6 +48,7 @@ class GenericFormElementSpec extends ObjectBehavior
     {
         $this->getOptions()->shouldReturn(array(
             'template_form' => null,
+            'allow_add' => true
         ));
     }
 }
