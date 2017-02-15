@@ -98,6 +98,7 @@ class FormElementContext extends ContextAbstract
     {
         $id = $request->get('id');
         if (empty($id)) {
+            $this->checkAllowAddOption();
             return null;
         }
 
@@ -107,5 +108,20 @@ class FormElementContext extends ContextAbstract
         }
 
         return $object;
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     */
+    private function checkAllowAddOption()
+    {
+        if ($this->element->hasOption('allow_add')
+            && !$this->element->getOption('allow_add')
+        ) {
+            throw new NotFoundHttpException(sprintf(
+                'Cannot add objects through element "%s", because it has option "allow_add" set to false',
+                get_class($this->element)
+            ));
+        }
     }
 }

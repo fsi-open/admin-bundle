@@ -11,16 +11,21 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Mink;
+use Behat\MinkExtension\Context\MinkAwareContext;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Faker\Factory;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\Behat\Context\Page\NewsList;
+use LogicException;
 use PhpSpec\Exception\Example\PendingException;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
+use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class CRUDContext extends PageObjectContext implements KernelAwareContext
+class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkAwareContext
 {
     /**
      * @var KernelInterface
@@ -51,6 +56,28 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext
      * @var string
      */
     protected $invalidEmail = 'not_a_valid_email#email.';
+
+    /**
+     * @var Mink
+     */
+    protected $mink;
+
+    /**
+     * @var array
+     */
+    private $minkParameters;
+
+    private $selectedRows = [];
+
+    public function setMink(Mink $mink)
+    {
+        $this->mink = $mink;
+    }
+
+    public function setMinkParameters(array $parameters)
+    {
+        $this->minkParameters = $parameters;
+    }
 
     /**
      * @param KernelInterface $kernel
@@ -466,7 +493,13 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext
      */
     public function iPressCheckboxInFirstColumnInFirstRow()
     {
-        $this->getPage('News list')->pressBatchCheckboxInRow(1);
+        $driver = $this->mink->getSession()->getDriver();
+        if ($driver instanceof Selenium2Driver) {
+            $this->getPage('News list')->pressBatchCheckboxInRow(1);
+        } else {
+            $row = $this->getPage('News list')->find('xpath', sprintf('//tr[%d]', 1));
+            $this->selectedRows[] = $row->find('css', 'input[type=checkbox]')->getAttribute('value');
+        }
     }
 
     /**
@@ -603,6 +636,30 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext
     public function newsTitleShouldBeChangedTo($arg1, $arg2)
     {
         throw new PendingException();
+    }
+
+    /**
+     * @Given I perform action :action
+     */
+    public function iPerformBatchActionOnPage($action)
+    {
+        $page = $this->getPage('News list');
+        $batchActionUrl = $page->find('css', sprintf('#batch_action_action option:contains("%s")', $action))
+            ->getAttribute('value')
+        ;
+        $data = [
+            'batch_action' => [
+                '_token' => $page->find('css', '#batch_action__token')
+                    ->getAttribute('value'),
+            ],
+        ];
+        foreach ($this->selectedRows as $id) {
+            $data['indexes'][] = $id;
+        }
+
+        /* @var $client Client */
+        $client = $this->mink->getSession()->getDriver()->getClient();
+        $client->request('POST', $batchActionUrl, $data);
     }
 
     /**

@@ -122,6 +122,7 @@
             <tag name="admin.manager.visitor" />
         </service>
 
+        <!-- Flash messages -->
         <service id="admin.messages.flash" class="FSi\Bundle\AdminBundle\Message\FlashMessages" lazy="true">
             <argument type="service" id="session" />
             <argument type="string">fsi_admin</argument>

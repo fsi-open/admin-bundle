@@ -37,9 +37,11 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
     {
         $resolver->setDefaults(array(
             'template_form' => null,
+            'allow_add' => true
         ));
 
         $resolver->setAllowedTypes('template_form', array('null', 'string'));
+        $resolver->setAllowedTypes('allow_add', 'bool');
     }
 
     /**

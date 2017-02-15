@@ -12,6 +12,7 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Behat\Mink\Element\NodeElement;
+use Exception;
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
@@ -311,5 +312,41 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
     {
         $collection->find('xpath', sprintf('/*/*[@class = "form-group"][%d]', $index))
              ->find('css', '.collection-remove')->click();
+    }
+
+    /**
+     * @Given I try to open the :page page
+     */
+    public function iTryToOpenPage($page)
+    {
+        $this->getPage($page)->openWithoutVerifying();
+    }
+
+    /**
+     * @Then page :page should display not found exception
+     */
+    public function pageShouldDisplayNotFoundException($page)
+    {
+        $status = $this->getPage($page)->getStatusCode();
+        if ($status !== 404) {
+            throw new Exception(sprintf(
+                'Invalid status code "%s", expected 404.',
+                $status
+            ));
+        }
+    }
+
+    /**
+     * @Then page :page should throw an error exception
+     */
+    public function pageShouldThrowAnErrorExceptionException($page)
+    {
+        $status = $this->getPage($page)->getStatusCode();
+        if ($status !== 500) {
+            throw new Exception(sprintf(
+                'Invalid status code "%s", expected 500.',
+                $status
+            ));
+        }
     }
 }

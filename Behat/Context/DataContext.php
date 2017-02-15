@@ -226,6 +226,32 @@ class DataContext implements KernelAwareContext
     }
 
     /**
+     * @Given /^there is a person with id (\d+) in database$/
+     */
+    public function thereIsAPersonWithIdInDatabase($id)
+    {
+        $generator = Factory::create();
+        $populator = new Populator($generator, $this->getDoctrine()->getManager());
+
+        $populator->addEntity('FSi\FixturesBundle\Entity\Person', 1, array(
+            'id' => $id,
+            'email' => function() use ($generator) { return $generator->email(); }
+        ));
+        $populator->execute();
+
+        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Person')->findAll()))->toBe(1);
+    }
+
+    /**
+     * @Then there should be a person with id :id in database
+     */
+    public function thereShouldBeAPersonWithId($id)
+    {
+        $class = 'FSi\FixturesBundle\Entity\Person';
+        expect($this->getEntityRepository($class)->find($id))->beAnInstanceOf($class);
+    }
+
+    /**
      * @param string $name
      * @return \Doctrine\Orm\EntityRepository
      */
