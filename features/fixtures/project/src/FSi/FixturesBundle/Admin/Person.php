@@ -10,6 +10,7 @@
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
@@ -86,11 +87,18 @@ class Person extends CRUDElement
 
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        $builder = $factory->createNamedBuilder('person', 'form', $data, [
-            'data_class' => $this->getClassName()
-        ]);
+        $builder = $factory->createNamedBuilder(
+            'person',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+            $data,
+            ['data_class' => $this->getClassName()]
+        );
 
-        $builder->add('email', 'text', ['label' => 'admin.email']);
+        $builder->add(
+            'email',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\TextType', 'text'),
+            ['label' => 'admin.email']
+        );
 
         return $builder->getForm();
     }
