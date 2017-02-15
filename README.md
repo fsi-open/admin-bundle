@@ -1,6 +1,6 @@
 # FSi Admin Bundle
 
-FSi Admin Bundle is a complete solution that provides mechanisms to generate an admin panel for any Symfony2 based application.
+FSi Admin Bundle is a complete solution that provides mechanisms to generate an admin panel for any Symfony2 (and 3) based application.
 
 > **Important** - the bundle is not integrated with Symfony's security component. By default the path /admin is not protected
 > and you need to secure it on your own. It's recommended to use [FSiAdminSecurityBundle](https://github.com/fsi-open/admin-security-bundle)

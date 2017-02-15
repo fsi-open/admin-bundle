@@ -3,6 +3,10 @@
 This document covers the extent of changes done during the transition from
 branches 2.* to 3.0.
 
+## Symfony 3 support
+
+This bundle now supports Symfony 3.
+
 ## Removed deprecated classes and options from version 1.1
 
 Everything marked as deprecated in 1.1 has been finally removed in this version.
