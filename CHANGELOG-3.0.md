@@ -76,3 +76,8 @@ of replaced services and parameters:
         </tr>
     </tbody>
 </table>
+
+## Removed CRUD/form.html.twig
+
+This template is never used and was only left for backwards compatibility's sake.
+Now it is removed.
