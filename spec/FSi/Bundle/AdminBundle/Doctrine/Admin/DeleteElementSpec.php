@@ -2,16 +2,15 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class DeleteElementSpec extends ObjectBehavior
 {
-    /**
-     * @param \Symfony\Bridge\Doctrine\ManagerRegistry $registry
-     * @param \Doctrine\Common\Persistence\ObjectManager $om
-     */
-    function let($registry, $om)
+    function let(ManagerRegistry $registry, ObjectManager $om)
     {
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDeleteElement');
         $this->beConstructedWith(array());
@@ -23,16 +22,12 @@ class DeleteElementSpec extends ObjectBehavior
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $om
      */
-    public function it_should_return_object_manager($om)
+    public function it_should_return_object_manager(ObjectManager $om)
     {
         $this->getObjectManager()->shouldReturn($om);
     }
 
-    /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $om
-     * @param \Doctrine\Common\Persistence\ObjectRepository $repository
-     */
-    public function it_should_return_object_repository($om, $repository)
+    public function it_should_return_object_repository(ObjectManager $om, ObjectRepository $repository)
     {
         $om->getRepository('FSiDemoBundle:Entity')->willReturn($repository);
         $this->getRepository()->shouldReturn($repository);
@@ -44,8 +39,12 @@ class DeleteElementSpec extends ObjectBehavior
      * @param \Doctrine\Common\Persistence\ObjectRepository $repository
      * @param \Doctrine\ORM\Mapping\ClassMetadata $metadata
      */
-    public function it_should_have_doctrine_data_indexer($registry, $om, $repository, $metadata)
-    {
+    public function it_should_have_doctrine_data_indexer(
+        ManagerRegistry $registry,
+        ObjectManager $om,
+        ObjectRepository $repository,
+        ClassMetadata $metadata
+    ) {
         $registry->getManagerForClass('FSi/Bundle/DemoBundle/Entity/Entity')->willReturn($om);
         $om->getRepository('FSiDemoBundle:Entity')->willReturn($repository);
         $metadata->isMappedSuperclass = false;
@@ -58,10 +57,7 @@ class DeleteElementSpec extends ObjectBehavior
         $this->getDataIndexer()->shouldReturnAnInstanceOf('FSi\Component\DataIndexer\DoctrineDataIndexer');
     }
 
-    /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $om
-     */
-    public function it_deletes_object_from_object_manager($om)
+    public function it_deletes_object_from_object_manager(ObjectManager $om)
     {
         $object = new \stdClass();
 

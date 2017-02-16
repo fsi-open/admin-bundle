@@ -11,6 +11,7 @@ namespace spec\FSi\Bundle\AdminBundle;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 class FSiAdminBundleSpec extends ObjectBehavior
@@ -20,10 +21,7 @@ class FSiAdminBundleSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\HttpKernel\Bundle\Bundle');
     }
 
-    /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $builder
-     */
-    function it_add_compiler_pass($builder)
+    function it_add_compiler_pass(ContainerBuilder $builder)
     {
         $builder->addCompilerPass(Argument::type('FSi\Bundle\AdminBundle\DependencyInjection\Compiler\AdminAnnotatedElementPass'))
             ->shouldBeCalled();

@@ -5,13 +5,11 @@ namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class GenericFormElementSpec extends ObjectBehavior
 {
-    /**
-     * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     */
-    function let($factory)
+    function let(FormFactoryInterface $factory)
     {
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyForm');
         $this->beConstructedWith(array());
@@ -33,10 +31,7 @@ class GenericFormElementSpec extends ObjectBehavior
         $this->getRoute()->shouldReturn('fsi_admin_form');
     }
 
-    /**
-     * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     */
-    function it_throw_exception_when_init_form_does_not_return_instance_of_form($factory)
+    function it_throw_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory)
     {
         $factory->create(Argument::cetera())->willReturn(null);
 

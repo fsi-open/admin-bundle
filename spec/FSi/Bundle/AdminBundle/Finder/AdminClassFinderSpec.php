@@ -3,7 +3,6 @@
 namespace spec\FSi\Bundle\AdminBundle\Finder;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AdminClassFinderSpec extends ObjectBehavior
 {

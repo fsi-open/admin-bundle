@@ -2,24 +2,21 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Factory\Worker;
 
+use FSi\Bundle\AdminBundle\spec\fixtures\Admin\RequestStackAwareElement;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestStackWorkerSpec extends ObjectBehavior
 {
-    /**
-     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-     */
-    function let($requestStack)
+    function let(RequestStack $requestStack)
     {
         $this->beConstructedWith($requestStack);
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\spec\fixtures\Admin\RequestStackAwareElement $element
-     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-     */
-    function it_mount_request_stack_to_elements_that_are_request_stack_aware($element, $requestStack)
-    {
+    function it_mount_request_stack_to_elements_that_are_request_stack_aware(
+        RequestStackAwareElement $element,
+        RequestStack $requestStack
+    ) {
         $element->setRequestStack($requestStack)->shouldBeCalled();
 
         $this->mount($element);

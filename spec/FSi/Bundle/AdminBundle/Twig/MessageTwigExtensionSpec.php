@@ -9,14 +9,12 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Twig;
 
+use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use PhpSpec\ObjectBehavior;
 
 class MessageTwigExtensionSpec extends ObjectBehavior
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Message\FlashMessages $flashMessages
-     */
-    public function let($flashMessages)
+    public function let(FlashMessages $flashMessages)
     {
         $this->beConstructedWith($flashMessages);
     }
@@ -26,10 +24,7 @@ class MessageTwigExtensionSpec extends ObjectBehavior
         $this->getName()->shouldReturn('fsi_admin_messages');
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Message\FlashMessages $flashMessages
-     */
-    public function it_return_all_messages($flashMessages)
+    public function it_return_all_messages(FlashMessages $flashMessages)
     {
         $flashMessages->all()->willReturn([
             'success' => [
