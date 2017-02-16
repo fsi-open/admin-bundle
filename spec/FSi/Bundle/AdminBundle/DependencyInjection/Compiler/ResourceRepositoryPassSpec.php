@@ -39,10 +39,6 @@ class ResourceRepositoryPassSpec extends ObjectBehavior
             Argument::type('string'),
             Argument::type('Symfony\Component\DependencyInjection\Definition')
         )->shouldBeCalled();
-        $container->setAlias(
-            Argument::type('string'),
-            Argument::type('Symfony\Component\DependencyInjection\Alias')
-        )->shouldBeCalled();
 
         $this->process($container);
     }

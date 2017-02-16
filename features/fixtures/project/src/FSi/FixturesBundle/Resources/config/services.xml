@@ -21,9 +21,8 @@
 
         <service id="fixtures_bundle.admin.custom_news" class="FSi\FixturesBundle\Admin\CustomNews">
             <argument type="collection">
-                <argument key="template_crud_list">@FSiFixtures/Admin/custom_list.html.twig</argument>
-                <argument key="template_crud_create">@FSiFixtures/Admin/custom_edit.html.twig</argument>
-                <argument key="template_crud_edit">@FSiFixtures/Admin/custom_edit.html.twig</argument>
+                <argument key="template_list">@FSiFixtures/Admin/custom_list.html.twig</argument>
+                <argument key="template_form">@FSiFixtures/Admin/custom_form.html.twig</argument>
             </argument>
             <tag name="admin.element" />
         </service>

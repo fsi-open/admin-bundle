@@ -8,10 +8,9 @@ Feature: Overwriting default CRUD element templates
       | Id          | Class                               |
       | custom_news | FSi\FixturesBundle\Admin\CustomNews |
     And "custom_news" element have following options defined
-      | Option               | Value                                      |
-      | template_crud_list   | @FSiFixtures/Admin/custom_list.html.twig   |
-      | template_crud_create | @FSiFixtures/Admin/custom_edit.html.twig   |
-      | template_crud_edit   | @FSiFixtures/Admin/custom_edit.html.twig   |
+      | Option        | Value                                      |
+      | template_list | @FSiFixtures/Admin/custom_list.html.twig   |
+      | template_form | @FSiFixtures/Admin/custom_form.html.twig   |
 
   Scenario: Display custom list view
     And I am on the "Custom news list" page

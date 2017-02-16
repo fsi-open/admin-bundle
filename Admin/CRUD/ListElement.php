@@ -9,7 +9,10 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
-interface ListElement extends DataIndexerElement, DataSourceAwareInterface, DataGridAwareInterface
+use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataSource\DataSourceFactoryInterface;
+
+interface ListElement extends DataIndexerElement
 {
     /**
      * @return \FSi\Component\DataGrid\DataGrid|null
@@ -18,10 +21,20 @@ interface ListElement extends DataIndexerElement, DataSourceAwareInterface, Data
     public function createDataGrid();
 
     /**
+     * @param \FSi\Component\DataGrid\DataGridFactoryInterface $factory
+     */
+    public function setDataGridFactory(DataGridFactoryInterface $factory);
+
+    /**
      * @return \FSi\Component\DataSource\DataSource|null
      * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createDataSource();
+
+    /**
+     * @param \FSi\Component\DataSource\DataSourceFactoryInterface $factory
+     */
+    public function setDataSourceFactory(DataSourceFactoryInterface $factory);
 
     /**
      * Method called after DataGrid update at listAction in CRUDController.

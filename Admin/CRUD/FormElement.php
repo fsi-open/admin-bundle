@@ -10,8 +10,9 @@
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
+use Symfony\Component\Form\FormFactoryInterface;
 
-interface FormElement extends DataIndexerElement, RedirectableElement, FormAwareInterface
+interface FormElement extends DataIndexerElement, RedirectableElement
 {
     /**
      * @param mixed $data
@@ -19,6 +20,11 @@ interface FormElement extends DataIndexerElement, RedirectableElement, FormAware
      * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
      */
     public function createForm($data = null);
+
+    /**
+     * @param \Symfony\Component\Form\FormFactoryInterface $factory
+     */
+    public function setFormFactory(FormFactoryInterface $factory);
 
     /**
      * This method is called from FormController after form validation is passed in edit and create action.

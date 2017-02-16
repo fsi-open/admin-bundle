@@ -10,9 +10,8 @@
 namespace FSi\Bundle\AdminBundle\spec\fixtures\Admin;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\DoctrineAwareInterface;
 
-class DoctrineElement extends SimpleAdminElement implements DoctrineAwareInterface
+class DoctrineElement extends SimpleAdminElement
 {
     /**
      * @var ManagerRegistry

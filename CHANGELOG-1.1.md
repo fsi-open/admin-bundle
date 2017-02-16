@@ -1,6 +1,7 @@
-# CHANGELOG for 1.1
+# CHANGELOG for 1.1 (and 2.0)
 
-This document describes all the significant changes made between 1.0 and 1.1 branches
+This document describes all the significant changes made between 1.0 and 1.1 branches.
+It also covers transition to 2.0 branch, since 1.1 and 2.0 are backwards compatibile.
  
 ## Admin elements' changes
 

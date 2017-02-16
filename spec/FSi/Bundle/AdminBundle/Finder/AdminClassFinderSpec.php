@@ -3,7 +3,6 @@
 namespace spec\FSi\Bundle\AdminBundle\Finder;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AdminClassFinderSpec extends ObjectBehavior
 {
@@ -13,12 +12,10 @@ class AdminClassFinderSpec extends ObjectBehavior
     {
         $paths = array(__DIR__ . self::FIXTURES_BUNDLE_PATH . '/Admin');
         /* We can't just check if result is an array with following values because it might be in other order */
-        $this->findClasses($paths)->shouldHaveCount(6);
+        $this->findClasses($paths)->shouldHaveCount(4);
         $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\CRUDElement");
         $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DoctrineElement");
         $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\SimpleAdminElement");
-        $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DataGridAwareElement");
-        $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DataSourceAwareElement");
         $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\RequestStackAwareElement");
     }
 
@@ -29,12 +26,10 @@ class AdminClassFinderSpec extends ObjectBehavior
             __DIR__ . self::FIXTURES_BUNDLE_PATH . '/CustomAdmin'
         );
 
-        $this->findClasses($paths)->shouldHaveCount(7);
+        $this->findClasses($paths)->shouldHaveCount(5);
         $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\CRUDElement");
         $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DoctrineElement");
         $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\SimpleAdminElement");
-        $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DataGridAwareElement");
-        $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\DataSourceAwareElement");
         $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\RequestStackAwareElement");
         $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\CustomAdmin\\SimpleAdminElement");
     }

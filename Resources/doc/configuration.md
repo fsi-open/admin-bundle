@@ -16,7 +16,9 @@ fsi_admin:
         list: @FSiAdmin/List/list.html.twig
         form: @FSiAdmin/Form/form.html.twig
         crud_list: @FSiAdmin/CRUD/list.html.twig
-        crud_form: @FSiAdmin/CRUD/form.html.twig
+        # by default the value of `templates.form` option is copied here,
+        # but you can overwrite it
+        crud_form: @FSiAdmin/Form/form.html.twig
         resource: @FSiAdmin/Resource/resource.html.twig
         display: @FSiAdmin/Display/display.html.twig
         datagrid_theme: @FSiAdmin/CRUD/datagrid.html.twig
