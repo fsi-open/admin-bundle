@@ -99,7 +99,6 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         $this->actionOptionsResolver->setDefined(array(
             'element'
         ));
-        $self = $this;
         $this->actionOptionsResolver->setDefaults(array(
             'route_name' => function(Options $options) {
                 return $this->getDefaultRouteName($options);
