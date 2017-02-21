@@ -85,6 +85,7 @@ class DataContext implements KernelAwareContext
      */
     public function followingNewsExistInDatabase(TableNode $table)
     {
+        $manager = $this->getDoctrine()->getManager();
         $generator = Factory::create();
         foreach ($table->getHash() as $newsNode) {
             $news = $this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findOneByTitle($newsNode['Title']);
@@ -100,9 +101,10 @@ class DataContext implements KernelAwareContext
             $news->setVisible($generator->boolean());
             $news->setCreatorEmail($generator->email());
 
-            $this->getDoctrine()->getManager()->persist($news);
-            $this->getDoctrine()->getManager()->flush();
+            $manager->persist($news);
         }
+
+        $manager->flush();
     }
 
     /**

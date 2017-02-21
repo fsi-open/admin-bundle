@@ -99,10 +99,9 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         $this->actionOptionsResolver->setDefined(array(
             'element'
         ));
-        $self = $this;
         $this->actionOptionsResolver->setDefaults(array(
-            'route_name' => function(Options $options) use ($self) {
-                return $self->getDefaultRouteName($options);
+            'route_name' => function(Options $options) {
+                return $this->getDefaultRouteName($options);
             },
             'additional_parameters' => array(),
             'label' => null,
@@ -110,8 +109,8 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         ));
         $this->actionOptionsResolver->setNormalizer(
             'additional_parameters',
-            function(Options $options, $value) use ($self) {
-                return $self->normalizeAdditionalParameters($options, $value);
+            function(Options $options, $value) {
+                return $this->normalizeAdditionalParameters($options, $value);
             }
         );
         $this->actionOptionsResolver->setAllowedTypes('element', 'string');

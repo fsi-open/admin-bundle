@@ -2,13 +2,10 @@
 
 namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
-use FSi\Bundle\AdminBundle\Admin\Manager;
-use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataGrid\Column\CellViewInterface;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
-use FSi\Component\DataGrid\Extension\Symfony\ColumnType\Action;
 
 class AttributesExtension extends ColumnAbstractTypeExtension
 {

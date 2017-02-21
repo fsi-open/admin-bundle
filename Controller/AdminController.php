@@ -38,7 +38,7 @@ class AdminController
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      * @param string $indexActionTemplate
      */
-    function __construct(EngineInterface $templating, RouterInterface $router, $indexActionTemplate)
+    public function __construct(EngineInterface $templating, RouterInterface $router, $indexActionTemplate)
     {
         $this->templating = $templating;
         $this->router = $router;
