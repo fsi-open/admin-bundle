@@ -2,6 +2,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\EventListener;
 
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
@@ -11,10 +12,7 @@ use Prophecy\Prophet;
 
 class MainMenuListenerSpec extends ObjectBehavior
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
-     */
-    function let($manager)
+    function let(ManagerInterface $manager)
     {
         $prophet = new Prophet();
         $manager->getElement(Argument::type('string'))->will(function($args) use ($prophet) {
@@ -32,12 +30,10 @@ class MainMenuListenerSpec extends ObjectBehavior
         $this->beConstructedWith($manager, __DIR__ . '/admin_menu.yml');
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
-     * @param \FSi\Bundle\AdminBundle\Event\MenuEvent $event
-     */
-    function it_throws_exception_when_yaml_definition_of_menu_is_invalid($manager, $event)
-    {
+    function it_throws_exception_when_yaml_definition_of_menu_is_invalid(
+        ManagerInterface $manager,
+        MenuEvent $event
+    ) {
         $menuYaml = __DIR__ . '/invalid_admin_menu.yml';
         $this->beConstructedWith($manager, $menuYaml);
 

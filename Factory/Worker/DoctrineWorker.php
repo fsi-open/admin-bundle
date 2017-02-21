@@ -17,7 +17,7 @@ class DoctrineWorker implements Worker
     /**
      * @param ManagerRegistry $managerRegistry
      */
-    function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
         $this->managerRegistry = $managerRegistry;
     }

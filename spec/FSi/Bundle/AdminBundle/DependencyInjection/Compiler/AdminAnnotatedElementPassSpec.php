@@ -2,29 +2,26 @@
 
 namespace spec\FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use FSi\Bundle\AdminBundle\Finder\AdminClassFinder;
 use FSi\Bundle\AdminBundle\Annotation\Element;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class AdminAnnotatedElementPassSpec extends ObjectBehavior
 {
-    /**
-     * @param \Doctrine\Common\Annotations\AnnotationReader $annotationReader
-     * @param \FSi\Bundle\AdminBundle\Finder\AdminClassFinder $adminClassFinder
-     */
-    function let($annotationReader, $adminClassFinder)
+    function let(AnnotationReader $annotationReader, AdminClassFinder $adminClassFinder)
     {
         $this->beConstructedWith($annotationReader, $adminClassFinder);
 
     }
 
-    /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param \Doctrine\Common\Annotations\AnnotationReader $annotationReader
-     * @param \FSi\Bundle\AdminBundle\Finder\AdminClassFinder $adminClassFinder
-     */
-    function it_registers_annotated_admin_classes_as_services($container, $annotationReader, $adminClassFinder)
-    {
+    function it_registers_annotated_admin_classes_as_services(
+        ContainerBuilder $container,
+        AnnotationReader $annotationReader,
+        AdminClassFinder $adminClassFinder
+    ) {
         $container->getParameter('kernel.bundles')->willReturn(array(
             'FSi\Bundle\AdminBundle\spec\fixtures\MyBundle',
             'FSi\Bundle\AdminBundle\FSiAdminBundle',

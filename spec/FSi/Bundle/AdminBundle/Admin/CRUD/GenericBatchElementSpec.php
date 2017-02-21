@@ -3,7 +3,6 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class GenericBatchElementSpec extends ObjectBehavior
 {

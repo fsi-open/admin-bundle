@@ -9,16 +9,15 @@
 
 namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
+use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ElementActionExtensionSpec extends ObjectBehavior
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
-     * @param \FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action $column
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $actionOptionsResolver
-     */
-    function let($manager, $column, $actionOptionsResolver)
+    function let(Manager $manager, Action $column, OptionsResolver $actionOptionsResolver)
     {
         $column->getActionOptionsResolver()->willReturn($actionOptionsResolver);
         $this->beConstructedWith($manager);
@@ -34,11 +33,7 @@ class ElementActionExtensionSpec extends ObjectBehavior
         $this->getExtendedColumnTypes()->shouldReturn(array('action'));
     }
 
-    /**
-     * @param \FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action $column
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $actionOptionsResolver
-     */
-    function it_adds_element_id_action_option($column, $actionOptionsResolver)
+    function it_adds_element_id_action_option(Action $column, OptionsResolver $actionOptionsResolver)
     {
         $actionOptionsResolver->setDefined(array('element'))->shouldBeCalled();
         $actionOptionsResolver->setAllowedTypes('element', 'string')->shouldBeCalled();
@@ -46,14 +41,11 @@ class ElementActionExtensionSpec extends ObjectBehavior
         $this->initOptions($column);
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     * @param \FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action $column
-     * @throws \FSi\Component\DataGrid\Exception\UnknownOptionException
-     */
-    function it_initializes_action_route_and_parameters_based_on_element_id($manager, $element, $column)
-    {
+    function it_initializes_action_route_and_parameters_based_on_element_id(
+        Manager $manager,
+        Element $element,
+        Action $column
+    ) {
         $actionOptions = array(
             'element' => 'some_element_id',
             'additional_parameters' => array(

@@ -9,21 +9,25 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
+use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class ResourceRepositoryContextSpec extends ObjectBehavior
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface $handler
-     * @param \FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement $element
-     * @param \FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder $builder
-     * @param \FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder $resourceFormBuilder
-     * @param \Symfony\Component\Form\Form $form
-     */
-    function let($handler, $element, $builder, $resourceFormBuilder, $form)
-    {
+    function let(
+        HandlerInterface $handler,
+        ResourceElement $element,
+        MapBuilder $builder,
+        ResourceFormBuilder $resourceFormBuilder,
+        FormInterface $form
+    ) {
         $builder->getMap()->willReturn(array(
             'resources' => array()
         ));
@@ -47,11 +51,7 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('element');
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface $handler
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
-    function it_handle_request_with_request_handlers($handler, $request)
+    function it_handle_request_with_request_handlers(HandlerInterface $handler, Request $request)
     {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
             ->shouldBeCalled();
@@ -59,11 +59,7 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface $handler
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
-    function it_return_response_from_handler($handler, $request)
+    function it_return_response_from_handler(HandlerInterface $handler, Request $request)
     {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
             ->willReturn(new Response());

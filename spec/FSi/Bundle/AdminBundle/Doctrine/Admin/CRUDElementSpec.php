@@ -9,16 +9,16 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class CRUDElementSpec extends ObjectBehavior
 {
-    /**
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
-     * @param \Doctrine\Common\Persistence\ObjectManager $om
-     */
-    function let($registry, $om)
+    function let(ManagerRegistry $registry, ObjectManager $om)
     {
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyCrudElement');
         $this->beConstructedWith(array());
@@ -27,28 +27,18 @@ class CRUDElementSpec extends ObjectBehavior
         $this->setManagerRegistry($registry);
     }
 
-    /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $om
-     */
-    public function it_should_return_object_manager($om)
+    public function it_should_return_object_manager(ObjectManager $om)
     {
         $this->getObjectManager()->shouldReturn($om);
     }
 
-    /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $om
-     * @param \Doctrine\Common\Persistence\ObjectRepository $repository
-     */
-    public function it_should_return_object_repository($om, $repository)
+    public function it_should_return_object_repository(ObjectManager $om, ObjectRepository $repository)
     {
         $om->getRepository('FSiDemoBundle:Entity')->willReturn($repository);
         $this->getRepository()->shouldReturn($repository);
     }
 
-    /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $om
-     */
-    public function it_should_save_object_at_object_manager($om)
+    public function it_should_save_object_at_object_manager(ObjectManager $om)
     {
         $om->persist(Argument::type('stdClass'))->shouldBeCalled();
         $om->flush()->shouldBeCalled();
@@ -56,10 +46,7 @@ class CRUDElementSpec extends ObjectBehavior
         $this->save(new \stdClass());
     }
 
-    /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $om
-     */
-    public function it_should_remove_object_from_object_manager($om)
+    public function it_should_remove_object_from_object_manager(ObjectManager $om)
     {
         $om->remove(Argument::type('stdClass'))->shouldBeCalled();
         $om->flush()->shouldBeCalled();
@@ -67,24 +54,19 @@ class CRUDElementSpec extends ObjectBehavior
         $this->delete(new \stdClass());
     }
 
-    /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $om
-     */
-    public function it_should_save_datagrid($om)
+    public function it_should_save_datagrid(ObjectManager $om)
     {
         $om->flush()->shouldBeCalled();
 
         $this->saveDataGrid();
     }
 
-    /**
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
-     * @param \Doctrine\Common\Persistence\ObjectManager $om
-     * @param \Doctrine\Common\Persistence\ObjectRepository $repository
-     * @param \Doctrine\ORM\Mapping\ClassMetadata $metadata
-     */
-    public function it_should_have_doctrine_data_indexer($registry, $om, $repository, $metadata)
-    {
+    public function it_should_have_doctrine_data_indexer(
+        ManagerRegistry $registry,
+        ObjectManager $om,
+        ObjectRepository $repository,
+        ClassMetadata $metadata
+    ) {
         $registry->getManagerForClass('FSi/Bundle/DemoBundle/Entity/Entity')->willReturn($om);
         $om->getRepository('FSiDemoBundle:Entity')->willReturn($repository);
         $metadata->isMappedSuperclass = false;

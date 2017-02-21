@@ -2,8 +2,11 @@
 
 namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
+use FSi\Component\DataGrid\Column\ColumnTypeInterface;
+use FSi\Component\DataGrid\Column\CellViewInterface;
+use FSi\Component\DataGrid\Column\HeaderViewInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AttributesExtensionSpec extends ObjectBehavior
 {
@@ -12,11 +15,7 @@ class AttributesExtensionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface');
     }
 
-    /**
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $optionsResolver
-     */
-    function it_adds_actions_options($column, $optionsResolver)
+    function it_adds_actions_options(ColumnTypeInterface $column, OptionsResolver $optionsResolver)
     {
         $column->getOptionsResolver()->willReturn($optionsResolver);
 
@@ -36,11 +35,7 @@ class AttributesExtensionSpec extends ObjectBehavior
         $this->initOptions($column);
     }
 
-    /**
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param \FSi\Component\DataGrid\Column\CellViewInterface $view
-     */
-    function it_passes_attributes_to_cell_view($column, $view)
+    function it_passes_attributes_to_cell_view(ColumnTypeInterface $column, CellViewInterface $view)
     {
         $column->getOption('cell_attr')->willReturn(array('cell attributes'));
         $view->setAttribute('cell_attr', array('cell attributes'))->shouldBeCalled();
@@ -52,11 +47,7 @@ class AttributesExtensionSpec extends ObjectBehavior
         $this->buildCellView($column, $view);
     }
 
-    /**
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param \FSi\Component\DataGrid\Column\HeaderViewInterface $view
-     */
-    function it_passes_attributes_to_header_view($column, $view)
+    function it_passes_attributes_to_header_view(ColumnTypeInterface $column, HeaderViewInterface $view)
     {
         $column->getOption('header_attr')->willReturn(array('header attributes'));
         $view->setAttribute('header_attr', array('header attributes'))->shouldBeCalled();

@@ -25,7 +25,7 @@ class ListWorker implements Worker
     /**
      * @param DataSourceFactoryInterface $dataSourceFactory
      */
-    function __construct(
+    public function __construct(
         DataSourceFactoryInterface $dataSourceFactory,
         DataGridFactoryInterface $dataGridFactory
     ) {

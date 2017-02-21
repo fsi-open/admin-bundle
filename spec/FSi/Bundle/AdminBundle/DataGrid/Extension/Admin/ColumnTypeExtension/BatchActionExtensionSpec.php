@@ -2,25 +2,35 @@
 
 namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
+use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
+use FSi\Bundle\AdminBundle\Admin\Manager;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\AdminBundle\Form\TypeSolver;
+use FSi\Component\DataGrid\Column\ColumnTypeInterface;
+use FSi\Component\DataGrid\Column\HeaderViewInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 class BatchActionExtensionSpec extends ObjectBehavior
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
-     * @param \Symfony\Component\Routing\RouterInterface $router
-     * @param \Symfony\Component\Form\Test\FormBuilderInterface $formBuilder
-     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $queryAttributes
-     * @param \Symfony\Component\Form\Form $form
-     * @param \Symfony\Component\Form\FormView $formView
-     */
-    function let($manager, $router, $formBuilder, $requestStack, $request, $queryAttributes, $form, $formView)
-    {
+    function let(
+        Manager $manager,
+        RouterInterface $router,
+        FormBuilderInterface $formBuilder,
+        RequestStack $requestStack,
+        Request $request,
+        ParameterBag $queryAttributes,
+        FormInterface $form,
+        FormView $formView
+    ) {
         $this->beConstructedWith($manager, $requestStack, $router, $formBuilder);
         $formBuilder->getForm()->willReturn($form);
         $requestStack->getMasterRequest()->willReturn($request);
@@ -38,11 +48,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
         $this->getExtendedColumnTypes()->shouldReturn(array('batch'));
     }
 
-    /**
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $optionsResolver
-     */
-    function it_adds_actions_options($column, $optionsResolver)
+    function it_adds_actions_options(ColumnTypeInterface $column, OptionsResolver $optionsResolver)
     {
         $column->getOptionsResolver()->willReturn($optionsResolver);
 
@@ -54,14 +60,12 @@ class BatchActionExtensionSpec extends ObjectBehavior
         $this->initOptions($column);
     }
 
-    /**
-     * @param \Symfony\Component\Form\Test\FormBuilderInterface $formBuilder
-     * @param \Symfony\Component\Form\FormView $formView
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param \FSi\Component\DataGrid\Column\HeaderViewInterface $view
-     */
-    function it_does_not_add_batch_actions_to_form_when_none_are_defined($formBuilder, $formView, $column, $view)
-    {
+    function it_does_not_add_batch_actions_to_form_when_none_are_defined(
+        FormBuilderInterface $formBuilder,
+        FormView $formView,
+        ColumnTypeInterface $column,
+        HeaderViewInterface $view
+    ) {
         $column->getOption('actions')->willReturn(array());
         $formBuilder->add(Argument::any())->shouldNotBeCalled();
         $view->setAttribute('batch_form', $formView)->shouldBeCalled();
@@ -69,12 +73,10 @@ class BatchActionExtensionSpec extends ObjectBehavior
         $this->buildHeaderView($column, $view);
     }
 
-    /**
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param \FSi\Component\DataGrid\Column\HeaderViewInterface $view
-     */
-    function it_throws_exception_when_wrong_action_option_is_passed($column, $view)
-    {
+    function it_throws_exception_when_wrong_action_option_is_passed(
+        ColumnTypeInterface $column,
+        HeaderViewInterface $view
+    ) {
         $column->getOption('actions')->willReturn(array(
             array(
                 'wrong_option' => 'value'
@@ -85,15 +87,13 @@ class BatchActionExtensionSpec extends ObjectBehavior
             ->during('buildHeaderView', array($column, $view));
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
-     * @param \Symfony\Component\Form\Test\FormBuilderInterface $formBuilder
-     * @param \Symfony\Component\Form\FormView $formView
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param \FSi\Component\DataGrid\Column\HeaderViewInterface $view
-     */
-    function it_throws_exception_when_non_existing_element_is_passed($manager, $formBuilder, $formView, $column, $view)
-    {
+    function it_throws_exception_when_non_existing_element_is_passed(
+        Manager $manager,
+        FormBuilderInterface $formBuilder,
+        ColumnTypeInterface $column,
+        HeaderViewInterface $view,
+        FormView $formView
+    ) {
         $column->getOption('actions')->willReturn(array(
             array(
                 'element' => 'some_batch_element_id',
@@ -109,25 +109,15 @@ class BatchActionExtensionSpec extends ObjectBehavior
             ->during('buildHeaderView', array($column, $view));
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $batchElement
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $queryAttributes
-     * @param \Symfony\Component\Routing\RouterInterface $router
-     * @param \Symfony\Component\Form\Test\FormBuilderInterface $formBuilder
-     * @param \Symfony\Component\Form\FormView $formView
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param \FSi\Component\DataGrid\Column\HeaderViewInterface $view
-     */
     function it_adds_actions_choice_to_form_when_actions_are_defined(
-        $manager,
-        $batchElement,
-        $queryAttributes,
-        $router,
-        $formBuilder,
-        $formView,
-        $column,
-        $view
+        Manager $manager,
+        BatchElement $batchElement,
+        ParameterBag $queryAttributes,
+        RouterInterface $router,
+        FormBuilderInterface $formBuilder,
+        FormView $formView,
+        ColumnTypeInterface $column,
+        HeaderViewInterface $view
     ) {
         $column->getOption('actions')->willReturn(array(
             array(
@@ -191,27 +181,16 @@ class BatchActionExtensionSpec extends ObjectBehavior
         $this->buildHeaderView($column, $view);
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $batchElement
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $queryAttributes
-     * @param \Symfony\Component\Routing\RouterInterface $router
-     * @param \Symfony\Component\Form\Test\FormBuilderInterface $formBuilder
-     * @param \Symfony\Component\Form\FormView $formView
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param \FSi\Component\DataGrid\Column\HeaderViewInterface $view
-     */
     function it_adds_redirect_uri_to_actions_when_no_redirect_uri_is_defined(
-        $manager,
-        $batchElement,
-        $request,
-        $queryAttributes,
-        $router,
-        $formBuilder,
-        $formView,
-        $column,
-        $view
+        Manager $manager,
+        BatchElement $batchElement,
+        ParameterBag $queryAttributes,
+        RouterInterface $router,
+        FormBuilderInterface $formBuilder,
+        FormView $formView,
+        ColumnTypeInterface $column,
+        HeaderViewInterface $view,
+        Request $request
     ) {
         $column->getOption('actions')->willReturn(array(
             array(
@@ -274,25 +253,14 @@ class BatchActionExtensionSpec extends ObjectBehavior
         $this->buildHeaderView($column, $view);
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $batchElement
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $queryAttributes
-     * @param \Symfony\Component\Routing\RouterInterface $router
-     * @param \Symfony\Component\Form\Test\FormBuilderInterface $formBuilder
-     * @param \Symfony\Component\Form\FormView $formView
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param \FSi\Component\DataGrid\Column\HeaderViewInterface $view
-     */
     function it_does_not_add_redirect_uri_to_actions_when_redirect_uri_option_is_set_to_false(
-        $manager,
-        $batchElement,
-        $router,
-        $formBuilder,
-        $formView,
-        $column,
-        $view
+        Manager $manager,
+        BatchElement $batchElement,
+        RouterInterface $router,
+        FormBuilderInterface $formBuilder,
+        FormView $formView,
+        ColumnTypeInterface $column,
+        HeaderViewInterface $view
     ) {
         $column->getOption('actions')->willReturn(array(
             array(
@@ -353,21 +321,13 @@ class BatchActionExtensionSpec extends ObjectBehavior
         $this->buildHeaderView($column, $view);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $queryAttributes
-     * @param \Symfony\Component\Routing\RouterInterface $router
-     * @param \Symfony\Component\Form\Test\FormBuilderInterface $formBuilder
-     * @param \Symfony\Component\Form\FormView $formView
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param \FSi\Component\DataGrid\Column\HeaderViewInterface $view
-     */
     function it_allows_to_pass_route_name_and_additional_parameters_to_batch_action(
-        $queryAttributes,
-        $router,
-        $formBuilder,
-        $formView,
-        $column,
-        $view
+        ParameterBag $queryAttributes,
+        RouterInterface $router,
+        FormBuilderInterface $formBuilder,
+        FormView $formView,
+        ColumnTypeInterface $column,
+        HeaderViewInterface $view
     ) {
         $column->getOption('actions')->willReturn(array(
             'action_name' => array(
