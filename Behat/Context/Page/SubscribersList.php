@@ -20,36 +20,6 @@ class SubscribersList extends Page
         return $this->find('css', '#page-header')->getText();
     }
 
-    public function isColumnEditable($columnHeader)
-    {
-        return $this->getCell($columnHeader, 1)->has('css', 'a.editable');
-    }
-
-    public function getColumnPosition($columnHeader)
-    {
-        $headers = $this->findAll('css', 'th');
-        foreach ($headers as $index => $header) {
-            if ($header->has('css', 'span')) {
-                if ($header->find('css', 'span')->getText() == $columnHeader) {
-                    return $index + 1;
-                }
-            }
-        }
-
-        throw new UnexpectedPageException(sprintf("Cant find column %s", $columnHeader));
-    }
-
-    public function getCell($columnHeader, $rowNumber)
-    {
-        $columnPos = $this->getColumnPosition($columnHeader);
-        return $this->find('xpath', sprintf("descendant-or-self::table/tbody/tr[%d]/td[%d]", $rowNumber, $columnPos));
-    }
-
-    public function getPopover()
-    {
-        return $this->find('css', 'div.popover-content');
-    }
-
     protected function verifyPage()
     {
         if (!$this->has('css', '#page-header:contains("List of elements")')) {

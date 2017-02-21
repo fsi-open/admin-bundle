@@ -2,23 +2,18 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Factory;
 
+use FSi\Bundle\AdminBundle\Factory\ProductionLine;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ElementFactorySpec extends ObjectBehavior
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Factory\ProductionLine $productionLine
-     */
-    function let($productionLine)
+    function let(ProductionLine $productionLine)
     {
         $this->beConstructedWith($productionLine);
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Factory\ProductionLine $productionLine
-     */
-    function it_create_admin_element($productionLine)
+    function it_create_admin_element(ProductionLine $productionLine)
     {
         $productionLine->workOn(Argument::type('FSi\Bundle\AdminBundle\Admin\Element'))->shouldBeCalled();
         $this->create("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\SimpleAdminElement")

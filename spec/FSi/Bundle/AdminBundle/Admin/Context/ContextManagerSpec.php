@@ -9,23 +9,18 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use PhpSpec\ObjectBehavior;
 
 class ContextManagerSpec extends ObjectBehavior
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface $context
-     */
-    function let($context)
+    function let(ContextInterface $context)
     {
         $this->beConstructedWith(array($context));
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface $context
-     */
-    function it_build_context_for_element($element, $context)
+    function it_build_context_for_element(Element $element, ContextInterface $context)
     {
         $context->supports('route_name', $element)->willReturn(true);
         $context->setElement($element)->shouldBeCalled();
@@ -33,11 +28,7 @@ class ContextManagerSpec extends ObjectBehavior
         $this->createContext('route_name', $element)->shouldReturn($context);
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface $context
-     */
-    function it_return_null_when_context_builders_do_not_support_element($element, $context)
+    function it_return_null_when_context_builders_do_not_support_element(Element $element, ContextInterface $context)
     {
         $context->supports('route_name', $element)->willReturn(false);
         $context->setElement($element)->shouldNotBeCalled();

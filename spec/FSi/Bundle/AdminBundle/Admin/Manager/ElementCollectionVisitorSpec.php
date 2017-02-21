@@ -2,27 +2,23 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\Manager;
 
+use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
+use FSi\Bundle\AdminBundle\Factory\ProductionLine;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ElementCollectionVisitorSpec extends ObjectBehavior
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $adminElement
-     * @param \FSi\Bundle\AdminBundle\Factory\ProductionLine $productionLine
-     */
-    function let($adminElement, $productionLine)
+    function let(Element $adminElement, ProductionLine $productionLine)
     {
         $this->beConstructedWith(array($adminElement), $productionLine);
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
-     * @param \FSi\Bundle\AdminBundle\Factory\ProductionLine $productionLine
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $adminElement
-     */
-    function it_visit_manager_and_add_into_it_elements($manager, $productionLine, $adminElement)
-    {
+    function it_visit_manager_and_add_into_it_elements(
+        ManagerInterface $manager,
+        ProductionLine $productionLine,
+        Element $adminElement
+    ) {
         $productionLine->workOn($adminElement)->shouldBeCalled();
         $manager->addElement($adminElement)->shouldBeCalled();
 

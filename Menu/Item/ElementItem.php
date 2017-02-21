@@ -21,7 +21,7 @@ class ElementItem extends RoutableItem
      */
     private $element;
 
-    function __construct($name, Element $element)
+    public function __construct($name, Element $element)
     {
         parent::__construct($name);
 

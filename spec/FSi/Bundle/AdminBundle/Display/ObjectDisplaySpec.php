@@ -4,7 +4,6 @@ namespace spec\FSi\Bundle\AdminBundle\Display;
 
 use FSi\Bundle\AdminBundle\Display\Property;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ObjectDisplaySpec extends ObjectBehavior
 {

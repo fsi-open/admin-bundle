@@ -47,7 +47,7 @@ abstract class ControllerAbstract
      * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $contextManager
      * @param string|null $resourceActionTemplate
      */
-    function __construct(
+    public function __construct(
         EngineInterface $templating,
         ContextManager $contextManager,
         $resourceActionTemplate = null

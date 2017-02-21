@@ -17,7 +17,7 @@ class FormWorker implements Worker
     /**
      * @param FormFactoryInterface $formFactory
      */
-    function __construct(FormFactoryInterface $formFactory)
+    public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
     }

@@ -9,18 +9,18 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
+use FSi\Component\DataIndexer\DataIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class FormElementContextSpec extends ObjectBehavior
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
-     * @param \Symfony\Component\Form\Form $form
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface $handler
-     */
-    function let($element, $form, $handler)
+    function let(FormElement $element, FormInterface $form, HandlerInterface $handler)
     {
         $this->beConstructedWith(array($handler));
         $element->hasOption('allow_add')->willReturn(true);
@@ -34,14 +34,12 @@ class FormElementContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    /**
-     * @param \Symfony\Component\Form\Form $form
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
-     * @param \FSi\Component\DataIndexer\DataIndexerInterface $dataIndexer
-     */
-    function it_has_array_data($form, $request, $element, $dataIndexer)
-    {
+    function it_have_array_data(
+        FormInterface $form,
+        FormElement $element,
+        DataIndexerInterface $dataIndexer,
+        Request $request
+    ) {
         $form->createView()->willReturn('form_view');
         $form->getData()->willReturn(null);
 
@@ -51,10 +49,7 @@ class FormElementContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('element');
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
-     */
-    function it_has_template($element)
+    function it_has_template(FormElement $element)
     {
         $element->hasOption('template_form')->willReturn(true);
         $element->getOption('template_form')->willReturn('this_is_form_template.html.twig');
@@ -62,11 +57,7 @@ class FormElementContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn('this_is_form_template.html.twig');
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface $handler
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
-    function it_handle_request_with_request_handlers($handler, $request)
+    function it_handle_request_with_request_handlers(HandlerInterface $handler, Request $request)
     {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
             ->shouldBeCalled();
@@ -74,11 +65,7 @@ class FormElementContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface $handler
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
-    function it_return_response_from_handler($handler, $request)
+    function it_return_response_from_handler(HandlerInterface $handler, Request $request)
     {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
             ->willReturn(new Response());

@@ -9,17 +9,20 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
+use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
+use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext;
 use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class BatchControllerSpec extends ObjectBehavior
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
-     * @param \Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine $templating
-     */
-    function let($manager, $templating)
+    function let(ContextManager $manager, EngineInterface $templating)
     {
         $this->beConstructedWith(
             $templating,
@@ -27,21 +30,13 @@ class BatchControllerSpec extends ObjectBehavior
         );
     }
 
-    /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext $context
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\HttpFoundation\Response $response
-     */
     function it_dispatch_event_if_displatcher_present(
-        $dispatcher,
-        $manager,
-        $element,
-        $context,
-        $request,
-        $response
+        EventDispatcherInterface $dispatcher,
+        ContextManager $manager,
+        BatchElement $element,
+        BatchElementContext $context,
+        Request $request,
+        Response $response
     ) {
         $this->setEventDispatcher($dispatcher);
 
@@ -56,15 +51,10 @@ class BatchControllerSpec extends ObjectBehavior
         $this->batchAction($element, $request)->shouldReturn($response);
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
     function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
-        $element,
-        $manager,
-        $request
+        BatchElement $element,
+        ContextManager $manager,
+        Request $request
     ) {
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
@@ -73,14 +63,12 @@ class BatchControllerSpec extends ObjectBehavior
             ->during('batchAction', array($element, $request));
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext $context
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
-    function it_throws_exception_when_context_does_not_return_response($manager, $element, $context, $request)
-    {
+    function it_throws_exception_when_context_does_not_return_response(
+        ContextManager $manager,
+        BatchElement $element,
+        BatchElementContext $context,
+        Request $request
+    ) {
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->hasTemplateName()->willReturn(false);
         $context->handleRequest($request)->willReturn(null);
@@ -89,15 +77,13 @@ class BatchControllerSpec extends ObjectBehavior
             ->during('batchAction', array($element, $request));
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $manager
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext $context
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\HttpFoundation\Response $response
-     */
-    function it_return_response_from_context_in_batch_action($manager, $element, $context, $request, $response)
-    {
+    function it_return_response_from_context_in_batch_action(
+        ContextManager $manager,
+        BatchElement $element,
+        BatchElementContext $context,
+        Request $request,
+        Response $response
+    ) {
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
