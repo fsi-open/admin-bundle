@@ -27,7 +27,7 @@ class AdminElementPass implements CompilerPassInterface
             return;
         }
 
-        $elements = array();
+        $elements = [];
         $elementServices = $container->findTaggedServiceIds('admin.element');
         foreach ($elementServices as $id => $tag) {
             $elements[] = new Reference($id);

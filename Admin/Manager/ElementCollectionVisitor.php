@@ -25,7 +25,7 @@ class ElementCollectionVisitor implements Visitor
      */
     private $factoryProductionLine;
 
-    public function __construct($elements = array(), ProductionLine $factoryProductionLine)
+    public function __construct($elements = [], ProductionLine $factoryProductionLine)
     {
         $this->elements = $elements;
         $this->factoryProductionLine = $factoryProductionLine;

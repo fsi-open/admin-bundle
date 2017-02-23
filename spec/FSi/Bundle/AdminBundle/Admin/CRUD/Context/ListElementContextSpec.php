@@ -26,7 +26,7 @@ class ListElementContextSpec extends ObjectBehavior
         DataGridInterface $datagrid,
         HandlerInterface $handler
     ) {
-        $this->beConstructedWith(array($handler));
+        $this->beConstructedWith([$handler]);
         $element->createDataGrid()->willReturn($datagrid);
         $element->createDataSource()->willReturn($datasource);
         $this->setElement($element);
@@ -72,7 +72,7 @@ class ListElementContextSpec extends ObjectBehavior
 
     public function getMatchers()
     {
-        return array(
+        return [
             'haveKeyInArray' => function($subject, $key) {
                 if (!is_array($subject)) {
                     return false;
@@ -80,6 +80,6 @@ class ListElementContextSpec extends ObjectBehavior
 
                 return array_key_exists($key, $subject);
             },
-        );
+        ];
     }
 }

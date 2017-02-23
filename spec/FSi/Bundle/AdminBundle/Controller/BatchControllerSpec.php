@@ -60,7 +60,7 @@ class BatchControllerSpec extends ObjectBehavior
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
         $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
-            ->during('batchAction', array($element, $request));
+            ->during('batchAction', [$element, $request]);
     }
 
     function it_throws_exception_when_context_does_not_return_response(
@@ -74,7 +74,7 @@ class BatchControllerSpec extends ObjectBehavior
         $context->handleRequest($request)->willReturn(null);
 
         $this->shouldThrow('FSi\Bundle\AdminBundle\Exception\ContextException')
-            ->during('batchAction', array($element, $request));
+            ->during('batchAction', [$element, $request]);
     }
 
     function it_return_response_from_context_in_batch_action(

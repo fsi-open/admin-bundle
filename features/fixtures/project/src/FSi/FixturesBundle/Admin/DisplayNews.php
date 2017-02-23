@@ -40,18 +40,18 @@ class DisplayNews extends DisplayElement
         $display = new ObjectDisplay($object);
         $display->add('id', 'Identity')
             ->add('title')
-            ->add('date', null, array(
+            ->add('date', null, [
                 new Formatter\EmptyValue(),
                 new Formatter\DateTime('Y-m-d H:i:s')
-            ))
-            ->add('visible', 'Visible', array(
+            ])
+            ->add('visible', 'Visible', [
                 new Formatter\Boolean("yes", "no")
-            ))
+            ])
             ->add('categories')
-            ->add('createdAt', null, array(
+            ->add('createdAt', null, [
                 new Formatter\EmptyValue(),
                 new Formatter\DateTime('Y-m-d H:i:s')
-            ))
+            ])
             ->add('creatorEmail');
 
         return $display;

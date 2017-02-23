@@ -31,7 +31,7 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
             new RequestHandlerException(
                 "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormSubmitHandler require FormEvent"
             )
-        )->during('handleRequest', array($listEvent, $request));
+        )->during('handleRequest', [$listEvent, $request]);
     }
 
     function it_does_nothing_on_non_POST_request(FormEvent $event, Request $request)

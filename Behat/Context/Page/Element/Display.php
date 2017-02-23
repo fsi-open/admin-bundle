@@ -13,7 +13,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 class Display extends Element
 {
-    protected $selector = array('css' => 'table.table.table-bordered');
+    protected $selector = ['css' => 'table.table.table-bordered'];
 
     public function hasFieldWithName($fieldName)
     {

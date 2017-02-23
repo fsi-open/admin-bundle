@@ -140,7 +140,7 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
      */
     public function iAmOnThePageWithId($pageName, $id)
     {
-        $this->getPage($pageName)->open(array('id' => $id));
+        $this->getPage($pageName)->open(['id' => $id]);
     }
 
     /**

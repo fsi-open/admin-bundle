@@ -87,7 +87,7 @@ class ResourceFormBuilder
         ResourceValueRepository $valueRepository,
         array $resources
     ) {
-        $data = array();
+        $data = [];
 
         foreach ($resources as $resourceKey => $resource) {
             $resourceName = $this->buildResourceName($element, $resourceKey);
@@ -112,9 +112,9 @@ class ResourceFormBuilder
             $builder->add(
                 $this->normalizeKey($resourceName),
                 'resource',
-                array(
+                [
                     'resource_key' => $resourceName,
-                )
+                ]
             );
         }
     }

@@ -78,7 +78,7 @@ class News
 
     public function __construct()
     {
-        $this->categories = array();
+        $this->categories = [];
         $this->tags = new ArrayCollection();
     }
 

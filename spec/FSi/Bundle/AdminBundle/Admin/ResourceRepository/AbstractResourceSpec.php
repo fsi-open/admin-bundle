@@ -30,9 +30,9 @@ class AbstractResourceSpec extends ObjectBehavior
 
     function it_have_element_in_router_parameters()
     {
-        $this->getRouteParameters()->shouldReturn(array(
+        $this->getRouteParameters()->shouldReturn([
             'element' => 'main_page',
-        ));
+        ]);
     }
 
     function it_have_route_name()
@@ -42,8 +42,8 @@ class AbstractResourceSpec extends ObjectBehavior
 
     function it_has_default_options_values()
     {
-        $this->getOptions()->shouldReturn(array(
+        $this->getOptions()->shouldReturn([
             'template' => null
-        ));
+        ]);
     }
 }

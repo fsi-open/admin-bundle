@@ -14,7 +14,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageExce
 
 class ElementsList extends Element
 {
-    protected $selector = array('css' => 'table.table.table-hover.table-striped.table-bordered');
+    protected $selector = ['css' => 'table.table.table-hover.table-striped.table-bordered'];
 
     public function getElementsCount()
     {

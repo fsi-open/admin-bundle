@@ -14,9 +14,9 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageExce
 class NewsEdit extends Page
 {
     protected $path = '/admin/form/news/{id}';
-    protected $elements = array(
+    protected $elements = [
         'page header' => '#page-header',
-    );
+    ];
 
     public function getHeader()
     {

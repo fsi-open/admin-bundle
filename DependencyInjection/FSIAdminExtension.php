@@ -52,7 +52,7 @@ class FSIAdminExtension extends Extension
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @param array $config
      */
-    protected function setTemplateParameters(ContainerBuilder $container, $config = array())
+    protected function setTemplateParameters(ContainerBuilder $container, $config = [])
     {
         foreach ($config as $key => $value) {
             $container->setParameter(sprintf('admin.templates.%s', $key), $value);

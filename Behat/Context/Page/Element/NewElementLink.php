@@ -13,5 +13,5 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 class NewElementLink extends Element
 {
-    protected $selector = array('css' => 'a#create-element');
+    protected $selector = ['css' => 'a#create-element'];
 }

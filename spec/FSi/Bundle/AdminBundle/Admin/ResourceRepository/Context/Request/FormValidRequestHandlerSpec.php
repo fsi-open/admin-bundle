@@ -38,7 +38,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             new RequestHandlerException(
                 "FSi\\Bundle\\AdminBundle\\Admin\\ResourceRepository\\Context\\Request\\FormValidRequestHandler require FormEvent"
             )
-        )->during('handleRequest', array($listEvent, $request));
+        )->during('handleRequest', [$listEvent, $request]);
     }
 
     function it_do_nothing_on_non_POST_request(
@@ -70,7 +70,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
             ->shouldBeCalled();
 
-        $form->getData()->willReturn(array(new Resource(), new Resource()));
+        $form->getData()->willReturn([new Resource(), new Resource()]);
         $event->getElement()->willReturn($element);
         $element->save(Argument::type('FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Entity\\Resource'))->shouldBeCalledTimes(2);
 
@@ -78,8 +78,8 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $element->getSuccessRoute()->willReturn('fsi_admin_resource');
-        $element->getSuccessRouteParameters()->willReturn(array('element' => 'test-resource'));
-        $router->generate('fsi_admin_resource', array('element' => 'test-resource'))
+        $element->getSuccessRouteParameters()->willReturn(['element' => 'test-resource']);
+        $router->generate('fsi_admin_resource', ['element' => 'test-resource'])
             ->willReturn('/resource/test-resource');
 
         $this->handleRequest($event, $request)
@@ -140,7 +140,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
             ->shouldBeCalled();
 
-        $form->getData()->willReturn(array(new Resource(), new Resource()));
+        $form->getData()->willReturn([new Resource(), new Resource()]);
         $event->getElement()->willReturn($element);
         $element->save(Argument::type('FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Entity\\Resource'))->shouldBeCalledTimes(2);
 

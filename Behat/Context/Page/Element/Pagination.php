@@ -13,7 +13,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 class Pagination extends Element
 {
-    protected $selector = array('css' => 'ul.pagination');
+    protected $selector = ['css' => 'ul.pagination'];
 
     public function isDisabled($selector)
     {

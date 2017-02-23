@@ -26,14 +26,14 @@ class ItemElementsDecorator implements ItemDecorator
     public function decorate(KnpMenuItem $knpMenuItem, AdminMenuItem $adminMenuItem)
     {
         if ($adminMenuItem instanceof ElementItem && $adminMenuItem->hasOption('elements')) {
-            $routes = $knpMenuItem->getExtra('routes', array());
+            $routes = $knpMenuItem->getExtra('routes', []);
 
             /** @var Element $element */
             foreach ($adminMenuItem->getOption('elements') as $element) {
-                $routes[] = array(
+                $routes[] = [
                     'route' => $element->getRoute(),
                     'parameters' => $element->getRouteParameters()
-                );
+                ];
             }
 
             $knpMenuItem->setExtra('routes', $routes);

@@ -84,8 +84,8 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
      */
     public function setKernel(KernelInterface $kernel)
     {
-        $this->datagrids = array();
-        $this->datasources = array();
+        $this->datagrids = [];
+        $this->datasources = [];
         $this->kernel = $kernel;
     }
 

@@ -22,15 +22,15 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         ResourceValueRepository $valueRepository,
         TextType $resource
     ) {
-        $mapBuilder->getMap()->willReturn(array(
-            'resources' => array(
+        $mapBuilder->getMap()->willReturn([
+            'resources' => [
                 'resource_key' => $resource
-            )
-        ));
+            ]
+        ]);
         $resource->getName()->willReturn('resources.resource_key');
 
         $element->getRepository()->willReturn($valueRepository);
-        $element->getResourceFormOptions()->willReturn(array('form_options'));
+        $element->getResourceFormOptions()->willReturn(['form_options']);
 
         $this->beConstructedWith($formFactory, $mapBuilder);
     }
@@ -41,7 +41,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new RuntimeException("resources.resource_key its not a resource group key")
-        )->during('build', array($element));
+        )->during('build', [$element]);
     }
 
     function it_builds_form_for_resource_group(
@@ -56,11 +56,11 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         $valueRepository->get('resources.resource_key')->willReturn($resourceValue);
 
         $formFactory
-            ->createBuilder('form', array('resources_resource_key' => $resourceValue), array('form_options'))
+            ->createBuilder('form', ['resources_resource_key' => $resourceValue], ['form_options'])
             ->willReturn($formBuilder);
 
         $formBuilder
-            ->add('resources_resource_key', 'resource', array('resource_key' => 'resources.resource_key'))
+            ->add('resources_resource_key', 'resource', ['resource_key' => 'resources.resource_key'])
             ->shouldBeCalled();
 
         $formBuilder->getForm()->willReturn($form);
