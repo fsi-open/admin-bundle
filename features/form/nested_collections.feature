@@ -5,7 +5,7 @@ Feature: Managing form nested collections
       | Id   | Class                         |
       | news | FSi\FixturesBundle\Admin\News |
     And translations are enabled in application
-    And there is 1 news in database
+    And there is 1 "news"
     And I am on the "Admin panel" page
     And I follow "News" menu element
     And I press "Edit" link in "Action" column of first element at list

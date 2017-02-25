@@ -29,7 +29,7 @@ Feature: Deleting existing object
     And I choose action "Delete" from actions
     And I press confirmation button "Ok"
     Then I should be redirected to "News list" page
-    And news "News 1" should not exist in database anymore
+    And "news" with "title" "News 1" should not exist in database anymore
     And I should see a success message saying:
     """
     Operation has been completed successfully.
@@ -42,7 +42,7 @@ Feature: Deleting existing object
     And I choose action "Delete" from actions
     And I press confirmation button "Ok"
     Then I should be redirected to "News list" page
-    And there should not be any news in database
+    And there should not be any "news" present in the database
     And I should see a success message saying:
     """
     Operation has been completed successfully.

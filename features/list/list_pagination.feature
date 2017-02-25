@@ -11,7 +11,7 @@ Feature: Pagination
       | Id         | Class                               |
       | subscriber | FSi\FixturesBundle\Admin\Subscriber |
     And translations are enabled in application
-    And there are 20 subscribers in database
+    And there are 20 "subscribers"
     And I am on the "Subscribers list" page
     Then I should see pagination with following buttons
       | Button   | Active | Current |
@@ -23,12 +23,12 @@ Feature: Pagination
       | last     | true   | false   |
 
   Scenario: Pagination is not visible when max results is bigger than elements count
-    Given there are 8 subscribers in database
+    Given there are 8 "subscribers"
     And I am on the "Subscribers list" page
     Then I should not see pagination
 
   Scenario: Change current page
-    Given there are 20 subscribers in database
+    Given there are 20 "subscribers"
     And I am on the "Subscribers list" page
     Then I should see pagination with following buttons
       | Button   | Active | Current |

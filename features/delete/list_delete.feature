@@ -8,7 +8,7 @@ Feature: Deleting existing object
       | Id                | Class                                     |
       | subscriber        | FSi\FixturesBundle\Admin\Subscriber       |
       | subscriber_delete | FSi\FixturesBundle\Admin\SubscriberDelete |
-    And there are 3 subscribers in database
+    And there are 3 "subscribers"
 
   Scenario: Display delete action
     Given I am on the "Subscribers list" page
@@ -26,7 +26,7 @@ Feature: Deleting existing object
     And I choose action "Delete" from actions
     And I press confirmation button "Ok"
     Then I should be redirected to "Subscribers list" page
-    And there should be 2 subscribers in database
+    And there should be 2 "subscribers" present in the database
     And I should see a success message saying:
     """
     Operation has been completed successfully.
@@ -39,16 +39,16 @@ Feature: Deleting existing object
     And I choose action "Delete" from actions
     And I press confirmation button "Ok"
     Then I should be redirected to "Subscribers list" page
-    And there should not be any subscribers in database
+    And there should not be any "subscribers" present in the database
     And I should see a success message saying:
     """
     Operation has been completed successfully.
     """
 
   Scenario: Deleting object with an element not allowing deletion
-    Given there is a person with id 1 in database
+    Given there is a "person" with "id" 1 present in the database
     And I am on the "Person list" page
     When I press checkbox in first column in first row
     And I perform action "Delete"
     Then page "Person list" should throw an error exception
-    And there should be a person with id 1 in database
+    And there should be a "person" with "id" "1" present in the database

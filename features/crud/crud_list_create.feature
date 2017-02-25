@@ -3,6 +3,7 @@ Feature: Creating new object
   As a developer
   I need to install FSiAdminBundle and configure form in news admin element
 
+
   Scenario: Display create form
     Given the following admin elements were registered
       | Id   | Class                         |
@@ -20,11 +21,12 @@ Feature: Creating new object
       | Visible       |
       | Creator email |
 
+
   Scenario: Create new element
     Given I am on the "News Create" page
     When I fill all form field properly
     And I press form "Save" button
-    Then new news should be created
+    Then new "news" should be created
     And I should be redirected to "News List" page
     And I should see a success message saying:
     """

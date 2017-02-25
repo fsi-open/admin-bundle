@@ -3,6 +3,7 @@ Feature: Creating new object
   As a developer
   I need to install FSiAdminBundle and configure form in news admin element
 
+
   Scenario: Display form for new element
     Given the following admin elements were registered
       | Id              | Class                                   |
@@ -19,23 +20,25 @@ Feature: Creating new object
       | Created at    |
       | Active        |
 
+
   Scenario: Create new element
     Given I am on the "Subscriber Form" page
     When I fill all form field properly
     And I press form "Save" button
-    Then new subscriber should be created
+    Then new "subscriber" should be created
     And I should be redirected to "Subscribers List" page
     And I should see a success message saying:
     """
     Data has been successfully saved.
     """
 
+
   Scenario: Display form for existing element
     Given the following admin elements were registered
       | Id              | Class                                   |
       | subscriber      | FSi\FixturesBundle\Admin\Subscriber     |
       | subscriber_form | FSi\FixturesBundle\Admin\SubscriberForm |
-    And there is 1 subscriber in database
+    And there is 1 "subscriber"
     And translations are enabled in application
     And I am on the "Subscribers list" page
     When I press "Edit" link in "Action" column of first element at list
@@ -46,8 +49,9 @@ Feature: Creating new object
       | Created at    |
       | Active        |
 
+
   Scenario: Edit element
-    Given there is subscriber with id 1 in database
+    Given there is a "subscriber" with "id" 1 present in the database
     And I am on the "Subscriber Edit" page with id 1
     When I change form "Email" field value
     And I press form "Save" button
@@ -58,8 +62,9 @@ Feature: Creating new object
     Data has been successfully saved.
     """
 
+
   Scenario: Editing an element with invalid data
-    Given there is subscriber with id 1 in database
+    Given there is a "subscriber" with "id" 1 present in the database
     And I am on the "Subscriber Edit" page with id 1
     When I fill the "Email" field with invalid data
     And I press form "Save" button
@@ -69,8 +74,9 @@ Feature: Creating new object
     Form is invalid.
     """
 
+
   Scenario: Opening new object form page for edit only element
-    Given there is a person with id 1 in database
+    Given there is a "person" with "id" 1 present in the database
     And I am on the "Person edit form" page with id 1
     Then I should see form with following fields
       | Field name    |

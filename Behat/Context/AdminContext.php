@@ -24,6 +24,10 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
      * @var KernelInterface
      */
     protected $kernel;
+    /**
+     * @var \FSi\Component\DataSource\DataSource[]
+     */
+    protected $datasources;
 
     public function setKernel(KernelInterface $kernel)
     {
@@ -88,11 +92,11 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
      */
     public function elementHaveDatasourceWithFields(ListElement $adminElement)
     {
-        $dataSource = $adminElement->createDataSource();
+        $dataSource = $this->getDataSource($adminElement);
 
         expect(count($dataSource->getFields()) > 0)->toBe(true);
 
-        $this->kernel->getContainer()->get('datasource.factory')->clearDataSource('news');
+        $this->kernel->getContainer()->get('datasource.factory')->clearDataSource($adminElement->getId());
     }
 
     /**
@@ -100,7 +104,7 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
      */
     public function elementHaveDatasourceWithoutFilters(ListElement $adminElement)
     {
-        $dataSource = $adminElement->createDataSource();
+        $dataSource = $this->getDataSource($adminElement);
 
         $filters = false;
         foreach ($dataSource->getFields() as $field) {
@@ -111,7 +115,7 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
         }
         expect($filters)->toBe(false);
 
-        $this->kernel->getContainer()->get('datasource.factory')->clearDataSource('news');
+        $this->kernel->getContainer()->get('datasource.factory')->clearDataSource($adminElement->getId());
     }
 
     /**
@@ -348,5 +352,14 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
                 $status
             ));
         }
+    }
+
+    protected function getDataSource(ListElement $adminElement)
+    {
+        if (!isset($this->datasources[$adminElement->getId()])) {
+            $this->datasources[$adminElement->getId()] = $adminElement->createDataSource();
+        }
+
+        return $this->datasources[$adminElement->getId()];
     }
 }

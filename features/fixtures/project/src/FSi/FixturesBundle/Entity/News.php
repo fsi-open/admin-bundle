@@ -3,6 +3,7 @@
 namespace FSi\FixturesBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FSi\Bundle\DoctrineExtensionsBundle\Validator\Constraints as UploadableAssert;
 use FSi\DoctrineExtensions\Uploadable\Mapping\Annotation as Uploadable;
@@ -69,7 +70,7 @@ class News
     protected $categories;
 
     /**
-     * @var Tag[]
+     * @var Tag[]|Collection
      *
      * @Assert\Valid
      * @ORM\OneToMany(targetEntity="Tag", mappedBy="news", cascade={"persist"}, orphanRemoval=true)

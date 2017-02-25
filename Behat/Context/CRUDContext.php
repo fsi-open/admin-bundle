@@ -19,7 +19,6 @@ use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Faker\Factory;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\Behat\Context\Page\NewsList;
-use LogicException;
 use PhpSpec\Exception\Example\PendingException;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\BrowserKit\Client;
@@ -681,7 +680,7 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
      */
     protected function getDataSource(ListElement $adminElement)
     {
-        if (!array_key_exists($adminElement->getId(), $this->datasources)) {
+        if (!isset($this->datasources[$adminElement->getId()])) {
             $this->datasources[$adminElement->getId()] = $adminElement->createDataSource();
         }
 

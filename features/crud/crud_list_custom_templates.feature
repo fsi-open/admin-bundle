@@ -17,7 +17,8 @@ Feature: Overwriting default CRUD element templates
     And I am on the "Custom news list" page
     Then I should see customized "list" view
 
+
   Scenario: Display custom edit view
-    Given there is news with id 1 in database
+    Given there is a "news" with "id" 1 present in the database
     And I am on the "Custom news edit" page with id 1
     Then I should see customized "edit" view
