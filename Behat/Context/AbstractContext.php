@@ -131,4 +131,17 @@ abstract class AbstractContext implements KernelAwareContext, MinkAwareContext
     {
         return $this->getSession()->getDriver() instanceof Selenium2Driver;
     }
+
+    protected function parseScenarioValue($rawValue)
+    {
+        $value = trim($rawValue);
+        switch ($value) {
+            case 'false':
+                return false;
+            case 'true':
+                return true;
+            default:
+                return $value;
+        }
+    }
 }

@@ -11,17 +11,13 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Mink;
 use Behat\MinkExtension\Context\MinkAwareContext;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
-use Faker\Factory;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\Behat\Context\Page\NewsList;
-use PhpSpec\Exception\Example\PendingException;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
-use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkAwareContext
@@ -42,21 +38,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
     protected $datasources;
 
     /**
-     * @var string
-     */
-    protected $newsTitle;
-
-    /**
-     * @var string
-     */
-    protected $subscriberEmail;
-
-    /**
-     * @var string
-     */
-    protected $invalidEmail = 'not_a_valid_email#email.';
-
-    /**
      * @var Mink
      */
     protected $mink;
@@ -65,8 +46,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
      * @var array
      */
     private $minkParameters;
-
-    private $selectedRows = [];
 
     public function setMink(Mink $mink)
     {
@@ -86,23 +65,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
         $this->datagrids = [];
         $this->datasources = [];
         $this->kernel = $kernel;
-    }
-
-    /**
-     * @Then /^I should see list with following columns$/
-     */
-    public function iShouldSeeListWithFollowingColumns(TableNode $table)
-    {
-        $list = $this->getElement('Elements List');
-
-        foreach ($table->getHash() as $columnRow) {
-            expect($list->hasColumn($columnRow['Column name']))->toBe(true);
-
-            if (array_key_exists('Sortable', $columnRow)) {
-                expect($list->isColumnSortable($columnRow['Column name']))
-                    ->toBe(($columnRow['Sortable'] === 'true') ? true : false);
-            }
-        }
     }
 
     /**
@@ -171,7 +133,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
                 break;
             default :
                 throw new \Exception(sprintf("Unknown sorting type %s", $sort));
-                break;
         }
     }
 
@@ -191,16 +152,7 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
                 break;
             default :
                 throw new \Exception(sprintf("Unknown sorting type %s", $sort));
-                break;
         }
-    }
-
-    /**
-     * @Then /^I should not see pagination$/
-     */
-    public function iShouldNotSeePagination()
-    {
-        expect($this->getElement('Pagination'))->toThrow('\LogicException');
     }
 
     /**
@@ -209,14 +161,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
     public function iPressButtonAtPagination($button)
     {
         $this->getElement('Pagination')->clickLink($button);
-    }
-
-    /**
-     * @Then /^there should be (\d+) elements at list$/
-     */
-    public function thereShouldBeElementsAtList($elemetsCount)
-    {
-        expect($this->getElement('Elements List')->getElementsCount())->toBe($elemetsCount);
     }
 
     /**
@@ -292,14 +236,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
     }
 
     /**
-     * @Then /^I should see filtered list$/
-     */
-    public function iShouldSeeFilteredList()
-    {
-        $this->getElement('Elements List')->getHtml();
-    }
-
-    /**
      * @Given /^simple text filter "([^"]*)" should be filled with value "([^"]*)"$/
      */
     public function simpleTextFilterShouldBeFilledWithValue($filterName, $filterValue)
@@ -318,56 +254,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
     }
 
     /**
-     * @Given /^I should see form with following fields$/
-     */
-    public function iShouldSeeFormWithFollowingFields(TableNode $table)
-    {
-        $form = $this->getElement('Form');
-        foreach($table->getHash() as $fieldRow) {
-            expect($form->hasField($fieldRow['Field name']))->toBe(true);
-        }
-    }
-
-    /**
-     * @When /^I fill all form field properly$/
-     */
-    public function iFillAllFormFieldProperly()
-    {
-        $generator = Factory::create();
-        $form = $this->getElement('Form');
-        if ($form->hasField('Title')) {
-            $form->fillField('Title', $generator->text());
-        }
-        if ($form->hasField('Created at')) {
-            $this->getElement('Form')->fillField('Created at', $generator->date());
-        }
-        if ($form->hasField('Visible')) {
-            if ($generator->boolean()) {
-                $this->getElement('Form')->checkField('Visible');
-            } else {
-                $this->getElement('Form')->uncheckField('Visible');
-            }
-        }
-        if ($form->hasField('Active')) {
-            $this->getElement('Form')->fillField('Active', $generator->boolean());
-        }
-        if ($form->hasField('Email')) {
-            $this->getElement('Form')->fillField('Email', $generator->email());
-        }
-        if ($form->hasField('Creator email')) {
-            $this->getElement('Form')->fillField('Creator email', $generator->email());
-        }
-    }
-
-    /**
-     * @Given /^I press form "([^"]*)" button$/
-     */
-    public function iPressFormButton($button)
-    {
-        $this->getElement('Form')->pressButton($button);
-    }
-
-    /**
      * @Given /^I should be redirected to "([^"]*)" page$/
      */
     public function iShouldBeRedirectedToPage($pageName)
@@ -381,72 +267,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
     public function iPressLinkInColumnOfFirstElementAtList($link, $columnName)
     {
         $this->getElement('Elements list')->pressLinkInRowInColumn($link, 1, $columnName);
-    }
-
-    /**
-     * @When /^I change form "([^"]*)" field value$/
-     */
-    public function iChangeFormTitleFieldValue($field)
-    {
-        $generator = Factory::create();
-        switch ($field) {
-            case 'Title':
-                $this->newsTitle = $generator->text();
-                expect($this->newsTitle)->toNotBe($this->getElement('Form')->findField($field)->getValue());
-                $this->getElement('Form')->fillField($field, $this->newsTitle);
-                break;
-            case 'Email':
-                $this->subscriberEmail = $generator->email();
-                expect($this->subscriberEmail)->toNotBe($this->getElement('Form')->findField($field)->getValue());
-                $this->getElement('Form')->fillField($field, $this->subscriberEmail);
-                break;
-        }
-    }
-
-    /**
-     * @When /^I fill the "([^"]*)" field with invalid data$/
-     */
-    public function iFillFormValueWithInvalidData($field)
-    {
-        switch ($field) {
-            case 'Email':
-                expect($this->invalidEmail)->toNotBe($this->getElement('Form')->findField($field)->getValue());
-                $this->getElement('Form')->fillField($field, $this->invalidEmail);
-                break;
-        }
-    }
-
-    /**
-     * @Then /^news with id (\d+) should have changed title$/
-     */
-    public function newsWithIdShouldHaveChangedTitle($id)
-    {
-        expect($this->kernel->getContainer()->get('doctrine')->getManager()->getRepository('FSi\FixturesBundle\Entity\News')->findOneById($id)->getTitle())->toBe($this->newsTitle);
-    }
-
-    /**
-     * @Then /^subscriber with id (\d+) should have changed email$/
-     */
-    public function subscriberWithIdShouldHaveChangedEmail($id)
-    {
-        expect($this->kernel->getContainer()->get('doctrine')->getManager()->getRepository('FSi\FixturesBundle\Entity\Subscriber')->findOneById($id)->getEmail())->toBe($this->subscriberEmail);
-    }
-
-    /**
-     * @Then /^subscriber with id (\d+) should not have his email changed to invalid one$/
-     */
-    public function subscriberWithIdShouldNotHaveChangedEmailToInvalid($id)
-    {
-        $manager = $this->kernel->getContainer()
-            ->get('doctrine')
-            ->getManager()
-        ;
-        $subsciber = $manager
-            ->getRepository('FSi\FixturesBundle\Entity\Subscriber')
-            ->findOneById($id)
-        ;
-        $manager->refresh($subsciber);
-        expect($subsciber->getEmail())->notToBe($this->invalidEmail);
     }
 
     /**
@@ -488,66 +308,12 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
     }
 
     /**
-     * @When /^I press checkbox in first column in first row$/
-     */
-    public function iPressCheckboxInFirstColumnInFirstRow()
-    {
-        $driver = $this->mink->getSession()->getDriver();
-        if ($driver instanceof Selenium2Driver) {
-            $this->getPage('News list')->pressBatchCheckboxInRow(1);
-        } else {
-            $row = $this->getPage('News list')->find('xpath', sprintf('//tr[%d]', 1));
-            $this->selectedRows[] = $row->find('css', 'input[type=checkbox]')->getAttribute('value');
-        }
-    }
-
-    /**
-     * @Given /^I choose action "([^"]*)" from actions$/
-     */
-    public function iChooseActionFromActions($action)
-    {
-        $this->getPage('News list')->selectBatchAction($action);
-    }
-
-    /**
-     * @Given /^I press confirmation button "Ok"$/
-     */
-    public function iPressConfirmationButton()
-    {
-        $this->getPage('News list')->pressBatchActionConfirmationButton();
-    }
-
-    /**
      * @Then /^I should be redirected to confirmation page with message$/
      */
     public function iShouldBeRedirectedToConfirmationPageWithMessage(PyStringNode $message)
     {
         $this->getPage('News delete confirmation')->isOpen();
         expect($this->getPage('News delete confirmation')->getConfirmationMessage())->toBe((string) $message);
-    }
-
-    /**
-     * @When /^I press "Yes"$/
-     */
-    public function iPress()
-    {
-        $this->getPage('News delete confirmation')->pressButton('Yes');
-    }
-
-    /**
-     * @When /^I press checkbox in first column header$/
-     */
-    public function iPressCheckboxInFirstColumnHeader()
-    {
-        $this->getPage('News list')->selectAllElements();
-    }
-
-    /**
-     * @Given /^"([^"]*)" column is editable$/
-     */
-    public function columnIsEditable($columnHeader)
-    {
-        expect($this->getPage('News list')->isColumnEditable($columnHeader))->toBe(true);
     }
 
     /**
@@ -630,38 +396,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
     }
 
     /**
-     * @Then /^"([^"]*)" news title should be changed to "([^"]*)"$/
-     */
-    public function newsTitleShouldBeChangedTo($arg1, $arg2)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given I perform action :action
-     */
-    public function iPerformBatchActionOnPage($action)
-    {
-        $page = $this->getPage('News list');
-        $batchActionUrl = $page->find('css', sprintf('#batch_action_action option:contains("%s")', $action))
-            ->getAttribute('value')
-        ;
-        $data = [
-            'batch_action' => [
-                '_token' => $page->find('css', '#batch_action__token')
-                    ->getAttribute('value'),
-            ],
-        ];
-        foreach ($this->selectedRows as $id) {
-            $data['indexes'][] = $id;
-        }
-
-        /* @var $client Client */
-        $client = $this->mink->getSession()->getDriver()->getClient();
-        $client->request('POST', $batchActionUrl, $data);
-    }
-
-    /**
      * @param \FSi\Bundle\AdminBundle\Admin\CRUD\ListElement $adminElement
      * @return \FSi\Component\DataGrid\DataGrid
      */
@@ -685,18 +419,5 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
         }
 
         return $this->datasources[$adminElement->getId()];
-    }
-
-    /**
-     * @param $optionValue
-     * @return mixed
-     */
-    protected function prepareColumnOptionValue($optionValue)
-    {
-        if ($optionValue === 'true' || $optionValue === 'false') {
-            $optionValue = ($optionValue === 'true') ? true : false;
-        }
-
-        return $optionValue;
     }
 }

@@ -12,7 +12,12 @@ Feature: Managing form collections
     And I follow "News" menu element
     And I press "New element" link
     And I should see "News create" page header "New element"
-    And I fill all form field properly
+    When I fill the form with values:
+      | Field name    | Field value       |
+      | Title         | A new news        |
+      | Created at    | 2017-03-01        |
+      | Creator email | email@example.com |
+      | Visible       | Yes               |
     And "Tags" collection should have 0 elements
     When I press "Add value" in collection "Tags"
     And "Tags" collection should have 1 elements
@@ -31,7 +36,7 @@ Feature: Managing form collections
     And I am on the "Admin panel" page
     And I follow "News" menu element
     When I press "Edit" link in "Action" column of first element at list
-    And I should see "News Edit" page header "Edit element"
+    And I should see "News edit" page header "Edit element"
     And "Tags" collection should have 1 elements
     When I press "Add value" in collection "Tags"
     And I fill "Name" with "Lorem" in collection "Tags" at position 2
@@ -50,7 +55,7 @@ Feature: Managing form collections
     And I am on the "Admin panel" page
     And I follow "News" menu element
     When I press "Edit" link in "Action" column of first element at list
-    And I should see "News Edit" page header "Edit element"
+    And I should see "News edit" page header "Edit element"
     And "Tags" collection should have 1 elements
     And I remove first element in collection "Tags"
     And "Tags" collection should have 0 elements
@@ -68,6 +73,6 @@ Feature: Managing form collections
     And I am on the "Admin panel" page
     And I follow "News" menu element
     When I press "Edit" link in "Action" column of first element at list
-    And I should see "News Edit" page header "Edit element"
+    And I should see "News edit" page header "Edit element"
     And non-editable collection "Non-editable tags" should have 3 elements
     Then all buttons for adding and removing items in non-editable collection "Non-editable tags" should be disabled

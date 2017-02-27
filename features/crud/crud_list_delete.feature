@@ -22,12 +22,11 @@ Feature: Deleting existing object
       | Delete        |
     And I should see confirmation button "Ok"
 
-  @javascript
+
   Scenario: Delete single news
     Given I am on the "News list" page
     When I press checkbox in first column in first row
-    And I choose action "Delete" from actions
-    And I press confirmation button "Ok"
+    And I perform the batch action "Delete"
     Then I should be redirected to "News list" page
     And "news" with "title" "News 1" should not exist in database anymore
     And I should see a success message saying:
@@ -35,12 +34,11 @@ Feature: Deleting existing object
     Operation has been completed successfully.
     """
 
-  @javascript
+
   Scenario: Delete all elements from page
     Given I am on the "News list" page
     When I press checkbox in first column header
-    And I choose action "Delete" from actions
-    And I press confirmation button "Ok"
+    And I perform the batch action "Delete"
     Then I should be redirected to "News list" page
     And there should not be any "news" present in the database
     And I should see a success message saying:

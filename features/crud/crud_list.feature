@@ -3,6 +3,7 @@ Feature: List of elements
   As a developer
   I need to install FSiAdminBundle and configure datagrid for news admin element
 
+
   Scenario: Accessing news list from admin panel main page
     Given the following admin elements were registered
       | Id   | Class                         |

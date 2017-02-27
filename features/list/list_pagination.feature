@@ -25,7 +25,7 @@ Feature: Pagination
   Scenario: Pagination is not visible when max results is bigger than elements count
     Given there are 8 "subscribers"
     And I am on the "Subscribers list" page
-    Then I should not see pagination
+    Then I should not see pagination on page "Subscribers list"
 
   Scenario: Change current page
     Given there are 20 "subscribers"

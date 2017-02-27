@@ -82,7 +82,7 @@ class DataContext extends AbstractContext
     public function thereIsAnEntityWithField($className, $field, $value)
     {
         $formatters = $this->getColumnFormatters($className);
-        $formatters[$field] = $value;
+        $formatters[$field] = $this->parseScenarioValue($value);
         $populator = new Populator($this->getFaker(), $this->getEntityManager());
         $populator->addEntity(
             $className,
@@ -170,10 +170,29 @@ class DataContext extends AbstractContext
         $entity = $this->getRepository($className)->findOneBy([$field => $value]);
         $this->getEntityManager()->refresh($entity);
 
-        $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $tags = $propertyAccessor->getValue($entity, strtolower($collectionName));
+        expect(count($this->getEntityField($entity, $collectionName)))->toBe($expectedCount);
+    }
 
-        expect(count($tags))->toBe($expectedCount);
+    /**
+     * @Then :className with id :id should have changed :field to :value
+     */
+    public function entityWithIdShouldHaveChangedField($className, $id, $field, $value)
+    {
+        $entity = $this->getRepository($className)->find($id);
+        $this->getEntityManager()->refresh($entity);
+
+        expect($this->getEntityField($entity, $field))->toBe($value);
+    }
+
+    /**
+     * @Then :className with id :id should not have his :field changed to :value
+     */
+    public function entityWithIdShouldNotHaveChangedFieldValue($className, $id, $field, $value)
+    {
+        $entity = $this->getRepository($className)->find($id);
+        $this->getEntityManager()->refresh($entity);
+
+        expect($this->getEntityField($entity, $field))->notToBe($value);
     }
 
     /**
@@ -235,5 +254,11 @@ class DataContext extends AbstractContext
                     $className
                 ));
         }
+    }
+
+    private function getEntityField($entity, $field)
+    {
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        return $propertyAccessor->getValue($entity, strtolower($field));
     }
 }

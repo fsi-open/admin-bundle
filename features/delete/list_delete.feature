@@ -3,12 +3,14 @@ Feature: Deleting existing object
   As a developer
   I need to install FSiAdminBundle and configure delete admin element for newsletter subscribers
 
+
   Background:
     Given the following admin elements were registered
       | Id                | Class                                     |
       | subscriber        | FSi\FixturesBundle\Admin\Subscriber       |
       | subscriber_delete | FSi\FixturesBundle\Admin\SubscriberDelete |
     And there are 3 "subscribers"
+
 
   Scenario: Display delete action
     Given I am on the "Subscribers list" page
@@ -19,12 +21,11 @@ Feature: Deleting existing object
       | Delete        |
     And I should see confirmation button "Ok"
 
-  @javascript
+
   Scenario: Delete single subscriber
     Given I am on the "Subscribers list" page
     When I press checkbox in first column in first row
-    And I choose action "Delete" from actions
-    And I press confirmation button "Ok"
+    And I perform the batch action "Delete"
     Then I should be redirected to "Subscribers list" page
     And there should be 2 "subscribers" present in the database
     And I should see a success message saying:
@@ -32,12 +33,11 @@ Feature: Deleting existing object
     Operation has been completed successfully.
     """
 
-  @javascript
+
   Scenario: Delete all elements from page
     Given I am on the "Subscribers list" page
     When I press checkbox in first column header
-    And I choose action "Delete" from actions
-    And I press confirmation button "Ok"
+    And I perform the batch action "Delete"
     Then I should be redirected to "Subscribers list" page
     And there should not be any "subscribers" present in the database
     And I should see a success message saying:
@@ -45,10 +45,11 @@ Feature: Deleting existing object
     Operation has been completed successfully.
     """
 
+
   Scenario: Deleting object with an element not allowing deletion
     Given there is a "person" with "id" 1 present in the database
     And I am on the "Person list" page
     When I press checkbox in first column in first row
-    And I perform action "Delete"
+    And I perform the batch action "Delete"
     Then page "Person list" should throw an error exception
     And there should be a "person" with "id" "1" present in the database

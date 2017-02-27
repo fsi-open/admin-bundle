@@ -138,7 +138,8 @@ class News extends CRUDElement
             'label' => 'admin.news.list.creator_email'
         ]);
         $builder->add('photo', 'fsi_image', [
-            'label' => 'admin.news.list.photo'
+            'label' => 'admin.news.list.photo',
+            'required' => false
         ]);
         $builder->add('tags', 'collection', [
             'type' => new TagType(),

@@ -12,7 +12,7 @@ Feature: Creating new object
     And I am on the "Admin panel" page
     When I follow "News" menu element
     And I press "New element" link
-    Then I should see "News Create" page header "New element"
+    Then I should see "News create" page header "New element"
     And I should see form with following fields
       | Field name    |
       | Title         |
@@ -23,8 +23,14 @@ Feature: Creating new object
 
 
   Scenario: Create new element
-    Given I am on the "News Create" page
-    When I fill all form field properly
+    Given there is "0" "news"
+    And I am on the "News create" page
+    When I fill the form with values:
+      | Field name    | Field value       |
+      | Title         | A new news        |
+      | Created at    | 2017-03-01        |
+      | Creator email | email@example.com |
+      | Visible       | Yes               |
     And I press form "Save" button
     Then new "news" should be created
     And I should be redirected to "News List" page

@@ -13,7 +13,7 @@ Feature: Creating new object
     And I am on the "Admin panel" page
     When I follow "Subscribers" menu element
     And I press "New element" link
-    Then I should see "Subscriber Form" page header "New element"
+    Then I should see "Subscriber form" page header "New element"
     And I should see form with following fields
       | Field name    |
       | Email         |
@@ -22,8 +22,13 @@ Feature: Creating new object
 
 
   Scenario: Create new element
-    Given I am on the "Subscriber Form" page
-    When I fill all form field properly
+    Given there is "0" "subscribers"
+    And I am on the "Subscriber form" page
+    When I fill the form with values:
+      | Field name | Field value            |
+      | Email      | subscriber@example.com |
+      | Created at | 2017-03-01             |
+      | Active     | Yes                    |
     And I press form "Save" button
     Then new "subscriber" should be created
     And I should be redirected to "Subscribers List" page
@@ -42,7 +47,7 @@ Feature: Creating new object
     And translations are enabled in application
     And I am on the "Subscribers list" page
     When I press "Edit" link in "Action" column of first element at list
-    Then I should see "Subscriber Form" page header "Edit element"
+    Then I should see "Subscriber form" page header "Edit element"
     And I should see form with following fields
       | Field name    |
       | Email         |
@@ -52,11 +57,11 @@ Feature: Creating new object
 
   Scenario: Edit element
     Given there is a "subscriber" with "id" 1 present in the database
-    And I am on the "Subscriber Edit" page with id 1
-    When I change form "Email" field value
+    And I am on the "Subscriber edit" page with id 1
+    When I change form field "Email" to value "email@example.com"
     And I press form "Save" button
-    Then subscriber with id 1 should have changed email
-    And I should be redirected to "Subscribers List" page
+    Then I should be redirected to "Subscribers List" page
+    And "subscriber" with id "1" should have changed "Email" to "email@example.com"
     And I should see a success message saying:
     """
     Data has been successfully saved.
@@ -65,10 +70,10 @@ Feature: Creating new object
 
   Scenario: Editing an element with invalid data
     Given there is a "subscriber" with "id" 1 present in the database
-    And I am on the "Subscriber Edit" page with id 1
-    When I fill the "Email" field with invalid data
+    And I am on the "Subscriber edit" page with id 1
+    When I change form field "Email" to value "notavalidemail.com"
     And I press form "Save" button
-    Then subscriber with id 1 should not have his email changed to invalid one
+    Then "subscriber" with id "1" should not have his "Email" changed to "notavalidemail.com"
     And I should see an error message saying:
     """
     Form is invalid.

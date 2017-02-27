@@ -8,6 +8,9 @@ default: &default
                 - FSi\Bundle\AdminBundle\Behat\Context\DisplayContext
                 - FSi\Bundle\AdminBundle\Behat\Context\DataContext
                 - FSi\Bundle\AdminBundle\Behat\Context\MessageContext
+                - FSi\Bundle\AdminBundle\Behat\Context\ListContext
+                - FSi\Bundle\AdminBundle\Behat\Context\FormContext
+                - FSi\Bundle\AdminBundle\Behat\Context\NavigationContext
     extensions:
         Behat\MinkExtension:
             sessions:

@@ -12,7 +12,7 @@ Feature: Editing existing object
     And translations are enabled in application
     And I am on the "News list" page
     When I press "Edit" link in "Action" column of first element at list
-    Then I should see "News Edit" page header "Edit element"
+    Then I should see "News edit" page header "Edit element"
     And I should see form with following fields
       | Field name    |
       | Title         |
@@ -24,11 +24,11 @@ Feature: Editing existing object
 
   Scenario: Edit element
     Given there is a "news" with "id" 1 present in the database
-    And I am on the "News Edit" page with id 1
-    When I change form "Title" field value
+    And I am on the "News edit" page with id 1
+    When I change form field "Title" to value "New title"
     And I press form "Save" button
-    Then news with id 1 should have changed title
-    And I should be redirected to "News List" page
+    Then I should be redirected to "News List" page
+    And "news" with id "1" should have changed "Title" to "New title"
     And I should see a success message saying:
     """
     Data has been successfully saved.
