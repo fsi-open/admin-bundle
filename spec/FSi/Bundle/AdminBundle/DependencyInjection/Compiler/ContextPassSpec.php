@@ -23,12 +23,12 @@ class ContextPassSpec extends ObjectBehavior
 
     function it_add_context_builders_into_context_manager($container, $def, $fooDef)
     {
-        $container->findTaggedServiceIds('admin.context')->willReturn(array(
-            'builder_foo' => array(array()),
-        ));
+        $container->findTaggedServiceIds('admin.context')->willReturn([
+            'builder_foo' => [[]],
+        ]);
 
         $container->findDefinition('builder_foo')->willReturn($fooDef);
-        $def->replaceArgument(0, array($fooDef))->shouldBeCalled();
+        $def->replaceArgument(0, [$fooDef])->shouldBeCalled();
 
         $this->process($container);
     }
@@ -40,16 +40,16 @@ class ContextPassSpec extends ObjectBehavior
         Definition $barDef,
         Definition $bazDef
     ) {
-        $container->findTaggedServiceIds('admin.context')->willReturn(array(
-            'builder_baz' => array(array('priority' => -10)),
-            'builder_bar' => array(array()),
-            'builder_foo' => array(array('priority' => 5)),
-        ));
+        $container->findTaggedServiceIds('admin.context')->willReturn([
+            'builder_baz' => [['priority' => -10]],
+            'builder_bar' => [[]],
+            'builder_foo' => [['priority' => 5]],
+        ]);
 
         $container->findDefinition('builder_foo')->willReturn($fooDef);
         $container->findDefinition('builder_bar')->willReturn($barDef);
         $container->findDefinition('builder_baz')->willReturn($bazDef);
-        $def->replaceArgument(0, array($fooDef, $barDef, $bazDef))->shouldBeCalled();
+        $def->replaceArgument(0, [$fooDef, $barDef, $bazDef])->shouldBeCalled();
 
         $this->process($container);
     }

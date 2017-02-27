@@ -22,7 +22,7 @@ class FormElementContextSpec extends ObjectBehavior
 {
     function let(FormElement $element, FormInterface $form, HandlerInterface $handler)
     {
-        $this->beConstructedWith(array($handler));
+        $this->beConstructedWith([$handler]);
         $element->hasOption('allow_add')->willReturn(true);
         $element->getOption('allow_add')->willReturn(true);
         $element->createForm(null)->willReturn($form);
@@ -48,9 +48,9 @@ class FormElementContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('form');
         $this->getData()->shouldHaveKeyInArray('element');
 
-        $form->getData()->willReturn(array('object'));
+        $form->getData()->willReturn(['object']);
         $element->getDataIndexer()->willReturn($dataIndexer);
-        $dataIndexer->getIndex(array('object'))->willReturn('id');
+        $dataIndexer->getIndex(['object'])->willReturn('id');
         $this->getData()->shouldHaveKeyInArray('id');
     }
 
@@ -92,7 +92,7 @@ class FormElementContextSpec extends ObjectBehavior
 
     public function getMatchers()
     {
-        return array(
+        return [
             'haveKeyInArray' => function($subject, $key) {
                 if (!is_array($subject)) {
                     return false;
@@ -100,6 +100,6 @@ class FormElementContextSpec extends ObjectBehavior
 
                 return array_key_exists($key, $subject);
             },
-        );
+        ];
     }
 }

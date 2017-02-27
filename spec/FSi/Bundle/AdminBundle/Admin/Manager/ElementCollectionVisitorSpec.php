@@ -11,7 +11,7 @@ class ElementCollectionVisitorSpec extends ObjectBehavior
 {
     function let(Element $adminElement, ProductionLine $productionLine)
     {
-        $this->beConstructedWith(array($adminElement), $productionLine);
+        $this->beConstructedWith([$adminElement], $productionLine);
     }
 
     function it_visit_manager_and_add_into_it_elements(

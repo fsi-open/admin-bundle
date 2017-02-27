@@ -33,7 +33,7 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
             new RequestHandlerException(
                 "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\DataGridBindDataHandler require ListEvent"
             )
-        )->during('handleRequest', array($event, $request));
+        )->during('handleRequest', [$event, $request]);
     }
 
     function it_does_nothing_when_request_is_not_a_POST(
@@ -84,8 +84,8 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         $element->saveDataGrid()->shouldBeCalled();
         $event->getDataSource()->willReturn($dataSource);
         $dataSource->bindParameters($request)->shouldBeCalled();
-        $dataSource->getResult()->willReturn(array(1));
-        $dataGrid->setData(array(1))->shouldBeCalled();
+        $dataSource->getResult()->willReturn([1]);
+        $dataGrid->setData([1])->shouldBeCalled();
 
         $eventDispatcher->dispatch(ListEvents::LIST_RESPONSE_PRE_RENDER, $event)->shouldBeCalled();
 

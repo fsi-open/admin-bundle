@@ -17,7 +17,7 @@ interface Display
      * @param array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[] $valueFormatters
      * @return \FSi\Bundle\AdminBundle\Display\Display
      */
-    public function add($path, $label = null, $valueFormatters = array());
+    public function add($path, $label = null, $valueFormatters = []);
 
     /**
      * @return \FSi\Bundle\AdminBundle\Display\DisplayView

@@ -33,10 +33,10 @@ class Item
      */
     public function __construct($name = null)
     {
-        $this->children = array();
+        $this->children = [];
         $this->name = $name;
 
-        $this->setOptions(array());
+        $this->setOptions([]);
     }
 
     /**
@@ -133,21 +133,21 @@ class Item
 
     protected function configureOptions(OptionsResolver $optionsResolver)
     {
-        $optionsResolver->setDefaults(array(
-            'attr' => array(),
-        ));
+        $optionsResolver->setDefaults([
+            'attr' => [],
+        ]);
 
-        $optionsResolver->setAllowedTypes('attr', array('array'));
+        $optionsResolver->setAllowedTypes('attr', ['array']);
 
         $optionsResolver->setNormalizer('attr', function (Options $options, array $value) {
             $attrOptionsResolver = new OptionsResolver();
-            $attrOptionsResolver->setDefaults(array(
+            $attrOptionsResolver->setDefaults([
                 'id' => null,
                 'class' => null,
-            ));
+            ]);
 
-            $attrOptionsResolver->setAllowedTypes('id', array('null', 'string'));
-            $attrOptionsResolver->setAllowedTypes('class', array('null', 'string'));
+            $attrOptionsResolver->setAllowedTypes('id', ['null', 'string']);
+            $attrOptionsResolver->setAllowedTypes('class', ['null', 'string']);
 
             return $attrOptionsResolver->resolve($value);
         });

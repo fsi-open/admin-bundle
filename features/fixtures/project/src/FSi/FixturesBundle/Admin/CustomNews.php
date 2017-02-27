@@ -30,9 +30,9 @@ class CustomNews extends CRUDElement
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
         /* @var $datasource \FSi\Component\DataSource\DataSource */
-        $datasource = $factory->createDataSource('doctrine', array('entity' => $this->getClassName()), 'news');
+        $datasource = $factory->createDataSource('doctrine', ['entity' => $this->getClassName()], 'news');
 
-        $datasource->addField('title', 'text', 'eq', array('form_filter' => false));
+        $datasource->addField('title', 'text', 'eq', ['form_filter' => false]);
 
         return $datasource;
     }
@@ -40,9 +40,9 @@ class CustomNews extends CRUDElement
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
 
-        $builder = $factory->createNamedBuilder('news', 'form', $data, array(
+        $builder = $factory->createNamedBuilder('news', 'form', $data, [
             'data_class' => $this->getClassName()
-        ));
+        ]);
 
         return $builder->getForm();
     }

@@ -116,16 +116,16 @@ class DataContext implements KernelAwareContext
         $generator = Factory::create();
         $populator = new Populator($generator, $this->getDoctrine()->getManager());
 
-        $populator->addEntity('FSi\FixturesBundle\Entity\News', $newsCount, array(
+        $populator->addEntity('FSi\FixturesBundle\Entity\News', $newsCount, [
             'creatorEmail' => function() use ($generator) { return $generator->email(); },
-            'categories' => function() use($generator) {return array($generator->text(), $generator->text());},
+            'categories' => function() use($generator) {return [$generator->text(), $generator->text()];},
             'photoKey' => null
-        ), array(function(News $news) use($generator) {
+        ], [function(News $news) use($generator) {
             $tag = new Tag();
             $tag->setName($generator->sentence());
             $tag->setNews($news);
-            $news->setTags(array($tag));
-        }));
+            $news->setTags([$tag]);
+        }]);
         $populator->execute();
 
         expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe($newsCount);
@@ -139,11 +139,11 @@ class DataContext implements KernelAwareContext
         $generator = Factory::create();
         $populator = new Populator($generator, $this->getDoctrine()->getManager());
 
-        $populator->addEntity('FSi\FixturesBundle\Entity\News', 1, array(
+        $populator->addEntity('FSi\FixturesBundle\Entity\News', 1, [
             'id' => $id,
             'creatorEmail' => function() use ($generator) { return $generator->email(); },
             'photoKey' => null
-        ));
+        ]);
         $populator->execute();
 
         expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe(1);
@@ -163,9 +163,9 @@ class DataContext implements KernelAwareContext
      */
     public function newsShouldNotExistInDatabaseAnymore($title)
     {
-        expect($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findOneBy(array(
+        expect($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findOneBy([
             'title' => $title
-        )))->toBe(null);
+        ]))->toBe(null);
     }
 
 
@@ -186,9 +186,9 @@ class DataContext implements KernelAwareContext
         $generator = Factory::create();
         $populator = new Populator($generator, $this->getDoctrine()->getManager());
 
-        $populator->addEntity('FSi\FixturesBundle\Entity\Subscriber', $count, array(
+        $populator->addEntity('FSi\FixturesBundle\Entity\Subscriber', $count, [
             'email' => function() use ($generator) { return $generator->email(); }
-        ));
+        ]);
         $populator->execute();
 
         expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll()))->toBe($count);
@@ -202,10 +202,10 @@ class DataContext implements KernelAwareContext
         $generator = Factory::create();
         $populator = new Populator($generator, $this->getDoctrine()->getManager());
 
-        $populator->addEntity('FSi\FixturesBundle\Entity\Subscriber', 1, array(
+        $populator->addEntity('FSi\FixturesBundle\Entity\Subscriber', 1, [
             'id' => $id,
             'email' => function() use ($generator) { return $generator->email(); }
-        ));
+        ]);
         $populator->execute();
 
         expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll()))->toBe(1);
@@ -235,10 +235,10 @@ class DataContext implements KernelAwareContext
         $generator = Factory::create();
         $populator = new Populator($generator, $this->getDoctrine()->getManager());
 
-        $populator->addEntity('FSi\FixturesBundle\Entity\Person', 1, array(
+        $populator->addEntity('FSi\FixturesBundle\Entity\Person', 1, [
             'id' => $id,
             'email' => function() use ($generator) { return $generator->email(); }
-        ));
+        ]);
         $populator->execute();
 
         expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Person')->findAll()))->toBe(1);
@@ -280,7 +280,7 @@ class DataContext implements KernelAwareContext
 
         $news = $manager
             ->getRepository('FSi\FixturesBundle\Entity\News')
-            ->findBy(array(), array(), 1);
+            ->findBy([], [], 1);
         $news = reset($news);
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();

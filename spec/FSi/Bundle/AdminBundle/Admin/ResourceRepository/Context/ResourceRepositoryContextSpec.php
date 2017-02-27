@@ -28,14 +28,14 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         ResourceFormBuilder $resourceFormBuilder,
         FormInterface $form
     ) {
-        $builder->getMap()->willReturn(array(
-            'resources' => array()
-        ));
-        $element->getResourceFormOptions()->willReturn(array());
+        $builder->getMap()->willReturn([
+            'resources' => []
+        ]);
+        $element->getResourceFormOptions()->willReturn([]);
         $element->getKey()->willReturn('resources');
         $resourceFormBuilder->build($element)->willReturn($form);
 
-        $this->beConstructedWith(array($handler), $resourceFormBuilder);
+        $this->beConstructedWith([$handler], $resourceFormBuilder);
         $this->setElement($element);
     }
 
@@ -70,7 +70,7 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
 
     public function getMatchers()
     {
-        return array(
+        return [
             'haveKeyInArray' => function($subject, $key) {
                 if (!is_array($subject)) {
                     return false;
@@ -78,6 +78,6 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
 
                 return array_key_exists($key, $subject);
             },
-        );
+        ];
     }
 }

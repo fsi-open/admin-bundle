@@ -13,7 +13,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 class ElementsListResults extends Element
 {
-    protected $selector = array('css' => 'div#list-results');
+    protected $selector = ['css' => 'div#list-results'];
 
     public function setElementsPerPage($elementsCount)
     {

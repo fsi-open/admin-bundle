@@ -25,7 +25,7 @@ class LocaleListenerSpec extends ObjectBehavior
     function it_subscribe_kernel_request_event_before_default_locale_listener()
     {
         $this->getSubscribedEvents()->shouldReturn(
-            array(KernelEvents::REQUEST => array(array('onKernelRequest', 17)))
+            [KernelEvents::REQUEST => [['onKernelRequest', 17]]]
         );
     }
 

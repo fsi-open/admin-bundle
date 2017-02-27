@@ -22,20 +22,20 @@ class AdminAnnotatedElementPassSpec extends ObjectBehavior
         AnnotationReader $annotationReader,
         AdminClassFinder $adminClassFinder
     ) {
-        $container->getParameter('kernel.bundles')->willReturn(array(
+        $container->getParameter('kernel.bundles')->willReturn([
             'FSi\Bundle\AdminBundle\spec\fixtures\MyBundle',
             'FSi\Bundle\AdminBundle\FSiAdminBundle',
             'Symfony\Bundle\FrameworkBundle\FrameworkBundle'
-        ));
+        ]);
 
         $baseDir = __DIR__ . '/../../../../../..';
-        $adminClassFinder->findClasses(array(
+        $adminClassFinder->findClasses([
             realpath($baseDir . '/spec/fixtures/Admin'),
             realpath($baseDir . '/Admin')
-        ))->willReturn(array(
+        ])->willReturn([
             'FSi\Bundle\AdminBundle\spec\fixtures\Admin\SimpleAdminElement',
             'FSi\Bundle\AdminBundle\spec\fixtures\Admin\CRUDElement'
-        ));
+        ]);
 
         $annotationReader->getClassAnnotation(
             Argument::allOf(
@@ -51,7 +51,7 @@ class AdminAnnotatedElementPassSpec extends ObjectBehavior
                 Argument::which('getName', 'FSi\Bundle\AdminBundle\spec\fixtures\Admin\SimpleAdminElement')
             ),
             'FSi\\Bundle\\AdminBundle\\Annotation\\Element'
-        )->willReturn(new Element(array()));
+        )->willReturn(new Element([]));
 
         $container->addResource(Argument::allOf(
             Argument::type('Symfony\Component\Config\Resource\DirectoryResource'),

@@ -14,7 +14,7 @@ class AttributesExtension extends ColumnAbstractTypeExtension
      */
     public function getExtendedColumnTypes()
     {
-        return array(
+        return [
             'text',
             'boolean',
             'datetime',
@@ -25,7 +25,7 @@ class AttributesExtension extends ColumnAbstractTypeExtension
             'action',
             'fsi_file',
             'fsi_image'
-        );
+        ];
     }
 
     /**
@@ -33,17 +33,17 @@ class AttributesExtension extends ColumnAbstractTypeExtension
      */
     public function initOptions(ColumnTypeInterface $column)
     {
-        $column->getOptionsResolver()->setDefined(array('header_attr', 'cell_attr', 'container_attr', 'value_attr'));
+        $column->getOptionsResolver()->setDefined(['header_attr', 'cell_attr', 'container_attr', 'value_attr']);
         $column->getOptionsResolver()->setAllowedTypes('header_attr', 'array');
         $column->getOptionsResolver()->setAllowedTypes('cell_attr', 'array');
         $column->getOptionsResolver()->setAllowedTypes('container_attr', 'array');
         $column->getOptionsResolver()->setAllowedTypes('value_attr', 'array');
-        $column->getOptionsResolver()->setDefaults(array(
-            'header_attr' => array(),
-            'cell_attr' => array(),
-            'container_attr' => array(),
-            'value_attr' => array()
-        ));
+        $column->getOptionsResolver()->setDefaults([
+            'header_attr' => [],
+            'cell_attr' => [],
+            'container_attr' => [],
+            'value_attr' => []
+        ]);
     }
 
     /**

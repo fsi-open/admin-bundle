@@ -17,7 +17,7 @@ class ContextManagerSpec extends ObjectBehavior
 {
     function let(ContextInterface $context)
     {
-        $this->beConstructedWith(array($context));
+        $this->beConstructedWith([$context]);
     }
 
     function it_build_context_for_element(Element $element, ContextInterface $context)

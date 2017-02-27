@@ -13,7 +13,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 class Filters extends Element
 {
-    protected $selector = array('css' => 'form.filters');
+    protected $selector = ['css' => 'form.filters'];
 
     public function hasBetweenFilter($filterName, $fromName, $toName)
     {

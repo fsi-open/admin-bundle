@@ -36,25 +36,25 @@ class SubscriberForm extends FormElement
 
     public function getSuccessRouteParameters()
     {
-        return array('element' => 'subscriber');
+        return ['element' => 'subscriber'];
     }
 
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        $builder = $factory->createNamedBuilder('subscriber', 'form', $data, array(
+        $builder = $factory->createNamedBuilder('subscriber', 'form', $data, [
             'data_class' => $this->getClassName()
-        ));
+        ]);
 
-        $builder->add('email', 'email', array(
+        $builder->add('email', 'email', [
             'label' => 'admin.subscriber.list.email',
-        ));
-        $builder->add('created_at', 'date', array(
+        ]);
+        $builder->add('created_at', 'date', [
             'label' => 'admin.subscriber.list.created_at',
             'widget' => 'single_text'
-        ));
-        $builder->add('active', 'checkbox', array(
+        ]);
+        $builder->add('active', 'checkbox', [
             'label' => 'admin.subscriber.list.active',
-        ));
+        ]);
 
         return $builder->getForm();
     }
