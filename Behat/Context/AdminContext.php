@@ -23,8 +23,9 @@ class AdminContext extends PageObjectContext implements KernelAwareContext
      * @var KernelInterface
      */
     protected $kernel;
+
     /**
-     * @var \FSi\Component\DataSource\DataSource[]
+     * @var DataSource[]
      */
     protected $datasources;
 

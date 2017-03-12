@@ -10,10 +10,14 @@
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use Behat\Mink\Element\NodeElement;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page as BasePage;
 
 class Page extends BasePage
 {
+    const REDIRECT_URI = '/&redirect_uri=.{1,}/';
+    const QUERY = 'query';
+
     public function getCollection($label)
     {
         return $this->find('xpath', sprintf('//div[@data-prototype]/ancestor::*[@class = "form-group"]/label[text() = "%s"]/..//div[@data-prototype]', $label));
@@ -63,26 +67,15 @@ class Page extends BasePage
         $this->find('css', 'select[data-datagrid-name]')->selectOption($action);
     }
 
-    public function selectAllElements()
-    {
-        $th = $this->find('xpath', "descendant-or-self::table/thead/tr/th[position() = 1]");
-        $th->find('css', 'input[type="checkbox"]')->click();
-    }
-
-    public function isColumnEditable($columnHeader)
-    {
-        return $this->getCell($columnHeader, 1)->has('css', 'a.editable');
-    }
-
     public function getColumnPosition($columnHeader)
     {
         $headers = $this->findAll('css', 'th');
         foreach ($headers as $index => $header) {
             /** @var NodeElement $header */
-            if ($header->has('css', 'span')) {
-                if ($header->find('css', 'span')->getText() == $columnHeader) {
-                    return $index + 1;
-                }
+            if ($header->has('css', 'span')
+                && $header->find('css', 'span')->getText() == $columnHeader
+            ) {
+                return $index + 1;
             }
         }
 
@@ -98,5 +91,30 @@ class Page extends BasePage
     public function getPopover()
     {
         return $this->find('css', '.popover');
+    }
+
+    public function isOpen(array $urlParameters = array())
+    {
+        $this->verify($urlParameters);
+
+        return true;
+    }
+
+    protected function verifyUrl(array $urlParameters = array())
+    {
+        $currentUrl = parse_url($this->getDriver()->getCurrentUrl());
+        $expectedUrl = parse_url($this->getUrl($urlParameters));
+        foreach ($expectedUrl as $key => $value) {
+            if ($key === self::QUERY && !empty($currentUrl[$key])) {
+                $currentUrl[$key] = urldecode(preg_replace(self::REDIRECT_URI, '', $currentUrl[$key]));
+            }
+            if (empty($currentUrl[$key]) || $value !== $currentUrl[$key]) {
+                throw new UnexpectedPageException(sprintf(
+                    'Expected to be on "%s" but found "%s" instead',
+                    $value,
+                    $currentUrl[$key]
+                ));
+            }
+        }
     }
 }

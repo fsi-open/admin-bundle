@@ -270,24 +270,6 @@ class CRUDContext extends PageObjectContext implements KernelAwareContext, MinkA
     }
 
     /**
-     * @Then /^I should see customized "([^"]*)" view$/
-     */
-    public function iShouldSeeCustomizedView($crudElement)
-    {
-        switch($crudElement) {
-            case 'subscribers list':
-                $this->getPage('Custom subscribers list')->isOpen();
-                break;
-            case 'list':
-                $this->getPage('Custom news list')->isOpen();
-                break;
-            case 'edit':
-                $this->getPage('Custom news edit')->isOpen();
-                break;
-        }
-    }
-
-    /**
      * @Then /^I should see actions dropdown with following options$/
      */
     public function iShouldSeeActionsDropdownWithFollowingOptions(TableNode $actions)

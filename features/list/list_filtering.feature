@@ -32,7 +32,8 @@ Feature: Filtering elements at list
     And there are 2 elements at list
     When I fill simple text filter "Email" with value "@domain.com"
     And I press "Search" button
-    Then simple text filter "Email" should be filled with value "@domain.com"
+    Then I should be on the "Subscribers list" page
+    And simple text filter "Email" should be filled with value "@domain.com"
     And there should be 1 element at list
 
 

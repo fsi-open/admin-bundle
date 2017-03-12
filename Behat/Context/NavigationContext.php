@@ -191,6 +191,14 @@ class NavigationContext extends AbstractContext
     }
 
     /**
+     * @Given I should be on the :page page
+     */
+    public function iShouldBeOnThePage(Page $page)
+    {
+        expect($page->isOpen())->toBe(true);
+    }
+
+    /**
      * @Given I try to open the :page page
      */
     public function iTryToOpenPage(Page $page)
@@ -199,17 +207,19 @@ class NavigationContext extends AbstractContext
     }
 
     /**
+     * @Then page :page should display OK status
+     */
+    public function pageShouldDisplayOKStatus(Page $page)
+    {
+        $this->expectPageStatus($page, 200);
+    }
+
+    /**
      * @Then page :page should display not found exception
      */
     public function pageShouldDisplayNotFoundException(Page $page)
     {
-        $status = $page->getStatusCode();
-        if ($status !== 404) {
-            throw new Exception(sprintf(
-                'Invalid status code "%s", expected 404.',
-                $status
-            ));
-        }
+        $this->expectPageStatus($page, 404);
     }
 
     /**
@@ -217,11 +227,22 @@ class NavigationContext extends AbstractContext
      */
     public function pageShouldThrowAnErrorExceptionException(Page $page)
     {
+        $this->expectPageStatus($page, 500);
+    }
+
+    /**
+     * @param Page $page
+     * @param int $expectedStatus
+     * @throws Exception
+     */
+    private function expectPageStatus(Page $page, $expectedStatus)
+    {
         $status = $page->getStatusCode();
-        if ($status !== 500) {
+        if ($status !== $expectedStatus) {
             throw new Exception(sprintf(
-                'Invalid status code "%s", expected 500.',
-                $status
+                'Invalid status code "%s", expected "%s".',
+                $status,
+                $expectedStatus
             ));
         }
     }
