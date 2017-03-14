@@ -45,3 +45,14 @@ Feature: Deleting existing object
     """
     Operation has been completed successfully.
     """
+
+
+  Scenario: Perform deletion without selecting any elements
+    Given I am on the "News list" page
+    When I perform the batch action "Delete"
+    Then I should be redirected to "News list" page
+    And there should be 3 elements at list
+    And I should see a warning message saying:
+    """
+    Cannot perform batch action without selecting any elements.
+    """

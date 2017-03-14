@@ -3,10 +3,12 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\DeleteElement;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
+use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use FSi\Component\DataIndexer\DataIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -19,10 +21,14 @@ use Symfony\Component\Routing\RouterInterface;
 
 class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 {
-    function let(EventDispatcherInterface $eventDispatcher, FormEvent$event, RouterInterface $router)
-    {
+    function let(
+        EventDispatcherInterface $eventDispatcher,
+        FormEvent$event,
+        RouterInterface $router,
+        FlashMessages $flashMessage
+    ) {
         $event->hasResponse()->willReturn(false);
-        $this->beConstructedWith($eventDispatcher, $router);
+        $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
     }
 
     function it_is_context_request_handler()
@@ -190,17 +196,11 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\HttpFoundation\ParameterBag $requestParameterbag
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\DeleteElement $element
-     */
     function it_throws_exception_when_delete_not_allowed(
-        $event,
-        $request,
-        $requestParameterbag,
-        $element
+        FormEvent $event,
+        Request $request,
+        ParameterBag $requestParameterbag,
+        DeleteElement $element
     ) {
         $request->request = $requestParameterbag;
         $requestParameterbag->get('indexes', [])->willReturn(['index']);
@@ -209,5 +209,37 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $element->getOption('allow_delete')->willReturn(false);
 
         $this->shouldThrow('\LogicException')->during('handleRequest', [$event, $request]);
+    }
+
+    public function it_displays_warning_when_no_elements_sent(
+        FormEvent $event,
+        Request $request,
+        ParameterBag $requestParameterbag,
+        FormInterface $form,
+        DeleteElement $element,
+        EventDispatcherInterface $eventDispatcher,
+        FlashMessages $flashMessage
+    ) {
+        $request->isMethod('POST')->willReturn(true);
+        $event->getForm()->willReturn($form);
+        $form->isValid()->willReturn(true);
+        $requestParameterbag->get('indexes', [])->willReturn([]);
+        $request->request = $requestParameterbag;
+        $event->getElement()->willReturn($element);
+        $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
+            ->shouldBeCalled();
+
+        $element->getOption('allow_delete')->willReturn(true);
+        $element->hasOption('allow_delete')->willReturn(true);
+        $element->apply(Argument::type('stdClass'))->shouldNotBeCalled();
+        $flashMessage->warning(Argument::type('string'))->shouldBeCalled();
+
+        $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
+            ->will(function() use ($event) {
+                $event->hasResponse()->willReturn(true);
+                $event->getResponse()->willReturn(new Response());
+            });
+
+        $this->handleRequest($event, $request);
     }
 }

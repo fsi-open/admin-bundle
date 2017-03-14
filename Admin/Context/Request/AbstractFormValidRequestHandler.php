@@ -29,8 +29,10 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      * @param \Symfony\Component\Routing\RouterInterface $router
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, RouterInterface $router)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        RouterInterface $router
+    ) {
         parent::__construct($eventDispatcher);
         $this->router = $router;
     }

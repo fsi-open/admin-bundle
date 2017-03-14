@@ -86,3 +86,9 @@ changeset:
         </tr>
     </tbody>
 </table>
+
+
+## Batch actions do not throw an exception when no elements are submitted
+
+Instead of throwing an exception, a warning message is displayed when no elements
+have been submitted in a batch action.
