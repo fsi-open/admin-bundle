@@ -33,7 +33,7 @@ Feature: Creating new object
       | Visible       | Yes               |
     And I press form "Save" button
     Then new "news" should be created
-    And I should be redirected to "News List" page
+    And I should be redirected to "News list" page
     And I should see a success message saying:
     """
     Data has been successfully saved.

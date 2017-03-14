@@ -24,6 +24,16 @@ class ListElement extends Element
         return $this->getNotEmptyTexts($this->getTable()->findAll('css', 'th'));
     }
 
+    /**
+     * @param string $name
+     * @return NodeElement
+     */
+    public function getNamedColumn($name)
+    {
+        $selector = '//th[normalize-space(text())="%s"]/ancestor::tr';
+        return $this->getTable()->find('xpath', sprintf($selector, $name));
+    }
+
     public function hasBatchColumn()
     {
         return $this->has('css', 'th > input[type="checkbox"]');
@@ -121,6 +131,55 @@ class ListElement extends Element
     public function isColumnEditable($columnHeader)
     {
         return $this->getCell($columnHeader, 1)->has('css', 'a.editable');
+    }
+
+    public function isColumnSortable($columnHeader)
+    {
+        $column = $this->getColumnHeader($columnHeader);
+
+        return $column->has('css', '.sort-asc') && $column->has('css', '.sort-desc');
+    }
+
+    public function isColumnAscSortActive($columnHeader)
+    {
+        $sortButton = $this->getColumnHeader($columnHeader)->find('css', '.sort-asc');
+
+        return !$sortButton->hasAttribute('disabled');
+    }
+
+    public function isColumnDescSortActive($columnHeader)
+    {
+        $sortButton = $this->getColumnHeader($columnHeader)->find('css', '.sort-desc');
+
+        return !$sortButton->hasAttribute('disabled');
+    }
+
+    public function pressSortButton($columnHeader, $sort)
+    {
+        switch (strtolower($sort)) {
+            case 'sort asc':
+                $this->getColumnHeader($columnHeader)->find('css', '.sort-asc')->click();
+                break;
+            case 'sort desc':
+                $this->getColumnHeader($columnHeader)->find('css', '.sort-desc')->click();
+                break;
+            default:
+                throw new UnexpectedPageException(sprintf("Unknown sorting type %s", $sort));
+        }
+    }
+
+    /**
+     * @param int $rowNumber
+     * @param string $action
+     */
+    public function clickRowAction($rowNumber, $action)
+    {
+        $this->getCell("Actions", $rowNumber)->clickLink($action);
+    }
+
+    private function getColumnHeader($columnHeader)
+    {
+        return $this->find('css', sprintf('th span:contains("%s")', $columnHeader))->getParent();
     }
 
     /**

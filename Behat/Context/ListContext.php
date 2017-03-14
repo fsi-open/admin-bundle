@@ -67,6 +67,14 @@ class ListContext extends AbstractContext
     }
 
     /**
+     * @Given I press :action link in actions column of first element at list
+     */
+    public function iPressLinkInColumnOfFirstElementAtList($link)
+    {
+        $this->getListElement()->clickRowAction(1, $link);
+    }
+
+    /**
      * @Given I perform the batch action :action
      */
     public function iPerformBatchAction($action)
@@ -140,6 +148,82 @@ class ListContext extends AbstractContext
     public function iShouldNotSeePagination(Page $page)
     {
         expect($page->find('css', 'ul.pagination'))->toBe(null);
+    }
+
+    /**
+     * @Given /^I clicked "([^"]*)" in "([^"]*)" column in first row$/
+     * @When /^I click "([^"]*)" in "([^"]*)" column in first row$/
+     */
+    public function iClickInColumnInFirstRow($link, $columnHeader)
+    {
+        $this->getListElement()->getCell($columnHeader, 1)->clickLink($link);
+    }
+
+    /**
+     * @Given /^I clicked edit in "([^"]*)" column in first row$/
+     * @When /^I click edit in "([^"]*)" column in first row$/
+     */
+    public function iClickEditInColumnInFirstRow($columnHeader)
+    {
+        $cell = $this->getListElement()->getCell($columnHeader, 1);
+        $this->getListElement()->click($cell->getXPath());
+        $cell->find('css', 'a')->click();
+    }
+
+    /**
+     * @Then /^popover with "([^"]*)" field in form should appear$/
+     */
+    public function popoverWithFieldInFormShouldAppear($newsTitle)
+    {
+        $popover = $this->defaultPage->getPopover();
+        expect($popover->isVisible())->toBe(true);
+        expect($popover->findField('Title')->getValue())->toBe($newsTitle);
+    }
+
+    /**
+     * @Then /^popover with empty date field in form should appear$/
+     */
+    public function popoverWithEmptyDateFieldInFormShouldAppear()
+    {
+        $popover = $this->defaultPage->getPopover();
+        expect($popover->isVisible())->toBe(true);
+        expect($popover->findField('Date')->getValue())->toBe('');
+    }
+    /**
+     * @Then /^popover should not be visible anymore$/
+     */
+    public function popoverShouldNotBeVisibleAnymore()
+    {
+        expect($this->defaultPage->getPopover())->toBe(null);
+    }
+
+    /**
+     * @When /^I fill "([^"]*)" field at popover with "([^"]*)" value$/
+     */
+    public function iFillFieldAtPopoverWithValue($field, $value)
+    {
+        $this->defaultPage->getPopover()->fillField($field, $value);
+    }
+
+    /**
+     * @Given /^I press "([^"]*)" at popover$/
+     */
+    public function iPressAtPopover($button)
+    {
+        $this->defaultPage->getPopover()->pressButton($button);
+    }
+
+    /**
+     * @When /^I click X at popover$/
+     */
+    public function iClickXAtPopover()
+    {
+        $session = $this->defaultPage->getSession();
+        /** @var NodeElement $popover */
+        $session->wait(1000, 'jQuery(".popover").length > 0');
+        $popover = $this->defaultPage->getPopover();
+        $popover->find('css', '.editable-close')->click();
+        $session->wait(1000, 'jQuery(".popover").length === 0');
     }
 
     /**

@@ -12,8 +12,8 @@ Feature: View object
     And there is 1 "news"
     And translations are enabled in application
     And I am on the "News list" page
-    When I press "Display" link in "Action" column of first element at list
-    Then I should see "News Display" page header "Display element"
+    When I press "Display" link in actions column of first element at list
+    Then I should see "News display" page header "Display element"
     And I should see display with following fields
       | Field name    |
       | Identity      |

@@ -9,8 +9,6 @@
 
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-
 class DefaultPage extends Page
 {
     protected function verifyPage()

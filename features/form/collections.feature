@@ -24,7 +24,7 @@ Feature: Managing form collections
     And I fill "Name" with "Lorem" in collection "Tags" at position 1
     And I press form "Save" button
     Then new "news" should be created
-    And I should be redirected to "News List" page
+    And I should be redirected to "News list" page
     And I should see a success message saying:
     """
     Data has been successfully saved.
@@ -35,14 +35,14 @@ Feature: Managing form collections
     Given there is a "news" with "title" "News 1" present in the database
     And I am on the "Admin panel" page
     And I follow "News" menu element
-    When I press "Edit" link in "Action" column of first element at list
+    When I press "Edit" link in actions column of first element at list
     And I should see "News edit" page header "Edit element"
     And "Tags" collection should have 1 elements
     When I press "Add value" in collection "Tags"
     And I fill "Name" with "Lorem" in collection "Tags" at position 2
     And "Tags" collection should have 2 elements
     And I press form "Save" button
-    Then I should be redirected to "News List" page
+    Then I should be redirected to "News list" page
     And "news" with "title" "News 1" should have 2 elements in collection "Tags"
     And I should see a success message saying:
     """
@@ -54,13 +54,13 @@ Feature: Managing form collections
     Given there is a "news" with "title" "News 1" present in the database
     And I am on the "Admin panel" page
     And I follow "News" menu element
-    When I press "Edit" link in "Action" column of first element at list
+    When I press "Edit" link in actions column of first element at list
     And I should see "News edit" page header "Edit element"
     And "Tags" collection should have 1 elements
     And I remove first element in collection "Tags"
     And "Tags" collection should have 0 elements
     And I press form "Save" button
-    Then I should be redirected to "News List" page
+    Then I should be redirected to "News list" page
     And "news" with "title" "News 1" should have 0 elements in collection "Tags"
     And I should see a success message saying:
     """
@@ -72,7 +72,7 @@ Feature: Managing form collections
     And there is 1 "news"
     And I am on the "Admin panel" page
     And I follow "News" menu element
-    When I press "Edit" link in "Action" column of first element at list
+    When I press "Edit" link in actions column of first element at list
     And I should see "News edit" page header "Edit element"
     And non-editable collection "Non-editable tags" should have 3 elements
     Then all buttons for adding and removing items in non-editable collection "Non-editable tags" should be disabled

@@ -11,7 +11,7 @@ namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
-class ElementsListResults extends Element
+class ListResultsElement extends Element
 {
     protected $selector = ['css' => 'div#list-results'];
 

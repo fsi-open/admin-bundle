@@ -31,7 +31,7 @@ Feature: Creating new object
       | Active     | Yes                    |
     And I press form "Save" button
     Then new "subscriber" should be created
-    And I should be redirected to "Subscribers List" page
+    And I should be redirected to "Subscribers list" page
     And I should see a success message saying:
     """
     Data has been successfully saved.
@@ -46,7 +46,7 @@ Feature: Creating new object
     And there is 1 "subscriber"
     And translations are enabled in application
     And I am on the "Subscribers list" page
-    When I press "Edit" link in "Action" column of first element at list
+    When I press "Edit" link in actions column of first element at list
     Then I should see "Subscriber form" page header "Edit element"
     And I should see form with following fields
       | Field name    |
@@ -60,7 +60,7 @@ Feature: Creating new object
     And I am on the "Subscriber edit" page with id 1
     When I change form field "Email" to value "email@example.com"
     And I press form "Save" button
-    Then I should be redirected to "Subscribers List" page
+    Then I should be redirected to "Subscribers list" page
     And "subscriber" with id "1" should have changed "Email" to "email@example.com"
     And I should see a success message saying:
     """

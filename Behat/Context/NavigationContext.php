@@ -9,11 +9,14 @@
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Behat\Gherkin\Node\TableNode;
 use Exception;
 use FSi\Bundle\AdminBundle\Behat\Page\AdminPanel;
 use FSi\Bundle\AdminBundle\Behat\Page\CustomNewsEdit;
 use FSi\Bundle\AdminBundle\Behat\Page\CustomNewsList;
 use FSi\Bundle\AdminBundle\Behat\Page\CustomSubscribersList;
+use FSi\Bundle\AdminBundle\Behat\Page\DefaultPage;
+use FSi\Bundle\AdminBundle\Behat\Page\NewsDisplay;
 use FSi\Bundle\AdminBundle\Behat\Page\HomePageEdit;
 use FSi\Bundle\AdminBundle\Behat\Page\NewsCreate;
 use FSi\Bundle\AdminBundle\Behat\Page\NewsEdit;
@@ -29,6 +32,11 @@ use InvalidArgumentException;
 
 class NavigationContext extends AbstractContext
 {
+    /**
+     * @var DefaultPage
+     */
+    private $defaultPage;
+
     /**
      * @var AdminPanel
      */
@@ -58,6 +66,11 @@ class NavigationContext extends AbstractContext
      * @var NewsCreate
      */
     private $newsCreatePage;
+
+    /**
+     * @var NewsDisplay
+     */
+    private $newsDisplayPage;
 
     /**
      * @var NewsEdit
@@ -100,12 +113,14 @@ class NavigationContext extends AbstractContext
     private $subscribersListPage;
 
     public function __construct(
+        DefaultPage $defaultPage,
         AdminPanel $adminPanelPage,
         CustomNewsEdit $customNewsEditPage,
         CustomNewsList $customNewsListPage,
         CustomSubscribersList $customSubscribersListPage,
         HomePageEdit $homePageEditPage,
         NewsCreate $newsCreatePage,
+        NewsDisplay $newsDisplayPage,
         NewsEdit $newsEditPage,
         NewsList $newsListPage,
         PersonAddForm $personAddFormPage,
@@ -115,12 +130,14 @@ class NavigationContext extends AbstractContext
         SubscriberForm $subscriberFormPage,
         SubscribersList $subscribersListPage
     ) {
+        $this->defaultPage = $defaultPage;
         $this->adminPanelPage = $adminPanelPage;
         $this->customNewsEditPage = $customNewsEditPage;
         $this->customNewsListPage = $customNewsListPage;
         $this->customSubscribersListPage = $customSubscribersListPage;
         $this->homePageEditPage = $homePageEditPage;
         $this->newsCreatePage = $newsCreatePage;
+        $this->newsDisplayPage = $newsDisplayPage;
         $this->newsEditPage = $newsEditPage;
         $this->newsListPage = $newsListPage;
         $this->personAddFormPage = $personAddFormPage;
@@ -151,6 +168,8 @@ class NavigationContext extends AbstractContext
                 return $this->homePageEditPage;
             case "News create":
                 return $this->newsCreatePage;
+            case "News display":
+                return $this->newsDisplayPage;
             case "News edit":
                 return $this->newsEditPage;
             case "News list":
@@ -175,6 +194,30 @@ class NavigationContext extends AbstractContext
     }
 
     /**
+     * @When /^I follow "([^"]*)" url from top bar$/
+     * @Given /^I follow "([^"]*)" menu element$/
+     */
+    public function iFollowUrlFromTopBar($menuElement)
+    {
+        $this->adminPanelPage->getMenu()->clickLink($menuElement);
+    }
+
+    /**
+     * @Then /^menu with following elements should be visible at the top of the page$/
+     */
+    public function menuWithFollowingElementsShouldBeVisibleAtTheTopOfThePage(TableNode $table)
+    {
+        expect($this->adminPanelPage->getMenuElementsCount())->toBe(count($table->getHash()));
+
+        foreach ($table->getHash() as $elementRow) {
+            expect($this->adminPanelPage->hasMenuElement(
+                $elementRow['Element name'],
+                empty($elementRow['Element group']) ? null : $elementRow['Element group'])
+            )->toBe(true);
+        }
+    }
+
+    /**
      * @Given I am on the :page page
      */
     public function iAmOnThePage(Page $page)
@@ -192,6 +235,7 @@ class NavigationContext extends AbstractContext
 
     /**
      * @Given I should be on the :page page
+     * @Given I should be redirected to :page page
      */
     public function iShouldBeOnThePage(Page $page)
     {
@@ -204,6 +248,46 @@ class NavigationContext extends AbstractContext
     public function iTryToOpenPage(Page $page)
     {
         $page->openWithoutVerifying();
+    }
+
+    /**
+     * @Given /^I press "New element" link$/
+     */
+    public function iPressNewElementLink()
+    {
+        $this->defaultPage->getElement('New Element Link')->click();
+    }
+
+    /**
+     * @When /^I press "([^"]*)" button at pagination$/
+     */
+    public function iPressButtonAtPagination($button)
+    {
+        $this->defaultPage->getElement('Pagination')->clickLink($button);
+    }
+
+    /**
+     * @Then /^I should see pagination with following buttons$/
+     */
+    public function iShouldSeePaginationWithFollowingButtons(TableNode $table)
+    {
+        $pagination = $this->defaultPage->getElement('Pagination');
+
+        foreach ($table->getHash() as $buttonRow) {
+            expect($pagination->hasLink($buttonRow['Button']))->toBe(true);
+
+            if ($buttonRow['Active'] === 'true') {
+                expect($pagination->isDisabled($buttonRow['Button']))->toBe(false);
+            } else {
+                expect($pagination->isDisabled($buttonRow['Button']))->toBe(true);
+            }
+
+            if ($buttonRow['Current'] === 'true') {
+                expect($pagination->isCurrentPage($buttonRow['Button']))->toBe(true);
+            } else {
+                expect($pagination->isCurrentPage($buttonRow['Button']))->toBe(false);
+            }
+        }
     }
 
     /**

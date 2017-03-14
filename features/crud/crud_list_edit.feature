@@ -11,7 +11,7 @@ Feature: Editing existing object
     And there is 1 "news"
     And translations are enabled in application
     And I am on the "News list" page
-    When I press "Edit" link in "Action" column of first element at list
+    When I press "Edit" link in actions column of first element at list
     Then I should see "News edit" page header "Edit element"
     And I should see form with following fields
       | Field name    |
@@ -27,7 +27,7 @@ Feature: Editing existing object
     And I am on the "News edit" page with id 1
     When I change form field "Title" to value "New title"
     And I press form "Save" button
-    Then I should be redirected to "News List" page
+    Then I should be redirected to "News list" page
     And "news" with id "1" should have changed "Title" to "New title"
     And I should see a success message saying:
     """

@@ -8,7 +8,7 @@ Feature: Managing form nested collections
     And there is 1 "news"
     And I am on the "Admin panel" page
     And I follow "News" menu element
-    And I press "Edit" link in "Action" column of first element at list
+    And I press "Edit" link in actions column of first element at list
     And I should see "News edit" page header "Edit element"
     And "Tags" collection should have 1 elements
     And "Elements" collection should have 0 elements

@@ -19,4 +19,4 @@ Feature: List of elements
       | Created at    |
       | Visible       |
       | Creator email |
-    And I should see "News List" page header "List of elements"
+    And I should see "News list" page header "List of elements"
