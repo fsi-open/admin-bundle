@@ -16,6 +16,7 @@
         <parameter key="admin.element.factory.worker.form.class">FSi\Bundle\AdminBundle\Factory\Worker\FormWorker</parameter>
         <parameter key="admin.element.factory.worker.doctrine.class">FSi\Bundle\AdminBundle\Factory\Worker\DoctrineWorker</parameter>
         <parameter key="admin.element.factory.worker.request_stack.class">FSi\Bundle\AdminBundle\Factory\Worker\RequestStackWorker</parameter>
+        <parameter key="admin.controller.abstract.class">FSi\Bundle\AdminBundle\Controller\ControllerAbstract</parameter>
         <parameter key="admin.controller.resource.class">FSi\Bundle\AdminBundle\Controller\ResourceController</parameter>
         <parameter key="admin.controller.display.class">FSi\Bundle\AdminBundle\Controller\DisplayController</parameter>
         <parameter key="admin.controller.list.class">FSi\Bundle\AdminBundle\Controller\ListController</parameter>
@@ -74,39 +75,29 @@
         </service>
 
         <!-- Controllers -->
-        <service id="admin.controller.resource" class="%admin.controller.resource.class%">
+        <service id="admin.controller.abstract" class="%admin.controller.abstract.class%" abstract="true">
             <argument type="service" id="templating"/>
             <argument type="service" id="admin.context.manager"/>
+            <argument type="service" id="event_dispatcher"/>
+        </service>
+
+        <service id="admin.controller.resource" class="%admin.controller.resource.class%" parent="admin.controller.abstract">
             <argument>%admin.templates.resource%</argument>
-            <tag name="admin.event_dispatcher_aware" />
         </service>
 
-        <service id="admin.controller.display" class="%admin.controller.display.class%">
-            <argument type="service" id="templating"/>
-            <argument type="service" id="admin.context.manager"/>
+        <service id="admin.controller.display" class="%admin.controller.display.class%" parent="admin.controller.abstract">
             <argument>%admin.templates.display%</argument>
-            <tag name="admin.event_dispatcher_aware" />
         </service>
 
-        <service id="admin.controller.list" class="%admin.controller.list.class%">
-            <argument type="service" id="templating"/>
-            <argument type="service" id="admin.context.manager"/>
+        <service id="admin.controller.list" class="%admin.controller.list.class%" parent="admin.controller.abstract">
             <argument>%admin.templates.list%</argument>
-            <tag name="admin.event_dispatcher_aware" />
         </service>
 
-        <service id="admin.controller.form" class="%admin.controller.form.class%">
-            <argument type="service" id="templating"/>
-            <argument type="service" id="admin.context.manager"/>
+        <service id="admin.controller.form" class="%admin.controller.form.class%" parent="admin.controller.abstract">
             <argument>%admin.templates.form%</argument>
-            <tag name="admin.event_dispatcher_aware" />
         </service>
 
-        <service id="admin.controller.batch" class="%admin.controller.batch.class%">
-            <argument type="service" id="templating"/>
-            <argument type="service" id="admin.context.manager"/>
-            <tag name="admin.event_dispatcher_aware" />
-        </service>
+        <service id="admin.controller.batch" class="%admin.controller.batch.class%" parent="admin.controller.abstract" />
 
         <service id="admin.controller.admin" class="%admin.controller.admin.class%">
             <argument type="service" id="templating"/>

@@ -16,7 +16,6 @@ use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\KnpMenuBuilderPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ManagerVisitorPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ResourceRepositoryPass;
-use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\SetEventDispatcherPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\FSIAdminExtension;
 use FSi\Bundle\AdminBundle\Finder\AdminClassFinder;
@@ -46,7 +45,6 @@ class FSiAdminBundle extends Bundle
         $container->addCompilerPass(new ManagerVisitorPass());
         $container->addCompilerPass(new ContextPass());
         $container->addCompilerPass(new TwigGlobalsPass());
-        $container->addCompilerPass(new SetEventDispatcherPass());
     }
 
     /**
