@@ -122,3 +122,15 @@ in favour of [GenericCRUDElement](Admin/CRUD/GenericCRUDElement.php).
 
 [Element](Admin/Element.php) has had the `setDefaultOptions` method renamed
 to `configureOptions`, mirroring the change of Symfony's form component.
+
+## Refactored Display component
+
+It was simplified to make it more accessible to use. The `\FSi\Bundle\AdminBundle\Display\DisplayView`
+and `FSi\Bundle\AdminBundle\Display\View` classes were dropped and now the data between 
+[Display](Display/Display.php) and [DisplayContext](Admin/Display/Context/DisplayContext.php)
+is passed directly. Also, the data formatters are applied immediately after the
+value is added to the [Display](Display/Display.php), instead during creation of
+the `FSi\Bundle\AdminBundle\Display\DisplayView`.
+
+Please refer to [Display components documentation](Resources/doc/admin_element_display.md) for
+more information.

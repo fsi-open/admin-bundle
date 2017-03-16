@@ -19,7 +19,7 @@ to have it return a default value for the template name. This stems from the cha
 to controllers [not having](CHANGELOG-3.0.md#default-response-templates-are-injected-into-contexts)
 a default template name injected to them.
 
-## Access Admin\AbstraceElement options through getter methods
+## Access Admin\AbstractElement options through getter methods
 
 If you have created an element class extending the [AbstractElement](Admin/AbstractElement.php)
 and are accessing it's `options` property directly, you will need to switch to
@@ -36,3 +36,22 @@ if you have been extending it.
 
 [Element](Admin/Element.php) method `setDefaultOptions` has been renamed to `configureOptions`,
 so you are required to change all implementations of that method in your elements.
+
+## Adjust Display elements
+
+Following the refactoring of the Display component, following classes were removed:
+
+- FSi\Bundle\AdminBundle\Display\DisplayView
+- FSi\Bundle\AdminBundle\Display\ObjectDisplay (replaced with [PropertyAccessDisplay](Display/PropertyAccessDisplay.php))
+- FSi\Bundle\AdminBundle\Display\View
+
+Also, the [Display](Display/Display.php) interface has been changed. The `add` 
+method no longer permits empty labels and the `createView` has been removed in
+favour of `getData`. Classes implementing it should return an array of [Property](Display/Property.php)
+objects. There have new base classes introduced:
+
+- [PropertyAccessDisplay](Display/PropertyAccessDisplay.php)
+- [SimpleDisplay](Display/SimpleDisplay.php)
+
+Please refer to [Display components documentation](Resources/doc/admin_element_display.md) for
+more information.

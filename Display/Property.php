@@ -25,7 +25,7 @@ class Property
     private $label;
 
     /**
-     * @param string $value
+     * @param mixed $value
      * @param string $label
      * @param array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[] $valueFormatters
      */
