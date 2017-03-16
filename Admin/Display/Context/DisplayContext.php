@@ -53,7 +53,7 @@ class DisplayContext extends ContextAbstract
     public function getData()
     {
         return [
-            'display' => $this->display->createView(),
+            'display' => $this->display->getData(),
             'element' => $this->element,
         ];
     }
