@@ -20,12 +20,12 @@ abstract class AbstractElement implements Element
     /**
      * @var array
      */
-    protected $options;
+    private $options;
 
     /**
      * @param array $options
      */
-    public function __construct($options = [])
+    public function __construct(array $options = [])
     {
         $optionsResolver = new OptionsResolver();
         $this->setDefaultOptions($optionsResolver);
