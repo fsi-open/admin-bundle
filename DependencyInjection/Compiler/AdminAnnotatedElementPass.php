@@ -50,7 +50,7 @@ class AdminAnnotatedElementPass implements CompilerPassInterface
         $paths = $this->getBundlesAdminPaths($container);
 
         $annotatedAdminClassess = $this->findAnnotatedAdminClasses($paths);
-        $adminElementsDefinitions = array();
+        $adminElementsDefinitions = [];
         foreach ($annotatedAdminClassess as $adminClass) {
             $adminElementsDefinitions[] = $this->createAdminElementDefinition($adminClass);
         }
@@ -64,7 +64,7 @@ class AdminAnnotatedElementPass implements CompilerPassInterface
     private function getBundlesAdminPaths(ContainerBuilder $container)
     {
         $bundleClasses = $container->getParameter('kernel.bundles');
-        $paths = array();
+        $paths = [];
         foreach ($bundleClasses as $bundleClass) {
             $bundleClassReflector = new \ReflectionClass($bundleClass);
             $bundleAdminPath = dirname($bundleClassReflector->getFileName()) . '/Admin';
@@ -94,7 +94,7 @@ class AdminAnnotatedElementPass implements CompilerPassInterface
      */
     private function findAnnotatedAdminClasses(array $paths)
     {
-        $annotatedAdminClasses = array();
+        $annotatedAdminClasses = [];
 
         foreach ($this->adminClassFinder->findClasses($paths) as $class) {
             $annotation = $this->annotationReader->getClassAnnotation(

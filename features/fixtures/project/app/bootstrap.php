@@ -8,5 +8,5 @@ if (!file_exists($file = __DIR__.'/../../../../vendor/autoload.php')) {
 
 $loader = require $file;
 $loader->add('FSi\\FixturesBundle', __DIR__ . '/../src');
-AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
+AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 AnnotationRegistry::registerFile(__DIR__.'/../../../../Annotation/Element.php');

@@ -10,7 +10,7 @@ class AdminClassFinderSpec extends ObjectBehavior
 
     function it_find_admin_classes_in_default_path()
     {
-        $paths = array(__DIR__ . self::FIXTURES_BUNDLE_PATH . '/Admin');
+        $paths = [__DIR__ . self::FIXTURES_BUNDLE_PATH . '/Admin'];
         /* We can't just check if result is an array with following values because it might be in other order */
         $this->findClasses($paths)->shouldHaveCount(4);
         $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\CRUDElement");
@@ -21,10 +21,10 @@ class AdminClassFinderSpec extends ObjectBehavior
 
     function it_find_admin_classes_in_additional_paths()
     {
-        $paths = array(
+        $paths = [
             __DIR__ . self::FIXTURES_BUNDLE_PATH . '/Admin',
             __DIR__ . self::FIXTURES_BUNDLE_PATH . '/CustomAdmin'
-        );
+        ];
 
         $this->findClasses($paths)->shouldHaveCount(5);
         $this->findClasses($paths)->shouldContain("FSi\\Bundle\\AdminBundle\\spec\\fixtures\\Admin\\CRUDElement");

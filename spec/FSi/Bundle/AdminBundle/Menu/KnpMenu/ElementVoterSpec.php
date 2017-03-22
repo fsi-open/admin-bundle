@@ -49,12 +49,12 @@ class ElementVoterSpec extends ObjectBehavior
         $requestAttributes->has('element')->willReturn(true);
         $requestAttributes->get('element')->willReturn($element);
 
-        $item->getExtra('routes', array())->willReturn(array());
+        $item->getExtra('routes', [])->willReturn([]);
         $this->matchItem($item)->shouldReturn(false);
 
-        $item->getExtra('routes', array())->willReturn(array(array(
-            'parameters' => array()
-        )));
+        $item->getExtra('routes', [])->willReturn([[
+            'parameters' => []
+        ]]);
         $this->matchItem($item)->shouldReturn(false);
     }
 
@@ -67,11 +67,11 @@ class ElementVoterSpec extends ObjectBehavior
         $requestAttributes->get('element')->willReturn($element);
         $element->getId()->willReturn('element_id');
 
-        $item->getExtra('routes', array())->willReturn(array(array(
-            'parameters' => array(
+        $item->getExtra('routes', [])->willReturn([[
+            'parameters' => [
                 'element' => 'some_element'
-            )
-        )));
+            ]
+        ]]);
         $this->matchItem($item)->shouldReturn(false);
     }
 
@@ -84,11 +84,11 @@ class ElementVoterSpec extends ObjectBehavior
         $requestAttributes->get('element')->willReturn($element);
         $element->getId()->willReturn('element_id');
 
-        $item->getExtra('routes', array())->willReturn(array(array(
-            'parameters' => array(
+        $item->getExtra('routes', [])->willReturn([[
+            'parameters' => [
                 'element' => 'element_id'
-            )
-        )));
+            ]
+        ]]);
         $this->matchItem($item)->shouldReturn(true);
     }
 
@@ -100,13 +100,13 @@ class ElementVoterSpec extends ObjectBehavior
         $requestAttributes->has('element')->willReturn(true);
         $requestAttributes->get('element')->willReturn($element);
         $element->getId()->willReturn('element_id');
-        $element->getSuccessRouteParameters()->willReturn(array('element' => 'element_after_success'));
+        $element->getSuccessRouteParameters()->willReturn(['element' => 'element_after_success']);
 
-        $item->getExtra('routes', array())->willReturn(array(array(
-            'parameters' => array(
+        $item->getExtra('routes', [])->willReturn([[
+            'parameters' => [
                 'element' => 'some_element'
-            )
-        )));
+            ]
+        ]]);
         $this->matchItem($item)->shouldReturn(false);
     }
 
@@ -118,13 +118,13 @@ class ElementVoterSpec extends ObjectBehavior
         $requestAttributes->has('element')->willReturn(true);
         $requestAttributes->get('element')->willReturn($element);
         $element->getId()->willReturn('element_id');
-        $element->getSuccessRouteParameters()->willReturn(array('element' => 'element_after_success'));
+        $element->getSuccessRouteParameters()->willReturn(['element' => 'element_after_success']);
 
-        $item->getExtra('routes', array())->willReturn(array(array(
-            'parameters' => array(
+        $item->getExtra('routes', [])->willReturn([[
+            'parameters' => [
                 'element' => 'element_after_success'
-            )
-        )));
+            ]
+        ]]);
         $this->matchItem($item)->shouldReturn(true);
     }
 

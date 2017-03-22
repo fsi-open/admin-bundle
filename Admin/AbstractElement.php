@@ -25,7 +25,7 @@ abstract class AbstractElement implements Element
     /**
      * @param array $options
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $optionsResolver = new OptionsResolver();
         $this->setDefaultOptions($optionsResolver);
@@ -37,9 +37,9 @@ abstract class AbstractElement implements Element
      */
     public function getRouteParameters()
     {
-        return array(
+        return [
             'element' => $this->getId(),
-        );
+        ];
     }
 
     /**

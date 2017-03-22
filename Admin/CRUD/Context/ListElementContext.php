@@ -65,11 +65,11 @@ class ListElementContext extends ContextAbstract
      */
     public function getData()
     {
-        return array(
+        return [
             'datagrid_view' => $this->dataGrid->createView(),
             'datasource_view' => $this->dataSource->createView(),
             'element' => $this->element,
-        );
+        ];
     }
 
     /**

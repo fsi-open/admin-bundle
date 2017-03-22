@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Behat\Context\Page\Element;
+namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
-class Form extends Element
+class NewElementLink extends Element
 {
-    protected $selector = array('css' => 'form');
+    protected $selector = ['css' => 'a#create-element'];
 }

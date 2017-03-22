@@ -29,7 +29,7 @@ class CustomSubscriber extends ListElement
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
         /* @var $datasource \FSi\Component\DataSource\DataSource */
-        $datasource = $factory->createDataSource('doctrine', array('entity' => $this->getClassName()), 'subscriber');
+        $datasource = $factory->createDataSource('doctrine', ['entity' => $this->getClassName()], 'subscriber');
 
         return $datasource;
     }

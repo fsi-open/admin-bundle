@@ -11,6 +11,8 @@ Feature: Overwriting default list element templates
       | Option        | Value                                               |
       | template_list | @FSiFixtures/Admin/subscriber_custom_list.html.twig |
 
+
+
   Scenario: Display custom list view
     And I am on the "Custom subscribers list" page
-    Then I should see customized "subscribers list" view
+    Then page "Custom subscribers list" should display OK status

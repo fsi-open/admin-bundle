@@ -1,4 +1,5 @@
 <?php
+
 /**
  * (c) FSi sp. z o.o. <info@fsi.pl>
  *
@@ -9,38 +10,23 @@
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Doctrine\ORM\Tools\SchemaTool;
-use Faker\Factory;
 use Faker\ORM\Doctrine\Populator;
 use FSi\FixturesBundle\Entity\News;
 use FSi\FixturesBundle\Entity\Tag;
-use Symfony\Component\HttpKernel\KernelInterface;
+use InvalidArgumentException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class DataContext implements KernelAwareContext
+class DataContext extends AbstractContext
 {
-    /**
-     * @var KernelInterface
-     */
-    protected $kernel;
-
-    /**
-     * @param KernelInterface $kernel
-     */
-    public function setKernel(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
-    }
-
     /**
      * @BeforeScenario
      */
     public function createDatabase()
     {
         $this->deleteDatabaseIfExist();
-        $metadata = $this->getDoctrine()->getManager()->getMetadataFactory()->getAllMetadata();
-        $tool = new SchemaTool($this->getDoctrine()->getManager());
+        $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
+        $tool = new SchemaTool($this->getEntityManager());
         $tool->createSchema($metadata);
     }
 
@@ -49,7 +35,7 @@ class DataContext implements KernelAwareContext
      */
     public function deleteDatabaseIfExist()
     {
-        $dbFilePath = $this->kernel->getRootDir() . '/data.sqlite';
+        $dbFilePath = $this->getKernel()->getRootDir() . '/data.sqlite';
 
         if (file_exists($dbFilePath)) {
             unlink($dbFilePath);
@@ -57,27 +43,96 @@ class DataContext implements KernelAwareContext
     }
 
     /**
-     * @Then /^new news should be created$/
+     * @Transform :className
      */
-    public function newNewsShouldBeCreated()
+    public function entityToClassName($entityName)
     {
-        $this->thereShouldBeNewsInDatabase(1);
+        switch ($entityName) {
+            case "news":
+                return "FSi\FixturesBundle\Entity\News";
+            case "subscriber":
+            case "subscribers":
+                return "FSi\FixturesBundle\Entity\Subscriber";
+            case "person":
+                return "FSi\FixturesBundle\Entity\Person";
+        }
     }
 
     /**
-     * @Then /^new subscriber should be created$/
+     * @Given there are :count :className
+     * @Given there is :count :className
      */
-    public function newSubscriberShouldBeCreated()
+    public function thereIsNumberOfEntities($count, $className)
     {
-        $this->thereShouldBeSubscribersInDatabase(1);
+        $populator = new Populator($this->getFaker(), $this->getEntityManager());
+        $populator->addEntity(
+            $className,
+            $count,
+            $this->getColumnFormatters($className),
+            $this->getModifiers($className)
+        );
+
+        $populator->execute();
+        expect(count($this->getRepository($className)->findAll()))->toBe($count);
     }
 
     /**
-     * @Then /^there should be (\d+) news in database$/
+     * @Given there is a :className with :field :value present in the database
      */
-    public function thereShouldBeNewsInDatabase($newsCount)
+    public function thereIsAnEntityWithField($className, $field, $value)
     {
-        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe($newsCount);
+        $formatters = $this->getColumnFormatters($className);
+        $formatters[$field] = $this->parseScenarioValue($value);
+        $populator = new Populator($this->getFaker(), $this->getEntityManager());
+        $populator->addEntity(
+            $className,
+            1,
+            $formatters,
+            $this->getModifiers($className)
+        );
+
+        $populator->execute();
+        expect($this->getRepository($className)->findOneBy([$field => $value]))->toBeAnInstanceOf($className);
+    }
+
+    /**
+     * @Then there should be a :className with :field :value present in the database
+     */
+    public function entityWithFieldShouldExist($className, $field, $value)
+    {
+        expect($this->getRepository($className)->findOneBy([$field => $value]))->toBeAnInstanceOf($className);
+    }
+
+    /**
+     * @Given :className with :field :value should not exist in database anymore
+     */
+    public function entityShouldNotExistInDatabaseAnymore($className, $field, $value)
+    {
+        expect($this->getRepository($className)->findOneBy([$field => $value]))->toBe(null);
+    }
+
+    /**
+     * @Then new :className should be created
+     */
+    public function newEntityShouldBeCreated($className)
+    {
+        $this->thereShouldExistsNumberOfEntities(1, $className);
+    }
+
+    /**
+     * @Then there should not be any :className present in the database
+     */
+    public function thereShouldNotBeAnyEntities($className)
+    {
+        $this->thereShouldExistsNumberOfEntities(0, $className);
+    }
+
+    /**
+     * @Then there should be :count :className present in the database
+     */
+    public function thereShouldExistsNumberOfEntities($count, $className)
+    {
+        expect(count($this->getRepository($className)->findAll()))->toBe($count);
     }
 
     /**
@@ -85,10 +140,10 @@ class DataContext implements KernelAwareContext
      */
     public function followingNewsExistInDatabase(TableNode $table)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $generator = Factory::create();
+        $manager = $this->getEntityManager();
+        $faker = $this->getFaker();
         foreach ($table->getHash() as $newsNode) {
-            $news = $this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findOneByTitle($newsNode['Title']);
+            $news = $this->getRepository('FSi\FixturesBundle\Entity\News')->findOneByTitle($newsNode['Title']);
             if (!isset($news)) {
                 $news = new News();
             }
@@ -97,9 +152,9 @@ class DataContext implements KernelAwareContext
             if (isset($newsNode['Date']) && $newsNode['Date']) {
                 $news->setDate(\DateTime::createFromFormat('Y-m-d', $newsNode['Date']));
             }
-            $news->setCreatedAt($generator->dateTime());
-            $news->setVisible($generator->boolean());
-            $news->setCreatorEmail($generator->email());
+            $news->setCreatedAt($faker->dateTime());
+            $news->setVisible($faker->boolean());
+            $news->setCreatorEmail($faker->email());
 
             $manager->persist($news);
         }
@@ -108,184 +163,102 @@ class DataContext implements KernelAwareContext
     }
 
     /**
-     * @Given /^there are (\d+) news in database$/
-     * @Given /^there is (\d+) news in database$/
+     * @Then :className with :field :value should have :expectedCount elements in collection :collectionName
      */
-    public function thereAreNewsInDatabase($newsCount)
+    public function entityShouldHaveElementsInCollection($className, $field, $value, $expectedCount, $collectionName)
     {
-        $generator = Factory::create();
-        $populator = new Populator($generator, $this->getDoctrine()->getManager());
+        $entity = $this->getRepository($className)->findOneBy([$field => $value]);
+        $this->getEntityManager()->refresh($entity);
 
-        $populator->addEntity('FSi\FixturesBundle\Entity\News', $newsCount, array(
-            'creatorEmail' => function() use ($generator) { return $generator->email(); },
-            'categories' => function() use($generator) {return array($generator->text(), $generator->text());},
-            'photoKey' => null
-        ), array(function(News $news) use($generator) {
-            $tag = new Tag();
-            $tag->setName($generator->sentence());
-            $tag->setNews($news);
-            $news->setTags(array($tag));
-        }));
-        $populator->execute();
-
-        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe($newsCount);
+        expect(count($this->getEntityField($entity, $collectionName)))->toBe($expectedCount);
     }
 
     /**
-     * @Given /^there is news with id (\d+) in database$/
+     * @Then :className with id :id should have changed :field to :value
      */
-    public function thereIsNewsWithIdInDatabase($id)
+    public function entityWithIdShouldHaveChangedField($className, $id, $field, $value)
     {
-        $generator = Factory::create();
-        $populator = new Populator($generator, $this->getDoctrine()->getManager());
+        $entity = $this->getRepository($className)->find($id);
+        $this->getEntityManager()->refresh($entity);
 
-        $populator->addEntity('FSi\FixturesBundle\Entity\News', 1, array(
-            'id' => $id,
-            'creatorEmail' => function() use ($generator) { return $generator->email(); },
-            'photoKey' => null
-        ));
-        $populator->execute();
-
-        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe(1);
+        expect($this->getEntityField($entity, $field))->toBe($value);
     }
 
     /**
-     * @Then /^there should be news with "([^"]*)" title in database$/
+     * @Then :className with id :id should not have his :field changed to :value
      */
-    public function thereShouldBeNewsWithTitleInDatabase($title)
+    public function entityWithIdShouldNotHaveChangedFieldValue($className, $id, $field, $value)
     {
-        expect($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findOneByTitle($title))
-            ->toBeAnInstanceOf('FSi\FixturesBundle\Entity\News');
+        $entity = $this->getRepository($className)->find($id);
+        $this->getEntityManager()->refresh($entity);
+
+        expect($this->getEntityField($entity, $field))->notToBe($value);
     }
 
     /**
-     * @Given /^news "([^"]*)" should not exist in database anymore$/
+     * @param string $className
+     * @return array
+     * @throws InvalidArgumentException
      */
-    public function newsShouldNotExistInDatabaseAnymore($title)
+    private function getColumnFormatters($className)
     {
-        expect($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findOneBy(array(
-            'title' => $title
-        )))->toBe(null);
-    }
-
-
-    /**
-     * @Given /^there should not be any news in database$/
-     */
-    public function thereShouldNotBeAnyNewsInDatabase()
-    {
-        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\News')->findAll()))->toBe(0);
-    }
-
-    /**
-     * @Given /^there is (\d+) subscriber in database$/
-     * @Given /^there are (\d+) subscribers in database$/
-     */
-    public function thereAreSubscribersInDatabase($count)
-    {
-        $generator = Factory::create();
-        $populator = new Populator($generator, $this->getDoctrine()->getManager());
-
-        $populator->addEntity('FSi\FixturesBundle\Entity\Subscriber', $count, array(
-            'email' => function() use ($generator) { return $generator->email(); }
-        ));
-        $populator->execute();
-
-        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll()))->toBe($count);
+        $faker = $this->getFaker();
+        switch ($className) {
+            case 'FSi\FixturesBundle\Entity\News':
+                return [
+                    'creatorEmail' => function() use ($faker) {
+                        return $faker->email();
+                    },
+                    'categories' => function() use ($faker) {
+                        return [$faker->text(), $faker->text()];
+                    },
+                    'photoKey' => null
+                ];
+            case 'FSi\FixturesBundle\Entity\Person':
+            case 'FSi\FixturesBundle\Entity\Subscriber':
+                return [
+                    'email' => function() use ($faker) { return $faker->email(); }
+                ];
+            default:
+                throw new InvalidArgumentException(sprintf(
+                    'Cannot find any column formatters for class "%s',
+                    $className
+                ));
+        }
     }
 
     /**
-     * @Given /^there is subscriber with id (\d+) in database$/
+     * @param string $className
+     * @return array
+     * @throws InvalidArgumentException
      */
-    public function thereIsSubscriberWithIdInDatabase($id)
+    private function getModifiers($className)
     {
-        $generator = Factory::create();
-        $populator = new Populator($generator, $this->getDoctrine()->getManager());
-
-        $populator->addEntity('FSi\FixturesBundle\Entity\Subscriber', 1, array(
-            'id' => $id,
-            'email' => function() use ($generator) { return $generator->email(); }
-        ));
-        $populator->execute();
-
-        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll()))->toBe(1);
+        $faker = $this->getFaker();
+        switch ($className) {
+            case 'FSi\FixturesBundle\Entity\News':
+                return [
+                    function(News $news) use ($faker) {
+                        $tag = new Tag();
+                        $tag->setName($faker->sentence());
+                        $tag->setNews($news);
+                        $news->setTags([$tag]);
+                    }
+                ];
+            case 'FSi\FixturesBundle\Entity\Person':
+            case 'FSi\FixturesBundle\Entity\Subscriber':
+                return [];
+            default:
+                throw new InvalidArgumentException(sprintf(
+                    'Cannot find any modifiers for class "%s',
+                    $className
+                ));
+        }
     }
 
-    /**
-     * @Given /^there should be (\d+) subscribers in database$/
-     */
-    public function thereShouldBeSubscribersInDatabase($count)
+    private function getEntityField($entity, $field)
     {
-        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll()))->toBe($count);
-    }
-
-    /**
-     * @Given /^there should not be any subscribers in database$/
-     */
-    public function thereShouldNotBeAnySubscribersInDatabase()
-    {
-        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Subscriber')->findAll()))->toBe(0);
-    }
-
-    /**
-     * @Given /^there is a person with id (\d+) in database$/
-     */
-    public function thereIsAPersonWithIdInDatabase($id)
-    {
-        $generator = Factory::create();
-        $populator = new Populator($generator, $this->getDoctrine()->getManager());
-
-        $populator->addEntity('FSi\FixturesBundle\Entity\Person', 1, array(
-            'id' => $id,
-            'email' => function() use ($generator) { return $generator->email(); }
-        ));
-        $populator->execute();
-
-        expect(count($this->getEntityRepository('FSi\FixturesBundle\Entity\Person')->findAll()))->toBe(1);
-    }
-
-    /**
-     * @Then there should be a person with id :id in database
-     */
-    public function thereShouldBeAPersonWithId($id)
-    {
-        $class = 'FSi\FixturesBundle\Entity\Person';
-        expect($this->getEntityRepository($class)->find($id))->beAnInstanceOf($class);
-    }
-
-    /**
-     * @param string $name
-     * @return \Doctrine\Orm\EntityRepository
-     */
-    protected function getEntityRepository($name)
-    {
-        return $this->getDoctrine()->getManager()->getRepository($name);
-    }
-
-    /**
-     * @return \Doctrine\Bundle\DoctrineBundle\Registry
-     */
-    protected function getDoctrine()
-    {
-        return $this->kernel->getContainer()->get('doctrine');
-    }
-
-    /**
-     * @Then /^news should have (\d+) elements in collection "([^"]*)"$/
-     */
-    public function newsShouldHaveElementsInCollection($expectedCount, $collectionName)
-    {
-        $manager = $this->getDoctrine()->getManager();
-        $manager->clear();
-
-        $news = $manager
-            ->getRepository('FSi\FixturesBundle\Entity\News')
-            ->findBy(array(), array(), 1);
-        $news = reset($news);
-
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $tags = $propertyAccessor->getValue($news, strtolower($collectionName));
-
-        expect(count($tags))->toBe($expectedCount);
+        return $propertyAccessor->getValue($entity, strtolower($field));
     }
 }

@@ -23,15 +23,11 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         ResourceValueRepository $valueRepository,
         TextType $resource
     ) {
-        $mapBuilder->getMap()->willReturn(array(
-            'resources' => array(
-                'resource_key' => $resource
-            )
-        ));
+        $mapBuilder->getMap()->willReturn(['resources' => ['resource_key' => $resource]]);
         $resource->getName()->willReturn('resources.resource_key');
 
         $element->getRepository()->willReturn($valueRepository);
-        $element->getResourceFormOptions()->willReturn(array('form_options'));
+        $element->getResourceFormOptions()->willReturn(['form_options']);
 
         $this->beConstructedWith($formFactory, $mapBuilder);
     }
@@ -42,7 +38,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new RuntimeException("resources.resource_key its not a resource group key")
-        )->during('build', array($element));
+        )->during('build', [$element]);
     }
 
     function it_builds_form_for_resource_group(
@@ -56,21 +52,17 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         $element->getKey()->willReturn('resources');
         $valueRepository->get('resources.resource_key')->willReturn($resourceValue);
 
-        $formFactory
-            ->createBuilder(
-                TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
-                array('resources_resource_key' => $resourceValue),
-                array('form_options')
-            )
-            ->willReturn($formBuilder);
+        $formFactory->createBuilder(
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+            ['resources_resource_key' => $resourceValue],
+            ['form_options']
+        )->willReturn($formBuilder);
 
-        $formBuilder
-            ->add(
-                'resources_resource_key',
-                TypeSolver::getFormType('FSi\Bundle\ResourceRepositoryBundle\Form\Type\ResourceType', 'resource'),
-                array('resource_key' => 'resources.resource_key')
-            )
-            ->shouldBeCalled();
+        $formBuilder->add(
+            'resources_resource_key',
+            TypeSolver::getFormType('FSi\Bundle\ResourceRepositoryBundle\Form\Type\ResourceType', 'resource'),
+            ['resource_key' => 'resources.resource_key']
+        )->shouldBeCalled();
 
         $formBuilder->getForm()->willReturn($form);
 

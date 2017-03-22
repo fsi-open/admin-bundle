@@ -14,9 +14,9 @@ class ProductionLine
     /**
      * @param Worker[] $workers
      */
-    public function __construct($workers = array())
+    public function __construct($workers = [])
     {
-        $this->workers = array();
+        $this->workers = [];
 
         foreach((array) $workers as $worker) {
             $this->addWorker($worker);

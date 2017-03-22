@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Behat\Context\Page\Element;
+namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 class Pagination extends Element
 {
-    protected $selector = array('css' => 'ul.pagination');
+    protected $selector = ['css' => 'ul.pagination'];
 
     public function isDisabled($selector)
     {

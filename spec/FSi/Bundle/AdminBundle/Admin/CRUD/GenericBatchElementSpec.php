@@ -9,7 +9,7 @@ class GenericBatchElementSpec extends ObjectBehavior
     function let()
     {
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyBatch');
-        $this->beConstructedWith(array());
+        $this->beConstructedWith([]);
     }
 
     function it_is_initializable()
