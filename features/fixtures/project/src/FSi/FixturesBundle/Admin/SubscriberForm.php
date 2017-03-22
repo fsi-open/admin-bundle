@@ -37,7 +37,7 @@ class SubscriberForm extends FormElement
 
     public function getSuccessRouteParameters()
     {
-        return array('element' => 'subscriber');
+        return ['element' => 'subscriber'];
     }
 
     protected function initForm(FormFactoryInterface $factory, $data = null)
@@ -46,34 +46,28 @@ class SubscriberForm extends FormElement
             'subscriber',
             TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
             $data,
-            array(
-                'data_class' => $this->getClassName()
-            )
+            ['data_class' => $this->getClassName()]
         );
 
         $builder->add(
             'email',
             TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email'),
-            array(
-                'label' => 'admin.subscriber.list.email',
-            )
+            ['label' => 'admin.subscriber.list.email']
         );
 
         $builder->add(
             'created_at',
             TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date'),
-            array(
+            [
                 'label' => 'admin.subscriber.list.created_at',
                 'widget' => 'single_text'
-            )
+            ]
         );
 
         $builder->add(
             'active',
             TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CheckboxType', 'checkbox'),
-            array(
-                'label' => 'admin.subscriber.list.active',
-            )
+            ['label' => 'admin.subscriber.list.active']
         );
 
         return $builder->getForm();

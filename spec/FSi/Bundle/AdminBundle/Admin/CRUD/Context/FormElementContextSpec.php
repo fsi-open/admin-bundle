@@ -22,7 +22,7 @@ class FormElementContextSpec extends ObjectBehavior
 {
     function let(FormElement $element, FormInterface $form, HandlerInterface $handler)
     {
-        $this->beConstructedWith(array($handler));
+        $this->beConstructedWith([$handler]);
         $element->hasOption('allow_add')->willReturn(true);
         $element->getOption('allow_add')->willReturn(true);
         $element->createForm(null)->willReturn($form);
@@ -34,12 +34,7 @@ class FormElementContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_array_data(
-        FormInterface $form,
-        FormElement $element,
-        DataIndexerInterface $dataIndexer,
-        Request $request
-    ) {
+    function it_has_array_data(FormInterface $form, Request $request) {
         $form->createView()->willReturn('form_view');
         $form->getData()->willReturn(null);
 
@@ -74,11 +69,7 @@ class FormElementContextSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
-     */
-    function it_throws_exception_when_adding_is_not_allowed($request, $element)
+    function it_throws_exception_when_adding_is_not_allowed(Request $request, FormElement $element)
     {
         $request->get('id')->willReturn(false);
         $element->getOption('allow_add')->willReturn(false);
@@ -87,7 +78,7 @@ class FormElementContextSpec extends ObjectBehavior
 
     public function getMatchers()
     {
-        return array(
+        return [
             'haveKeyInArray' => function($subject, $key) {
                 if (!is_array($subject)) {
                     return false;
@@ -95,6 +86,6 @@ class FormElementContextSpec extends ObjectBehavior
 
                 return array_key_exists($key, $subject);
             },
-        );
+        ];
     }
 }

@@ -25,7 +25,7 @@ class KnpMenuBuilderPass implements CompilerPassInterface
 
         $decoratorServices = $container->findTaggedServiceIds('admin.menu.knp_decorator');
 
-        $decorators = array();
+        $decorators = [];
         foreach ($decoratorServices as $id => $tag) {
             $decorators[] = $container->findDefinition($id);
         }

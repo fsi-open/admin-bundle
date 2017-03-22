@@ -31,7 +31,7 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
             new RequestHandlerException(
                 "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\DataSourceBindParametersHandler require ListEvent"
             )
-        )->during('handleRequest', array($event, $request));
+        )->during('handleRequest', [$event, $request]);
     }
 
     function it_binds_request_to_datasource_and_dispatch_events(

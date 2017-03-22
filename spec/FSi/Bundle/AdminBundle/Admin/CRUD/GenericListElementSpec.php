@@ -13,7 +13,7 @@ class GenericListElementSpec extends ObjectBehavior
     function let()
     {
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyList');
-        $this->beConstructedWith(array());
+        $this->beConstructedWith([]);
     }
 
     function it_is_initializable()
@@ -56,8 +56,8 @@ class GenericListElementSpec extends ObjectBehavior
 
     function it_has_default_options_values()
     {
-        $this->getOptions()->shouldReturn(array(
+        $this->getOptions()->shouldReturn([
             'template_list' => null,
-        ));
+        ]);
     }
 }

@@ -38,16 +38,16 @@ class Person extends CRUDElement
         }
 
         if (!$datagrid->hasColumnType('batch')) {
-            $datagrid->addColumn('batch', 'batch', array(
-                'actions' => array(
-                    'delete' => array(
+            $datagrid->addColumn('batch', 'batch', [
+                'actions' => [
+                    'delete' => [
                         'route_name' => 'fsi_admin_batch',
-                        'additional_parameters' => array('element' => $this->getId()),
+                        'additional_parameters' => ['element' => $this->getId()],
                         'label' => 'crud.list.batch.delete'
-                    )
-                ),
+                    ]
+                ],
                 'display_order' => -1000
-            ));
+            ]);
         }
 
         return $datagrid;

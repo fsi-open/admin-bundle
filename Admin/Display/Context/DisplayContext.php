@@ -49,10 +49,10 @@ class DisplayContext extends ContextAbstract
      */
     public function getData()
     {
-        return array(
+        return [
             'display' => $this->display->createView(),
             'element' => $this->element,
-        );
+        ];
     }
 
     /**

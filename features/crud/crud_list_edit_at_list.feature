@@ -33,4 +33,4 @@ Feature: Editing news title directly from list of elements
     When I fill "Title" field at popover with "News 1 Test" value
     When I fill "Subtitle" field at popover with "News 1 Test Subtitle" value
     And I press "Save" at popover
-    Then there should be news with "News 1 Test" title in database
+    Then there should be a "news" with "title" "News 1 Test" present in the database

@@ -23,15 +23,15 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         ResourceValueRepository $valueRepository,
         TextType $resource
     ) {
-        $mapBuilder->getMap()->willReturn(array(
-            'resources' => array(
+        $mapBuilder->getMap()->willReturn([
+            'resources' => [
                 'resource_key' => $resource
-            )
-        ));
+            ]
+        ]);
         $resource->getName()->willReturn('resources.resource_key');
 
         $element->getRepository()->willReturn($valueRepository);
-        $element->getResourceFormOptions()->willReturn(array('form_options'));
+        $element->getResourceFormOptions()->willReturn(['form_options']);
 
         $this->beConstructedWith($formFactory, $mapBuilder);
     }
@@ -42,7 +42,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new RuntimeException("resources.resource_key its not a resource group key")
-        )->during('build', array($element));
+        )->during('build', [$element]);
     }
 
     function it_builds_form_for_resource_group(
@@ -59,8 +59,8 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         $formFactory
             ->createBuilder(
                 TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
-                array('resources_resource_key' => $resourceValue),
-                array('form_options')
+                ['resources_resource_key' => $resourceValue],
+                ['form_options']
             )
             ->willReturn($formBuilder);
 
@@ -68,7 +68,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
             ->add(
                 'resources_resource_key',
                 TypeSolver::getFormType('FSi\Bundle\ResourceRepositoryBundle\Form\Type\ResourceType', 'resource'),
-                array('resource_key' => 'resources.resource_key')
+                ['resource_key' => 'resources.resource_key']
             )
             ->shouldBeCalled();
 

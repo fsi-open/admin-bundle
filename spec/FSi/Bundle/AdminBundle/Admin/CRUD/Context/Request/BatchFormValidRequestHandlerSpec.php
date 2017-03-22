@@ -36,7 +36,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             new RequestHandlerException(
                 "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler require FormEvent"
             )
-        )->during('handleRequest', array($listEvent, $request));
+        )->during('handleRequest', [$listEvent, $request]);
     }
 
     function it_throw_exception_for_non_redirectable_element(FormEvent $formEvent, Request $request)
@@ -47,7 +47,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             new RequestHandlerException(
                 "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler require RedirectableElement"
             )
-        )->during('handleRequest', array($formEvent, $request));
+        )->during('handleRequest', [$formEvent, $request]);
     }
 
     function it_handles_POST_request(
@@ -64,7 +64,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $request->isMethod('POST')->willReturn(true);
         $request->request = $requestParameterbag;
         $request->query = $queryParameterbag;
-        $requestParameterbag->get('indexes', array())->willReturn(array('index'));
+        $requestParameterbag->get('indexes', [])->willReturn(['index']);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
@@ -79,14 +79,14 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
-        $element->getSuccessRouteParameters()->willReturn(array('element' => 'element_list_id'));
+        $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');
         $element->getDataIndexer()->willReturn($dataIndexer);
 
         $dataIndexer->getData('index')->willReturn(new \stdClass());
 
         $queryParameterbag->has('redirect_uri')->willReturn(false);
-        $router->generate('fsi_admin_list', array('element' => 'element_list_id'))->willReturn('/list/page');
+        $router->generate('fsi_admin_list', ['element' => 'element_list_id'])->willReturn('/list/page');
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
@@ -105,7 +105,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $request->isMethod('POST')->willReturn(true);
         $request->request = $requestParameterbag;
         $request->query = $queryParameterbag;
-        $requestParameterbag->get('indexes', array())->willReturn(array('index'));
+        $requestParameterbag->get('indexes', [])->willReturn(['index']);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
@@ -120,7 +120,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
-        $element->getSuccessRouteParameters()->willReturn(array('element' => 'element_list_id'));
+        $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');
         $element->getDataIndexer()->willReturn($dataIndexer);
 
@@ -166,7 +166,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     ) {
         $request->isMethod('POST')->willReturn(true);
         $request->request = $requestParameterbag;
-        $requestParameterbag->get('indexes', array())->willReturn(array('index'));
+        $requestParameterbag->get('indexes', [])->willReturn(['index']);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);

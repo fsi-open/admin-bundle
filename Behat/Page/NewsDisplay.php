@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Behat\Context\Page;
+namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
-class DTOForm extends Page
+class NewsDisplay extends Page
 {
-    protected $path = '/admin/form/dto_form';
+    protected $path = '/admin/display/news/{id}';
 
     public function getHeader()
     {
@@ -22,10 +22,8 @@ class DTOForm extends Page
 
     protected function verifyPage()
     {
-        if (!$this->has('css', '#page-header:contains("New element")')) {
-            throw new UnexpectedPageException(
-                sprintf("%s page is missing \"New element\" header", $this->path)
-            );
+        if (!$this->has('css', '#page-header:contains("Display element")')) {
+            throw new UnexpectedPageException(sprintf("%s page is missing \"Display element\" header", $this->path));
         }
     }
 }

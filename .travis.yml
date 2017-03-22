@@ -5,6 +5,7 @@ sudo: false
 cache:
     directories:
         - $HOME/.composer/cache
+        - vendor
 
 matrix:
     include:
@@ -45,8 +46,8 @@ before_script:
     - features/fixtures/project/app/console assets:install features/fixtures/project/web --relative --symlink
 
 script:
-    - ./bin/phpspec run --format=pretty
-    - ./bin/behat --no-snippets --format=progress --profile=travis
+    - bin/phpspec run --format=pretty
+    - bin/behat --no-snippets --format=progress --profile=travis
 
 notifications:
     irc: "irc.freenode.org#fsi-open"

@@ -30,6 +30,6 @@ class SubscriberDelete extends DeleteElement
 
     public function getSuccessRouteParameters()
     {
-        return array('element' => 'subscriber');
+        return ['element' => 'subscriber'];
     }
 }

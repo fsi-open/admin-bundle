@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Behat\Context\Page\Element;
+namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 class Display extends Element
 {
-    protected $selector = array('css' => 'table.table.table-bordered');
+    protected $selector = ['css' => 'table.table.table-bordered'];
 
     public function hasFieldWithName($fieldName)
     {

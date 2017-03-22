@@ -42,6 +42,6 @@ abstract class GenericBatchElement extends AbstractElement implements BatchEleme
      */
     public function getSuccessRouteParameters()
     {
-        return array();
+        return [];
     }
 }

@@ -23,7 +23,7 @@ class Manager implements ManagerInterface
 
     public function __construct()
     {
-        $this->elements = array();
+        $this->elements = [];
     }
 
     /**

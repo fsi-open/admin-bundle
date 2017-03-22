@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Behat\Context\Page;
+namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
-class PersonEditForm extends Page
+class PersonAddForm extends Page
 {
-    protected $path = '/admin/form/person/{id}';
+    protected $path = '/admin/form/person';
 
     public function getHeader()
     {
@@ -22,8 +22,8 @@ class PersonEditForm extends Page
 
     protected function verifyPage()
     {
-        if (!$this->has('css', '#page-header:contains("Edit element")')) {
-            throw new UnexpectedPageException(sprintf("%s page is missing \"Edit element\" header", $this->path));
+        if (!$this->has('css', '#page-header:contains("New element")')) {
+            throw new UnexpectedPageException(sprintf("%s page is missing \"New element\" header", $this->path));
         }
     }
 }

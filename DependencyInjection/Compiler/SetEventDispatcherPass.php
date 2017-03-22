@@ -26,7 +26,7 @@ class SetEventDispatcherPass implements CompilerPassInterface
         foreach ($ids as $id) {
             $definition = $container->findDefinition($id);
             if (!$definition->hasMethodCall('setEventDispatcher')) {
-                $definition->addMethodCall('setEventDispatcher', array($eventDispatcher));
+                $definition->addMethodCall('setEventDispatcher', [$eventDispatcher]);
             }
         }
     }

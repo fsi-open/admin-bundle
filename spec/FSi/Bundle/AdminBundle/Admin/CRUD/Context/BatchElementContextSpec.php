@@ -20,7 +20,7 @@ class BatchElementContextSpec extends ObjectBehavior
         FormInterface $batchForm,
         HandlerInterface $handler
     ) {
-        $this->beConstructedWith(array($handler), $formBuilder);
+        $this->beConstructedWith([$handler], $formBuilder);
         $formBuilder->getForm()->willReturn($batchForm);
         $this->setElement($element);
     }
@@ -53,7 +53,7 @@ class BatchElementContextSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $request->request = $requestParameterBag;
-        $requestParameterBag->get('indexes', array())->willReturn(array());
+        $requestParameterBag->get('indexes', [])->willReturn([]);
 
         $this->handleRequest($request)->shouldReturn(null);
     }
@@ -67,7 +67,7 @@ class BatchElementContextSpec extends ObjectBehavior
             ->willReturn(new Response());
 
         $request->request = $requestParameterBag;
-        $requestParameterBag->get('indexes', array())->willReturn(array());
+        $requestParameterBag->get('indexes', [])->willReturn([]);
 
         $this->handleRequest($request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
@@ -75,7 +75,7 @@ class BatchElementContextSpec extends ObjectBehavior
 
     public function getMatchers()
     {
-        return array(
+        return [
             'haveKeyInArray' => function($subject, $key) {
                 if (!is_array($subject)) {
                     return false;
@@ -83,6 +83,6 @@ class BatchElementContextSpec extends ObjectBehavior
 
                 return array_key_exists($key, $subject);
             },
-        );
+        ];
     }
 }

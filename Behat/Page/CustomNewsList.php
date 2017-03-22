@@ -7,18 +7,18 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Behat\Context\Page;
+namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
-class CustomNewsCreate extends Page
+class CustomNewsList extends Page
 {
-    protected $path = '/admin/form/custom_news';
+    protected $path = '/admin/list/custom_news';
 
     protected function verifyPage()
     {
-        if (!$this->has('css', 'h1#page-header:contains("Custom form")')) {
-            throw new UnexpectedPageException(sprintf("%s page is missing \"Custom form\" header", $this->path));
+        if (!$this->has('css', 'h1#page-header:contains("Custom list")')) {
+            throw new UnexpectedPageException(sprintf("%s page is missing \"Custom list\" header", $this->path));
         }
     }
 }

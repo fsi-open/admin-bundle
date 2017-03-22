@@ -40,7 +40,7 @@ class Collection implements ValueFormatter
             throw new \InvalidArgumentException("Collection decorator require value to be an array or implement \\Iterator");
         }
 
-        $formatted = array();
+        $formatted = [];
         foreach ($value as $key => $val) {
             $formattedValue = $val;
             foreach ($this->formatters as $formatter) {

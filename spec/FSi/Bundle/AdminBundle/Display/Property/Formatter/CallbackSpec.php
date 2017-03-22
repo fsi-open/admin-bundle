@@ -18,7 +18,7 @@ class CallbackSpec extends ObjectBehavior
     {
         $this->format(0)->shouldReturn(0);
         $this->format(null)->shouldReturn(null);
-        $this->format(array())->shouldReturn(array());
+        $this->format([])->shouldReturn([]);
     }
 
     function it_form_value_using_callback_funciton()

@@ -6,16 +6,18 @@ Feature: Changing results per page at list page
   Background:
     Given "news" element datasource max results is set 10
 
+
   Scenario: Display list with elements count equal to datasource max results
     Given the following admin elements were registered
       | Id   | Class                         |
       | news | FSi\FixturesBundle\Admin\News |
-    And there are 20 news in database
+    And there are 20 "news"
     And I am on the "News list" page
     Then there should be 10 elements at list
 
+
   Scenario: Change elements per page
-    Given there are 20 news in database
+    Given there are 20 "news"
     And I am on the "News list" page
     Then there should be 10 elements at list
     When I change elements per page to 5

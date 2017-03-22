@@ -33,7 +33,7 @@ class Property
      * @param null|string $label
      * @param array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[] $valueFormatters
      */
-    public function __construct($path, $label = null, $valueFormatters = array())
+    public function __construct($path, $label = null, $valueFormatters = [])
     {
         $this->validatePath($path);
         $this->validateFormatters($valueFormatters);

@@ -20,7 +20,7 @@ class DisplayView implements \IteratorAggregate
 
     public function __construct()
     {
-        $this->properties = array();
+        $this->properties = [];
     }
 
     /**

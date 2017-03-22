@@ -35,7 +35,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             new RequestHandlerException(
                 "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\FormValidRequestHandler require FormEvent"
             )
-        )->during('handleRequest', array($listEvent, $request));
+        )->during('handleRequest', [$listEvent, $request]);
     }
 
     function it_throw_exception_for_non_redirectable_element(FormEvent $formEvent, Request $request)
@@ -46,7 +46,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             new RequestHandlerException(
                 "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\FormValidRequestHandler require RedirectableElement"
             )
-        )->during('handleRequest', array($formEvent, $request));
+        )->during('handleRequest', [$formEvent, $request]);
     }
 
     function it_do_nothing_on_non_POST_request(
@@ -88,10 +88,10 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
-        $element->getSuccessRouteParameters()->willReturn(array('element' => 'element_list_id'));
+        $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');
         $queryParameterbag->has('redirect_uri')->willReturn(false);
-        $router->generate('fsi_admin_list', array('element' => 'element_list_id'))->willReturn('/list/page');
+        $router->generate('fsi_admin_list', ['element' => 'element_list_id'])->willReturn('/list/page');
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
@@ -121,7 +121,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
-        $element->getSuccessRouteParameters()->willReturn(array('element' => 'element_list_id'));
+        $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');
         $queryParameterbag->has('redirect_uri')->willReturn(true);
         $queryParameterbag->get('redirect_uri')->willReturn('some_redirect_uri');
