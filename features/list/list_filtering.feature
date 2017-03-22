@@ -31,6 +31,7 @@ Feature: Filtering elements at list
     And I am on the "Subscribers list" page
     And there are 2 elements at list
     When I fill simple text filter "Email" with value "@domain.com"
+    And I select "yes" in choice filter "Active"
     And I press "Search" button
     Then I should be on the "Subscribers list" page
     And simple text filter "Email" should be filled with value "@domain.com"
