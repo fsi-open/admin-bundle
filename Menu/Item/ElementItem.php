@@ -64,11 +64,11 @@ class ElementItem extends RoutableItem
     {
         parent::configureOptions($optionsResolver);
 
-        $optionsResolver->setDefaults(array(
-            'elements' => array(),
-        ));
+        $optionsResolver->setDefaults([
+            'elements' => [],
+        ]);
 
-        $optionsResolver->setAllowedTypes('elements', array('array'));
+        $optionsResolver->setAllowedTypes('elements', ['array']);
 
         $optionsResolver->setNormalizer('elements', function (Options $options, array $value) {
             foreach ($value as $element) {

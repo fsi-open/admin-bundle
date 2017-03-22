@@ -30,11 +30,11 @@ class ItemRouteDecorator implements ItemDecorator
                 $adminMenuItem->getRouteParameters()
             ));
 
-            $routes = $knpMenuItem->getExtra('routes', array());
-            $routes[] = array(
+            $routes = $knpMenuItem->getExtra('routes', []);
+            $routes[] = [
                 'route' => $adminMenuItem->getRoute(),
                 'parameters' => $adminMenuItem->getRouteParameters()
-            );
+            ];
             $knpMenuItem->setExtra('routes', $routes);
         }
     }

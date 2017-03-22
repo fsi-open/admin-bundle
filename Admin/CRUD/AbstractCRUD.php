@@ -68,17 +68,17 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDElement
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'allow_delete' => true,
             'allow_add' => true,
             'template_list' => null,
             'template_form' => null
-        ));
+        ]);
 
         $resolver->setAllowedTypes('allow_delete', 'bool');
         $resolver->setAllowedTypes('allow_add', 'bool');
-        $resolver->setAllowedTypes('template_list', array('null', 'string'));
-        $resolver->setAllowedTypes('template_form', array('null', 'string'));
+        $resolver->setAllowedTypes('template_list', ['null', 'string']);
+        $resolver->setAllowedTypes('template_form', ['null', 'string']);
     }
 
     /**
@@ -126,16 +126,16 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDElement
 
         if ($this->options['allow_delete']) {
             if (!$datagrid->hasColumnType('batch')) {
-                $datagrid->addColumn('batch', 'batch', array(
-                    'actions' => array(
-                        'delete' => array(
+                $datagrid->addColumn('batch', 'batch', [
+                    'actions' => [
+                        'delete' => [
                             'route_name' => 'fsi_admin_batch',
-                            'additional_parameters' => array('element' => $this->getId()),
+                            'additional_parameters' => ['element' => $this->getId()],
                             'label' => 'crud.list.batch.delete'
-                        )
-                    ),
+                        ]
+                    ],
                     'display_order' => -1000
-                ));
+                ]);
             }
         }
 

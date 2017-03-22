@@ -16,7 +16,7 @@ class TagType extends AbstractType
         $builder->add(
             'elements',
             TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CollectionType', 'collection'),
-            array(
+            [
                 TypeSolver::hasCollectionEntryTypeOption() ? 'entry_type' : 'type' =>
                     TypeSolver::getFormType('FSi\FixturesBundle\Form\TagElementType', new TagElementType()),
                 'label' => 'admin.news.list.tag_elements',
@@ -24,7 +24,7 @@ class TagType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'prototype_name' => 'tagname'
-            )
+            ]
         );
     }
 
@@ -35,15 +35,15 @@ class TagType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'FSi\FixturesBundle\Entity\Tag',
-        ));
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'FSi\FixturesBundle\Entity\Tag',
-        ));
+        ]);
     }
 }

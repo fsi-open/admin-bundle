@@ -1,6 +1,6 @@
 <?php
 
-namespace FSi\Bundle\AdminBundle\Behat\Context\Page\Element;
+namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use Exception;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;

@@ -21,9 +21,9 @@ class TagElementType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'FSi\FixturesBundle\Entity\TagElement',
-        ));
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

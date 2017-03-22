@@ -39,7 +39,7 @@ class MainMenuListenerSpec extends ObjectBehavior
 
         $this->shouldThrow(new InvalidYamlStructureException(
             sprintf('File "%s" should contain top level "menu:" key', $menuYaml)
-        ))->during('createMainMenu', array($event));
+        ))->during('createMainMenu', [$event]);
     }
 
     function it_build_menu()
@@ -60,7 +60,7 @@ class MainMenuListenerSpec extends ObjectBehavior
 
     public function getMatchers()
     {
-        return array(
+        return [
             'haveItem' => function(Item $menu, $itemName, $elementId = false) {
                 $items = $menu->getChildren();
                 foreach ($items as $item) {
@@ -92,6 +92,6 @@ class MainMenuListenerSpec extends ObjectBehavior
                 }
                 return false;
             }
-        );
+        ];
     }
 }

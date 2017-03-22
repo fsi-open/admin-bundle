@@ -15,7 +15,7 @@ class EmptyValueSpec extends ObjectBehavior
     {
         $this->format(0)->shouldReturn('-');
         $this->format(null)->shouldReturn('-');
-        $this->format(array())->shouldReturn('-');
+        $this->format([])->shouldReturn('-');
     }
 
     function it_ignore_not_empty_value()

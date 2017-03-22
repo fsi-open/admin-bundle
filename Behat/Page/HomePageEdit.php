@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Behat\Context\Page;
+namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
-class SubscribersList extends Page
+class HomePageEdit extends Page
 {
-    protected $path = '/admin/list/subscriber';
+    protected $path = '/admin/resource/home_page';
 
     public function getHeader()
     {
@@ -22,8 +22,8 @@ class SubscribersList extends Page
 
     protected function verifyPage()
     {
-        if (!$this->has('css', '#page-header:contains("List of elements")')) {
-            throw new UnexpectedPageException(sprintf("%s page is missing \"List of elements\" header", $this->path));
+        if (!$this->has('css', '#page-header:contains("Edit resources")')) {
+            throw new UnexpectedPageException(sprintf("%s page is missing \"Resource edit\" header", $this->path));
         }
     }
 }

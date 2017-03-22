@@ -24,9 +24,9 @@ class ContextManager
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface[] $contexts
      */
-    public function __construct($contexts = array())
+    public function __construct($contexts = [])
     {
-        $this->contexts = array();
+        $this->contexts = [];
 
         foreach($contexts as $context) {
             $this->addContext($context);

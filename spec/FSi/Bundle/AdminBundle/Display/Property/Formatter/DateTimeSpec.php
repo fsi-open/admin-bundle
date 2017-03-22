@@ -15,7 +15,7 @@ class DateTimeSpec extends ObjectBehavior
     {
         $this->format(0)->shouldReturn(0);
         $this->format(null)->shouldReturn(null);
-        $this->format(array())->shouldReturn(array());
+        $this->format([])->shouldReturn([]);
         $this->format('not_datetime')->shouldReturn('not_datetime');
     }
 
