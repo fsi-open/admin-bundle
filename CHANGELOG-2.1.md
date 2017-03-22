@@ -87,8 +87,18 @@ changeset:
     </tbody>
 </table>
 
-
 ## Batch actions do not throw an exception when no elements are submitted
 
 Instead of throwing an exception, a warning message is displayed when no elements
 have been submitted in a batch action.
+
+## Replace Admin\Manager typehints with an interface
+
+There were two instances, where [Manager](Admin\Manager.php) class was
+being typehinted instead of [ManagerInterface](Admin\ManagerInterface.php).
+Now the latter is being used in both cases, which were:
+
+- [BatchActionExtension](DataGrid\Extension\Admin\ColumnTypeExtension)
+- [AdminElementParamConverter](Request\ParamConverter\AdminElementParamConverter.php)
+
+So if this was an issue for you, it no longer should be.
