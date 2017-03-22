@@ -22,7 +22,7 @@ class CustomNews extends CRUDElement
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
         /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
-        $datagrid = $factory->createDataGrid('news');
+        $datagrid = $factory->createDataGrid('custom_news');
 
         return $datagrid;
     }
@@ -30,7 +30,7 @@ class CustomNews extends CRUDElement
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
         /* @var $datasource \FSi\Component\DataSource\DataSource */
-        $datasource = $factory->createDataSource('doctrine', ['entity' => $this->getClassName()], 'news');
+        $datasource = $factory->createDataSource('doctrine', ['entity' => $this->getClassName()], 'custom_news');
 
         $datasource->addField('title', 'text', 'eq', ['form_filter' => false]);
 

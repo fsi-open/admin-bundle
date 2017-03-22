@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
-use FSi\FixturesBundle\Entity\News as NewsEntity;
 use FSi\FixturesBundle\Form\TagType;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -139,7 +138,8 @@ class News extends CRUDElement
             'label' => 'admin.news.list.creator_email'
         ]);
         $builder->add('photo', 'fsi_image', [
-            'label' => 'admin.news.list.photo'
+            'label' => 'admin.news.list.photo',
+            'required' => false
         ]);
         $builder->add('tags', 'collection', [
             'type' => new TagType(),

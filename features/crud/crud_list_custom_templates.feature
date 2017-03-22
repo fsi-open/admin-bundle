@@ -13,11 +13,14 @@ Feature: Overwriting default CRUD element templates
       | template_crud_create | @FSiFixtures/Admin/custom_edit.html.twig   |
       | template_crud_edit   | @FSiFixtures/Admin/custom_edit.html.twig   |
 
+
+
   Scenario: Display custom list view
     And I am on the "Custom news list" page
-    Then I should see customized "list" view
+    Then page "Custom news list" should display OK status
+
 
   Scenario: Display custom edit view
-    Given there is news with id 1 in database
+    Given there is a "news" with "id" 1 present in the database
     And I am on the "Custom news edit" page with id 1
-    Then I should see customized "edit" view
+    Then page "Custom news edit" should display OK status

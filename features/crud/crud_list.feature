@@ -3,6 +3,7 @@ Feature: List of elements
   As a developer
   I need to install FSiAdminBundle and configure datagrid for news admin element
 
+
   Scenario: Accessing news list from admin panel main page
     Given the following admin elements were registered
       | Id   | Class                         |
@@ -18,4 +19,4 @@ Feature: List of elements
       | Created at    |
       | Visible       |
       | Creator email |
-    And I should see "News List" page header "List of elements"
+    And I should see "News list" page header "List of elements"
