@@ -11,7 +11,7 @@ Feature: Pagination
       | Id   | Class                         |
       | news | FSi\FixturesBundle\Admin\News |
     And translations are enabled in application
-    And there are 20 news in database
+    And there are 20 "news"
     And I am on the "News list" page
     Then I should see pagination with following buttons
       | Button   | Active | Current |
@@ -23,12 +23,12 @@ Feature: Pagination
       | last     | true   | false   |
 
   Scenario: Pagination is not visible when max results is bigger than elements count
-    Given there are 8 news in database
+    Given there are 8 "news"
     And I am on the "News list" page
-    Then I should not see pagination
+    Then I should not see pagination on page "News list"
 
   Scenario: Change current page
-    Given there are 20 news in database
+    Given there are 20 "news"
     And I am on the "News list" page
     Then I should see pagination with following buttons
       | Button   | Active | Current |

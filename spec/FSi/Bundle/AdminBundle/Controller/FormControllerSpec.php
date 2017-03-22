@@ -50,9 +50,9 @@ class FormControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
-        $context->getData()->willReturn(array());
+        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_form', array(), null)->willReturn($response);
+        $templating->renderResponse('default_form', [], null)->willReturn($response);
         $this->formAction($element, $request)->shouldReturn($response);
     }
 
@@ -65,7 +65,7 @@ class FormControllerSpec extends ObjectBehavior
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
         $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
-            ->during('formAction', array($element, $request));
+            ->during('formAction', [$element, $request]);
     }
 
     function it_render_default_template_in_form_action(
@@ -79,9 +79,9 @@ class FormControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
-        $context->getData()->willReturn(array());
+        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_form', array(), null)->willReturn($response);
+        $templating->renderResponse('default_form', [], null)->willReturn($response);
         $this->formAction($element, $request)->shouldReturn($response);
     }
 
@@ -97,9 +97,9 @@ class FormControllerSpec extends ObjectBehavior
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('custom_template');
-        $context->getData()->willReturn(array());
+        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('custom_template', array(), null)->willReturn($response);
+        $templating->renderResponse('custom_template', [], null)->willReturn($response);
         $this->formAction($element, $request)->shouldReturn($response);
     }
 

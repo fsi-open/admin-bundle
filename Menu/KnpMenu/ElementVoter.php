@@ -39,7 +39,7 @@ class ElementVoter implements VoterInterface
             return null;
         }
 
-        foreach ($item->getExtra('routes', array()) as $testedRoute) {
+        foreach ($item->getExtra('routes', []) as $testedRoute) {
             if ($this->isRouteMatchingElement($this->getRequestElement(), $testedRoute['parameters'])) {
                 return true;
             }

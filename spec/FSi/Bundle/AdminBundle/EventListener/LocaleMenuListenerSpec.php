@@ -14,7 +14,7 @@ class LocaleMenuListenerSpec extends ObjectBehavior
      */
     function let($translator, $requestStack)
     {
-        $this->beConstructedWith($translator, $requestStack, array('en', 'de'));
+        $this->beConstructedWith($translator, $requestStack, ['en', 'de']);
     }
 
     /**
@@ -41,12 +41,12 @@ class LocaleMenuListenerSpec extends ObjectBehavior
 
         expect($enItem->getLabel())->toBe('Englisch');
         expect($enItem->getRoute())->toBe('fsi_admin_locale');
-        expect($enItem->getRouteParameters())->toBe(array('_locale' => 'en', 'redirect_uri' => 'uri_to_redirect_to'));
-        expect($enItem->getOptions())->toBe(array('attr' => array('id' => null, 'class' => null)));
+        expect($enItem->getRouteParameters())->toBe(['_locale' => 'en', 'redirect_uri' => 'uri_to_redirect_to']);
+        expect($enItem->getOptions())->toBe(['attr' => ['id' => null, 'class' => null]]);
 
         expect($deItem->getLabel())->toBe('Deutsch');
         expect($deItem->getRoute())->toBe('fsi_admin_locale');
-        expect($deItem->getRouteParameters())->toBe(array('_locale' => 'de', 'redirect_uri' => 'uri_to_redirect_to'));
-        expect($deItem->getOptions())->toBe(array('attr' => array('id' => null, 'class' => 'active')));
+        expect($deItem->getRouteParameters())->toBe(['_locale' => 'de', 'redirect_uri' => 'uri_to_redirect_to']);
+        expect($deItem->getOptions())->toBe(['attr' => ['id' => null, 'class' => 'active']]);
     }
 }

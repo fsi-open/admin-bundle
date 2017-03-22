@@ -36,7 +36,7 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
             new RequestHandlerException(
                 "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\DataGridSetDataHandler require ListEvent"
             )
-        )->during('handleRequest', array($event, $request));
+        )->during('handleRequest', [$event, $request]);
     }
 
     function it_set_data_at_datagrid_and_dispatch_events(
@@ -51,8 +51,8 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
         $event->getDataGrid()->willReturn($dataGrid);
         $event->getDataSource()->willReturn($dataSource);
 
-        $dataSource->getResult()->willReturn(array(1));
-        $dataGrid->setData(array(1))->shouldBeCalled();
+        $dataSource->getResult()->willReturn([1]);
+        $dataGrid->setData([1])->shouldBeCalled();
 
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_POST_BIND, $event)->shouldBeCalled();
 
@@ -86,8 +86,8 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
         $event->getDataGrid()->willReturn($dataGrid);
         $event->getDataSource()->willReturn($dataSource);
 
-        $dataSource->getResult()->willReturn(array(1));
-        $dataGrid->setData(array(1))->shouldBeCalled();
+        $dataSource->getResult()->willReturn([1]);
+        $dataGrid->setData([1])->shouldBeCalled();
 
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_POST_BIND, $event)
             ->will(function() use ($event) {

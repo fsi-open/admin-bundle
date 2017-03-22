@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Behat\Context\Page\Element;
+namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 class Filters extends Element
 {
-    protected $selector = array('css' => 'form.filters');
+    protected $selector = ['css' => 'form.filters'];
 
     public function hasBetweenFilter($filterName, $fromName, $toName)
     {

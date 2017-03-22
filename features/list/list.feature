@@ -15,4 +15,4 @@ Feature: List of elements
       | Email         |
       | Active        |
       | Created at    |
-    And I should see "Subscribers List" page header "List of elements"
+    And I should see "Subscribers list" page header "List of elements"

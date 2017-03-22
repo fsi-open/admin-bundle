@@ -10,9 +10,9 @@ class ProductionLineSpec extends ObjectBehavior
 {
     function it_is_created_with_workers(Worker $workerFoo, Worker $workerBar)
     {
-        $this->beConstructedWith(array($workerFoo, $workerBar));
+        $this->beConstructedWith([$workerFoo, $workerBar]);
         $this->count()->shouldReturn(2);
-        $this->getWorkers()->shouldReturn(array($workerFoo, $workerBar));
+        $this->getWorkers()->shouldReturn([$workerFoo, $workerBar]);
     }
 
     function it_work_on_element_with_workers(
@@ -20,7 +20,7 @@ class ProductionLineSpec extends ObjectBehavior
         Worker $workerBar,
         Element $element
     ) {
-        $this->beConstructedWith(array($workerFoo, $workerBar));
+        $this->beConstructedWith([$workerFoo, $workerBar]);
         $workerBar->mount($element)->shouldBeCalled();
         $workerFoo->mount($element)->shouldBeCalled();
 

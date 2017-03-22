@@ -27,9 +27,9 @@ abstract class GenericResourceElement extends AbstractElement implements Element
      */
     public function getRouteParameters()
     {
-        return array(
+        return [
             'element' => $this->getId(),
-        );
+        ];
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class GenericResourceElement extends AbstractElement implements Element
      */
     public function getResourceFormOptions()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -66,10 +66,10 @@ abstract class GenericResourceElement extends AbstractElement implements Element
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'template' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('template', array('null', 'string'));
+        $resolver->setAllowedTypes('template', ['null', 'string']);
     }
 }

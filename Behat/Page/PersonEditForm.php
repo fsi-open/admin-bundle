@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Behat\Context\Page;
+namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 
-class SubscriberEdit extends Page
+class PersonEditForm extends Page
 {
-    protected $path = '/admin/form/subscriber_form/{id}';
+    protected $path = '/admin/form/person/{id}';
 
     public function getHeader()
     {

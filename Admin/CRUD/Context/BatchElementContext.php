@@ -54,11 +54,11 @@ class BatchElementContext extends ContextAbstract
      */
     public function getData()
     {
-        $data = array(
+        $data = [
             'element' => $this->element,
             'indexes' => $this->indexes,
             'form' => $this->form->createView()
-        );
+        ];
 
         return $data;
     }
@@ -76,7 +76,7 @@ class BatchElementContext extends ContextAbstract
      */
     protected function createEvent(Request $request)
     {
-        $this->indexes = $request->request->get('indexes', array());
+        $this->indexes = $request->request->get('indexes', []);
 
         return new FormEvent($this->element, $request, $this->form);
     }

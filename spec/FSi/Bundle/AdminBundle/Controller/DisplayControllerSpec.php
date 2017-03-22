@@ -46,9 +46,9 @@ class DisplayControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
-        $context->getData()->willReturn(array());
+        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_display', array(), null)->willReturn($response);
+        $templating->renderResponse('default_display', [], null)->willReturn($response);
         $this->displayAction($element, $request)->shouldReturn($response);
     }
 
@@ -61,7 +61,7 @@ class DisplayControllerSpec extends ObjectBehavior
         $manager->createContext(Argument::type('string'), $element)->willReturn(null);
 
         $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
-            ->during('displayAction', array($element, $request));
+            ->during('displayAction', [$element, $request]);
     }
 
     function it_render_default_template_in_display_action(
@@ -75,9 +75,9 @@ class DisplayControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
-        $context->getData()->willReturn(array());
+        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_display', array(), null)->willReturn($response);
+        $templating->renderResponse('default_display', [], null)->willReturn($response);
         $this->displayAction($element, $request)->shouldReturn($response);
     }
 
@@ -93,9 +93,9 @@ class DisplayControllerSpec extends ObjectBehavior
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('custom_template');
-        $context->getData()->willReturn(array());
+        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('custom_template', array(), null)->willReturn($response);
+        $templating->renderResponse('custom_template', [], null)->willReturn($response);
         $this->displayAction($element, $request)->shouldReturn($response);
     }
 

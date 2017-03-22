@@ -50,9 +50,9 @@ class ListControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_list', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
-        $context->getData()->willReturn(array());
+        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_list', array(), null)->willReturn($response);
+        $templating->renderResponse('default_list', [], null)->willReturn($response);
         $this->listAction($element, $request)->shouldReturn($response);
     }
 
@@ -65,7 +65,7 @@ class ListControllerSpec extends ObjectBehavior
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
         $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
-            ->during('listAction', array($element, $request));
+            ->during('listAction', [$element, $request]);
     }
 
     function it_render_default_template_in_list_action(
@@ -79,9 +79,9 @@ class ListControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_list', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(false);
-        $context->getData()->willReturn(array());
+        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_list', array(), null)->willReturn($response);
+        $templating->renderResponse('default_list', [], null)->willReturn($response);
         $this->listAction($element, $request)->shouldReturn($response);
     }
 
@@ -97,9 +97,9 @@ class ListControllerSpec extends ObjectBehavior
         $context->handleRequest($request)->willReturn(null);
         $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('custom_template');
-        $context->getData()->willReturn(array());
+        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('custom_template', array(), null)->willReturn($response);
+        $templating->renderResponse('custom_template', [], null)->willReturn($response);
         $this->listAction($element, $request)->shouldReturn($response);
     }
 

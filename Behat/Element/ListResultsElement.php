@@ -7,13 +7,13 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Behat\Context\Page\Element;
+namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
-class ElementsListResults extends Element
+class ListResultsElement extends Element
 {
-    protected $selector = array('css' => 'div#list-results');
+    protected $selector = ['css' => 'div#list-results'];
 
     public function setElementsPerPage($elementsCount)
     {
