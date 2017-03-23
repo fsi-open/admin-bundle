@@ -32,12 +32,12 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
     /**
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      * @param \Symfony\Component\Routing\RouterInterface $router
-     * @param \FSi\Bundle\AdminBundle\Message\FlashMessages
+     * @param \FSi\Bundle\AdminBundle\Message\FlashMessages|null
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         RouterInterface $router,
-        FlashMessages $flashMessages
+        FlashMessages $flashMessages = null
     ) {
         parent::__construct($eventDispatcher, $router);
         $this->flashMessages = $flashMessages;
@@ -54,7 +54,7 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         $objects = $this->getObjects($element, $request);
 
         if (empty($objects)) {
-            $this->flashMessages->warning('messages.batch.no_elements');
+            $this->setWarningMessage();
             return;
         }
 
@@ -140,5 +140,12 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
     protected function getPostSaveEventName()
     {
         return BatchEvents::BATCH_OBJECTS_POST_APPLY;
+    }
+
+    private function setWarningMessage()
+    {
+        if ($this->flashMessages) {
+            $this->flashMessages->warning('messages.batch.no_elements');
+        }
     }
 }

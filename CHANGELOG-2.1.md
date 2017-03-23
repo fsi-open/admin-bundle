@@ -15,7 +15,7 @@ a) Form elements with "allow_add" option set to false will throw a not found exc
    if you try to open the page form without supplying the ID parameter in the request.
 
 b) Elements implementing interface `Admin\CRUD\DeleteElement` with option
-   "allow_delete" set to false will throw a logic exception during form submission.
+   "allow_delete" set to false will throw a `\LogicException` during form submission.
 
 ## Deprecated inconsintent service definitions and parameters for ResourceRepository and Display contexts
 
@@ -92,13 +92,13 @@ changeset:
 Instead of throwing an exception, a warning message is displayed when no elements
 have been submitted in a batch action.
 
-## Replace Admin\Manager typehints with an interface
+## Replaced Admin\Manager typehints with an interface
 
-There were two instances, where [Manager](Admin\Manager.php) class was
-being typehinted instead of [ManagerInterface](Admin\ManagerInterface.php).
+There were two instances, where [Manager](Admin/Manager.php) class was
+being typehinted instead of [ManagerInterface](Admin/ManagerInterface.php).
 Now the latter is being used in both cases, which were:
 
-- [BatchActionExtension](DataGrid\Extension\Admin\ColumnTypeExtension)
-- [AdminElementParamConverter](Request\ParamConverter\AdminElementParamConverter.php)
+- [BatchActionExtension](DataGrid/Extension/Admin/ColumnTypeExtension/BatchActionExtension.php)
+- [AdminElementParamConverter](Request/ParamConverter/AdminElementParamConverter.php)
 
 So if this was an issue for you, it no longer should be.
