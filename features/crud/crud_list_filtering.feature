@@ -22,6 +22,8 @@ Feature: Filtering elements at list
     And I am on the "News list" page
     And there are 2 elements at list
     When I fill simple text filter "Title" with value "Lorem ipsum"
+    And I select "yes" in choice filter "Visible"
     And I press "Search" button
-    Then simple text filter "Title" should be filled with value "Lorem ipsum"
+    Then I should be redirected to "News list" page
+    And simple text filter "Title" should be filled with value "Lorem ipsum"
     And there should be 1 element at list

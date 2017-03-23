@@ -212,12 +212,17 @@ class DataContext extends AbstractContext
                     'categories' => function() use ($faker) {
                         return [$faker->text(), $faker->text()];
                     },
-                    'photoKey' => null
+                    'photoKey' => null,
+                    'visible' => true
                 ];
             case 'FSi\FixturesBundle\Entity\Person':
+                return [
+                    'email' => function() use ($faker) { return $faker->email(); },
+                ];
             case 'FSi\FixturesBundle\Entity\Subscriber':
                 return [
-                    'email' => function() use ($faker) { return $faker->email(); }
+                    'email' => function() use ($faker) { return $faker->email(); },
+                    'active' => true
                 ];
             default:
                 throw new InvalidArgumentException(sprintf(

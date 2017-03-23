@@ -29,6 +29,7 @@
                  class="%admin.context.batch.request_handler.form_valid_request.class%">
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="router" />
+            <argument type="service" id="admin.messages.flash"/>
         </service>
     </services>
 </container>

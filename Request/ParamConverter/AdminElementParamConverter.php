@@ -2,8 +2,7 @@
 
 namespace FSi\Bundle\AdminBundle\Request\ParamConverter;
 
-use FSi\Bundle\AdminBundle\Admin\Manager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +14,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class AdminElementParamConverter implements ParamConverterInterface
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\Manager
+     * @var \FSi\Bundle\AdminBundle\Admin\ManagerInterface
      */
     private $manager;
 
     /**
      * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
      */
-    public function __construct(Manager $manager)
+    public function __construct(ManagerInterface $manager)
     {
         $this->manager = $manager;
     }

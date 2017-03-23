@@ -15,12 +15,34 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\DeleteElement;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
+use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use LogicException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
 {
+    /**
+     * @var \FSi\Bundle\AdminBundle\Message\FlashMessages
+     */
+    private $flashMessages;
+
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @param \Symfony\Component\Routing\RouterInterface $router
+     * @param \FSi\Bundle\AdminBundle\Message\FlashMessages|null
+     */
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        RouterInterface $router,
+        FlashMessages $flashMessages = null
+    ) {
+        parent::__construct($eventDispatcher, $router);
+        $this->flashMessages = $flashMessages;
+    }
+
     /**
      * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -31,6 +53,11 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         $element = $event->getElement();
         $objects = $this->getObjects($element, $request);
 
+        if (empty($objects)) {
+            $this->setWarningMessage();
+            return;
+        }
+
         foreach ($objects as $object) {
             $element->apply($object);
         }
@@ -40,7 +67,7 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
      * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return array
-     * @throws \FSi\Bundle\AdminBundle\Exception\ContextBuilderException
+     * @throws \FSi\Bundle\AdminBundle\Exception\RequestHandlerException
      */
     private function getObjects(BatchElement $element, Request $request)
     {
@@ -48,7 +75,7 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         $indexes = $request->request->get('indexes', []);
 
         if (!count($indexes)) {
-            throw new RequestHandlerException('There must be at least one object to execute batch action');
+            return [];
         }
 
         foreach ($indexes as $index) {
@@ -113,5 +140,12 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
     protected function getPostSaveEventName()
     {
         return BatchEvents::BATCH_OBJECTS_POST_APPLY;
+    }
+
+    private function setWarningMessage()
+    {
+        if ($this->flashMessages) {
+            $this->flashMessages->warning('messages.batch.no_elements');
+        }
     }
 }

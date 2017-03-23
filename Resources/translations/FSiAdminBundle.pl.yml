@@ -73,3 +73,4 @@ messages:
     error: Formularz został wypełniony nieprawidłowo.
   batch:
     success: Operacja zakończona powodzeniem.
+    no_elements: Nie można wykonać operacji grupowej bez zaznaczenia żadnych elementów.
