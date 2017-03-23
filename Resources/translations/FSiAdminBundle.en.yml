@@ -74,3 +74,4 @@ messages:
     error: Form is invalid.
   batch:
     success: Operation has been completed successfully.
+    no_elements: Cannot perform batch action without selecting any elements.

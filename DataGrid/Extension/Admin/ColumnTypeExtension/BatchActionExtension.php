@@ -2,7 +2,7 @@
 
 namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
-use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\RouterInterface;
 class BatchActionExtension extends ColumnAbstractTypeExtension
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\Manager
+     * @var \FSi\Bundle\AdminBundle\Admin\ManagerInterface
      */
     protected $manager;
 
@@ -42,13 +42,13 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     protected $actionOptionsResolver;
 
     /**
-     * @param Manager $manager
+     * @param ManagerInterface $manager
      * @param RequestStack $requestStack
      * @param RouterInterface $router
      * @param FormBuilderInterface $formBuilder
      */
     public function __construct(
-        Manager $manager,
+        ManagerInterface $manager,
         RequestStack $requestStack,
         RouterInterface $router,
         FormBuilderInterface $formBuilder
