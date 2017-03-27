@@ -85,3 +85,10 @@ of replaced services and parameters:
 
 This template is never used and was only left for backwards compatibility's sake.
 Now it is removed.
+
+## ControllerAbstract gets the EventDispatcher through the constructor
+
+[ControllerAbstract](Controller/ControllerAbstract.php) now has the `EventDispatcher`
+passed into it's constructor instead through the `setEventDispatcher` method. Due to
+this change, the [compiler pass](DependencyInjection/Compiler/SetEventDispatcherPass.php)
+became redundant and was removed.

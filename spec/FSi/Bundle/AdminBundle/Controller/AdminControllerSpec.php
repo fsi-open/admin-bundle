@@ -3,6 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +14,7 @@ class AdminControllerSpec extends ObjectBehavior
 {
     function let(EngineInterface $templating, RouterInterface $router)
     {
-        $this->beConstructedWith($templating, $router, 'template');
+        $this->beConstructedWith($templating, $router, Argument::type('string'));
     }
 
     function it_stores_locale_in_session(

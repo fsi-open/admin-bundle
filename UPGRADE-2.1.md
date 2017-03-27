@@ -1,4 +1,4 @@
-# UPGRADE from ~1.1/2.0.*
+# UPGRADE FROM VERSIONS ~1.1/2.0.* TO 2.1
 
 ## Make sure allow_add and allow_delete options are properly used
 

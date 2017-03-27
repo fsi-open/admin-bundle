@@ -22,12 +22,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ResourceControllerSpec extends ObjectBehavior
 {
-    function let(ContextManager $manager, EngineInterface $templating)
-    {
-        $this->beConstructedWith($templating, $manager, 'default_resource');
+    function let(
+        EngineInterface $templating,
+        ContextManager $manager,
+        EventDispatcherInterface $dispatcher
+    ) {
+        $this->beConstructedWith(
+            $templating,
+            $manager,
+            $dispatcher,
+            'default_resource'
+        );
     }
 
-    function it_dispatch_event_if_displatcher_present(
+    function it_dispatches_event(
         EventDispatcherInterface $dispatcher,
         Request $request,
         Response $response,
@@ -36,8 +44,6 @@ class ResourceControllerSpec extends ObjectBehavior
         ResourceRepositoryContext $context,
         EngineInterface $templating
     ) {
-        $this->setEventDispatcher($dispatcher);
-
         $dispatcher->dispatch(
             AdminEvents::CONTEXT_PRE_CREATE,
             Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')

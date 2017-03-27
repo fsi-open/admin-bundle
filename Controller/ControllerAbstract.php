@@ -18,6 +18,7 @@ use FSi\Bundle\AdminBundle\Exception\ContextException;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 abstract class ControllerAbstract
@@ -45,24 +46,19 @@ abstract class ControllerAbstract
     /**
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $contextManager
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      * @param string|null $resourceActionTemplate
      */
     public function __construct(
         EngineInterface $templating,
         ContextManager $contextManager,
+        EventDispatcherInterface $eventDispatcher,
         $resourceActionTemplate = null
     ) {
         $this->templating = $templating;
         $this->contextManager = $contextManager;
-        $this->template = $resourceActionTemplate;
-    }
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function setEventDispatcher($eventDispatcher)
-    {
         $this->eventDispatcher = $eventDispatcher;
+        $this->template = $resourceActionTemplate;
     }
 
     /**
@@ -73,30 +69,28 @@ abstract class ControllerAbstract
      */
     protected function handleRequest(Element $element, Request $request, $route)
     {
-        if ($this->eventDispatcher) {
-            $event = new AdminEvent($element, $request);
-            $this->eventDispatcher->dispatch(AdminEvents::CONTEXT_PRE_CREATE, $event);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
-            }
+        $event = new AdminEvent($element, $request);
+        $this->eventDispatcher->dispatch(AdminEvents::CONTEXT_PRE_CREATE, $event);
+        if ($event->hasResponse()) {
+            return $event->getResponse();
         }
-        
-        $context = $this->contextManager->createContext($route, $element);
 
+        $context = $this->contextManager->createContext($route, $element);
         if (!($context instanceof ContextInterface)) {
             throw new NotFoundHttpException(sprintf(
-                'Cant find context builder that supports element with id "%s"',
+                'Cannot find context builder that supports element with id "%s"',
                 $element->getId()
             ));
         }
 
-        if (($response = $context->handleRequest($request)) !== null) {
+        $response = $context->handleRequest($request);
+        if ($response instanceof Response) {
             return $response;
         }
 
         if (!isset($this->template) && !$context->hasTemplateName()) {
             throw new ContextException(sprintf(
-                "Context %s did not returned any response and controller %s has no template",
+                "Context %s did not return any response and controller %s has no template",
                 get_class($context),
                 __CLASS__
             ));
