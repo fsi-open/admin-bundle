@@ -23,16 +23,15 @@ use Symfony\Component\HttpFoundation\Response;
 class ListControllerSpec extends ObjectBehavior
 {
     function let(
-        EngineInterface $templating,
         ContextManager $manager,
+        EngineInterface $templating,
+        ListElementContext $context,
         EventDispatcherInterface $dispatcher
     ) {
-        $this->beConstructedWith(
-            $templating,
-            $manager,
-            $dispatcher,
-            'default_list'
-        );
+        $context->hasTemplateName()->willReturn(true);
+        $context->getTemplateName()->willReturn('default_list');
+
+        $this->beConstructedWith($templating, $manager, $dispatcher);
     }
 
     function it_dispatches_event(
@@ -51,10 +50,27 @@ class ListControllerSpec extends ObjectBehavior
 
         $manager->createContext('fsi_admin_list', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
-        $context->hasTemplateName()->willReturn(false);
         $context->getData()->willReturn([]);
 
         $templating->renderResponse('default_list', [], null)->willReturn($response);
+        $this->listAction($element, $request)->shouldReturn($response);
+    }
+
+    function it_returns_response(
+        ContextManager $manager,
+        ListElement $element,
+        ListElementContext $context,
+        Request $request,
+        Response $response,
+        EngineInterface $templating
+    ) {
+        $manager->createContext('fsi_admin_list', $element)->willReturn($context);
+        $context->handleRequest($request)->willReturn(null);
+        $context->getData()->willReturn([]);
+
+        $templating->renderResponse('custom_template', [], null)->willReturn($response);
+        $context->handleRequest($request)->willReturn($response);
+
         $this->listAction($element, $request)->shouldReturn($response);
     }
 
@@ -70,51 +86,17 @@ class ListControllerSpec extends ObjectBehavior
             ->during('listAction', [$element, $request]);
     }
 
-    function it_render_default_template_in_list_action(
+    function it_throws_exception_when_no_response_and_no_template_name(
         Request $request,
-        Response $response,
         ListElement $element,
         ContextManager $manager,
-        ListElementContext $context,
-        EngineInterface $templating
-    ) {
-        $manager->createContext('fsi_admin_list', $element)->willReturn($context);
-        $context->handleRequest($request)->willReturn(null);
+        ListElementContext $context
+    ){
         $context->hasTemplateName()->willReturn(false);
-        $context->getData()->willReturn([]);
-
-        $templating->renderResponse('default_list', [], null)->willReturn($response);
-        $this->listAction($element, $request)->shouldReturn($response);
-    }
-
-    function it_render_template_from_element_in_list_action(
-        ContextManager $manager,
-        ListElement $element,
-        ListElementContext $context,
-        Request $request,
-        EngineInterface $templating,
-        Response $response
-    ) {
         $manager->createContext('fsi_admin_list', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
-        $context->hasTemplateName()->willReturn(true);
-        $context->getTemplateName()->willReturn('custom_template');
-        $context->getData()->willReturn([]);
 
-        $templating->renderResponse('custom_template', [], null)->willReturn($response);
-        $this->listAction($element, $request)->shouldReturn($response);
-    }
-
-    function it_return_response_from_context_in_list_action(
-        ContextManager $manager,
-        ListElement $element,
-        ListElementContext $context,
-        Request $request,
-        Response $response
-    ) {
-        $manager->createContext('fsi_admin_list', $element)->willReturn($context);
-        $context->handleRequest($request)->willReturn($response);
-
-        $this->listAction($element, $request)->shouldReturn($response);
+        $this->shouldThrow('FSi\Bundle\AdminBundle\Exception\ContextException')
+            ->during('listAction', [$element, $request]);
     }
 }

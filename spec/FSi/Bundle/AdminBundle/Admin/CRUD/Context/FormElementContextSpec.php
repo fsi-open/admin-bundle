@@ -11,7 +11,6 @@ namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
-use FSi\Component\DataIndexer\DataIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormInterface;
@@ -22,7 +21,7 @@ class FormElementContextSpec extends ObjectBehavior
 {
     function let(FormElement $element, FormInterface $form, HandlerInterface $handler)
     {
-        $this->beConstructedWith([$handler]);
+        $this->beConstructedWith([$handler], 'default_form');
         $element->hasOption('allow_add')->willReturn(true);
         $element->getOption('allow_add')->willReturn(true);
         $element->createForm(null)->willReturn($form);
@@ -34,7 +33,8 @@ class FormElementContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_has_array_data(FormInterface $form, Request $request) {
+    function it_has_array_data(FormInterface $form, Request $request)
+    {
         $form->createView()->willReturn('form_view');
         $form->getData()->willReturn(null);
 
@@ -44,15 +44,22 @@ class FormElementContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('element');
     }
 
-    function it_has_template(FormElement $element)
+    function it_returns_default_template_if_element_does_not_have_one(FormElement $element)
     {
-        $element->hasOption('template_form')->willReturn(true);
-        $element->getOption('template_form')->willReturn('this_is_form_template.html.twig');
+        $element->hasOption('template_form')->willReturn(false);
+        $this->getTemplateName()->shouldReturn('default_form');
         $this->hasTemplateName()->shouldReturn(true);
-        $this->getTemplateName()->shouldReturn('this_is_form_template.html.twig');
     }
 
-    function it_handle_request_with_request_handlers(HandlerInterface $handler, Request $request)
+    function it_returns_template_from_element_if_it_has_one(FormElement $element)
+    {
+        $element->hasOption('template_form')->willReturn(true);
+        $element->getOption('template_form')->willReturn('form.html.twig');
+        $this->hasTemplateName()->shouldReturn(true);
+        $this->getTemplateName()->shouldReturn('form.html.twig');
+    }
+
+    function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request)
     {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
             ->shouldBeCalled();
@@ -60,7 +67,7 @@ class FormElementContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_return_response_from_handler(HandlerInterface $handler, Request $request)
+    function it_returns_response_from_handler(HandlerInterface $handler, Request $request)
     {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
             ->willReturn(new Response());
@@ -69,8 +76,10 @@ class FormElementContextSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
-    function it_throws_exception_when_adding_is_not_allowed(Request $request, FormElement $element)
-    {
+    function it_throws_exception_when_adding_is_not_allowed(
+        Request $request,
+        FormElement $element
+    ) {
         $request->get('id')->willReturn(false);
         $element->getOption('allow_add')->willReturn(false);
         $this->shouldThrow('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException')->during('handleRequest', [$request]);

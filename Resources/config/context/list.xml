@@ -30,6 +30,7 @@
                 <argument type="service" id="admin.context.list.request_handler.datagrid_set_data"/>
                 <argument type="service" id="admin.context.list.request_handler.datagrid_bind_data"/>
             </argument>
+            <argument>%admin.templates.list%</argument>
             <argument type="service" id="form.factory" />
             <tag name="admin.context" />
         </service>
@@ -38,10 +39,12 @@
                 class="%admin.context.list.request_handler.datasource_bind_parameters.class%">
             <argument type="service" id="event_dispatcher" />
         </service>
+
         <service id="admin.context.list.request_handler.datagrid_set_data"
                  class="%admin.context.list.request_handler.datagrid_set_data.class%">
             <argument type="service" id="event_dispatcher" />
         </service>
+
         <service id="admin.context.list.request_handler.datagrid_bind_data"
                  class="%admin.context.list.request_handler.datagrid_bind_data.class%">
             <argument type="service" id="event_dispatcher" />

@@ -23,16 +23,15 @@ use Symfony\Component\HttpFoundation\Response;
 class DisplayControllerSpec extends ObjectBehavior
 {
     function let(
-        EngineInterface $templating,
         ContextManager $manager,
+        EngineInterface $templating,
+        DisplayContext $context,
         EventDispatcherInterface $dispatcher
     ) {
-        $this->beConstructedWith(
-            $templating,
-            $manager,
-            $dispatcher,
-            'default_display'
-        );
+        $context->hasTemplateName()->willReturn(true);
+        $context->getTemplateName()->willReturn('default_display');
+
+        $this->beConstructedWith($templating, $manager, $dispatcher);
     }
 
     function it_dispatches_event(
@@ -51,7 +50,22 @@ class DisplayControllerSpec extends ObjectBehavior
 
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
-        $context->hasTemplateName()->willReturn(false);
+        $context->getData()->willReturn([]);
+
+        $templating->renderResponse('default_display', [], null)->willReturn($response);
+        $this->displayAction($element, $request)->shouldReturn($response);
+    }
+
+    function it_returns_response(
+        Request $request,
+        Response $response,
+        Element $element,
+        ContextManager $manager,
+        DisplayContext $context,
+        EngineInterface $templating
+    ) {
+        $manager->createContext('fsi_admin_display', $element)->willReturn($context);
+        $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
         $templating->renderResponse('default_display', [], null)->willReturn($response);
@@ -70,51 +84,17 @@ class DisplayControllerSpec extends ObjectBehavior
             ->during('displayAction', [$element, $request]);
     }
 
-    function it_render_default_template_in_display_action(
+    function it_throws_exception_when_no_response_and_no_template_name(
         Request $request,
-        Response $response,
-        Element $element,
-        ContextManager $manager,
-        DisplayContext $context,
-        EngineInterface $templating
-    ) {
-        $manager->createContext('fsi_admin_display', $element)->willReturn($context);
-        $context->handleRequest($request)->willReturn(null);
-        $context->hasTemplateName()->willReturn(false);
-        $context->getData()->willReturn([]);
-
-        $templating->renderResponse('default_display', [], null)->willReturn($response);
-        $this->displayAction($element, $request)->shouldReturn($response);
-    }
-
-    function it_render_template_from_element_in_display_action(
-        Request $request,
-        Response $response,
-        Element $element,
-        ContextManager $manager,
-        DisplayContext $context,
-        EngineInterface $templating
-    ) {
-        $manager->createContext('fsi_admin_display', $element)->willReturn($context);
-        $context->handleRequest($request)->willReturn(null);
-        $context->hasTemplateName()->willReturn(true);
-        $context->getTemplateName()->willReturn('custom_template');
-        $context->getData()->willReturn([]);
-
-        $templating->renderResponse('custom_template', [], null)->willReturn($response);
-        $this->displayAction($element, $request)->shouldReturn($response);
-    }
-
-    function it_return_response_from_context_in_display_action(
-        Request $request,
-        Response $response,
         Element $element,
         ContextManager $manager,
         DisplayContext $context
-    ) {
+    ){
+        $context->hasTemplateName()->willReturn(false);
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
-        $context->handleRequest($request)->willReturn($response);
+        $context->handleRequest($request)->willReturn(null);
 
-        $this->displayAction($element, $request)->shouldReturn($response);
+        $this->shouldThrow('FSi\Bundle\AdminBundle\Exception\ContextException')
+            ->during('displayAction', [$element, $request]);
     }
 }

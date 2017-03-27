@@ -26,7 +26,7 @@ class ListElementContextSpec extends ObjectBehavior
         DataGridInterface $datagrid,
         HandlerInterface $handler
     ) {
-        $this->beConstructedWith([$handler]);
+        $this->beConstructedWith([$handler], 'default_list');
         $element->createDataGrid()->willReturn($datagrid);
         $element->createDataSource()->willReturn($datasource);
         $this->setElement($element);
@@ -37,7 +37,7 @@ class ListElementContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_array_data()
+    function it_has_array_data()
     {
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('datagrid_view');
@@ -45,15 +45,22 @@ class ListElementContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('element');
     }
 
-    function it_has_template(ListElement $element)
+    function it_returns_default_template_if_element_does_not_have_one(ListElement $element)
     {
-        $element->hasOption('template_list')->willReturn(true);
-        $element->getOption('template_list')->willReturn('this_is_list_template.html.twig');
+        $element->hasOption('template_list')->willReturn(false);
+        $this->getTemplateName()->shouldReturn('default_list');
         $this->hasTemplateName()->shouldReturn(true);
-        $this->getTemplateName()->shouldReturn('this_is_list_template.html.twig');
     }
 
-    function it_handle_request_with_request_handlers(HandlerInterface $handler, Request $request)
+    function it_returns_template_from_element_if_it_has_one(ListElement $element)
+    {
+        $element->hasOption('template_list')->willReturn(true);
+        $element->getOption('template_list')->willReturn('list.html.twig');
+        $this->hasTemplateName()->shouldReturn(true);
+        $this->getTemplateName()->shouldReturn('list.html.twig');
+    }
+
+    function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request)
     {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent'), $request)
             ->shouldBeCalled();
@@ -61,7 +68,7 @@ class ListElementContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_return_response_from_handler(HandlerInterface $handler, Request $request)
+    function it_returns_response_from_handler(HandlerInterface $handler, Request $request)
     {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent'), $request)
             ->willReturn(new Response());

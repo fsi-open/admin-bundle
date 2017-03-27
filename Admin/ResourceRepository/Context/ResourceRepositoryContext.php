@@ -37,11 +37,15 @@ class ResourceRepositoryContext extends ContextAbstract
 
     /**
      * @param HandlerInterface[]|$requestHandlers
+     * @param string $template
      * @param ResourceFormBuilder $resourceFormBuilder
      */
-    public function __construct($requestHandlers, ResourceFormBuilder $resourceFormBuilder)
-    {
-        parent::__construct($requestHandlers);
+    public function __construct(
+        array $requestHandlers,
+        $template,
+        ResourceFormBuilder $resourceFormBuilder
+    ) {
+        parent::__construct($requestHandlers, $template);
 
         $this->resourceFormBuilder = $resourceFormBuilder;
     }
@@ -60,7 +64,7 @@ class ResourceRepositoryContext extends ContextAbstract
      */
     public function hasTemplateName()
     {
-        return $this->element->hasOption('template');
+        return $this->element->hasOption('template') || parent::hasTemplateName();
     }
 
     /**
@@ -68,7 +72,10 @@ class ResourceRepositoryContext extends ContextAbstract
      */
     public function getTemplateName()
     {
-        return $this->element->getOption('template');
+        return $this->element->hasOption('template')
+            ? $this->element->getOption('template')
+            : parent::getTemplateName()
+        ;
     }
 
     /**

@@ -49,7 +49,7 @@ class ListElementContext extends ContextAbstract
      */
     public function hasTemplateName()
     {
-        return $this->element->hasOption('template_list');
+        return $this->element->hasOption('template_list') || parent::hasTemplateName();
     }
 
     /**
@@ -57,7 +57,10 @@ class ListElementContext extends ContextAbstract
      */
     public function getTemplateName()
     {
-        return $this->element->getOption('template_list');
+        return $this->element->hasOption('template_list')
+            ? $this->element->getOption('template_list')
+            : parent::getTemplateName()
+        ;
     }
 
     /**
