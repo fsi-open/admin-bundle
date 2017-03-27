@@ -18,3 +18,10 @@ If you have created a context, whose actions can return an HTML response, you ne
 to have it return a default value for the template name. This stems from the change
 to controllers [not having](CHANGELOG-3.0.md#default-response-templates-are-injected-into-contexts)
 a default template name injected to them.
+
+## Access Admin\AbstraceElement options through getter methods
+
+If you have created an element class extending the [AbstractElement](Admin/AbstractElement.php)
+and are accessing it's `options` property directly, you will need to switch to
+using a proper getter method (`hasOption`, `getOption` or `getOptions`), since it 
+has been made [private](CHANGELOG-3.0.md#resolving-adminabstractelement-options-only-on-first-use).

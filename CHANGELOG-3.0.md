@@ -102,3 +102,13 @@ classes, which caused inconsitency and was problematic, since controllers can
 handle vastly different elements. Now all contexts are required to provide a template
 name, assuming their action returns an HTML response. For example Batch actions
 will return a redirect response, so there is no point for them to provide one.
+
+## Resolving Admin\AbstractElement options only on first use
+
+Until now options passed into [AbstractElement](Admin/AbstractElement.php) were
+resolved immediately in the class' constructor, but now it is postponed until
+the first use of `getOption`, `hasOption` or `getOptions` methods.
+
+The `$options` property has also been made private to ensure they are not resolved
+somewhere else in extending classes, so if you access it directly in your elements, 
+you will need to use the appropriate getter method instead.

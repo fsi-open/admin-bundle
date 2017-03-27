@@ -23,13 +23,16 @@ abstract class AbstractElement implements Element
     private $options;
 
     /**
+     * @var array
+     */
+    private $unresolvedOptions;
+
+    /**
      * @param array $options
      */
     public function __construct(array $options = [])
     {
-        $optionsResolver = new OptionsResolver();
-        $this->setDefaultOptions($optionsResolver);
-        $this->options = $optionsResolver->resolve($options);
+        $this->unresolvedOptions = $options;
     }
 
     /**
@@ -47,8 +50,13 @@ abstract class AbstractElement implements Element
      */
     public function getOption($name)
     {
+        $this->resolveOptions();
         if (!$this->hasOption($name)) {
-            throw new MissingOptionException(sprintf('Option with name: "%s" does\'t exists.', $name));
+            throw new MissingOptionException(sprintf(
+                'Option with name "%s" does not exist in element "%s"',
+                $name,
+                get_class($this)
+            ));
         }
 
         return $this->options[$name];
@@ -59,6 +67,7 @@ abstract class AbstractElement implements Element
      */
     public function getOptions()
     {
+        $this->resolveOptions();
         return $this->options;
     }
 
@@ -67,6 +76,17 @@ abstract class AbstractElement implements Element
      */
     public function hasOption($name)
     {
+        $this->resolveOptions();
         return isset($this->options[$name]);
+    }
+
+    private function resolveOptions()
+    {
+        if (!is_array($this->options)) {
+            $optionsResolver = new OptionsResolver();
+            $this->setDefaultOptions($optionsResolver);
+            $this->options = $optionsResolver->resolve($this->unresolvedOptions);
+            unset($this->unresolvedOptions);
+        }
     }
 }
