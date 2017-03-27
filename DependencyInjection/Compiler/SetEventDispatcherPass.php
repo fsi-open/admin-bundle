@@ -13,6 +13,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * @deprecated since version 2.1
+ *
+ * This compiler was created as a backwards-compatibile way of injecting the
+ * EventDispatcher into the Controller\ControllerAbstract. In version 3.0 it is
+ * replaced by directly injecting it to the controller's constructor and was so
+ * removed.
+ */
 class SetEventDispatcherPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
