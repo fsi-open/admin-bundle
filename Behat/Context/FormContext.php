@@ -92,8 +92,10 @@ class FormContext extends AbstractContext
     }
 
     /**
-     * @Given /^("[^"]*" collection) should have (\d+) elements$/
-     * @Given /^(non-editable collection "[^"]*") should have (\d+) elements$/
+     * @Given /^("[^"]*" collection) has (\d+) (element|elements)$/
+     * @Then /^("[^"]*" collection) should have (\d+) (element|elements)$/
+     * @Given /^(non-editable collection "[^"]*") has (\d+) (element|elements)$/
+     * @Then /^(non-editable collection "[^"]*") should have (\d+) (element|elements)$/
      */
     public function collectionShouldHaveElements(NodeElement $collection, $elementsCount)
     {
