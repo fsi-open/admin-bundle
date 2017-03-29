@@ -58,6 +58,8 @@ abstract class ControllerAbstract
     }
 
     /**
+     * @deprecated since version 2.1 - inject dispatcher through the constructor
+     *
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function setEventDispatcher($eventDispatcher)
@@ -80,7 +82,7 @@ abstract class ControllerAbstract
                 return $event->getResponse();
             }
         }
-        
+
         $context = $this->contextManager->createContext($route, $element);
 
         if (!($context instanceof ContextInterface)) {
