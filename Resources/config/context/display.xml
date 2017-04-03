@@ -14,6 +14,7 @@
             <argument type="collection">
                 <argument type="service" id="admin.context.display.request_handler"/>
             </argument>
+            <argument>%admin.templates.display%</argument>
             <tag name="admin.context" />
         </service>
 

@@ -33,7 +33,7 @@ class DisplayContext extends ContextAbstract
      */
     public function hasTemplateName()
     {
-        return $this->element->hasOption('template');
+        return $this->element->hasOption('template') || parent::hasTemplateName();
     }
 
     /**
@@ -41,7 +41,10 @@ class DisplayContext extends ContextAbstract
      */
     public function getTemplateName()
     {
-        return $this->element->getOption('template');
+        return $this->element->hasOption('template')
+            ? $this->element->getOption('template')
+            : parent::getTemplateName()
+        ;
     }
 
     /**

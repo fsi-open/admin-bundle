@@ -34,7 +34,7 @@ class FormElementContext extends ContextAbstract
      */
     public function hasTemplateName()
     {
-        return $this->element->hasOption('template_form');
+        return $this->element->hasOption('template_form') || parent::hasTemplateName();
     }
 
     /**
@@ -42,7 +42,10 @@ class FormElementContext extends ContextAbstract
      */
     public function getTemplateName()
     {
-        return $this->element->getOption('template_form');
+        return $this->element->hasOption('template_form')
+            ? $this->element->getOption('template_form')
+            : parent::getTemplateName()
+        ;
     }
 
     /**

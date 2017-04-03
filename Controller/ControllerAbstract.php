@@ -34,11 +34,6 @@ abstract class ControllerAbstract
     protected $contextManager;
 
     /**
-     * @var string
-     */
-    protected $template;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -47,18 +42,15 @@ abstract class ControllerAbstract
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $contextManager
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
-     * @param string|null $resourceActionTemplate
      */
     public function __construct(
         EngineInterface $templating,
         ContextManager $contextManager,
-        EventDispatcherInterface $eventDispatcher,
-        $resourceActionTemplate = null
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->templating = $templating;
         $this->contextManager = $contextManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->template = $resourceActionTemplate;
     }
 
     /**
@@ -74,7 +66,6 @@ abstract class ControllerAbstract
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
-
         $context = $this->contextManager->createContext($route, $element);
         if (!($context instanceof ContextInterface)) {
             throw new NotFoundHttpException(sprintf(
@@ -88,16 +79,16 @@ abstract class ControllerAbstract
             return $response;
         }
 
-        if (!isset($this->template) && !$context->hasTemplateName()) {
+        if (!$context->hasTemplateName()) {
             throw new ContextException(sprintf(
-                "Context %s did not return any response and controller %s has no template",
+                "Context %s neither returned a response nor has a template name",
                 get_class($context),
                 __CLASS__
             ));
         }
 
         return $this->templating->renderResponse(
-            $context->hasTemplateName() ? $context->getTemplateName() : $this->template,
+            $context->getTemplateName(),
             $context->getData()
         );
     }

@@ -25,14 +25,13 @@ class FormControllerSpec extends ObjectBehavior
     function let(
         EngineInterface $templating,
         ContextManager $manager,
+        FormElementContext $context,
         EventDispatcherInterface $dispatcher
     ) {
-        $this->beConstructedWith(
-            $templating,
-            $manager,
-            $dispatcher,
-            'default_form'
-        );
+        $context->hasTemplateName()->willReturn(true);
+        $context->getTemplateName()->willReturn('default_form');
+
+        $this->beConstructedWith($templating, $manager, $dispatcher);
     }
 
     function it_dispatches_event(
@@ -51,7 +50,22 @@ class FormControllerSpec extends ObjectBehavior
 
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
-        $context->hasTemplateName()->willReturn(false);
+        $context->getData()->willReturn([]);
+
+        $templating->renderResponse('default_form', [], null)->willReturn($response);
+        $this->formAction($element, $request)->shouldReturn($response);
+    }
+
+    function it_returns_response(
+        Request $request,
+        Response $response,
+        GenericFormElement $element,
+        ContextManager $manager,
+        FormElementContext $context,
+        EngineInterface $templating
+    ) {
+        $manager->createContext('fsi_admin_form', $element)->willReturn($context);
+        $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
         $templating->renderResponse('default_form', [], null)->willReturn($response);
@@ -65,56 +79,21 @@ class FormControllerSpec extends ObjectBehavior
     ) {
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
-
         $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
             ->during('formAction', [$element, $request]);
     }
 
-    function it_render_default_template_in_form_action(
+    function it_throws_exception_when_no_response_and_no_template_name(
         Request $request,
-        Response $response,
-        GenericFormElement $element,
-        ContextManager $manager,
-        FormElementContext $context,
-        EngineInterface $templating
-    ) {
-        $manager->createContext('fsi_admin_form', $element)->willReturn($context);
-        $context->handleRequest($request)->willReturn(null);
-        $context->hasTemplateName()->willReturn(false);
-        $context->getData()->willReturn([]);
-
-        $templating->renderResponse('default_form', [], null)->willReturn($response);
-        $this->formAction($element, $request)->shouldReturn($response);
-    }
-
-    function it_render_template_from_element_in_form_action(
-        Request $request,
-        Response $response,
-        GenericFormElement $element,
-        ContextManager $manager,
-        FormElementContext $context,
-        EngineInterface $templating
-    ) {
-        $manager->createContext('fsi_admin_form', $element)->willReturn($context);
-        $context->handleRequest($request)->willReturn(null);
-        $context->hasTemplateName()->willReturn(true);
-        $context->getTemplateName()->willReturn('custom_template');
-        $context->getData()->willReturn([]);
-
-        $templating->renderResponse('custom_template', [], null)->willReturn($response);
-        $this->formAction($element, $request)->shouldReturn($response);
-    }
-
-    function it_return_response_from_context_in_form_action(
-        Request $request,
-        Response $response,
         GenericFormElement $element,
         ContextManager $manager,
         FormElementContext $context
     ) {
+        $context->hasTemplateName()->willReturn(false);
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
-        $context->handleRequest($request)->willReturn($response);
+        $context->handleRequest($request)->willReturn(null);
 
-        $this->formAction($element, $request)->shouldReturn($response);
+        $this->shouldThrow('FSi\Bundle\AdminBundle\Exception\ContextException')
+            ->during('formAction', [$element, $request]);
     }
 }

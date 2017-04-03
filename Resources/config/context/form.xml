@@ -26,6 +26,7 @@
                 <argument type="service" id="admin.context.form.request_handler.form_submit"/>
                 <argument type="service" id="admin.context.form.request_handler.form_valid_request"/>
             </argument>
+            <argument type="string">%admin.templates.form%</argument>
             <tag name="admin.context" />
         </service>
 

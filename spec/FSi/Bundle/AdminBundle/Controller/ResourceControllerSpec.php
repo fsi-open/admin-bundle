@@ -23,16 +23,14 @@ use Symfony\Component\HttpFoundation\Response;
 class ResourceControllerSpec extends ObjectBehavior
 {
     function let(
-        EngineInterface $templating,
         ContextManager $manager,
+        EngineInterface $templating,
+        ResourceRepositoryContext $context,
         EventDispatcherInterface $dispatcher
     ) {
-        $this->beConstructedWith(
-            $templating,
-            $manager,
-            $dispatcher,
-            'default_resource'
-        );
+        $context->hasTemplateName()->willReturn(true);
+        $context->getTemplateName()->willReturn('default_resource');
+        $this->beConstructedWith($templating, $manager, $dispatcher);
     }
 
     function it_dispatches_event(
@@ -51,11 +49,26 @@ class ResourceControllerSpec extends ObjectBehavior
 
         $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
-        $context->hasTemplateName()->willReturn(false);
         $context->getData()->willReturn([]);
 
         $templating->renderResponse('default_resource', [], null)->willReturn($response);
 
+        $this->resourceAction($element, $request)->shouldReturn($response);
+    }
+
+    function it_renders_response(
+        Request $request,
+        Response $response,
+        Element $element,
+        ContextManager $manager,
+        ResourceRepositoryContext $context,
+        EngineInterface $templating
+    ) {
+        $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
+        $context->handleRequest($request)->willReturn(null);
+        $context->getData()->willReturn([]);
+
+        $templating->renderResponse('default_resource', [], null)->willReturn($response);
         $this->resourceAction($element, $request)->shouldReturn($response);
     }
 
@@ -71,51 +84,17 @@ class ResourceControllerSpec extends ObjectBehavior
             ->during('resourceAction', [$element, $request]);
     }
 
-    function it_render_default_template_in_resource_action(
+    function it_throws_exception_when_no_response_and_no_template_name(
         Request $request,
-        Response $response,
-        Element $element,
-        ContextManager $manager,
-        ResourceRepositoryContext $context,
-        EngineInterface $templating
-    ) {
-        $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
-        $context->handleRequest($request)->willReturn(null);
-        $context->hasTemplateName()->willReturn(false);
-        $context->getData()->willReturn([]);
-
-        $templating->renderResponse('default_resource', [], null)->willReturn($response);
-        $this->resourceAction($element, $request)->shouldReturn($response);
-    }
-
-    function it_render_template_from_element_in_resource_action(
-        Request $request,
-        Response $response,
-        Element $element,
-        ContextManager $manager,
-        ResourceRepositoryContext $context,
-        EngineInterface $templating
-    ) {
-        $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
-        $context->handleRequest($request)->willReturn(null);
-        $context->hasTemplateName()->willReturn(true);
-        $context->getTemplateName()->willReturn('custom_template');
-        $context->getData()->willReturn([]);
-
-        $templating->renderResponse('custom_template', [], null)->willReturn($response);
-        $this->resourceAction($element, $request)->shouldReturn($response);
-    }
-
-    function it_return_response_from_context_in_resource_action(
-        Request $request,
-        Response $response,
         Element $element,
         ContextManager $manager,
         ResourceRepositoryContext $context
-    ) {
+    ){
+        $context->hasTemplateName()->willReturn(false);
         $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
-        $context->handleRequest($request)->willReturn($response);
+        $context->handleRequest($request)->willReturn(null);
 
-        $this->resourceAction($element, $request)->shouldReturn($response);
+        $this->shouldThrow('FSi\Bundle\AdminBundle\Exception\ContextException')
+            ->during('resourceAction', [$element, $request]);
     }
 }

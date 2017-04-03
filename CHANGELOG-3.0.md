@@ -92,3 +92,13 @@ Now it is removed.
 passed into it's constructor instead through the `setEventDispatcher` method. Due to
 this change, the [compiler pass](DependencyInjection/Compiler/SetEventDispatcherPass.php)
 became redundant and was removed.
+
+## Default response templates are injected into contexts
+
+Previously default response templates were injected into controllers and could have
+been overwritten by a value returned by the context handling the element. This
+behaviour split the responsibilty of providing the template name between two 
+classes, which caused inconsitency and was problematic, since controllers can
+handle vastly different elements. Now all contexts are required to provide a template
+name, assuming their action returns an HTML response. For example Batch actions
+will return a redirect response, so there is no point for them to provide one.

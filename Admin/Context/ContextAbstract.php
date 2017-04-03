@@ -22,11 +22,18 @@ abstract class ContextAbstract implements ContextInterface
     private $requestHandlers;
 
     /**
-     * @param HandlerInterface[]|array $requestHandlers
+     * @var string
      */
-    public function __construct(array $requestHandlers)
+    private $template;
+
+    /**
+     * @param HandlerInterface[]|array $requestHandlers
+     * @param string|null
+     */
+    public function __construct(array $requestHandlers, $template = null)
     {
         $this->requestHandlers = $requestHandlers;
+        $this->template = $template;
     }
 
     /**
@@ -56,12 +63,9 @@ abstract class ContextAbstract implements ContextInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasTemplateName()
     {
-        return false;
+        return !empty($this->template);
     }
 
     /**
@@ -69,7 +73,7 @@ abstract class ContextAbstract implements ContextInterface
      */
     public function getTemplateName()
     {
-        return null;
+        return $this->template;
     }
 
     /**
