@@ -2,6 +2,15 @@
 
 This document describes all the significant changes made between 1.1/2.0 and 2.1.
 
+## Added bunch of new "dependent" admin element classes
+
+These new abstract classes allow easy creation of admin elements which are dependent
+from another (parent) admin element and specific instance of class it manages. This
+dependency means that:
+ - actions witch dependent element properly highglight parent element's menu item
+ - dependent element's method have access to parent admin element and the parent object instance,
+   which can be used in datasource / datagrid / form building or view template
+
 ## Added "allow_add" option to Admin\Crud\GenericFormElement
 
 It was a natural consequence of this class and now this option is by default true.
