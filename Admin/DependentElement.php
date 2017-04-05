@@ -16,7 +16,7 @@ interface DependentElement extends Element, RequestStackAware
     /**
      * ID of parent element
      *
-     * @return string
+     * @return string|null
      */
     public function getParentId();
 

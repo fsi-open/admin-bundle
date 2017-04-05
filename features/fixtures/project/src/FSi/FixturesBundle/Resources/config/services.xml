@@ -4,6 +4,8 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
+        <parameter key="fixtures_bundle.admin.category.class">FSi\FixturesBundle\Admin\Category</parameter>
+        <parameter key="fixtures_bundle.admin.category_news.class">FSi\FixturesBundle\Admin\CategoryNews</parameter>
         <parameter key="fixtures_bundle.admin.news.class">FSi\FixturesBundle\Admin\News</parameter>
         <parameter key="fixtures_bundle.admin.news_display.class">FSi\FixturesBundle\Admin\DisplayNews</parameter>
         <parameter key="fixtures_bundle.admin.subscriber.class">FSi\FixturesBundle\Admin\Subscriber</parameter>
@@ -11,6 +13,14 @@
         <parameter key="fixtures_bundle.admin.subscriber_delete.class">FSi\FixturesBundle\Admin\SubscriberDelete</parameter>
     </parameters>
     <services>
+        <service id="fixtures_bundle.admin.category" class="%fixtures_bundle.admin.category.class%">
+            <tag name="admin.element" />
+        </service>
+
+        <service id="fixtures_bundle.admin.category_news" class="%fixtures_bundle.admin.category_news.class%">
+            <tag name="admin.element" />
+        </service>
+
         <service id="fixtures_bundle.admin.news" class="%fixtures_bundle.admin.news.class%">
             <tag name="admin.element" />
         </service>

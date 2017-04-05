@@ -59,11 +59,17 @@ trait DependentElementImpl
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     protected function getParentObjectId()
     {
-        return $this->requestStack->getCurrentRequest()->get(DependentElement::REQUEST_PARENT_PARAMETER);
+        $currentRequest = $this->requestStack->getCurrentRequest();
+
+        if ($currentRequest === null) {
+            return null;
+        }
+
+        return $currentRequest->get(DependentElement::REQUEST_PARENT_PARAMETER);
     }
 
     /**

@@ -12,6 +12,7 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\ORM\Tools\SchemaTool;
 use Faker\ORM\Doctrine\Populator;
+use FSi\FixturesBundle\Entity\Category;
 use FSi\FixturesBundle\Entity\News;
 use FSi\FixturesBundle\Entity\Tag;
 use InvalidArgumentException;
@@ -50,6 +51,9 @@ class DataContext extends AbstractContext
         switch ($entityName) {
             case "news":
                 return "FSi\FixturesBundle\Entity\News";
+            case "category":
+            case "categories":
+                return "FSi\FixturesBundle\Entity\Category";
             case "subscriber":
             case "subscribers":
                 return "FSi\FixturesBundle\Entity\Subscriber";
@@ -142,8 +146,11 @@ class DataContext extends AbstractContext
     {
         $manager = $this->getEntityManager();
         $faker = $this->getFaker();
+        $newsRepository = $this->getRepository('FSi\FixturesBundle\Entity\News');
+        $categoryRepository = $this->getRepository('FSi\FixturesBundle\Entity\Category');
+
         foreach ($table->getHash() as $newsNode) {
-            $news = $this->getRepository('FSi\FixturesBundle\Entity\News')->findOneByTitle($newsNode['Title']);
+            $news = $newsRepository->findOneByTitle($newsNode['Title']);
             if (!isset($news)) {
                 $news = new News();
             }
@@ -151,6 +158,19 @@ class DataContext extends AbstractContext
             $news->setTitle($newsNode['Title']);
             if (isset($newsNode['Date']) && $newsNode['Date']) {
                 $news->setDate(\DateTime::createFromFormat('Y-m-d', $newsNode['Date']));
+            }
+            if (isset($newsNode['Category']) && $newsNode['Category']) {
+                /** @var Category|null $category */
+                $category = $categoryRepository->findOneBy(['title' => $newsNode['Category']]);
+
+                if ($category === null) {
+                    throw new InvalidArgumentException(sprintf(
+                        'can\'t find category by title "%s"',
+                        $newsNode['Category']
+                    ));
+                }
+
+                $news->addCategory($category);
             }
             $news->setCreatedAt($faker->dateTime());
             $news->setVisible($faker->boolean());
@@ -210,11 +230,19 @@ class DataContext extends AbstractContext
                         return $faker->email();
                     },
                     'categories' => function() use ($faker) {
-                        return [$faker->text(), $faker->text()];
+                        $categories = $this->getRepository('FSi\FixturesBundle\Entity\Category')->findAll();
+
+                        if (count($categories)) {
+                            return [$faker->randomElement($categories)];
+                        }
+
+                        return [];
                     },
                     'photoKey' => null,
                     'visible' => true
                 ];
+            case 'FSi\FixturesBundle\Entity\Category':
+                return [];
             case 'FSi\FixturesBundle\Entity\Person':
                 return [
                     'email' => function() use ($faker) { return $faker->email(); },
@@ -252,6 +280,7 @@ class DataContext extends AbstractContext
                 ];
             case 'FSi\FixturesBundle\Entity\Person':
             case 'FSi\FixturesBundle\Entity\Subscriber':
+            case 'FSi\FixturesBundle\Entity\Category':
                 return [];
             default:
                 throw new InvalidArgumentException(sprintf(

@@ -9,6 +9,7 @@
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
@@ -37,6 +38,9 @@ class AdminContext extends AbstractContext
             $class = $serviceRow['Class'];
             expect($this->getAdminManager()->hasElement($id))->toBe(true);
             expect($this->getAdminManager()->getElement($id))->toBeAnInstanceOf($class);
+            if (array_key_exists('Parent', $serviceRow) && !empty($serviceRow['Parent'])) {
+                expect($this->getAdminManager()->getElement($id)->getParentId())->toBe($serviceRow['Parent']);
+            }
         }
     }
 

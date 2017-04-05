@@ -15,10 +15,10 @@ use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 abstract class DependentDisplayElement extends GenericDisplayElement implements DependentElement
 {
     use DependentElementImpl;
+
     /**
      * {@inheritdoc}
      */
-
     public function getRouteParameters()
     {
         return array_merge(

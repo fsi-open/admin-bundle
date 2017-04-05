@@ -1,4 +1,5 @@
 menu:
+  - { id: category, name: admin.category.name }
   - { id: news, name: admin.news.name }
   - { id: subscriber, name : admin.subscriber.name }
   - admin.menu.structure:

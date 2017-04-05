@@ -10,6 +10,7 @@
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use Behat\Mink\Element\NodeElement;
+use Rize\UriTemplate;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page as BasePage;
 
@@ -102,19 +103,14 @@ class Page extends BasePage
 
     protected function verifyUrl(array $urlParameters = array())
     {
-        $currentUrl = parse_url($this->getDriver()->getCurrentUrl());
-        $expectedUrl = parse_url($this->getUrl($urlParameters));
-        foreach ($expectedUrl as $key => $value) {
-            if ($key === self::QUERY && !empty($currentUrl[$key])) {
-                $currentUrl[$key] = urldecode(preg_replace(self::REDIRECT_URI, '', $currentUrl[$key]));
-            }
-            if (empty($currentUrl[$key]) || $value !== $currentUrl[$key]) {
-                throw new UnexpectedPageException(sprintf(
-                    'Expected to be on "%s" but found "%s" instead',
-                    $value,
-                    $currentUrl[$key]
-                ));
-            }
+        $uriTemplate = new UriTemplate();
+        $expectedUri = $uriTemplate->expand($this->path, $urlParameters);
+        if (strpos($this->getDriver()->getCurrentUrl(), $expectedUri) === false) {
+            throw new UnexpectedPageException(sprintf(
+                'Expected to be on "%s" but found "%s" instead',
+                $expectedUri,
+                $this->getDriver()->getCurrentUrl()
+            ));
         }
     }
 }

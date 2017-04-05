@@ -6,13 +6,16 @@ Feature: Admin panel main page
   Scenario: Admin panel top bar appearance
     Given the following admin elements were registered
       | Id            | Class                                |
+      | category      | FSi\FixturesBundle\Admin\Category    |
       | news          | FSi\FixturesBundle\Admin\News        |
+      | subscriber    | FSi\FixturesBundle\Admin\Subscriber  |
       | about_us_page | FSi\FixturesBundle\Admin\AboutUsPage |
     And translations are enabled in application
     And I am on the "Admin panel" page
     Then I should see "Admin" title at top bar
     And menu with following elements should be visible at the top of the page
       | Element name  | Element group  |
+      | Categories    |                |
       | News          |                |
       | Subscribers   |                |
       | About us page | Site structure |
