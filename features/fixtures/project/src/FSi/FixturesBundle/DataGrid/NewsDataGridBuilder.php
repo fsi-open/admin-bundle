@@ -9,7 +9,6 @@
 namespace FSi\FixturesBundle\DataGrid;
 
 use FSi\Component\DataGrid\DataGridInterface;
-use FSi\FixturesBundle\Admin\DisplayNews;
 
 class NewsDataGridBuilder
 {
@@ -47,21 +46,6 @@ class NewsDataGridBuilder
         $datagrid->addColumn('photo', 'fsi_image', [
             'label' => 'admin.news.list.photo',
             'width' => 100
-        ]);
-
-        $datagrid->addColumn('actions', 'action', [
-            'label' => 'admin.news.list.actions',
-            'field_mapping' => ['id'],
-            'actions' => [
-                'edit' => [
-                    'route_name' => "fsi_admin_crud_edit",
-                    'additional_parameters' => ['element' => $datagrid->getName()],
-                    'parameters_field_mapping' => ['id' => 'id']
-                ],
-                'display' => [
-                    'element' => DisplayNews::ID
-                ]
-            ]
         ]);
 
         return $datagrid;

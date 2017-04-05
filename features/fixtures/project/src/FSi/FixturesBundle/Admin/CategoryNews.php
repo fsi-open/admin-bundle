@@ -34,6 +34,21 @@ class CategoryNews extends DependentCRUDElement
 
         NewsDataGridBuilder::buildNewsDataGrid($datagrid);
 
+        $datagrid->addColumn('actions', 'action', [
+            'label' => 'admin.news.list.actions',
+            'field_mapping' => ['id'],
+            'actions' => [
+                'edit' => [
+                    'route_name' => "fsi_admin_crud_edit",
+                    'additional_parameters' => ['element' => $datagrid->getName()],
+                    'parameters_field_mapping' => ['id' => 'id']
+                ],
+                'display' => [
+                    'element' => CategoryNewsDisplay::ID
+                ]
+            ]
+        ]);
+
         return $datagrid;
     }
 
