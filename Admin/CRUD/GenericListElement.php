@@ -52,6 +52,14 @@ abstract class GenericListElement extends AbstractElement implements ListElement
     /**
      * {@inheritdoc}
      */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $this->setDefaultOptions($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setDataGridFactory(DataGridFactoryInterface $factory)
     {
         $this->datagridFactory = $factory;
