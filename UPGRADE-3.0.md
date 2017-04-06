@@ -25,3 +25,9 @@ If you have created an element class extending the [AbstractElement](Admin/Abstr
 and are accessing it's `options` property directly, you will need to switch to
 using a proper getter method (`hasOption`, `getOption` or `getOptions`), since it 
 has been made [private](CHANGELOG-3.0.md#resolving-adminabstractelement-options-only-on-first-use).
+
+## Use GenericCRUDElement instead of AbstractCRUD
+
+Since [AbstractCRUD](Admin/CRUD/AbstractCRUD.php) was removed due to being deprecated,
+you will need to use [GenericCRUDElement](Admin/CRUD/GenericCRUDElement.php) instead,
+if you have been extending it.

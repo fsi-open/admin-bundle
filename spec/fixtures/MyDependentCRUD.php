@@ -9,7 +9,6 @@
 
 namespace FSi\Bundle\AdminBundle\spec\fixtures;
 
-use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
 use FSi\Bundle\AdminBundle\Admin\CRUD\DependentCRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;

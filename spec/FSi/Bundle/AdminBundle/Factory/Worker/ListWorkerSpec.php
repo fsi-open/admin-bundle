@@ -2,7 +2,6 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Factory\Worker;
 
-use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
