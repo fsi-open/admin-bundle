@@ -1,4 +1,4 @@
-Feature: Deleting existing depndent object
+Feature: Deleting existing depndent objects
   In order to allow deleting existing news from dependent list
   As a developer
   I need to install FSiAdminBundle and configure news dependent admin element

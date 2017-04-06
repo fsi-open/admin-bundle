@@ -20,7 +20,7 @@ abstract class DependentFormElement extends FormElement implements DependentElem
     {
         return array_merge(
             parent::getRouteParameters(),
-            [DependentElement::REQUEST_PARENT_PARAMETER => $this->getParentObjectId()]
+            [DependentElement::PARENT_REQUEST_PARAMETER => $this->getParentObjectId()]
         );
     }
 }

@@ -1,5 +1,5 @@
 Feature: Sorting elements at dependent list
-  In order to allow sorting elements at dependent list
+  In order to allow sorting elements of dependent list
   As a developer
   I need to install FSiAdminBundle and configure parent admin element and child admin element
 

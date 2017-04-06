@@ -11,7 +11,7 @@ namespace FSi\Bundle\AdminBundle\Admin;
 
 interface DependentElement extends Element, RequestStackAware
 {
-    const REQUEST_PARENT_PARAMETER = 'parent';
+    const PARENT_REQUEST_PARAMETER = 'parent';
 
     /**
      * ID of parent element

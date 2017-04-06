@@ -52,7 +52,7 @@ class DependentFormElementSpec extends ObjectBehavior
     ) {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
-        $currentRequest->get(DependentElement::REQUEST_PARENT_PARAMETER)->willReturn(null);
+        $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn(null);
 
         $this->setRequestStack($requestStack);
         $this->setParentElement($parentElement);
@@ -68,7 +68,7 @@ class DependentFormElementSpec extends ObjectBehavior
     ) {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
-        $currentRequest->get(DependentElement::REQUEST_PARENT_PARAMETER)->willReturn('parent_object_id');
+        $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn('parent_object_id');
         $parentDataIndexer->getData('parent_object_id')->willReturn('parent_object');
 
         $this->setRequestStack($requestStack);
@@ -85,13 +85,13 @@ class DependentFormElementSpec extends ObjectBehavior
     ) {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
-        $currentRequest->get(DependentElement::REQUEST_PARENT_PARAMETER)->willReturn('parent_object_id');
+        $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn('parent_object_id');
 
         $this->setRequestStack($requestStack);
         $this->setParentElement($parentElement);
 
         $this->getRouteParameters()
-            ->shouldHaveKeyWithValue(DependentElement::REQUEST_PARENT_PARAMETER, 'parent_object_id');
+            ->shouldHaveKeyWithValue(DependentElement::PARENT_REQUEST_PARAMETER, 'parent_object_id');
     }
 
     public function it_should_return_object_manager(ObjectManager $om)

@@ -165,7 +165,7 @@ class DataContext extends AbstractContext
 
                 if ($category === null) {
                     throw new InvalidArgumentException(sprintf(
-                        'can\'t find category by title "%s"',
+                        'Can\'t find category by title "%s"',
                         $newsNode['Category']
                     ));
                 }

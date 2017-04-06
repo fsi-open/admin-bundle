@@ -1,5 +1,5 @@
-Feature: Creating new object from dependent list
-  In order to allow creating new objects from dependent
+Feature: Creating new objects  from dependent list
+  In order to allow creating new objects from dependent list
   As a developer
   I need to install FSiAdminBundle and configure form in dependent news admin element
 

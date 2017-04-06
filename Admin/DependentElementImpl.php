@@ -69,7 +69,7 @@ trait DependentElementImpl
             return null;
         }
 
-        return $currentRequest->get(DependentElement::REQUEST_PARENT_PARAMETER);
+        return $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER);
     }
 
     /**

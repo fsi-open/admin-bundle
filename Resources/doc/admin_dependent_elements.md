@@ -52,7 +52,7 @@ Here are some differences when creating dependent CRUD element:
   dependent element's view template i.e. to display its name and/or some url in
   breadcrumbs.
 
-## 4. CRUD is not the only thing you usually need
+## 4. CRUD is not the only thing you need
 
 As mentioned before dependent admin elements are not constrained only to CRUDs. Here's
 the complete list of dependent admin elements abstract classes:

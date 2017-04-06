@@ -9,7 +9,6 @@
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;

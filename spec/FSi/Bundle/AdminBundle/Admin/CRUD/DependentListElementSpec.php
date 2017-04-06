@@ -29,7 +29,7 @@ class DependentListElementSpec extends ObjectBehavior
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\DependentElement');
     }
 
-    function it_have_default_route()
+    function it_has_default_route()
     {
         $this->getRoute()->shouldReturn('fsi_admin_list');
     }
@@ -55,7 +55,7 @@ class DependentListElementSpec extends ObjectBehavior
     ) {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
-        $currentRequest->get(DependentElement::REQUEST_PARENT_PARAMETER)->willReturn(null);
+        $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn(null);
 
         $this->setRequestStack($requestStack);
         $this->setParentElement($parentElement);
@@ -71,7 +71,7 @@ class DependentListElementSpec extends ObjectBehavior
     ) {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
-        $currentRequest->get(DependentElement::REQUEST_PARENT_PARAMETER)->willReturn('parent_object_id');
+        $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn('parent_object_id');
         $parentDataIndexer->getData('parent_object_id')->willReturn('parent_object');
 
         $this->setRequestStack($requestStack);
@@ -88,16 +88,16 @@ class DependentListElementSpec extends ObjectBehavior
     ) {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
-        $currentRequest->get(DependentElement::REQUEST_PARENT_PARAMETER)->willReturn('parent_object_id');
+        $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn('parent_object_id');
 
         $this->setRequestStack($requestStack);
         $this->setParentElement($parentElement);
 
         $this->getRouteParameters()
-            ->shouldHaveKeyWithValue(DependentElement::REQUEST_PARENT_PARAMETER, 'parent_object_id');
+            ->shouldHaveKeyWithValue(DependentElement::PARENT_REQUEST_PARAMETER, 'parent_object_id');
     }
 
-    function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid(
+    function it_throws_exception_when_init_datagrid_does_not_return_instance_of_datagrid(
         DataGridFactoryInterface $factory
     ) {
         $this->setDataGridFactory($factory);
@@ -108,7 +108,7 @@ class DependentListElementSpec extends ObjectBehavior
         )->during('createDataGrid');
     }
 
-    function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource(
+    function it_throws_exception_when_init_datasource_does_not_return_instance_of_datasource(
         DataSourceFactoryInterface $factory
     ) {
         $this->setDataSourceFactory($factory);

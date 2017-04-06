@@ -10,8 +10,12 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Component\DataGrid\DataGridFactory;
+use FSi\Component\DataGrid\DataGridInterface;
+use FSi\Component\DataSource\DataSourceFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class GenericCRUDElementSpec extends ObjectBehavior
 {
@@ -31,16 +35,12 @@ class GenericCRUDElementSpec extends ObjectBehavior
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Element');
     }
 
-    function it_have_default_route()
+    function it_has_default_route()
     {
         $this->getRoute()->shouldReturn('fsi_admin_list');
     }
 
-    /**
-     * @param \FSi\Component\DataGrid\DataGridFactory $factory
-     * @throws \FSi\Component\DataGrid\Exception\DataGridColumnException
-     */
-    function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid($factory)
+    function it_throws_exception_when_init_datagrid_does_not_return_instance_of_datagrid(DataGridFactory $factory)
     {
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
@@ -49,14 +49,10 @@ class GenericCRUDElementSpec extends ObjectBehavior
             ->during('createDataGrid');
     }
 
-    /**
-     * @param \FSi\Component\DataGrid\DataGridFactory $factory
-     * @param \FSi\Component\DataGrid\DataGrid $datagrid
-     * @throws \FSi\Component\DataGrid\Exception\DataGridColumnException
-     * @throws \FSi\Component\DataGrid\Exception\UnexpectedTypeException
-     */
-    function it_add_batch_column_to_datagrid_when_element_allow_delete_objects($factory, $datagrid)
-    {
+    function it_adds_batch_column_to_datagrid_when_element_allow_delete_objects(
+        DataGridFactory $factory,
+        DataGridInterface $datagrid
+    ) {
         $factory->createDataGrid('my_datagrid')->shouldBeCalled()->willReturn($datagrid);
         $datagrid->hasColumnType('batch')->shouldBeCalled()->willReturn(false);
         $datagrid->addColumn('batch', 'batch', [
@@ -75,12 +71,9 @@ class GenericCRUDElementSpec extends ObjectBehavior
         $this->createDataGrid()->shouldReturn($datagrid);
     }
 
-    /**
-     * @param \FSi\Component\DataSource\DataSourceFactory $factory
-     * @throws \FSi\Component\DataSource\Exception\DataSourceException
-     */
-    function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource($factory)
-    {
+    function it_throws_exception_when_init_datasource_does_not_return_instance_of_datasource(
+        DataSourceFactoryInterface $factory
+    ) {
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
 
@@ -88,10 +81,7 @@ class GenericCRUDElementSpec extends ObjectBehavior
             ->during('createDataSource');
     }
 
-    /**
-     * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     */
-    function it_throw_exception_when_init_form_does_not_return_instance_of_form($factory)
+    function it_throws_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory)
     {
         $this->setFormFactory($factory);
         $factory->create(Argument::cetera())->willReturn(null);

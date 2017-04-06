@@ -30,7 +30,7 @@ class CategoryNewsEdit extends Page
     protected function verifyPage()
     {
         if (!$this->has('css', '#page-header:contains("Edit element")')) {
-            throw new UnexpectedPageException(sprintf("%s page is missing \"New element\" header", $this->path));
+            throw new UnexpectedPageException(sprintf("%s page is missing \"Edit element\" header", $this->path));
         }
     }
 }

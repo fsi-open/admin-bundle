@@ -142,7 +142,7 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
             throw new RuntimeException('initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface');
         }
 
-        if ($this->options['allow_delete']) {
+        if ($this->getOption('allow_delete')) {
             if (!$datagrid->hasColumnType('batch')) {
                 $datagrid->addColumn('batch', 'batch', [
                     'actions' => [

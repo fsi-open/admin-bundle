@@ -20,7 +20,7 @@ abstract class DependentListElement extends ListElement implements DependentElem
     {
         return array_merge(
             parent::getRouteParameters(),
-            [DependentElement::REQUEST_PARENT_PARAMETER => $this->getParentObjectId()]
+            [DependentElement::PARENT_REQUEST_PARAMETER => $this->getParentObjectId()]
         );
     }
 }

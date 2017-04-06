@@ -1,5 +1,5 @@
 Feature: Pagination
-  In order to paginate long dependent list
+  In order to paginate a long dependent list
   As a developer
   I need to install FSiAdminBundle and configure parent admin element and child admin element
 
