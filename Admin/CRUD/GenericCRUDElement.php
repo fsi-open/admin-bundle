@@ -66,7 +66,7 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'allow_delete' => true,
             'allow_add' => true,
             'template_crud_list' => null,
@@ -78,7 +78,7 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
             'template_form' => function (Options $options) {
                 return $options['template_crud_edit'];
             }
-        ));
+        ]);
 
         $resolver->setNormalizer('template_crud_create', function (Options $options, $value) {
             if ($value !== $options['template_crud_edit']) {
@@ -92,11 +92,11 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
 
         $resolver->setAllowedTypes('allow_delete', 'bool');
         $resolver->setAllowedTypes('allow_add', 'bool');
-        $resolver->setAllowedTypes('template_crud_list', array('null', 'string'));
-        $resolver->setAllowedTypes('template_crud_create', array('null', 'string'));
-        $resolver->setAllowedTypes('template_crud_edit', array('null', 'string'));
-        $resolver->setAllowedTypes('template_list', array('null', 'string'));
-        $resolver->setAllowedTypes('template_form', array('null', 'string'));
+        $resolver->setAllowedTypes('template_crud_list', ['null', 'string']);
+        $resolver->setAllowedTypes('template_crud_create', ['null', 'string']);
+        $resolver->setAllowedTypes('template_crud_edit', ['null', 'string']);
+        $resolver->setAllowedTypes('template_list', ['null', 'string']);
+        $resolver->setAllowedTypes('template_form', ['null', 'string']);
     }
 
     /**
@@ -144,16 +144,16 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
 
         if ($this->options['allow_delete']) {
             if (!$datagrid->hasColumnType('batch')) {
-                $datagrid->addColumn('batch', 'batch', array(
-                    'actions' => array(
-                        'delete' => array(
+                $datagrid->addColumn('batch', 'batch', [
+                    'actions' => [
+                        'delete' => [
                             'route_name' => 'fsi_admin_batch',
-                            'additional_parameters' => array('element' => $this->getId()),
+                            'additional_parameters' => ['element' => $this->getId()],
                             'label' => 'crud.list.batch.delete'
-                        )
-                    ),
+                        ]
+                    ],
                     'display_order' => -1000
-                ));
+                ]);
             }
         }
 

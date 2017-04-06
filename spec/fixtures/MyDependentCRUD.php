@@ -75,7 +75,7 @@ class MyDependentCRUD extends DependentCRUDElement
 
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
-        $datasource = $factory->createDataSource('doctrine', array('entity' => 'FSiDemoBundle:MyEntity'), 'my_datasource');
+        $datasource = $factory->createDataSource('doctrine', ['entity' => 'FSiDemoBundle:MyEntity'], 'my_datasource');
 
         return $datasource;
     }

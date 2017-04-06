@@ -16,7 +16,7 @@ class DependentBatchElementSpec extends ObjectBehavior
     function let()
     {
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyDependentBatch');
-        $this->beConstructedWith(array());
+        $this->beConstructedWith([]);
     }
 
     function it_is_admin_element()

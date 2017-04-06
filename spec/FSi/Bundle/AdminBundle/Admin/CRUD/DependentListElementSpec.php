@@ -19,7 +19,7 @@ class DependentListElementSpec extends ObjectBehavior
     function let()
     {
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyDependentList');
-        $this->beConstructedWith(array());
+        $this->beConstructedWith([]);
     }
 
     function it_is_admin_element()
@@ -123,8 +123,8 @@ class DependentListElementSpec extends ObjectBehavior
 
     function it_has_default_options_values()
     {
-        $this->getOptions()->shouldReturn(array(
+        $this->getOptions()->shouldReturn([
             'template_list' => null,
-        ));
+        ]);
     }
 }

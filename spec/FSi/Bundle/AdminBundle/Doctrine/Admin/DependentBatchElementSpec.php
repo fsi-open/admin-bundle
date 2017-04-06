@@ -19,7 +19,7 @@ class DependentBatchElementSpec extends ObjectBehavior
     function let(ManagerRegistry $registry, ObjectManager $om)
     {
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDependentBatchElement');
-        $this->beConstructedWith(array());
+        $this->beConstructedWith([]);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
         $this->setManagerRegistry($registry);

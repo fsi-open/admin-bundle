@@ -159,7 +159,7 @@ class DependentCRUDElementSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface")
-        )->during('createForm', array(null));
+        )->during('createForm', [null]);
     }
 
     function it_has_default_options_values()

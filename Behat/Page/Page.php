@@ -94,14 +94,14 @@ class Page extends BasePage
         return $this->find('css', '.popover');
     }
 
-    public function isOpen(array $urlParameters = array())
+    public function isOpen(array $urlParameters = [])
     {
         $this->verify($urlParameters);
 
         return true;
     }
 
-    protected function verifyUrl(array $urlParameters = array())
+    protected function verifyUrl(array $urlParameters = [])
     {
         $uriTemplate = new UriTemplate();
         $expectedUri = $uriTemplate->expand($this->path, $urlParameters);

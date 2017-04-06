@@ -18,7 +18,7 @@ class GenericCRUDElementSpec extends ObjectBehavior
     function let()
     {
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyCRUD');
-        $this->beConstructedWith(array());
+        $this->beConstructedWith([]);
     }
 
     function it_is_initializable()
@@ -59,16 +59,16 @@ class GenericCRUDElementSpec extends ObjectBehavior
     {
         $factory->createDataGrid('my_datagrid')->shouldBeCalled()->willReturn($datagrid);
         $datagrid->hasColumnType('batch')->shouldBeCalled()->willReturn(false);
-        $datagrid->addColumn('batch', 'batch', array(
-            'actions' => array(
-                'delete' => array(
+        $datagrid->addColumn('batch', 'batch', [
+            'actions' => [
+                'delete' => [
                     'route_name' => 'fsi_admin_batch',
-                    'additional_parameters' => array('element' => $this->getId()),
+                    'additional_parameters' => ['element' => $this->getId()],
                     'label' => 'crud.list.batch.delete'
-                )
-            ),
+                ]
+            ],
             'display_order' => -1000
-        ))->shouldBeCalled();
+        ])->shouldBeCalled();
 
         $this->setDataGridFactory($factory);
 
@@ -97,7 +97,7 @@ class GenericCRUDElementSpec extends ObjectBehavior
         $factory->create(Argument::cetera())->willReturn(null);
 
         $this->shouldThrow(new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface"))
-            ->during('createForm', array(null));
+            ->during('createForm', [null]);
     }
 
     function it_has_default_options_values()

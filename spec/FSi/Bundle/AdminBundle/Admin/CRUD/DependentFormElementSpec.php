@@ -18,7 +18,7 @@ class DependentFormElementSpec extends ObjectBehavior
     function let(FormFactoryInterface $factory)
     {
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyDependentForm');
-        $this->beConstructedWith(array());
+        $this->beConstructedWith([]);
         $this->setFormFactory($factory);
     }
 
@@ -108,9 +108,9 @@ class DependentFormElementSpec extends ObjectBehavior
 
     function it_has_default_options_values()
     {
-        $this->getOptions()->shouldReturn(array(
+        $this->getOptions()->shouldReturn([
             'template_form' => null,
             'allow_add' => true,
-        ));
+        ]);
     }
 }
