@@ -3,6 +3,7 @@
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DependentCRUDElement;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\FixturesBundle\DataGrid\NewsDataGridBuilder;
@@ -77,6 +78,10 @@ class CategoryNews extends DependentCRUDElement
             $data->addCategory($this->getParentObject());
         }
 
-        return $factory->createNamed('news', new NewsType(), $data);
+        return $factory->createNamed(
+            'news',
+            TypeSolver::getFormType('FSi\FixturesBundle\Form\NewsType', new NewsType()),
+            $data
+        );
     }
 }

@@ -3,6 +3,7 @@
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\FixturesBundle\DataGrid\NewsDataGridBuilder;
@@ -38,9 +39,7 @@ class News extends CRUDElement
                     'additional_parameters' => ['element' => $datagrid->getName()],
                     'parameters_field_mapping' => ['id' => 'id']
                 ],
-                'display' => [
-                    'element' => DisplayNews::ID
-                ]
+                'display' => ['element' => DisplayNews::ID]
             ]
         ]);
 
@@ -59,6 +58,10 @@ class News extends CRUDElement
 
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        return $factory->createNamed('news', new NewsType(), $data);
+        return $factory->createNamed(
+            'news',
+            TypeSolver::getFormType('FSi\FixturesBundle\Form\NewsType', new NewsType()),
+            $data
+        );
     }
 }

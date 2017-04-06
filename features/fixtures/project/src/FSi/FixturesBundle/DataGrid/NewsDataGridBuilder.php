@@ -8,12 +8,14 @@
 
 namespace FSi\FixturesBundle\DataGrid;
 
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridInterface;
 
 class NewsDataGridBuilder
 {
     public static function buildNewsDataGrid(DataGridInterface $datagrid)
     {
+        $dateType = TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date');
         $datagrid->addColumn('title', 'text', [
             'label' => 'admin.news.list.title',
             'field_mapping' => ['title', 'subtitle'],
@@ -25,7 +27,7 @@ class NewsDataGridBuilder
             'label' => 'admin.news.list.date',
             'datetime_format' => 'Y-m-d',
             'editable' => true,
-            'form_type' => ['date' => 'date'],
+            'form_type' => ['date' => $dateType],
             'form_options' => [
                 'date' => ['widget' => 'single_text']
             ]

@@ -3,6 +3,7 @@
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -67,13 +68,18 @@ class Category extends CRUDElement
 
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        $builder = $factory->createNamedBuilder('category', 'form', $data, [
-            'data_class' => $this->getClassName()
-        ]);
+        $builder = $factory->createNamedBuilder(
+            'category',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+            $data,
+            ['data_class' => $this->getClassName()]
+        );
 
-        $builder->add('title', 'text', [
-            'label' => 'admin.category.list.title',
-        ]);
+        $builder->add(
+            'title',
+            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\TextType', 'text'),
+            ['label' => 'admin.category.list.title']
+        );
 
         return $builder->getForm();
     }
