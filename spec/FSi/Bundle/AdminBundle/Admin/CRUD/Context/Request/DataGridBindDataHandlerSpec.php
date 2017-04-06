@@ -50,13 +50,14 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
     function it_does_nothing_when_request_is_not_a_POST_and_return_respone_from_pre_render_event(
         ListEvent $event,
         Request $request,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        Response $response
     ) {
         $request->isMethod('POST')->willReturn(false);
         $eventDispatcher->dispatch(ListEvents::LIST_RESPONSE_PRE_RENDER, $event)
-            ->will(function() use ($event) {
+            ->will(function() use ($event, $response) {
                 $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
+                $event->getResponse()->willReturn($response);
             });
 
         $this->handleRequest($event, $request)
@@ -95,13 +96,14 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
     function it_return_response_from_datagrid_pre_bind_request_event(
         ListEvent $event,
         Request $request,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        Response $response
     ) {
         $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND, $event)
-            ->will(function() use ($event) {
+            ->will(function() use ($event, $response) {
                 $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
+                $event->getResponse()->willReturn($response);
             });
 
         $this->handleRequest($event, $request)
@@ -112,7 +114,8 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         ListEvent $event,
         Request $request,
         EventDispatcherInterface $eventDispatcher,
-        DatagridInterface $dataGrid
+        DatagridInterface $dataGrid,
+        Response $response
     ) {
         $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND, $event)
@@ -121,9 +124,9 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         $event->getDataGrid()->willReturn($dataGrid);
         $dataGrid->bindData($request)->shouldBeCalled();
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_POST_BIND, $event)
-            ->will(function() use ($event) {
+            ->will(function() use ($event, $response) {
                 $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
+                $event->getResponse()->willReturn($response);
             });
 
         $this->handleRequest($event, $request)

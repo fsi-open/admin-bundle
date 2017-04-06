@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
 
 class MenuBuilderSpec extends ObjectBehavior
 {
-    function let (FactoryInterface $factory, ItemDecorator $itemDecorator)
+    function let(FactoryInterface $factory, ItemDecorator $itemDecorator)
     {
         $this->beConstructedWith($factory, $itemDecorator);
     }

@@ -2,28 +2,25 @@
 
 namespace spec\FSi\Bundle\AdminBundle\EventListener;
 
+use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class LocaleMenuListenerSpec extends ObjectBehavior
 {
-    /**
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
-     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-     */
-    function let($translator, $requestStack)
+    function let(TranslatorInterface $translator, RequestStack $requestStack)
     {
         $this->beConstructedWith($translator, $requestStack, ['en', 'de']);
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\MenuEvent $event
-     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
-    function it_should_build_locale_menu($event, $requestStack, $request)
-    {
+    function it_should_build_locale_menu(
+        MenuEvent $event,
+        RequestStack $requestStack,
+        Request $request
+    ) {
         $menu = new Item();
         $event->getMenu()->willReturn($menu);
         $requestStack->getMasterRequest()->willReturn($request);

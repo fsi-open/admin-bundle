@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
+use stdClass;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class DeleteElementSpec extends ObjectBehavior
@@ -19,9 +20,6 @@ class DeleteElementSpec extends ObjectBehavior
         $this->setManagerRegistry($registry);
     }
 
-    /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $om
-     */
     public function it_should_return_object_manager(ObjectManager $om)
     {
         $this->getObjectManager()->shouldReturn($om);
@@ -33,12 +31,6 @@ class DeleteElementSpec extends ObjectBehavior
         $this->getRepository()->shouldReturn($repository);
     }
 
-    /**
-     * @param \Symfony\Bridge\Doctrine\ManagerRegistry $registry
-     * @param \Doctrine\Common\Persistence\ObjectManager $om
-     * @param \Doctrine\Common\Persistence\ObjectRepository $repository
-     * @param \Doctrine\ORM\Mapping\ClassMetadata $metadata
-     */
     public function it_should_have_doctrine_data_indexer(
         ManagerRegistry $registry,
         ObjectManager $om,
@@ -57,10 +49,10 @@ class DeleteElementSpec extends ObjectBehavior
         $this->getDataIndexer()->shouldReturnAnInstanceOf('FSi\Component\DataIndexer\DoctrineDataIndexer');
     }
 
-    public function it_deletes_object_from_object_manager(ObjectManager $om)
-    {
-        $object = new \stdClass();
-
+    public function it_deletes_object_from_object_manager(
+        ObjectManager $om,
+        stdClass $object
+    ) {
         $om->remove($object)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 

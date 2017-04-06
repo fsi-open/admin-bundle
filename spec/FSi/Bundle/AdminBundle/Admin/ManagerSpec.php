@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
 
 class ManagerSpec extends ObjectBehavior
 {
-    function it_remove_element_by_id(Element $element)
+    function it_removes_element_by_id(Element $element)
     {
         $element->getId()->willReturn('foo');
         $this->addElement($element);
@@ -25,7 +25,7 @@ class ManagerSpec extends ObjectBehavior
         $this->hasElement('foo')->shouldReturn(false);
     }
 
-    function it_accept_visitors(Visitor$visitor)
+    function it_accepts_visitors(Visitor$visitor)
     {
         $visitor->visitManager($this)->shouldBeCalled();
         $this->accept($visitor);

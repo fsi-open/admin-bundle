@@ -37,7 +37,7 @@ class ListElementContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_array_data()
+    function it_has_array_data()
     {
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('datagrid_view');
@@ -53,7 +53,7 @@ class ListElementContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn('this_is_list_template.html.twig');
     }
 
-    function it_handle_request_with_request_handlers(HandlerInterface $handler, Request $request)
+    function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request)
     {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent'), $request)
             ->shouldBeCalled();
@@ -61,10 +61,13 @@ class ListElementContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_return_response_from_handler(HandlerInterface $handler, Request $request)
-    {
+    function it_return_response_from_handler(
+        HandlerInterface $handler,
+        Request $request,
+        Response $response
+    ) {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent'), $request)
-            ->willReturn(new Response());
+            ->willReturn($response);
 
         $this->handleRequest($request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');

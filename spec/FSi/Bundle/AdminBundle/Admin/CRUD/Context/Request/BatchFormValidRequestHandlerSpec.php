@@ -12,6 +12,7 @@ use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use FSi\Component\DataIndexer\DataIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use stdClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -56,10 +57,11 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcherInterface $eventDispatcher,
         RouterInterface $router,
-        FlashMessages $flashMessage
+        FlashMessages $flashMessage,
+        stdClass $object
     ) {
         $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
-        $formEvent->getElement()->willReturn(new \stdClass());
+        $formEvent->getElement()->willReturn($object);
 
         $this->shouldThrow(
             new RequestHandlerException(
@@ -78,7 +80,8 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         BatchElement $element,
         DataIndexerInterface $dataIndexer,
         RouterInterface $router,
-        FlashMessages $flashMessage
+        FlashMessages $flashMessage,
+        stdClass $object
     ) {
         $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
 
@@ -92,7 +95,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
             ->shouldBeCalled();
 
-        $form->getData()->willReturn(new \stdClass());
+        $form->getData()->willReturn($object);
         $event->getElement()->willReturn($element);
         $element->apply(Argument::type('stdClass'))->shouldBeCalled();
 
@@ -104,7 +107,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $element->getId()->willReturn('element_form_id');
         $element->getDataIndexer()->willReturn($dataIndexer);
 
-        $dataIndexer->getData('index')->willReturn(new \stdClass());
+        $dataIndexer->getData('index')->willReturn($object);
 
         $queryParameterbag->has('redirect_uri')->willReturn(false);
         $router->generate('fsi_admin_list', ['element' => 'element_list_id'])->willReturn('/list/page');
@@ -123,7 +126,8 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         BatchElement $element,
         RouterInterface $router,
         DataIndexerInterface $dataIndexer,
-        FlashMessages $flashMessage
+        FlashMessages $flashMessage,
+        stdClass $object
     ) {
         $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
 
@@ -137,7 +141,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
             ->shouldBeCalled();
 
-        $form->getData()->willReturn(new \stdClass());
+        $form->getData()->willReturn($object);
         $event->getElement()->willReturn($element);
         $element->apply(Argument::type('stdClass'))->shouldBeCalled();
 
@@ -149,7 +153,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $element->getId()->willReturn('element_form_id');
         $element->getDataIndexer()->willReturn($dataIndexer);
 
-        $dataIndexer->getData('index')->willReturn(new \stdClass());
+        $dataIndexer->getData('index')->willReturn($object);
 
         $queryParameterbag->has('redirect_uri')->willReturn(true);
         $queryParameterbag->get('redirect_uri')->willReturn('some_redirect_uri');
@@ -193,7 +197,8 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         BatchElement $element,
         DataIndexerInterface $dataIndexer,
         RouterInterface $router,
-        FlashMessages $flashMessage
+        FlashMessages $flashMessage,
+        stdClass $object
     ) {
         $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
 
@@ -206,10 +211,10 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
             ->shouldBeCalled();
 
-        $form->getData()->willReturn(new \stdClass());
+        $form->getData()->willReturn($object);
         $event->getElement()->willReturn($element);
         $element->getDataIndexer()->willReturn($dataIndexer);
-        $dataIndexer->getData('index')->willReturn(new \stdClass());
+        $dataIndexer->getData('index')->willReturn($object);
 
         $element->apply(Argument::type('stdClass'))->shouldBeCalled();
 
