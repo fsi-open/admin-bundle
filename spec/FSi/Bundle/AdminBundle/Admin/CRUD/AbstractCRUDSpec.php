@@ -28,6 +28,7 @@ class AbstractCRUDSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD');
+        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement');
     }
 
     function it_is_admin_element()

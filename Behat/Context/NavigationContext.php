@@ -12,6 +12,10 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 use Behat\Gherkin\Node\TableNode;
 use Exception;
 use FSi\Bundle\AdminBundle\Behat\Page\AdminPanel;
+use FSi\Bundle\AdminBundle\Behat\Page\CategoryList;
+use FSi\Bundle\AdminBundle\Behat\Page\CategoryNewsCreate;
+use FSi\Bundle\AdminBundle\Behat\Page\CategoryNewsEdit;
+use FSi\Bundle\AdminBundle\Behat\Page\CategoryNewsList;
 use FSi\Bundle\AdminBundle\Behat\Page\CustomNewsEdit;
 use FSi\Bundle\AdminBundle\Behat\Page\CustomNewsList;
 use FSi\Bundle\AdminBundle\Behat\Page\CustomSubscribersList;
@@ -78,6 +82,26 @@ class NavigationContext extends AbstractContext
     private $newsEditPage;
 
     /**
+     * @var CategoryList
+     */
+    private $categoryListPage;
+
+    /**
+     * @var CategoryNewsList
+     */
+    private $categoryNewsListPage;
+
+    /**
+     * @var CategoryNewsCreate
+     */
+    private $categoryNewsCreatePage;
+
+    /**
+     * @var CategoryNewsEdit
+     */
+    private $categoryNewsEditPage;
+
+    /**
      * @va NewsList
      */
     private $newsListPage;
@@ -123,6 +147,10 @@ class NavigationContext extends AbstractContext
         NewsDisplay $newsDisplayPage,
         NewsEdit $newsEditPage,
         NewsList $newsListPage,
+        CategoryList $categoryListPage,
+        CategoryNewsList $categoryNewsListPage,
+        CategoryNewsCreate $categoryNewsCreatePage,
+        CategoryNewsEdit $categoryNewsEditPage,
         PersonAddForm $personAddFormPage,
         PersonEditForm $personEditFormPage,
         PersonList $personListPage,
@@ -140,6 +168,10 @@ class NavigationContext extends AbstractContext
         $this->newsDisplayPage = $newsDisplayPage;
         $this->newsEditPage = $newsEditPage;
         $this->newsListPage = $newsListPage;
+        $this->categoryListPage = $categoryListPage;
+        $this->categoryNewsListPage = $categoryNewsListPage;
+        $this->categoryNewsCreatePage = $categoryNewsCreatePage;
+        $this->categoryNewsEditPage = $categoryNewsEditPage;
         $this->personAddFormPage = $personAddFormPage;
         $this->personEditFormPage = $personEditFormPage;
         $this->personListPage = $personListPage;
@@ -172,8 +204,14 @@ class NavigationContext extends AbstractContext
                 return $this->newsDisplayPage;
             case "News edit":
                 return $this->newsEditPage;
-            case "News list":
-                return $this->newsListPage;
+            case "Category list":
+                return $this->categoryListPage;
+            case "Category news list":
+                return $this->categoryNewsListPage;
+            case "Category news edit":
+                return $this->categoryNewsEditPage;
+            case "Category news create":
+                return $this->categoryNewsCreatePage;
             case "Person add form":
                 return $this->personAddFormPage;
             case "Person edit form":
@@ -215,6 +253,16 @@ class NavigationContext extends AbstractContext
                 empty($elementRow['Element group']) ? null : $elementRow['Element group'])
             )->toBe(true);
         }
+    }
+
+    /**
+     * @Then :link link in the top bar should be highlighted
+     */
+    public function linkInTheTopBarShouldBeHighlighted($link)
+    {
+        $linkNode = $this->adminPanelPage->getMenu()->findLink($link);
+
+        expect($linkNode->getParent()->hasClass('active'))->toBe(true);
     }
 
     /**

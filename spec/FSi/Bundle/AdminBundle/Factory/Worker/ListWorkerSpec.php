@@ -3,6 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\Factory\Worker;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\spec\fixtures\Admin\DataGridAwareElement;
 use FSi\Bundle\AdminBundle\spec\fixtures\Admin\DataSourceAwareElement;
@@ -38,7 +39,7 @@ class ListWorkerSpec extends ObjectBehavior
     }
 
     function it_mount_datasource_factory_and_datagrid_factory_to_elements_that_behave_like_list(
-        AbstractCRUD $element,
+        GenericCRUDElement $element,
         DataSourceFactoryInterface $dataSourceFactory,
         DataGridFactoryInterface $dataGridFactory
     ) {
