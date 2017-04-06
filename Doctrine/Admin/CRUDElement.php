@@ -9,12 +9,12 @@
 
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
-use FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement;
 
 /**
  * @author Norbert Orzechowicz <norbert@fsi.pl>
  */
-abstract class CRUDElement extends AbstractCRUD implements Element
+abstract class CRUDElement extends GenericCRUDElement implements Element
 {
     use DataIndexerElementImpl;
 

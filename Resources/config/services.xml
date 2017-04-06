@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="admin.manager.class">FSi\Bundle\AdminBundle\Admin\Manager</parameter>
         <parameter key="admin.manager.visitor.element_collection.class">FSi\Bundle\AdminBundle\Admin\Manager\ElementCollectionVisitor</parameter>
+        <parameter key="admin.manager.visitor.dependent_elements.class">FSi\Bundle\AdminBundle\Admin\Manager\DependentElementsVisitor</parameter>
         <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Admin\Context\ContextManager</parameter>
         <parameter key="admin.form.builder.batch.class">Symfony\Component\Form\FormBuilder</parameter>
         <parameter key="admin.form.collection_extension.class">FSi\Bundle\AdminBundle\Form\CollectionTypeExtension</parameter>
@@ -16,6 +17,7 @@
         <parameter key="admin.element.factory.worker.form.class">FSi\Bundle\AdminBundle\Factory\Worker\FormWorker</parameter>
         <parameter key="admin.element.factory.worker.doctrine.class">FSi\Bundle\AdminBundle\Factory\Worker\DoctrineWorker</parameter>
         <parameter key="admin.element.factory.worker.request_stack.class">FSi\Bundle\AdminBundle\Factory\Worker\RequestStackWorker</parameter>
+        <parameter key="admin.element.factory.worker.dependent.class">FSi\Bundle\AdminBundle\Factory\Worker\DependentElementWorker</parameter>
         <parameter key="admin.controller.abstract.class">FSi\Bundle\AdminBundle\Controller\ControllerAbstract</parameter>
         <parameter key="admin.controller.resource.class">FSi\Bundle\AdminBundle\Controller\ResourceController</parameter>
         <parameter key="admin.controller.display.class">FSi\Bundle\AdminBundle\Controller\DisplayController</parameter>
@@ -110,6 +112,10 @@
             <!-- This collection is replaced in AdminElementPass -->
             <argument type="collection" />
             <argument type="service" id="admin.element.factory.production_line" />
+            <tag name="admin.manager.visitor" />
+        </service>
+
+        <service id="admin.manager.visitor.dependent_elements" class="%admin.manager.visitor.dependent_elements.class%">
             <tag name="admin.manager.visitor" />
         </service>
 

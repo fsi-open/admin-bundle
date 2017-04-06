@@ -9,7 +9,9 @@
 
 namespace FSi\Bundle\AdminBundle\Menu\KnpMenu;
 
+use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
@@ -18,9 +20,19 @@ use Symfony\Component\HttpFoundation\Request;
 class ElementVoter implements VoterInterface
 {
     /**
+     * @var ManagerInterface
+     */
+    private $manager;
+
+    /**
      * @var Request
      */
     private $request;
+
+    public function __construct(ManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
 
     /**
      * @param Request $request
@@ -39,10 +51,24 @@ class ElementVoter implements VoterInterface
             return null;
         }
 
-        foreach ($item->getExtra('routes', []) as $testedRoute) {
-            if ($this->isRouteMatchingElement($this->getRequestElement(), $testedRoute['parameters'])) {
-                return true;
+        $element = $this->getRequestElement();
+
+        while (true) {
+            foreach ($item->getExtra('routes', []) as $testedRoute) {
+                if ($this->isRouteMatchingElement($element, $testedRoute['parameters'])) {
+                    return true;
+                }
             }
+
+            if (!($element instanceof DependentElement)) {
+                break;
+            }
+
+            if (!$this->manager->hasElement($element->getParentId())) {
+                break;
+            }
+
+            $element = $this->manager->getElement($element->getParentId());
         }
 
         return false;

@@ -38,7 +38,7 @@ abstract class AbstractContext implements KernelAwareContext, MinkAwareContext
     private $minkParameters;
 
     /**
-     * @var type
+     * @var Generator
      */
     private $faker;
 

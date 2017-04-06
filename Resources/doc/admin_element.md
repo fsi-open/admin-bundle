@@ -11,6 +11,7 @@ Currently there are many different types of elements available and you can choos
 * [Doctrine Batch/Delete](admin_element_batch.md)
 * [Doctrine Resource](admin_element_resource.md)
 * [Doctrine Display](admin_element_display.md)
+* [Doctrine dependent elements](admin_dependent_elements.md)
 
 Should you wish to extend any of the elements behaviour, the [event system](events.md) is there to suit
 your needs.

@@ -19,8 +19,8 @@ It takes a request instance and should return either a response (for example a r
 If a `null` is returned, then AdminBundle internally renders template from `getTemplateName()` method with data from
 the `getData()` method.
 
-All internal contexts handle data by iterating over several [HandlerInterface's](Admin/Context/Request/HandlerInterface.php)
-to support datagrid, datasource and form handling.
+All internal contexts handle data by iterating over several [HandlerInterface](/Admin/Context/Request/HandlerInterface.php)
+instances to support datagrid, datasource and form handling.
 
 You can register custom contexts by creating services tagged as in the example below.
 ```xml
