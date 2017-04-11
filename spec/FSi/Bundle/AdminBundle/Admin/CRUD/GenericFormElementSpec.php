@@ -31,7 +31,7 @@ class GenericFormElementSpec extends ObjectBehavior
         $this->getRoute()->shouldReturn('fsi_admin_form');
     }
 
-    function it_throw_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory)
+    function it_throws_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory)
     {
         $factory->create(Argument::cetera())->willReturn(null);
 

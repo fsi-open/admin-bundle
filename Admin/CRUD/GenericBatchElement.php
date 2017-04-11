@@ -32,6 +32,14 @@ abstract class GenericBatchElement extends AbstractElement implements BatchEleme
     /**
      * {@inheritdoc}
      */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $this->setDefaultOptions($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSuccessRoute()
     {
         return 'fsi_admin';

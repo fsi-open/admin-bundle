@@ -44,7 +44,7 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_array_data()
+    function it_has_array_data()
     {
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('form');
@@ -59,10 +59,13 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_return_response_from_handler(HandlerInterface $handler, Request $request)
-    {
+    function it_return_response_from_handler(
+        HandlerInterface $handler,
+        Request $request,
+        Response $response
+    ) {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
-            ->willReturn(new Response());
+            ->willReturn($response);
 
         $this->handleRequest($request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');

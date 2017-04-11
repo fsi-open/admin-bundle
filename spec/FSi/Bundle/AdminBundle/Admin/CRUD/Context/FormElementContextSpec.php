@@ -34,7 +34,7 @@ class FormElementContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_array_data(
+    function it_has_array_data(
         FormInterface $form,
         FormElement $element,
         DataIndexerInterface $dataIndexer,
@@ -62,7 +62,7 @@ class FormElementContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn('this_is_form_template.html.twig');
     }
 
-    function it_handle_request_with_request_handlers(HandlerInterface $handler, Request $request)
+    function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request)
     {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
             ->shouldBeCalled();
@@ -79,12 +79,10 @@ class FormElementContextSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
-     */
-    function it_throws_exception_when_adding_is_not_allowed($request, $element)
-    {
+    function it_throws_exception_when_adding_is_not_allowed(
+        Request $request,
+        FormElement $element
+    ) {
         $request->get('id')->willReturn(false);
         $element->getOption('allow_add')->willReturn(false);
         $this->shouldThrow('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException')->during('handleRequest', [$request]);

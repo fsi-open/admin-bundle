@@ -18,24 +18,24 @@ class AbstractResourceSpec extends ObjectBehavior
         $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyResource');
     }
 
-    function it_have_id()
+    function it_has_id()
     {
         $this->getId()->shouldReturn('main_page');
     }
 
-    function it_have_name()
+    function it_has_name()
     {
         $this->getName()->shouldReturn('admin.main_page');
     }
 
-    function it_have_element_in_router_parameters()
+    function it_has_element_in_router_parameters()
     {
         $this->getRouteParameters()->shouldReturn([
             'element' => 'main_page',
         ]);
     }
 
-    function it_have_route_name()
+    function it_has_route_name()
     {
         return $this->getRoute()->shouldReturn('fsi_admin_resource');
     }

@@ -31,7 +31,7 @@ class FormControllerSpec extends ObjectBehavior
         );
     }
 
-    function it_dispatch_event_if_displatcher_present(
+    function it_dispatches_event_if_displatcher_present(
         EventDispatcherInterface $dispatcher,
         Request $request,
         Response $response,
@@ -56,7 +56,7 @@ class FormControllerSpec extends ObjectBehavior
         $this->formAction($element, $request)->shouldReturn($response);
     }
 
-    function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
+    function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
         GenericFormElement $element,
         ContextManager $manager,
         Request $request
@@ -68,7 +68,7 @@ class FormControllerSpec extends ObjectBehavior
             ->during('formAction', [$element, $request]);
     }
 
-    function it_render_default_template_in_form_action(
+    function it_renders_default_template_in_form_action(
         Request $request,
         Response $response,
         GenericFormElement $element,
@@ -85,7 +85,7 @@ class FormControllerSpec extends ObjectBehavior
         $this->formAction($element, $request)->shouldReturn($response);
     }
 
-    function it_render_template_from_element_in_form_action(
+    function it_renders_template_from_element_in_form_action(
         Request $request,
         Response $response,
         GenericFormElement $element,
@@ -103,7 +103,7 @@ class FormControllerSpec extends ObjectBehavior
         $this->formAction($element, $request)->shouldReturn($response);
     }
 
-    function it_return_response_from_context_in_form_action(
+    function it_returns_response_from_context_in_form_action(
         Request $request,
         Response $response,
         GenericFormElement $element,

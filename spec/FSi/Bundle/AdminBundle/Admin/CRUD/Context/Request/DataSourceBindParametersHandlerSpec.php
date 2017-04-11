@@ -53,12 +53,13 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
     function it_returns_response_from_pre_datasource_bind_parameters_event(
         ListEvent $event,
         Request $request,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        Response $response
     ) {
         $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND, $event)
-            ->will(function() use ($event) {
+            ->will(function() use ($event, $response) {
                 $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
+                $event->getResponse()->willReturn($response);
             });
 
         $this->handleRequest($event, $request)
@@ -69,7 +70,8 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
         ListEvent $event,
         Request $request,
         EventDispatcherInterface $eventDispatcher,
-        DataSourceInterface $dataSource
+        DataSourceInterface $dataSource,
+        Response $response
     ) {
         $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND, $event)->shouldBeCalled();
 
@@ -77,9 +79,9 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
         $dataSource->bindParameters($request)->shouldBecalled();
 
         $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND, $event)
-            ->will(function() use ($event) {
+            ->will(function() use ($event, $response) {
                 $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
+                $event->getResponse()->willReturn($response);
             });
 
         $this->handleRequest($event, $request)

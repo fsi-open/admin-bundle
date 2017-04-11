@@ -27,7 +27,7 @@ class GenericBatchElementSpec extends ObjectBehavior
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Element');
     }
 
-    function it_have_default_route()
+    function it_has_default_route()
     {
         $this->getRoute()->shouldReturn('fsi_admin_batch');
     }

@@ -20,7 +20,7 @@ class ContextManagerSpec extends ObjectBehavior
         $this->beConstructedWith([$context]);
     }
 
-    function it_build_context_for_element(Element $element, ContextInterface $context)
+    function it_builds_context_for_element(Element $element, ContextInterface $context)
     {
         $context->supports('route_name', $element)->willReturn(true);
         $context->setElement($element)->shouldBeCalled();

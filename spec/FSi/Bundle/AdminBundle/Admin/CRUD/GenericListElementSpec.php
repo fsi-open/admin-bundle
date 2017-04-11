@@ -36,7 +36,7 @@ class GenericListElementSpec extends ObjectBehavior
         $this->getRoute()->shouldReturn('fsi_admin_list');
     }
 
-    function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid(DataGridFactoryInterface $factory)
+    function it_throws_exception_when_init_datagrid_does_not_return_instance_of_datagrid(DataGridFactoryInterface $factory)
     {
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
@@ -45,7 +45,7 @@ class GenericListElementSpec extends ObjectBehavior
             ->during('createDataGrid');
     }
 
-    function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource(DataSourceFactoryInterface $factory)
+    function it_throws_exception_when_init_datasource_does_not_return_instance_of_datasource(DataSourceFactoryInterface $factory)
     {
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);

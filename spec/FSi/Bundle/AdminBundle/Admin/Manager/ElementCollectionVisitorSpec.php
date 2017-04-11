@@ -14,7 +14,7 @@ class ElementCollectionVisitorSpec extends ObjectBehavior
         $this->beConstructedWith([$adminElement], $productionLine);
     }
 
-    function it_visit_manager_and_add_into_it_elements(
+    function it_visits_manager_and_add_into_it_elements(
         ManagerInterface $manager,
         ProductionLine $productionLine,
         Element $adminElement

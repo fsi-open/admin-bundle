@@ -14,7 +14,6 @@ class AdminAnnotatedElementPassSpec extends ObjectBehavior
     function let(AnnotationReader $annotationReader, AdminClassFinder $adminClassFinder)
     {
         $this->beConstructedWith($annotationReader, $adminClassFinder);
-
     }
 
     function it_registers_annotated_admin_classes_as_services(

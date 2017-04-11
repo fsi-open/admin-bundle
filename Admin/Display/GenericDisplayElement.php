@@ -40,6 +40,14 @@ abstract class GenericDisplayElement extends AbstractElement implements Element
     /**
      * {@inheritdoc}
      */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $this->setDefaultOptions($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function createDisplay($object)
     {
         if (!is_object($object)) {

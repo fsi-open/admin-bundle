@@ -27,7 +27,7 @@ class ResourceControllerSpec extends ObjectBehavior
         $this->beConstructedWith($templating, $manager, 'default_resource');
     }
 
-    function it_dispatch_event_if_displatcher_present(
+    function it_dispatches_event_if_displatcher_present(
         EventDispatcherInterface $dispatcher,
         Request $request,
         Response $response,
@@ -53,7 +53,7 @@ class ResourceControllerSpec extends ObjectBehavior
         $this->resourceAction($element, $request)->shouldReturn($response);
     }
 
-    function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
+    function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
         Element $element,
         ContextManager $manager,
         Request $request
@@ -65,7 +65,7 @@ class ResourceControllerSpec extends ObjectBehavior
             ->during('resourceAction', [$element, $request]);
     }
 
-    function it_render_default_template_in_resource_action(
+    function it_renders_default_template_in_resource_action(
         Request $request,
         Response $response,
         Element $element,
@@ -82,7 +82,7 @@ class ResourceControllerSpec extends ObjectBehavior
         $this->resourceAction($element, $request)->shouldReturn($response);
     }
 
-    function it_render_template_from_element_in_resource_action(
+    function it_renders_template_from_element_in_resource_action(
         Request $request,
         Response $response,
         Element $element,
@@ -100,7 +100,7 @@ class ResourceControllerSpec extends ObjectBehavior
         $this->resourceAction($element, $request)->shouldReturn($response);
     }
 
-    function it_return_response_from_context_in_resource_action(
+    function it_returns_response_from_context_in_resource_action(
         Request $request,
         Response $response,
         Element $element,
