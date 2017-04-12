@@ -116,6 +116,6 @@ So if this was an issue for you, it no longer should be.
 
 ## Deprecated setDefaultOptions in favour of configureOptions in Element interface
 
-[Element](Admin/Element.php) has had the `setDefaultOptions` method deprecated 
+[Element](Admin/Element.php) has had the `setDefaultOptions` method deprecated
 and the `configureOptions` should be use instead. Currently, it calls the old
 method to save backwards compatibility.

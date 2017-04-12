@@ -25,16 +25,8 @@ abstract class GenericBatchElement extends AbstractElement implements BatchEleme
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $this->setDefaultOptions($resolver);
     }
 
     /**

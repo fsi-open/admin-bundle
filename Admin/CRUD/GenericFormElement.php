@@ -33,7 +33,7 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'template_form' => null,
@@ -42,14 +42,6 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
 
         $resolver->setAllowedTypes('template_form', ['null', 'string']);
         $resolver->setAllowedTypes('allow_add', 'bool');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $this->setDefaultOptions($resolver);
     }
 
     /**

@@ -84,7 +84,7 @@ abstract class AbstractElement implements Element
     {
         if (!is_array($this->options)) {
             $optionsResolver = new OptionsResolver();
-            $this->setDefaultOptions($optionsResolver);
+            $this->configureOptions($optionsResolver);
             $this->options = $optionsResolver->resolve($this->unresolvedOptions);
             unset($this->unresolvedOptions);
         }

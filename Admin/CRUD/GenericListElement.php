@@ -40,21 +40,13 @@ abstract class GenericListElement extends AbstractElement implements ListElement
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'template_list' => null,
         ]);
 
         $resolver->setAllowedTypes('template_list', ['null', 'string']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $this->setDefaultOptions($resolver);
     }
 
     /**

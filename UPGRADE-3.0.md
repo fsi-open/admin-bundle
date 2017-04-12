@@ -31,3 +31,8 @@ has been made [private](CHANGELOG-3.0.md#resolving-adminabstractelement-options-
 Since [AbstractCRUD](Admin/CRUD/AbstractCRUD.php) was removed due to being deprecated,
 you will need to use [GenericCRUDElement](Admin/CRUD/GenericCRUDElement.php) instead,
 if you have been extending it.
+
+## Use configureOptions instead of setDefaultOptions in admin elements
+
+[Element](Admin/Element.php) method `setDefaultOptions` has been renamed to `configureOptions`,
+so you are required to change all implementations of that method in your elements.

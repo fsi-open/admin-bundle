@@ -64,7 +64,7 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'allow_delete' => true,
@@ -101,14 +101,6 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
 
     /**
      * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $this->setDefaultOptions($resolver);
-    }
-
-    /**
-     * @inheritdoc
      */
     public function apply($object)
     {

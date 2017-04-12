@@ -39,12 +39,10 @@ interface Element
     public function getRouteParameters();
 
     /**
-     * @deprecated since 2.1, use configureOptions(OptionsResolver $resolver) instead
-     *
      * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
      * @return mixed
      */
-    public function setDefaultOptions(OptionsResolver $resolver);
+    public function configureOptions(OptionsResolver $resolver);
 
     /**
      * Get option by name.
