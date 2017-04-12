@@ -22,7 +22,7 @@ class ElementFactorySpec extends ObjectBehavior
 
     function it_throw_exception_when_class_does_not_implement_admin_element_interface()
     {
-        $this->shouldThrow(new \InvalidArgumentException("StdClass does not seems to be an admin element."))
-            ->during('create', ['StdClass']);
+        $this->shouldThrow(new \InvalidArgumentException("stdClass does not seems to be an admin element."))
+            ->during('create', ['stdClass']);
     }
 }

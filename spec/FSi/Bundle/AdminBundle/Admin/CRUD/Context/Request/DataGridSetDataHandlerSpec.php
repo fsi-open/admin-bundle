@@ -62,12 +62,13 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
     function it_return_response_from_datagrid_pre_bind_data(
         EventDispatcherInterface $eventDispatcher,
         ListEvent $event,
-        Request $request
+        Request $request,
+        Response $response
     ) {
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_PRE_BIND, $event)
-            ->will(function() use ($event) {
+            ->will(function() use ($event, $response) {
                 $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
+                $event->getResponse()->willReturn($response);
             });
 
         $this->handleRequest($event, $request)
@@ -79,7 +80,8 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
         ListEvent $event,
         Request $request,
         DataGridInterface $dataGrid,
-        DataSourceInterface $dataSource
+        DataSourceInterface $dataSource,
+        Response $response
     ) {
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_PRE_BIND, $event)->shouldBeCalled();
 
@@ -90,9 +92,9 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
         $dataGrid->setData([1])->shouldBeCalled();
 
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_POST_BIND, $event)
-            ->will(function() use ($event) {
+            ->will(function() use ($event, $response) {
                 $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
+                $event->getResponse()->willReturn($response);
             });
 
         $this->handleRequest($event, $request)

@@ -72,7 +72,7 @@ class DisplayControllerSpec extends ObjectBehavior
         $this->displayAction($element, $request)->shouldReturn($response);
     }
 
-    function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
+    function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
         Element $element,
         ContextManager $manager,
         Request $request
@@ -85,16 +85,14 @@ class DisplayControllerSpec extends ObjectBehavior
     }
 
     function it_throws_exception_when_no_response_and_no_template_name(
-        Request $request,
         Element $element,
         ContextManager $manager,
-        DisplayContext $context
-    ){
-        $context->hasTemplateName()->willReturn(false);
-        $manager->createContext('fsi_admin_display', $element)->willReturn($context);
-        $context->handleRequest($request)->willReturn(null);
+        Request $request
+    ) {
+        $element->getId()->willReturn('my_awesome_display');
+        $manager->createContext(Argument::type('string'), $element)->willReturn(null);
 
-        $this->shouldThrow('FSi\Bundle\AdminBundle\Exception\ContextException')
+        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
             ->during('displayAction', [$element, $request]);
     }
 }

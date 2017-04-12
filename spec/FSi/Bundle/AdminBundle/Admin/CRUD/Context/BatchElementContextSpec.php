@@ -30,7 +30,7 @@ class BatchElementContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
     }
 
-    function it_have_array_data()
+    function it_has_array_data()
     {
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('form');
@@ -44,7 +44,7 @@ class BatchElementContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn(null);
     }
 
-    function it_handle_request_with_request_handlers(
+    function it_handles_request_with_request_handlers(
         HandlerInterface $handler,
         Request $request,
         ParameterBag $requestParameterBag
@@ -61,10 +61,11 @@ class BatchElementContextSpec extends ObjectBehavior
     function it_return_response_from_handler(
         HandlerInterface $handler,
         Request $request,
-        ParameterBag $requestParameterBag
+        ParameterBag $requestParameterBag,
+        Response $response
     ) {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
-            ->willReturn(new Response());
+            ->willReturn($response);
 
         $request->request = $requestParameterBag;
         $requestParameterBag->get('indexes', [])->willReturn([]);

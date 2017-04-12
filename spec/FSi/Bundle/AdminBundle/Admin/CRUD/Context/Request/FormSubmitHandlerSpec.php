@@ -63,13 +63,14 @@ class FormSubmitHandlerSpec extends ObjectBehavior
     function it_return_response_from_request_pre_submit_event(
         FormEvent $event,
         Request $request,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        Response $response
     ) {
         $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
-            ->will(function() use ($event) {
+            ->will(function() use ($event, $response) {
                 $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
+                $event->getResponse()->willReturn($response);
             });
 
         $this->handleRequest($event, $request)
@@ -80,7 +81,8 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         FormEvent $event,
         Request $request,
         EventDispatcherInterface $eventDispatcher,
-        FormInterface $form
+        FormInterface $form,
+        Response $response
     ) {
         $request->isMethod('POST')->willReturn(true);
         $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
@@ -90,9 +92,9 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled();
 
         $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_POST_SUBMIT, $event)
-            ->will(function() use ($event) {
+            ->will(function() use ($event, $response) {
                 $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
+                $event->getResponse()->willReturn($response);
             });
 
         $this->handleRequest($event, $request)

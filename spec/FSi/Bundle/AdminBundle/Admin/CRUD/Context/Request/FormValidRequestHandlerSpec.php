@@ -9,6 +9,7 @@ use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use stdClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -38,9 +39,12 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         )->during('handleRequest', [$listEvent, $request]);
     }
 
-    function it_throw_exception_for_non_redirectable_element(FormEvent $formEvent, Request $request)
-    {
-        $formEvent->getElement()->willReturn(new \stdClass());
+    function it_throw_exception_for_non_redirectable_element(
+        FormEvent $formEvent,
+        Request $request,
+        stdClass $object
+    ) {
+        $formEvent->getElement()->willReturn($object);
 
         $this->shouldThrow(
             new RequestHandlerException(
@@ -70,7 +74,8 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
         FormElement $element,
-        RouterInterface $router
+        RouterInterface $router,
+        stdClass $object
     ) {
         $request->isMethod('POST')->willReturn(true);
         $request->query = $queryParameterbag;
@@ -80,7 +85,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
             ->shouldBeCalled();
 
-        $form->getData()->willReturn(new \stdClass());
+        $form->getData()->willReturn($object);
         $event->getElement()->willReturn($element);
         $element->save(Argument::type('stdClass'))->shouldBeCalled();
 
@@ -103,7 +108,8 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         ParameterBag $queryParameterbag,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
-        FormElement $element
+        FormElement $element,
+        stdClass $object
     ) {
         $request->isMethod('POST')->willReturn(true);
         $request->query = $queryParameterbag;
@@ -113,7 +119,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
             ->shouldBeCalled();
 
-        $form->getData()->willReturn(new \stdClass());
+        $form->getData()->willReturn($object);
         $event->getElement()->willReturn($element);
         $element->save(Argument::type('stdClass'))->shouldBeCalled();
 
@@ -135,14 +141,15 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         FormEvent $event,
         FormElement $element,
         Request $request,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        Response $response
     ) {
         $request->isMethod('POST')->willReturn(false);
 
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
-            ->will(function() use ($event) {
+            ->will(function() use ($event, $response) {
                 $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
+                $event->getResponse()->willReturn($response);
             });
         $event->getElement()->willReturn($element);
 
@@ -155,16 +162,17 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         FormElement $element,
         Request $request,
         EventDispatcherInterface $eventDispatcher,
-        FormInterface $form
+        FormInterface $form,
+        Response $response
     ) {
         $request->isMethod('POST')->willReturn(true);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
-            ->will(function() use ($event) {
+            ->will(function() use ($event, $response) {
                 $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
+                $event->getResponse()->willReturn($response);
             });
         $event->getElement()->willReturn($element);
 
@@ -177,7 +185,9 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         FormElement $element,
         Request $request,
         EventDispatcherInterface $eventDispatcher,
-        FormInterface $form
+        FormInterface $form,
+        stdClass $object,
+        Response $response
     ) {
         $request->isMethod('POST')->willReturn(true);
 
@@ -186,14 +196,14 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
             ->shouldBeCalled();
 
-        $form->getData()->willReturn(new \stdClass());
+        $form->getData()->willReturn($object);
         $event->getElement()->willReturn($element);
         $element->save(Argument::type('stdClass'))->shouldBeCalled();
 
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_POST_SAVE, $event)
-            ->will(function() use ($event) {
+            ->will(function() use ($event, $response) {
                 $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
+                $event->getResponse()->willReturn($response);
             });
 
         $this->handleRequest($event, $request)

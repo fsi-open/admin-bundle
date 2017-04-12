@@ -100,6 +100,14 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $this->setDefaultOptions($resolver);
+    }
+
+    /**
      * @inheritdoc
      */
     public function apply($object)

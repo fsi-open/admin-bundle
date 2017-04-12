@@ -39,6 +39,8 @@ interface Element
     public function getRouteParameters();
 
     /**
+     * @deprecated since 2.1, use configureOptions(OptionsResolver $resolver) instead
+     *
      * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
      * @return mixed
      */

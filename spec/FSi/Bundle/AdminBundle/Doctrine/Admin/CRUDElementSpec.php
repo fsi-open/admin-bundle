@@ -14,6 +14,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use stdClass;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class CRUDElementSpec extends ObjectBehavior
@@ -32,26 +33,32 @@ class CRUDElementSpec extends ObjectBehavior
         $this->getObjectManager()->shouldReturn($om);
     }
 
-    public function it_should_return_object_repository(ObjectManager $om, ObjectRepository $repository)
-    {
+    public function it_should_return_object_repository(
+        ObjectManager $om,
+        ObjectRepository $repository
+    ) {
         $om->getRepository('FSiDemoBundle:Entity')->willReturn($repository);
         $this->getRepository()->shouldReturn($repository);
     }
 
-    public function it_should_save_object_at_object_manager(ObjectManager $om)
-    {
+    public function it_should_save_object_at_object_manager(
+        ObjectManager $om,
+        stdClass $object
+    ) {
         $om->persist(Argument::type('stdClass'))->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
-        $this->save(new \stdClass());
+        $this->save($object);
     }
 
-    public function it_should_remove_object_from_object_manager(ObjectManager $om)
-    {
+    public function it_should_remove_object_from_object_manager(
+        ObjectManager $om,
+        stdClass $object
+    ) {
         $om->remove(Argument::type('stdClass'))->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
-        $this->delete(new \stdClass());
+        $this->delete($object);
     }
 
     public function it_should_save_datagrid(ObjectManager $om)

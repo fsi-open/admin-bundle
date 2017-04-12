@@ -47,6 +47,14 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
     /**
      * {@inheritdoc}
      */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $this->setDefaultOptions($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setFormFactory(FormFactoryInterface $factory)
     {
         $this->formFactory = $factory;
