@@ -1,6 +1,11 @@
 admin:
   menu:
     structure: Site structure
+  category:
+    name: Categories
+    list:
+      title: Title
+      actions: Actions
   news:
     name: News
     list:

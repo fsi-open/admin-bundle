@@ -10,14 +10,14 @@
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataGrid\DataGridFactory;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class AbstractCRUDSpec extends ObjectBehavior
+class GenericCRUDElementSpec extends ObjectBehavior
 {
     function let()
     {
@@ -27,7 +27,7 @@ class AbstractCRUDSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\AbstractCRUD');
+        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement');
     }
 
     function it_is_admin_element()
@@ -35,12 +35,12 @@ class AbstractCRUDSpec extends ObjectBehavior
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Element');
     }
 
-    function it_have_default_route()
+    function it_has_default_route()
     {
         $this->getRoute()->shouldReturn('fsi_admin_list');
     }
 
-    function it_throw_exception_when_init_datagrid_does_not_return_instance_of_datagrid(DataGridFactoryInterface $factory)
+    function it_throws_exception_when_init_datagrid_does_not_return_instance_of_datagrid(DataGridFactory $factory)
     {
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
@@ -49,8 +49,8 @@ class AbstractCRUDSpec extends ObjectBehavior
             ->during('createDataGrid');
     }
 
-    function it_add_batch_column_to_datagrid_when_element_allow_delete_objects(
-        DataGridFactoryInterface $factory,
+    function it_adds_batch_column_to_datagrid_when_element_allow_delete_objects(
+        DataGridFactory $factory,
         DataGridInterface $datagrid
     ) {
         $factory->createDataGrid('my_datagrid')->shouldBeCalled()->willReturn($datagrid);
@@ -71,8 +71,9 @@ class AbstractCRUDSpec extends ObjectBehavior
         $this->createDataGrid()->shouldReturn($datagrid);
     }
 
-    function it_throw_exception_when_init_datasource_does_not_return_instance_of_datasource(DataSourceFactoryInterface $factory)
-    {
+    function it_throws_exception_when_init_datasource_does_not_return_instance_of_datasource(
+        DataSourceFactoryInterface $factory
+    ) {
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
 
@@ -80,7 +81,7 @@ class AbstractCRUDSpec extends ObjectBehavior
             ->during('createDataSource');
     }
 
-    function it_throw_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory)
+    function it_throws_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory)
     {
         $this->setFormFactory($factory);
         $factory->create(Argument::cetera())->willReturn(null);
@@ -94,10 +95,16 @@ class AbstractCRUDSpec extends ObjectBehavior
         $options = $this->getOptions();
         $options->shouldHaveKey('allow_delete');
         $options->shouldHaveKey('allow_add');
+        $options->shouldHaveKey('template_crud_list');
+        $options->shouldHaveKey('template_crud_create');
+        $options->shouldHaveKey('template_crud_edit');
         $options->shouldHaveKey('template_list');
         $options->shouldHaveKey('template_form');
         $options['allow_delete']->shouldBe(true);
         $options['allow_add']->shouldBe(true);
+        $options['template_crud_list']->shouldBe(null);
+        $options['template_crud_create']->shouldBe(null);
+        $options['template_crud_edit']->shouldBe(null);
         $options['template_list']->shouldBe(null);
         $options['template_form']->shouldBe(null);
     }

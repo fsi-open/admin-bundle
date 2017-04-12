@@ -112,3 +112,8 @@ the first use of `getOption`, `hasOption` or `getOptions` methods.
 The `$options` property has also been made private to ensure they are not resolved
 somewhere else in extending classes, so if you access it directly in your elements, 
 you will need to use the appropriate getter method instead.
+
+## Removed deprecated AbstractCRUD element
+
+[AbstractCRUD](Admin/CRUD/AbstractCRUD.php) was marked as deprecated and was removed
+in favour of [GenericCRUDElement](Admin/CRUD/GenericCRUDElement.php).

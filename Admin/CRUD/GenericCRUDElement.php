@@ -17,12 +17,10 @@ use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
-abstract class AbstractCRUD extends AbstractElement implements CRUDElement
+abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
 {
     /**
      * @var \FSi\Component\DataSource\DataSourceFactoryInterface
@@ -71,12 +69,32 @@ abstract class AbstractCRUD extends AbstractElement implements CRUDElement
         $resolver->setDefaults([
             'allow_delete' => true,
             'allow_add' => true,
-            'template_list' => null,
-            'template_form' => null
+            'template_crud_list' => null,
+            'template_crud_create' => null,
+            'template_crud_edit' => null,
+            'template_list' => function (Options $options) {
+                return $options['template_crud_list'];
+            },
+            'template_form' => function (Options $options) {
+                return $options['template_crud_edit'];
+            }
         ]);
+
+        $resolver->setNormalizer('template_crud_create', function (Options $options, $value) {
+            if ($value !== $options['template_crud_edit']) {
+                throw new RuntimeException(
+                    'CRUD admin element options "template_crud_create" and "template_crud_edit" have both to have the same value'
+                );
+            }
+
+            return $value;
+        });
 
         $resolver->setAllowedTypes('allow_delete', 'bool');
         $resolver->setAllowedTypes('allow_add', 'bool');
+        $resolver->setAllowedTypes('template_crud_list', ['null', 'string']);
+        $resolver->setAllowedTypes('template_crud_create', ['null', 'string']);
+        $resolver->setAllowedTypes('template_crud_edit', ['null', 'string']);
         $resolver->setAllowedTypes('template_list', ['null', 'string']);
         $resolver->setAllowedTypes('template_form', ['null', 'string']);
     }

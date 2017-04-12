@@ -26,7 +26,7 @@ fsi_admin:
         form_theme: @FSiAdmin/Form/form_div_layout.html.twig
 ```
 
-There is a separate [theme](../view/CRUD/datagrid_fsi_doctrine_extensions.html.twig) for datagrids you can use if
+There is a separate [theme](../views/CRUD/datagrid_fsi_doctrine_extensions.html.twig) for datagrids you can use if
 you register the [fsi/doctrine-extensions-bundle](https://github.com/fsi-open/doctrine-extensions-bundle).
 
 ```yml

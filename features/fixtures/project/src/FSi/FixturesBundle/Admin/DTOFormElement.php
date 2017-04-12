@@ -41,9 +41,7 @@ class DTOFormElement extends FormElement
         $builder->add(
             'email',
             TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email'),
-            array(
-                'label' => 'admin.email',
-            )
+            ['label' => 'admin.email']
         );
 
         return $builder->getForm();

@@ -65,7 +65,9 @@ class News
     protected $photo;
 
     /**
-     * @ORM\Column(type="array", name="categories");
+     * @var Category[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Category")
      */
     protected $categories;
 
@@ -79,7 +81,7 @@ class News
 
     public function __construct()
     {
-        $this->categories = [];
+        $this->categories = new ArrayCollection();
         $this->tags = new ArrayCollection();
     }
 
@@ -231,12 +233,14 @@ class News
         $this->photo = $photo;
     }
 
-    /**
-     * @param mixed $categories
-     */
-    public function setCategories(array $categories)
+    public function addCategory(Category $category)
     {
-        $this->categories = $categories;
+        $this->categories->add($category);
+    }
+
+    public function removeCategory(Category $category)
+    {
+        $this->categories->removeElement($category);
     }
 
     /**
