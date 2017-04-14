@@ -48,7 +48,9 @@ class DisplayNews extends DisplayElement
             ->add($object->isVisible(), 'Visible', [
                 new Formatter\Boolean("yes", "no")
             ])
-            ->add($object->getCategories(), 'Categories')
+            ->add($object->getCategories(), 'Categories', [
+                new Formatter\EmptyValue()
+            ])
             ->add($object->getCreatedAt(), 'Created at', [
                 new Formatter\EmptyValue(),
                 new Formatter\DateTime('Y-m-d H:i:s')

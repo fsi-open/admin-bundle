@@ -244,11 +244,11 @@ class News
     }
 
     /**
-     * @return mixed
+     * @return Category[]|array
      */
     public function getCategories()
     {
-        return (array) $this->categories;
+        return $this->categories->toArray();
     }
 
     /**
