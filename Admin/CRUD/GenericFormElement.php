@@ -33,7 +33,7 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'template_form' => null,

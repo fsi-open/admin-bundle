@@ -54,7 +54,7 @@ class SimpleAdminElement extends AbstractElement
      * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
      * @return mixed
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
     }
 }

@@ -75,7 +75,7 @@ class BatchControllerSpec extends ObjectBehavior
             ->during('batchAction', [$element, $request]);
     }
 
-    function it_return_response_from_context_in_batch_action(
+    function it_returns_response_from_context_in_batch_action(
         ContextManager $manager,
         BatchElement $element,
         BatchElementContext $context,

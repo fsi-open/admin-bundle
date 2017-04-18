@@ -36,7 +36,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         $this->beConstructedWith($formFactory, $mapBuilder);
     }
 
-    function it_throw_exception_when_resource_key_is_not_resource_group_key(GenericResourceElement $element)
+    function it_throws_exception_when_resource_key_is_not_resource_group_key(GenericResourceElement $element)
     {
         $element->getKey()->willReturn('resources.resource_key');
 

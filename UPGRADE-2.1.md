@@ -24,3 +24,8 @@ to your service as well.
 
 The parameter itself is optional, so even if you leave it as it is, no error will
 be thrown.
+
+## Use configureOptions in setDefaultOptions in admin elements
+
+[Element](Admin/Element.php) method `setDefaultOptions` is deprecated and will
+be removed in 3.0, so it is advised to transist to using `configureOptions` instead.

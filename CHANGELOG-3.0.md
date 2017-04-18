@@ -117,3 +117,8 @@ you will need to use the appropriate getter method instead.
 
 [AbstractCRUD](Admin/CRUD/AbstractCRUD.php) was marked as deprecated and was removed
 in favour of [GenericCRUDElement](Admin/CRUD/GenericCRUDElement.php).
+
+## Renamed setDefaultOptions to configureOptions in Element interface
+
+[Element](Admin/Element.php) has had the `setDefaultOptions` method renamed
+to `configureOptions`, mirroring the change of Symfony's form component.

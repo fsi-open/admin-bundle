@@ -64,7 +64,7 @@ abstract class GenericResourceElement extends AbstractElement implements Element
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'template' => null,

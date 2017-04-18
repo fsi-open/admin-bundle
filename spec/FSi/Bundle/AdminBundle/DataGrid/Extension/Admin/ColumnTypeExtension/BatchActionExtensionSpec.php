@@ -77,11 +77,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
         ColumnTypeInterface $column,
         HeaderViewInterface $view
     ) {
-        $column->getOption('actions')->willReturn([
-            [
-                'wrong_option' => 'value'
-            ]
-        ]);
+        $column->getOption('actions')->willReturn([['wrong_option' => 'value']]);
 
         $this->shouldThrow()
             ->during('buildHeaderView', [$column, $view]);

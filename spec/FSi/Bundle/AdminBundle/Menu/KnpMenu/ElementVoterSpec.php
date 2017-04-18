@@ -8,6 +8,7 @@ use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use Knp\Menu\ItemInterface;
 use PhpSpec\ObjectBehavior;
+use stdClass;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -37,10 +38,11 @@ class ElementVoterSpec extends ObjectBehavior
 
     function it_returns_null_if_route_parameters_contain_element_that_is_not_admin_element(
         ItemInterface $item,
-        ParameterBag $requestAttributes
+        ParameterBag $requestAttributes,
+        stdClass $object
     ) {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn(new \stdClass());
+        $requestAttributes->get('element')->willReturn($object);
 
         $this->matchItem($item)->shouldReturn(null);
     }
@@ -72,9 +74,7 @@ class ElementVoterSpec extends ObjectBehavior
         $element->getId()->willReturn('element_id');
 
         $item->getExtra('routes', [])->willReturn([[
-            'parameters' => [
-                'element' => 'some_element'
-            ]
+            'parameters' => ['element' => 'some_element']
         ]]);
         $this->matchItem($item)->shouldReturn(false);
     }
@@ -89,9 +89,7 @@ class ElementVoterSpec extends ObjectBehavior
         $element->getId()->willReturn('element_id');
 
         $item->getExtra('routes', [])->willReturn([[
-            'parameters' => [
-                'element' => 'element_id'
-            ]
+            'parameters' => ['element' => 'element_id']
         ]]);
         $this->matchItem($item)->shouldReturn(true);
     }
@@ -107,9 +105,7 @@ class ElementVoterSpec extends ObjectBehavior
         $element->getSuccessRouteParameters()->willReturn(['element' => 'element_after_success']);
 
         $item->getExtra('routes', [])->willReturn([[
-            'parameters' => [
-                'element' => 'some_element'
-            ]
+            'parameters' => ['element' => 'some_element']
         ]]);
         $this->matchItem($item)->shouldReturn(false);
     }
@@ -125,9 +121,7 @@ class ElementVoterSpec extends ObjectBehavior
         $element->getSuccessRouteParameters()->willReturn(['element' => 'element_after_success']);
 
         $item->getExtra('routes', [])->willReturn([[
-            'parameters' => [
-                'element' => 'element_after_success'
-            ]
+            'parameters' => ['element' => 'element_after_success']
         ]]);
         $this->matchItem($item)->shouldReturn(true);
     }
@@ -148,11 +142,7 @@ class ElementVoterSpec extends ObjectBehavior
         $parentElement->getId()->willReturn('parent_element_id');
 
         $item->getExtra('routes', [])->willReturn([
-            [
-            'parameters' => [
-                'element' => 'some_element'
-            ]
-            ]
+            ['parameters' => ['element' => 'some_element']]
         ]);
         $this->matchItem($item)->shouldReturn(false);
     }
@@ -173,11 +163,7 @@ class ElementVoterSpec extends ObjectBehavior
         $parentElement->getId()->willReturn('parent_element_id');
 
         $item->getExtra('routes', [])->willReturn([
-            [
-            'parameters' => [
-                'element' => 'parent_element_id'
-            ]
-            ]
+            ['parameters' => ['element' => 'parent_element_id']]
         ]);
         $this->matchItem($item)->shouldReturn(true);
     }
@@ -199,11 +185,7 @@ class ElementVoterSpec extends ObjectBehavior
         $parentElement->getSuccessRouteParameters()->willReturn(['element' => 'parent_element_after_success']);
 
         $item->getExtra('routes', [])->willReturn([
-            [
-            'parameters' => [
-                'element' => 'some_element'
-            ]
-            ]
+            ['parameters' => ['element' => 'some_element']]
         ]);
         $this->matchItem($item)->shouldReturn(false);
     }
@@ -225,11 +207,7 @@ class ElementVoterSpec extends ObjectBehavior
         $parentElement->getSuccessRouteParameters()->willReturn(['element' => 'parent_element_after_success']);
 
         $item->getExtra('routes', [])->willReturn([
-            [
-            'parameters' => [
-                'element' => 'parent_element_after_success'
-            ]
-            ]
+            ['parameters' => ['element' => 'parent_element_after_success']]
         ]);
         $this->matchItem($item)->shouldReturn(true);
     }
@@ -255,11 +233,7 @@ class ElementVoterSpec extends ObjectBehavior
         $grandparentElement->getId()->willReturn('grandparent_element_id');
 
         $item->getExtra('routes', [])->willReturn([
-            [
-            'parameters' => [
-                'element' => 'some_element'
-            ]
-            ]
+            ['parameters' => ['element' => 'some_element']]
         ]);
         $this->matchItem($item)->shouldReturn(false);
     }
@@ -285,11 +259,7 @@ class ElementVoterSpec extends ObjectBehavior
         $grandparentElement->getId()->willReturn('grandparent_element_id');
 
         $item->getExtra('routes', [])->willReturn([
-            [
-            'parameters' => [
-                'element' => 'grandparent_element_id'
-            ]
-            ]
+            ['parameters' => ['element' => 'grandparent_element_id']]
         ]);
         $this->matchItem($item)->shouldReturn(true);
     }
@@ -317,11 +287,7 @@ class ElementVoterSpec extends ObjectBehavior
             ->willReturn(['element' => 'grandparent_element_after_success']);
 
         $item->getExtra('routes', [])->willReturn([
-            [
-            'parameters' => [
-                'element' => 'some_element'
-            ]
-            ]
+            ['parameters' => ['element' => 'some_element']]
         ]);
         $this->matchItem($item)->shouldReturn(false);
     }
@@ -349,16 +315,12 @@ class ElementVoterSpec extends ObjectBehavior
             ->willReturn(['element' => 'grandparent_element_after_success']);
 
         $item->getExtra('routes', [])->willReturn([
-            [
-            'parameters' => [
-                'element' => 'grandparent_element_after_success'
-            ]
-            ]
+            ['parameters' => ['element' => 'grandparent_element_after_success']]
         ]);
         $this->matchItem($item)->shouldReturn(true);
     }
 
-    function it_return_false_if_request_is_empty(ItemInterface $item, Request $request)
+    function it_returns_false_if_request_is_empty(ItemInterface $item, Request $request)
     {
         $request->attributes = null;
         $this->matchItem($item)->shouldReturn(null);

@@ -28,7 +28,7 @@ abstract class GenericDisplayElement extends AbstractElement implements Element
      * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
      * @return mixed
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'template' => null,

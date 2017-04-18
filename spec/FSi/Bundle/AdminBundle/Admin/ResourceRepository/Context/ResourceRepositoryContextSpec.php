@@ -72,10 +72,13 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_returns_response_from_handler(HandlerInterface $handler, Request $request)
-    {
+    function it_return_response_from_handler(
+        HandlerInterface $handler,
+        Request $request,
+        Response $response
+    ) {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
-            ->willReturn(new Response());
+            ->willReturn($response);
 
         $this->handleRequest($request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
