@@ -10,41 +10,36 @@
 namespace FSi\Bundle\AdminBundle\Display;
 
 use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
+use InvalidArgumentException;
 
 class Property
 {
     /**
-     * @var string
+     * @var mixed
      */
-    private $path;
+    private $value;
 
     /**
-     * @var null|string
+     * @var string
      */
     private $label;
 
     /**
-     * @var array
-     */
-    private $valueDecorators;
-
-    /**
-     * @param string $path
-     * @param null|string $label
+     * @param mixed $value
+     * @param string $label
      * @param array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[] $valueFormatters
      */
-    public function __construct($path, $label = null, $valueFormatters = [])
+    public function __construct($value, $label, array $valueFormatters = [])
     {
-        $this->validatePath($path);
+        $this->validateLabel($label);
         $this->validateFormatters($valueFormatters);
 
-        $this->path = $path;
+        $this->value = $this->formatValue($value, $valueFormatters);
         $this->label = $label;
-        $this->valueDecorators = $valueFormatters;
     }
 
     /**
-     * @return null|string
+     * @return string
      */
     public function getLabel()
     {
@@ -52,41 +47,55 @@ class Property
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getPath()
+    public function getValue()
     {
-        return $this->path;
+        return $this->value;
     }
 
     /**
-     * @return array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[]
+     * @param mixed $value
+     * @param ValueFormatter[] $valueFormatters
+     * @return mixed
      */
-    public function getValueFormatters()
+    private function formatValue($value, array $valueFormatters)
     {
-        return $this->valueDecorators;
+        foreach ($valueFormatters as $formatter) {
+            $value = $formatter->format($value);
+        }
+
+        return $value;
     }
 
     /**
-     * @param string $path
-     * @throws \InvalidArgumentException
+     * @param string $label
+     * @throws InvalidArgumentException
      */
-    private function validatePath($path)
+    private function validateLabel($label)
     {
-        if (!is_string($path)) {
-            throw new \InvalidArgumentException("Property path must be a string value");
+        if (!is_string($label)) {
+            throw new InvalidArgumentException(sprintf(
+                'Property label must be a string, got "%s"',
+                gettype($label)
+            ));
         }
     }
 
     /**
-     * @param array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[] $valueFormatters
-     * @throws \InvalidArgumentException
+     * @param ValueFormatter[] $valueFormatters
+     * @throws InvalidArgumentException
      */
     private function validateFormatters(array $valueFormatters)
     {
         foreach ($valueFormatters as $formatter) {
             if (!$formatter instanceof ValueFormatter) {
-                throw new \InvalidArgumentException("All property value formatters must implement ValueFormatter interface");
+                throw new InvalidArgumentException(sprintf(
+                    'Expected property formatter to be an instance of'
+                    . ' FSi\Bundle\AdminBundle\Display\Property\ValueFormatter,'
+                    . ' got "%s" instead',
+                    is_object($formatter) ? get_class($formatter) : gettype($formatter)
+                ));
             }
         }
     }

@@ -22,12 +22,12 @@ class Handler extends AbstractHandler
      * @param AdminEvent $event
      * @param Request $request
      * @throws \FSi\Bundle\AdminBundle\Exception\RequestHandlerException
-     * @return null|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response|null
      */
     public function handleRequest(AdminEvent $event, Request $request)
     {
         if (!$event instanceof DisplayEvent) {
-            throw new RequestHandlerException(sprintf("%s require DisplayEvent", get_class($this)));
+            throw new RequestHandlerException(sprintf("%s requires DisplayEvent", get_class($this)));
         }
 
         $this->eventDispatcher->dispatch(DisplayEvents::DISPLAY_PRE_RENDER, $event);
