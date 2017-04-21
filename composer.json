@@ -42,7 +42,7 @@
         "ext-pdo_sqlite": "*",
         "fsi/resource-repository-bundle": "^1.1.5",
         "fsi/doctrine-extensions-bundle": "^1.1.4",
-        "doctrine/doctrine-bundle": "^1.4",
+        "doctrine/doctrine-bundle": "1.5.*",
         "phpspec/phpspec": "^2.5",
         "behat/behat": "^3.3",
         "behat/symfony2-extension": "^2.1",
