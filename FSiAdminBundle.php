@@ -40,10 +40,10 @@ class FSiAdminBundle extends Bundle
             new AnnotationReader(),
             new AdminClassFinder()
         ));
-        $container->addCompilerPass(new AdminElementPass(), PassConfig::TYPE_BEFORE_REMOVING);
+        $container->addCompilerPass(new AdminElementPass(), PassConfig::TYPE_REMOVING);
         $container->addCompilerPass(new KnpMenuBuilderPass());
         $container->addCompilerPass(new ResourceRepositoryPass());
-        $container->addCompilerPass(new ManagerVisitorPass());
+        $container->addCompilerPass(new ManagerVisitorPass(), PassConfig::TYPE_BEFORE_REMOVING);
         $container->addCompilerPass(new ContextPass());
         $container->addCompilerPass(new TwigGlobalsPass());
         $container->addCompilerPass(new SetEventDispatcherPass());

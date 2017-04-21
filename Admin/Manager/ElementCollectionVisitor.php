@@ -9,7 +9,6 @@
 
 namespace FSi\Bundle\AdminBundle\Admin\Manager;
 
-use FSi\Bundle\AdminBundle\Admin\Manager;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Factory\ProductionLine;
 
