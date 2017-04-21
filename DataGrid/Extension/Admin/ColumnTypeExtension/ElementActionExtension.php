@@ -2,7 +2,7 @@
 
 namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
-use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
@@ -11,11 +11,11 @@ use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 class ElementActionExtension extends ColumnAbstractTypeExtension
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\Manager
+     * @var \FSi\Bundle\AdminBundle\Admin\ManagerInterface
      */
     private $manager;
 
-    public function __construct(Manager $manager)
+    public function __construct(ManagerInterface $manager)
     {
         $this->manager = $manager;
     }
