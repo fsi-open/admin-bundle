@@ -71,12 +71,10 @@ class MainMenuListener
             $item = $this->buildSingleItem($itemConfig);
 
             if (null !== $item) {
-                $options = [
-                    'attr' => [
-                        'class' => 'admin-element'
-                    ]
-                ];
-                $options['elements'] = $this->buildItemElements($itemConfig);
+                $options = ['attr' => ['class' => 'admin-element']];
+                if ($item instanceof ElementItem) {
+                    $options['elements'] = $this->buildItemElements($itemConfig);
+                }
                 $item->setOptions($options);
             }
 
