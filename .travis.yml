@@ -27,18 +27,15 @@ matrix:
 before_install:
     - phpenv config-rm xdebug.ini
     - composer self-update
-    - if [[ "$DEPENDENCIES" != "low" && ! $SYMFONY_VERSION ]]; then composer update; fi;
-    - if [[ "$DEPENDENCIES" != "low" && $SYMFONY_VERSION ]]; then composer require symfony/symfony:${SYMFONY_VERSION} -n --prefer-source; fi;
-    - if [[ "$DEPENDENCIES" == "low" ]]; then composer update --prefer-lowest; fi;
-
-install:
-    - wget http://selenium-release.storage.googleapis.com/2.50/selenium-server-standalone-2.50.1.jar
+    - if [[ $SYMFONY_VERSION ]]; then composer require symfony/symfony:${SYMFONY_VERSION} -n --no-update; fi;
+    - composer update $COMPOSER_FLAGS
+    - "[ ! -f bin/selenium.jar ] && wget wget -O bin/selenium.jar http://selenium-release.storage.googleapis.com/2.50/selenium-server-standalone-2.50.1.jar || true"
 
 before_script:
-    - php -S localhost:8080 -t features/fixtures/project/web > /dev/null 2>&1 &
+    - nohup php -S localhost:8080 -t features/fixtures/project/web > /dev/null 2>&1 &
     - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99.0
-    - java -jar selenium-server-standalone-2.50.1.jar > /dev/null 2>&1 &
+    - java -jar bin/selenium.jar > /dev/null 2>&1 &
     - sleep 5
     - features/fixtures/project/app/console assets:install features/fixtures/project/web --relative --symlink
 
