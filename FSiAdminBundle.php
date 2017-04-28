@@ -39,7 +39,7 @@ class FSiAdminBundle extends Bundle
             new AnnotationReader(),
             new AdminClassFinder()
         ));
-        $container->addCompilerPass(new AdminElementPass(), PassConfig::TYPE_BEFORE_REMOVING);
+        $container->addCompilerPass(new AdminElementPass(), PassConfig::TYPE_REMOVE);
         $container->addCompilerPass(new KnpMenuBuilderPass());
         $container->addCompilerPass(new ResourceRepositoryPass());
         $container->addCompilerPass(new ManagerVisitorPass());
