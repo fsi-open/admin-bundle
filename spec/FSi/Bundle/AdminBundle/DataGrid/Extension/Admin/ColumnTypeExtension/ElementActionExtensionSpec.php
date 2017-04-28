@@ -9,7 +9,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
-use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action;
 use PhpSpec\ObjectBehavior;
@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ElementActionExtensionSpec extends ObjectBehavior
 {
-    function let(Manager $manager, Action $column, OptionsResolver $actionOptionsResolver)
+    function let(ManagerInterface $manager, Action $column, OptionsResolver $actionOptionsResolver)
     {
         $column->getActionOptionsResolver()->willReturn($actionOptionsResolver);
         $this->beConstructedWith($manager);
@@ -42,7 +42,7 @@ class ElementActionExtensionSpec extends ObjectBehavior
     }
 
     function it_initializes_action_route_and_parameters_based_on_element_id(
-        Manager $manager,
+        ManagerInterface $manager,
         Element $element,
         Action $column
     ) {

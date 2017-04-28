@@ -9,13 +9,13 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Request\ParamConverter;
 
-use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class AdminElementParamConverterSpec extends ObjectBehavior
 {
-    function let(Manager $manager)
+    function let(ManagerInterface $manager)
     {
         $this->beConstructedWith($manager);
     }

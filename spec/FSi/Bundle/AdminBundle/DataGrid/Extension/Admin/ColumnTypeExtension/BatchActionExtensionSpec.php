@@ -3,7 +3,7 @@
 namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
-use FSi\Bundle\AdminBundle\Admin\Manager;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Routing\RouterInterface;
 class BatchActionExtensionSpec extends ObjectBehavior
 {
     function let(
-        Manager $manager,
+        ManagerInterface $manager,
         RouterInterface $router,
         FormBuilderInterface $formBuilder,
         RequestStack $requestStack,
@@ -84,7 +84,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
     }
 
     function it_throws_exception_when_non_existing_element_is_passed(
-        Manager $manager,
+        ManagerInterface $manager,
         FormBuilderInterface $formBuilder,
         ColumnTypeInterface $column,
         HeaderViewInterface $view,
@@ -106,7 +106,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
     }
 
     function it_adds_actions_choice_to_form_when_actions_are_defined(
-        Manager $manager,
+        ManagerInterface $manager,
         BatchElement $batchElement,
         ParameterBag $queryAttributes,
         RouterInterface $router,
@@ -178,7 +178,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
     }
 
     function it_adds_redirect_uri_to_actions_when_no_redirect_uri_is_defined(
-        Manager $manager,
+        ManagerInterface $manager,
         BatchElement $batchElement,
         ParameterBag $queryAttributes,
         RouterInterface $router,
@@ -250,7 +250,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
     }
 
     function it_does_not_add_redirect_uri_to_actions_when_redirect_uri_option_is_set_to_false(
-        Manager $manager,
+        ManagerInterface $manager,
         BatchElement $batchElement,
         RouterInterface $router,
         FormBuilderInterface $formBuilder,
