@@ -9,7 +9,6 @@
 
 namespace FSi\Bundle\AdminBundle\Menu\KnpMenu;
 
-use FSi\Bundle\AdminBundle\Admin\Manager;
 use FSi\Bundle\AdminBundle\Menu\Builder\Builder;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use Knp\Menu\FactoryInterface;
