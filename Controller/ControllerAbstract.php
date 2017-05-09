@@ -38,11 +38,6 @@ abstract class ControllerAbstract
      */
     private $eventDispatcher;
 
-    /**
-     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextManager $contextManager
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         EngineInterface $templating,
         ContextManager $contextManager,

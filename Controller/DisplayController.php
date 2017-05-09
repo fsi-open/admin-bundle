@@ -17,10 +17,6 @@ class DisplayController extends ControllerAbstract
 {
     /**
      * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\Display\Element")
-     * @param \FSi\Bundle\AdminBundle\Admin\Display\Element $element
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function displayAction(Display\Element $element, Request $request)
     {

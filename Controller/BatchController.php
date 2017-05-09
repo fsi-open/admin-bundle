@@ -17,9 +17,6 @@ class BatchController extends ControllerAbstract
 {
     /**
      * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement")
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function batchAction(BatchElement $element, Request $request)
     {

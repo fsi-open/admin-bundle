@@ -17,9 +17,6 @@ class FormController extends ControllerAbstract
 {
     /**
      * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\FormElement")
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\FormElement $element
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function formAction(FormElement $element, Request $request)
     {
