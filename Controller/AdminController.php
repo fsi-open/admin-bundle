@@ -14,30 +14,23 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class AdminController
 {
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
+     * @var EngineInterface
      */
-    protected $templating;
+    private $templating;
 
     /**
-     * @var \Symfony\Component\Routing\RouterInterface
+     * @var RouterInterface
      */
-    protected $router;
+    private $router;
 
     /**
      * @var string
      */
-    protected $indexActionTemplate;
+    private $indexActionTemplate;
 
-    /**
-     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
-     * @param string $indexActionTemplate
-     */
     public function __construct(EngineInterface $templating, RouterInterface $router, $indexActionTemplate)
     {
         $this->templating = $templating;
@@ -45,27 +38,19 @@ class AdminController
         $this->indexActionTemplate = $indexActionTemplate;
     }
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function indexAction()
     {
         return $this->templating->renderResponse($this->indexActionTemplate);
     }
 
-    /**
-     * @param string $_locale
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
     public function localeAction($_locale, Request $request)
     {
         $request->getSession()->set('admin_locale', $_locale);
 
         return new RedirectResponse(
-            $request->query->has('redirect_uri') ?
-                $request->query->get('redirect_uri') :
-                $this->router->generate('fsi_admin')
+            $request->query->has('redirect_uri')
+                ? $request->query->get('redirect_uri')
+                : $this->router->generate('fsi_admin')
         );
     }
 }

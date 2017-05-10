@@ -17,9 +17,6 @@ class ListController extends ControllerAbstract
 {
     /**
      * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\ListElement")
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\ListElement $element
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAction(ListElement $element, Request $request)
     {
