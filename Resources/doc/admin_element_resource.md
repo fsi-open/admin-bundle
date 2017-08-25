@@ -93,11 +93,6 @@ namespace FSi\Bundle\DemoBundle\Admin;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
 use FSi\Bundle\AdminBundle\Annotation as Admin;
 
-/**
- * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
- *
- * @Admin\Element
- */
 class MainPage extends ResourceElement
 {
     /**
@@ -144,7 +139,7 @@ menu:
 ## Admin element options
 
 There are also several options that you can use to configure the element.
-This can be easily done by overwriting ``setDefaultOptions`` method in the element's class.
+This can be easily done by overwriting ``configureOptions`` method in the element's class.
 Following example contains all available options with default values:
 
 ```php
@@ -153,14 +148,11 @@ Following example contains all available options with default values:
 
 namespace FSi\Bundle\DemoBundle\Admin;
 
-/**
- * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
- *
- * @Admin\Element
- */
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class UserElement extends CRUDElement
 {
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             "template" => "@FSiDemo/Resource/resource.html.twig",

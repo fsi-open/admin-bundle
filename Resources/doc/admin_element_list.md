@@ -13,11 +13,6 @@ use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Bundle\AdminBundle\Annotation as Admin;
 
-/**
- * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
- *
- * @Admin\Element
- */
 class SubscriberElement extends ListElement
 {
     /**

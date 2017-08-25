@@ -160,7 +160,7 @@ use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserInvoice extends CRUDElement
 {
@@ -169,7 +169,7 @@ class UserInvoice extends CRUDElement
      */
     public function getClassName()
     {
-        return 'AcmeDemoBundle:UserInvoice';
+        return 'AcmeDemoBundle\Entity\UserInvoice';
     }
 
     /**
@@ -180,9 +180,9 @@ class UserInvoice extends CRUDElement
         return 'invoices';
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::setDefaultOptions($resolver);
+        parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
             'user' => 'Acme\DemoBundle\Entity\User'
@@ -266,7 +266,7 @@ class User extends CRUDElement
      */
     public function getClassName()
     {
-        return 'AcmeDemoBundle:User';
+        return 'AcmeDemoBundle\Entity\User';
     }
 
     /**

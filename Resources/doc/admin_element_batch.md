@@ -11,11 +11,6 @@ namespace FSi\Bundle\DemoBundle\Admin;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\BatchElement;
 use FSi\Bundle\AdminBundle\Annotation as Admin;
 
-/**
- * IMPORTANT - Without the "Element" annotation, the element will not be registered in admin elements manager!
- *
- * @Admin\Element
- */
 class SubscriberDeactivateElement extends BatchElement
 {
     /**
@@ -76,11 +71,6 @@ namespace FSi\Bundle\DemoBundle\Admin;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DeleteElement;
 use FSi\Bundle\AdminBundle\Annotation as Admin;
 
-/**
- * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
- *
- * @Admin\Element
- */
 class SubscriberDeleteElement extends DeleteElement
 {
     /**
