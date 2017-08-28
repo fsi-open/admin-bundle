@@ -134,3 +134,8 @@ the `FSi\Bundle\AdminBundle\Display\DisplayView`.
 
 Please refer to [Display components documentation](Resources/doc/admin_element_display.md) for
 more information.
+
+## BatchFormValidRequestHandler requires FlashMessages
+
+As of this version, `FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler`
+requires the `FlashMessages` as the third constructor parameter.
