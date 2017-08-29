@@ -36,7 +36,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $requestParameterbag->get('indexes', [])->willReturn(['index']);
         $request->request = $requestParameterbag;
         $request->query = $queryParameterbag;
-        $request->isMethod(Request::METHOD_POST)->willReturn(true);
+        $request->isMethod('POST')->willReturn(true);
         $event->getForm()->willReturn($form);
         $event->hasResponse()->willReturn(false);
         $event->getElement()->willReturn($element);
@@ -82,10 +82,18 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     ) {
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
             ->shouldBeCalled();
+        $eventDispatcher->dispatch(
+            BatchEvents::BATCH_OBJECT_PRE_APPLY,
+            Argument::type('FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent')
+        )->shouldBeCalled();
 
         $form->getData()->willReturn($object);
         $element->apply($object)->shouldBeCalled();
 
+        $eventDispatcher->dispatch(
+            BatchEvents::BATCH_OBJECT_POST_APPLY,
+            Argument::type('FSi\Bundle\AdminBundle\Event\BatchEvent')
+        )->shouldBeCalled();
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
             ->shouldBeCalled();
 
@@ -115,10 +123,18 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     ) {
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
             ->shouldBeCalled();
+        $eventDispatcher->dispatch(
+            BatchEvents::BATCH_OBJECT_PRE_APPLY,
+            Argument::type('FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent')
+        )->shouldBeCalled();
 
         $form->getData()->willReturn($object);
         $element->apply($object)->shouldBeCalled();
 
+        $eventDispatcher->dispatch(
+            BatchEvents::BATCH_OBJECT_POST_APPLY,
+            Argument::type('FSi\Bundle\AdminBundle\Event\BatchEvent')
+        )->shouldBeCalled();
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
             ->shouldBeCalled();
 
@@ -163,6 +179,10 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     ) {
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
             ->shouldBeCalled();
+        $eventDispatcher->dispatch(
+            BatchEvents::BATCH_OBJECT_PRE_APPLY,
+            Argument::type('FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent')
+        )->shouldBeCalled();
 
         $form->getData()->willReturn($object);
         $element->getDataIndexer()->willReturn($dataIndexer);
@@ -170,6 +190,10 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 
         $element->apply($object)->shouldBeCalled();
 
+        $eventDispatcher->dispatch(
+            BatchEvents::BATCH_OBJECT_POST_APPLY,
+            Argument::type('FSi\Bundle\AdminBundle\Event\BatchEvent')
+        )->shouldBeCalled();
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);

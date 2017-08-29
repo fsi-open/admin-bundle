@@ -18,4 +18,8 @@ final class BatchEvents
     const BATCH_OBJECTS_PRE_APPLY = 'admin.batch.objects.pre_apply';
 
     const BATCH_OBJECTS_POST_APPLY = 'admin.batch.objects.post_apply';
+
+    const BATCH_OBJECT_PRE_APPLY = 'admin.batch.object.pre_apply';
+
+    const BATCH_OBJECT_POST_APPLY = 'admin.batch.object.post_apply';
 }
