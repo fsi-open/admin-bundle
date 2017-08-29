@@ -41,7 +41,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler require FormEvent"
+                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler requires FormEvent"
             )
         )->during('handleRequest', [$listEvent, $request]);
     }
@@ -55,7 +55,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler require RedirectableElement"
+                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler requires RedirectableElement"
             )
         )->during('handleRequest', [$formEvent, $request]);
     }

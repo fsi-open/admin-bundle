@@ -34,7 +34,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\FormValidRequestHandler require FormEvent"
+                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\FormValidRequestHandler requires FormEvent"
             )
         )->during('handleRequest', [$listEvent, $request]);
     }
@@ -48,7 +48,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\FormValidRequestHandler require RedirectableElement"
+                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\FormValidRequestHandler requires RedirectableElement"
             )
         )->during('handleRequest', [$formEvent, $request]);
     }
