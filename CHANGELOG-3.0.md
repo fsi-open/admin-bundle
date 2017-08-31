@@ -166,3 +166,7 @@ it. The events are:
 
 The event class `FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent` also has a property
 called `skip`, which you can use to mark an object to be skipped when applying actions.
+
+## Dropped routes deprecated back in 1.1
+
+Refer to [1.1 changelog](CHANGELOG-1.1.md) for information on which routes have been removed.

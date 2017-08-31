@@ -355,7 +355,7 @@ class User extends CRUDElement
                         'title' => 'edit user'
                     ),
                     'content' => '<span class="icon-eject icon-white"></span>',
-                    'route_name' => 'fsi_admin_crud_edit',
+                    'route_name' => 'fsi_admin_form',
                     'parameters_field_mapping' => array(
                         'id' => 'id'
                     ),

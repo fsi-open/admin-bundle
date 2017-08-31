@@ -61,3 +61,7 @@ more information.
 If you have extended the `FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler`
 class, make sure to pass a `FlashMessage` service to it's parent constructor, otherwise you 
 may receive an exception when handling batch actions.
+
+## Do not use routes deprecated back in version 1.1
+
+Refer to [1.1 changelog](CHANGELOG-1.1.md) for information on which routes have been removed.

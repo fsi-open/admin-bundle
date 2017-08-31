@@ -22,48 +22,42 @@ class Category extends CRUDElement
 
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
-        /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
-        $datagrid = $factory->createDataGrid('category');
-        $datagrid->addColumn('title', 'text', [
+        return $factory->createDataGrid($this->getId())
+        ->addColumn('title', 'text', [
             'label' => 'admin.category.list.title',
             'field_mapping' => ['title'],
             'editable' => true
-        ]);
-        $datagrid->addColumn('actions', 'action', [
+        ])->addColumn('actions', 'action', [
             'label' => 'admin.category.list.actions',
             'field_mapping' => ['id'],
             'actions' => [
                 'news' => [
-                    'route_name' => "fsi_admin_crud_list",
+                    'route_name' => "fsi_admin_list",
                     'additional_parameters' => ['element' => 'category_news'],
                     'parameters_field_mapping' => ['parent' => 'id'],
                     'redirect_uri' => false,
                 ],
                 'edit' => [
-                    'route_name' => "fsi_admin_crud_edit",
+                    'route_name' => "fsi_admin_form",
                     'additional_parameters' => ['element' => $this->getId()],
                     'parameters_field_mapping' => ['id' => 'id']
                 ],
             ]
         ]);
-
-        return $datagrid;
     }
 
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
-        /* @var $datasource \FSi\Component\DataSource\DataSource */
-        $datasource = $factory->createDataSource('doctrine', ['entity' => $this->getClassName()], 'news');
-        $datasource->addField('title', 'text', 'like', [
+        return $factory->createDataSource(
+            'doctrine-orm',
+            ['entity' => $this->getClassName()],
+            'news'
+        )->addField('title', 'text', 'like', [
             'sortable' => false,
             'form_options' => [
                 'label' => 'admin.category.list.title',
             ]
-        ]);
-
-        $datasource->setMaxResults(10);
-
-        return $datasource;
+        ])->setMaxResults(10);
     }
 
     protected function initForm(FormFactoryInterface $factory, $data = null)

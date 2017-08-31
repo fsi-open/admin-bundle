@@ -31,7 +31,7 @@ class CategoryNews extends DependentCRUDElement
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
         /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
-        $datagrid = $factory->createDataGrid('category_news');
+        $datagrid = $factory->createDataGrid($this->getId());
 
         NewsDataGridBuilder::buildNewsDataGrid($datagrid);
 
@@ -40,7 +40,7 @@ class CategoryNews extends DependentCRUDElement
             'field_mapping' => ['id'],
             'actions' => [
                 'edit' => [
-                    'route_name' => "fsi_admin_crud_edit",
+                    'route_name' => "fsi_admin_form",
                     'additional_parameters' => ['element' => $datagrid->getName()],
                     'parameters_field_mapping' => ['id' => 'id']
                 ],
@@ -55,8 +55,7 @@ class CategoryNews extends DependentCRUDElement
 
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
-        $queryBuilder = $this->getRepository()
-            ->createQueryBuilder('n');
+        $queryBuilder = $this->getRepository()->createQueryBuilder('n');
 
         if ($this->getParentObject()) {
             $queryBuilder->where(':category MEMBER OF n.categories')
@@ -64,7 +63,11 @@ class CategoryNews extends DependentCRUDElement
         }
 
         /* @var $datasource \FSi\Component\DataSource\DataSource */
-        $datasource = $factory->createDataSource('doctrine', ['qb' => $queryBuilder], 'category_news');
+        $datasource = $factory->createDataSource(
+            'doctrine-orm',
+            ['qb' => $queryBuilder],
+            $this->getId()
+        );
 
         NewsDataSourceBuilder::buildNewsDataSource($datasource);
 

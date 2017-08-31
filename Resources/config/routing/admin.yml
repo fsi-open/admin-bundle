@@ -25,32 +25,6 @@ fsi_admin_batch:
     defaults:
         _controller: admin.controller.batch:batchAction
 
-# Deprecated since version 1.1, to be removed in 1.2. Use fsi_admin_list instead.
-fsi_admin_crud_list:
-    path: /list/{element}
-    defaults:
-        _controller: admin.controller.list:listAction
-
-# Deprecated since version 1.1, to be removed in 1.2. Use fsi_admin_form instead.
-fsi_admin_crud_create:
-    path: /form/{element}/{id}
-    defaults:
-        _controller: admin.controller.form:formAction
-        id: null
-
-# Deprecated since version 1.1, to be removed in 1.2. Use fsi_admin_form instead.
-fsi_admin_crud_edit:
-    path: /form/{element}/{id}
-    defaults:
-        _controller: admin.controller.form:formAction
-        id: null
-
-# Deprecated since version 1.1, to be removed in 1.2. Use fsi_admin_batch instead.
-fsi_admin_crud_delete:
-    path: /batch/{element}
-    defaults:
-        _controller: admin.controller.batch:batchAction
-
 fsi_admin_resource:
     path: /resource/{element}
     defaults:

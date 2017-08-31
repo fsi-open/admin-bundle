@@ -23,7 +23,7 @@ admin element manager. There are two ways to do this:
 
 ## Service
 
-The first way is to register your admin element as a Symfony2 tagged service:
+The first way is to register your admin element as a service with the tag `admin.element`:
 
 #### XML Example:
 ```xml
