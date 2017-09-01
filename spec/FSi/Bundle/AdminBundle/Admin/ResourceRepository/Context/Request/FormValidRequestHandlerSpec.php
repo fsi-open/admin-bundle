@@ -36,7 +36,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\ResourceRepository\\Context\\Request\\FormValidRequestHandler require FormEvent"
+                "FSi\\Bundle\\AdminBundle\\Admin\\ResourceRepository\\Context\\Request\\FormValidRequestHandler requires FormEvent"
             )
         )->during('handleRequest', [$listEvent, $request]);
     }

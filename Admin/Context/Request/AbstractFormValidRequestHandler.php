@@ -82,10 +82,10 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
     protected function validateEvent(AdminEvent $event)
     {
         if (!$event instanceof FormEvent) {
-            throw new RequestHandlerException(sprintf("%s require FormEvent", get_class($this)));
+            throw new RequestHandlerException(sprintf("%s requires FormEvent", get_class($this)));
         }
         if (!$event->getElement() instanceof RedirectableElement) {
-            throw new RequestHandlerException(sprintf("%s require RedirectableElement", get_class($this)));
+            throw new RequestHandlerException(sprintf("%s requires RedirectableElement", get_class($this)));
         }
 
         return $event;

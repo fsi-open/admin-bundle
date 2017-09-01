@@ -134,3 +134,35 @@ the `FSi\Bundle\AdminBundle\Display\DisplayView`.
 
 Please refer to [Display components documentation](Resources/doc/admin_element_display.md) for
 more information.
+
+## BatchFormValidRequestHandler requires FlashMessages
+
+As of this version, `FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler`
+requires the `FlashMessages` as the third constructor parameter.
+
+## Added events fired before and after applying a batch action
+
+Two news events are being fired when each objects has an batch action applied to
+it. The events are:
+
+<table>
+    <thead>
+        <tr>
+            <th>Event name</th>
+            <th>Event class</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>admin.batch.object.pre_apply</td>
+            <td>FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent</td>
+        </tr>
+        <tr>
+            <td>admin.batch.object.post_apply</td>
+            <td>FSi\Bundle\AdminBundle\Event\BatchEvent</td>
+        </tr>
+    </tbody>
+</table>    
+
+The event class `FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent` also has a property
+called `skip`, which you can use to mark an object to be skipped when applying actions.

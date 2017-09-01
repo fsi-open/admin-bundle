@@ -29,7 +29,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\FormSubmitHandler require FormEvent"
+                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\FormSubmitHandler requires FormEvent"
             )
         )->during('handleRequest', [$listEvent, $request]);
     }

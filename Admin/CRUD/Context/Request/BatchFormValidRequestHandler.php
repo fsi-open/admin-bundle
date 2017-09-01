@@ -12,7 +12,9 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractFormValidRequestHandler;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\DeleteElement;
+use FSi\Bundle\AdminBundle\Event\BatchEvent;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
+use FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
@@ -25,49 +27,63 @@ use Symfony\Component\Routing\RouterInterface;
 class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Message\FlashMessages
+     * @var FlashMessages
      */
     private $flashMessages;
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
-     * @param \Symfony\Component\Routing\RouterInterface $router
-     * @param \FSi\Bundle\AdminBundle\Message\FlashMessages|null
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param RouterInterface $router
+     * @param FlashMessages|null
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         RouterInterface $router,
-        FlashMessages $flashMessages = null
+        FlashMessages $flashMessages
     ) {
         parent::__construct($eventDispatcher, $router);
         $this->flashMessages = $flashMessages;
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param FormEvent $event
+     * @param Request $request
      */
     protected function action(FormEvent $event, Request $request)
     {
-        /** @var \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element */
+        /** @var BatchElement $element */
         $element = $event->getElement();
         $objects = $this->getObjects($element, $request);
 
         if (empty($objects)) {
-            $this->setWarningMessage();
+            $this->flashMessages->warning('messages.batch.no_elements');
             return;
         }
 
         foreach ($objects as $object) {
+            $preEvent = $this->eventDispatcher->dispatch(
+                BatchEvents::BATCH_OBJECT_PRE_APPLY,
+                new BatchPreApplyEvent($element, $request, $object)
+            );
+
+            if ($this->shouldSkip($preEvent)) {
+                continue;
+            }
+
             $element->apply($object);
+
+            $this->eventDispatcher->dispatch(
+                BatchEvents::BATCH_OBJECT_POST_APPLY,
+                new BatchEvent($element, $request, $object)
+            );
         }
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement $element
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param BatchElement $element
+     * @param Request $request
      * @return array
-     * @throws \FSi\Bundle\AdminBundle\Exception\RequestHandlerException
+     * @throws RequestHandlerException
      */
     private function getObjects(BatchElement $element, Request $request)
     {
@@ -92,8 +108,8 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param FormEvent $event
+     * @param Request $request
      * @return bool
      */
     protected function isValidPostRequest(FormEvent $event, Request $request)
@@ -142,10 +158,16 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         return BatchEvents::BATCH_OBJECTS_POST_APPLY;
     }
 
-    private function setWarningMessage()
+    /**
+     * @param BatchPreApplyEvent $event
+     * @return boolean
+     */
+    private function shouldSkip($event)
     {
-        if ($this->flashMessages) {
-            $this->flashMessages->warning('messages.batch.no_elements');
+        if (!($event instanceof BatchPreApplyEvent)) {
+            return false;
         }
+
+        return $event->shouldSkip();
     }
 }

@@ -22,83 +22,78 @@ use Symfony\Component\Routing\RouterInterface;
 
 class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 {
-    function let(FormEvent$event)
-    {
+    function let(
+        EventDispatcherInterface $eventDispatcher,
+        RouterInterface $router,
+        FlashMessages $flashMessage,
+        Request $request,
+        ParameterBag $requestParameterbag,
+        ParameterBag $queryParameterbag,
+        FormInterface $form,
+        BatchElement $element,
+        FormEvent $event
+    ) {
+        $requestParameterbag->get('indexes', [])->willReturn(['index']);
+        $request->request = $requestParameterbag;
+        $request->query = $queryParameterbag;
+        $request->isMethod('POST')->willReturn(true);
+        $event->getForm()->willReturn($form);
         $event->hasResponse()->willReturn(false);
+        $event->getElement()->willReturn($element);
+        $form->isValid()->willReturn(true);
+
+        $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
     }
 
     function it_is_context_request_handler(
-        EventDispatcherInterface $eventDispatcher,
-        RouterInterface $router,
-        FlashMessages $flashMessage
     ) {
-        $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
         $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface');
     }
 
-    function it_throw_exception_for_non_form_event(
-        ListEvent $listEvent,
-        Request $request,
-        EventDispatcherInterface $eventDispatcher,
-        RouterInterface $router,
-        FlashMessages $flashMessage
-    ) {
-        $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
-
-        $this->shouldThrow(
-            new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler require FormEvent"
-            )
-        )->during('handleRequest', [$listEvent, $request]);
+    function it_throw_exception_for_non_form_event(ListEvent $listEvent, Request $request)
+    {
+        $this->shouldThrow(new RequestHandlerException(
+            "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler requires FormEvent"
+        ))->during('handleRequest', [$listEvent, $request]);
     }
 
     function it_throw_exception_for_non_redirectable_element(
         FormEvent $formEvent,
         Request $request,
-        EventDispatcherInterface $eventDispatcher,
-        RouterInterface $router,
-        FlashMessages $flashMessage,
         stdClass $object
     ) {
-        $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
         $formEvent->getElement()->willReturn($object);
 
-        $this->shouldThrow(
-            new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler require RedirectableElement"
-            )
-        )->during('handleRequest', [$formEvent, $request]);
+        $this->shouldThrow(new RequestHandlerException(
+            "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler requires RedirectableElement"
+        ))->during('handleRequest', [$formEvent, $request]);
     }
 
     function it_handles_POST_request(
         FormEvent $event,
         Request $request,
-        ParameterBag $requestParameterbag,
         ParameterBag $queryParameterbag,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
         BatchElement $element,
         DataIndexerInterface $dataIndexer,
         RouterInterface $router,
-        FlashMessages $flashMessage,
         stdClass $object
     ) {
-        $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
-
-        $request->isMethod('POST')->willReturn(true);
-        $request->request = $requestParameterbag;
-        $request->query = $queryParameterbag;
-        $requestParameterbag->get('indexes', [])->willReturn(['index']);
-
-        $event->getForm()->willReturn($form);
-        $form->isValid()->willReturn(true);
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
             ->shouldBeCalled();
+        $eventDispatcher->dispatch(
+            BatchEvents::BATCH_OBJECT_PRE_APPLY,
+            Argument::type('FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent')
+        )->shouldBeCalled();
 
         $form->getData()->willReturn($object);
-        $event->getElement()->willReturn($element);
-        $element->apply(Argument::type('stdClass'))->shouldBeCalled();
+        $element->apply($object)->shouldBeCalled();
 
+        $eventDispatcher->dispatch(
+            BatchEvents::BATCH_OBJECT_POST_APPLY,
+            Argument::type('FSi\Bundle\AdminBundle\Event\BatchEvent')
+        )->shouldBeCalled();
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
             ->shouldBeCalled();
 
@@ -119,32 +114,27 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     function it_returns_redirect_response_with_redirect_uri_passed_by_request(
         FormEvent $event,
         Request $request,
-        ParameterBag $requestParameterbag,
         ParameterBag $queryParameterbag,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
         BatchElement $element,
-        RouterInterface $router,
         DataIndexerInterface $dataIndexer,
-        FlashMessages $flashMessage,
         stdClass $object
     ) {
-        $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
-
-        $request->isMethod('POST')->willReturn(true);
-        $request->request = $requestParameterbag;
-        $request->query = $queryParameterbag;
-        $requestParameterbag->get('indexes', [])->willReturn(['index']);
-
-        $event->getForm()->willReturn($form);
-        $form->isValid()->willReturn(true);
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
             ->shouldBeCalled();
+        $eventDispatcher->dispatch(
+            BatchEvents::BATCH_OBJECT_PRE_APPLY,
+            Argument::type('FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent')
+        )->shouldBeCalled();
 
         $form->getData()->willReturn($object);
-        $event->getElement()->willReturn($element);
-        $element->apply(Argument::type('stdClass'))->shouldBeCalled();
+        $element->apply($object)->shouldBeCalled();
 
+        $eventDispatcher->dispatch(
+            BatchEvents::BATCH_OBJECT_POST_APPLY,
+            Argument::type('FSi\Bundle\AdminBundle\Event\BatchEvent')
+        )->shouldBeCalled();
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
             ->shouldBeCalled();
 
@@ -165,24 +155,14 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 
     function it_return_response_from_pre_apply_event(
         FormEvent $event,
-        BatchElement $element,
         Request $request,
-        EventDispatcherInterface $eventDispatcher,
-        FormInterface $form,
-        RouterInterface $router,
-        FlashMessages $flashMessage
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
-
-        $request->isMethod('POST')->willReturn(true);
-        $event->getForm()->willReturn($form);
-        $form->isValid()->willReturn(true);
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
                 $event->getResponse()->willReturn(new Response());
             });
-        $event->getElement()->willReturn($element);
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
@@ -191,33 +171,29 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     function it_return_response_from_post_apply_event(
         FormEvent $event,
         Request $request,
-        ParameterBag $requestParameterbag,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
         BatchElement $element,
         DataIndexerInterface $dataIndexer,
-        RouterInterface $router,
-        FlashMessages $flashMessage,
         stdClass $object
     ) {
-        $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
-
-        $request->isMethod('POST')->willReturn(true);
-        $request->request = $requestParameterbag;
-        $requestParameterbag->get('indexes', [])->willReturn(['index']);
-
-        $event->getForm()->willReturn($form);
-        $form->isValid()->willReturn(true);
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
             ->shouldBeCalled();
+        $eventDispatcher->dispatch(
+            BatchEvents::BATCH_OBJECT_PRE_APPLY,
+            Argument::type('FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent')
+        )->shouldBeCalled();
 
         $form->getData()->willReturn($object);
-        $event->getElement()->willReturn($element);
         $element->getDataIndexer()->willReturn($dataIndexer);
         $dataIndexer->getData('index')->willReturn($object);
 
-        $element->apply(Argument::type('stdClass'))->shouldBeCalled();
+        $element->apply($object)->shouldBeCalled();
 
+        $eventDispatcher->dispatch(
+            BatchEvents::BATCH_OBJECT_POST_APPLY,
+            Argument::type('FSi\Bundle\AdminBundle\Event\BatchEvent')
+        )->shouldBeCalled();
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
             ->will(function() use ($event) {
                 $event->hasResponse()->willReturn(true);
@@ -231,19 +207,11 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     function it_throws_exception_when_delete_not_allowed(
         FormEvent $event,
         Request $request,
-        ParameterBag $requestParameterbag,
-        DeleteElement $element,
-        EventDispatcherInterface $eventDispatcher,
-        RouterInterface $router,
-        FlashMessages $flashMessage
+        DeleteElement $deleteEelement
     ) {
-        $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
-
-        $request->request = $requestParameterbag;
-        $requestParameterbag->get('indexes', [])->willReturn(['index']);
-        $event->getElement()->willReturn($element);
-        $element->hasOption('allow_delete')->willReturn(true);
-        $element->getOption('allow_delete')->willReturn(false);
+        $event->getElement()->willReturn($deleteEelement);
+        $deleteEelement->hasOption('allow_delete')->willReturn(true);
+        $deleteEelement->getOption('allow_delete')->willReturn(false);
 
         $this->shouldThrow('\LogicException')->during('handleRequest', [$event, $request]);
     }
@@ -252,62 +220,20 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         FormEvent $event,
         Request $request,
         ParameterBag $requestParameterbag,
-        FormInterface $form,
-        DeleteElement $element,
+        DeleteElement $deleteEelement,
         EventDispatcherInterface $eventDispatcher,
-        RouterInterface $router,
-        FlashMessages $flashMessage
+        FlashMessages $flashMessage,
+        stdClass $object
     ) {
-        $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
-
-        $request->isMethod('POST')->willReturn(true);
-        $event->getForm()->willReturn($form);
-        $form->isValid()->willReturn(true);
         $requestParameterbag->get('indexes', [])->willReturn([]);
-        $request->request = $requestParameterbag;
-        $event->getElement()->willReturn($element);
+        $event->getElement()->willReturn($deleteEelement);
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
             ->shouldBeCalled();
 
-        $element->getOption('allow_delete')->willReturn(true);
-        $element->hasOption('allow_delete')->willReturn(true);
-        $element->apply(Argument::type('stdClass'))->shouldNotBeCalled();
+        $deleteEelement->getOption('allow_delete')->willReturn(true);
+        $deleteEelement->hasOption('allow_delete')->willReturn(true);
+        $deleteEelement->apply($object)->shouldNotBeCalled();
         $flashMessage->warning(Argument::type('string'))->shouldBeCalled();
-
-        $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
-            ->will(function() use ($event) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
-            });
-
-        $this->handleRequest($event, $request);
-    }
-
-    public function it_does_not_display_warning_when_flash_messages_are_not_present(
-        FormEvent $event,
-        Request $request,
-        ParameterBag $requestParameterbag,
-        FormInterface $form,
-        DeleteElement $element,
-        EventDispatcherInterface $eventDispatcher,
-        RouterInterface $router,
-        FlashMessages $flashMessage
-    ) {
-        $this->beConstructedWith($eventDispatcher, $router);
-
-        $request->isMethod('POST')->willReturn(true);
-        $event->getForm()->willReturn($form);
-        $form->isValid()->willReturn(true);
-        $requestParameterbag->get('indexes', [])->willReturn([]);
-        $request->request = $requestParameterbag;
-        $event->getElement()->willReturn($element);
-        $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_PRE_APPLY, $event)
-            ->shouldBeCalled();
-
-        $element->getOption('allow_delete')->willReturn(true);
-        $element->hasOption('allow_delete')->willReturn(true);
-        $element->apply(Argument::type('stdClass'))->shouldNotBeCalled();
-        $flashMessage->warning(Argument::type('string'))->shouldNotBeCalled();
 
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
             ->will(function() use ($event) {

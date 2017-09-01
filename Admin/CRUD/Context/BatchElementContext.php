@@ -15,7 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,7 +27,7 @@ class BatchElementContext extends ContextAbstract
     protected $element;
 
     /**
-     * @var Form
+     * @var FormInterface
      */
     protected $form;
 
@@ -54,13 +54,11 @@ class BatchElementContext extends ContextAbstract
      */
     public function getData()
     {
-        $data = [
+        return [
             'element' => $this->element,
             'indexes' => $this->indexes,
             'form' => $this->form->createView()
         ];
-
-        return $data;
     }
 
     /**

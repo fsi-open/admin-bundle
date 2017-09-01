@@ -51,7 +51,7 @@ abstract class AbstractFormSubmitHandler extends AbstractHandler
     protected function validateEvent(AdminEvent $event)
     {
         if (!$event instanceof FormEvent) {
-            throw new RequestHandlerException(sprintf("%s require FormEvent", get_class($this)));
+            throw new RequestHandlerException(sprintf("%s requires FormEvent", get_class($this)));
         }
 
         return $event;

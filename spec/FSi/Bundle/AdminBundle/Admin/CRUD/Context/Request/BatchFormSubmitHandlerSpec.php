@@ -29,7 +29,7 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormSubmitHandler require FormEvent"
+                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormSubmitHandler requires FormEvent"
             )
         )->during('handleRequest', [$listEvent, $request]);
     }
