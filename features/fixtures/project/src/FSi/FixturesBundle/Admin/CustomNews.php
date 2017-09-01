@@ -22,31 +22,25 @@ class CustomNews extends CRUDElement
 
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
-        /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
-        $datagrid = $factory->createDataGrid('custom_news');
-
-        return $datagrid;
+        return $factory->createDataGrid($this->getId());
     }
 
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
-        /* @var $datasource \FSi\Component\DataSource\DataSource */
-        $datasource = $factory->createDataSource('doctrine', ['entity' => $this->getClassName()], 'custom_news');
-
-        $datasource->addField('title', 'text', 'eq', ['form_filter' => false]);
-
-        return $datasource;
+        return $factory->createDataSource(
+            'doctrine-orm',
+            ['entity' => $this->getClassName()],
+            $this->getId()
+        )->addField('title', 'text', 'eq', ['form_filter' => false]);
     }
 
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
-        $builder = $factory->createNamedBuilder(
+        return $factory->createNamedBuilder(
             'news',
             TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
             $data,
             ['data_class' => $this->getClassName()]
-        );
-
-        return $builder->getForm();
+        )->getForm();
     }
 }

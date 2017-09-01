@@ -66,7 +66,7 @@ class Person extends CRUDElement
             'field_mapping' => ['id'],
             'actions' => [
                 'edit' => [
-                    'route_name' => "fsi_admin_crud_edit",
+                    'route_name' => "fsi_admin_form",
                     'additional_parameters' => ['element' => $this->getId()],
                     'parameters_field_mapping' => ['id' => 'id']
                 ]
@@ -79,7 +79,7 @@ class Person extends CRUDElement
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
         return $factory->createDataSource(
-            'doctrine',
+            'doctrine-orm',
             ['entity' => $this->getClassName()],
             $this->getId()
         );

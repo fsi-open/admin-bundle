@@ -26,7 +26,7 @@ class News extends CRUDElement
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
         /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
-        $datagrid = $factory->createDataGrid('news');
+        $datagrid = $factory->createDataGrid($this->getId());
 
         NewsDataGridBuilder::buildNewsDataGrid($datagrid);
 
@@ -35,7 +35,7 @@ class News extends CRUDElement
             'field_mapping' => ['id'],
             'actions' => [
                 'edit' => [
-                    'route_name' => "fsi_admin_crud_edit",
+                    'route_name' => "fsi_admin_form",
                     'additional_parameters' => ['element' => $datagrid->getName()],
                     'parameters_field_mapping' => ['id' => 'id']
                 ],
@@ -48,8 +48,11 @@ class News extends CRUDElement
 
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
-        /* @var $datasource \FSi\Component\DataSource\DataSource */
-        $datasource = $factory->createDataSource('doctrine', ['entity' => $this->getClassName()], 'news');
+        $datasource = $factory->createDataSource(
+            'doctrine-orm',
+            ['entity' => $this->getClassName()],
+            $this->getId()
+        );
 
         NewsDataSourceBuilder::buildNewsDataSource($datasource);
 

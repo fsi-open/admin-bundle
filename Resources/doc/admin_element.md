@@ -21,7 +21,71 @@ your needs.
 In order for the admin element to be properly recognized by the bundle, you need to register it in the
 admin element manager. There are two ways to do this:
 
-### Annotation
+## Service
+
+The first way is to register your admin element as a service with the tag `admin.element`:
+
+#### XML Example:
+```xml
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+<services>
+
+    <service id="fsi_demo_bundle.admin.element.user" class="FSi\Bundle\DemoBundle\Admin\UserElement">
+        <tag name="admin.element"/>
+    </service>
+
+</services>
+</container>
+```
+
+#### YML Example:
+```yaml
+services:
+    tc_api.admin.element.admin_user:
+        class: FSi\Bundle\DemoBundle\Admin\UserElement
+        tags:
+            - { name: admin.element }
+```
+
+### Autoconfigure
+
+If you are using Symfony 3.3 or higher, you can use service defaults like so:
+
+#### XML Example:
+
+```xml
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <prototype namespace="FSi\Bundle\DemoBundle\Admin\" resource="../../src/FSi/Bundle/DemoBundle/Admin/*">
+            <tag name="admin.element" />
+        </prototype>
+
+    </services>
+</container>
+```
+
+#### YML Example:
+
+```yaml
+services:
+    # Add the relevant tag to all classes in the Admin directory
+    FSi\Bundle\DemoBundle\Admin\:
+        resource: '../../src/FSi/Bundle/DemoBundle/Admin/*'
+        tags: ['admin.element']
+```
+
+## Annotation
+
+*WARNING* This method of registration is deprecated as of version 3.0 and will be
+removed in 4.0. Please reffer to the previous example for a quick registration method.
 
 Probably the simplest way is to annotate your element class like so:
 
@@ -44,36 +108,6 @@ class UserElement extends CRUDElement
 This is fast and easy, but currently there is no way to inject any dependencies
 using this method. You will either have to register your element as a service or
 use interfaces to modify what dependecies are being injected into the element.
-
-### Service
-
-The other way is to register your admin element as a Symfony2 tagged service:
-
-XML Example:
-```xml
-<?xml version="1.0" ?>
-
-<container xmlns="http://symfony.com/schema/dic/services"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-<services>
-
-    <service id="fsi_demo_bundle.admin.element.user" class="FSi\Bundle\DemoBundle\Admin\UserElement">
-        <tag name="admin.element"/>
-    </service>
-
-</services>
-</container>
-```
-
-YML Example:
-```yaml
-services:
-    tc_api.admin.element.admin_user:
-        class: FSi\Bundle\DemoBundle\Admin\UserElement
-        tags:
-            - { name: admin.element }
-```
 
 # Injecting request stack to admin element
 

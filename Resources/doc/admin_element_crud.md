@@ -15,11 +15,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use FSi\Bundle\DemoBundle\Form\Type\UserType;
 use FSi\Bundle\AdminBundle\Annotation as Admin;
 
-/**
- * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
- *
- * @Admin\Element
- */
 class UserElement extends CRUDElement
 {
     /**
@@ -158,7 +153,7 @@ You can read more about menu configuration in [Menu section](menu.md)
 ## 5. Admin element options
 
 There are also several options that you can use to configure an element.
-This can be easily done by overwriting ``setDefaultOptions`` method in the element's class.
+This can be easily done by overwriting ``configureOptions`` method in the element's class.
 Following example contains all available options with default values:
 
 ```php
@@ -167,23 +162,17 @@ Following example contains all available options with default values:
 
 namespace FSi\Bundle\DemoBundle\Admin;
 
-/**
- * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
- *
- * @Admin\Element
- */
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class UserElement extends CRUDElement
 {
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             "allow_delete" => true,
             "allow_add" => true,
             "template_list" => "@FSiDemo/Admin/user_list.html.twig",
             "template_form" => "@FSiDemo/Admin/user_form.html.twig",
-            "template_crud_list" => "@FSiDemo/Admin/user_list.html.twig", # deprecated since version 1.1, will be removed in version 2.0
-            "template_crud_create" => "@FSiDemo/Admin/user_create.html.twig", # deprecated since version 1.1, will be removed in version 2.0
-            "template_crud_edit" => "@FSiDemo/Admin/user_edit.html.twig", # deprecated since version 1.1, will be removed in version 2.0
         ));
     }
 }

@@ -166,3 +166,13 @@ it. The events are:
 
 The event class `FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent` also has a property
 called `skip`, which you can use to mark an object to be skipped when applying actions.
+
+## Deprecated annotation as service registration for elements
+
+This option was introduced to make admin elements registration easier. With the 
+introduction of service configuration defaults in the dependency injection component,
+it has became redundant and will be removed.
+
+## Dropped routes deprecated back in 1.1
+
+Refer to [1.1 changelog](CHANGELOG-1.1.md) for information on which routes have been removed.

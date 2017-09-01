@@ -9,9 +9,11 @@ use FSi\Component\DataSource\DataSourceFactoryInterface;
 
 class Subscriber extends ListElement
 {
+    const ID = 'subscriber';
+
     public function getId()
     {
-        return 'subscriber';
+        return self::ID;
     }
 
     public function getClassName()
@@ -21,8 +23,7 @@ class Subscriber extends ListElement
 
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
-        /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
-        $datagrid = $factory->createDataGrid('subscriber');
+        $datagrid = $factory->createDataGrid($this->getId());
         $datagrid->addColumn('batch', 'batch', [
             'actions' => [
                 [
@@ -55,8 +56,11 @@ class Subscriber extends ListElement
 
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
-        /* @var $datasource \FSi\Component\DataSource\DataSource */
-        $datasource = $factory->createDataSource('doctrine', ['entity' => $this->getClassName()], 'subscriber');
+        $datasource = $factory->createDataSource(
+            'doctrine-orm',
+            ['entity' => $this->getClassName()],
+            $this->getId()
+        );
         $datasource->addField('email', 'text', 'like', [
             'sortable' => true,
             'form_options' => [

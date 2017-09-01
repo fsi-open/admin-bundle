@@ -13,6 +13,8 @@ use Doctrine\Common\Annotations\Annotation;
 
 /**
  * @Annotation
+ *
+ * @deprecated since 3.0 
  */
 final class Element extends Annotation
 {

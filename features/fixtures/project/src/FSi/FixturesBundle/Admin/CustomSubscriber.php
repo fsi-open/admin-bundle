@@ -20,17 +20,15 @@ class CustomSubscriber extends ListElement
 
     protected function initDataGrid(DataGridFactoryInterface $factory)
     {
-        /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
-        $datagrid = $factory->createDataGrid('subscriber');
-
-        return $datagrid;
+        return  $factory->createDataGrid(Subscriber::ID);
     }
 
     protected function initDataSource(DataSourceFactoryInterface $factory)
     {
-        /* @var $datasource \FSi\Component\DataSource\DataSource */
-        $datasource = $factory->createDataSource('doctrine', ['entity' => $this->getClassName()], 'subscriber');
-
-        return $datasource;
+        return $factory->createDataSource(
+            'doctrine-orm',
+            ['entity' => $this->getClassName()],
+            Subscriber::ID
+        );
     }
 }

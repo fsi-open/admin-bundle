@@ -20,7 +20,7 @@ columns:
       field_mapping: [ id ]
       actions:
         news:
-          route_name: fsi_admin_crud_list
+          route_name: fsi_admin_list
           additional_parameters:
             element: category_news # ID of dependent admin element
           parameters_field_mapping:

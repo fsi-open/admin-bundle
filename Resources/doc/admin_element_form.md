@@ -12,11 +12,6 @@ use FSi\Bundle\AdminBundle\Annotation as Admin;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\FormElement;
 use Symfony\Component\Form\FormFactoryInterface;
 
-/**
- * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
- *
- * @Admin\Element
- */
 class SubscriberFormElement extends FormElement
 {
     /**

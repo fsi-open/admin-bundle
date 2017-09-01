@@ -48,7 +48,7 @@ Following the refactoring of the Display component, following classes were remov
 Also, the [Display](Display/Display.php) interface has been changed. The `add` 
 method no longer permits empty labels and the `createView` has been removed in
 favour of `getData`. Classes implementing it should return an array of [Property](Display/Property.php)
-objects. There have new base classes introduced:
+objects. There have been new base classes introduced:
 
 - [PropertyAccessDisplay](Display/PropertyAccessDisplay.php)
 - [SimpleDisplay](Display/SimpleDisplay.php)
@@ -61,3 +61,7 @@ more information.
 If you have extended the `FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler`
 class, make sure to pass a `FlashMessage` service to it's parent constructor, otherwise you 
 may receive an exception when handling batch actions.
+
+## Do not use routes deprecated back in version 1.1
+
+Refer to [1.1 changelog](CHANGELOG-1.1.md) for information on which routes have been removed.

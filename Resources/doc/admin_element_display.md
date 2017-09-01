@@ -138,11 +138,6 @@ use FSi\Bundle\AdminBundle\Display\Property\Formatter;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DisplayElement;
 use FSi\FixturesBundle\Entity\News;
 
-/**
- * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
- *
- * @Admin\Element
- */
 class DisplayNewsElement extends DisplayElement
 {
     const ID = 'news-display';
@@ -214,7 +209,7 @@ Remember to use id of element that is returned by ``DisplayNewsElement::getId`` 
 
 ### Admin element options
 
-As with any other element, you can set options by overriding the `setDefaultOptions`
+As with any other element, you can set options by overriding the `configureOptions`
 method. Currently, only `template` option is available.
 
 ```php
@@ -223,14 +218,11 @@ method. Currently, only `template` option is available.
 
 namespace FSi\Bundle\DemoBundle\Admin;
 
-/**
- * IMPORTANT - Without "Element" annotation element will not be registered in admin elements manager!
- *
- * @Admin\Element
- */
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class DisplayNewsElement extends DisplayElement
 {
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             "template" => "@FSiAdmin/Display/display.html.twig"
