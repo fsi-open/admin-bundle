@@ -48,7 +48,7 @@ Following the refactoring of the Display component, following classes were remov
 Also, the [Display](Display/Display.php) interface has been changed. The `add` 
 method no longer permits empty labels and the `createView` has been removed in
 favour of `getData`. Classes implementing it should return an array of [Property](Display/Property.php)
-objects. There have new base classes introduced:
+objects. There have been new base classes introduced:
 
 - [PropertyAccessDisplay](Display/PropertyAccessDisplay.php)
 - [SimpleDisplay](Display/SimpleDisplay.php)
