@@ -48,7 +48,4 @@ before_script:
 
 script:
     - bin/phpspec run --format=pretty
-    - bin/behat --no-snippets --format=progress --profile=travis
-
-notifications:
-    irc: "irc.freenode.org#fsi-open"
+    - bin/behat --no-snippets --profile=travis -vvv
