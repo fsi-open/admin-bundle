@@ -65,3 +65,7 @@ may receive an exception when handling batch actions.
 ## Do not use routes deprecated back in version 1.1
 
 Refer to [1.1 changelog](CHANGELOG-1.1.md) for information on which routes have been removed.
+
+## Upgrade to PHP 7.1 or higher
+
+In order to use this bundle, you will need PHP 7.1 or higher.

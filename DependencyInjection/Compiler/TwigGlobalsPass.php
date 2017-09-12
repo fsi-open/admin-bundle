@@ -14,9 +14,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class TwigGlobalsPass implements CompilerPassInterface
 {
-    /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition('twig')) {
@@ -24,10 +21,10 @@ class TwigGlobalsPass implements CompilerPassInterface
         }
 
         $parameters = [
-            'admin_templates_base'                => $container->getParameter('admin.templates.base'),
-            'admin_templates_form_theme'          => $container->getParameter('admin.templates.form_theme'),
-            'admin_templates_datagrid_theme'      => $container->getParameter('admin.templates.datagrid_theme'),
-            'admin_templates_datasource_theme'    => $container->getParameter('admin.templates.datasource_theme'),
+            'admin_templates_base' => $container->getParameter('admin.templates.base'),
+            'admin_templates_form_theme' => $container->getParameter('admin.templates.form_theme'),
+            'admin_templates_datagrid_theme' => $container->getParameter('admin.templates.datagrid_theme'),
+            'admin_templates_datasource_theme' => $container->getParameter('admin.templates.datasource_theme'),
         ];
 
         $twig = $container->findDefinition('twig');

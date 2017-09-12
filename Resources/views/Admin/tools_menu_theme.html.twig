@@ -5,4 +5,4 @@
     {{ block('list') -}}
 {% endblock %}
 
-{% block label %}{{ item.label|trans({}, 'FSiAdminBundle') }}{% endblock %}
+{% block label item.label|trans({}, 'FSiAdminBundle') %}
