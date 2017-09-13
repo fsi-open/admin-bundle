@@ -14,9 +14,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 class ManagerVisitorPass implements CompilerPassInterface
 {
-    /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition('admin.manager')) {
@@ -24,7 +21,7 @@ class ManagerVisitorPass implements CompilerPassInterface
         }
 
         $elementServices = $container->findTaggedServiceIds('admin.manager.visitor');
-        foreach ($elementServices as $id => $tag) {
+        foreach (array_keys($elementServices) as $id) {
             $visitor = $container->findDefinition($id);
 
             $container->findDefinition('admin.manager')->addMethodCall('accept', [$visitor]);

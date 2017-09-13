@@ -8,32 +8,23 @@ cache:
         - bin
         - vendor
 
+addons:
+    firefox: "47.0.1"
+
 matrix:
     include:
-        - php: 5.4
+        - php: 7.1
           env:
               - COMPOSER_FLAGS='--prefer-lowest'
-        - php: 5.5
-        - php: 5.6
-          env:
-              - SYMFONY_VERSION=2.6.*
-        - php: 5.6
-          env:
-              - SYMFONY_VERSION=2.7.*
-        - php: 5.6
-          env:
-              - SYMFONY_VERSION=2.8.*
-        - php: 5.6
-        - php: 7.0
         - php: 7.1
 
 before_install:
-    - phpenv config-rm xdebug.ini || true
+    - phpenv config-rm xdebug.ini
     - if [[ $SYMFONY_VERSION ]]; then composer require symfony/symfony:${SYMFONY_VERSION} -n --no-update; fi;
     # Avoid issues on composer update
     - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     - composer update $COMPOSER_FLAGS
-    - "[ ! -f bin/selenium.jar ] && wget wget -O bin/selenium.jar http://selenium-release.storage.googleapis.com/2.50/selenium-server-standalone-2.50.1.jar || true"
+    - wget --no-clobber -O bin/selenium.jar http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar || true
 
 before_script:
     - nohup php -S localhost:8080 -t features/fixtures/project/web > /dev/null 2>&1 &
@@ -46,6 +37,3 @@ before_script:
 script:
     - bin/phpspec run --format=pretty
     - bin/behat --no-snippets --format=progress --profile=travis
-
-notifications:
-    irc: "irc.freenode.org#fsi-open"

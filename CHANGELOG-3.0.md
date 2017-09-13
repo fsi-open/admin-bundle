@@ -176,3 +176,8 @@ it has became redundant and will be removed.
 ## Dropped routes deprecated back in 1.1
 
 Refer to [1.1 changelog](CHANGELOG-1.1.md) for information on which routes have been removed.
+
+## Dropped support for PHP below 7.1
+
+To be able to fully utilize new functionality introduced in 7.1, we have decided
+to only support PHP versions equal or higher to it.

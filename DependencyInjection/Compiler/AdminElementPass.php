@@ -23,13 +23,15 @@ class AdminElementPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('admin.manager') || !$container->has('admin.manager.visitor.element_collection')) {
+        if (!$container->hasDefinition('admin.manager')
+            || !$container->has('admin.manager.visitor.element_collection')
+        ) {
             return;
         }
 
         $elements = [];
         $elementServices = $container->findTaggedServiceIds('admin.element');
-        foreach ($elementServices as $id => $tag) {
+        foreach (array_keys($elementServices) as $id) {
             $elements[] = new Reference($id);
         }
 

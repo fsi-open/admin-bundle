@@ -1,9 +1,10 @@
 {% extends 'knp_menu.html.twig' %}
 
-{% block label %}{{ item.label|trans|humanize }}{% endblock %}
+{% import "knp_menu.html.twig" as macros %}
+
+{% block label item.label|trans|humanize %}
 
 {% block item %}
-{% import "knp_menu.html.twig" as macros %}
 {% if item.displayed %}
     {# building the class of the item #}
     {%- set classes = item.attribute('class') is not empty ? [item.attribute('class')] : [] %}

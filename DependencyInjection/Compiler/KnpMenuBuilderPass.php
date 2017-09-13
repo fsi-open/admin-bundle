@@ -14,9 +14,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 class KnpMenuBuilderPass implements CompilerPassInterface
 {
-    /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition('admin.menu.knp.decorator.chain')) {
@@ -26,7 +23,7 @@ class KnpMenuBuilderPass implements CompilerPassInterface
         $decoratorServices = $container->findTaggedServiceIds('admin.menu.knp_decorator');
 
         $decorators = [];
-        foreach ($decoratorServices as $id => $tag) {
+        foreach (array_keys($decoratorServices) as $id) {
             $decorators[] = $container->findDefinition($id);
         }
 
