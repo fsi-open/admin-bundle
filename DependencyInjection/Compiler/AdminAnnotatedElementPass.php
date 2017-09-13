@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -18,10 +20,11 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
+/**
+ * @deprecated since 3.0
+ */
 class AdminAnnotatedElementPass implements CompilerPassInterface
 {
-    const ANNOTATION_CLASS = 'FSi\\Bundle\\AdminBundle\\Annotation\\Element';
-
     /**
      * @var AnnotationReader
      */
@@ -38,23 +41,20 @@ class AdminAnnotatedElementPass implements CompilerPassInterface
         $this->adminClassFinder = $adminClassFinder;
     }
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $paths = $this->getBundlesAdminPaths($container);
 
-        $annotatedAdminClassess = $this->findAnnotatedAdminClasses($paths);
+        $annotatedAdminClasses = $this->findAnnotatedAdminClasses($paths);
         $adminElementsDefinitions = [];
-        foreach ($annotatedAdminClassess as $adminClass) {
+        foreach ($annotatedAdminClasses as $adminClass) {
             $adminElementsDefinitions[] = $this->createAdminElementDefinition($adminClass);
         }
+
         $container->addDefinitions($adminElementsDefinitions);
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @return array
-     */
-    private function getBundlesAdminPaths(ContainerBuilder $container)
+    private function getBundlesAdminPaths(ContainerBuilder $container): array
     {
         $bundleClasses = $container->getParameter('kernel.bundles');
         $paths = [];
@@ -69,11 +69,7 @@ class AdminAnnotatedElementPass implements CompilerPassInterface
         return $paths;
     }
 
-    /**
-     * @param $class
-     * @return Definition
-     */
-    private function createAdminElementDefinition($class)
+    private function createAdminElementDefinition(string $class): Definition
     {
         $definition = new Definition($class);
         $definition->addTag('admin.element');
@@ -81,21 +77,17 @@ class AdminAnnotatedElementPass implements CompilerPassInterface
         return $definition;
     }
 
-    /**
-     * @param array $paths
-     * @return array
-     */
-    private function findAnnotatedAdminClasses(array $paths)
+    private function findAnnotatedAdminClasses(array $paths): array
     {
         $annotatedAdminClasses = [];
 
         foreach ($this->adminClassFinder->findClasses($paths) as $class) {
             $annotation = $this->annotationReader->getClassAnnotation(
                 new ReflectionClass($class),
-                self::ANNOTATION_CLASS
+                Element::class
             );
 
-            if (isset($annotation) && $annotation instanceof Element) {
+            if ($annotation instanceof Element) {
                 $annotatedAdminClasses[] = $class;
             }
         }

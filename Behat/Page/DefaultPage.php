@@ -7,11 +7,13 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 class DefaultPage extends Page
 {
-    protected function verifyPage()
+    protected function verifyPage(): void
     {
     }
 }

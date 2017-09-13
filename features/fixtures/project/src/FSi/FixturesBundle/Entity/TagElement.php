@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -29,56 +31,33 @@ class TagElement
     protected $name;
 
     /**
-     * @var News
+     * @var Tag
      *
      * @ORM\ManyToOne(targetEntity="Tag", inversedBy="elements")
      */
     protected $tag;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name)
+    public function setName(?string $name)
     {
         $this->name = $name;
     }
 
-    /**
-     * @return News
-     */
-    public function getTag()
+    public function getTag(): ?Tag
     {
         return $this->tag;
     }
 
-    /**
-     * @param News $tag
-     */
-    public function setTag($tag = null)
+    public function setTag(?Tag $tag): void
     {
         $this->tag = $tag;
     }

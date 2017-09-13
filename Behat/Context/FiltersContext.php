@@ -7,10 +7,15 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement as AdminListElement;
+use FSi\Bundle\AdminBundle\Behat\Element\Filters;
+use FSi\Bundle\AdminBundle\Behat\Element\ListElement;
+use FSi\Bundle\AdminBundle\Behat\Element\ListResultsElement;
 use FSi\Bundle\AdminBundle\Behat\Page\DefaultPage;
 use FSi\Component\DataSource\DataSourceInterface;
 
@@ -34,7 +39,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^("[^"]*" element) datasource max results is set (\d+)$/
      */
-    public function elementDatasourceMaxResultsIsSet(ListElement $adminElement, $maxResults)
+    public function elementDatasourceMaxResultsIsSet(AdminListElement $adminElement, $maxResults)
     {
         expect($this->getDataSource($adminElement)->getMaxResults())->toBe($maxResults);
         $this->clearDataSource($adminElement);
@@ -43,7 +48,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^("[^"]*" element) has datasource with fields$/
      */
-    public function elementHaveDatasourceWithFields(ListElement $adminElement)
+    public function elementHaveDatasourceWithFields(AdminListElement $adminElement)
     {
         $dataSource = $this->getDataSource($adminElement);
 
@@ -54,7 +59,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^("[^"]*" element) has datasource without filters$/
      */
-    public function elementHaveDatasourceWithoutFilters(ListElement $adminElement)
+    public function elementHaveDatasourceWithoutFilters(AdminListElement $adminElement)
     {
         $dataSource = $this->getDataSource($adminElement);
 
@@ -101,7 +106,7 @@ class FiltersContext extends AbstractContext
                 expect($list->isColumnDescSortActive($column))->toBe(false);
                 break;
             default :
-                throw new \Exception(sprintf("Unknown sorting type %s", $sort));
+                throw new \LogicException(sprintf('Unknown sorting type %s', $sort));
         }
     }
 
@@ -120,16 +125,16 @@ class FiltersContext extends AbstractContext
                 expect($list->isColumnDescSortActive($column))->toBe(true);
                 break;
             default :
-                throw new \Exception(sprintf("Unknown sorting type %s", $sort));
+                throw new \LogicException(sprintf('Unknown sorting type %s', $sort));
         }
     }
 
     /**
      * @When /^I change elements per page to (\d+)$/
      */
-    public function iChangeElementsPerPageTo($elemetsCount)
+    public function iChangeElementsPerPageTo($elementsCount)
     {
-        $this->getListResultsElement()->setElementsPerPage($elemetsCount);
+        $this->getListResultsElement()->setElementsPerPage((int) $elementsCount);
     }
 
     /**
@@ -227,10 +232,10 @@ class FiltersContext extends AbstractContext
     }
 
     /**
-     * @param ListElement $adminElement
+     * @param AdminListElement $adminElement
      * @return DataSourceInterface
      */
-    private function getDataSource(ListElement $adminElement)
+    private function getDataSource(AdminListElement $adminElement)
     {
         if (!isset($this->datasources[$adminElement->getId()])) {
             $this->datasources[$adminElement->getId()] = $adminElement->createDataSource();
@@ -239,25 +244,22 @@ class FiltersContext extends AbstractContext
         return $this->datasources[$adminElement->getId()];
     }
 
-    /**
-     * @param ListElement $element
-     */
-    private function clearDataSource(ListElement $element)
+    private function clearDataSource(AdminListElement $element): void
     {
         $this->getContainer()->get('datasource.factory')->clearDataSource($element->getId());
     }
 
-    private function getFiltersElement()
+    private function getFiltersElement(): Filters
     {
         return $this->defaultPage->getElement('Filters');
     }
 
-    private function getListElement()
+    private function getListElement(): ListElement
     {
         return $this->defaultPage->getElement('ListElement');
     }
 
-    private function getListResultsElement()
+    private function getListResultsElement(): ListResultsElement
     {
         return $this->defaultPage->getElement('ListResultsElement');
     }

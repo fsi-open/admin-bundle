@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * (c) FSi sp. z o.o. <info@fsi.pl>
  *
@@ -35,7 +37,7 @@ class ListContext extends AbstractContext
     /**
      * @beforeScenario
      */
-    public function clearSelectedRows()
+    public function clearSelectedRows(): void
     {
         $this->selectedRows = [];
     }
@@ -226,10 +228,7 @@ class ListContext extends AbstractContext
         $session->wait(1000, 'jQuery(".popover").length === 0');
     }
 
-    /**
-     * @return ListElement
-     */
-    private function getListElement()
+    private function getListElement(): ListElement
     {
         return $this->defaultPage->getElement('ListElement');
     }

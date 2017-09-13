@@ -45,7 +45,7 @@ class GenericCRUDElementSpec extends ObjectBehavior
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(new RuntimeException("initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface"))
+        $this->shouldThrow(\TypeError::class)
             ->during('createDataGrid');
     }
 
@@ -77,7 +77,7 @@ class GenericCRUDElementSpec extends ObjectBehavior
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(new RuntimeException("initDataSource should return instanceof FSi\\Component\\DataSource\\DataSourceInterface"))
+        $this->shouldThrow(\TypeError::class)
             ->during('createDataSource');
     }
 
@@ -86,7 +86,7 @@ class GenericCRUDElementSpec extends ObjectBehavior
         $this->setFormFactory($factory);
         $factory->create(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface"))
+        $this->shouldThrow(\TypeError::class)
             ->during('createForm', [null]);
     }
 

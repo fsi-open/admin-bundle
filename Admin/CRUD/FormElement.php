@@ -7,30 +7,29 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 interface FormElement extends DataIndexerElement, RedirectableElement
 {
     /**
      * @param mixed $data
-     * @return \Symfony\Component\Form\Form|null
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
+     * @return FormInterface|null
      */
-    public function createForm($data = null);
+    public function createForm($data = null): FormInterface;
+
+    public function setFormFactory(FormFactoryInterface $factory): void;
 
     /**
-     * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     */
-    public function setFormFactory(FormFactoryInterface $factory);
-
-    /**
-     * This method is called from FormController after form validation is passed in edit and create action.
-     * Mostly this method should save updated object in database.
+     * This method is called after successful form submission and validation in edit and create action.
+     * Mostly this method should create or update the object in your persistence layer.
      *
-     * @param mixed $object
+     * @param mixed $data
      */
-    public function save($object);
+    public function save($data): void;
 }

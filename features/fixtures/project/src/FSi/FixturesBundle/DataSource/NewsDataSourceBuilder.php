@@ -7,13 +7,15 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\DataSource;
 
 use FSi\Component\DataSource\DataSourceInterface;
 
 class NewsDataSourceBuilder
 {
-    public static function buildNewsDataSource(DataSourceInterface $datasource)
+    public static function buildNewsDataSource(DataSourceInterface $datasource): DataSourceInterface
     {
         $datasource->addField('title', 'text', 'like', [
             'sortable' => false,

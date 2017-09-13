@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Factory\Worker;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
@@ -22,10 +24,7 @@ class RequestStackWorker implements Worker
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function mount(Element $element)
+    public function mount(Element $element): void
     {
         if ($element instanceof RequestStackAware) {
             $element->setRequestStack($this->requestStack);

@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
@@ -14,57 +16,29 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class GenericResourceElement extends AbstractElement implements Element
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoute()
+    public function getRoute(): string
     {
         return 'fsi_admin_resource';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRouteParameters()
-    {
-        return [
-            'element' => $this->getId(),
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSuccessRoute()
+    public function getSuccessRoute(): string
     {
         return $this->getRoute();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSuccessRouteParameters()
+    public function getSuccessRouteParameters(): array
     {
         return $this->getRouteParameters();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getKey();
+    abstract public function getKey(): string;
 
-    /**
-     * @return array
-     */
-    public function getResourceFormOptions()
+    public function getResourceFormOptions(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'template' => null,

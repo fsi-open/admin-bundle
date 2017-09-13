@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Menu\Item;
 
 class RoutableItem extends Item
@@ -23,10 +25,10 @@ class RoutableItem extends Item
 
     /**
      * @param string $name
-     * @param $route
-     * @param $routeParameters
+     * @param string $route
+     * @param array $routeParameters
      */
-    public function __construct($name, $route = null, $routeParameters = [])
+    public function __construct($name, ?string $route = null, array $routeParameters = [])
     {
         parent::__construct($name);
 
@@ -34,18 +36,12 @@ class RoutableItem extends Item
         $this->routeParameters = $routeParameters;
     }
 
-    /**
-     * @return string
-     */
-    public function getRoute()
+    public function getRoute(): string
     {
         return $this->route;
     }
 
-    /**
-     * @return array
-     */
-    public function getRouteParameters()
+    public function getRouteParameters(): array
     {
         return $this->routeParameters;
     }

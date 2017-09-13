@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Display\Property\Formatter;
 
 use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
@@ -21,7 +23,7 @@ class DateTime implements ValueFormatter
     /**
      * @param string $format
      */
-    public function __construct($format = 'Y-m-d H:i:s')
+    public function __construct(string $format = 'Y-m-d H:i:s')
     {
         $this->format = $format;
     }

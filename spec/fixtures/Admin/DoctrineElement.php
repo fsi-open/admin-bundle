@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\spec\fixtures\Admin;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -18,10 +20,6 @@ class DoctrineElement extends SimpleAdminElement
      */
     private $registry;
 
-    /**
-     * @param ManagerRegistry $registry
-     * @return mixed
-     */
     public function setManagerRegistry(ManagerRegistry $registry)
     {
         $this->registry = $registry;

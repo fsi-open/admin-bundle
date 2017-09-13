@@ -7,30 +7,21 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 
 interface Element extends RedirectableElement
 {
-    /**
-     * @return string
-     */
-    public function getKey();
+    public function getKey(): string;
 
-    /**
-     * @return array
-     */
-    public function getResourceFormOptions();
+    public function getResourceFormOptions(): array;
 
-    /**
-     * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue $resource
-     */
-    public function save(ResourceValue $resource);
+    public function save(ResourceValue $resource): void;
 
-    /**
-     * @return \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository
-     */
-    public function getRepository();
+    public function getResourceValueRepository(): ResourceValueRepository;
 }

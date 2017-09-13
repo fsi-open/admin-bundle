@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,53 +20,25 @@ interface Element
      * - http://example.com/admin/list/{name}
      * - http://example.com/admin/form/{name}
      * etc.
-     *
-     * @return string
      */
-    public function getId();
+    public function getId(): string;
 
     /**
      * Return route name that will be used to generate element url in menu.
-     *
-     * @return string
      */
-    public function getRoute();
+    public function getRoute(): string;
 
     /**
      * Return array of parameters.
-     * Element id always exists in this array under element key.
-     *
-     * @return mixed
+     * Element id always exists in this array under 'element' key.
      */
-    public function getRouteParameters();
+    public function getRouteParameters(): array;
 
-    /**
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
-     * @return mixed
-     */
-    public function configureOptions(OptionsResolver $resolver);
+    public function configureOptions(OptionsResolver $resolver): void;
 
-    /**
-     * Get option by name.
-     *
-     * @param string $name
-     * @return mixed
-     * @throws \FSi\Bundle\AdminBundle\Exception\MissingOptionException
-     */
-    public function getOption($name);
+    public function getOption(string $name);
 
-    /**
-     * Get options array.
-     *
-     * @return array
-     */
-    public function getOptions();
+    public function getOptions(): array;
 
-    /**
-     * Check if option exists.
-     *
-     * @param string $name
-     * @return boolean
-     */
-    public function hasOption($name);
+    public function hasOption($name): bool;
 }

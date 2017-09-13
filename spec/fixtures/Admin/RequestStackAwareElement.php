@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\spec\fixtures\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\RequestStackAware;
@@ -14,12 +16,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestStackAwareElement extends SimpleAdminElement implements RequestStackAware
 {
+    /**
+     * @var RequestStack
+     */
     private $requestStack;
 
-    /**
-     * @param RequestStack $requestStack
-     */
-    public function setRequestStack(RequestStack $requestStack)
+    public function setRequestStack(RequestStack $requestStack): void
     {
         $this->requestStack = $requestStack;
     }

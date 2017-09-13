@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -79,7 +81,7 @@ class FormContext extends AbstractContext
      */
     public function transformToNoneditableCollection($collectionNames)
     {
-        return $this->defaultPage->getNoneditableCollection($collectionNames);
+        return $this->defaultPage->getNonEditableCollection($collectionNames);
     }
 
     /**
@@ -156,10 +158,7 @@ class FormContext extends AbstractContext
              ->find('css', '.collection-remove')->click();
     }
 
-    /**
-     * @return Form
-     */
-    private function getFormElement()
+    private function getFormElement(): Form
     {
         return $this->defaultPage->getElement('Form');
     }

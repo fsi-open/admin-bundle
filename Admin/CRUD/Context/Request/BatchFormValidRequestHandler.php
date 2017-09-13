@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractFormValidRequestHandler;
@@ -20,7 +22,6 @@ use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use LogicException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -31,25 +32,17 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
      */
     private $flashMessages;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param RouterInterface $router
-     * @param FlashMessages|null
-     */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         RouterInterface $router,
         FlashMessages $flashMessages
     ) {
         parent::__construct($eventDispatcher, $router);
+
         $this->flashMessages = $flashMessages;
     }
 
-    /**
-     * @param FormEvent $event
-     * @param Request $request
-     */
-    protected function action(FormEvent $event, Request $request)
+    protected function action(FormEvent $event, Request $request): void
     {
         /** @var BatchElement $element */
         $element = $event->getElement();
@@ -61,12 +54,10 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         }
 
         foreach ($objects as $object) {
-            $preEvent = $this->eventDispatcher->dispatch(
-                BatchEvents::BATCH_OBJECT_PRE_APPLY,
-                new BatchPreApplyEvent($element, $request, $object)
-            );
+            $preEvent = new BatchPreApplyEvent($element, $request, $object);
+            $this->eventDispatcher->dispatch(BatchEvents::BATCH_OBJECT_PRE_APPLY, $preEvent);
 
-            if ($this->shouldSkip($preEvent)) {
+            if ($preEvent->shouldSkip()) {
                 continue;
             }
 
@@ -79,25 +70,19 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         }
     }
 
-    /**
-     * @param BatchElement $element
-     * @param Request $request
-     * @return array
-     * @throws RequestHandlerException
-     */
-    private function getObjects(BatchElement $element, Request $request)
+    private function getObjects(BatchElement $element, Request $request): array
     {
         $objects = [];
         $indexes = $request->request->get('indexes', []);
 
-        if (!count($indexes)) {
+        if (!is_array($indexes) || !count($indexes)) {
             return [];
         }
 
         foreach ($indexes as $index) {
             $object = $element->getDataIndexer()->getData($index);
 
-            if (!isset($object)) {
+            if (null === $object) {
                 throw new RequestHandlerException(sprintf("Can't find object with id %s", $index));
             }
 
@@ -107,12 +92,7 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         return $objects;
     }
 
-    /**
-     * @param FormEvent $event
-     * @param Request $request
-     * @return bool
-     */
-    protected function isValidPostRequest(FormEvent $event, Request $request)
+    protected function isValidPostRequest(FormEvent $event, Request $request): bool
     {
         $element = $event->getElement();
         if ($element instanceof DeleteElement
@@ -128,46 +108,13 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         return parent::isValidPostRequest($event, $request);
     }
 
-    /**
-     * @param FormEvent $event
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    protected function getRedirectResponse(FormEvent $event, Request $request)
-    {
-        if ($request->query->has('redirect_uri')) {
-            return new RedirectResponse($request->query->get('redirect_uri'));
-        }
-
-        return parent::getRedirectResponse($event, $request);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getPreSaveEventName()
+    protected function getPreSaveEventName(): string
     {
         return BatchEvents::BATCH_OBJECTS_PRE_APPLY;
     }
 
-    /**
-     * @return string
-     */
-    protected function getPostSaveEventName()
+    protected function getPostSaveEventName(): string
     {
         return BatchEvents::BATCH_OBJECTS_POST_APPLY;
-    }
-
-    /**
-     * @param BatchPreApplyEvent $event
-     * @return boolean
-     */
-    private function shouldSkip($event)
-    {
-        if (!($event instanceof BatchPreApplyEvent)) {
-            return false;
-        }
-
-        return $event->shouldSkip();
     }
 }

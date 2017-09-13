@@ -34,7 +34,6 @@
         </service>
 
         <service id="admin.menu.knp.decorator.elements" class="%admin.menu.knp.decorator.elements.class%">
-            <argument type="service" id="router" />
             <tag name="admin.menu.knp_decorator" />
         </service>
 

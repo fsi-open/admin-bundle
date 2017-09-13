@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -14,7 +16,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 class ContextPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('admin.context.manager')) {
             return;
@@ -22,7 +24,7 @@ class ContextPass implements CompilerPassInterface
 
         $contexts = [];
         foreach ($container->findTaggedServiceIds('admin.context') as $id => $tags) {
-            $priority = isset($tags[0]['priority']) ? $tags[0]['priority'] : 0;
+            $priority = $tags[0]['priority'] ?? 0;
             $contexts[$priority][] = $container->findDefinition($id);
         }
 
@@ -30,7 +32,7 @@ class ContextPass implements CompilerPassInterface
             return;
         }
         krsort($contexts);
-        $contexts = call_user_func_array('array_merge', $contexts);
+        $contexts = array_merge(...$contexts);
 
         $container->findDefinition('admin.context.manager')->replaceArgument(0, $contexts);
     }

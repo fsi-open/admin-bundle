@@ -112,9 +112,7 @@ class DependentCRUDElementSpec extends ObjectBehavior
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(
-            new RuntimeException("initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface")
-        )->during('createDataGrid');
+        $this->shouldThrow(\TypeError::class)->during('createDataGrid');
     }
 
     function it_adds_batch_column_to_datagrid_when_element_allow_delete_objects(
@@ -145,11 +143,7 @@ class DependentCRUDElementSpec extends ObjectBehavior
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(
-            new RuntimeException(
-                "initDataSource should return instanceof FSi\\Component\\DataSource\\DataSourceInterface"
-            )
-        )->during('createDataSource');
+        $this->shouldThrow(\TypeError::class)->during('createDataSource');
     }
 
     function it_throws_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory)
@@ -157,9 +151,7 @@ class DependentCRUDElementSpec extends ObjectBehavior
         $this->setFormFactory($factory);
         $factory->create(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(
-            new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface")
-        )->during('createForm', [null]);
+        $this->shouldThrow(\TypeError::class)->during('createForm', [null]);
     }
 
     function it_has_default_options_values()

@@ -7,28 +7,31 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DeleteElement;
+use FSi\FixturesBundle\Entity;
 
 class SubscriberDelete extends DeleteElement
 {
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\FixturesBundle\Entity\Subscriber';
+        return Entity\Subscriber::class;
     }
 
-    public function getId()
+    public function getId(): string
     {
         return 'subscriber_delete';
     }
 
-    public function getSuccessRoute()
+    public function getSuccessRoute(): string
     {
         return 'fsi_admin_list';
     }
 
-    public function getSuccessRouteParameters()
+    public function getSuccessRouteParameters(): array
     {
         return ['element' => 'subscriber'];
     }

@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
@@ -16,25 +18,18 @@ use Symfony\Component\HttpFoundation\Request;
 class FormEvent extends AdminEvent
 {
     /**
-     * @var \Symfony\Component\Form\FormInterface
+     * @var FormInterface
      */
     protected $form;
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\Form\FormInterface $form
-     */
     public function __construct(Element $element, Request $request, FormInterface $form)
     {
         parent::__construct($element, $request);
+
         $this->form = $form;
     }
 
-    /**
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    public function getForm()
+    public function getForm(): FormInterface
     {
         return $this->form;
     }

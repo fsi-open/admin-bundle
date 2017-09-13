@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
@@ -14,9 +16,9 @@ use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 interface BatchElement extends DataIndexerElement, RedirectableElement
 {
     /**
-     * This method is called from BatchController after action is confirmed.
+     * This method is called during batch action for every single data item.
      *
-     * @param mixed $object
+     * @param mixed $data
      */
-    public function apply($object);
+    public function apply($data): void;
 }

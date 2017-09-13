@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Entity;
 
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,7 +43,7 @@ class News
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $visible;
+    protected $visible = false;
 
     /**
      * @ORM\Column(type="datetime", name="created_at")
@@ -85,134 +88,77 @@ class News
         $this->tags = new ArrayCollection();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     * @return News
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @param mixed $createdAt
-     */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param mixed $creatorEmail
-     */
-    public function setCreatorEmail($creatorEmail)
+    public function setCreatorEmail(?string $creatorEmail): void
     {
         $this->creatorEmail = $creatorEmail;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCreatorEmail()
+    public function getCreatorEmail(): ?string
     {
         return $this->creatorEmail;
     }
 
-    /**
-     * @param mixed $title
-     */
-    public function setTitle($title)
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param mixed $subtitle
-     */
-    public function setSubtitle($subtitle)
+    public function setSubtitle(?string $subtitle): void
     {
         $this->subtitle = $subtitle;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSubtitle()
+    public function getSubtitle(): ?string
     {
         return $this->subtitle;
     }
 
-    /**
-     * @param mixed $date
-     */
-    public function setDate($date)
+    public function setDate(?DateTimeInterface $date): void
     {
         $this->date = $date;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDate()
+    public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
-    /**
-     * @param mixed $visible
-     * @return News
-     */
-    public function setVisible($visible)
+    public function setVisible(bool $visible): void
     {
-        $this->visible = (boolean) $visible;
-        return $this;
+        $this->visible = $visible;
     }
 
-    /**
-     * @return mixed
-     */
-    public function isVisible()
+    public function isVisible(): bool
     {
         return $this->visible;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPhotoKey()
+    public function getPhotoKey(): ?string
     {
         return $this->photoKey;
     }
 
-    /**
-     * @param mixed $photoKey
-     */
-    public function setPhotoKey($photoKey)
+    public function setPhotoKey(?string $photoKey): void
     {
         $this->photoKey = $photoKey;
     }
@@ -228,41 +174,38 @@ class News
     /**
      * @param \FSi\DoctrineExtensions\Uploadable\File|\SplFileInfo $photo
      */
-    public function setPhoto($photo)
+    public function setPhoto($photo): void
     {
         $this->photo = $photo;
     }
 
-    public function addCategory(Category $category)
+    public function addCategory(Category $category): void
     {
         $this->categories->add($category);
     }
 
-    public function removeCategory(Category $category)
+    public function removeCategory(Category $category): void
     {
         $this->categories->removeElement($category);
     }
 
     /**
-     * @return Category[]|array
+     * @return Category[]
      */
-    public function getCategories()
+    public function getCategories(): array
     {
         return $this->categories->toArray();
     }
 
     /**
-     * @return Tag[]|ArrayCollection
+     * @return Tag[]|Collection
      */
-    public function getTags()
+    public function getTags(): Collection
     {
         return $this->tags;
     }
 
-    /**
-     * @param Tag $tag
-     */
-    public function addTag(Tag $tag)
+    public function addTag(Tag $tag): void
     {
         if (!$this->tags->contains($tag)) {
             $tag->setNews($this);
@@ -270,16 +213,13 @@ class News
         }
     }
 
-    /**
-     * @param Tag $tag
-     */
-    public function removeTag(Tag $tag)
+    public function removeTag(Tag $tag): void
     {
         $tag->setNews(null);
         $this->tags->removeElement($tag);
     }
 
-    public function setTags(array $tags)
+    public function setTags(array $tags): void
     {
         $this->tags = new ArrayCollection($tags);
     }

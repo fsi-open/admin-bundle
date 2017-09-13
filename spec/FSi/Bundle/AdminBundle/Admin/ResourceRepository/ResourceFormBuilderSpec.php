@@ -30,7 +30,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         ]);
         $resource->getName()->willReturn('resources.resource_key');
 
-        $element->getRepository()->willReturn($valueRepository);
+        $element->getResourceValueRepository()->willReturn($valueRepository);
         $element->getResourceFormOptions()->willReturn(['form_options']);
 
         $this->beConstructedWith($formFactory, $mapBuilder);

@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
@@ -15,7 +17,7 @@ class Display extends Element
 {
     protected $selector = ['css' => 'table.table.table-bordered'];
 
-    public function hasFieldWithName($fieldName)
+    public function hasFieldWithName($fieldName): bool
     {
         return ($this->find('css', sprintf('tr td:first-child:contains("%s")', $fieldName)) !== null);
     }

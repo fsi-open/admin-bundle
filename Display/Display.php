@@ -7,19 +7,16 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Display;
 
 interface Display
 {
-    /**
-     * @param mixed $value
-     * @param string $label
-     * @param \FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[]|null $valueFormatters
-     */
-    public function add($value, $label, array $valueFormatters = []);
+    public function add($value, ?string $label = null, array $valueFormatters = []): self;
 
     /**
-     * @return \FSi\Bundle\AdminBundle\Display\Property[]|array
+     * @return Property[]
      */
-    public function getData();
+    public function getData(): array;
 }

@@ -4,6 +4,7 @@ namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\DeleteElement;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
@@ -60,9 +61,9 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     function it_throw_exception_for_non_redirectable_element(
         FormEvent $formEvent,
         Request $request,
-        stdClass $object
+        Element $genericElement
     ) {
-        $formEvent->getElement()->willReturn($object);
+        $formEvent->getElement()->willReturn($genericElement);
 
         $this->shouldThrow(new RequestHandlerException(
             "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler requires RedirectableElement"

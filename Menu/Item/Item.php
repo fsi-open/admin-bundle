@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Menu\Item;
 
 use FSi\Bundle\AdminBundle\Exception\MissingOptionException;
@@ -14,7 +23,7 @@ class Item
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $label;
 
@@ -28,10 +37,7 @@ class Item
      */
     private $options;
 
-    /**
-     * @param string|null $name
-     */
-    public function __construct($name = null)
+    public function __construct(?string $name = null)
     {
         $this->children = [];
         $this->name = $name;
@@ -39,85 +45,68 @@ class Item
         $this->setOptions([]);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): ?string
     {
         return $this->label;
     }
 
-    /**
-     * @param string $label
-     */
-    public function setLabel($label)
+    public function setLabel(?string $label): void
     {
         $this->label = $label;
     }
 
-    /**
-     * @param Item $item
-     */
-    public function addChild(Item $item)
+    public function addChild(Item $item): void
     {
         $this->children[$item->getName()] = $item;
     }
 
-    /**
-     * @param string $name
-     */
-    public function removeChild($name)
+    public function removeChild(string $name): void
     {
         if (isset($this->children[$name])) {
             unset($this->children[$name]);
         }
     }
 
-    /**
-     * @return bool
-     */
-    public function hasChildren()
+    public function hasChildren(): bool
     {
-        return (boolean) count($this->children);
+        return (bool) count($this->children);
     }
 
     /**
      * @return Item[]
      */
-    public function getChildren()
+    public function getChildren(): array
     {
         return $this->children;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name;
     }
 
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         $optionsResolver = new OptionsResolver();
         $this->configureOptions($optionsResolver);
         $this->options = $optionsResolver->resolve($options);
     }
 
-    public function hasOption($name)
+    public function hasOption(string $name): bool
     {
         return array_key_exists($name, $this->options);
     }
 
-    public function getOption($name)
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getOption(string $name)
     {
         if (!$this->hasOption($name)) {
             throw new MissingOptionException(sprintf('Option with name: "%s" does\'t exists.', $name));
@@ -126,12 +115,12 @@ class Item
         return $this->options[$name];
     }
 
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
 
-    protected function configureOptions(OptionsResolver $optionsResolver)
+    protected function configureOptions(OptionsResolver $optionsResolver): void
     {
         $optionsResolver->setDefaults([
             'attr' => [],

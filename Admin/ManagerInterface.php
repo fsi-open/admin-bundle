@@ -7,43 +7,26 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\Manager\Visitor;
 
 interface ManagerInterface
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     * @return \FSi\Bundle\AdminBundle\Admin\Manager
-     */
-    public function addElement(Element $element);
+    public function addElement(Element $element): void;
+
+    public function hasElement(string $id): bool;
+
+    public function getElement(string $id): Element;
+
+    public function removeElement(string $id): void;
 
     /**
-     * @param string $id
-     * @return bool
+     * @return Element[]
      */
-    public function hasElement($id);
+    public function getElements(): array;
 
-    /**
-     * @param string $id
-     * @return \FSi\Bundle\AdminBundle\Admin\Element
-     */
-    public function getElement($id);
-
-    /**
-     * @param int $id
-     */
-    public function removeElement($id);
-
-    /**
-     * @return \FSi\Bundle\AdminBundle\Admin\Element[]
-     */
-    public function getElements();
-
-    /**
-     * @param Visitor $visitor
-     * @return mixed
-     */
-    public function accept(Visitor $visitor);
+    public function accept(Visitor $visitor): void;
 }

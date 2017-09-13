@@ -7,39 +7,21 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 interface Element
 {
-    /**
-     * Class name that represent entity. It might be returned in Symfony2 style:
-     * FSiDemoBundle:News
-     * or as a full class name
-     * \FSi\Bundle\DemoBundle\Entity\News
-     *
-     * @return string
-     */
-    public function getClassName();
+    public function getClassName(): string;
 
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
-     */
-    public function getObjectManager();
+    public function getObjectManager(): ObjectManager;
 
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    public function getRepository();
+    public function getRepository(): ObjectRepository;
 
-    /**
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
-     * @return null
-     */
-    public function setManagerRegistry(ManagerRegistry $registry);
+    public function setManagerRegistry(ManagerRegistry $registry): void;
 }

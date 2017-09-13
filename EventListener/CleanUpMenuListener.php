@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
@@ -20,7 +22,7 @@ class CleanUpMenuListener
         $this->cleanMenuLevel($event->getMenu());
     }
 
-    private function cleanMenuLevel(MenuItem $menu)
+    private function cleanMenuLevel(MenuItem $menu): void
     {
         if (!$menu->hasChildren()) {
             return;

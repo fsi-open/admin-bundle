@@ -7,46 +7,25 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 interface ContextInterface
 {
-    /**
-     * @param string $route
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     * @return boolean
-     */
-    public function supports($route, Element $element);
+    public function supports(string $route, Element $element): bool;
 
-    /**
-     * @param Element $element
-     */
-    public function setElement(Element $element);
+    public function setElement(Element $element): void;
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return null|\Symfony\Component\HttpFoundation\Response
-     */
-    public function handleRequest(Request $request);
+    public function handleRequest(Request $request): ?Response;
 
-    /**
-     * @return boolean
-     */
-    public function hasTemplateName();
+    public function hasTemplateName(): bool;
 
-    /**
-     * @return string
-     */
-    public function getTemplateName();
+    public function getTemplateName(): ?string;
 
-    /**
-     * @return array
-     */
-    public function getData();
+    public function getData(): array;
 }

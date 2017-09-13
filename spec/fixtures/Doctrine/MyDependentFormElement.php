@@ -7,38 +7,32 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\spec\fixtures\Doctrine;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DependentFormElement;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 class MyDependentFormElement extends DependentFormElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return 'FSiDemoBundle:Entity';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'my_entity_form';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParentId()
+    public function getParentId(): string
     {
         return 'my_parent_entity';
     }
 
-    protected function initForm(FormFactoryInterface $factory, $data = null)
+    protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface
     {
     }
 }

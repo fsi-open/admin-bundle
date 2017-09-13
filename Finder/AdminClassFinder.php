@@ -1,30 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Finder;
 
 use Symfony\Component\Finder\Finder;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
+/**
+ * @deprecated since 3.0
+ */
 class AdminClassFinder
 {
-    const ADMIN_ELEMENT_INTERFACE = 'FSi\\Bundle\\AdminBundle\\Admin\\Element';
-
-    public function findClasses($paths = [])
+    /**
+     * @param string[] $paths
+     * @return string[]
+     */
+    public function findClasses(array $paths = []): array
     {
         $classes = $this->findClassesInPaths($paths);
 
         return $this->filterAdminClasses($classes);
     }
 
-    /**
-     * @param $classes
-     * @return array
-     */
-    private function filterAdminClasses($classes)
+    private function filterAdminClasses(array $classes): array
     {
         $adminClasses = [];
         foreach ($classes as $className) {
             $classImplements = class_implements($className);
-            if (in_array(self::ADMIN_ELEMENT_INTERFACE, $classImplements)) {
+            if (in_array(Element::class, $classImplements, true)) {
                 $adminClasses[] = $className;
             }
         }
@@ -32,18 +36,16 @@ class AdminClassFinder
         return $adminClasses;
     }
 
-    /**
-     * @param $searchPaths
-     * @return array
-     */
-    private function findClassesInPaths($searchPaths)
+    private function findClassesInPaths(array $searchPaths): array
     {
         $finder = new Finder();
         $includedFiles = [];
         foreach ($searchPaths as $path) {
-            foreach ($finder->files()->name('*.php')->in($path) as $file) {
-                require_once $file->getRealpath();
-                $includedFiles[] = $file->getRealpath();
+            /** @var \SplFileInfo[] $files */
+            $files = $finder->files()->name('*.php')->in($path);
+            foreach ($files as $file) {
+                require_once $file->getRealPath();
+                $includedFiles[] = $file->getRealPath();
             }
         }
 
@@ -52,7 +54,7 @@ class AdminClassFinder
         $classes = [];
         foreach ($declared as $className) {
             $reflection = new \ReflectionClass($className);
-            if (in_array($reflection->getFileName(), $includedFiles)) {
+            if (in_array($reflection->getFileName(), $includedFiles, true)) {
                 $classes[] = $className;
             }
         }

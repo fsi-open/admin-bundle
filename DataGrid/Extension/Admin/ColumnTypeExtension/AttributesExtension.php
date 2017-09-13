@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
 use FSi\Component\DataGrid\Column\CellViewInterface;
@@ -9,10 +11,7 @@ use FSi\Component\DataGrid\Column\HeaderViewInterface;
 
 class AttributesExtension extends ColumnAbstractTypeExtension
 {
-    /**
-     * @inheritdoc
-     */
-    public function getExtendedColumnTypes()
+    public function getExtendedColumnTypes(): array
     {
         return [
             'text',
@@ -28,10 +27,7 @@ class AttributesExtension extends ColumnAbstractTypeExtension
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function initOptions(ColumnTypeInterface $column)
+    public function initOptions(ColumnTypeInterface $column): void
     {
         $column->getOptionsResolver()->setDefined(['header_attr', 'cell_attr', 'container_attr', 'value_attr']);
         $column->getOptionsResolver()->setAllowedTypes('header_attr', 'array');
@@ -46,20 +42,14 @@ class AttributesExtension extends ColumnAbstractTypeExtension
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildCellView(ColumnTypeInterface $column, CellViewInterface $view)
+    public function buildCellView(ColumnTypeInterface $column, CellViewInterface $view): void
     {
         $view->setAttribute('cell_attr', $column->getOption('cell_attr'));
         $view->setAttribute('container_attr', $column->getOption('container_attr'));
         $view->setAttribute('value_attr', $column->getOption('value_attr'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildHeaderView(ColumnTypeInterface $column, HeaderViewInterface $view)
+    public function buildHeaderView(ColumnTypeInterface $column, HeaderViewInterface $view): void
     {
         $view->setAttribute('header_attr', $column->getOption('header_attr'));
     }

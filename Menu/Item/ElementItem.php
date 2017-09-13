@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Menu\Item;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
@@ -21,46 +23,29 @@ class ElementItem extends RoutableItem
      */
     private $element;
 
-    public function __construct($name, Element $element)
+    public function __construct(string $name, Element $element)
     {
         parent::__construct($name);
 
         $this->element = $element;
     }
 
-    /**
-     * @return Element
-     */
-    public function getElement()
+    public function getElement(): Element
     {
         return $this->element;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasElement()
-    {
-        return isset($this->element);
-    }
-
-    /**
-     * @return string
-     */
-    public function getRoute()
+    public function getRoute(): string
     {
         return $this->element->getRoute();
     }
 
-    /**
-     * @return array
-     */
-    public function getRouteParameters()
+    public function getRouteParameters(): array
     {
         return $this->element->getRouteParameters();
     }
 
-    protected function configureOptions(OptionsResolver $optionsResolver)
+    protected function configureOptions(OptionsResolver $optionsResolver): void
     {
         parent::configureOptions($optionsResolver);
 

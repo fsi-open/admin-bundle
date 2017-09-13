@@ -7,18 +7,18 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
+use FSi\Component\DataIndexer\DataIndexerInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 trait DataIndexerElementImpl
 {
     use ElementImpl;
 
-    /**
-     * @return \FSi\Component\DataIndexer\DoctrineDataIndexer
-     */
-    public function getDataIndexer()
+    public function getDataIndexer(): DataIndexerInterface
     {
         return new DoctrineDataIndexer($this->registry, $this->getRepository()->getClassName());
     }

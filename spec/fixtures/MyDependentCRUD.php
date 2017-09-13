@@ -7,82 +7,58 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\spec\fixtures;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\DependentCRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataGrid\DataGridInterface;
+use FSi\Component\DataIndexer\DataIndexerInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 class MyDependentCRUD extends DependentCRUDElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
+    {
+        return 'my_dependent_crud';
+    }
+
+    public function getParentId(): string
     {
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getParentId()
+    public function getDataIndexer(): DataIndexerInterface
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function save($object): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataIndexer()
+    public function saveDataGrid(): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function save($object)
+    public function delete($object): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function saveDataGrid()
+    protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface
     {
+        return $factory->createDataGrid('my_datagrid');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function delete($object)
+    protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface
     {
+        return $factory->createDataSource('doctrine', ['entity' => 'FSiDemoBundle:MyEntity'], 'my_datasource');
     }
 
-    protected function initDataGrid(DataGridFactoryInterface $factory)
+    protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface
     {
-        $datagrid = $factory->createDataGrid('my_datagrid');
-
-        return $datagrid;
-    }
-
-    protected function initDataSource(DataSourceFactoryInterface $factory)
-    {
-        $datasource = $factory->createDataSource('doctrine', ['entity' => 'FSiDemoBundle:MyEntity'], 'my_datasource');
-
-        return $datasource;
-    }
-
-    protected function initForm(FormFactoryInterface $factory, $data = null)
-    {
-        $form = $factory->create('form');
-
-        return $form;
+        return $factory->create('form');
     }
 }

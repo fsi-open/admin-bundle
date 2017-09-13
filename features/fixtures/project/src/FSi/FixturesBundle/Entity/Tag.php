@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -48,66 +51,40 @@ class Tag
         $this->elements = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return News
-     */
-    public function getNews()
+    public function getNews(): ?News
     {
         return $this->news;
     }
 
-    /**
-     * @param News $news
-     */
-    public function setNews(News $news = null)
+    public function setNews(?News $news): void
     {
         $this->news = $news;
     }
 
     /**
-     * @return TagElement[]|ArrayCollection
+     * @return TagElement[]|Collection
      */
-    public function getElements()
+    public function getElements(): Collection
     {
         return $this->elements;
     }
 
-    /**
-     * @param TagElement $element
-     */
-    public function addElement(TagElement $element)
+    public function addElement(TagElement $element): void
     {
         if (!$this->elements->contains($element)) {
             $element->setTag($this);
@@ -115,12 +92,9 @@ class Tag
         }
     }
 
-    /**
-     * @param TagElement $element
-     */
-    public function removeElement(TagElement $element)
+    public function removeElement(TagElement $element): void
     {
-        $element->setNews(null);
+        $element->setTag(null);
         $this->elements->removeElement($element);
     }
 }

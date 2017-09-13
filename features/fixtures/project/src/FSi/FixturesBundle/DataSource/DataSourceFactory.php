@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\DataSource;
 
 use FSi\Component\DataSource\DataSourceFactory as BaseDataSourceFactory;

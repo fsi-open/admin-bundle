@@ -7,24 +7,23 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class ContextManager
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface[]
+     * @var ContextInterface[]
      */
     protected $contexts;
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface[] $contexts
+     * @param ContextInterface[] $contexts
      */
-    public function __construct($contexts = [])
+    public function __construct(array $contexts = [])
     {
         $this->contexts = [];
 
@@ -33,20 +32,12 @@ class ContextManager
         }
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface $builder
-     */
-    public function addContext(ContextInterface $builder)
+    public function addContext(ContextInterface $builder): void
     {
         $this->contexts[] = $builder;
     }
 
-    /**
-     * @param string $route
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     * @return \FSi\Bundle\AdminBundle\Admin\Context\ContextInterface|null
-     */
-    public function createContext($route, Element $element)
+    public function createContext(string $route, Element $element): ?ContextInterface
     {
         foreach ($this->contexts as $context) {
             if ($context->supports($route, $element)) {

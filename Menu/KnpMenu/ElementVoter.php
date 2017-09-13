@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Menu\KnpMenu;
 
 use FSi\Bundle\AdminBundle\Admin\DependentElement;
@@ -54,7 +56,9 @@ class ElementVoter implements VoterInterface
         $element = $this->getRequestElement();
 
         while (true) {
-            foreach ($item->getExtra('routes', []) as $testedRoute) {
+            /** @var array $routes */
+            $routes = $item->getExtra('routes', []);
+            foreach ($routes as $testedRoute) {
                 if ($this->isRouteMatchingElement($element, $testedRoute['parameters'])) {
                     return true;
                 }
@@ -74,15 +78,8 @@ class ElementVoter implements VoterInterface
         return false;
     }
 
-    /**
-     * @return bool
-     */
-    private function validateRequestElement()
+    private function validateRequestElement(): bool
     {
-        if (empty($this->request->attributes)) {
-            return false;
-        }
-
         if (!$this->request->attributes->has('element')) {
             return false;
         }
@@ -95,31 +92,18 @@ class ElementVoter implements VoterInterface
         return true;
     }
 
-    /**
-     * @return Element
-     */
-    private function getRequestElement()
+    private function getRequestElement(): Element
     {
         return $this->request->attributes->get('element');
     }
 
-    /**
-     * @param Element $element
-     * @param array $testedRouteParameters
-     * @return bool
-     */
-    private function isRouteMatchingElement(Element $element, array $testedRouteParameters)
+    private function isRouteMatchingElement(Element $element, array $testedRouteParameters): bool
     {
         return $this->isRouteMatchingElementDirectly($element, $testedRouteParameters) ||
             $this->isRouteMatchingElementAfterSuccess($element, $testedRouteParameters);
     }
 
-    /**
-     * @param Element $element
-     * @param array $testedRouteParameters
-     * @return bool
-     */
-    private function isRouteMatchingElementDirectly(Element $element, array $testedRouteParameters)
+    private function isRouteMatchingElementDirectly(Element $element, array $testedRouteParameters): bool
     {
         if (!isset($testedRouteParameters['element'])) {
             return false;
@@ -128,12 +112,7 @@ class ElementVoter implements VoterInterface
         return $testedRouteParameters['element'] === $element->getId();
     }
 
-    /**
-     * @param Element $element
-     * @param array $testedRouteParameters
-     * @return bool
-     */
-    private function isRouteMatchingElementAfterSuccess(Element $element, array $testedRouteParameters)
+    private function isRouteMatchingElementAfterSuccess(Element $element, array $testedRouteParameters): bool
     {
         if (!($element instanceof RedirectableElement)) {
             return false;

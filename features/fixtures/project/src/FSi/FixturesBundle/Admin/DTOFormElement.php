@@ -7,40 +7,46 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\FormElement;
 use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use Symfony\Component\Form\FormFactoryInterface;
+use FSi\FixturesBundle\DTO\Model;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class DTOFormElement extends FormElement
 {
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\FixturesBundle\DTO\Model';
+        return Model::class;
     }
 
-    public function getId()
+    public function getId(): string
     {
         return 'dto_form';
     }
 
-    public function save($object)
+    public function save($data): void
     {
     }
 
-    protected function initForm(FormFactoryInterface $factory, $data = null)
+    protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface
     {
         $builder = $factory->createNamedBuilder(
             'dto_form',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+            TypeSolver::getFormType(FormType::class, 'form'),
             $data,
             ['data_class' => $this->getClassName()]
         );
 
         $builder->add(
             'email',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email'),
+            TypeSolver::getFormType(EmailType::class, 'email'),
             ['label' => 'admin.email']
         );
 

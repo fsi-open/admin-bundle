@@ -7,28 +7,22 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\Display;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Display\Display;
-use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class GenericDisplayElement extends AbstractElement implements Element
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoute()
+    public function getRoute(): string
     {
         return 'fsi_admin_display';
     }
 
-    /**
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
-     * @return mixed
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'template' => null,
@@ -37,26 +31,14 @@ abstract class GenericDisplayElement extends AbstractElement implements Element
         $resolver->setAllowedTypes('template', ['null', 'string']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createDisplay($object)
+    public function createDisplay($data): Display
     {
-        if (!is_object($object)) {
-            throw new RuntimeException("createDisplay method accepts only objects.");
-        }
-
-        $display = $this->initDisplay($object);
-        if (!is_object($display) || !$display instanceof Display) {
-            throw new RuntimeException('initDisplay should return instanceof FSi\\Bundle\\AdminBundle\\Display\\Display');
-        }
-
-        return $display;
+        return $this->initDisplay($data);
     }
 
     /**
-     * @param mixed $object
+     * @param object $data
      * @return Display
      */
-    abstract protected function initDisplay($object);
+    abstract protected function initDisplay($data): Display;
 }

@@ -7,12 +7,14 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 interface DeleteElement extends BatchElement
 {
     /**
-     * @param mixed $object
+     * @param mixed $data
      */
-    public function delete($object);
+    public function delete($data): void;
 }

@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
@@ -15,18 +17,13 @@ use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DataGridSetDataHandler extends AbstractHandler
 {
-    /**
-     * @param AdminEvent $event
-     * @param Request $request
-     * @throws \FSi\Bundle\AdminBundle\Exception\RequestHandlerException
-     * @return null|\Symfony\Component\HttpFoundation\Response
-     */
-    public function handleRequest(AdminEvent $event, Request $request)
+    public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
-        $this->validateEvent($event);
+        $event = $this->validateEvent($event);
 
         $this->eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_PRE_BIND, $event);
         if ($event->hasResponse()) {
@@ -39,16 +36,16 @@ class DataGridSetDataHandler extends AbstractHandler
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
+
+        return null;
     }
 
-    /**
-     * @param AdminEvent $event
-     * @throws \FSi\Bundle\AdminBundle\Exception\RequestHandlerException
-     */
-    protected function validateEvent(AdminEvent $event)
+    private function validateEvent(AdminEvent $event): ListEvent
     {
         if (!$event instanceof ListEvent) {
-            throw new RequestHandlerException(sprintf("%s require ListEvent", get_class($this)));
+            throw new RequestHandlerException(sprintf('%s require ListEvent', get_class($this)));
         }
+
+        return $event;
     }
 }

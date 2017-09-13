@@ -7,16 +7,17 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Component\DataIndexer\DataIndexerInterface;
 
 interface DataIndexerElement extends Element
 {
     /**
-     * This method should be used inside of admin objects to retrieve DataIndexerInterface.
-     *
-     * @return \FSi\Component\DataIndexer\DataIndexerInterface
+     * This method should be used inside of admin elements to retrieve DataIndexerInterface.
      */
-    public function getDataIndexer();
+    public function getDataIndexer(): DataIndexerInterface;
 }

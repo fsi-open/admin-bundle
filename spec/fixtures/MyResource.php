@@ -7,36 +7,31 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\spec\fixtures;
 
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 
 class MyResource extends GenericResourceElement
 {
-    public function getKey()
+    public function getKey(): string
     {
         return 'resources.main_page';
     }
 
-    public function getId()
+    public function getId(): string
     {
         return 'main_page';
     }
 
-    public function getName()
-    {
-        return 'admin.main_page';
-    }
-
-    public function getRepository()
+    public function getResourceValueRepository(): ResourceValueRepository
     {
     }
 
-    /**
-     * @param \FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue $resource
-     */
-    public function save(ResourceValue $resource)
+    public function save(ResourceValue $resource): void
     {
     }
 }

@@ -7,11 +7,14 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,18 +32,12 @@ class FormElementContext extends ContextAbstract
      */
     protected $form;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasTemplateName()
+    public function hasTemplateName(): bool
     {
         return $this->element->hasOption('template_form') || parent::hasTemplateName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTemplateName()
+    public function getTemplateName(): ?string
     {
         return $this->element->hasOption('template_form')
             ? $this->element->getOption('template_form')
@@ -48,10 +45,7 @@ class FormElementContext extends ContextAbstract
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getData()
+    public function getData(): array
     {
         return [
             'form' => $this->form->createView(),
@@ -59,36 +53,24 @@ class FormElementContext extends ContextAbstract
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setElement(Element $element)
+    public function setElement(Element $element): void
     {
         $this->element = $element;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createEvent(Request $request)
+    protected function createEvent(Request $request): AdminEvent
     {
         $this->form = $this->element->createForm($this->getObject($request));
 
         return new FormEvent($this->element, $request, $this->form);
     }
 
-    /**
-     * @return string
-     */
-    protected function getSupportedRoute()
+    protected function getSupportedRoute(): string
     {
         return 'fsi_admin_form';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supportsElement(Element $element)
+    protected function supportsElement(Element $element): bool
     {
         return $element instanceof FormElement;
     }
@@ -113,10 +95,7 @@ class FormElementContext extends ContextAbstract
         return $object;
     }
 
-    /**
-     * @throws NotFoundHttpException
-     */
-    private function checkAllowAddOption()
+    private function checkAllowAddOption(): void
     {
         if ($this->element->hasOption('allow_add')
             && !$this->element->getOption('allow_add')

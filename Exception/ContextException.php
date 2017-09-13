@@ -7,11 +7,10 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Exception;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class ContextException extends RuntimeException implements ContextExceptionInterface
 {
 }

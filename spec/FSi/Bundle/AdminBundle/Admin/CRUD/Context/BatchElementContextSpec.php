@@ -50,7 +50,7 @@ class BatchElementContextSpec extends ObjectBehavior
         ParameterBag $requestParameterBag
     ) {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
-            ->shouldBeCalled();
+            ->willReturn(null);
 
         $request->request = $requestParameterBag;
         $requestParameterBag->get('indexes', [])->willReturn([]);

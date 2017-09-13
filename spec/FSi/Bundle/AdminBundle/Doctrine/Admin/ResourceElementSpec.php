@@ -12,7 +12,7 @@ namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
+use FSi\Bundle\ResourceRepositoryBundle\Doctrine\ResourceRepository;
 use PhpSpec\ObjectBehavior;
 
 class ResourceElementSpec extends ObjectBehavior
@@ -26,7 +26,7 @@ class ResourceElementSpec extends ObjectBehavior
     function it_return_repository(
         ManagerRegistry $registry,
         ObjectManager $om,
-        ResourceValueRepository $repository
+        ResourceRepository $repository
     ) {
         $registry->getManagerForClass('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($om);
         $om->getRepository('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($repository);

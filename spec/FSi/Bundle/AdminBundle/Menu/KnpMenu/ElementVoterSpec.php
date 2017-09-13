@@ -322,7 +322,7 @@ class ElementVoterSpec extends ObjectBehavior
 
     function it_returns_false_if_request_is_empty(ItemInterface $item, Request $request)
     {
-        $request->attributes = null;
+        $request->attributes = new ParameterBag();
         $this->matchItem($item)->shouldReturn(null);
     }
 }

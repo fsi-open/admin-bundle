@@ -7,52 +7,43 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractFormValidRequestHandler;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvents;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FormValidRequestHandler extends AbstractFormValidRequestHandler
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
-     */
-    protected function action(FormEvent $event, Request $request)
+    protected function action(FormEvent $event, Request $request): void
     {
-        /* @var $element \FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement */
+        /* @var $element GenericResourceElement */
         $element = $event->getElement();
+        /* @var $data ResourceValue[] */
         $data = $event->getForm()->getData();
         foreach ($data as $resource) {
             $element->save($resource);
         }
     }
 
-    /**
-     * @return string
-     */
-    protected function getPreSaveEventName()
+    protected function getPreSaveEventName(): string
     {
         return FormEvents::FORM_DATA_PRE_SAVE;
     }
 
-    /**
-     * @return string
-     */
-    protected function getPostSaveEventName()
+    protected function getPostSaveEventName(): string
     {
         return FormEvents::FORM_DATA_POST_SAVE;
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return null|\Symfony\Component\HttpFoundation\Response|RedirectResponse
-     */
-    public function handleRequest(AdminEvent $event, Request $request)
+    public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
         $response = parent::handleRequest($event, $request);
         if ($response) {
@@ -63,5 +54,7 @@ class FormValidRequestHandler extends AbstractFormValidRequestHandler
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
+
+        return null;
     }
 }

@@ -7,10 +7,11 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
-use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
@@ -20,27 +21,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 abstract class GenericListElement extends AbstractElement implements ListElement
 {
     /**
-     * @var \FSi\Component\DataSource\DataSourceFactoryInterface
+     * @var DataSourceFactoryInterface
      */
     protected $datasourceFactory;
 
     /**
-     * @var \FSi\Component\DataGrid\DataGridFactoryInterface
+     * @var DataGridFactoryInterface
      */
     protected $datagridFactory;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoute()
+    public function getRoute(): string
     {
         return 'fsi_admin_list';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'template_list' => null,
@@ -49,63 +44,27 @@ abstract class GenericListElement extends AbstractElement implements ListElement
         $resolver->setAllowedTypes('template_list', ['null', 'string']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDataGridFactory(DataGridFactoryInterface $factory)
+    public function setDataGridFactory(DataGridFactoryInterface $factory): void
     {
         $this->datagridFactory = $factory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDataSourceFactory(DataSourceFactoryInterface $factory)
+    public function setDataSourceFactory(DataSourceFactoryInterface $factory): void
     {
         $this->datasourceFactory = $factory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createDataGrid()
+    public function createDataGrid(): DataGridInterface
     {
-        $datagrid = $this->initDataGrid($this->datagridFactory);
-
-        if (!is_object($datagrid) || !$datagrid instanceof DataGridInterface) {
-            throw new RuntimeException('initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface');
-        }
-
-        return $datagrid;
+        return $this->initDataGrid($this->datagridFactory);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createDataSource()
+    public function createDataSource(): DataSourceInterface
     {
-        $datasource = $this->initDataSource($this->datasourceFactory);
-
-        if (!is_object($datasource) || !$datasource instanceof DataSourceInterface) {
-            throw new RuntimeException('initDataSource should return instanceof FSi\\Component\\DataSource\\DataSourceInterface');
-        }
-
-        return $datasource;
+        return $this->initDataSource($this->datasourceFactory);
     }
 
-    /**
-     * Initialize DataGrid.
-     *
-     * @param \FSi\Component\DataGrid\DataGridFactoryInterface $factory
-     * @return \FSi\Component\DataGrid\DataGridInterface
-     */
-    abstract protected function initDataGrid(DataGridFactoryInterface $factory);
+    abstract protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface;
 
-    /**
-     * Initialize DataSource.
-     *
-     * @param \FSi\Component\DataSource\DataSourceFactoryInterface $factory
-     * @return \FSi\Component\DataSource\DataSourceInterface
-     */
-    abstract protected function initDataSource(DataSourceFactoryInterface $factory);
+    abstract protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface;
 }

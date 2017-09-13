@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
@@ -15,8 +17,8 @@ class ListResultsElement extends Element
 {
     protected $selector = ['css' => 'div#list-results'];
 
-    public function setElementsPerPage($elementsCount)
+    public function setElementsPerPage(int $elementsCount): void
     {
-        return $this->find('css', 'ul[role="menu"]')->clickLink($elementsCount);
+        $this->find('css', 'ul[role="menu"]')->clickLink($elementsCount);
     }
 }

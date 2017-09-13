@@ -63,7 +63,7 @@ class ListElementContextSpec extends ObjectBehavior
     function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request)
     {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent'), $request)
-            ->shouldBeCalled();
+            ->willReturn(null);
 
         $this->handleRequest($request)->shouldReturn(null);
     }

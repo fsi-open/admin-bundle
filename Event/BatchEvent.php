@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
@@ -42,10 +44,7 @@ class BatchEvent extends Event
         $this->object = $object;
     }
 
-    /**
-     * @return Element
-     */
-    public function getElement()
+    public function getElement(): Element
     {
         return $this->element;
     }
@@ -53,7 +52,7 @@ class BatchEvent extends Event
     /**
      * @return Request
      */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }

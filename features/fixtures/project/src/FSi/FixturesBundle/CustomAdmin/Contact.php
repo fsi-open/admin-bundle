@@ -1,43 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\CustomAdmin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
+use FSi\FixturesBundle\Entity;
 
 class Contact extends ResourceElement
 {
-    /**
-     * @return string
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
+        return Entity\Resource::class;
     }
 
-    /**
-     * ID will appear in routes:
-     * - http://example.com/admin/{name}/list
-     * - http://example.com/admin/{name}/edit
-     * etc.
-     *
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
+        return 'contact';
     }
 
-    /**
-     * Name is a simple string that can be translated.
-     *
-     * @return string
-     */
-    public function getName()
+    public function getKey(): string
     {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getKey()
-    {
+        return 'contact';
     }
 }

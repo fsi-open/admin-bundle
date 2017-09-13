@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Display;
 
 use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
@@ -20,28 +22,24 @@ class Property
     private $value;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $label;
 
     /**
      * @param mixed $value
      * @param string $label
-     * @param array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[] $valueFormatters
+     * @param ValueFormatter[] $valueFormatters
      */
-    public function __construct($value, $label, array $valueFormatters = [])
+    public function __construct($value, ?string $label = null, array $valueFormatters = [])
     {
-        $this->validateLabel($label);
         $this->validateFormatters($valueFormatters);
 
         $this->value = $this->formatValue($value, $valueFormatters);
         $this->label = $label;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): ?string
     {
         return $this->label;
     }
@@ -68,25 +66,7 @@ class Property
         return $value;
     }
 
-    /**
-     * @param string $label
-     * @throws InvalidArgumentException
-     */
-    private function validateLabel($label)
-    {
-        if (!is_string($label)) {
-            throw new InvalidArgumentException(sprintf(
-                'Property label must be a string, got "%s"',
-                gettype($label)
-            ));
-        }
-    }
-
-    /**
-     * @param ValueFormatter[] $valueFormatters
-     * @throws InvalidArgumentException
-     */
-    private function validateFormatters(array $valueFormatters)
+    private function validateFormatters(array $valueFormatters): void
     {
         foreach ($valueFormatters as $formatter) {
             if (!$formatter instanceof ValueFormatter) {

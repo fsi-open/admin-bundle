@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * (c) FSi sp. z o.o. <info@fsi.pl>
  *
@@ -15,15 +17,10 @@ class PersonEditForm extends Page
 {
     protected $path = '/admin/form/person/{id}';
 
-    public function getHeader()
-    {
-        return $this->find('css', 'h3#page-header')->getText();
-    }
-
-    protected function verifyPage()
+    protected function verifyPage(): void
     {
         if (!$this->has('css', '#page-header:contains("Edit element")')) {
-            throw new UnexpectedPageException(sprintf("%s page is missing \"Edit element\" header", $this->path));
+            throw new UnexpectedPageException(sprintf('%s page is missing "Edit element" header', $this->path));
         }
     }
 }

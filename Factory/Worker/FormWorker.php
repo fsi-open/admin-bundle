@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Factory\Worker;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
@@ -22,10 +24,7 @@ class FormWorker implements Worker
         $this->formFactory = $formFactory;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function mount(Element $element)
+    public function mount(Element $element): void
     {
         if ($element instanceof FormElement) {
             $element->setFormFactory($this->formFactory);

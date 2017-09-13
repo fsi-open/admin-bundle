@@ -22,7 +22,7 @@ class CollectionSpec extends ObjectBehavior
 
     function it_throw_exception_when_value_is_not_an_array()
     {
-        $this->shouldThrow(new \InvalidArgumentException("Collection decorator require value to be an array or implement \\Iterator"))
+        $this->shouldThrow(new \InvalidArgumentException('Collection formatter requires value to be iterable'))
             ->during('format', [new \stdClass()]);
     }
 

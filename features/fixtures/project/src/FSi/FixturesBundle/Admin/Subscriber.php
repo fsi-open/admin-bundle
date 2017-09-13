@@ -1,27 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ListElement;
 use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\Component\DataSource\DataSourceInterface;
+use FSi\FixturesBundle\Entity;
 
 class Subscriber extends ListElement
 {
     const ID = 'subscriber';
 
-    public function getId()
+    public function getId(): string
     {
         return self::ID;
     }
 
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\FixturesBundle\Entity\Subscriber';
+        return Entity\Subscriber::class;
     }
 
-    protected function initDataGrid(DataGridFactoryInterface $factory)
+    protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface
     {
         $datagrid = $factory->createDataGrid($this->getId());
         $datagrid->addColumn('batch', 'batch', [
@@ -54,7 +59,7 @@ class Subscriber extends ListElement
         return $datagrid;
     }
 
-    protected function initDataSource(DataSourceFactoryInterface $factory)
+    protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface
     {
         $datasource = $factory->createDataSource(
             'doctrine-orm',

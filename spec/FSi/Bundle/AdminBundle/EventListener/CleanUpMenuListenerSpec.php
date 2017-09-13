@@ -25,9 +25,15 @@ class CleanUpMenuListenerSpec extends ObjectBehavior
 
         $menu->hasChildren()->willReturn(true);
 
+        $childItem1->hasChildren()->willReturn(false);
+        $childItem2->hasChildren()->willReturn(false);
+
         $childItem3->getName()->willReturn('item3');
         $childItem3->hasChildren()->willReturn(true);
         $childItem3->getChildren()->willReturn([$childItem31]);
+
+        $childItem31->getName()->willReturn('item31');
+        $childItem31->hasChildren()->willReturn(false);
 
         $childItem4->getName()->willReturn('item4');
         $childItem4->hasChildren()->willReturn(false); //after cleanup of item41

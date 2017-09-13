@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use Behat\Mink\Element\NodeElement;
@@ -15,41 +17,41 @@ class AdminPanel extends Page
 {
     protected $path = '/admin/';
 
-    public function hasMenuElement($name, $group = null)
+    public function hasMenuElement(string $name, ?string $group = null): bool
     {
-        if (!isset($group)) {
+        if (null === $group) {
             return $this->getMenu()->has('css', sprintf('li > a:contains("%s")', $name));
         }
 
         $groupExpandButton = $this->getMenu()->find('css', sprintf('li.dropdown > a:contains("%s")', $group));
 
-        if (isset($groupExpandButton)) {
+        if (null !== $groupExpandButton) {
             return $groupExpandButton->getParent()->has('css', sprintf('ul > li > a:contains("%s")', $name));
         }
 
         return false;
     }
 
-    public function getMenuElementsCount()
+    public function getMenuElementsCount(): int
     {
         return count($this->getMenu()->findAll('css', 'li.admin-element'));
     }
 
-    public function getMenu()
+    public function getMenu(): ?NodeElement
     {
         return $this->find('css', '#top-menu');
     }
 
-    public function getNavbarBrandText()
+    public function getNavbarBrandText(): string
     {
         return $this->find('css', 'a.navbar-brand')->getText();
     }
 
-    public function getLanguageDropdownOptions()
+    public function getLanguageDropdownOptions(): array
     {
-        $link = $this->find('css', sprintf('li#language'));
-        if (!isset($link)) {
-            return null;
+        $link = $this->getLanguageDropdown();
+        if (null === $link) {
+            return [];
         }
 
         $linkNodes = $this->findAll('css', 'li#language > ul > li');
@@ -59,7 +61,7 @@ class AdminPanel extends Page
         }, $linkNodes));
     }
 
-    public function getLanguageDropdown()
+    public function getLanguageDropdown(): ?NodeElement
     {
         return $this->find('css', 'li#language');
     }

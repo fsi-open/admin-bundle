@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -17,13 +19,15 @@ use FSi\FixturesBundle\Entity\News;
 use FSi\FixturesBundle\Entity\Tag;
 use InvalidArgumentException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use FSi\FixturesBundle\Entity\Subscriber;
+use FSi\FixturesBundle\Entity\Person;
 
 class DataContext extends AbstractContext
 {
     /**
      * @BeforeScenario
      */
-    public function createDatabase()
+    public function createDatabase(): void
     {
         $this->deleteDatabaseIfExist();
         $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
@@ -34,7 +38,7 @@ class DataContext extends AbstractContext
     /**
      * @AfterScenario
      */
-    public function deleteDatabaseIfExist()
+    public function deleteDatabaseIfExist(): void
     {
         $dbFilePath = $this->getKernel()->getRootDir() . '/data.sqlite';
 
@@ -46,19 +50,19 @@ class DataContext extends AbstractContext
     /**
      * @Transform :className
      */
-    public function entityToClassName($entityName)
+    public function entityToClassName(string $entityName): string
     {
         switch ($entityName) {
-            case "news":
-                return "FSi\FixturesBundle\Entity\News";
-            case "category":
-            case "categories":
-                return "FSi\FixturesBundle\Entity\Category";
-            case "subscriber":
-            case "subscribers":
-                return "FSi\FixturesBundle\Entity\Subscriber";
-            case "person":
-                return "FSi\FixturesBundle\Entity\Person";
+            case 'news':
+                return News::class;
+            case 'category':
+            case 'categories':
+                return Category::class;
+            case 'subscriber':
+            case 'subscribers':
+                return Subscriber::class;
+            case 'person':
+                return Person::class;
         }
     }
 
@@ -86,7 +90,7 @@ class DataContext extends AbstractContext
     public function thereIsAnEntityWithField($className, $field, $value)
     {
         $formatters = $this->getColumnFormatters($className);
-        $formatters[$field] = $this->parseScenarioValue($value);
+        $formatters[$field] = $this->parseScenarioValue((string) $value);
         $populator = new Populator($this->getFaker(), $this->getEntityManager());
         $populator->addEntity(
             $className,
@@ -215,22 +219,17 @@ class DataContext extends AbstractContext
         expect($this->getEntityField($entity, $field))->notToBe($value);
     }
 
-    /**
-     * @param string $className
-     * @return array
-     * @throws InvalidArgumentException
-     */
-    private function getColumnFormatters($className)
+    private function getColumnFormatters(string $className): array
     {
         $faker = $this->getFaker();
         switch ($className) {
-            case 'FSi\FixturesBundle\Entity\News':
+            case News::class:
                 return [
                     'creatorEmail' => function() use ($faker) {
                         return $faker->email();
                     },
                     'categories' => function() use ($faker) {
-                        $categories = $this->getRepository('FSi\FixturesBundle\Entity\Category')->findAll();
+                        $categories = $this->getRepository(Category::class)->findAll();
 
                         if (count($categories)) {
                             return [$faker->randomElement($categories)];
@@ -241,13 +240,13 @@ class DataContext extends AbstractContext
                     'photoKey' => null,
                     'visible' => true
                 ];
-            case 'FSi\FixturesBundle\Entity\Category':
+            case Category::class:
                 return [];
-            case 'FSi\FixturesBundle\Entity\Person':
+            case Person::class:
                 return [
                     'email' => function() use ($faker) { return $faker->email(); },
                 ];
-            case 'FSi\FixturesBundle\Entity\Subscriber':
+            case Subscriber::class:
                 return [
                     'email' => function() use ($faker) { return $faker->email(); },
                     'active' => true
@@ -260,16 +259,11 @@ class DataContext extends AbstractContext
         }
     }
 
-    /**
-     * @param string $className
-     * @return array
-     * @throws InvalidArgumentException
-     */
-    private function getModifiers($className)
+    private function getModifiers(string $className): array
     {
         $faker = $this->getFaker();
         switch ($className) {
-            case 'FSi\FixturesBundle\Entity\News':
+            case News::class:
                 return [
                     function(News $news) use ($faker) {
                         $tag = new Tag();
@@ -278,9 +272,9 @@ class DataContext extends AbstractContext
                         $news->setTags([$tag]);
                     }
                 ];
-            case 'FSi\FixturesBundle\Entity\Person':
-            case 'FSi\FixturesBundle\Entity\Subscriber':
-            case 'FSi\FixturesBundle\Entity\Category':
+            case Person::class:
+            case Subscriber::class:
+            case Category::class:
                 return [];
             default:
                 throw new InvalidArgumentException(sprintf(
@@ -290,7 +284,12 @@ class DataContext extends AbstractContext
         }
     }
 
-    private function getEntityField($entity, $field)
+    /**
+     * @param object $entity
+     * @param string $field
+     * @return mixed
+     */
+    private function getEntityField($entity, string $field)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         return $propertyAccessor->getValue($entity, strtolower($field));

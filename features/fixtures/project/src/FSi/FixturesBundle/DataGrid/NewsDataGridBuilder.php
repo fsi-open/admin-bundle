@@ -1,4 +1,5 @@
 <?php
+
 /**
  * (c) FSi sp. z o.o. <info@fsi.pl>
  *
@@ -6,16 +7,19 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\DataGrid;
 
 use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class NewsDataGridBuilder
 {
-    public static function buildNewsDataGrid(DataGridInterface $datagrid)
+    public static function buildNewsDataGrid(DataGridInterface $datagrid): DataGridInterface
     {
-        $dateType = TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date');
+        $dateType = TypeSolver::getFormType(DateType::class, 'date');
         $datagrid->addColumn('title', 'text', [
             'label' => 'admin.news.list.title',
             'field_mapping' => ['title', 'subtitle'],

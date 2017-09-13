@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
@@ -14,20 +16,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageExce
 class CategoryNewsEdit extends Page
 {
     protected $path = '/admin/form/category_news/{id}?parent={parent_id}';
-    protected $elements = [
-        'page header' => '#page-header',
-    ];
 
-    public function getHeader()
-    {
-        if (!$this->hasElement('page header')) {
-            throw new \Exception('Unable to find page header');
-        }
-
-        return $this->getElement('page header')->getText();
-    }
-
-    protected function verifyPage()
+    protected function verifyPage(): void
     {
         if (!$this->has('css', '#page-header:contains("Edit element")')) {
             throw new UnexpectedPageException(sprintf("%s page is missing \"Edit element\" header", $this->path));

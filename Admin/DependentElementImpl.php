@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
@@ -25,20 +27,17 @@ trait DependentElementImpl
      */
     private $parentElement;
 
-    public function setParentElement(Element $element)
+    public function setParentElement(Element $element): void
     {
         $this->parentElement = $element;
     }
 
-    /**
-     * @return Element
-     */
-    public function getParentElement()
+    public function getParentElement(): Element
     {
         return $this->parentElement;
     }
 
-    public function setRequestStack(RequestStack $requestStack)
+    public function setRequestStack(RequestStack $requestStack): void
     {
         $this->requestStack = $requestStack;
     }
@@ -58,10 +57,7 @@ trait DependentElementImpl
         return null;
     }
 
-    /**
-     * @return string|null
-     */
-    protected function getParentObjectId()
+    protected function getParentObjectId(): ?string
     {
         $currentRequest = $this->requestStack->getCurrentRequest();
 
@@ -72,10 +68,7 @@ trait DependentElementImpl
         return $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER);
     }
 
-    /**
-     * @return DataIndexerInterface
-     */
-    protected function getParentDataIndexer()
+    protected function getParentDataIndexer(): ?DataIndexerInterface
     {
         if ($this->parentElement instanceof DataIndexerElement) {
             return $this->parentElement->getDataIndexer();

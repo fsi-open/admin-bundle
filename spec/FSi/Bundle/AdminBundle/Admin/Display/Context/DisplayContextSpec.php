@@ -33,6 +33,7 @@ class DisplayContextSpec extends ObjectBehavior
         $element->getDataIndexer()->willReturn($dataIndexer);
         $dataIndexer->getData('index')->willReturn($displayObject);
         $element->createDisplay($displayObject)->willReturn($display);
+        $display->getData()->willReturn([]);
 
         $this->beConstructedWith([$handler], 'default_display');
         $this->setElement($element);
@@ -71,7 +72,7 @@ class DisplayContextSpec extends ObjectBehavior
         Request $request
     ) {
         $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\DisplayEvent'), $request)
-            ->shouldBeCalled();
+            ->willReturn(null);
 
         $this->handleRequest($request)->shouldReturn(null);
     }

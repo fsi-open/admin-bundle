@@ -35,7 +35,7 @@ class GenericFormElementSpec extends ObjectBehavior
     {
         $factory->create(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface"))
+        $this->shouldThrow(\TypeError::class)
             ->during('createForm');
     }
 

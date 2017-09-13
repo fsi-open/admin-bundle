@@ -101,9 +101,7 @@ class DependentFormElementSpec extends ObjectBehavior
     {
         $factory->create(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(
-            new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface")
-        )->during('createForm');
+        $this->shouldThrow(\TypeError::class)->during('createForm');
     }
 
     function it_has_default_options_values()

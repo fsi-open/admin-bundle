@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle;
 
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -23,15 +25,9 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class FSiAdminBundle extends Bundle
 {
-    /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -47,10 +43,7 @@ class FSiAdminBundle extends Bundle
         $container->addCompilerPass(new TwigGlobalsPass());
     }
 
-    /**
-     * @return \FSi\Bundle\AdminBundle\DependencyInjection\FSIAdminExtension
-     */
-    public function getContainerExtension()
+    public function getContainerExtension(): FSIAdminExtension
     {
         if (null === $this->extension) {
             $this->extension = new FSIAdminExtension();

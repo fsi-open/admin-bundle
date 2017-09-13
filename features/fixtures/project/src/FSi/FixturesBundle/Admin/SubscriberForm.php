@@ -7,57 +7,60 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\FormElement;
 use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use Symfony\Component\Form\FormFactoryInterface;
+use FSi\FixturesBundle\Entity;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class SubscriberForm extends FormElement
 {
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\FixturesBundle\Entity\Subscriber';
+        return Entity\Subscriber::class;
     }
 
-    public function getId()
+    public function getId(): string
     {
         return 'subscriber_form';
     }
 
-    public function getName()
-    {
-        return 'admin.subscriber.name';
-    }
-
-    public function getSuccessRoute()
+    public function getSuccessRoute(): string
     {
         return 'fsi_admin_list';
     }
 
-    public function getSuccessRouteParameters()
+    public function getSuccessRouteParameters(): array
     {
         return ['element' => 'subscriber'];
     }
 
-    protected function initForm(FormFactoryInterface $factory, $data = null)
+    protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface
     {
         $builder = $factory->createNamedBuilder(
             'subscriber',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+            TypeSolver::getFormType(FormType::class, 'form'),
             $data,
             ['data_class' => $this->getClassName()]
         );
 
         $builder->add(
             'email',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email'),
+            TypeSolver::getFormType(EmailType::class, 'email'),
             ['label' => 'admin.subscriber.list.email']
         );
 
         $builder->add(
             'created_at',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date'),
+            TypeSolver::getFormType(DateType::class, 'date'),
             [
                 'label' => 'admin.subscriber.list.created_at',
                 'widget' => 'single_text'
@@ -66,7 +69,7 @@ class SubscriberForm extends FormElement
 
         $builder->add(
             'active',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CheckboxType', 'checkbox'),
+            TypeSolver::getFormType(CheckboxType::class, 'checkbox'),
             ['label' => 'admin.subscriber.list.active']
         );
 

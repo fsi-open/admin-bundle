@@ -7,14 +7,13 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Menu\Builder;
 
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 
 interface Builder
 {
-    /**
-     * @return Item
-     */
-    public function buildMenu();
+    public function buildMenu(): Item;
 }

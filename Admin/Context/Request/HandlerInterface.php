@@ -7,20 +7,15 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\Context\Request;
 
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 interface HandlerInterface
 {
-    /**
-     * @param AdminEvent $event
-     * @param Request $request
-     * @return null|\Symfony\Component\HttpFoundation\Response
-     */
-    public function handleRequest(AdminEvent $event, Request $request);
+    public function handleRequest(AdminEvent $event, Request $request): ?Response;
 }

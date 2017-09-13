@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
@@ -14,7 +16,7 @@ use Doctrine\Common\Annotations\Annotation;
 /**
  * @Annotation
  *
- * @deprecated since 3.0 
+ * @deprecated since 3.0
  */
 final class Element extends Annotation
 {

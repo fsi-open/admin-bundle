@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
@@ -14,6 +16,7 @@ use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -37,8 +40,8 @@ class BatchElementContext extends ContextAbstract
     protected $indexes;
 
     /**
-     * @param HandlerInterface[]|array $requestHandlers
-     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
+     * @param HandlerInterface[] $requestHandlers
+     * @param FormBuilderInterface $formBuilder
      */
     public function __construct(
         array $requestHandlers,
@@ -49,10 +52,7 @@ class BatchElementContext extends ContextAbstract
         $this->form = $formBuilder->getForm();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getData()
+    public function getData(): array
     {
         return [
             'element' => $this->element,
@@ -61,36 +61,24 @@ class BatchElementContext extends ContextAbstract
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setElement(Element $element)
+    public function setElement(Element $element): void
     {
         $this->element = $element;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createEvent(Request $request)
+    protected function createEvent(Request $request): AdminEvent
     {
         $this->indexes = $request->request->get('indexes', []);
 
         return new FormEvent($this->element, $request, $this->form);
     }
 
-    /**
-     * @return string
-     */
-    protected function getSupportedRoute()
+    protected function getSupportedRoute(): string
     {
         return 'fsi_admin_batch';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supportsElement(Element $element)
+    protected function supportsElement(Element $element): bool
     {
         return $element instanceof BatchElement;
     }

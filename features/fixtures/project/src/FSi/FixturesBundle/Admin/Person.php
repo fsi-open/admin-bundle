@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
@@ -14,28 +16,28 @@ use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
-use RuntimeException;
+use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use FSi\FixturesBundle\Entity;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class Person extends CRUDElement
 {
-    public function getId()
+    public function getId(): string
     {
         return 'person';
     }
 
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\FixturesBundle\Entity\Person';
+        return Entity\Person::class;
     }
 
-    public function createDataGrid()
+    public function createDataGrid(): DataGridInterface
     {
         $datagrid = $this->initDataGrid($this->datagridFactory);
-
-        if (!is_object($datagrid) || !$datagrid instanceof DataGridInterface) {
-            throw new RuntimeException('initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface');
-        }
 
         if (!$datagrid->hasColumnType('batch')) {
             $datagrid->addColumn('batch', 'batch', [
@@ -53,7 +55,7 @@ class Person extends CRUDElement
         return $datagrid;
     }
 
-    protected function initDataGrid(DataGridFactoryInterface $factory)
+    protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface
     {
         $datagrid = $factory->createDataGrid($this->getId());
 
@@ -66,7 +68,7 @@ class Person extends CRUDElement
             'field_mapping' => ['id'],
             'actions' => [
                 'edit' => [
-                    'route_name' => "fsi_admin_form",
+                    'route_name' => 'fsi_admin_form',
                     'additional_parameters' => ['element' => $this->getId()],
                     'parameters_field_mapping' => ['id' => 'id']
                 ]
@@ -76,7 +78,7 @@ class Person extends CRUDElement
         return $datagrid;
     }
 
-    protected function initDataSource(DataSourceFactoryInterface $factory)
+    protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface
     {
         return $factory->createDataSource(
             'doctrine-orm',
@@ -85,18 +87,18 @@ class Person extends CRUDElement
         );
     }
 
-    protected function initForm(FormFactoryInterface $factory, $data = null)
+    protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface
     {
         $builder = $factory->createNamedBuilder(
             'person',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+            TypeSolver::getFormType(FormType::class, 'form'),
             $data,
             ['data_class' => $this->getClassName()]
         );
 
         $builder->add(
             'email',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\TextType', 'text'),
+            TypeSolver::getFormType(TextType::class, 'text'),
             ['label' => 'admin.email']
         );
 

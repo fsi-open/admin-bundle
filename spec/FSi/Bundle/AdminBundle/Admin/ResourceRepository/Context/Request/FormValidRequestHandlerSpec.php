@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -58,6 +59,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     function it_handle_POST_request(
         FormEvent $event,
         Request $request,
+        ParameterBag $query,
         ResourceElement $element,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
@@ -66,6 +68,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         Resource $resource2
     ) {
         $request->isMethod('POST')->willReturn(true);
+        $request->query = $query;
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);

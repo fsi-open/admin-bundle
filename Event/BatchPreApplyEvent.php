@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Event;
 
 class BatchPreApplyEvent extends BatchEvent
@@ -16,18 +18,12 @@ class BatchPreApplyEvent extends BatchEvent
      */
     private $skip = false;
 
-    /**
-     * @return boolean
-     */
-    public function shouldSkip()
+    public function shouldSkip(): bool
     {
         return $this->skip;
     }
 
-    /**
-     * @param boolean $skip
-     */
-    public function skip($skip)
+    public function skip(bool $skip = true): void
     {
         $this->skip = $skip;
     }

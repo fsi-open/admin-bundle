@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Message;
 
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
@@ -30,43 +32,38 @@ class FlashMessages
      */
     private $session;
 
-    /**
-     * FlashMessages constructor.
-     * @param SessionInterface $session
-     * @param $prefix
-     */
-    public function __construct(SessionInterface $session, $prefix)
+    public function __construct(SessionInterface $session, string $prefix)
     {
         $this->prefix = $prefix;
         $this->session = $session;
     }
 
-    public function success($message, $domain = 'FSiAdminBundle', array $params = [])
+    public function success(string $message, string $domain = 'FSiAdminBundle', array $params = [])
     {
         $this->add('success', $message, $domain, $params);
     }
 
-    public function error($message, $domain = 'FSiAdminBundle', array $params = [])
+    public function error(string $message, string $domain = 'FSiAdminBundle', array $params = [])
     {
         $this->add('error', $message, $domain, $params);
     }
 
-    public function warning($message, $domain = 'FSiAdminBundle', array $params = [])
+    public function warning(string $message, string $domain = 'FSiAdminBundle', array $params = [])
     {
         $this->add('warning', $message, $domain, $params);
     }
 
-    public function info($message, $domain = 'FSiAdminBundle', array $params = [])
+    public function info(string $message, string $domain = 'FSiAdminBundle', array $params = [])
     {
         $this->add('info', $message, $domain, $params);
     }
 
-    public function all()
+    public function all(): array
     {
         return $this->getFlashBag()->get($this->prefix);
     }
 
-    private function add($type, $message, $domain, array $params = [])
+    private function add(string $type, string $message, string $domain, array $params = []): void
     {
         if ($this->getFlashBag()->has($this->prefix)) {
             $messages = $this->getFlashBag()->get($this->prefix);
@@ -79,10 +76,7 @@ class FlashMessages
         $this->flashBag->set($this->prefix, $messages);
     }
 
-    /**
-     * @return FlashBagInterface
-     */
-    private function getFlashBag()
+    private function getFlashBag(): FlashBagInterface
     {
         if ($this->flashBag instanceof FlashBagInterface) {
             return $this->flashBag;

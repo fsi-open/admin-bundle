@@ -7,18 +7,21 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ListController extends ControllerAbstract
 {
     /**
      * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\ListElement")
      */
-    public function listAction(ListElement $element, Request $request)
+    public function listAction(ListElement $element, Request $request): Response
     {
         return $this->handleRequest($element, $request, 'fsi_admin_list');
     }
