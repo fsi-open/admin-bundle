@@ -91,32 +91,23 @@ This will define a `resources` group with a single key `main_page`.
 namespace FSi\Bundle\DemoBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
-use FSi\Bundle\AdminBundle\Annotation as Admin;
+use FSi\Bundle\DemoBundle\Entity;
 
 class MainPage extends ResourceElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getKey()
+    public function getKey(): string
     {
         return 'resources.main_page'; // must be a group type key, defined in the `resource_map.yml`
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'main_page';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\Bundle\DemoBundle\Entity\Resource';
+        return Entity\Resource::class;
     }
 }
 ```

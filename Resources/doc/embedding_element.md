@@ -21,7 +21,7 @@ use FOS\UserBundle\Entity\User as BaseUser;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="fos_user")
+ * @ORM\Table(name="fsi_user")
  */
 class User extends BaseUser
 {
@@ -30,12 +30,12 @@ class User extends BaseUser
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\OneToMany(targetEntity="UserInvoice", mappedBy="user")
      */
-    protected $invoices;
+    private $invoices;
 
     public function __construct()
     {
@@ -46,17 +46,15 @@ class User extends BaseUser
     /**
      * @return Collection|UserInvoice[]
      */
-    public function getInvoices()
+    public function getInvoices(): Collection
     {
         return $this->invoices;
     }
 
-    public function addInvoice(UserInvoice $invoice)
+    public function addInvoice(UserInvoice $invoice): void
     {
         $invoice->setUser($this);
         $this->invoices->add($invoice);
-
-        return $this;
     }
 }
 ```
@@ -73,7 +71,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="fos_user_invoice")
+ * @ORM\Table(name="fsi_user_invoice")
  */
 class UserInvoice
 {
@@ -82,55 +80,40 @@ class UserInvoice
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $title;
+    private $title;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="invoices")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      */
-    protected $user;
+    private $user;
 
-    /**
-     * @return integer
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param User $user
-     */
-    public function setUser(User $user)
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }
 
-    /**
-     * @return User
-     */
-    public function getUser()
+    public function getUser(): ?User
     {
         return $this->user;
     }
@@ -156,36 +139,33 @@ Here's how an `UserInvoice` element can look like:
 
 namespace Acme\DemoBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use AcmeDemoBundle\Entity;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\ListElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserInvoice extends CRUDElement
+class UserInvoice extends ListElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'AcmeDemoBundle\Entity\UserInvoice';
+        return Entity\UserInvoice::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'invoices';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
-            'user' => 'Acme\DemoBundle\Entity\User'
+            'user' => Entity\User::class
         ));
 
         $resolver->setRequired(array(
@@ -193,15 +173,12 @@ class UserInvoice extends CRUDElement
         ));
     }
 
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->getOption('user')->getId();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initDataSource(DataSourceFactoryInterface $factory)
+    protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface
     {
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $this->getRepository()
@@ -217,10 +194,7 @@ class UserInvoice extends CRUDElement
         return $datasource;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initDataGrid(DataGridFactoryInterface $factory)
+    protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface
     {
         $datagrid = $factory->createDataGrid('datagrid');
 
@@ -229,15 +203,6 @@ class UserInvoice extends CRUDElement
         ));
 
         return $datagrid;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function initForm(FormFactoryInterface $factory, $data = null)
-    {
-        // Because this element doesn't allow creating or editing invoices,
-        // this method should be empty
     }
 }
 ```
@@ -252,37 +217,30 @@ The best place would be inside of `User` admin element, since there we have the 
 
 namespace Acme\DemoBundle\Admin;
 
-use Acme\DemoBundle\Entity\User as UserEntity;
+use Acme\DemoBundle\Entity;
 use Acme\DemoBundle\Admin\UserInvoice;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class User extends CRUDElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'AcmeDemoBundle\Entity\User';
+        return Entity\User::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'users';
     }
 
-    public function invoices(UserEntity $user)
+    public function invoices(Entity\User $user): UserInvoice
     {
         $invoice = new UserInvoice(array(
-            'allow_delete' => false,
-            'allow_add' => false,
-            'allow_edit' => false,
             'user' => $user,
             'template_crud_list' => '@AcmeDemo/Admin/user_invoices_list.html.twig'
         ));
@@ -294,10 +252,7 @@ class User extends CRUDElement
         return $invoice;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initDataSource(DataSourceFactoryInterface $factory)
+    protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface
     {
         /* @var $datasource \FSi\Component\DataSource\DataSource */
         $datasource = $factory->createDataSource('doctrine', array(
@@ -313,16 +268,13 @@ class User extends CRUDElement
         return $datasource;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initDataGrid(DataGridFactoryInterface $factory)
+    protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface
     {
         /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
         $datagrid = $factory->createDataGrid('datagrid');
 
         $datagrid->addColumn('email', 'text', array(
-            'label' => 'Eamil'
+            'label' => 'Email'
         ));
 
         $datagrid->addColumn('username', 'text', array(
@@ -375,7 +327,7 @@ class User extends CRUDElement
     protected function initForm(FormFactoryInterface $factory, $data = null)
     {
         $form = $factory->create('form', $data, array(
-            'data_class' => 'Acme\DemoBundle\Entity\User' // this option is important for creation form
+            'data_class' => Entity\User::class // this option is important for creation form
         ));
 
         $form->add('email', 'email');
@@ -414,7 +366,7 @@ Next, we have to modify the template for the `User` edit form:
 {% endblock %}
 ```
 
-and add it to the elment's service options:
+and add it to the element's service options:
 
 ```xml
 <!-- src/Acme/DemoBundle/Resources/config/services.xml -->
@@ -449,7 +401,7 @@ Then, we have to prepare the `UserInvoice` element list template:
 
 This is enough for displaying a list of user invoices under his/hers edition form (assuming he/she has any).
 But since we rendered it through the ``render(controller( .. ))`` method, the pagination will not
-work - it does not have the acces to the application's main request object.
+work - it does not have the access to the application's main request object.
 
 So, how we are going to take data from the main request and pass it to the datasource
 rendered in a subrequest? Via the admin bundle events, of course!

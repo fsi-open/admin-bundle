@@ -6,7 +6,7 @@ Add the following line to your `composer.json` and run update:
 
 ```json
 "require": {
-    "fsi/admin-bundle": "2.0.*"
+    "fsi/admin-bundle": "^3.0@dev"
 }
 ```
 
@@ -46,7 +46,7 @@ admin:
 # app/config/config.yml
 
 framework:
-    translator:      { fallback: %locale% }
+    translator:      { fallback: "%locale%" }
 ```
 
 Congratulations! Now you can register your first [admin element](admin_element.md).

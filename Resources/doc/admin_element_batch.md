@@ -9,30 +9,21 @@
 namespace FSi\Bundle\DemoBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\BatchElement;
-use FSi\Bundle\AdminBundle\Annotation as Admin;
+use FSi\Bundle\DemoBundle\Entity;
 
 class SubscriberDeactivateElement extends BatchElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\Bundle\DemoBundle\Entity\Subscriber'; // Doctrine entity's class name
+        return Entity\Subscriber::class; // Doctrine entity's class name
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId():string
     {
         return 'subscribers_deactivate'; // ID is used in url generation http://domain.com/admin/batch/{id}
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function apply($object)
+    public function apply($object): void
     {
         $object->setActive(false); // this is where the element logic is being applied
         $this->getObjectManager()->flush();
@@ -69,22 +60,16 @@ This is the only predefined batch admin element class, which can be used to dele
 namespace FSi\Bundle\DemoBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DeleteElement;
-use FSi\Bundle\AdminBundle\Annotation as Admin;
+use FSi\Bundle\DemoBundle\Entity;
 
 class SubscriberDeleteElement extends DeleteElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): class
     {
-        return 'FSi\Bundle\DemoBundle\Entity\Subscriber'; // Doctrine entity's class name
+        return Entity\Subscriber::class; // Doctrine entity's class name
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'subscribers_delete'; // id is used in url generation http://domain.com/admin/batch/{id}
     }

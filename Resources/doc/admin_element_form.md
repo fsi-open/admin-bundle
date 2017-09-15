@@ -8,48 +8,44 @@
 
 namespace FSi\Bundle\DemoBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Annotation as Admin;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\FormElement;
+use FSi\Bundle\DemoBundle\Entity;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 class SubscriberFormElement extends FormElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\Bundle\DemoBundle\Entity\Subscriber'; // Doctrine entity's class name
+        return Entity\Subscriber::class; // Doctrine entity's class name
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'subscriber_form'; // ID is used in url generation http://domain.com/admin/form/{id}
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initForm(FormFactoryInterface $factory, $data = null)
+    protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface
     {
         // You can either build your form here or use a dedicated class.
         // Basically all ways of creating forms from the Symfony2 Form component
         // are valid.
-        $builder = $factory->createNamedBuilder('subscriber', 'form', $data, array(
+        $builder = $factory->createNamedBuilder('subscriber', FormType::class, $data, array(
             'data_class' => $this->getClassName()
         ));
 
-        $builder->add('email', 'email', array(
+        $builder->add('email', EmailType::class, array(
             'label' => 'admin.subscriber.list.email',
         ));
-        $builder->add('created_at', 'date', array(
+        $builder->add('created_at', DateType::class, array(
             'label' => 'admin.subscriber.list.created_at',
             'widget' => 'single_text'
         ));
-        $builder->add('active', 'checkbox', array(
+        $builder->add('active', CheckboxType::class, array(
             'label' => 'admin.subscriber.list.active',
         ));
 
