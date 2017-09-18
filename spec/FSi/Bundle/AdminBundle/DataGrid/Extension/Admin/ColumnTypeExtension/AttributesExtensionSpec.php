@@ -7,12 +7,13 @@ use FSi\Component\DataGrid\Column\CellViewInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface;
 
 class AttributesExtensionSpec extends ObjectBehavior
 {
     function it_is_column_extension()
     {
-        $this->shouldBeAnInstanceOf('FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface');
+        $this->shouldBeAnInstanceOf(ColumnTypeExtensionInterface::class);
     }
 
     function it_adds_actions_options(ColumnTypeInterface $column, OptionsResolver $optionsResolver)

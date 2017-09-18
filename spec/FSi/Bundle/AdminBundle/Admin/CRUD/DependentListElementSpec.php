@@ -13,20 +13,23 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use FSi\Bundle\AdminBundle\spec\fixtures\MyDependentList;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 
 class DependentListElementSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyDependentList');
+        $this->beAnInstanceOf(MyDependentList::class);
         $this->beConstructedWith([]);
     }
 
     function it_is_admin_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\ListElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\DependentElement');
+        $this->shouldHaveType(GenericListElement::class);
+        $this->shouldHaveType(ListElement::class);
+        $this->shouldHaveType(DependentElement::class);
     }
 
     function it_has_default_route()

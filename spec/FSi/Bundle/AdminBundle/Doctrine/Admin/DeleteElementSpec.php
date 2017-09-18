@@ -8,12 +8,14 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use stdClass;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDeleteElement;
+use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class DeleteElementSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, ObjectManager $om)
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDeleteElement');
+        $this->beAnInstanceOf(MyDeleteElement::class);
         $this->beConstructedWith([]);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
@@ -46,7 +48,7 @@ class DeleteElementSpec extends ObjectBehavior
         $repository->getClassName()->willReturn('FSi/Bundle/DemoBundle/Entity/Entity');
 
         $this->setManagerRegistry($registry);
-        $this->getDataIndexer()->shouldReturnAnInstanceOf('FSi\Component\DataIndexer\DoctrineDataIndexer');
+        $this->getDataIndexer()->shouldReturnAnInstanceOf(DoctrineDataIndexer::class);
     }
 
     public function it_deletes_object_from_object_manager(

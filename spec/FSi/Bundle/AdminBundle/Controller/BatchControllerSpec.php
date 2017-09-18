@@ -19,6 +19,9 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use FSi\Bundle\AdminBundle\Exception\ContextException;
 
 class BatchControllerSpec extends ObjectBehavior
 {
@@ -40,7 +43,7 @@ class BatchControllerSpec extends ObjectBehavior
     ) {
         $dispatcher->dispatch(
             AdminEvents::CONTEXT_PRE_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type(AdminEvent::class)
         )->shouldBeCalled();
 
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
@@ -57,7 +60,7 @@ class BatchControllerSpec extends ObjectBehavior
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
-        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
+        $this->shouldThrow(NotFoundHttpException::class)
             ->during('batchAction', [$element, $request]);
     }
 
@@ -71,7 +74,7 @@ class BatchControllerSpec extends ObjectBehavior
         $context->hasTemplateName()->willReturn(false);
         $context->handleRequest($request)->willReturn(null);
 
-        $this->shouldThrow('FSi\Bundle\AdminBundle\Exception\ContextException')
+        $this->shouldThrow(ContextException::class)
             ->during('batchAction', [$element, $request]);
     }
 

@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class FormValidRequestHandlerSpec extends ObjectBehavior
 {
@@ -60,7 +61,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $request->isMethod('POST')->willReturn(false);
+        $request->isMethod(Request::METHOD_POST)->willReturn(false);
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
             ->shouldBeCalled();
         $event->getElement()->willReturn($element);
@@ -78,7 +79,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         RouterInterface $router,
         stdClass $object
     ) {
-        $request->isMethod('POST')->willReturn(true);
+        $request->isMethod(Request::METHOD_POST)->willReturn(true);
         $request->query = $queryParameterbag;
 
         $event->getForm()->willReturn($form);
@@ -100,7 +101,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $router->generate('fsi_admin_list', ['element' => 'element_list_id'])->willReturn('/list/page');
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
+            ->shouldReturnAnInstanceOf(RedirectResponse::class);
     }
 
     function it_return_redirect_response_with_redirect_uri_passed_by_request(
@@ -112,7 +113,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         FormElement $element,
         stdClass $object
     ) {
-        $request->isMethod('POST')->willReturn(true);
+        $request->isMethod(Request::METHOD_POST)->willReturn(true);
         $request->query = $queryParameterbag;
 
         $event->getForm()->willReturn($form);
@@ -134,7 +135,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $queryParameterbag->get('redirect_uri')->willReturn('some_redirect_uri');
 
         $response = $this->handleRequest($event, $request);
-        $response->shouldBeAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->shouldBeAnInstanceOf(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('some_redirect_uri');
     }
 
@@ -145,7 +146,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         Response $response
     ) {
-        $request->isMethod('POST')->willReturn(false);
+        $request->isMethod(Request::METHOD_POST)->willReturn(false);
 
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
             ->will(function() use ($event, $response) {
@@ -155,7 +156,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $event->getElement()->willReturn($element);
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_return_response_from_pre_data_save_event(
@@ -166,7 +167,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         FormInterface $form,
         Response $response
     ) {
-        $request->isMethod('POST')->willReturn(true);
+        $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
@@ -178,7 +179,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $event->getElement()->willReturn($element);
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_return_response_from_post_data_save_event(
@@ -190,7 +191,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         stdClass $object,
         Response $response
     ) {
-        $request->isMethod('POST')->willReturn(true);
+        $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
@@ -208,6 +209,6 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             });
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 }

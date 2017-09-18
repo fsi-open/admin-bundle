@@ -14,12 +14,13 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use FSi\Bundle\ResourceRepositoryBundle\Doctrine\ResourceRepository;
 use PhpSpec\ObjectBehavior;
+use FSi\Bundle\AdminBundle\spec\fixtures\MyResourceElement;
 
 class ResourceElementSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry)
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyResourceElement');
+        $this->beAnInstanceOf(MyResourceElement::class);
         $this->setManagerRegistry($registry);
     }
 

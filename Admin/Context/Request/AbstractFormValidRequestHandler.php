@@ -61,7 +61,7 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
 
     protected function isValidPostRequest(FormEvent $event, Request $request): bool
     {
-        return $request->isMethod('POST') && $event->getForm()->isValid();
+        return $request->isMethod(Request::METHOD_POST) && $event->getForm()->isValid();
     }
 
     protected function getRedirectResponse(FormEvent $event, Request $request): RedirectResponse

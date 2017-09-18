@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * (c) FSi sp. z o.o. <info@fsi.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
@@ -16,6 +16,7 @@ use FSi\Bundle\AdminBundle\Behat\Element\ListElement;
 use FSi\Bundle\AdminBundle\Behat\Page\DefaultPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Symfony\Component\BrowserKit\Client;
+use Symfony\Component\HttpFoundation\Request;
 
 class ListContext extends AbstractContext
 {
@@ -100,7 +101,7 @@ class ListContext extends AbstractContext
             }
             /** @var Client $client */
             $client = $this->getSession()->getDriver()->getClient();
-            $client->request('POST', $batchActionUrl, $data);
+            $client->request(Request::METHOD_POST, $batchActionUrl, $data);
         }
     }
 

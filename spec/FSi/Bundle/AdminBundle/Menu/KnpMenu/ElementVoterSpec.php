@@ -11,6 +11,7 @@ use PhpSpec\ObjectBehavior;
 use stdClass;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
+use Knp\Menu\Matcher\Voter\VoterInterface;
 
 class ElementVoterSpec extends ObjectBehavior
 {
@@ -24,7 +25,7 @@ class ElementVoterSpec extends ObjectBehavior
 
     function it_is_menu_voter()
     {
-        $this->shouldBeAnInstanceOf('\Knp\Menu\Matcher\Voter\VoterInterface');
+        $this->shouldBeAnInstanceOf(VoterInterface::class);
     }
 
     function it_returns_null_if_route_parameters_not_contain_element(

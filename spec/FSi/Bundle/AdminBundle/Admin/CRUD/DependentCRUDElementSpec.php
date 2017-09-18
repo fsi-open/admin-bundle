@@ -22,20 +22,23 @@ use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use FSi\Bundle\AdminBundle\spec\fixtures\MyDependentCRUD;
+use FSi\Bundle\AdminBundle\Admin\CRUD\DependentCRUDElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\CRUDElement;
 
 class DependentCRUDElementSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyDependentCRUD');
+        $this->beAnInstanceOf(MyDependentCRUD::class);
         $this->beConstructedWith(array());
     }
 
     function it_is_admin_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\DependentCRUDElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\CRUDElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\DependentElement');
+        $this->shouldHaveType(DependentCRUDElement::class);
+        $this->shouldHaveType(CRUDElement::class);
+        $this->shouldHaveType(DependentElement::class);
     }
 
     function it_has_default_route()

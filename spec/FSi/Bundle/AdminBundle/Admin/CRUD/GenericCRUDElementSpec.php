@@ -16,23 +16,26 @@ use FSi\Component\DataSource\DataSourceFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
+use FSi\Bundle\AdminBundle\spec\fixtures\MyCRUD;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 class GenericCRUDElementSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyCRUD');
+        $this->beAnInstanceOf(MyCRUD::class);
         $this->beConstructedWith([]);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement');
+        $this->shouldHaveType(GenericCRUDElement::class);
     }
 
     function it_is_admin_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Element');
+        $this->shouldHaveType(Element::class);
     }
 
     function it_has_default_route()

@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
+use FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class BatchActionExtensionSpec extends ObjectBehavior
 {
@@ -40,7 +43,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
     function it_is_column_extension()
     {
-        $this->shouldBeAnInstanceOf('FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface');
+        $this->shouldBeAnInstanceOf(ColumnTypeExtensionInterface::class);
     }
 
     function it_should_extend_batch_column()
@@ -156,7 +159,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
         $formBuilder->add(
             'action',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+            TypeSolver::getFormType(ChoiceType::class, 'choice'),
             [
                 'choices' => $expectedChoices,
                 'translation_domain' => 'FSiAdminBundle'
@@ -165,7 +168,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
         $formBuilder->add(
             'submit',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+            TypeSolver::getFormType(SubmitType::class, 'submit'),
             [
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'
@@ -229,7 +232,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
         $formBuilder->add(
             'action',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+            TypeSolver::getFormType(ChoiceType::class, 'choice'),
             [
                 'choices' => $expectedChoices,
                 'translation_domain' => 'FSiAdminBundle'
@@ -237,7 +240,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
         )->willReturn();
         $formBuilder->add(
             'submit',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+            TypeSolver::getFormType(SubmitType::class, 'submit'),
             [
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'
@@ -297,7 +300,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
         $formBuilder->add(
             'action',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+            TypeSolver::getFormType(ChoiceType::class, 'choice'),
             [
                 'choices' => $expectedChoices,
                 'translation_domain' => 'FSiAdminBundle'
@@ -305,7 +308,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
         )->willReturn();
         $formBuilder->add(
             'submit',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+            TypeSolver::getFormType(SubmitType::class, 'submit'),
             [
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'
@@ -360,7 +363,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
         $formBuilder->add(
             'action',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+            TypeSolver::getFormType(ChoiceType::class, 'choice'),
             [
                 'choices' => $expectedChoices,
                 'translation_domain' => 'FSiAdminBundle'
@@ -368,7 +371,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
         )->willReturn();
         $formBuilder->add(
             'submit',
-            TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+            TypeSolver::getFormType(SubmitType::class, 'submit'),
             [
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'

@@ -13,6 +13,8 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use FSi\Bundle\ResourceRepositoryBundle\Form\Type\ResourceType;
 
 class ResourceFormBuilderSpec extends ObjectBehavior
 {
@@ -41,7 +43,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         $element->getKey()->willReturn('resources.resource_key');
 
         $this->shouldThrow(
-            new RuntimeException("resources.resource_key its not a resource group key")
+            new RuntimeException('resources.resource_key its not a resource group key')
         )->during('build', [$element]);
     }
 
@@ -58,7 +60,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
 
         $formFactory
             ->createBuilder(
-                TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\FormType', 'form'),
+                TypeSolver::getFormType(FormType::class, 'form'),
                 ['resources_resource_key' => $resourceValue],
                 ['form_options']
             )
@@ -67,7 +69,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         $formBuilder
             ->add(
                 'resources_resource_key',
-                TypeSolver::getFormType('FSi\Bundle\ResourceRepositoryBundle\Form\Type\ResourceType', 'resource'),
+                TypeSolver::getFormType(ResourceType::class, 'resource'),
                 ['resource_key' => 'resources.resource_key']
             )
             ->shouldBeCalled();

@@ -43,7 +43,7 @@ class DataGridSetDataHandler extends AbstractHandler
     private function validateEvent(AdminEvent $event): ListEvent
     {
         if (!$event instanceof ListEvent) {
-            throw new RequestHandlerException(sprintf('%s require ListEvent', get_class($this)));
+            throw new RequestHandlerException(sprintf('%s requires ListEvent', get_class($this)));
         }
 
         return $event;

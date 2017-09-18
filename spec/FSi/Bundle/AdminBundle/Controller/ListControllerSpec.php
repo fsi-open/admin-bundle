@@ -19,6 +19,9 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use FSi\Bundle\AdminBundle\Exception\ContextException;
 
 class ListControllerSpec extends ObjectBehavior
 {
@@ -45,7 +48,7 @@ class ListControllerSpec extends ObjectBehavior
     ) {
         $dispatcher->dispatch(
             AdminEvents::CONTEXT_PRE_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type(AdminEvent::class)
         )->shouldBeCalled();
 
         $manager->createContext('fsi_admin_list', $element)->willReturn($context);
@@ -79,10 +82,10 @@ class ListControllerSpec extends ObjectBehavior
         ContextManager $manager,
         Request $request
     ) {
-        $element->getId()->willReturn("my_awesome_list_element");
+        $element->getId()->willReturn('my_awesome_list_element');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
-        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
+        $this->shouldThrow(NotFoundHttpException::class)
             ->during('listAction', [$element, $request]);
     }
 
@@ -96,7 +99,7 @@ class ListControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_list', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
 
-        $this->shouldThrow('FSi\Bundle\AdminBundle\Exception\ContextException')
+        $this->shouldThrow(ContextException::class)
             ->during('listAction', [$element, $request]);
     }
 }

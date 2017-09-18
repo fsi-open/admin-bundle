@@ -8,6 +8,13 @@ use FSi\Bundle\AdminBundle\Annotation\Element;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use FSi\Bundle\AdminBundle\spec\fixtures\MyBundle;
+use FSi\Bundle\AdminBundle\FSiAdminBundle;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use FSi\Bundle\AdminBundle\spec\fixtures\Admin\SimpleAdminElement;
+use FSi\Bundle\AdminBundle\spec\fixtures\Admin\CRUDElement;
+use Symfony\Component\Config\Resource\DirectoryResource;
+use Symfony\Component\DependencyInjection\Definition;
 
 class AdminAnnotatedElementPassSpec extends ObjectBehavior
 {
@@ -22,9 +29,9 @@ class AdminAnnotatedElementPassSpec extends ObjectBehavior
         AdminClassFinder $adminClassFinder
     ) {
         $container->getParameter('kernel.bundles')->willReturn([
-            'FSi\Bundle\AdminBundle\spec\fixtures\MyBundle',
-            'FSi\Bundle\AdminBundle\FSiAdminBundle',
-            'Symfony\Bundle\FrameworkBundle\FrameworkBundle'
+            MyBundle::class,
+            FSiAdminBundle::class,
+            FrameworkBundle::class
         ]);
 
         $baseDir = __DIR__ . '/../../../../../..';
@@ -32,34 +39,34 @@ class AdminAnnotatedElementPassSpec extends ObjectBehavior
             realpath($baseDir . '/spec/fixtures/Admin'),
             realpath($baseDir . '/Admin')
         ])->willReturn([
-            'FSi\Bundle\AdminBundle\spec\fixtures\Admin\SimpleAdminElement',
-            'FSi\Bundle\AdminBundle\spec\fixtures\Admin\CRUDElement'
+            SimpleAdminElement::class,
+            CRUDElement::class
         ]);
 
         $annotationReader->getClassAnnotation(
             Argument::allOf(
                 Argument::type('ReflectionClass'),
-                Argument::which('getName', 'FSi\Bundle\AdminBundle\spec\fixtures\Admin\CRUDElement')
+                Argument::which('getName', CRUDElement::class)
             ),
-            'FSi\\Bundle\\AdminBundle\\Annotation\\Element'
+            Element::class
         )->willReturn(null);
 
         $annotationReader->getClassAnnotation(
             Argument::allOf(
                 Argument::type('ReflectionClass'),
-                Argument::which('getName', 'FSi\Bundle\AdminBundle\spec\fixtures\Admin\SimpleAdminElement')
+                Argument::which('getName', SimpleAdminElement::class)
             ),
-            'FSi\\Bundle\\AdminBundle\\Annotation\\Element'
+            Element::class
         )->willReturn(new Element([]));
 
         $container->addResource(Argument::allOf(
-            Argument::type('Symfony\Component\Config\Resource\DirectoryResource'),
+            Argument::type(DirectoryResource::class),
             Argument::which('getResource', realpath($baseDir . '/spec/fixtures/Admin')),
             Argument::which('getPattern', '/\.php$/')
         ))->shouldBeCalled();
 
         $container->addResource(Argument::allOf(
-            Argument::type('Symfony\Component\Config\Resource\DirectoryResource'),
+            Argument::type(DirectoryResource::class),
             Argument::which('getResource', realpath($baseDir . '/Admin')),
             Argument::which('getPattern', '/\.php$/')
         ))->shouldBeCalled();
@@ -69,9 +76,9 @@ class AdminAnnotatedElementPassSpec extends ObjectBehavior
                 return false;
             }
 
-            /** @var \Symfony\Component\DependencyInjection\Definition $definition */
+            /** @var Definition $definition */
             $definition = $definitions[0];
-            if ($definition->getClass() !== 'FSi\Bundle\AdminBundle\spec\fixtures\Admin\SimpleAdminElement') {
+            if ($definition->getClass() !== SimpleAdminElement::class) {
                 return false;
             }
 

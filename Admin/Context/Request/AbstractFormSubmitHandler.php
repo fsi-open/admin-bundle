@@ -23,7 +23,7 @@ abstract class AbstractFormSubmitHandler extends AbstractHandler
     {
         $event = $this->validateEvent($event);
 
-        if (!$request->isMethod('POST')) {
+        if (!$request->isMethod(Request::METHOD_POST)) {
             return null;
         }
 

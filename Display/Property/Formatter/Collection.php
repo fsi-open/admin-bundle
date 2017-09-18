@@ -39,7 +39,10 @@ class Collection implements ValueFormatter
         }
 
         if (!is_iterable($value)) {
-            throw new \InvalidArgumentException('Collection formatter requires value to be iterable');
+            throw new \InvalidArgumentException(sprintf(
+                'Collection formatter requires value to be iterable, %s given',
+                is_object($value) ? get_class($value) : gettype($value)
+            ));
         }
 
         $formatted = [];

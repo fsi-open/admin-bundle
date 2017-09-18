@@ -13,12 +13,15 @@ use FSi\Component\DataIndexer\DataIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDependentFormElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\FormElement;
+use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class DependentFormElementSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, ObjectManager $om)
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDependentFormElement');
+        $this->beAnInstanceOf(MyDependentFormElement::class);
         $this->beConstructedWith([]);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
@@ -27,8 +30,8 @@ class DependentFormElementSpec extends ObjectBehavior
 
     function it_is_dependent_crud_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\DependentElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Doctrine\Admin\FormElement');
+        $this->shouldHaveType(DependentElement::class);
+        $this->shouldHaveType(FormElement::class);
     }
 
     function it_returns_null_if_parent_element_does_not_have_data_indexer(
@@ -120,6 +123,6 @@ class DependentFormElementSpec extends ObjectBehavior
         $repository->getClassName()->willReturn('FSi/Bundle/DemoBundle/Entity/Entity');
 
         $this->setManagerRegistry($registry);
-        $this->getDataIndexer()->shouldReturnAnInstanceOf('FSi\Component\DataIndexer\DoctrineDataIndexer');
+        $this->getDataIndexer()->shouldReturnAnInstanceOf(DoctrineDataIndexer::class);
     }
 }

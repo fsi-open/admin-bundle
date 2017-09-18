@@ -18,6 +18,8 @@ use Prophecy\Argument;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
+use FSi\Bundle\AdminBundle\Event\DisplayEvent;
 
 class DisplayContextSpec extends ObjectBehavior
 {
@@ -41,7 +43,7 @@ class DisplayContextSpec extends ObjectBehavior
 
     function it_is_context()
     {
-        $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
+        $this->shouldBeAnInstanceOf(ContextInterface::class);
     }
 
     function it_has_array_data(Request $request)
@@ -71,7 +73,7 @@ class DisplayContextSpec extends ObjectBehavior
         HandlerInterface $handler,
         Request $request
     ) {
-        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\DisplayEvent'), $request)
+        $handler->handleRequest(Argument::type(DisplayEvent::class), $request)
             ->willReturn(null);
 
         $this->handleRequest($request)->shouldReturn(null);
@@ -79,11 +81,11 @@ class DisplayContextSpec extends ObjectBehavior
 
     function it_returns_response_from_handler(HandlerInterface $handler, Request $request)
     {
-        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\DisplayEvent'), $request)
+        $handler->handleRequest(Argument::type(DisplayEvent::class), $request)
             ->willReturn(new Response());
 
         $this->handleRequest($request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 
     public function getMatchers()

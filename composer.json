@@ -26,6 +26,7 @@
         "symfony/asset": "^2.7|^3.0",
         "symfony/options-resolver": "^2.6|^3.0",
         "symfony/expression-language": "^2.6|^3.0",
+        "symfony/http-foundation": "^2.6|^3.0",
         "symfony/dependency-injection": "^2.6.2|^3.0",
         "symfony/validator": "^2.3|^3.0",
         "symfony/proxy-manager-bridge": "^2.3|^3.0",

@@ -11,6 +11,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 
 class BatchFormSubmitHandlerSpec extends ObjectBehavior
 {
@@ -22,7 +23,7 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
 
     function it_is_context_request_handler()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface');
+        $this->shouldHaveType(HandlerInterface::class);
     }
 
     function it_throw_exception_for_non_form_event(ListEvent $listEvent, Request $request)
@@ -36,7 +37,7 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
 
     function it_does_nothing_on_non_POST_request(FormEvent $event, Request $request)
     {
-        $request->isMethod('POST')->willReturn(false);
+        $request->isMethod(Request::METHOD_POST)->willReturn(false);
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -47,7 +48,7 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
         EventDispatcher $eventDispatcher,
         FormInterface $form
     ) {
-        $request->isMethod('POST')->willReturn(true);
+        $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_PRE_SUBMIT, $event)
             ->shouldBeCalled();
@@ -66,7 +67,7 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcher $eventDispatcher
     ) {
-        $request->isMethod('POST')->willReturn(true);
+        $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_PRE_SUBMIT, $event)
             ->will(function() use ($event) {
@@ -75,7 +76,7 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
             });
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_return_response_from_request_post_submit_event(
@@ -84,7 +85,7 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
         EventDispatcher $eventDispatcher,
         FormInterface $form
     ) {
-        $request->isMethod('POST')->willReturn(true);
+        $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_PRE_SUBMIT, $event)
             ->shouldBeCalled();
@@ -99,6 +100,6 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
             });
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 }

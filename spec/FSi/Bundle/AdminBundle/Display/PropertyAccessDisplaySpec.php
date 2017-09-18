@@ -4,13 +4,14 @@ namespace spec\FSi\Bundle\AdminBundle\Display;
 
 use FSi\Bundle\AdminBundle\Display\Property;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class PropertyAccessDisplaySpec extends ObjectBehavior
 {
     function it_throws_exception_when_value_is_not_an_object_or_array()
     {
         $object = 'wrong_data';
-        $this->shouldThrow('\InvalidArgumentException')->during('__construct', [$object]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('__construct', [$object]);
     }
 
     function it_throws_exception_when_property_path_is_invalid()
@@ -20,7 +21,7 @@ class PropertyAccessDisplaySpec extends ObjectBehavior
 
         $this->beConstructedWith($object);
 
-        $this->shouldThrow('Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException')
+        $this->shouldThrow(NoSuchPropertyException::class)
             ->during('add', ['first_name', 'First Name']);
     }
 

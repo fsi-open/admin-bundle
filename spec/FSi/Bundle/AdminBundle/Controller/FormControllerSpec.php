@@ -19,6 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use FSi\Bundle\AdminBundle\Exception\ContextException;
 
 class FormControllerSpec extends ObjectBehavior
 {
@@ -45,7 +47,7 @@ class FormControllerSpec extends ObjectBehavior
     ) {
         $dispatcher->dispatch(
             AdminEvents::CONTEXT_PRE_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type(AdminEvent::class)
         )->shouldBeCalled();
 
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
@@ -93,7 +95,7 @@ class FormControllerSpec extends ObjectBehavior
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
 
-        $this->shouldThrow('FSi\Bundle\AdminBundle\Exception\ContextException')
+        $this->shouldThrow(ContextException::class)
             ->during('formAction', [$element, $request]);
     }
 }
