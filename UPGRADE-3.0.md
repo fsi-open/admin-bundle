@@ -71,3 +71,9 @@ Refer to [1.1 changelog](CHANGELOG-1.1.md) for information on which routes have 
 In order to use this bundle, you will need PHP 7.1 or higher. You will also need to adjust all you classes
 that inherit from this bundle's classes (especially admin element classes) that method signatures will match
 their parents signatures.
+
+## Correct arguments order in calls to FlashMessages methods
+
+All public methods of `FSi\Bundle\AdminBundle\Message\FlashMessages` now has the following arguments order:
+`string $message, array $params = [], string $domain = 'FSiAdminBundle'` so be careful to adjust all calls
+accordingly.

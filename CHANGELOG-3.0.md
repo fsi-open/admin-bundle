@@ -182,3 +182,9 @@ Refer to [1.1 changelog](CHANGELOG-1.1.md) for information on which routes have 
 To be able to fully utilize new functionality introduced in 7.1, we have decided
 to only support PHP versions equal or higher to it. All bundle's classes and interfaces
 utilize new php 7.1 features like scalar typehints, return typehints and nullable types.
+
+## Reordered arguments in FSi\Bundle\AdminBundle\Message\FlashMessages methods
+
+All public methods of `FSi\Bundle\AdminBundle\Message\FlashMessages` now has more logical arguments order:
+`string $message, array $params = [], string $domain = 'FSiAdminBundle'` instead of previous
+`string $message, string $domain = 'FSiAdminBundle, array $params = []'`
