@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Request\ParamConverter;
 
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
@@ -7,31 +16,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class AdminElementParamConverter implements ParamConverterInterface
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\ManagerInterface
+     * @var ManagerInterface
      */
     private $manager;
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Manager $manager
-     */
     public function __construct(ManagerInterface $manager)
     {
         $this->manager = $manager;
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter $configuration
-     * @return bool
-     */
-    public function apply(Request $request, ParamConverter $configuration)
+    public function apply(Request $request, ParamConverter $configuration): bool
     {
         $param = $configuration->getName();
         $id = $request->attributes->get($param, '');
@@ -45,11 +44,7 @@ class AdminElementParamConverter implements ParamConverterInterface
         return true;
     }
 
-    /**
-     * @param \Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter $configuration
-     * @return bool
-     */
-    public function supports(ParamConverter $configuration)
+    public function supports(ParamConverter $configuration): bool
     {
         if (!$configuration instanceof ParamConverter) {
             return false;
@@ -61,7 +56,7 @@ class AdminElementParamConverter implements ParamConverterInterface
 
         $implements = class_implements($configuration->getClass());
 
-        if (in_array('FSi\\Bundle\\AdminBundle\\Admin\\Element', $implements)) {
+        if (in_array(Element::class, $implements, true)) {
             return true;
         }
 

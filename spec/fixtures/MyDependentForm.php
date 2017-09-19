@@ -1,29 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\spec\fixtures;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\DependentFormElement;
+use FSi\Component\DataIndexer\DataIndexerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 class MyDependentForm extends DependentFormElement
 {
-    public function getId()
+    public function getId(): string
+    {
+        return 'my_dependent_form';
+    }
+
+    public function getParentId(): string
     {
     }
 
-    public function getParentId()
+    public function getDataIndexer(): DataIndexerInterface
     {
     }
 
-    public function getDataIndexer()
+    public function save($object): void
     {
     }
 
-    public function save($object)
-    {
-    }
-
-    protected function initForm(FormFactoryInterface $factory, $data = null)
+    protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface
     {
     }
 }

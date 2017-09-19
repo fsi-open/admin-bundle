@@ -7,11 +7,14 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 class AdminController
@@ -38,12 +41,12 @@ class AdminController
         $this->indexActionTemplate = $indexActionTemplate;
     }
 
-    public function indexAction()
+    public function indexAction(): Response
     {
         return $this->templating->renderResponse($this->indexActionTemplate);
     }
 
-    public function localeAction($_locale, Request $request)
+    public function localeAction($_locale, Request $request): RedirectResponse
     {
         $request->getSession()->set('admin_locale', $_locale);
 

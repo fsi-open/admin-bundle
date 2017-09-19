@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
@@ -18,22 +20,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 abstract class GenericFormElement extends AbstractElement implements FormElement
 {
     /**
-     * @var \Symfony\Component\Form\FormFactoryInterface
+     * @var FormFactoryInterface
      */
     protected $formFactory;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoute()
+    public function getRoute(): string
     {
         return 'fsi_admin_form';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'template_form' => null,
@@ -44,50 +40,32 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
         $resolver->setAllowedTypes('allow_add', 'bool');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setFormFactory(FormFactoryInterface $factory)
+    public function setFormFactory(FormFactoryInterface $factory): void
     {
         $this->formFactory = $factory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createForm($data = null)
+    public function createForm($data = null): FormInterface
     {
-        $form = $this->initForm($this->formFactory, $data);
-
-        if (!is_object($form) || !$form instanceof FormInterface) {
-            throw new RuntimeException('initForm should return instanceof Symfony\\Component\\Form\\FormInterface');
-        }
-
-        return $form;
+        return $this->initForm($this->formFactory, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSuccessRoute()
+    public function getSuccessRoute(): string
     {
         return $this->getRoute();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSuccessRouteParameters()
+    public function getSuccessRouteParameters(): array
     {
         return $this->getRouteParameters();
     }
 
     /**
-     * Initialize create Form. This form will be used in createAction in FormController.
+     * Initialize Form. This form will be used in create and update actions.
      *
-     * @param \Symfony\Component\Form\FormFactoryInterface $factory
+     * @param FormFactoryInterface $factory
      * @param mixed $data
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
-    abstract protected function initForm(FormFactoryInterface $factory, $data = null);
+    abstract protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface;
 }

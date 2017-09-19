@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\Display\GenericDisplayElement;

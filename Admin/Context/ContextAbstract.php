@@ -7,12 +7,15 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class ContextAbstract implements ContextInterface
 {
@@ -22,24 +25,21 @@ abstract class ContextAbstract implements ContextInterface
     private $requestHandlers;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $template;
 
     /**
-     * @param HandlerInterface[]|array $requestHandlers
+     * @param HandlerInterface[] $requestHandlers
      * @param string|null
      */
-    public function __construct(array $requestHandlers, $template = null)
+    public function __construct(array $requestHandlers, ?string $template = null)
     {
         $this->requestHandlers = $requestHandlers;
         $this->template = $template;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($route, Element $element)
+    public function supports(string $route, Element $element): bool
     {
         if ($route !== $this->getSupportedRoute()) {
             return false;
@@ -48,48 +48,33 @@ abstract class ContextAbstract implements ContextInterface
         return $this->supportsElement($element);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handleRequest(Request $request)
+    public function handleRequest(Request $request): ?Response
     {
         $event = $this->createEvent($request);
 
         foreach ($this->requestHandlers as $handler) {
             $response = $handler->handleRequest($event, $request);
-            if (isset($response)) {
+            if (null !== $response) {
                 return $response;
             }
         }
+
+        return null;
     }
 
-    public function hasTemplateName()
+    public function hasTemplateName(): bool
     {
-        return !empty($this->template);
+        return null !== $this->template;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTemplateName()
+    public function getTemplateName(): ?string
     {
         return $this->template;
     }
 
-    /**
-     * @return string
-     */
-    abstract protected function getSupportedRoute();
+    abstract protected function getSupportedRoute(): string;
 
-    /**
-     * @param Element $element
-     * @return bool
-     */
-    abstract protected function supportsElement(Element $element);
+    abstract protected function supportsElement(Element $element): bool;
 
-    /**
-     * @param Request $request
-     * @return AdminEvent
-     */
-    abstract protected function createEvent(Request $request);
+    abstract protected function createEvent(Request $request): AdminEvent;
 }

@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\CRUDElement;
@@ -14,10 +16,7 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 
 class CRUDListElementContext extends ListElementContext
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function supportsElement(Element $element)
+    protected function supportsElement(Element $element): bool
     {
         return $element instanceof CRUDElement;
     }

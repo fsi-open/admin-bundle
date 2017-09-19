@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
@@ -28,7 +30,7 @@ class MessagesListener implements EventSubscriberInterface
         $this->flashMessages = $flashMessages;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::FORM_REQUEST_POST_SUBMIT => 'onFormRequestPostSubmit',
@@ -37,19 +39,19 @@ class MessagesListener implements EventSubscriberInterface
         ];
     }
 
-    public function onFormRequestPostSubmit(FormEvent $event)
+    public function onFormRequestPostSubmit(FormEvent $event): void
     {
         if (!$event->getForm()->isValid()) {
             $this->flashMessages->error('messages.form.error');
         }
     }
 
-    public function onFormDataPostSave(AdminEvent $event)
+    public function onFormDataPostSave(AdminEvent $event): void
     {
         $this->flashMessages->success('messages.form.save');
     }
 
-    public function onBatchObjectsPostApply(AdminEvent $event)
+    public function onBatchObjectsPostApply(AdminEvent $event): void
     {
         $this->flashMessages->success('messages.batch.success');
     }

@@ -21,12 +21,15 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDependentCrudElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class DependentCRUDElementSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, ObjectManager $om)
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDependentCrudElement');
+        $this->beAnInstanceOf(MyDependentCrudElement::class);
         $this->beConstructedWith([]);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
@@ -35,8 +38,8 @@ class DependentCRUDElementSpec extends ObjectBehavior
 
     function it_is_dependent_crud_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\DependentElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement');
+        $this->shouldHaveType(DependentElement::class);
+        $this->shouldHaveType(CRUDElement::class);
     }
 
     function it_returns_null_if_parent_element_does_not_have_data_indexer(
@@ -151,6 +154,6 @@ class DependentCRUDElementSpec extends ObjectBehavior
         $repository->getClassName()->willReturn('FSi/Bundle/DemoBundle/Entity/Entity');
 
         $this->setManagerRegistry($registry);
-        $this->getDataIndexer()->shouldReturnAnInstanceOf('FSi\Component\DataIndexer\DoctrineDataIndexer');
+        $this->getDataIndexer()->shouldReturnAnInstanceOf(DoctrineDataIndexer::class);
     }
 }

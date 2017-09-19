@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
@@ -15,12 +17,12 @@ class Pagination extends Element
 {
     protected $selector = ['css' => 'ul.pagination'];
 
-    public function isDisabled($selector)
+    public function isDisabled(string $selector): bool
     {
         return $this->findLink($selector)->getParent()->hasClass('disabled');
     }
 
-    public function isCurrentPage($selector)
+    public function isCurrentPage(string $selector): bool
     {
         return $this->findLink($selector)->getParent()->hasClass('active');
     }

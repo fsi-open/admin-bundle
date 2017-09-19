@@ -22,20 +22,23 @@ use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use FSi\Bundle\AdminBundle\spec\fixtures\MyDependentCRUD;
+use FSi\Bundle\AdminBundle\Admin\CRUD\DependentCRUDElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\CRUDElement;
 
 class DependentCRUDElementSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyDependentCRUD');
+        $this->beAnInstanceOf(MyDependentCRUD::class);
         $this->beConstructedWith(array());
     }
 
     function it_is_admin_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\DependentCRUDElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\CRUDElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\DependentElement');
+        $this->shouldHaveType(DependentCRUDElement::class);
+        $this->shouldHaveType(CRUDElement::class);
+        $this->shouldHaveType(DependentElement::class);
     }
 
     function it_has_default_route()
@@ -112,9 +115,7 @@ class DependentCRUDElementSpec extends ObjectBehavior
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(
-            new RuntimeException("initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface")
-        )->during('createDataGrid');
+        $this->shouldThrow(\TypeError::class)->during('createDataGrid');
     }
 
     function it_adds_batch_column_to_datagrid_when_element_allow_delete_objects(
@@ -145,11 +146,7 @@ class DependentCRUDElementSpec extends ObjectBehavior
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(
-            new RuntimeException(
-                "initDataSource should return instanceof FSi\\Component\\DataSource\\DataSourceInterface"
-            )
-        )->during('createDataSource');
+        $this->shouldThrow(\TypeError::class)->during('createDataSource');
     }
 
     function it_throws_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory)
@@ -157,9 +154,7 @@ class DependentCRUDElementSpec extends ObjectBehavior
         $this->setFormFactory($factory);
         $factory->create(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(
-            new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface")
-        )->during('createForm', [null]);
+        $this->shouldThrow(\TypeError::class)->during('createForm', [null]);
     }
 
     function it_has_default_options_values()

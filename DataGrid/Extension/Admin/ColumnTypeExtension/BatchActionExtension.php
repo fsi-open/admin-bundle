@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\AdminBundle\Form\TypeSolver;
@@ -9,6 +12,7 @@ use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,27 +21,27 @@ use Symfony\Component\Routing\RouterInterface;
 class BatchActionExtension extends ColumnAbstractTypeExtension
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\ManagerInterface
+     * @var ManagerInterface
      */
     protected $manager;
 
     /**
-     * @var \Symfony\Component\Routing\RouterInterface
+     * @var RouterInterface
      */
     protected $router;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\RequestStack
+     * @var RequestStack
      */
     protected $requestStack;
 
     /**
-     * @var \Symfony\Component\Form\FormBuilderInterface
+     * @var FormBuilderInterface
      */
     protected $formBuilder;
 
     /**
-     * @var \Symfony\Component\OptionsResolver\OptionsResolverInterface
+     * @var OptionsResolver
      */
     protected $actionOptionsResolver;
 
@@ -60,18 +64,12 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         $this->initActionOptions();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getExtendedColumnTypes()
+    public function getExtendedColumnTypes(): array
     {
         return ['batch'];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function initOptions(ColumnTypeInterface $column)
+    public function initOptions(ColumnTypeInterface $column): void
     {
         $column->getOptionsResolver()->setDefaults([
             'actions' => [],
@@ -81,7 +79,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         $column->getOptionsResolver()->setAllowedTypes('translation_domain', ['string']);
     }
 
-    public function buildHeaderView(ColumnTypeInterface $column, HeaderViewInterface $view)
+    public function buildHeaderView(ColumnTypeInterface $column, HeaderViewInterface $view): void
     {
         $this->buildBatchForm(
             $column,
@@ -91,7 +89,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         $view->setAttribute('batch_form', $this->formBuilder->getForm()->createView());
     }
 
-    private function initActionOptions()
+    private function initActionOptions(): void
     {
         $this->actionOptionsResolver = new OptionsResolver();
         $this->actionOptionsResolver->setRequired([
@@ -121,11 +119,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         $this->actionOptionsResolver->setAllowedTypes('redirect_uri', ['string', 'bool']);
     }
 
-    /**
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @return array
-     */
-    private function buildBatchActions(ColumnTypeInterface $column)
+    private function buildBatchActions(ColumnTypeInterface $column): array
     {
         if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
             $batchActions = ['crud.list.batch.empty_choice' => ''];
@@ -149,11 +143,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         return $batchActions;
     }
 
-    /**
-     * @param array $actionOptions
-     * @return string
-     */
-    private function getBatchActionUrl(array $actionOptions)
+    private function getBatchActionUrl(array $actionOptions): string
     {
         return $this->router->generate(
             $actionOptions['route_name'],
@@ -161,11 +151,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         );
     }
 
-    /**
-     * @param ColumnTypeInterface $column
-     * @param array $batchActions
-     */
-    private function buildBatchForm(ColumnTypeInterface $column, array $batchActions)
+    private function buildBatchForm(ColumnTypeInterface $column, array $batchActions): void
     {
         if (count($batchActions) > 1) {
             $this->formBuilder->add(
@@ -187,27 +173,18 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         }
     }
 
-    /**
-     * @param \Symfony\Component\OptionsResolver\Options $options
-     * @return null|string
-     */
-    private function getDefaultRouteName(Options $options)
+    private function getDefaultRouteName(Options $options): ?string
     {
         if (isset($options['element'])) {
             $this->validateElementFromOptions($options);
 
             return $this->getElementFromOption($options)->getRoute();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
-    /**
-     * @param \Symfony\Component\OptionsResolver\Options $options
-     * @param array $additionalParameters
-     * @return array
-     */
-    private function normalizeAdditionalParameters(Options $options, array $additionalParameters)
+    private function normalizeAdditionalParameters(Options $options, array $additionalParameters): array
     {
         if (isset($options['element'])) {
             $this->validateElementFromOptions($options);
@@ -221,10 +198,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         return $this->mergeAdditionalParametersWithRedirectUri($options, $additionalParameters);
     }
 
-    /**
-     * @param \Symfony\Component\OptionsResolver\Options $options
-     */
-    private function validateElementFromOptions(Options $options)
+    private function validateElementFromOptions(Options $options): void
     {
         if (!$this->manager->hasElement($options['element'])) {
             throw new RuntimeException(sprintf(
@@ -234,36 +208,25 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         }
     }
 
-    /**
-     * @param \Symfony\Component\OptionsResolver\Options $options
-     * @param array $additionalParameters
-     * @return array
-     */
-    private function mergeAdditionalParametersWithElementFromOptions(Options $options, array $additionalParameters)
-    {
+    private function mergeAdditionalParametersWithElementFromOptions(
+        Options $options,
+        array $additionalParameters
+    ): array {
         $additionalParameters = array_merge(
             ['element' => $this->getElementFromOption($options)->getId()],
             $this->getElementFromOption($options)->getRouteParameters(),
             $additionalParameters
         );
+
         return $additionalParameters;
     }
 
-    /**
-     * @param \Symfony\Component\OptionsResolver\Options $options
-     * @return \FSi\Bundle\AdminBundle\Admin\Element
-     */
-    private function getElementFromOption(Options $options)
+    private function getElementFromOption(Options $options): Element
     {
         return $this->manager->getElement($options['element']);
     }
 
-    /**
-     * @param Options $options
-     * @param array $additionalParameters
-     * @return mixed
-     */
-    private function mergeAdditionalParametersWithRedirectUri(Options $options, array $additionalParameters)
+    private function mergeAdditionalParametersWithRedirectUri(Options $options, array $additionalParameters): array
     {
         if (is_string($options['redirect_uri'])) {
             $additionalParameters['redirect_uri'] = $options['redirect_uri'];
@@ -280,10 +243,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         return $additionalParameters;
     }
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\ParameterBag
-     */
-    private function getMasterRequestQuery()
+    private function getMasterRequestQuery(): ParameterBag
     {
         return $this->requestStack->getMasterRequest()->query;
     }

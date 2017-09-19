@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
@@ -16,25 +18,18 @@ use Symfony\Component\HttpFoundation\Request;
 class DisplayEvent extends AdminEvent
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Display\Display
+     * @var Display
      */
     private $display;
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \FSi\Bundle\AdminBundle\Display\Display $display
-     */
     public function __construct(Element $element, Request $request, Display $display)
     {
         parent::__construct($element, $request);
+
         $this->display = $display;
     }
 
-    /**
-     * @return \FSi\Bundle\AdminBundle\Display\Display
-     */
-    public function getDisplay()
+    public function getDisplay(): Display
     {
         return $this->display;
     }

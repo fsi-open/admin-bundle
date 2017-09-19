@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -27,77 +30,44 @@ class Subscriber
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $active;
+    protected $active = false;
 
     /**
      * @ORM\Column(type="datetime", name="created_at")
      */
     protected $createdAt;
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     * @return Subscriber
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @param mixed $createdAt
-     */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(?DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email)
+    public function setEmail(?string $email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @param mixed $active
-     * @return Subscriber
-     */
-    public function setActive($active)
+    public function setActive(bool $active): void
     {
-        $this->active = (boolean) $active;
-        return $this;
+        $this->active = $active;
     }
 
-    /**
-     * @return bool
-     */
-    public function isActive()
+    public function isActive(): bool
     {
         return $this->active;
     }

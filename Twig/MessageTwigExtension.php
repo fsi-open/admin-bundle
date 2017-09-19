@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Twig;
 
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
@@ -20,27 +22,24 @@ class MessageTwigExtension extends Twig_Extension
      */
     private $flashMessages;
 
-    /**
-     * @param FlashMessages $flashMessages
-     */
     public function __construct(FlashMessages $flashMessages)
     {
         $this->flashMessages = $flashMessages;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new Twig_SimpleFunction('fsi_admin_messages', [$this, 'getMessages']),
         ];
     }
 
-    public function getMessages()
+    public function getMessages(): array
     {
         return $this->flashMessages->all();
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'fsi_admin_messages';
     }

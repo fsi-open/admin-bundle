@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericDeleteElement;
@@ -15,10 +17,7 @@ abstract class DeleteElement extends GenericDeleteElement implements Element
 {
     use DataIndexerElementImpl;
 
-    /**
-     * @inheritdoc
-     */
-    public function delete($object)
+    public function delete($object): void
     {
         $this->getObjectManager()->remove($object);
         $this->getObjectManager()->flush();

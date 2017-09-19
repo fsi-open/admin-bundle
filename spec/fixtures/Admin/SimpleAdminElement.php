@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\spec\fixtures\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
@@ -18,43 +20,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SimpleAdminElement extends AbstractElement
 {
-    /**
-     * ID will appear in routes:
-     * - http://example.com/admin/{name}/list
-     * - http://example.com/admin/{name}/edit
-     * etc.
-     *
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'simple_admin_element';
     }
 
-    /**
-     * Name is a simple string that can be translated.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'simple.admin.element';
-    }
-
-    /**
-     * Return route name that will be used to generate element url in menu.
-     *
-     * @return string
-     */
-    public function getRoute()
+    public function getRoute(): string
     {
     }
 
-    /**
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
-     * @return mixed
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
     }
 }

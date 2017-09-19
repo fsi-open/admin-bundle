@@ -14,6 +14,7 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface;
 
 class ElementActionExtensionSpec extends ObjectBehavior
 {
@@ -25,7 +26,7 @@ class ElementActionExtensionSpec extends ObjectBehavior
 
     function it_is_datagrid_column_extension()
     {
-        $this->shouldBeAnInstanceOf('FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface');
+        $this->shouldBeAnInstanceOf(ColumnTypeExtensionInterface::class);
     }
 
     function it_extends_action_column_type()

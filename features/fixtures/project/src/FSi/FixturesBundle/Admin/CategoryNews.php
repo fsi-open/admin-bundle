@@ -1,34 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DependentCRUDElement;
 use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\Component\DataSource\DataSourceInterface;
 use FSi\FixturesBundle\DataGrid\NewsDataGridBuilder;
 use FSi\FixturesBundle\DataSource\NewsDataSourceBuilder;
 use FSi\FixturesBundle\Form\NewsType;
 use Symfony\Component\Form\FormFactoryInterface;
+use FSi\FixturesBundle\Entity;
+use Symfony\Component\Form\FormInterface;
 
 class CategoryNews extends DependentCRUDElement
 {
-    public function getId()
+    public function getId(): string
     {
         return 'category_news';
     }
 
-    public function getParentId()
+    public function getParentId(): string
     {
         return 'category';
     }
 
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\FixturesBundle\Entity\News';
+        return Entity\News::class;
     }
 
-    protected function initDataGrid(DataGridFactoryInterface $factory)
+    protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface
     {
         /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
         $datagrid = $factory->createDataGrid($this->getId());
@@ -40,7 +46,7 @@ class CategoryNews extends DependentCRUDElement
             'field_mapping' => ['id'],
             'actions' => [
                 'edit' => [
-                    'route_name' => "fsi_admin_form",
+                    'route_name' => 'fsi_admin_form',
                     'additional_parameters' => ['element' => $datagrid->getName()],
                     'parameters_field_mapping' => ['id' => 'id']
                 ],
@@ -53,7 +59,7 @@ class CategoryNews extends DependentCRUDElement
         return $datagrid;
     }
 
-    protected function initDataSource(DataSourceFactoryInterface $factory)
+    protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface
     {
         $queryBuilder = $this->getRepository()->createQueryBuilder('n');
 
@@ -74,16 +80,16 @@ class CategoryNews extends DependentCRUDElement
         return $datasource;
     }
 
-    protected function initForm(FormFactoryInterface $factory, $data = null)
+    protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface
     {
         if ($data === null) {
-            $data = new \FSi\FixturesBundle\Entity\News();
+            $data = new Entity\News();
             $data->addCategory($this->getParentObject());
         }
 
         return $factory->createNamed(
             'news',
-            TypeSolver::getFormType('FSi\FixturesBundle\Form\NewsType', new NewsType()),
+            TypeSolver::getFormType(NewsType::class, new NewsType()),
             $data
         );
     }

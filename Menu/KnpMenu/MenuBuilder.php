@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Menu\KnpMenu;
 
 use FSi\Bundle\AdminBundle\Menu\Builder\Builder;
@@ -26,21 +28,13 @@ class MenuBuilder
      */
     protected $itemDecorator;
 
-    /**
-     * @param FactoryInterface $factory
-     * @param ItemDecorator $itemDecorator
-     */
     public function __construct(FactoryInterface $factory, ItemDecorator $itemDecorator)
     {
         $this->factory = $factory;
         $this->itemDecorator = $itemDecorator;
     }
 
-    /**
-     * @param Builder $builder
-     * @return \Knp\Menu\ItemInterface
-     */
-    public function createMenu(Builder $builder)
+    public function createMenu(Builder $builder): KnpItemInterface
     {
         $rootMenuItem = $builder->buildMenu();
         $knpMenuItem = $this->createMenuRoot($rootMenuItem);
@@ -50,11 +44,7 @@ class MenuBuilder
         return $knpMenuItem;
     }
 
-    /**
-     * @param Item $rootMenuItem
-     * @return KnpItemInterface
-     */
-    protected function createMenuRoot(Item $rootMenuItem)
+    private function createMenuRoot(Item $rootMenuItem): KnpItemInterface
     {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', $rootMenuItem->getOption('attr')['class']);
@@ -64,10 +54,10 @@ class MenuBuilder
     }
 
     /**
-     * @param \Knp\Menu\ItemInterface $menu
+     * @param KnpItemInterface $menu
      * @param Item[] $children
      */
-    protected function populateMenu(KnpItemInterface $menu, array $children)
+    private function populateMenu(KnpItemInterface $menu, array $children): void
     {
         foreach ($children as $item) {
             $knpItem = $menu->addChild($item->getName(), []);

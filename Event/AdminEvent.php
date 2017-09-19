@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
@@ -14,29 +16,26 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class AdminEvent extends Event
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\Element
+     * @var Element
      */
     protected $element;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Request
+     * @var Request
      */
     protected $request;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Response
+     * @var Response|null
      */
     protected $response;
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Element $element
+     * @param Request $request
      */
     public function __construct(Element $element, Request $request)
     {
@@ -44,45 +43,27 @@ class AdminEvent extends Event
         $this->request = $request;
     }
 
-    /**
-     * @return \FSi\Bundle\AdminBundle\Admin\Element
-     */
-    public function getElement()
+    public function getElement(): Element
     {
         return $this->element;
     }
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\Request
-     */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasResponse()
+    public function hasResponse(): bool
     {
-        return isset($this->response);
+        return null !== $this->response;
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Response $response
-     * @return \FSi\Bundle\AdminBundle\Event\AdminEvent
-     */
-    public function setResponse(Response $response)
+    public function setResponse(Response $response): void
     {
         $this->response = $response;
-
-        return $this;
     }
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function getResponse()
+    public function getResponse(): ?Response
     {
         return $this->response;
     }

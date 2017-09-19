@@ -11,6 +11,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
 
 class BatchElementContextSpec extends ObjectBehavior
 {
@@ -27,7 +29,7 @@ class BatchElementContextSpec extends ObjectBehavior
 
     function it_is_context()
     {
-        $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
+        $this->shouldBeAnInstanceOf(ContextInterface::class);
     }
 
     function it_has_array_data()
@@ -49,8 +51,8 @@ class BatchElementContextSpec extends ObjectBehavior
         Request $request,
         ParameterBag $requestParameterBag
     ) {
-        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
-            ->shouldBeCalled();
+        $handler->handleRequest(Argument::type(FormEvent::class), $request)
+            ->willReturn(null);
 
         $request->request = $requestParameterBag;
         $requestParameterBag->get('indexes', [])->willReturn([]);
@@ -64,14 +66,14 @@ class BatchElementContextSpec extends ObjectBehavior
         ParameterBag $requestParameterBag,
         Response $response
     ) {
-        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
+        $handler->handleRequest(Argument::type(FormEvent::class), $request)
             ->willReturn($response);
 
         $request->request = $requestParameterBag;
         $requestParameterBag->get('indexes', [])->willReturn([]);
 
         $this->handleRequest($request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 
     public function getMatchers()

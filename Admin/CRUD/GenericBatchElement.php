@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
@@ -14,33 +16,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class GenericBatchElement extends AbstractElement implements BatchElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoute()
+    public function getRoute(): string
     {
         return 'fsi_admin_batch';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSuccessRoute()
+    public function getSuccessRoute(): string
     {
         return 'fsi_admin';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSuccessRouteParameters()
+    public function getSuccessRouteParameters(): array
     {
         return [];
     }

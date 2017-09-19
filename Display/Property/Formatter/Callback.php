@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Display\Property\Formatter;
 
 use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
@@ -14,16 +16,16 @@ use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
 class Callback implements ValueFormatter
 {
     /**
-     * @var \Closure
+     * @var callable
      */
-    private $closure;
+    private $callable;
 
     /**
-     * @param callable $closure
+     * @param callable $callable
      */
-    public function __construct(\Closure $closure)
+    public function __construct(callable $callable)
     {
-        $this->closure = $closure;
+        $this->callable = $callable;
     }
 
     /**
@@ -36,8 +38,8 @@ class Callback implements ValueFormatter
             return $value;
         }
 
-        $closure = $this->closure;
+        $callable = $this->callable;
 
-        return $closure($value);
+        return $callable($value);
     }
 }

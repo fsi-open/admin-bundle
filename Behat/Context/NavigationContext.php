@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -194,45 +196,45 @@ class NavigationContext extends AbstractContext
     public function transformToPageObject($pageName)
     {
         switch ($pageName) {
-            case "News list":
+            case 'News list':
                 return $this->newsListPage;
-            case "Admin panel":
+            case 'Admin panel':
                 return $this->adminPanelPage;
-            case "Custom news edit":
+            case 'Custom news edit':
                 return $this->customNewsEditPage;
-            case "Custom news list":
+            case 'Custom news list':
                 return $this->customNewsListPage;
-            case "Custom subscribers list":
+            case 'Custom subscribers list':
                 return $this->customSubscribersListPage;
-            case "DTO Form":
+            case 'DTO Form':
                 return $this->dtoFormPage;
-            case "Home page edit":
+            case 'Home page edit':
                 return $this->homePageEditPage;
-            case "News create":
+            case 'News create':
                 return $this->newsCreatePage;
-            case "News display":
+            case 'News display':
                 return $this->newsDisplayPage;
-            case "News edit":
+            case 'News edit':
                 return $this->newsEditPage;
-            case "Category list":
+            case 'Category list':
                 return $this->categoryListPage;
-            case "Category news list":
+            case 'Category news list':
                 return $this->categoryNewsListPage;
-            case "Category news edit":
+            case 'Category news edit':
                 return $this->categoryNewsEditPage;
-            case "Category news create":
+            case 'Category news create':
                 return $this->categoryNewsCreatePage;
-            case "Person add form":
+            case 'Person add form':
                 return $this->personAddFormPage;
-            case "Person edit form":
+            case 'Person edit form':
                 return $this->personEditFormPage;
-            case "Person list":
+            case 'Person list':
                 return $this->personListPage;
-            case "Subscriber edit":
+            case 'Subscriber edit':
                 return $this->subscriberEditPage;
-            case "Subscriber form":
+            case 'Subscriber form':
                 return $this->subscriberFormPage;
-            case "Subscribers list":
+            case 'Subscribers list':
                 return $this->subscribersListPage;
             default:
                 throw new InvalidArgumentException(
@@ -372,12 +374,7 @@ class NavigationContext extends AbstractContext
         $this->expectPageStatus($page, 500);
     }
 
-    /**
-     * @param Page $page
-     * @param int $expectedStatus
-     * @throws Exception
-     */
-    private function expectPageStatus(Page $page, $expectedStatus)
+    private function expectPageStatus(Page $page, int $expectedStatus): void
     {
         $status = $page->getStatusCode();
         if ($status !== $expectedStatus) {

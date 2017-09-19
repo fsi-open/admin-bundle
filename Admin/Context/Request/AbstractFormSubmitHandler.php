@@ -7,27 +7,24 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\Context\Request;
 
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractFormSubmitHandler extends AbstractHandler
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @throws \FSi\Bundle\AdminBundle\Exception\RequestHandlerException
-     * @return null|\Symfony\Component\HttpFoundation\Response
-     */
-    public function handleRequest(AdminEvent $event, Request $request)
+    public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
         $event = $this->validateEvent($event);
 
-        if (!$request->isMethod('POST')) {
-            return;
+        if (!$request->isMethod(Request::METHOD_POST)) {
+            return null;
         }
 
         $this->eventDispatcher->dispatch($this->getPreSubmitEventName(), $event);
@@ -41,29 +38,20 @@ abstract class AbstractFormSubmitHandler extends AbstractHandler
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
+
+        return null;
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
-     * @return \FSi\Bundle\AdminBundle\Event\FormEvent
-     * @throws \FSi\Bundle\AdminBundle\Exception\RequestHandlerException
-     */
-    protected function validateEvent(AdminEvent $event)
+    private function validateEvent(AdminEvent $event): FormEvent
     {
         if (!$event instanceof FormEvent) {
-            throw new RequestHandlerException(sprintf("%s requires FormEvent", get_class($this)));
+            throw new RequestHandlerException(sprintf('%s requires FormEvent', get_class($this)));
         }
 
         return $event;
     }
 
-    /**
-     * @return string
-     */
-    abstract protected function getPreSubmitEventName();
+    abstract protected function getPreSubmitEventName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getPostSubmitEventName();
+    abstract protected function getPostSubmitEventName(): string;
 }

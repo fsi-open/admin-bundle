@@ -13,20 +13,23 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use FSi\Bundle\AdminBundle\spec\fixtures\MyDependentList;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 
 class DependentListElementSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyDependentList');
+        $this->beAnInstanceOf(MyDependentList::class);
         $this->beConstructedWith([]);
     }
 
     function it_is_admin_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\ListElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\DependentElement');
+        $this->shouldHaveType(GenericListElement::class);
+        $this->shouldHaveType(ListElement::class);
+        $this->shouldHaveType(DependentElement::class);
     }
 
     function it_has_default_route()
@@ -103,9 +106,7 @@ class DependentListElementSpec extends ObjectBehavior
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(
-            new RuntimeException("initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface")
-        )->during('createDataGrid');
+        $this->shouldThrow(\TypeError::class)->during('createDataGrid');
     }
 
     function it_throws_exception_when_init_datasource_does_not_return_instance_of_datasource(
@@ -114,11 +115,7 @@ class DependentListElementSpec extends ObjectBehavior
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(
-            new RuntimeException(
-                "initDataSource should return instanceof FSi\\Component\\DataSource\\DataSourceInterface"
-            )
-        )->during('createDataSource');
+        $this->shouldThrow(\TypeError::class)->during('createDataSource');
     }
 
     function it_has_default_options_values()

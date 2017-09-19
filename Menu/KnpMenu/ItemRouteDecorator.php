@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Menu\KnpMenu;
 
 use FSi\Bundle\AdminBundle\Menu\Item\Item as AdminMenuItem;
@@ -22,7 +31,7 @@ class ItemRouteDecorator implements ItemDecorator
         $this->router = $router;
     }
 
-    public function decorate(KnpMenuItem $knpMenuItem, AdminMenuItem $adminMenuItem)
+    public function decorate(KnpMenuItem $knpMenuItem, AdminMenuItem $adminMenuItem): void
     {
         if ($adminMenuItem instanceof RoutableItem && $adminMenuItem->getRoute()) {
             $knpMenuItem->setUri($this->router->generate(

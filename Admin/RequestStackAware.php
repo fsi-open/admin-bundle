@@ -7,11 +7,13 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 
 interface RequestStackAware
 {
-    public function setRequestStack(RequestStack $requestStack);
+    public function setRequestStack(RequestStack $requestStack): void;
 }

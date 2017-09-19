@@ -7,10 +7,13 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Behat\Page\AdminPanel;
 use FSi\Bundle\AdminBundle\Behat\Page\Page;
@@ -128,7 +131,7 @@ class AdminContext extends AbstractContext
     /**
      * @Transform /^"([^"]*)" element/
      */
-    public function transformListNameToAdminElement($id)
+    public function transformListNameToAdminElement(string $id): Element
     {
         return $this->getAdminManager()->getElement($id);
     }
@@ -136,7 +139,7 @@ class AdminContext extends AbstractContext
     /**
      * @Transform /^(\d+)/
      */
-    public function castStringToNumber($number)
+    public function castStringToNumber(string $number): int
     {
         return (int) $number;
     }
@@ -144,7 +147,7 @@ class AdminContext extends AbstractContext
     /**
      * @Transform /^first|second|third$/
      */
-    public function castWordToNumber($word)
+    public function castWordToNumber(string $word): int
     {
         switch ($word) {
             case 'first':
@@ -156,10 +159,7 @@ class AdminContext extends AbstractContext
         }
     }
 
-    /**
-     * @return ManagerInterface
-     */
-    private function getAdminManager()
+    private function getAdminManager(): ManagerInterface
     {
         return $this->getContainer()->get('admin.manager');
     }

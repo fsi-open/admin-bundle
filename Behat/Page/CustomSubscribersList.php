@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
@@ -15,10 +17,10 @@ class CustomSubscribersList extends Page
 {
     protected $path = '/admin/list/custom_subscriber';
 
-    protected function verifyPage()
+    protected function verifyPage(): void
     {
         if (!$this->has('css', 'h1#page-header:contains("Custom subscribers list")')) {
-            throw new UnexpectedPageException(sprintf("%s page is missing \"Custom subscribers list\" header", $this->path));
+            throw new UnexpectedPageException(sprintf('%s page is missing "Custom subscribers list" header', $this->path));
         }
     }
 }

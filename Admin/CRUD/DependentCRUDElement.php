@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\DependentElement;
@@ -16,7 +18,7 @@ abstract class DependentCRUDElement extends GenericCRUDElement implements Depend
 {
     use DependentElementImpl;
 
-    public function getRouteParameters()
+    public function getRouteParameters(): array
     {
         return array_merge(
             parent::getRouteParameters(),

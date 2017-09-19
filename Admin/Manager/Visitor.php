@@ -7,14 +7,13 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\Manager;
 
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 
 interface Visitor
 {
-    /**
-     * @param ManagerInterface $manager
-     */
-    public function visitManager(ManagerInterface $manager);
+    public function visitManager(ManagerInterface $manager): void;
 }

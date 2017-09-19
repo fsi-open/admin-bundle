@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\Display\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
@@ -15,24 +17,27 @@ use FSi\Bundle\AdminBundle\Event\DisplayEvent;
 use FSi\Bundle\AdminBundle\Event\DisplayEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Handler extends AbstractHandler
 {
     /**
      * @param AdminEvent $event
      * @param Request $request
-     * @throws \FSi\Bundle\AdminBundle\Exception\RequestHandlerException
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
+     * @throws RequestHandlerException
      */
-    public function handleRequest(AdminEvent $event, Request $request)
+    public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
         if (!$event instanceof DisplayEvent) {
-            throw new RequestHandlerException(sprintf("%s requires DisplayEvent", get_class($this)));
+            throw new RequestHandlerException(sprintf('%s requires DisplayEvent', get_class($this)));
         }
 
         $this->eventDispatcher->dispatch(DisplayEvents::DISPLAY_PRE_RENDER, $event);
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
+
+        return null;
     }
 }

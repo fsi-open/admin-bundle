@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin;
 
 interface DependentElement extends Element, RequestStackAware
@@ -15,18 +17,13 @@ interface DependentElement extends Element, RequestStackAware
 
     /**
      * ID of parent element
-     *
-     * @return string|null
      */
-    public function getParentId();
+    public function getParentId(): string;
+
+    public function setParentElement(Element $element): void;
 
     /**
-     * @param Element $element
-     */
-    public function setParentElement(Element $element);
-
-    /**
-     * @return mixed
+     * @return object|null
      */
     public function getParentObject();
 }

@@ -53,7 +53,8 @@ services:
 
 ### Autoconfigure
 
-If you are using Symfony 3.3 or higher, you can use service defaults like so:
+If you are using Symfony 3.3 or higher, you can use autoconfiguration feature which will add `admin.element` tag
+automatically:
 
 #### XML Example:
 
@@ -63,10 +64,7 @@ If you are using Symfony 3.3 or higher, you can use service defaults like so:
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-
-        <prototype namespace="FSi\Bundle\DemoBundle\Admin\" resource="../../src/FSi/Bundle/DemoBundle/Admin/*">
-            <tag name="admin.element" />
-        </prototype>
+        <prototype namespace="FSi\Bundle\DemoBundle\Admin\" resource="../../src/FSi/Bundle/DemoBundle/Admin/*" autoconfigure="true" />
 
     </services>
 </container>
@@ -76,16 +74,16 @@ If you are using Symfony 3.3 or higher, you can use service defaults like so:
 
 ```yaml
 services:
-    # Add the relevant tag to all classes in the Admin directory
+    _defaults:
+        autoconfigure: true
     FSi\Bundle\DemoBundle\Admin\:
         resource: '../../src/FSi/Bundle/DemoBundle/Admin/*'
-        tags: ['admin.element']
 ```
 
 ## Annotation
 
 *WARNING* This method of registration is deprecated as of version 3.0 and will be
-removed in 4.0. Please reffer to the previous example for a quick registration method.
+removed in 4.0. Please refer to the previous example for a quick registration method.
 
 Probably the simplest way is to annotate your element class like so:
 
@@ -126,7 +124,7 @@ class UserElement extends CRUDElement implements RequestStackAware
 {
     private $requestStack;
 
-    public function setRequestStack(RequestStack $requestStack)
+    public function setRequestStack(RequestStack $requestStack): void
     {
         $this->requestStack = $requestStack;
     }

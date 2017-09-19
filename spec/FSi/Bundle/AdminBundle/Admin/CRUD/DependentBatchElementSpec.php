@@ -10,20 +10,23 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use FSi\Bundle\AdminBundle\spec\fixtures\MyDependentBatch;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericBatchElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 
 class DependentBatchElementSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyDependentBatch');
+        $this->beAnInstanceOf(MyDependentBatch::class);
         $this->beConstructedWith([]);
     }
 
     function it_is_admin_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\GenericBatchElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\DependentElement');
+        $this->shouldHaveType(GenericBatchElement::class);
+        $this->shouldHaveType(BatchElement::class);
+        $this->shouldHaveType(DependentElement::class);
     }
 
     function it_have_default_route()

@@ -16,23 +16,26 @@ use FSi\Component\DataSource\DataSourceFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
+use FSi\Bundle\AdminBundle\spec\fixtures\MyCRUD;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 class GenericCRUDElementSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyCRUD');
+        $this->beAnInstanceOf(MyCRUD::class);
         $this->beConstructedWith([]);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement');
+        $this->shouldHaveType(GenericCRUDElement::class);
     }
 
     function it_is_admin_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Element');
+        $this->shouldHaveType(Element::class);
     }
 
     function it_has_default_route()
@@ -45,7 +48,7 @@ class GenericCRUDElementSpec extends ObjectBehavior
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(new RuntimeException("initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface"))
+        $this->shouldThrow(\TypeError::class)
             ->during('createDataGrid');
     }
 
@@ -77,7 +80,7 @@ class GenericCRUDElementSpec extends ObjectBehavior
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(new RuntimeException("initDataSource should return instanceof FSi\\Component\\DataSource\\DataSourceInterface"))
+        $this->shouldThrow(\TypeError::class)
             ->during('createDataSource');
     }
 
@@ -86,7 +89,7 @@ class GenericCRUDElementSpec extends ObjectBehavior
         $this->setFormFactory($factory);
         $factory->create(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface"))
+        $this->shouldThrow(\TypeError::class)
             ->during('createForm', [null]);
     }
 

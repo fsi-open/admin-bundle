@@ -7,40 +7,25 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\spec\fixtures;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
 
 class MyResourceElement extends ResourceElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'main_page';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'admin.main_page';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getKey()
+    public function getKey(): string
     {
         return 'resources.main_page';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return 'FSi\Bundle\DemoBundle\Entity\Resource';
     }

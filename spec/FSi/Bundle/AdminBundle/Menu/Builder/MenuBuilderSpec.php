@@ -5,6 +5,7 @@ namespace spec\FSi\Bundle\AdminBundle\Menu\Builder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use FSi\Bundle\AdminBundle\Menu\Item\Item;
 
 class MenuBuilderSpec extends ObjectBehavior
 {
@@ -19,6 +20,6 @@ class MenuBuilderSpec extends ObjectBehavior
             Argument::type('FSi\Bundle\AdminBundle\Event\MenuEvent')
         ))->shouldBeCalled();
 
-        $this->buildMenu()->shouldReturnAnInstanceOf('FSi\Bundle\AdminBundle\Menu\Item\Item');
+        $this->buildMenu()->shouldReturnAnInstanceOf(Item::class);
     }
 }

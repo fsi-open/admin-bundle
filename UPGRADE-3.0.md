@@ -23,7 +23,7 @@ a default template name injected to them.
 
 If you have created an element class extending the [AbstractElement](Admin/AbstractElement.php)
 and are accessing it's `options` property directly, you will need to switch to
-using a proper getter method (`hasOption`, `getOption` or `getOptions`), since it 
+using a proper getter method (`hasOption`, `getOption` or `getOptions`), since it
 has been made [private](CHANGELOG-3.0.md#resolving-adminabstractelement-options-only-on-first-use).
 
 ## Use GenericCRUDElement instead of AbstractCRUD
@@ -45,7 +45,7 @@ Following the refactoring of the Display component, following classes were remov
 - FSi\Bundle\AdminBundle\Display\ObjectDisplay (replaced with [PropertyAccessDisplay](Display/PropertyAccessDisplay.php))
 - FSi\Bundle\AdminBundle\Display\View
 
-Also, the [Display](Display/Display.php) interface has been changed. The `add` 
+Also, the [Display](Display/Display.php) interface has been changed. The `add`
 method no longer permits empty labels and the `createView` has been removed in
 favour of `getData`. Classes implementing it should return an array of [Property](Display/Property.php)
 objects. There have been new base classes introduced:
@@ -59,7 +59,7 @@ more information.
 ## Always pass FlashMessages to BatchFormValidRequestHandler subclasses
 
 If you have extended the `FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler`
-class, make sure to pass a `FlashMessage` service to it's parent constructor, otherwise you 
+class, make sure to pass a `FlashMessage` service to it's parent constructor, otherwise you
 may receive an exception when handling batch actions.
 
 ## Do not use routes deprecated back in version 1.1
@@ -68,4 +68,12 @@ Refer to [1.1 changelog](CHANGELOG-1.1.md) for information on which routes have 
 
 ## Upgrade to PHP 7.1 or higher
 
-In order to use this bundle, you will need PHP 7.1 or higher.
+In order to use this bundle, you will need PHP 7.1 or higher. You will also need to adjust all you classes
+that inherit from this bundle's classes (especially admin element classes) that method signatures will match
+their parents signatures.
+
+## Correct arguments order in calls to FlashMessages methods
+
+All public methods of `FSi\Bundle\AdminBundle\Message\FlashMessages` now has the following arguments order:
+`string $message, array $params = [], string $domain = 'FSiAdminBundle'` so be careful to adjust all calls
+accordingly.

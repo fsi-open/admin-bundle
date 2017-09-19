@@ -7,29 +7,25 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\spec\fixtures\Doctrine;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\BatchElement;
 
 class MyBatchElement extends BatchElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return 'FSiDemoBundle:Entity';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'my_entity_batch';
     }
 
-    public function apply($object)
+    public function apply($object): void
     {
     }
 }

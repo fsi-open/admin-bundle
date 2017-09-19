@@ -7,11 +7,15 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\Display\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
-use FSi\Bundle\AdminBundle\Admin\Display;
+use FSi\Bundle\AdminBundle\Admin\Display\Element as DisplayElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Bundle\AdminBundle\Display\Display;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\DisplayEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -19,27 +23,21 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class DisplayContext extends ContextAbstract
 {
     /**
-     * @var Display\Element
+     * @var DisplayElement
      */
     protected $element;
 
     /**
-     * @var \FSi\Bundle\AdminBundle\Display\Display
+     * @var Display
      */
     private $display;
 
-    /**
-     * @return boolean
-     */
-    public function hasTemplateName()
+    public function hasTemplateName(): bool
     {
         return $this->element->hasOption('template') || parent::hasTemplateName();
     }
 
-    /**
-     * @return string
-     */
-    public function getTemplateName()
+    public function getTemplateName(): ?string
     {
         return $this->element->hasOption('template')
             ? $this->element->getOption('template')
@@ -47,10 +45,7 @@ class DisplayContext extends ContextAbstract
         ;
     }
 
-    /**
-     * @return array
-     */
-    public function getData()
+    public function getData(): array
     {
         return [
             'display' => $this->display->getData(),
@@ -58,38 +53,26 @@ class DisplayContext extends ContextAbstract
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setElement(Element $element)
+    public function setElement(Element $element): void
     {
         $this->element = $element;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createEvent(Request $request)
+    protected function createEvent(Request $request): AdminEvent
     {
         $this->display = $this->element->createDisplay($this->getObject($request));
 
         return new DisplayEvent($this->element, $request, $this->display);
     }
 
-    /**
-     * @return string
-     */
-    protected function getSupportedRoute()
+    protected function getSupportedRoute(): string
     {
         return 'fsi_admin_display';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supportsElement(Element $element)
+    protected function supportsElement(Element $element): bool
     {
-        return $element instanceof Display\Element;
+        return $element instanceof DisplayElement;
     }
 
     /**
@@ -98,11 +81,11 @@ class DisplayContext extends ContextAbstract
      */
     private function getObject(Request $request)
     {
-        $id = $request->get('id', null);
+        $id = $request->get('id');
 
         $object = $this->element->getDataIndexer()->getData($id);
         if (!$object) {
-            throw new NotFoundHttpException(sprintf("Can't find object with id %s", $id));
+            throw new NotFoundHttpException(sprintf('Can\'t find object with id %s', $id));
         }
 
         return $object;

@@ -7,12 +7,14 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyListElement;
+use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class ListElementSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, ObjectManager $om)
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyListElement');
+        $this->beAnInstanceOf(MyListElement::class);
         $this->beConstructedWith([]);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
@@ -45,6 +47,6 @@ class ListElementSpec extends ObjectBehavior
         $repository->getClassName()->willReturn('FSi/Bundle/DemoBundle/Entity/Entity');
 
         $this->setManagerRegistry($registry);
-        $this->getDataIndexer()->shouldReturnAnInstanceOf('FSi\Component\DataIndexer\DoctrineDataIndexer');
+        $this->getDataIndexer()->shouldReturnAnInstanceOf(DoctrineDataIndexer::class);
     }
 }

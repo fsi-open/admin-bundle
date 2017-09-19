@@ -16,6 +16,9 @@ use Prophecy\Argument;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FormElementContextSpec extends ObjectBehavior
 {
@@ -30,7 +33,7 @@ class FormElementContextSpec extends ObjectBehavior
 
     function it_is_context()
     {
-        $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
+        $this->shouldBeAnInstanceOf(ContextInterface::class);
     }
 
     function it_has_array_data(FormInterface $form, Request $request)
@@ -61,19 +64,19 @@ class FormElementContextSpec extends ObjectBehavior
 
     function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request)
     {
-        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
-            ->shouldBeCalled();
+        $handler->handleRequest(Argument::type(FormEvent::class), $request)
+            ->willReturn(null);
 
         $this->handleRequest($request)->shouldReturn(null);
     }
 
     function it_returns_response_from_handler(HandlerInterface $handler, Request $request)
     {
-        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\FormEvent'), $request)
+        $handler->handleRequest(Argument::type(FormEvent::class), $request)
             ->willReturn(new Response());
 
         $this->handleRequest($request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_throws_exception_when_adding_is_not_allowed(
@@ -82,7 +85,7 @@ class FormElementContextSpec extends ObjectBehavior
     ) {
         $request->get('id')->willReturn(false);
         $element->getOption('allow_add')->willReturn(false);
-        $this->shouldThrow('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException')->during('handleRequest', [$request]);
+        $this->shouldThrow(NotFoundHttpException::class)->during('handleRequest', [$request]);
     }
 
     public function getMatchers()

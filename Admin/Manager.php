@@ -7,17 +7,16 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\Manager\Visitor;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class Manager implements ManagerInterface
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\Element[]
+     * @var Element[]
      */
     protected $elements;
 
@@ -26,56 +25,32 @@ class Manager implements ManagerInterface
         $this->elements = [];
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     * @return \FSi\Bundle\AdminBundle\Admin\Manager
-     */
-    public function addElement(Element $element)
+    public function addElement(Element $element): void
     {
         $this->elements[$element->getId()] = $element;
-
-        return $this;
     }
 
-    /**
-     * @param string $id
-     * @return bool
-     */
-    public function hasElement($id)
+    public function hasElement(string $id): bool
     {
         return array_key_exists($id, $this->elements);
     }
 
-    /**
-     * @param string $id
-     * @return \FSi\Bundle\AdminBundle\Admin\Element
-     */
-    public function getElement($id)
+    public function getElement(string $id): Element
     {
         return $this->elements[$id];
     }
 
-    /**
-     * @param int $id
-     */
-    public function removeElement($id)
+    public function removeElement(string $id): void
     {
         unset($this->elements[$id]);
     }
 
-    /**
-     * @return \FSi\Bundle\AdminBundle\Admin\Element[]
-     */
-    public function getElements()
+    public function getElements(): array
     {
         return $this->elements;
     }
 
-    /**
-     * @param Visitor $visitor
-     * @return mixed
-     */
-    public function accept(Visitor $visitor)
+    public function accept(Visitor $visitor): void
     {
         $visitor->visitManager($this);
     }

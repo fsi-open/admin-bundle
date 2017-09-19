@@ -7,14 +7,13 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 abstract class GenericDeleteElement extends GenericBatchElement implements DeleteElement
 {
-    /**
-     * @inheritdoc
-     */
-    public function apply($object)
+    public function apply($object): void
     {
         $this->delete($object);
     }

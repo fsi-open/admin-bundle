@@ -4,6 +4,7 @@ namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\DeleteElement;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
@@ -19,6 +20,10 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent;
+use FSi\Bundle\AdminBundle\Event\BatchEvent;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 {
@@ -36,7 +41,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $requestParameterbag->get('indexes', [])->willReturn(['index']);
         $request->request = $requestParameterbag;
         $request->query = $queryParameterbag;
-        $request->isMethod('POST')->willReturn(true);
+        $request->isMethod(Request::METHOD_POST)->willReturn(true);
         $event->getForm()->willReturn($form);
         $event->hasResponse()->willReturn(false);
         $event->getElement()->willReturn($element);
@@ -47,7 +52,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 
     function it_is_context_request_handler(
     ) {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface');
+        $this->shouldHaveType(HandlerInterface::class);
     }
 
     function it_throw_exception_for_non_form_event(ListEvent $listEvent, Request $request)
@@ -60,9 +65,9 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     function it_throw_exception_for_non_redirectable_element(
         FormEvent $formEvent,
         Request $request,
-        stdClass $object
+        Element $genericElement
     ) {
-        $formEvent->getElement()->willReturn($object);
+        $formEvent->getElement()->willReturn($genericElement);
 
         $this->shouldThrow(new RequestHandlerException(
             "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler requires RedirectableElement"
@@ -84,7 +89,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldBeCalled();
         $eventDispatcher->dispatch(
             BatchEvents::BATCH_OBJECT_PRE_APPLY,
-            Argument::type('FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent')
+            Argument::type(BatchPreApplyEvent::class)
         )->shouldBeCalled();
 
         $form->getData()->willReturn($object);
@@ -92,7 +97,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             BatchEvents::BATCH_OBJECT_POST_APPLY,
-            Argument::type('FSi\Bundle\AdminBundle\Event\BatchEvent')
+            Argument::type(BatchEvent::class)
         )->shouldBeCalled();
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
             ->shouldBeCalled();
@@ -108,7 +113,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $router->generate('fsi_admin_list', ['element' => 'element_list_id'])->willReturn('/list/page');
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
+            ->shouldReturnAnInstanceOf(RedirectResponse::class);
     }
 
     function it_returns_redirect_response_with_redirect_uri_passed_by_request(
@@ -125,7 +130,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldBeCalled();
         $eventDispatcher->dispatch(
             BatchEvents::BATCH_OBJECT_PRE_APPLY,
-            Argument::type('FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent')
+            Argument::type(BatchPreApplyEvent::class)
         )->shouldBeCalled();
 
         $form->getData()->willReturn($object);
@@ -133,7 +138,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             BatchEvents::BATCH_OBJECT_POST_APPLY,
-            Argument::type('FSi\Bundle\AdminBundle\Event\BatchEvent')
+            Argument::type(BatchEvent::class)
         )->shouldBeCalled();
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
             ->shouldBeCalled();
@@ -149,7 +154,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $queryParameterbag->get('redirect_uri')->willReturn('some_redirect_uri');
 
         $response = $this->handleRequest($event, $request);
-        $response->shouldBeAnInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->shouldBeAnInstanceOf(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('some_redirect_uri');
     }
 
@@ -165,7 +170,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             });
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_return_response_from_post_apply_event(
@@ -181,7 +186,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldBeCalled();
         $eventDispatcher->dispatch(
             BatchEvents::BATCH_OBJECT_PRE_APPLY,
-            Argument::type('FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent')
+            Argument::type(BatchPreApplyEvent::class)
         )->shouldBeCalled();
 
         $form->getData()->willReturn($object);
@@ -192,7 +197,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             BatchEvents::BATCH_OBJECT_POST_APPLY,
-            Argument::type('FSi\Bundle\AdminBundle\Event\BatchEvent')
+            Argument::type(BatchEvent::class)
         )->shouldBeCalled();
         $eventDispatcher->dispatch(BatchEvents::BATCH_OBJECTS_POST_APPLY, $event)
             ->will(function() use ($event) {
@@ -201,19 +206,19 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             });
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_throws_exception_when_delete_not_allowed(
         FormEvent $event,
         Request $request,
-        DeleteElement $deleteEelement
+        DeleteElement $deleteElement
     ) {
-        $event->getElement()->willReturn($deleteEelement);
-        $deleteEelement->hasOption('allow_delete')->willReturn(true);
-        $deleteEelement->getOption('allow_delete')->willReturn(false);
+        $event->getElement()->willReturn($deleteElement);
+        $deleteElement->hasOption('allow_delete')->willReturn(true);
+        $deleteElement->getOption('allow_delete')->willReturn(false);
 
-        $this->shouldThrow('\LogicException')->during('handleRequest', [$event, $request]);
+        $this->shouldThrow(\LogicException::class)->during('handleRequest', [$event, $request]);
     }
 
     public function it_displays_warning_when_no_elements_sent(

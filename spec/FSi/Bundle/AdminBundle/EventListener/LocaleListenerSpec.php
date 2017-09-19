@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LocaleListenerSpec extends ObjectBehavior
 {
@@ -19,7 +20,7 @@ class LocaleListenerSpec extends ObjectBehavior
 
     function it_is_event_subscriber()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $this->shouldBeAnInstanceOf(EventSubscriberInterface::class);
     }
 
     function it_subscribe_kernel_request_event_before_default_locale_listener()

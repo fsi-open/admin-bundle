@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -14,6 +16,7 @@ use FSi\Bundle\AdminBundle\Behat\Element\ListElement;
 use FSi\Bundle\AdminBundle\Behat\Page\DefaultPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Symfony\Component\BrowserKit\Client;
+use Symfony\Component\HttpFoundation\Request;
 
 class ListContext extends AbstractContext
 {
@@ -35,7 +38,7 @@ class ListContext extends AbstractContext
     /**
      * @beforeScenario
      */
-    public function clearSelectedRows()
+    public function clearSelectedRows(): void
     {
         $this->selectedRows = [];
     }
@@ -98,7 +101,7 @@ class ListContext extends AbstractContext
             }
             /** @var Client $client */
             $client = $this->getSession()->getDriver()->getClient();
-            $client->request('POST', $batchActionUrl, $data);
+            $client->request(Request::METHOD_POST, $batchActionUrl, $data);
         }
     }
 
@@ -226,10 +229,7 @@ class ListContext extends AbstractContext
         $session->wait(1000, 'jQuery(".popover").length === 0');
     }
 
-    /**
-     * @return ListElement
-     */
-    private function getListElement()
+    private function getListElement(): ListElement
     {
         return $this->defaultPage->getElement('ListElement');
     }

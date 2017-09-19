@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Form;
 
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
 
 /**
  * @internal
@@ -16,24 +19,18 @@ class TypeSolver
      * @param string|FormTypeInterface $shortType
      * @return string|FormTypeInterface
      */
-    public static function getFormType($fqcnType, $shortType)
+    public static function getFormType(string $fqcnType, $shortType)
     {
-        return class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? $fqcnType : $shortType;
+        return class_exists(RangeType::class) ? $fqcnType : $shortType;
     }
 
-    /**
-     * @return bool
-     */
-    public static function hasCollectionEntryTypeOption()
+    public static function hasCollectionEntryTypeOption(): bool
     {
-        return class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType');
+        return class_exists(RangeType::class);
     }
 
-    /**
-     * @return bool
-     */
-    public static function isChoicesAsValuesOptionTrueByDefault()
+    public static function isChoicesAsValuesOptionTrueByDefault(): bool
     {
-        return method_exists('Symfony\Component\Form\FormTypeInterface', 'configureOptions');
+        return method_exists(FormTypeInterface::class, 'configureOptions');
     }
 }

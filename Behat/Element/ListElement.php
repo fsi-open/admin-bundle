@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use Behat\Mink\Element\NodeElement;
@@ -19,22 +21,25 @@ class ListElement extends Element
 
     protected $selector = ['css' => 'body'];
 
-    public function getColumns()
+    /**
+     * @return NodeElement[]
+     */
+    public function getColumns(): array
     {
         return $this->getNotEmptyTexts($this->getTable()->findAll('css', 'th'));
     }
 
     /**
      * @param string $name
-     * @return NodeElement
+     * @return NodeElement|null
      */
-    public function getNamedColumn($name)
+    public function getNamedColumn(string $name): ?NodeElement
     {
         $selector = '//th[normalize-space(text())="%s"]/ancestor::tr';
         return $this->getTable()->find('xpath', sprintf($selector, $name));
     }
 
-    public function hasBatchColumn()
+    public function hasBatchColumn(): bool
     {
         return $this->has('css', 'th > input[type="checkbox"]');
     }
@@ -42,7 +47,7 @@ class ListElement extends Element
     /**
      * @return NodeElement[]
      */
-    public function getRows()
+    public function getRows(): array
     {
         return $this->getTable()->findAll('css', 'tbody > tr');
     }
@@ -50,7 +55,7 @@ class ListElement extends Element
     /**
      * @return string[]
      */
-    public function getRowsIds()
+    public function getRowsIds(): array
     {
         $ids = [];
         foreach ($this->getRows() as $row) {
@@ -60,11 +65,7 @@ class ListElement extends Element
         return $ids;
     }
 
-    /**
-     * @param int $number
-     * @return NodeElement
-     */
-    public function getRow($number)
+    public function getRow(int $number): NodeElement
     {
         $row = $this->find('xpath', sprintf('//tbody/tr[%d]', $number));
         if (!isset($row)) {
@@ -74,20 +75,12 @@ class ListElement extends Element
         return $row;
     }
 
-    /**
-     * @param string $number
-     * @return string
-     */
-    public function getRowId($number)
+    public function getRowId(int $number): string
     {
         return $this->getRow($number)->find('css', 'input[type=checkbox]')->getAttribute('value');
     }
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    public function getNamedRowId($name)
+    public function getNamedRowId(string $name): string
     {
         return $this->getNamedRow($name)->find('css', 'input[type=checkbox]')->getAttribute('value');
     }
@@ -96,65 +89,66 @@ class ListElement extends Element
      * @param string $name
      * @return NodeElement
      */
-    public function getNamedRow($name)
+    public function getNamedRow(string $name): NodeElement
     {
         $selector = '//span[@class="datagrid-cell-value" and normalize-space(text())="%s"]/ancestor::tr';
+
         return $this->getTable()->find('xpath', sprintf($selector, $name));
     }
 
-    public function getRowsCount()
+    public function getRowsCount(): int
     {
         return count($this->getRows());
     }
 
-    public function getCell($columnHeader, $rowNumber)
+    public function getCell($columnHeader, $rowNumber): ?NodeElement
     {
         $columnPos = $this->getColumnPosition($columnHeader);
-        return $this->find('xpath', sprintf("descendant-or-self::table/tbody/tr[%d]/td[%d]", $rowNumber, $columnPos));
+        return $this->find('xpath', sprintf('descendant-or-self::table/tbody/tr[%d]/td[%d]', $rowNumber, $columnPos));
     }
 
-    public function getColumnPosition($columnHeader)
+    public function getColumnPosition(string $columnHeader): int
     {
         $headers = $this->findAll('css', 'th');
         foreach ($headers as $index => $header) {
             /** @var NodeElement $header */
             if ($header->has('css', 'span')
-                && $header->find('css', 'span')->getText() == $columnHeader
+                && $header->find('css', 'span')->getText() === $columnHeader
             ) {
                 return $index + 1;
             }
         }
 
-        throw new UnexpectedPageException(sprintf("Cant find column %s", $columnHeader));
+        throw new UnexpectedPageException(sprintf('Can\'t find column %s', $columnHeader));
     }
 
-    public function isColumnEditable($columnHeader)
+    public function isColumnEditable(string $columnHeader): bool
     {
         return $this->getCell($columnHeader, 1)->has('css', 'a.editable');
     }
 
-    public function isColumnSortable($columnHeader)
+    public function isColumnSortable(string $columnHeader): bool
     {
         $column = $this->getColumnHeader($columnHeader);
 
         return $column->has('css', '.sort-asc') && $column->has('css', '.sort-desc');
     }
 
-    public function isColumnAscSortActive($columnHeader)
+    public function isColumnAscSortActive(string $columnHeader): bool
     {
         $sortButton = $this->getColumnHeader($columnHeader)->find('css', '.sort-asc');
 
         return !$sortButton->hasAttribute('disabled');
     }
 
-    public function isColumnDescSortActive($columnHeader)
+    public function isColumnDescSortActive(string $columnHeader): bool
     {
         $sortButton = $this->getColumnHeader($columnHeader)->find('css', '.sort-desc');
 
         return !$sortButton->hasAttribute('disabled');
     }
 
-    public function pressSortButton($columnHeader, $sort)
+    public function pressSortButton(string $columnHeader, string $sort): void
     {
         switch (strtolower($sort)) {
             case 'sort asc':
@@ -168,35 +162,31 @@ class ListElement extends Element
         }
     }
 
-    /**
-     * @param int $rowNumber
-     * @param string $action
-     */
-    public function clickRowAction($rowNumber, $action)
+    public function clickRowAction(int $rowNumber, string $action): void
     {
-        $this->getCell("Actions", $rowNumber)->clickLink($action);
+        $this->getCell('Actions', $rowNumber)->clickLink($action);
     }
 
-    private function getColumnHeader($columnHeader)
+    private function getColumnHeader(string $columnHeader): ?NodeElement
     {
         return $this->find('css', sprintf('th span:contains("%s")', $columnHeader))->getParent();
     }
 
-    /**
-     * @return NodeElement
-     * @throws \Exception
-     */
-    private function getTable()
+    private function getTable(): NodeElement
     {
         $table = $this->find('css', 'table.table-datagrid');
-        if (empty($table)) {
-            throw new \Exception('There is no datagrid table on page');
+        if (null === $table) {
+            throw new UnexpectedPageException('There is no datagrid table on page');
         }
 
         return $table;
     }
 
-    private function getNotEmptyTexts(array $elements)
+    /**
+     * @param NodeElement[] $elements
+     * @return string[]
+     */
+    private function getNotEmptyTexts(array $elements): array
     {
         $texts = [];
         /** @var Element $column */

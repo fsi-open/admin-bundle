@@ -1,35 +1,31 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Menu\KnpMenu;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item as AdminMenuItem;
 use Knp\Menu\ItemInterface as KnpMenuItem;
-use Symfony\Component\Routing\RouterInterface;
 
 class ItemElementsDecorator implements ItemDecorator
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @param RouterInterface $router
-     */
-    public function __construct(RouterInterface $router)
-    {
-        $this->router = $router;
-    }
-
-    public function decorate(KnpMenuItem $knpMenuItem, AdminMenuItem $adminMenuItem)
+    public function decorate(KnpMenuItem $knpMenuItem, AdminMenuItem $adminMenuItem): void
     {
         if ($adminMenuItem instanceof ElementItem && $adminMenuItem->hasOption('elements')) {
             $routes = $knpMenuItem->getExtra('routes', []);
 
-            /** @var Element $element */
-            foreach ($adminMenuItem->getOption('elements') as $element) {
+            /** @var Element[] $elements */
+            $elements = $adminMenuItem->getOption('elements');
+            foreach ($elements as $element) {
                 $routes[] = [
                     'route' => $element->getRoute(),
                     'parameters' => $element->getRouteParameters()

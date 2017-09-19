@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
@@ -27,12 +29,8 @@ class MenuEvent extends Event
         $this->menu = $menu;
     }
 
-    /**
-     * @return Item
-     */
-    public function getMenu()
+    public function getMenu(): Item
     {
         return $this->menu;
     }
-
 }

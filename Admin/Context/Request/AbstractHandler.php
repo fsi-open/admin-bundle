@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\Context\Request;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -14,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 abstract class AbstractHandler implements HandlerInterface
 {
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 

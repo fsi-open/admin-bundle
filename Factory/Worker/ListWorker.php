@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Factory\Worker;
 
-use FSi\Bundle\AdminBundle\Admin\CRUD\DataGridAwareInterface;
-use FSi\Bundle\AdminBundle\Admin\CRUD\DataSourceAwareInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Factory\Worker;
@@ -18,13 +18,10 @@ class ListWorker implements Worker
     private $dataSourceFactory;
 
     /**
-     * @var \FSi\Component\DataGrid\DataGridFactoryInterface
+     * @var DataGridFactoryInterface
      */
     private $dataGridFactory;
 
-    /**
-     * @param DataSourceFactoryInterface $dataSourceFactory
-     */
     public function __construct(
         DataSourceFactoryInterface $dataSourceFactory,
         DataGridFactoryInterface $dataGridFactory
@@ -33,20 +30,10 @@ class ListWorker implements Worker
         $this->dataGridFactory = $dataGridFactory;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function mount(Element $element)
+    public function mount(Element $element): void
     {
         if ($element instanceof ListElement) {
             $element->setDataSourceFactory($this->dataSourceFactory);
-            $element->setDataGridFactory($this->dataGridFactory);
-            return;
-        }
-        if ($element instanceof DataSourceAwareInterface) {
-            $element->setDataSourceFactory($this->dataSourceFactory);
-        }
-        if ($element instanceof DataGridAwareInterface) {
             $element->setDataGridFactory($this->dataGridFactory);
         }
     }

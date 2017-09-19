@@ -13,12 +13,15 @@ use FSi\Component\DataIndexer\DataIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDependentListElement;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\ListElement;
+use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class DependentListElementSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, ObjectManager $om)
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDependentListElement');
+        $this->beAnInstanceOf(MyDependentListElement::class);
         $this->beConstructedWith([]);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
@@ -27,8 +30,8 @@ class DependentListElementSpec extends ObjectBehavior
 
     function it_is_dependent_batch_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\DependentElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Doctrine\Admin\ListElement');
+        $this->shouldHaveType(DependentElement::class);
+        $this->shouldHaveType(ListElement::class);
     }
 
     function it_returns_null_if_parent_element_does_not_have_data_indexer(
@@ -120,6 +123,6 @@ class DependentListElementSpec extends ObjectBehavior
         $repository->getClassName()->willReturn('FSi/Bundle/DemoBundle/Entity/Entity');
 
         $this->setManagerRegistry($registry);
-        $this->getDataIndexer()->shouldReturnAnInstanceOf('FSi\Component\DataIndexer\DoctrineDataIndexer');
+        $this->getDataIndexer()->shouldReturnAnInstanceOf(DoctrineDataIndexer::class);
     }
 }

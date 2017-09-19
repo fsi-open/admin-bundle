@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Message;
 
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
@@ -30,43 +32,38 @@ class FlashMessages
      */
     private $session;
 
-    /**
-     * FlashMessages constructor.
-     * @param SessionInterface $session
-     * @param $prefix
-     */
-    public function __construct(SessionInterface $session, $prefix)
+    public function __construct(SessionInterface $session, string $prefix)
     {
         $this->prefix = $prefix;
         $this->session = $session;
     }
 
-    public function success($message, $domain = 'FSiAdminBundle', array $params = [])
+    public function success(string $message, array $params = [], string $domain = 'FSiAdminBundle')
     {
-        $this->add('success', $message, $domain, $params);
+        $this->add('success', $message, $params, $domain);
     }
 
-    public function error($message, $domain = 'FSiAdminBundle', array $params = [])
+    public function error(string $message, array $params = [], string $domain = 'FSiAdminBundle')
     {
-        $this->add('error', $message, $domain, $params);
+        $this->add('error', $message, $params, $domain);
     }
 
-    public function warning($message, $domain = 'FSiAdminBundle', array $params = [])
+    public function warning(string $message, array $params = [], string $domain = 'FSiAdminBundle')
     {
-        $this->add('warning', $message, $domain, $params);
+        $this->add('warning', $message, $params, $domain);
     }
 
-    public function info($message, $domain = 'FSiAdminBundle', array $params = [])
+    public function info(string $message, array $params = [], string $domain = 'FSiAdminBundle')
     {
-        $this->add('info', $message, $domain, $params);
+        $this->add('info', $message, $params, $domain);
     }
 
-    public function all()
+    public function all(): array
     {
         return $this->getFlashBag()->get($this->prefix);
     }
 
-    private function add($type, $message, $domain, array $params = [])
+    private function add(string $type, string $message, array $params, string $domain): void
     {
         if ($this->getFlashBag()->has($this->prefix)) {
             $messages = $this->getFlashBag()->get($this->prefix);
@@ -79,10 +76,7 @@ class FlashMessages
         $this->flashBag->set($this->prefix, $messages);
     }
 
-    /**
-     * @return FlashBagInterface
-     */
-    private function getFlashBag()
+    private function getFlashBag(): FlashBagInterface
     {
         if ($this->flashBag instanceof FlashBagInterface) {
             return $this->flashBag;

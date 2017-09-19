@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\spec\fixtures\Admin;
 
 use FSi\Component\DataGrid\DataGridFactoryInterface;
@@ -19,25 +21,16 @@ class CRUDElement extends SimpleAdminElement
     private $dataSourceFactory;
     private $formFactory;
 
-    /**
-     * @param \FSi\Component\DataGrid\DataGridFactoryInterface $factory
-     */
     public function setDataGridFactory(DataGridFactoryInterface $factory)
     {
         $this->dataGridFactory = $factory;
     }
 
-    /**
-     * @param \FSi\Component\DataSource\DataSourceFactoryInterface $factory
-     */
     public function setDataSourceFactory(DataSourceFactoryInterface $factory)
     {
         $this->dataSourceFactory = $factory;
     }
 
-    /**
-     * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     */
     public function setFormFactory(FormFactoryInterface $factory)
     {
         $this->formFactory = $factory;

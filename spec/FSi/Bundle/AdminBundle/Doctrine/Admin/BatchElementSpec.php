@@ -7,12 +7,14 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyBatchElement;
+use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class BatchElementSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, ObjectManager $om)
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyBatchElement');
+        $this->beAnInstanceOf(MyBatchElement::class);
         $this->beConstructedWith([]);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
@@ -45,6 +47,6 @@ class BatchElementSpec extends ObjectBehavior
         $repository->getClassName()->willReturn('FSi/Bundle/DemoBundle/Entity/Entity');
 
         $this->setManagerRegistry($registry);
-        $this->getDataIndexer()->shouldReturnAnInstanceOf('FSi\Component\DataIndexer\DoctrineDataIndexer');
+        $this->getDataIndexer()->shouldReturnAnInstanceOf(DoctrineDataIndexer::class);
     }
 }

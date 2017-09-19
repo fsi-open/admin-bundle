@@ -7,14 +7,13 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Exception\MissingOptionException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 abstract class AbstractElement implements Element
 {
     /**
@@ -27,30 +26,22 @@ abstract class AbstractElement implements Element
      */
     private $unresolvedOptions;
 
-    /**
-     * @param array $options
-     */
     public function __construct(array $options = [])
     {
         $this->unresolvedOptions = $options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRouteParameters()
+    public function getRouteParameters(): array
     {
         return [
             'element' => $this->getId(),
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOption($name)
+    public function getOption(string $name)
     {
         $this->resolveOptions();
+
         if (!$this->hasOption($name)) {
             throw new MissingOptionException(sprintf(
                 'Option with name "%s" does not exist in element "%s"',
@@ -62,25 +53,20 @@ abstract class AbstractElement implements Element
         return $this->options[$name];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptions()
+    public function getOptions(): array
     {
         $this->resolveOptions();
+
         return $this->options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasOption($name)
+    public function hasOption($name): bool
     {
         $this->resolveOptions();
         return isset($this->options[$name]);
     }
 
-    private function resolveOptions()
+    private function resolveOptions(): void
     {
         if (!is_array($this->options)) {
             $optionsResolver = new OptionsResolver();

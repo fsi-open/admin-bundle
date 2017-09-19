@@ -7,40 +7,24 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\Component\DataSource\DataSourceInterface;
 
 interface ListElement extends DataIndexerElement
 {
-    /**
-     * @return \FSi\Component\DataGrid\DataGrid|null
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
-     */
-    public function createDataGrid();
+    public function createDataGrid(): DataGridInterface;
 
-    /**
-     * @param \FSi\Component\DataGrid\DataGridFactoryInterface $factory
-     */
-    public function setDataGridFactory(DataGridFactoryInterface $factory);
+    public function setDataGridFactory(DataGridFactoryInterface $factory): void;
 
-    /**
-     * @return \FSi\Component\DataSource\DataSource|null
-     * @throws \FSi\Bundle\AdminBundle\Exception\RuntimeException
-     */
-    public function createDataSource();
+    public function createDataSource(): DataSourceInterface;
 
-    /**
-     * @param \FSi\Component\DataSource\DataSourceFactoryInterface $factory
-     */
-    public function setDataSourceFactory(DataSourceFactoryInterface $factory);
+    public function setDataSourceFactory(DataSourceFactoryInterface $factory): void;
 
-    /**
-     * Method called after DataGrid update at listAction in CRUDController.
-     * Mostly it should only call flush at ObjectManager.
-     *
-     * @return mixed
-     */
-    public function saveDataGrid();
+    public function saveDataGrid(): void;
 }

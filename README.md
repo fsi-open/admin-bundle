@@ -30,7 +30,7 @@ Documentation:
 - Sorting, ordering, filtering, pagination, batch actions, custom actions
 - Doctrine ORM\ODM support, with possibility to create data sets from query builder
 - Inline editing at list level
-- Fully integrated with Symfony2's Form component
+- Fully integrated with Symfony's Form component
 - Fully integrated with FSi's ResourceRepositoryBundle
 - Fully translatable
 - Every single part can be easily overwritten
@@ -45,7 +45,7 @@ components designed to do only one thing at once. That's why our AdminBundle is 
 
 Below is a full list of components, tools and bundles used during the creation of FSiAdminBundle:
 
-- [Symfony2 form component](https://github.com/symfony/form)
+- [Symfony form component](https://github.com/symfony/form)
 - [FSi Open datagrid](https://github.com/fsi-open/datagrid-bundle)
 - [FSi Open datasource](https://github.com/fsi-open/datasource-bundle)
 - [FSi Open resource repository](https://github.com/fsi-open/resource-repository-bundle)

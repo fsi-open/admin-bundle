@@ -5,10 +5,12 @@ namespace spec\FSi\Bundle\AdminBundle\EventListener;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
+use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Prophet;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 class MainMenuListenerSpec extends ObjectBehavior
 {
@@ -19,7 +21,7 @@ class MainMenuListenerSpec extends ObjectBehavior
             if ($args[0] == 'non_existing') {
                 throw new \Exception(sprintf('Element %s does not exist', $args[0]));
             };
-            $element = $prophet->prophesize('FSi\Bundle\AdminBundle\Admin\Element');
+            $element = $prophet->prophesize(Element::class);
             $element->getId()->willReturn($args[0]);
             return $element;
         });

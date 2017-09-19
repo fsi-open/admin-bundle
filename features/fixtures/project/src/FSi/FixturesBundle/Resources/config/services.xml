@@ -76,7 +76,7 @@
         </service>
 
         <service id="datasource.factory" class="FSi\FixturesBundle\DataSource\DataSourceFactory">
-            <argument type="service" id="datasource.driver.factory.manager"></argument>
+            <argument type="service" id="datasource.driver.factory.manager" />
             <argument type="collection">
                 <argument type="service" id="datasource.extension" />
             </argument>

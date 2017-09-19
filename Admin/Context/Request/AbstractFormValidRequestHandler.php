@@ -7,8 +7,11 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\Context\Request;
 
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
@@ -16,19 +19,16 @@ use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 abstract class AbstractFormValidRequestHandler extends AbstractHandler
 {
     /**
-     * @var \Symfony\Component\Routing\RouterInterface
+     * @var RouterInterface
      */
     protected $router;
 
-    /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
-     * @param \Symfony\Component\Routing\RouterInterface $router
-     */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         RouterInterface $router
@@ -37,16 +37,11 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
         $this->router = $router;
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return null|\Symfony\Component\HttpFoundation\Response
-     */
-    public function handleRequest(AdminEvent $event, Request $request)
+    public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
         $event = $this->validateEvent($event);
         if (!$this->isValidPostRequest($event, $request)) {
-            return;
+            return null;
         }
 
         $this->eventDispatcher->dispatch($this->getPreSaveEventName(), $event);
@@ -64,42 +59,18 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
         return $this->getRedirectResponse($event, $request);
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return bool
-     */
-    protected function isValidPostRequest(FormEvent $event, Request $request)
+    protected function isValidPostRequest(FormEvent $event, Request $request): bool
     {
-        return $request->isMethod('POST') && $event->getForm()->isValid();
+        return $request->isMethod(Request::METHOD_POST) && $event->getForm()->isValid();
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
-     * @return \FSi\Bundle\AdminBundle\Event\FormEvent
-     * @throws \FSi\Bundle\AdminBundle\Exception\RequestHandlerException
-     */
-    protected function validateEvent(AdminEvent $event)
+    protected function getRedirectResponse(FormEvent $event, Request $request): RedirectResponse
     {
-        if (!$event instanceof FormEvent) {
-            throw new RequestHandlerException(sprintf("%s requires FormEvent", get_class($this)));
-        }
-        if (!$event->getElement() instanceof RedirectableElement) {
-            throw new RequestHandlerException(sprintf("%s requires RedirectableElement", get_class($this)));
+        if ($request->query->has('redirect_uri')) {
+            return new RedirectResponse($request->query->get('redirect_uri'));
         }
 
-        return $event;
-    }
-
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    protected function getRedirectResponse(FormEvent $event, Request $request)
-    {
-        /** @var \FSi\Bundle\AdminBundle\Admin\RedirectableElement $element */
-        $element = $event->getElement();
+        $element = $this->validateElement($event->getElement());
 
         return new RedirectResponse(
             $this->router->generate(
@@ -109,19 +80,29 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
         );
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
-    abstract protected function action(FormEvent $event, Request $request);
+    abstract protected function action(FormEvent $event, Request $request): void;
 
-    /**
-     * @return string
-     */
-    abstract protected function getPreSaveEventName();
+    abstract protected function getPreSaveEventName(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function getPostSaveEventName();
+    abstract protected function getPostSaveEventName(): string;
+
+    private function validateEvent(AdminEvent $event): FormEvent
+    {
+        if (!$event instanceof FormEvent) {
+            throw new RequestHandlerException(sprintf('%s requires FormEvent', get_class($this)));
+        }
+
+        $this->validateElement($event->getElement());
+
+        return $event;
+    }
+
+    private function validateElement(Element $element): RedirectableElement
+    {
+        if (!$element instanceof RedirectableElement) {
+            throw new RequestHandlerException(sprintf('%s requires RedirectableElement', get_class($this)));
+        }
+
+        return $element;
+    }
 }

@@ -10,31 +10,24 @@ namespace FSi\Bundle\DemoBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ListElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
-use FSi\Bundle\AdminBundle\Annotation as Admin;
+use FSi\Component\DataSource\DataSourceInterface;
+use FSi\Bundle\DemoBundle\Entity;
 
 class SubscriberElement extends ListElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\Bundle\DemoBundle\Entity\Subscriber'; // Doctrine entity's class name
+        return Entity\Subscriber::class; // Doctrine entity's class name
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'subscribers'; // ID is used in url generation http://domain.com/admin/list/{id}
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initDataSource(DataSourceFactoryInterface $factory)
+    protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface
     {
         /* @var $datasource \FSi\Component\DataSource\DataSource */
         $datasource = $factory->createDataSource(
@@ -49,10 +42,7 @@ class SubscriberElement extends ListElement
         return $datasource;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initDataGrid(DataGridFactoryInterface $factory)
+    protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface
     {
         /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
         $datagrid = $factory->createDataGrid(

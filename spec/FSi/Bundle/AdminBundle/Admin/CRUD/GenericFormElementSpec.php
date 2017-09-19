@@ -6,24 +6,27 @@ use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
+use FSi\Bundle\AdminBundle\spec\fixtures\MyForm;
+use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 class GenericFormElementSpec extends ObjectBehavior
 {
     function let(FormFactoryInterface $factory)
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyForm');
+        $this->beAnInstanceOf(MyForm::class);
         $this->beConstructedWith([]);
         $this->setFormFactory($factory);
     }
 
     function it_is_form_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\FormElement');
+        $this->shouldHaveType(FormElement::class);
     }
 
     function it_is_admin_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Element');
+        $this->shouldHaveType(Element::class);
     }
 
     function it_have_default_route()
@@ -35,7 +38,7 @@ class GenericFormElementSpec extends ObjectBehavior
     {
         $factory->create(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface"))
+        $this->shouldThrow(\TypeError::class)
             ->during('createForm');
     }
 

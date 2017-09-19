@@ -7,28 +7,32 @@ use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use FSi\Bundle\AdminBundle\spec\fixtures\MyList;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
+use FSi\Bundle\AdminBundle\Admin\Element;
 
 class GenericListElementSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyList');
+        $this->beAnInstanceOf(MyList::class);
         $this->beConstructedWith([]);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement');
+        $this->shouldHaveType(GenericListElement::class);
     }
 
     function it_is_list_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\ListElement');
+        $this->shouldHaveType(ListElement::class);
     }
 
     function it_is_admin_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Element');
+        $this->shouldHaveType(Element::class);
     }
 
     function it_have_default_route()
@@ -41,7 +45,7 @@ class GenericListElementSpec extends ObjectBehavior
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(new RuntimeException("initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface"))
+        $this->shouldThrow(\TypeError::class)
             ->during('createDataGrid');
     }
 
@@ -50,7 +54,7 @@ class GenericListElementSpec extends ObjectBehavior
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(new RuntimeException("initDataSource should return instanceof FSi\\Component\\DataSource\\DataSourceInterface"))
+        $this->shouldThrow(\TypeError::class)
             ->during('createDataSource');
     }
 

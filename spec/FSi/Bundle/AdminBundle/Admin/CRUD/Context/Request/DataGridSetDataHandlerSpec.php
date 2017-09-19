@@ -12,6 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 
 class DataGridSetDataHandlerSpec extends ObjectBehavior
 {
@@ -23,7 +24,7 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
 
     function it_is_context_request_handler()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface');
+        $this->shouldHaveType(HandlerInterface::class);
     }
 
     /**
@@ -34,7 +35,7 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\DataGridSetDataHandler require ListEvent"
+                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\DataGridSetDataHandler requires ListEvent"
             )
         )->during('handleRequest', [$event, $request]);
     }
@@ -72,7 +73,7 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
             });
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_return_response_from_datagrid_post_bind_data(
@@ -98,6 +99,6 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
             });
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 }

@@ -12,21 +12,24 @@ use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use FSi\Bundle\AdminBundle\spec\fixtures\MyDependentForm;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 
 class DependentFormElementSpec extends ObjectBehavior
 {
     function let(FormFactoryInterface $factory)
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\MyDependentForm');
+        $this->beAnInstanceOf(MyDependentForm::class);
         $this->beConstructedWith([]);
         $this->setFormFactory($factory);
     }
 
     function it_is_admin_element()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\CRUD\FormElement');
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\DependentElement');
+        $this->shouldHaveType(GenericFormElement::class);
+        $this->shouldHaveType(FormElement::class);
+        $this->shouldHaveType(DependentElement::class);
     }
 
     function it_have_default_route()
@@ -101,9 +104,7 @@ class DependentFormElementSpec extends ObjectBehavior
     {
         $factory->create(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(
-            new RuntimeException("initForm should return instanceof Symfony\\Component\\Form\\FormInterface")
-        )->during('createForm');
+        $this->shouldThrow(\TypeError::class)->during('createForm');
     }
 
     function it_has_default_options_values()

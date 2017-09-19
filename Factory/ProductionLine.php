@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Factory;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
@@ -14,7 +16,7 @@ class ProductionLine
     /**
      * @param Worker[] $workers
      */
-    public function __construct($workers = [])
+    public function __construct(array $workers = [])
     {
         $this->workers = [];
 
@@ -23,36 +25,25 @@ class ProductionLine
         }
     }
 
-    /**
-     * @param Worker $worker
-     */
-    public function addWorker(Worker $worker)
+    public function addWorker(Worker $worker): void
     {
         $this->workers[] = $worker;
     }
 
-    /**
-     * @return int
-     */
-    public function count()
+    public function count(): int
     {
         return count($this->workers);
     }
 
     /**
-     * @return array|Worker[]
+     * @return Worker[]
      */
-    public function getWorkers()
+    public function getWorkers(): array
     {
         return $this->workers;
     }
 
-    /**
-     * Work on element with workers to make it ready to use.
-     *
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     */
-    public function workOn(Element $element)
+    public function workOn(Element $element): void
     {
         foreach ($this->workers as $worker) {
             $worker->mount($element);

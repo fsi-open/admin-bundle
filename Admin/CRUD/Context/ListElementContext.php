@@ -7,14 +7,17 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
-use FSi\Component\DataGrid\DataGrid;
-use FSi\Component\DataSource\DataSource;
+use FSi\Component\DataGrid\DataGridInterface;
+use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ListElementContext extends ContextAbstract
@@ -25,37 +28,28 @@ class ListElementContext extends ContextAbstract
     protected $element;
 
     /**
-     * @var DataSource
+     * @var DataSourceInterface
      */
     protected $dataSource;
 
     /**
-     * @var DataGrid
+     * @var DataGridInterface
      */
     protected $dataGrid;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setElement(Element $element)
+    public function setElement(Element $element): void
     {
         $this->element = $element;
         $this->dataSource = $this->element->createDataSource();
         $this->dataGrid = $this->element->createDataGrid();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasTemplateName()
+    public function hasTemplateName(): bool
     {
         return $this->element->hasOption('template_list') || parent::hasTemplateName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTemplateName()
+    public function getTemplateName(): ?string
     {
         return $this->element->hasOption('template_list')
             ? $this->element->getOption('template_list')
@@ -63,10 +57,7 @@ class ListElementContext extends ContextAbstract
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getData()
+    public function getData(): array
     {
         return [
             'datagrid_view' => $this->dataGrid->createView(),
@@ -75,26 +66,17 @@ class ListElementContext extends ContextAbstract
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createEvent(Request $request)
+    protected function createEvent(Request $request): AdminEvent
     {
         return new ListEvent($this->element, $request, $this->dataSource, $this->dataGrid);
     }
 
-    /**
-     * @return string
-     */
-    protected function getSupportedRoute()
+    protected function getSupportedRoute(): string
     {
         return 'fsi_admin_list';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supportsElement(Element $element)
+    protected function supportsElement(Element $element): bool
     {
         return $element instanceof ListElement;
     }

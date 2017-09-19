@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Display\Property\Formatter;
 
 use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
@@ -21,7 +23,7 @@ class EmptyValue implements ValueFormatter
     /**
      * @param string $emptyValue
      */
-    public function __construct($emptyValue = '-')
+    public function __construct(string $emptyValue = '-')
     {
         $this->emptyValue = $emptyValue;
     }
@@ -35,7 +37,6 @@ class EmptyValue implements ValueFormatter
         if (empty($value)) {
             return $this->emptyValue;
         }
-
 
         return $value;
     }

@@ -7,31 +7,28 @@
  * file that was distributed with this source code.
  */
 
-namespace FSi\Bundle\AdminBundle\Display;
+declare(strict_types=1);
 
-use FSi\Bundle\AdminBundle\Display\Property;
+namespace FSi\Bundle\AdminBundle\Display;
 
 class SimpleDisplay implements Display
 {
     /**
-     * @var Property[]|array
+     * @var Property[]
      */
     private $data = [];
 
     /**
      * {@inheritdoc}
      */
-    public function add($value, $label, array $valueFormatters = [])
+    public function add($value, ?string $label = null, array $valueFormatters = []): Display
     {
         $this->data[] = new Property($value, $label, $valueFormatters);
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }

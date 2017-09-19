@@ -7,11 +7,14 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\Element as ResourceRepositoryElement;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder;
@@ -21,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ResourceRepositoryContext extends ContextAbstract
 {
     /**
-     * @var ResourceRepository\Element
+     * @var ResourceRepositoryElement
      */
     protected $element;
 
@@ -36,13 +39,13 @@ class ResourceRepositoryContext extends ContextAbstract
     private $form;
 
     /**
-     * @param HandlerInterface[]|$requestHandlers
+     * @param HandlerInterface[] $requestHandlers
      * @param string $template
      * @param ResourceFormBuilder $resourceFormBuilder
      */
     public function __construct(
         array $requestHandlers,
-        $template,
+        string $template,
         ResourceFormBuilder $resourceFormBuilder
     ) {
         parent::__construct($requestHandlers, $template);
@@ -50,27 +53,18 @@ class ResourceRepositoryContext extends ContextAbstract
         $this->resourceFormBuilder = $resourceFormBuilder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setElement(Element $element)
+    public function setElement(Element $element): void
     {
         $this->element = $element;
         $this->form = $this->resourceFormBuilder->build($this->element);
     }
 
-    /**
-     * @return boolean
-     */
-    public function hasTemplateName()
+    public function hasTemplateName(): bool
     {
         return $this->element->hasOption('template') || parent::hasTemplateName();
     }
 
-    /**
-     * @return string
-     */
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return $this->element->hasOption('template')
             ? $this->element->getOption('template')
@@ -78,10 +72,7 @@ class ResourceRepositoryContext extends ContextAbstract
         ;
     }
 
-    /**
-     * @return array
-     */
-    public function getData()
+    public function getData(): array
     {
         return [
             'form' => $this->form->createView(),
@@ -89,26 +80,17 @@ class ResourceRepositoryContext extends ContextAbstract
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createEvent(Request $request)
+    protected function createEvent(Request $request): AdminEvent
     {
         return new FormEvent($this->element, $request, $this->form);
     }
 
-    /**
-     * @return string
-     */
-    protected function getSupportedRoute()
+    protected function getSupportedRoute(): string
     {
         return 'fsi_admin_resource';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supportsElement(Element $element)
+    protected function supportsElement(Element $element): bool
     {
         return $element instanceof ResourceRepositoryElement;
     }

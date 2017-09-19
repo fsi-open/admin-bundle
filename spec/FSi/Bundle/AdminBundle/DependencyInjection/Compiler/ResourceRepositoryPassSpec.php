@@ -7,6 +7,7 @@ use Prophecy\Argument;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\DependencyInjection\Definition;
 
 class ResourceRepositoryPassSpec extends ObjectBehavior
 {
@@ -23,13 +24,13 @@ class ResourceRepositoryPassSpec extends ObjectBehavior
         $container->hasExtension(Argument::type('string'))->willReturn(false);
         $container->hasExtension('fsi_resource_repository')->willReturn(true);
 
-        if (method_exists('Symfony\Component\DependencyInjection\ContainerBuilder', 'fileExists')) {
+        if (method_exists(ContainerBuilder::class, 'fileExists')) {
             $container->fileExists(Argument::that(function ($value) {
                 return preg_match('/context\/resource\.xml$/', $value);
             }))->shouldBeCalled();
         } else {
             $container->addResource(Argument::allOf(
-                Argument::type('Symfony\Component\Config\Resource\FileResource'),
+                Argument::type(FileResource::class),
                 Argument::that(function($value) {
                     return $value instanceof FileResource &&
                         preg_match('/context\/resource\.xml$/', $value->getResource());
@@ -40,7 +41,7 @@ class ResourceRepositoryPassSpec extends ObjectBehavior
         $container->getParameterBag()->willReturn($bag);
         $container->setDefinition(
             Argument::type('string'),
-            Argument::type('Symfony\Component\DependencyInjection\Definition')
+            Argument::type(Definition::class)
         )->shouldBeCalled();
 
         $this->process($container);

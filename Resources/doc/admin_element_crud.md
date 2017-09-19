@@ -10,33 +10,27 @@ namespace FSi\Bundle\DemoBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
+use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use FSi\Bundle\DemoBundle\Entity;
 use FSi\Bundle\DemoBundle\Form\Type\UserType;
-use FSi\Bundle\AdminBundle\Annotation as Admin;
 
 class UserElement extends CRUDElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\Bundle\DemoBundle\Entity\User'; // Doctrine entity's class name
+        return Entity\User::class; // Doctrine entity's class name
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'users'; // id is used in url generation http://domain.com/admin/{id}/list
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initDataSource(DataSourceFactoryInterface $factory)
+    protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface
     {
         /* @var $datasource \FSi\Component\DataSource\DataSource */
         $datasource = $factory->createDataSource(
@@ -52,10 +46,7 @@ class UserElement extends CRUDElement
         return $datasource;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initDataGrid(DataGridFactoryInterface $factory)
+    protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface
     {
         /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
         $datagrid = $factory->createDataGrid(
@@ -67,12 +58,9 @@ class UserElement extends CRUDElement
         return $datagrid;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initForm(FormFactoryInterface $factory, $data = null)
+    protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface
     {
-        $form = $factory->create(new UserType(), $data));
+        $form = $factory->create(UserType::class, $data));
 
         // To get more information about Symfony form you should visit http://symfony.com/doc/current/book/forms.html
 
@@ -166,7 +154,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserElement extends CRUDElement
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             "allow_delete" => true,

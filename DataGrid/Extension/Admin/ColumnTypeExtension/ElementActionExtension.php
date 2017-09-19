@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
@@ -11,7 +13,7 @@ use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 class ElementActionExtension extends ColumnAbstractTypeExtension
 {
     /**
-     * @var \FSi\Bundle\AdminBundle\Admin\ManagerInterface
+     * @var ManagerInterface
      */
     private $manager;
 
@@ -20,20 +22,14 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
         $this->manager = $manager;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getExtendedColumnTypes()
+    public function getExtendedColumnTypes(): array
     {
         return ['action'];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function initOptions(ColumnTypeInterface $column)
+    public function initOptions(ColumnTypeInterface $column): void
     {
-        $this->validateColumn($column);
+        $column = $this->validateColumn($column);
 
         $column->getActionOptionsResolver()->setDefined(['element']);
         $column->getActionOptionsResolver()->setAllowedTypes('element', 'string');
@@ -60,10 +56,7 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
         return parent::filterValue($column, $value);
     }
 
-    /**
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     */
-    private function validateColumn(ColumnTypeInterface $column)
+    private function validateColumn(ColumnTypeInterface $column): Action
     {
         if (!($column instanceof Action)) {
             throw new RuntimeException(sprintf(
@@ -72,14 +65,11 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
                 get_class($column)
             ));
         }
+
+        return $column;
     }
 
-    /**
-     * @param \FSi\Component\DataGrid\Column\ColumnTypeInterface $column
-     * @param string $action
-     * @param array $actionOptions
-     */
-    private function validateActionOptions(ColumnTypeInterface $column, $action, array $actionOptions)
+    private function validateActionOptions(ColumnTypeInterface $column, $action, array $actionOptions): bool
     {
         if (!isset($actionOptions['element'])) {
             return false;
@@ -97,18 +87,14 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
         return true;
     }
 
-    /**
-     * @param array $actionOptions
-     * @return array
-     */
-    private function generateActionOptions(array $actionOptions)
+    private function generateActionOptions(array $actionOptions): array
     {
         $element = $this->manager->getElement($actionOptions['element']);
 
         $additionalParameters = array_merge(
             ['element' => $element->getId()],
             $element->getRouteParameters(),
-            isset($actionOptions['additional_parameters']) ? $actionOptions['additional_parameters'] : []
+            $actionOptions['additional_parameters'] ?? []
         );
 
         return [

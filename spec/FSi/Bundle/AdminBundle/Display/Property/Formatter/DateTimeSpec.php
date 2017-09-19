@@ -22,6 +22,6 @@ class DateTimeSpec extends ObjectBehavior
     function it_decorate_value()
     {
         $datetime = new \DateTime();
-        $this->format($datetime)->shouldReturn($datetime->format("Y:m:d H:i:s"));
+        $this->format($datetime)->shouldReturn($datetime->format('Y:m:d H:i:s'));
     }
 }

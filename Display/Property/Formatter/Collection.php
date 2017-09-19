@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Display\Property\Formatter;
 
 use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
@@ -14,12 +16,12 @@ use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
 class Collection implements ValueFormatter
 {
     /**
-     * @var array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[]
+     * @var ValueFormatter[]
      */
     private $formatters;
 
     /**
-     * @param array|\FSi\Bundle\AdminBundle\Display\Property\ValueFormatter[] $formatters
+     * @param ValueFormatter[] $formatters
      */
     public function __construct(array $formatters)
     {
@@ -27,7 +29,7 @@ class Collection implements ValueFormatter
     }
 
     /**
-     * @param mixed $value
+     * @param iterable $value
      * @return array|mixed
      */
     public function format($value)
@@ -36,8 +38,11 @@ class Collection implements ValueFormatter
             return $value;
         }
 
-        if (!is_array($value) && !$value instanceof \Iterator) {
-            throw new \InvalidArgumentException("Collection decorator require value to be an array or implement \\Iterator");
+        if (!is_iterable($value)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Collection formatter requires value to be iterable, %s given',
+                is_object($value) ? get_class($value) : gettype($value)
+            ));
         }
 
         $formatted = [];

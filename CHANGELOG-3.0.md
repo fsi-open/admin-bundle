@@ -27,7 +27,7 @@ of replaced services and parameters:
         <tr>
             <th>Deprecated value</th>
             <th>New value</th>
-        </tr>  
+        </tr>
     </thead>
     <tbody>
         <tr>
@@ -97,7 +97,7 @@ became redundant and was removed.
 
 Previously default response templates were injected into controllers and could have
 been overwritten by a value returned by the context handling the element. This
-behaviour split the responsibilty of providing the template name between two 
+behaviour split the responsibilty of providing the template name between two
 classes, which caused inconsitency and was problematic, since controllers can
 handle vastly different elements. Now all contexts are required to provide a template
 name, assuming their action returns an HTML response. For example Batch actions
@@ -110,7 +110,7 @@ resolved immediately in the class' constructor, but now it is postponed until
 the first use of `getOption`, `hasOption` or `getOptions` methods.
 
 The `$options` property has also been made private to ensure they are not resolved
-somewhere else in extending classes, so if you access it directly in your elements, 
+somewhere else in extending classes, so if you access it directly in your elements,
 you will need to use the appropriate getter method instead.
 
 ## Removed deprecated AbstractCRUD element
@@ -126,7 +126,7 @@ to `configureOptions`, mirroring the change of Symfony's form component.
 ## Refactored Display component
 
 It was simplified to make it more accessible to use. The `\FSi\Bundle\AdminBundle\Display\DisplayView`
-and `FSi\Bundle\AdminBundle\Display\View` classes were dropped and now the data between 
+and `FSi\Bundle\AdminBundle\Display\View` classes were dropped and now the data between
 [Display](Display/Display.php) and [DisplayContext](Admin/Display/Context/DisplayContext.php)
 is passed directly. Also, the data formatters are applied immediately after the
 value is added to the [Display](Display/Display.php), instead during creation of
@@ -162,14 +162,14 @@ it. The events are:
             <td>FSi\Bundle\AdminBundle\Event\BatchEvent</td>
         </tr>
     </tbody>
-</table>    
+</table>
 
 The event class `FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent` also has a property
 called `skip`, which you can use to mark an object to be skipped when applying actions.
 
 ## Deprecated annotation as service registration for elements
 
-This option was introduced to make admin elements registration easier. With the 
+This option was introduced to make admin elements registration easier. With the
 introduction of service configuration defaults in the dependency injection component,
 it has became redundant and will be removed.
 
@@ -180,4 +180,11 @@ Refer to [1.1 changelog](CHANGELOG-1.1.md) for information on which routes have 
 ## Dropped support for PHP below 7.1
 
 To be able to fully utilize new functionality introduced in 7.1, we have decided
-to only support PHP versions equal or higher to it.
+to only support PHP versions equal or higher to it. All bundle's classes and interfaces
+utilize new php 7.1 features like scalar typehints, return typehints and nullable types.
+
+## Reordered arguments in FSi\Bundle\AdminBundle\Message\FlashMessages methods
+
+All public methods of `FSi\Bundle\AdminBundle\Message\FlashMessages` now has more logical arguments order:
+`string $message, array $params = [], string $domain = 'FSiAdminBundle'` instead of previous
+`string $message, string $domain = 'FSiAdminBundle, array $params = []'`

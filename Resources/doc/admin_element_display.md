@@ -63,17 +63,17 @@ class News
      */
     private $date;
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function getDate()
+    public function getDate(): ?\DateTime
     {
         return $this->date;
     }
@@ -115,7 +115,7 @@ $display->add('date', 'Date', [
 ]);
 ```
 
-You can of course create your own formatters, just remember that they need to 
+You can of course create your own formatters, just remember that they need to
 implement the [ValueFormatter](Display/Property/ValueFormatter) interface.
 
 For the full list of available formatters, go [here](Display/Property/Formatter).
@@ -136,33 +136,23 @@ use FSi\Bundle\AdminBundle\Display\Display;
 use FSi\Bundle\AdminBundle\Display\PropertyAccessDisplay;
 use FSi\Bundle\AdminBundle\Display\Property\Formatter;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DisplayElement;
-use FSi\FixturesBundle\Entity\News;
+use FSi\FixturesBundle\Entity;
 
 class DisplayNewsElement extends DisplayElement
 {
     const ID = 'news-display';
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return self::ID;
     }
 
-    /**
-     * @return string
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\FixturesBundle\Entity\News';
+        return Entity\News::class;
     }
 
-    /**
-     * @param News $object
-     * @return Display
-     */
-    protected function initDisplay($object)
+    protected function initDisplay($object): Display
     {
         $display = new PropertyAccessDisplay($object);
         $display->add('id', 'Identity')

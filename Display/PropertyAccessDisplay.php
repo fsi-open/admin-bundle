@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Display;
 
 use InvalidArgumentException;
@@ -41,10 +43,7 @@ class PropertyAccessDisplay implements Display
         $this->accessor = $this->createPropertyAccessor();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function add($path, $label, array $valueFormatters = array())
+    public function add($path, ?string $label = null, array $valueFormatters = []): Display
     {
         $this->data[] = new Property(
             $this->accessor->getValue($this->object, $path),
@@ -55,19 +54,12 @@ class PropertyAccessDisplay implements Display
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
 
-    /**
-     * @param object|array $object
-     * @throws InvalidArgumentException
-     */
-    private function validateObject($object)
+    private function validateObject($object): void
     {
         if (!is_object($object) && !is_array($object)) {
             throw new InvalidArgumentException(sprintf(
@@ -78,10 +70,7 @@ class PropertyAccessDisplay implements Display
         }
     }
 
-    /**
-     * @return PropertyAccessorInterface
-     */
-    private function createPropertyAccessor()
+    private function createPropertyAccessor(): PropertyAccessorInterface
     {
         $accessorBuilder = PropertyAccess::createPropertyAccessorBuilder();
         $accessorBuilder->enableMagicCall();

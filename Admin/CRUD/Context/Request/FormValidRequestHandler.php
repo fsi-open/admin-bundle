@@ -7,48 +7,35 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractFormValidRequestHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvents;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FormValidRequestHandler extends AbstractFormValidRequestHandler
 {
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
-    protected function action(FormEvent $event, Request $request)
+    protected function action(FormEvent $event, Request $request): void
     {
         $event->getElement()->save($event->getForm()->getData());
     }
 
-    /**
-     * @return string
-     */
-    protected function getPreSaveEventName()
+    protected function getPreSaveEventName(): string
     {
         return FormEvents::FORM_DATA_PRE_SAVE;
     }
 
-    /**
-     * @return string
-     */
-    protected function getPostSaveEventName()
+    protected function getPostSaveEventName(): string
     {
         return FormEvents::FORM_DATA_POST_SAVE;
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return null|\Symfony\Component\HttpFoundation\Response
-     */
-    public function handleRequest(AdminEvent $event, Request $request)
+    public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
         $response = parent::handleRequest($event, $request);
         if ($response) {
@@ -59,19 +46,7 @@ class FormValidRequestHandler extends AbstractFormValidRequestHandler
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
-    }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Event\FormEvent $event
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    protected function getRedirectResponse(FormEvent $event, Request $request)
-    {
-        if ($request->query->has('redirect_uri')) {
-            return new RedirectResponse($request->query->get('redirect_uri'));
-        }
-
-        return parent::getRedirectResponse($event, $request);
+        return null;
     }
 }

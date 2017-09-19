@@ -7,32 +7,25 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\spec\fixtures\Doctrine;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DependentDeleteElement;
 
 class MyDependentDeleteElement extends DependentDeleteElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return 'FSiDemoBundle:Entity';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'my_entity_delete';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParentId()
+    public function getParentId(): string
     {
         return 'my_parent_entity';
     }

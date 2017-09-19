@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
@@ -15,15 +17,10 @@ class NewsDisplay extends Page
 {
     protected $path = '/admin/display/news/{id}';
 
-    public function getHeader()
-    {
-        return $this->find('css', '#page-header')->getText();
-    }
-
-    protected function verifyPage()
+    protected function verifyPage(): void
     {
         if (!$this->has('css', '#page-header:contains("Display element")')) {
-            throw new UnexpectedPageException(sprintf("%s page is missing \"Display element\" header", $this->path));
+            throw new UnexpectedPageException(sprintf('%s page is missing "Display element" header', $this->path));
         }
     }
 }

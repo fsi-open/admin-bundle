@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Annotation as Admin;
 use FSi\Bundle\AdminBundle\Display\Display;
-use FSi\Bundle\AdminBundle\Display\ObjectDisplay;
+use FSi\Bundle\AdminBundle\Display\PropertyAccessDisplay;
 use FSi\Bundle\AdminBundle\Display\Property\Formatter;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DependentDisplayElement;
+use FSi\FixturesBundle\Entity;
 
 /**
  * @Admin\Element
@@ -15,37 +18,28 @@ class CategoryNewsDisplay extends DependentDisplayElement
 {
     const ID = 'category_news_display';
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return self::ID;
     }
 
-    /**
-     * @return string
-     */
-    public function getParentId()
+    public function getParentId(): string
     {
         return 'category';
     }
 
-    /**
-     * @return string
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\FixturesBundle\Entity\News';
+        return Entity\News::class;
     }
 
     /**
      * @param mixed $object
      * @return Display
      */
-    protected function initDisplay($object)
+    protected function initDisplay($object): Display
     {
-        $display = new ObjectDisplay($object);
+        $display = new PropertyAccessDisplay($object);
         $display->add('id', 'Identity')
             ->add('title')
             ->add('date', null, [
@@ -53,7 +47,7 @@ class CategoryNewsDisplay extends DependentDisplayElement
                 new Formatter\DateTime('Y-m-d H:i:s')
             ])
             ->add('visible', 'Visible', [
-                new Formatter\Boolean("yes", "no")
+                new Formatter\Boolean('yes', 'no')
             ])
             ->add('createdAt', null, [
                 new Formatter\EmptyValue(),

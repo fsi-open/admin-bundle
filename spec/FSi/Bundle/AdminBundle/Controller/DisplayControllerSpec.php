@@ -19,6 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DisplayControllerSpec extends ObjectBehavior
 {
@@ -45,7 +47,7 @@ class DisplayControllerSpec extends ObjectBehavior
     ) {
         $dispatcher->dispatch(
             AdminEvents::CONTEXT_PRE_CREATE,
-            Argument::type('FSi\Bundle\AdminBundle\Event\AdminEvent')
+            Argument::type(AdminEvent::class)
         )->shouldBeCalled();
 
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
@@ -80,7 +82,7 @@ class DisplayControllerSpec extends ObjectBehavior
         $element->getId()->willReturn('my_awesome_display');
         $manager->createContext(Argument::type('string'), $element)->willReturn(null);
 
-        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
+        $this->shouldThrow(NotFoundHttpException::class)
             ->during('displayAction', [$element, $request]);
     }
 
@@ -92,7 +94,7 @@ class DisplayControllerSpec extends ObjectBehavior
         $element->getId()->willReturn('my_awesome_display');
         $manager->createContext(Argument::type('string'), $element)->willReturn(null);
 
-        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
+        $this->shouldThrow(NotFoundHttpException::class)
             ->during('displayAction', [$element, $request]);
     }
 }

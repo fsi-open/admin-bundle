@@ -7,10 +7,13 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Mink;
+use Behat\Mink\Session;
 use Behat\MinkExtension\Context\MinkAwareContext;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,51 +45,32 @@ abstract class AbstractContext implements KernelAwareContext, MinkAwareContext
      */
     private $faker;
 
-    /**
-     * @param Mink $mink
-     */
-    public function setMink(Mink $mink)
+    public function setMink(Mink $mink): void
     {
         $this->mink = $mink;
     }
 
-    /**
-     * @param array $parameters
-     */
-    public function setMinkParameters(array $parameters)
+    public function setMinkParameters(array $parameters): void
     {
         $this->minkParameters = $parameters;
     }
 
-    /**
-     * @param KernelInterface $kernel
-     */
-    public function setKernel(KernelInterface $kernel)
+    public function setKernel(KernelInterface $kernel): void
     {
         $this->kernel = $kernel;
     }
 
-    /**
-     * @param string $className
-     * @return EntityRepository
-     */
-    protected function getRepository($className)
+    protected function getRepository($className): EntityRepository
     {
         return $this->getEntityManager()->getRepository($className);
     }
 
-    /**
-     * @return EntityManagerInterface
-     */
-    public function getEntityManager()
+    public function getEntityManager(): EntityManagerInterface
     {
         return $this->getContainer()->get('doctrine.orm.entity_manager');
     }
 
-    /**
-     * @return Generator
-     */
-    protected function getFaker()
+    protected function getFaker(): Generator
     {
         if (!$this->faker) {
             $this->faker = Factory::create();
@@ -95,39 +79,27 @@ abstract class AbstractContext implements KernelAwareContext, MinkAwareContext
         return $this->faker;
     }
 
-    /**
-     * @return array
-     */
-    protected function getMinkParameters()
+    protected function getMinkParameters(): array
     {
         return $this->minkParameters;
     }
 
-    protected function getSession($name = null)
+    protected function getSession($name = null): Session
     {
         return $this->mink->getSession($name);
     }
 
-    /**
-     * @return KernelInterface
-     */
-    protected function getKernel()
+    protected function getKernel(): KernelInterface
     {
         return $this->kernel;
     }
 
-    /**
-     * @return ContainerInterface
-     */
-    protected function getContainer()
+    protected function getContainer(): ContainerInterface
     {
         return $this->kernel->getContainer();
     }
 
-    /**
-     * @return bool
-     */
-    protected function isSeleniumDriverUsed()
+    protected function isSeleniumDriverUsed(): bool
     {
         return $this->getSession()->getDriver() instanceof Selenium2Driver;
     }

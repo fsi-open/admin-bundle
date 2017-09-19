@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Annotation as Admin;
@@ -7,7 +9,7 @@ use FSi\Bundle\AdminBundle\Display\Property\Formatter;
 use FSi\Bundle\AdminBundle\Display\SimpleDisplay;
 use FSi\Bundle\AdminBundle\Display\Display;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DisplayElement;
-use FSi\FixturesBundle\Entity\News as NewsEntity;
+use FSi\FixturesBundle\Entity;
 
 /**
  * @Admin\Element
@@ -16,27 +18,21 @@ class DisplayNews extends DisplayElement
 {
     const ID = 'news_display';
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return self::ID;
     }
 
-    /**
-     * @return string
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
-        return 'FSi\FixturesBundle\Entity\News';
+        return Entity\News::class;
     }
 
     /**
-     * @param NewsEntity $object
+     * @param Entity\News $object
      * @return Display
      */
-    protected function initDisplay($object)
+    protected function initDisplay($object): Display
     {
         $display = new SimpleDisplay();
         $display->add($object->getId(), 'Identity')
@@ -46,7 +42,7 @@ class DisplayNews extends DisplayElement
                 new Formatter\DateTime('Y-m-d H:i:s')
             ])
             ->add($object->isVisible(), 'Visible', [
-                new Formatter\Boolean("yes", "no")
+                new Formatter\Boolean('yes', 'no')
             ])
             ->add($object->getCategories(), 'Categories', [
                 new Formatter\EmptyValue()

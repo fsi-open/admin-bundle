@@ -7,38 +7,28 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 abstract class CRUDElement extends GenericCRUDElement implements Element
 {
     use DataIndexerElementImpl;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function save($object)
+    public function save($object): void
     {
         $this->getObjectManager()->persist($object);
         $this->getObjectManager()->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function saveDataGrid()
+    public function saveDataGrid(): void
     {
         $this->getObjectManager()->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function delete($object)
+    public function delete($object): void
     {
         $this->getObjectManager()->remove($object);
         $this->getObjectManager()->flush();

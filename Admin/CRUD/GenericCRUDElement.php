@@ -7,12 +7,15 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
+use FSi\Component\DataGrid\Exception\DataGridColumnException;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -23,48 +26,36 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
 {
     /**
-     * @var \FSi\Component\DataSource\DataSourceFactoryInterface
+     * @var DataSourceFactoryInterface
      */
     protected $datasourceFactory;
 
     /**
-     * @var \FSi\Component\DataGrid\DataGridFactoryInterface
+     * @var DataGridFactoryInterface
      */
     protected $datagridFactory;
 
     /**
-     * @var \Symfony\Component\Form\FormFactoryInterface
+     * @var FormFactoryInterface
      */
     protected $formFactory;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoute()
+    public function getRoute(): string
     {
         return 'fsi_admin_list';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSuccessRoute()
+    public function getSuccessRoute(): string
     {
         return $this->getRoute();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSuccessRouteParameters()
+    public function getSuccessRouteParameters(): array
     {
         return $this->getRouteParameters();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'allow_delete' => true,
@@ -99,117 +90,66 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
         $resolver->setAllowedTypes('template_form', ['null', 'string']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function apply($object)
+    public function apply($object): void
     {
         $this->delete($object);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDataGridFactory(DataGridFactoryInterface $factory)
+    public function setDataGridFactory(DataGridFactoryInterface $factory): void
     {
         $this->datagridFactory = $factory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDataSourceFactory(DataSourceFactoryInterface $factory)
+    public function setDataSourceFactory(DataSourceFactoryInterface $factory): void
     {
         $this->datasourceFactory = $factory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setFormFactory(FormFactoryInterface $factory)
+    public function setFormFactory(FormFactoryInterface $factory): void
     {
         $this->formFactory = $factory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createDataGrid()
+    public function createDataGrid(): DataGridInterface
     {
         $datagrid = $this->initDataGrid($this->datagridFactory);
 
-        if (!is_object($datagrid) || !$datagrid instanceof DataGridInterface) {
-            throw new RuntimeException('initDataGrid should return instanceof FSi\\Component\\DataGrid\\DataGridInterface');
-        }
-
-        if ($this->getOption('allow_delete')) {
-            if (!$datagrid->hasColumnType('batch')) {
-                $datagrid->addColumn('batch', 'batch', [
-                    'actions' => [
-                        'delete' => [
-                            'route_name' => 'fsi_admin_batch',
-                            'additional_parameters' => ['element' => $this->getId()],
-                            'label' => 'crud.list.batch.delete'
-                        ]
-                    ],
-                    'display_order' => -1000
-                ]);
-            }
+        if ($this->getOption('allow_delete') && !$datagrid->hasColumnType('batch')) {
+            $datagrid->addColumn('batch', 'batch', [
+                'actions' => [
+                    'delete' => [
+                        'route_name' => 'fsi_admin_batch',
+                        'additional_parameters' => ['element' => $this->getId()],
+                        'label' => 'crud.list.batch.delete'
+                    ]
+                ],
+                'display_order' => -1000
+            ]);
         }
 
         return $datagrid;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createDataSource()
+    public function createDataSource(): DataSourceInterface
     {
-        $datasource = $this->initDataSource($this->datasourceFactory);
-
-        if (!is_object($datasource) || !$datasource instanceof DataSourceInterface) {
-            throw new RuntimeException('initDataSource should return instanceof FSi\\Component\\DataSource\\DataSourceInterface');
-        }
-
-        return $datasource;
+        return $this->initDataSource($this->datasourceFactory);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createForm($data = null)
+    public function createForm($data = null): FormInterface
     {
-        $form = $this->initForm($this->formFactory, $data);
-
-        if (!is_object($form) || !$form instanceof FormInterface) {
-            throw new RuntimeException('initForm should return instanceof Symfony\\Component\\Form\\FormInterface');
-        }
-
-        return $form;
+        return $this->initForm($this->formFactory, $data);
     }
 
-    /**
-     * Initialize DataGrid.
-     *
-     * @param \FSi\Component\DataGrid\DataGridFactoryInterface $factory
-     * @return \FSi\Component\DataGrid\DataGridInterface
-     */
-    abstract protected function initDataGrid(DataGridFactoryInterface $factory);
+    abstract protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface;
+
+    abstract protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface;
 
     /**
-     * Initialize DataSource.
+     * Initialize form. This form will be used in create and update actions.
      *
-     * @param \FSi\Component\DataSource\DataSourceFactoryInterface $factory
-     * @return \FSi\Component\DataSource\DataSourceInterface
-     */
-    abstract protected function initDataSource(DataSourceFactoryInterface $factory);
-
-    /**
-     * Initialize create Form. This form will be used in createAction in CRUDController.
-     *
-     * @param \Symfony\Component\Form\FormFactoryInterface $factory
+     * @param FormFactoryInterface $factory
      * @param mixed $data
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
-    abstract protected function initForm(FormFactoryInterface $factory, $data = null);
+    abstract protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface;
 }

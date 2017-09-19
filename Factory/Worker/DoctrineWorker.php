@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Factory\Worker;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -22,10 +24,7 @@ class DoctrineWorker implements Worker
         $this->managerRegistry = $managerRegistry;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function mount(Element $element)
+    public function mount(Element $element): void
     {
         if ($element instanceof DoctrineElement) {
             $element->setManagerRegistry($this->managerRegistry);

@@ -17,6 +17,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
+use FSi\Bundle\AdminBundle\Event\ListEvent;
 
 class ListElementContextSpec extends ObjectBehavior
 {
@@ -34,7 +36,7 @@ class ListElementContextSpec extends ObjectBehavior
 
     function it_is_context()
     {
-        $this->shouldBeAnInstanceOf('FSi\Bundle\AdminBundle\Admin\Context\ContextInterface');
+        $this->shouldBeAnInstanceOf(ContextInterface::class);
     }
 
     function it_has_array_data()
@@ -62,8 +64,8 @@ class ListElementContextSpec extends ObjectBehavior
 
     function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request)
     {
-        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent'), $request)
-            ->shouldBeCalled();
+        $handler->handleRequest(Argument::type(ListEvent::class), $request)
+            ->willReturn(null);
 
         $this->handleRequest($request)->shouldReturn(null);
     }
@@ -73,11 +75,11 @@ class ListElementContextSpec extends ObjectBehavior
         Request $request,
         Response $response
     ) {
-        $handler->handleRequest(Argument::type('FSi\Bundle\AdminBundle\Event\ListEvent'), $request)
+        $handler->handleRequest(Argument::type(ListEvent::class), $request)
             ->willReturn($response);
 
         $this->handleRequest($request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 
     public function getMatchers()

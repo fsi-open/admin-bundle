@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\Config\FileLocator;
@@ -9,10 +11,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 class ResourceRepositoryPass implements CompilerPassInterface
 {
-    /**
-     * @param ContainerBuilder $container
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if ($container->hasExtension('fsi_resource_repository')) {
             $loader = new XmlFileLoader(

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\EventListener;
 
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
@@ -26,23 +29,14 @@ class MainMenuListener
      */
     private $manager;
 
-    /**
-     * @param ManagerInterface $manager
-     * @param string $configFilePath
-     */
-    public function __construct(ManagerInterface $manager, $configFilePath)
+    public function __construct(ManagerInterface $manager, string $configFilePath)
     {
         $this->configFilePath = $configFilePath;
         $this->yaml = new Yaml();
         $this->manager = $manager;
     }
 
-    /**
-     * @param MenuEvent $event
-     * @return Item
-     * @throws InvalidYamlStructureException
-     */
-    public function createMainMenu(MenuEvent $event)
+    public function createMainMenu(MenuEvent $event): Item
     {
         $config = $this->yaml->parse(file_get_contents($this->configFilePath), true, true);
 
@@ -65,7 +59,7 @@ class MainMenuListener
         return $menu;
     }
 
-    private function populateMenu(Item $menu, array $configs)
+    private function populateMenu(Item $menu, array $configs): void
     {
         foreach ($configs as $itemConfig) {
             $item = $this->buildSingleItem($itemConfig);
@@ -91,7 +85,11 @@ class MainMenuListener
         }
     }
 
-    private function buildSingleItem($itemConfig)
+    /**
+     * @param array|string $itemConfig
+     * @return Item|null
+     */
+    private function buildSingleItem($itemConfig): ?Item
     {
         if (is_string($itemConfig)) {
             if ($this->manager->hasElement($itemConfig)) {
@@ -106,26 +104,35 @@ class MainMenuListener
         }
 
         return new ElementItem(
-            ($this->hasEntry($itemConfig, 'name')) ? $itemConfig['name'] : $itemConfig['id'],
+            $this->hasEntry($itemConfig, 'name') ? $itemConfig['name'] : $itemConfig['id'],
             $this->manager->getElement($itemConfig['id'])
         );
     }
 
-    private function isSingleItem($itemConfig)
+    /**
+     * @param array|string $itemConfig
+     * @return bool
+     */
+    private function isSingleItem($itemConfig): bool
     {
         return $this->hasEntry($itemConfig, 'id');
     }
 
-    private function hasEntry($itemConfig, $keyName)
+    /**
+     * @param array|string $itemConfig
+     * @param string $keyName
+     * @return bool
+     */
+    private function hasEntry($itemConfig, string $keyName): bool
     {
         return is_array($itemConfig) && array_key_exists($keyName, $itemConfig);
     }
 
     /**
-     * @param array $itemConfig
-     * @return mixed
+     * @param array|string $itemConfig
+     * @return Element[]
      */
-    private function buildItemElements($itemConfig)
+    private function buildItemElements($itemConfig): array
     {
         $elements = [];
 

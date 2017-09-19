@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Display\Property\Formatter;
 
 use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
@@ -23,11 +25,7 @@ class Boolean implements ValueFormatter
      */
     private $false;
 
-    /**
-     * @param string $true
-     * @param string $false
-     */
-    public function __construct($true, $false)
+    public function __construct(string $true, string $false)
     {
         $this->true = $true;
         $this->false = $false;
@@ -43,6 +41,6 @@ class Boolean implements ValueFormatter
             return $value;
         }
 
-        return ($value) ? $this->true : $this->false;
+        return $value ? $this->true : $this->false;
     }
 }

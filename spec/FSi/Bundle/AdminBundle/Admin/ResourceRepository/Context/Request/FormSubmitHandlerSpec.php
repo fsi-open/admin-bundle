@@ -11,6 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 
 class FormSubmitHandlerSpec extends ObjectBehavior
 {
@@ -22,7 +23,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
 
     function it_is_context_request_handler()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface');
+        $this->shouldHaveType(HandlerInterface::class);
     }
 
     function it_throw_exception_for_non_list_event(ListEvent $listEvent, Request $request)
@@ -36,7 +37,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
 
     function it_does_nothing_on_non_POST_request(FormEvent $event, Request $request)
     {
-        $request->isMethod('POST')->willReturn(false);
+        $request->isMethod(Request::METHOD_POST)->willReturn(false);
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -47,7 +48,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form
     ) {
-        $request->isMethod('POST')->willReturn(true);
+        $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
             ->shouldBeCalled();
@@ -67,7 +68,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         Response $response
     ) {
-        $request->isMethod('POST')->willReturn(true);
+        $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
             ->will(function() use ($event, $response) {
@@ -76,7 +77,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
             });
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_return_response_from_request_post_submit_event(
@@ -86,7 +87,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         FormInterface $form,
         Response $response
     ) {
-        $request->isMethod('POST')->willReturn(true);
+        $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
             ->shouldBeCalled();
@@ -101,6 +102,6 @@ class FormSubmitHandlerSpec extends ObjectBehavior
             });
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 }

@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractFormSubmitHandler;
@@ -14,18 +16,12 @@ use FSi\Bundle\AdminBundle\Event\BatchEvents;
 
 class BatchFormSubmitHandler extends AbstractFormSubmitHandler
 {
-    /**
-     * @return string
-     */
-    protected function getPreSubmitEventName()
+    protected function getPreSubmitEventName(): string
     {
         return BatchEvents::BATCH_REQUEST_PRE_SUBMIT;
     }
 
-    /**
-     * @return string
-     */
-    protected function getPostSubmitEventName()
+    protected function getPostSubmitEventName(): string
     {
         return BatchEvents::BATCH_REQUEST_POST_SUBMIT;
     }

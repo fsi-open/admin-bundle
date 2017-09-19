@@ -7,9 +7,10 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
@@ -48,21 +49,16 @@ abstract class ControllerAbstract
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Element $element
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $route
-     * @return null|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function handleRequest(Element $element, Request $request, $route)
+    protected function handleRequest(Element $element, Request $request, string $route): Response
     {
         $event = new AdminEvent($element, $request);
         $this->eventDispatcher->dispatch(AdminEvents::CONTEXT_PRE_CREATE, $event);
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
+
         $context = $this->contextManager->createContext($route, $element);
-        if (!($context instanceof ContextInterface)) {
+        if (null === $context) {
             throw new NotFoundHttpException(sprintf(
                 'Cannot find context builder that supports element with id "%s"',
                 $element->getId()
@@ -76,9 +72,8 @@ abstract class ControllerAbstract
 
         if (!$context->hasTemplateName()) {
             throw new ContextException(sprintf(
-                "Context %s neither returned a response nor has a template name",
-                get_class($context),
-                __CLASS__
+                'Context %s neither returned a response nor has a template name',
+                get_class($context)
             ));
         }
 

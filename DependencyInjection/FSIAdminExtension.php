@@ -7,8 +7,11 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\DependencyInjection;
 
+use FSi\Bundle\AdminBundle\Admin\Element;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -23,7 +26,7 @@ class FSIAdminExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -51,13 +54,14 @@ class FSIAdminExtension extends Extension
         if (version_compare(Kernel::VERSION, '2.8.0', '>=')) {
             $loader->load('services-3.0.xml');
         }
+
+        if (method_exists($container, 'registerForAutoconfiguration')) {
+            $container->registerForAutoconfiguration(Element::class)
+                ->addTag('admin.element');
+        }
     }
 
-    /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param array $config
-     */
-    protected function setTemplateParameters(ContainerBuilder $container, $config = [])
+    protected function setTemplateParameters(ContainerBuilder $container, array $config = []): void
     {
         foreach ($config as $key => $value) {
             $container->setParameter(sprintf('admin.templates.%s', $key), $value);

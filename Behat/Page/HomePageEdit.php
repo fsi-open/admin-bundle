@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
@@ -15,15 +17,10 @@ class HomePageEdit extends Page
 {
     protected $path = '/admin/resource/home_page';
 
-    public function getHeader()
-    {
-        return $this->find('css', '#page-header')->getText();
-    }
-
-    protected function verifyPage()
+    protected function verifyPage(): void
     {
         if (!$this->has('css', '#page-header:contains("Edit resources")')) {
-            throw new UnexpectedPageException(sprintf("%s page is missing \"Resource edit\" header", $this->path));
+            throw new UnexpectedPageException(sprintf('%s page is missing "Resource edit" header', $this->path));
         }
     }
 }

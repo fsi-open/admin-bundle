@@ -11,6 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 
 class DataSourceBindParametersHandlerSpec extends ObjectBehavior
 {
@@ -22,14 +23,14 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
 
     function it_is_context_request_handler()
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface');
+        $this->shouldHaveType(HandlerInterface::class);
     }
 
     function it_throws_exception_for_non_list_event(AdminEvent $event, Request $request)
     {
         $this->shouldThrow(
             new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\DataSourceBindParametersHandler require ListEvent"
+                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\DataSourceBindParametersHandler requires ListEvent"
             )
         )->during('handleRequest', [$event, $request]);
     }
@@ -43,7 +44,7 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND, $event)->shouldBeCalled();
 
         $event->getDataSource()->willReturn($dataSource);
-        $dataSource->bindParameters($request)->shouldBecalled();
+        $dataSource->bindParameters($request)->shouldBeCalled();
 
         $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND, $event)->shouldBeCalled();
 
@@ -63,7 +64,7 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
             });
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_returns_response_from_post_datasource_bind_parameters_event(
@@ -85,6 +86,6 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
             });
 
         $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
+            ->shouldReturnAnInstanceOf(Response::class);
     }
 }

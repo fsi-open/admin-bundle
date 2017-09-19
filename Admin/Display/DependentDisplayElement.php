@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Admin\Display;
 
 use FSi\Bundle\AdminBundle\Admin\DependentElement;
@@ -16,10 +18,7 @@ abstract class DependentDisplayElement extends GenericDisplayElement implements 
 {
     use DependentElementImpl;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRouteParameters()
+    public function getRouteParameters(): array
     {
         return array_merge(
             parent::getRouteParameters(),

@@ -1,9 +1,18 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\PyStringNode;
-use FSi\Bundle\AdminBundle\Behat\Context\Page\Element\Messages;
+use FSi\Bundle\AdminBundle\Behat\Element\Messages;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 
 class MessageContext extends PageObjectContext
@@ -48,10 +57,7 @@ class MessageContext extends PageObjectContext
         expect($notifications->getMessageText('success'))->toBe($message->getRaw());
     }
 
-    /**
-     * @return Messages
-     */
-    private function getMessagesElement()
+    private function getMessagesElement(): Messages
     {
         return $this->getElement('Messages');
     }

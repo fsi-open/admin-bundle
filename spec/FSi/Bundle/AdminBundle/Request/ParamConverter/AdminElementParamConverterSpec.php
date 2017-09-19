@@ -12,6 +12,12 @@ namespace spec\FSi\Bundle\AdminBundle\Request\ParamConverter;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
+use FSi\Bundle\AdminBundle\Admin\Manager;
 
 class AdminElementParamConverterSpec extends ObjectBehavior
 {
@@ -28,22 +34,22 @@ class AdminElementParamConverterSpec extends ObjectBehavior
 
     function it_supports_any_object_that_implements_element_interface(ParamConverter $configuration)
     {
-        $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement');
+        $configuration->getClass()->willReturn(CRUDElement::class);
         $this->supports($configuration)->shouldReturn(true);
 
-        $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement');
+        $configuration->getClass()->willReturn(GenericCRUDElement::class);
         $this->supports($configuration)->shouldReturn(true);
 
-        $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\CRUD\FormElement');
+        $configuration->getClass()->willReturn(FormElement::class);
         $this->supports($configuration)->shouldReturn(true);
 
-        $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\CRUD\ListElement');
+        $configuration->getClass()->willReturn(ListElement::class);
         $this->supports($configuration)->shouldReturn(true);
 
-        $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement');
+        $configuration->getClass()->willReturn(BatchElement::class);
         $this->supports($configuration)->shouldReturn(true);
 
-        $configuration->getClass()->willReturn('FSi\Bundle\AdminBundle\Admin\Manager');
+        $configuration->getClass()->willReturn(Manager::class);
         $this->supports($configuration)->shouldReturn(false);
     }
 }

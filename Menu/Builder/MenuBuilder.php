@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\Menu\Builder;
 
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
@@ -31,10 +33,7 @@ class MenuBuilder implements Builder
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @return Item
-     */
-    public function buildMenu()
+    public function buildMenu(): Item
     {
         $menu = new Item();
 

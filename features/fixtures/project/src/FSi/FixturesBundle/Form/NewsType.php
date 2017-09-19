@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FSi\FixturesBundle\Form;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -7,20 +9,27 @@ use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use FSi\Bundle\DoctrineExtensionsBundle\Form\Type\FSi\ImageType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use FSi\FixturesBundle\Entity\News;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class NewsType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $dateType = TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\DateType', 'date');
-        $checkboxType = TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CheckboxType', 'checkbox');
+        $dateType = TypeSolver::getFormType(DateType::class, 'date');
+        $checkboxType = TypeSolver::getFormType(CheckboxType::class, 'checkbox');
         $collectionEntryTypeOption = TypeSolver::hasCollectionEntryTypeOption() ? 'entry_type' : 'type';
-        $collectionType = TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\CollectionType', 'collection');
-        $imageType = TypeSolver::getFormType('FSi\Bundle\DoctrineExtensionsBundle\Form\Type\FSi\ImageType', 'fsi_image');
-        $emailType = TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email');
-        $tagType = TypeSolver::getFormType('FSi\FixturesBundle\Form\TagType', new TagType());
-        $textType = TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\TextType', 'text');
+        $collectionType = TypeSolver::getFormType(CollectionType::class, 'collection');
+        $imageType = TypeSolver::getFormType(ImageType::class, 'fsi_image');
+        $emailType = TypeSolver::getFormType(EmailType::class, 'email');
+        $tagType = TypeSolver::getFormType(TagType::class, new TagType());
+        $textType = TypeSolver::getFormType(TextType::class, 'text');
 
         $builder->add('title', $textType, ['label' => 'admin.news.list.title']);
 
@@ -68,22 +77,22 @@ class NewsType extends AbstractType
         ]);
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'news_type';
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => 'FSi\FixturesBundle\Entity\News'
+            'data_class' => News::class
         ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => 'FSi\FixturesBundle\Entity\News'
+            'data_class' => News::class
         ]);
     }
 }

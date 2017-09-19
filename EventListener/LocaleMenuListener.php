@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
@@ -29,15 +31,10 @@ class LocaleMenuListener
     private $requestStack;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $locales;
 
-    /**
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
-     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-     * @param array $locales
-     */
     public function __construct(TranslatorInterface $translator, RequestStack $requestStack, array $locales)
     {
         $this->translator = $translator;
@@ -45,7 +42,7 @@ class LocaleMenuListener
         $this->locales = $locales;
     }
 
-    public function createLocaleMenu(MenuEvent $event)
+    public function createLocaleMenu(MenuEvent $event): void
     {
         if (count($this->locales) < 2) {
             return;
@@ -81,9 +78,9 @@ class LocaleMenuListener
         $event->getMenu()->addChild($language);
     }
 
-    private function getLanguageName($locale = null)
+    private function getLanguageName(?string $locale = null): ?string
     {
-        if (!$locale) {
+        if (null === $locale) {
             $locale = $this->getCurrentLocale();
         }
 
@@ -95,10 +92,7 @@ class LocaleMenuListener
             );
     }
 
-    /**
-     * @return string
-     */
-    private function getCurrentLocale()
+    private function getCurrentLocale(): string
     {
         return $this->requestStack->getMasterRequest()->getLocale();
     }

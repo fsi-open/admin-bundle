@@ -16,12 +16,14 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use stdClass;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyCrudElement;
+use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class CRUDElementSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, ObjectManager $om)
     {
-        $this->beAnInstanceOf('FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyCrudElement');
+        $this->beAnInstanceOf(MyCrudElement::class);
         $this->beConstructedWith([]);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
@@ -83,6 +85,6 @@ class CRUDElementSpec extends ObjectBehavior
         $repository->getClassName()->willReturn('FSi/Bundle/DemoBundle/Entity/Entity');
 
         $this->setManagerRegistry($registry);
-        $this->getDataIndexer()->shouldReturnAnInstanceOf('FSi\Component\DataIndexer\DoctrineDataIndexer');
+        $this->getDataIndexer()->shouldReturnAnInstanceOf(DoctrineDataIndexer::class);
     }
 }

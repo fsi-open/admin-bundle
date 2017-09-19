@@ -7,24 +7,20 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace FSi\Bundle\AdminBundle\spec\fixtures\Doctrine;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DeleteElement;
 
 class MyDeleteElement extends DeleteElement
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return 'FSiDemoBundle:Entity';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function getId(): string
     {
         return 'my_entity_batch';
     }
