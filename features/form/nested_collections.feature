@@ -6,8 +6,7 @@ Feature: Managing form nested collections
       | news | FSi\FixturesBundle\Admin\News |
     And translations are enabled in application
     And there is 1 "news"
-    And I am on the "Admin panel" page
-    And I follow "News" menu element
+    And I am on the "News list" page
     And I press "Edit" link in actions column of first element at list
     And I should see "News edit" page header "Edit element"
     And "Tags" collection should have 1 elements

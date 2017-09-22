@@ -32,6 +32,12 @@ class AdminElementParamConverterSpec extends ObjectBehavior
         $this->supports($configuration)->shouldReturn(false);
     }
 
+    function it_does_not_support_classless_param_converter(ParamConverter $configuration)
+    {
+        $configuration->getClass()->willReturn(null);
+        $this->supports($configuration)->shouldReturn(false);
+    }
+
     function it_supports_any_object_that_implements_element_interface(ParamConverter $configuration)
     {
         $configuration->getClass()->willReturn(CRUDElement::class);
