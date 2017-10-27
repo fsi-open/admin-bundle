@@ -64,7 +64,7 @@
     {% spaceless %}
         <th{{ block('datagrid_header_attributes') }}>
             <span>{{ header.label|trans({}, translation_domain) }}</span>
-            {% if (vars.datasource.hasField(header.name)) %}
+            {% if vars.datasource is defined and vars.datasource.hasField(header.name) %}
                 {% set filter = vars.datasource.getField(header.name) %}
                 {% if filter.getAttribute('sortable') == true %}
                     {{ datasource_sort_widget(filter) }}
