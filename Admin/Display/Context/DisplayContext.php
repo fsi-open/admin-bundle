@@ -60,9 +60,10 @@ class DisplayContext extends ContextAbstract
 
     protected function createEvent(Request $request): AdminEvent
     {
-        $this->display = $this->element->createDisplay($this->getObject($request));
+        $object = $this->getObject($request);
+        $this->display = $this->element->createDisplay($object);
 
-        return new DisplayEvent($this->element, $request, $this->display);
+        return new DisplayEvent($this->element, $request, $this->display, $object);
     }
 
     protected function getSupportedRoute(): string
