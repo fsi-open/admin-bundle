@@ -135,6 +135,11 @@ the `FSi\Bundle\AdminBundle\Display\DisplayView`.
 Please refer to [Display components documentation](Resources/doc/admin_element_display.md) for
 more information.
 
+## DisplayEvent gets original object in constructor
+
+`\FSi\Bundle\AdminBundle\Event\DisplayEvent` now has fourth constructor argument which is the original
+object or data extracted by `DataIndexer`
+
 ## BatchFormValidRequestHandler requires FlashMessages
 
 As of this version, `FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler`
