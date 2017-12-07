@@ -1,6 +1,6 @@
 language: php
 
-sudo: false
+sudo: required
 
 cache:
     directories:
@@ -36,4 +36,4 @@ before_script:
 
 script:
     - bin/phpspec run --format=pretty
-    - bin/behat --no-snippets --format=progress --profile=travis
+    - bin/behat --no-snippets --format=progress --profile=travis -vvv
