@@ -22,15 +22,29 @@ class DisplayEvent extends AdminEvent
      */
     private $display;
 
-    public function __construct(Element $element, Request $request, Display $display)
+    /**
+     * @var mixed
+     */
+    private $object;
+
+    public function __construct(Element $element, Request $request, Display $display, $object)
     {
         parent::__construct($element, $request);
 
         $this->display = $display;
+        $this->object = $object;
     }
 
     public function getDisplay(): Display
     {
         return $this->display;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getObject()
+    {
+        return $this->object;
     }
 }

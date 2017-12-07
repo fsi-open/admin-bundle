@@ -56,6 +56,12 @@ objects. There have been new base classes introduced:
 Please refer to [Display components documentation](Resources/doc/admin_element_display.md) for
 more information.
 
+## Pass original object as fourth parameter to `DisplayEvent`'s constructor
+
+If you have extended `\FSi\Bundle\AdminBundle\Event\DisplayEvent` you should pass original data as
+the fourth argument to the parent constructor. This data should be the original object or array
+extracted by `DataIndexer`.
+
 ## Always pass FlashMessages to BatchFormValidRequestHandler subclasses
 
 If you have extended the `FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler`
