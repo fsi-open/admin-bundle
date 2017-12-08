@@ -56,7 +56,7 @@ objects. There have been new base classes introduced:
 Please refer to [Display components documentation](Resources/doc/admin_element_display.md) for
 more information.
 
-## Pass original object as fourth parameter to `DisplayEvent`'s constructor
+## Pass original data as fourth parameter to `DisplayEvent`'s constructor
 
 If you have extended `\FSi\Bundle\AdminBundle\Event\DisplayEvent` you should pass original data as
 the fourth argument to the parent constructor. This data should be the original object or array
