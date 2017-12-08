@@ -25,14 +25,14 @@ class DisplayEvent extends AdminEvent
     /**
      * @var mixed
      */
-    private $object;
+    private $data;
 
-    public function __construct(Element $element, Request $request, Display $display, $object)
+    public function __construct(Element $element, Request $request, Display $display, $data)
     {
         parent::__construct($element, $request);
 
         $this->display = $display;
-        $this->object = $object;
+        $this->data = $data;
     }
 
     public function getDisplay(): Display
@@ -43,8 +43,8 @@ class DisplayEvent extends AdminEvent
     /**
      * @return mixed
      */
-    public function getObject()
+    public function getData()
     {
-        return $this->object;
+        return $this->data;
     }
 }
