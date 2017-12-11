@@ -50,7 +50,7 @@ class PropertyAccessDisplaySpec extends ObjectBehavior
         $this->getData()->shouldHaveProperty($now->format('Y-m-d'), 'Date');
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveProperty' => function($subject, $value, $label) {

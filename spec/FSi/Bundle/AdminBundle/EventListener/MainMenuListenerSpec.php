@@ -60,7 +60,7 @@ class MainMenuListenerSpec extends ObjectBehavior
         $offerItem->getOption('elements')[1]->getId()->shouldReturn('product');
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveItem' => function(Item $menu, $itemName, $elementId = false) {

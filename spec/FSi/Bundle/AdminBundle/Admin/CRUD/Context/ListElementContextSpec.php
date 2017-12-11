@@ -82,7 +82,7 @@ class ListElementContextSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf(Response::class);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveKeyInArray' => function($subject, $key) {

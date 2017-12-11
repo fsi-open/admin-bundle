@@ -21,7 +21,7 @@ class SimpleDisplaySpec extends ObjectBehavior
         $this->getData()->shouldHaveProperty('Piotr', 'First Name');
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveProperty' => function($subject, $value, $label) {
