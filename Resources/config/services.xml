@@ -77,7 +77,7 @@
         </service>
 
         <!-- Controllers -->
-        <service id="admin.controller.abstract" class="%admin.controller.abstract.class%" abstract="true">
+        <service id="admin.controller.abstract" class="%admin.controller.abstract.class%" abstract="true" public="true">
             <argument type="service" id="templating"/>
             <argument type="service" id="admin.context.manager"/>
             <argument type="service" id="event_dispatcher"/>
@@ -101,7 +101,7 @@
             <argument>%admin.templates.resource%</argument>
         </service>
 
-        <service id="admin.controller.admin" class="%admin.controller.admin.class%">
+        <service id="admin.controller.admin" class="%admin.controller.admin.class%" public="true">
             <argument type="service" id="templating"/>
             <argument type="service" id="router"/>
             <argument>%admin.templates.index_page%</argument>
