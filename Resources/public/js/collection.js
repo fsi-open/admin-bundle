@@ -7,7 +7,7 @@ define(['jquery'], function($) {
             removeButtonSelector: '> div > div > div > .collection-remove',
             itemsContainerSelector: '> .collection-items',
             itemSelector: '.form-group',
-            collectionsSelector: 'div[data-prototype]'
+            collectionsSelector: 'div[data-prototype-name]'
         }, options);
 
         var replacePrototypeName = function(template, prototypeName, index) {
@@ -40,7 +40,7 @@ define(['jquery'], function($) {
 
         this.each(function(index, element) {
             var $el = $(element);
-            if (!$el.data('prototype') || $el.data('current-index')) {
+            if (!$el.data('prototype-name') || $el.data('current-index')) {
                 return;
             }
 
@@ -51,7 +51,7 @@ define(['jquery'], function($) {
                 $el.on('click', options.removeButtonSelector, removeCollectionItem);
             }
 
-            if ($el.data('allow-add')) {
+            if ($el.data('allow-add') && $el.data('prototype')) {
                 $el.find(options.addButtonSelector).on('click', addCollectionItem);
             }
         });

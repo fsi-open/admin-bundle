@@ -1,11 +1,14 @@
 language: php
 
-sudo: false
+sudo: required
 
 cache:
     directories:
         - $HOME/.composer/cache
         - vendor
+
+addons:
+    firefox: "47.0.1"
 
 matrix:
     include:
@@ -29,7 +32,7 @@ before_install:
     - composer self-update
     - if [[ $SYMFONY_VERSION ]]; then composer require symfony/symfony:${SYMFONY_VERSION} -n --no-update; fi;
     - composer update $COMPOSER_FLAGS
-    - "[ ! -f bin/selenium.jar ] && wget wget -O bin/selenium.jar http://selenium-release.storage.googleapis.com/2.50/selenium-server-standalone-2.50.1.jar || true"
+    - "[ ! -f bin/selenium.jar ] && wget wget -O bin/selenium.jar http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar || true"
 
 before_script:
     - nohup php -S localhost:8080 -t features/fixtures/project/web > /dev/null 2>&1 &
