@@ -12,6 +12,7 @@ namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Component\DataGrid\DataGridInterface;
+use FSi\Component\DataGrid\DataGridViewInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -26,10 +27,12 @@ class ListElementContextSpec extends ObjectBehavior
         ListElement $element,
         DataSourceInterface $datasource,
         DataGridInterface $datagrid,
+        DataGridViewInterface $datagridView,
         HandlerInterface $handler
     ) {
         $this->beConstructedWith([$handler], 'default_list');
         $element->createDataGrid()->willReturn($datagrid);
+        $datagrid->createView()->willReturn($datagridView);
         $element->createDataSource()->willReturn($datasource);
         $this->setElement($element);
     }

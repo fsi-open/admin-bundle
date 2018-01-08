@@ -33,10 +33,8 @@ class FSiAdminBundleSpec extends ObjectBehavior
     {
         $builder->addCompilerPass(Argument::type(AdminAnnotatedElementPass::class))
             ->shouldBeCalled();
-        $builder->addCompilerPass(
-                Argument::type(AdminElementPass::class),
-                PassConfig::TYPE_REMOVE
-            )->shouldBeCalled();
+        $builder->addCompilerPass(Argument::type(AdminElementPass::class))
+            ->shouldBeCalled();
         $builder->addCompilerPass(Argument::type(KnpMenuBuilderPass::class))
             ->shouldBeCalled();
         $builder->addCompilerPass(Argument::type(ResourceRepositoryPass::class))

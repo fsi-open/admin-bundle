@@ -44,7 +44,7 @@
         "ocramius/proxy-manager": "^2.1"
     },
     "require-dev": {
-        "symfony/class-loader": "^2.3|^3.0",
+        "symfony/class-loader": "^2.3|^3.0|^4.0",
         "symfony/monolog-bundle": "^2.3|^3.0|^4.0",
         "symfony/yaml": "^2.7.1|^3.0|^4.0",
         "symfony/var-dumper": "^2.6|^3.0|^4.0",

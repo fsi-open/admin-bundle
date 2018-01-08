@@ -246,7 +246,7 @@ class FiltersContext extends AbstractContext
 
     private function clearDataSource(AdminListElement $element): void
     {
-        $this->getContainer()->get('datasource.factory')->clearDataSource($element->getId());
+        $this->getContainer()->get('test.datasource.factory')->clearDataSource($element->getId());
     }
 
     private function getFiltersElement(): Filters

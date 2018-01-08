@@ -75,11 +75,15 @@
             <tag name="admin.element" />
         </service>
 
-        <service id="datasource.factory" class="FSi\FixturesBundle\DataSource\DataSourceFactory">
+        <service id="test.datasource.factory" class="FSi\FixturesBundle\DataSource\DataSourceFactory" public="true">
             <argument type="service" id="datasource.driver.factory.manager" />
             <argument type="collection">
                 <argument type="service" id="datasource.extension" />
             </argument>
         </service>
+
+        <service id="test.admin.manager" alias="admin.manager" public="true" />
+
+        <service id="test.fsi_resource_repository.map_builder" alias="fsi_resource_repository.map_builder" public="true" />
     </services>
 </container>
