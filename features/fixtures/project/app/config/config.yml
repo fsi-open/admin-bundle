@@ -19,9 +19,9 @@ doctrine:
         driver:   pdo_sqlite
         user:     admin
         charset:  UTF8
-        path: %kernel.root_dir%/data.sqlite
+        path: "%kernel.root_dir%/data.sqlite"
     orm:
-        auto_generate_proxy_classes: %kernel.debug%
+        auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
 
 fsi_resource_repository:
@@ -41,4 +41,4 @@ monolog:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
-            channels: [!event]
+            channels: ["!event"]

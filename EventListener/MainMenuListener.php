@@ -38,7 +38,14 @@ class MainMenuListener
 
     public function createMainMenu(MenuEvent $event): Item
     {
-        $config = $this->yaml->parse(file_get_contents($this->configFilePath), true, true);
+        if (defined('Symfony\Component\Yaml\Yaml::PARSE_OBJECT')) {
+            $config = $this->yaml->parse(
+                file_get_contents($this->configFilePath),
+                Yaml::PARSE_OBJECT | Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE
+            );
+        } else {
+            $config = $this->yaml->parse(file_get_contents($this->configFilePath), true, true);
+        }
 
         if (!isset($config['menu'])) {
             throw new InvalidYamlStructureException(

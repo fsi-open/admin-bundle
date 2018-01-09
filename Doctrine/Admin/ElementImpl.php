@@ -23,6 +23,8 @@ trait ElementImpl
      */
     protected $registry;
 
+    abstract public function getClassName(): string;
+
     public function setManagerRegistry(ManagerRegistry $registry): void
     {
         $this->registry = $registry;

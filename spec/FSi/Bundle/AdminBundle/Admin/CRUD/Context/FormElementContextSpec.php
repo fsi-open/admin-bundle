@@ -88,7 +88,7 @@ class FormElementContextSpec extends ObjectBehavior
         $this->shouldThrow(NotFoundHttpException::class)->during('handleRequest', [$request]);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'haveKeyInArray' => function($subject, $key) {

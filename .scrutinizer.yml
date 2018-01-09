@@ -1,4 +1,12 @@
 ---
+build:
+    nodes:
+        analysis:
+            project_setup:
+                override: true
+            tests:
+                override: [php-scrutinizer-run]
+
 filter:
     excluded_paths: [vendor/*, app/*, web/*, Behat/*, spec/*, features/*]
 

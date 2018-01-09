@@ -13,6 +13,7 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
+use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -37,16 +38,12 @@ class ResourceContext extends PageObjectContext implements KernelAwareContext
     public function thereAreFollowingResourcesAddedToResourceMap(TableNode $resources)
     {
         foreach ($resources->getHash() as $resource) {
-            expect($this->kernel->getContainer()
-                ->get('fsi_resource_repository.map_builder')
-                ->hasResource($resource['Key']))->toBe(true);
+            expect($this->getResourceMapBuilder()->hasResource($resource['Key']))->toBe(true);
 
             if (isset($resource['Type'])) {
-                expect($this->kernel->getContainer()
-                    ->get('fsi_resource_repository.map_builder')
-                    ->getResource($resource['Key']))->toBeAnInstanceOf(
-                        sprintf('FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\%sType', ucfirst($resource['Type']))
-                    );
+                expect($this->getResourceMapBuilder()->getResource($resource['Key']))->toBeAnInstanceOf(
+                    sprintf('FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\%sType', ucfirst($resource['Type']))
+                );
             }
         }
     }
@@ -65,5 +62,10 @@ class ResourceContext extends PageObjectContext implements KernelAwareContext
     public function iShouldSeeFormFieldWithValue($value)
     {
         expect($this->getElement('Form')->findField('Content')->getValue())->toBe($value);
+    }
+
+    private function getResourceMapBuilder(): MapBuilder
+    {
+        return $this->kernel->getContainer()->get('test.fsi_resource_repository.map_builder');
     }
 }
