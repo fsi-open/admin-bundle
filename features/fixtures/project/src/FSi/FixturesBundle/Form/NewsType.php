@@ -75,6 +75,15 @@ class NewsType extends AbstractType
             'mapped' => false,
             'required' => false
         ]);
+        $builder->add('removableComments', $collectionType, [
+            $collectionEntryTypeOption => $textType,
+            'data' => new ArrayCollection(['Comment 1', 'Comment 2', 'Comment 3']),
+            'label' => 'admin.news.list.removable_comments',
+            'allow_add' => false,
+            'allow_delete' => true,
+            'mapped' => false,
+            'required' => false
+        ]);
     }
 
     public function getName(): string

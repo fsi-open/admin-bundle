@@ -31,6 +31,16 @@ class AdminContext extends AbstractContext
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function resizeWindow()
+    {
+        if ($this->isSeleniumDriverUsed()) {
+            $this->getSession()->resizeWindow(1280, 1024);
+        }
+    }
+
+    /**
      * @Given /^the following admin elements were registered$/
      */
     public function theFollowingAdminElementsWereRegistered(TableNode $table)

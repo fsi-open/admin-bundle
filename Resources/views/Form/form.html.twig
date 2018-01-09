@@ -48,7 +48,7 @@
                         $(label).append(' <i class="glyphicon glyphicon-asterisk"></i>');
                     }
                 });
-                $context.find('div[data-prototype]')
+                $context.find('div[data-prototype-name]')
                     .formCollection()
                     .on('add.collection-item', function(event, item) {
                         initForms($(item));
