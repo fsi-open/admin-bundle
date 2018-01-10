@@ -20,6 +20,7 @@ admin:
       tags: Tags
       tag_elements: Elements
       non_editable_tags: Non-editable tags
+      removable_comments: Removable-only comments
       actions: Actions
   subscriber:
     name: Subscribers

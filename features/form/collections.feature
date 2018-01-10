@@ -63,4 +63,9 @@ Feature: Managing form collections
     Given there is a "news" with "title" "News 1" present in the database
     And I am on the "News edit" page with id "1"
     Then non-editable collection "Non-editable tags" should have 3 elements
+    And removable-only collection "Removable-only comments" should have 3 elements
     And all buttons for adding and removing items in non-editable collection "Non-editable tags" should be disabled
+    And button for adding item in removable-only collection "Removable-only comments" should be disabled
+    And buttons for removing items in removable-only collection "Removable-only comments" should be enabled
+    When I remove first element in removable-only collection "Removable-only comments"
+    Then removable-only collection "Removable-only comments" should have 2 elements

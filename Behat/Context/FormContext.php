@@ -78,6 +78,7 @@ class FormContext extends AbstractContext
     /**
      * @Transform /"([^"]*)" non-editable collection/
      * @Transform /non-editable collection "([^"]*)"/
+     * @Transform /removable-only collection "([^"]*)"/
      */
     public function transformToNoneditableCollection($collectionNames)
     {
@@ -98,6 +99,7 @@ class FormContext extends AbstractContext
      * @Then /^("[^"]*" collection) should have (\d+) (element|elements)$/
      * @Given /^(non-editable collection "[^"]*") has (\d+) (element|elements)$/
      * @Then /^(non-editable collection "[^"]*") should have (\d+) (element|elements)$/
+     * @Then /^(removable-only collection "[^"]*") should have (\d+) (element|elements)$/
      */
     public function collectionShouldHaveElements(NodeElement $collection, $elementsCount)
     {
@@ -131,6 +133,30 @@ class FormContext extends AbstractContext
     }
 
     /**
+     * @Then /^button for adding item in (removable-only collection "[^"]*") should be disabled$/
+     */
+    public function collectionAddButtonIsDisabled(NodeElement $collection)
+    {
+        $addButtons = $collection->findAll('css', '.collection-add');
+        expect(count($addButtons))->notToBe(0);
+        foreach ($addButtons as $addButton) {
+            expect($addButton->hasClass('disabled'))->toBe(true);
+        }
+    }
+
+    /**
+     * @Then /^buttons for removing items in (removable-only collection "[^"]*") should be enabled/
+     */
+    public function collectionRemoveButtonsAreEnabled(NodeElement $collection)
+    {
+        $addButtons = $collection->findAll('css', '.collection-remove');
+        expect(count($addButtons))->notToBe(0);
+        foreach ($addButtons as $addButton) {
+            expect($addButton->hasClass('disabled'))->toBe(false);
+        }
+    }
+
+    /**
      * @When /^I press "([^"]*)" in (collection "[^"]*")$/
      */
     public function iPressInCollection($buttonName, NodeElement $collection)
@@ -151,6 +177,7 @@ class FormContext extends AbstractContext
 
     /**
      * @Given /^I remove (\w+) element in (collection "[^"]*")$/
+     * @Given /^I remove (\w+) element in (removable-only collection "[^"]*")$/
      */
     public function iRemoveElementInCollection($index, NodeElement $collection)
     {
