@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
+use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
+use FSi\Bundle\AdminBundle\Admin\DependentElement;
+use FSi\Bundle\AdminBundle\Admin\Display\Element as DisplayElement;
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
-use FSi\Component\DataGrid\Column\ColumnTypeInterface;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ElementActionExtension extends ColumnAbstractTypeExtension
 {
@@ -24,83 +29,62 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
 
     public function getExtendedColumnTypes(): array
     {
-        return ['action'];
+        return [Action::class];
     }
 
-    public function initOptions(ColumnTypeInterface $column): void
+    public function initOptions(OptionsResolver $optionsResolver): void
     {
-        $column = $this->validateColumn($column);
-
-        $column->getActionOptionsResolver()->setDefined(['element']);
-        $column->getActionOptionsResolver()->setAllowedTypes('element', 'string');
-    }
-
-    public function filterValue(ColumnTypeInterface $column, $value)
-    {
-        $this->validateColumn($column);
-
-        $actions = $column->getOption('actions');
-        $generatedActions = [];
-        foreach ($actions as $action => $actionOptions) {
-
-            if (!$this->validateActionOptions($column, $action, $actionOptions)) {
-                continue;
+        $defaultRouteClosure = function (Options $options, $previousValue) {
+            if (!isset($options['element'])) {
+                return $previousValue;
             }
 
-            $generatedActions[$action] = $this->generateActionOptions($actionOptions);
-            unset($actions[$action]['element']);
-        }
+            return $this->getElement($options['element'])->getRoute();
+        };
 
-        $column->setOption('actions', array_replace_recursive($actions, $generatedActions));
+        $defaultParametersClosure = function (Options $options, array $previousValue): array {
+            if (!isset($options['element'])) {
+                return $previousValue;
+            }
 
-        return parent::filterValue($column, $value);
-    }
+            $element = $this->getElement($options['element']);
 
-    private function validateColumn(ColumnTypeInterface $column): Action
-    {
-        if (!($column instanceof Action)) {
-            throw new RuntimeException(sprintf(
-                '%s can extend only FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action, but got %s',
-                get_class($this),
-                get_class($column)
-            ));
-        }
+            return array_merge(['element' => $element->getId()], $element->getRouteParameters(), $previousValue);
+        };
 
-        return $column;
-    }
+        $defaultMappingClosure = function (Options $options, array $previousValue): array {
+            if (!isset($options['element'])) {
+                return $previousValue;
+            }
 
-    private function validateActionOptions(ColumnTypeInterface $column, $action, array $actionOptions): bool
-    {
-        if (!isset($actionOptions['element'])) {
-            return false;
-        }
+            $defaultMapping = ['id' => 'id'];
 
-        if (!$this->manager->hasElement($actionOptions['element'])) {
-            throw new RuntimeException(sprintf(
-                'Unknown element "%s" specified in action "%s" of datagrid "%s"',
-                $actionOptions['element'],
-                $action,
-                $column->getDataGrid()->getName()
-            ));
-        }
+            return array_merge($defaultMapping, $previousValue);
+        };
 
-        return true;
-    }
+        $optionsResolver->setDefault(
+            'action_options_resolver',
+            function (Options $options, OptionsResolver $previousValue) use ($defaultRouteClosure, $defaultParametersClosure, $defaultMappingClosure): OptionsResolver {
+                $previousValue->setDefined(['element']);
+                $previousValue->setAllowedTypes('element', 'string');
+                $previousValue->setDefault('route_name', $defaultRouteClosure);
+                $previousValue->setDefault('additional_parameters', $defaultParametersClosure);
+                $previousValue->setDefault('parameters_field_mapping', $defaultMappingClosure);
 
-    private function generateActionOptions(array $actionOptions): array
-    {
-        $element = $this->manager->getElement($actionOptions['element']);
-
-        $additionalParameters = array_merge(
-            ['element' => $element->getId()],
-            $element->getRouteParameters(),
-            $actionOptions['additional_parameters'] ?? []
+                return $previousValue;
+            }
         );
+    }
 
-        return [
-            'route_name' => $element->getRoute(),
-            'additional_parameters' => $additionalParameters,
-            'parameters_field_mapping' => ['id' => 'id']
-        ];
+    private function getElement(string $element): Element
+    {
+        if (!$this->manager->hasElement($element)) {
+            throw new RuntimeException(sprintf(
+                'Unknown element "%s" specified in datagrid action',
+                $element
+            ));
+        }
+
+        return $this->manager->getElement($element);
     }
 }

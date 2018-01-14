@@ -48,31 +48,29 @@
 {% block under_content %}
     <div class="pull-left form-inline datagrid-actions">
     {% block batch_actions %}
-        {% if datagrid_view.hasColumnType('batch') == true %}
-            {% for column in datagrid_view.getColumns %}
-                {% if column.type == 'batch' %}
-                    {% set batch_form = column.getAttribute('batch_form') %}
-                    {% form_theme batch_form admin_templates_form_theme %}
-                    {{ form_widget(batch_form.action, {
-                        'attr': {
-                            'data-datagrid-name': datagrid_view.name
-                        }
-                    }) }}
-                    {{ form_widget(batch_form.submit, {
-                        'attr': {
-                            'class': 'btn-primary',
-                            'data-datagrid-name': datagrid_view.name
-                        }
-                    }) }}
-                    <form class="form hidden" method="POST" data-datagrid-name="{{ datagrid_view.name }}">
-                        {% for index in datagrid_view.indexes %}
-                            <input type="checkbox" class="hidden" value="{{ index }}" name="indexes[]">
-                        {% endfor %}
-                        {{ form_rest(batch_form) }}
-                    </form>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
+        {% for column in datagrid_view.getHeaders %}
+            {% if column.type == 'batch' %}
+                {% set batch_form = column.getAttribute('batch_form') %}
+                {% form_theme batch_form admin_templates_form_theme %}
+                {{ form_widget(batch_form.action, {
+                    'attr': {
+                        'data-datagrid-name': datagrid_view.name
+                    }
+                }) }}
+                {{ form_widget(batch_form.submit, {
+                    'attr': {
+                        'class': 'btn-primary',
+                        'data-datagrid-name': datagrid_view.name
+                    }
+                }) }}
+                <form class="form hidden" method="POST" data-datagrid-name="{{ datagrid_view.name }}">
+                    {% for index in datagrid_view.indexes %}
+                        <input type="checkbox" class="hidden" value="{{ index }}" name="indexes[]">
+                    {% endfor %}
+                    {{ form_rest(batch_form) }}
+                </form>
+            {% endif %}
+        {% endfor %}
     {% endblock batch_actions %}
     {% block bottom_buttons '' %}
     </div>
