@@ -16,11 +16,25 @@ use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
+use FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\EventSubscriber\FormSubscriber;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DataGridBindDataHandler extends AbstractHandler
 {
+    /**
+     * @var FormSubscriber
+     */
+    private $formSubscriber;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher, FormSubscriber $formSubscriber)
+    {
+        parent::__construct($eventDispatcher);
+
+        $this->formSubscriber = $formSubscriber;
+    }
+
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
         $event = $this->validateEvent($event);
@@ -31,13 +45,16 @@ class DataGridBindDataHandler extends AbstractHandler
                 return $event->getResponse();
             }
 
-            $event->getDataGrid()->bindData($request);
+            $submitted = $this->formSubscriber->handleDataGridForm($event->getDataGrid(), $request);
+
             $this->eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_POST_BIND, $event);
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
 
-            $event->getElement()->saveDataGrid();
+            if ($submitted) {
+                $event->getElement()->saveDataGrid();
+            }
             $event->getDataSource()->bindParameters($request);
             $event->getDataGrid()->setData($event->getDataSource()->getResult());
         }

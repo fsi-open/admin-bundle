@@ -9,14 +9,17 @@ use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
-use FSi\Component\DataGrid\Column\ColumnTypeInterface;
+use FSi\Component\DataGrid\Column\ColumnInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
+use FSi\Component\DataGrid\Extension\Core\ColumnType\Batch;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class BatchActionExtension extends ColumnAbstractTypeExtension
 {
@@ -66,20 +69,20 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
 
     public function getExtendedColumnTypes(): array
     {
-        return ['batch'];
+        return [Batch::class];
     }
 
-    public function initOptions(ColumnTypeInterface $column): void
+    public function initOptions(OptionsResolver $optionsResolver): void
     {
-        $column->getOptionsResolver()->setDefaults([
+        $optionsResolver->setDefaults([
             'actions' => [],
             'translation_domain' => 'FSiAdminBundle'
         ]);
-        $column->getOptionsResolver()->setAllowedTypes('actions', ['array', 'null']);
-        $column->getOptionsResolver()->setAllowedTypes('translation_domain', ['string']);
+        $optionsResolver->setAllowedTypes('actions', ['array', 'null']);
+        $optionsResolver->setAllowedTypes('translation_domain', ['string']);
     }
 
-    public function buildHeaderView(ColumnTypeInterface $column, HeaderViewInterface $view): void
+    public function buildHeaderView(ColumnInterface $column, HeaderViewInterface $view): void
     {
         $this->buildBatchForm(
             $column,
@@ -119,7 +122,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         $this->actionOptionsResolver->setAllowedTypes('redirect_uri', ['string', 'bool']);
     }
 
-    private function buildBatchActions(ColumnTypeInterface $column): array
+    private function buildBatchActions(ColumnInterface $column): array
     {
         if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
             $batchActions = ['crud.list.batch.empty_choice' => ''];
@@ -151,12 +154,12 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         );
     }
 
-    private function buildBatchForm(ColumnTypeInterface $column, array $batchActions): void
+    private function buildBatchForm(ColumnInterface $column, array $batchActions): void
     {
         if (count($batchActions) > 1) {
             $this->formBuilder->add(
                 'action',
-                TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\ChoiceType', 'choice'),
+                TypeSolver::getFormType(ChoiceType::class, 'choice'),
                 [
                     'choices' => $batchActions,
                     'translation_domain' => $column->getOption('translation_domain')
@@ -164,7 +167,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
             );
             $this->formBuilder->add(
                 'submit',
-                TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\SubmitType', 'submit'),
+                TypeSolver::getFormType(SubmitType::class, 'submit'),
                 [
                     'label' => 'crud.list.batch.confirm',
                     'translation_domain' => 'FSiAdminBundle'

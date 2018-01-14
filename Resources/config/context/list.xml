@@ -48,6 +48,7 @@
         <service id="admin.context.list.request_handler.datagrid_bind_data"
                  class="%admin.context.list.request_handler.datagrid_bind_data.class%">
             <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="datagrid.subscriber.symfony.form_subscriber" />
         </service>
 
     </services>
