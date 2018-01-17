@@ -36,17 +36,11 @@ class ElementVoter implements VoterInterface
         $this->manager = $manager;
     }
 
-    /**
-     * @param Request $request
-     */
     public function setRequest(Request $request)
     {
         $this->request = $request;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function matchItem(ItemInterface $item)
     {
         if (!$this->validateRequestElement()) {

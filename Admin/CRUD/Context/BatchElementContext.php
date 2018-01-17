@@ -39,16 +39,9 @@ class BatchElementContext extends ContextAbstract
      */
     protected $indexes;
 
-    /**
-     * @param HandlerInterface[] $requestHandlers
-     * @param FormBuilderInterface $formBuilder
-     */
-    public function __construct(
-        array $requestHandlers,
-        FormBuilderInterface $formBuilder
-    ) {
+    public function __construct(array $requestHandlers, FormBuilderInterface $formBuilder)
+    {
         parent::__construct($requestHandlers);
-
         $this->form = $formBuilder->getForm();
     }
 
