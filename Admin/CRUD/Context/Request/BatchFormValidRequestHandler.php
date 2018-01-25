@@ -13,14 +13,12 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractFormValidRequestHandler;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
-use FSi\Bundle\AdminBundle\Admin\CRUD\DeleteElement;
 use FSi\Bundle\AdminBundle\Event\BatchEvent;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
 use FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
-use LogicException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -44,11 +42,11 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
 
     protected function action(FormEvent $event, Request $request): void
     {
-        /** @var BatchElement $element */
+        /* @var $element BatchElement */
         $element = $event->getElement();
         $objects = $this->getObjects($element, $request);
 
-        if (empty($objects)) {
+        if (!count($objects)) {
             $this->flashMessages->warning('messages.batch.no_elements');
             return;
         }
@@ -90,22 +88,6 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         }
 
         return $objects;
-    }
-
-    protected function isValidPostRequest(FormEvent $event, Request $request): bool
-    {
-        $element = $event->getElement();
-        if ($element instanceof DeleteElement
-            && $element->hasOption('allow_delete')
-            && !$element->getOption('allow_delete')
-        ) {
-            throw new LogicException(sprintf(
-                'Tried to delete objects through element "%s", which has option "allow_delete" set to false',
-                get_class($element)
-            ));
-        }
-
-        return parent::isValidPostRequest($event, $request);
     }
 
     protected function getPreSaveEventName(): string

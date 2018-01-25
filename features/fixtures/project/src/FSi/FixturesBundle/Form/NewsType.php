@@ -75,6 +75,7 @@ class NewsType extends AbstractType
             'mapped' => false,
             'required' => false
         ]);
+
         $builder->add('removableComments', $collectionType, [
             $collectionEntryTypeOption => $textType,
             'data' => new ArrayCollection(['Comment 1', 'Comment 2', 'Comment 3']),
@@ -93,9 +94,7 @@ class NewsType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => News::class
-        ]);
+        $this->configureOptions($resolver);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

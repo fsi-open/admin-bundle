@@ -2,10 +2,14 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler;
 use FSi\Bundle\AdminBundle\Admin\CRUD\DeleteElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Bundle\AdminBundle\Event\BatchEvent;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
+use FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
@@ -17,13 +21,10 @@ use stdClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
-use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
-use FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent;
-use FSi\Bundle\AdminBundle\Event\BatchEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 
 class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 {
@@ -58,7 +59,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     function it_throw_exception_for_non_form_event(ListEvent $listEvent, Request $request)
     {
         $this->shouldThrow(new RequestHandlerException(
-            "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler requires FormEvent"
+            sprintf("%s requires FormEvent", BatchFormValidRequestHandler::class)
         ))->during('handleRequest', [$listEvent, $request]);
     }
 
@@ -70,7 +71,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $formEvent->getElement()->willReturn($genericElement);
 
         $this->shouldThrow(new RequestHandlerException(
-            "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\BatchFormValidRequestHandler requires RedirectableElement"
+            sprintf("%s requires RedirectableElement", BatchFormValidRequestHandler::class)
         ))->during('handleRequest', [$formEvent, $request]);
     }
 
@@ -207,18 +208,6 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);
-    }
-
-    function it_throws_exception_when_delete_not_allowed(
-        FormEvent $event,
-        Request $request,
-        DeleteElement $deleteElement
-    ) {
-        $event->getElement()->willReturn($deleteElement);
-        $deleteElement->hasOption('allow_delete')->willReturn(true);
-        $deleteElement->getOption('allow_delete')->willReturn(false);
-
-        $this->shouldThrow(\LogicException::class)->during('handleRequest', [$event, $request]);
     }
 
     public function it_displays_warning_when_no_elements_sent(

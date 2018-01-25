@@ -193,3 +193,8 @@ utilize new php 7.1 features like scalar typehints, return typehints and nullabl
 All public methods of `FSi\Bundle\AdminBundle\Message\FlashMessages` now has more logical arguments order:
 `string $message, array $params = [], string $domain = 'FSiAdminBundle'` instead of previous
 `string $message, string $domain = 'FSiAdminBundle, array $params = []'`
+
+## Catching Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException on batch delete
+
+When attempting to delete entities with restricting relations, you would normally
+receive a SQL eror. Now it is caught and an error flash message is displayed.
