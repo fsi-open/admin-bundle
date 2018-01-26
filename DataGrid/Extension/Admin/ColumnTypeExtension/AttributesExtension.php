@@ -23,7 +23,8 @@ class AttributesExtension extends ColumnAbstractTypeExtension
             'collection',
             'action',
             'fsi_file',
-            'fsi_image'
+            'fsi_image',
+            'gedmo_tree'
         ];
     }
 
