@@ -23,12 +23,7 @@ class RoutableItem extends Item
      */
     private $routeParameters;
 
-    /**
-     * @param string $name
-     * @param string $route
-     * @param array $routeParameters
-     */
-    public function __construct($name, ?string $route = null, array $routeParameters = [])
+    public function __construct(string $name, ?string $route = null, array $routeParameters = [])
     {
         parent::__construct($name);
 

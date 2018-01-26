@@ -86,6 +86,7 @@ class News
     {
         $this->categories = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int

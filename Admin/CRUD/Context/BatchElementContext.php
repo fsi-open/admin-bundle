@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
-use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
@@ -39,16 +38,9 @@ class BatchElementContext extends ContextAbstract
      */
     protected $indexes;
 
-    /**
-     * @param HandlerInterface[] $requestHandlers
-     * @param FormBuilderInterface $formBuilder
-     */
-    public function __construct(
-        array $requestHandlers,
-        FormBuilderInterface $formBuilder
-    ) {
+    public function __construct(array $requestHandlers, FormBuilderInterface $formBuilder)
+    {
         parent::__construct($requestHandlers);
-
         $this->form = $formBuilder->getForm();
     }
 

@@ -28,9 +28,10 @@ class ContextPass implements CompilerPassInterface
             $contexts[$priority][] = $container->findDefinition($id);
         }
 
-        if (empty($contexts)) {
+        if (!count($contexts)) {
             return;
         }
+
         krsort($contexts);
         $contexts = array_merge(...$contexts);
 

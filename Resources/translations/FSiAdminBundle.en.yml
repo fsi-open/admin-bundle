@@ -1,7 +1,7 @@
 admin:
     title: Admin
     language:
-        current: Language (%locale%)
+        current: 'Language (%locale%)'
         english: English (en)
         polish: Polish (pl)
     menu:
@@ -12,7 +12,6 @@ resource:
     button:
         save: Save
         reset: Reset
-
 crud:
     list:
         title: List of elements
@@ -43,12 +42,16 @@ crud:
             reset: Reset
             back_to_list: Back to list
     delete:
-        message: Are you sure you want to delete %count% from selected elements?
+        message: 'Are you sure you want to delete %count% from selected elements?'
         form:
             confirm:
                 label: Yes
             cancel:
                 label: No
+        error:
+            foreign_key: >
+                One or more elements could not be deleted. Please check the relations
+                of the selected elements and delete any blocking objects if need be.
     edit:
         title: Edit element
         button:

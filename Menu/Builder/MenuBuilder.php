@@ -27,7 +27,7 @@ class MenuBuilder implements Builder
      */
     private $eventName;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, $eventName)
+    public function __construct(EventDispatcherInterface $eventDispatcher, string $eventName)
     {
         $this->eventName = $eventName;
         $this->eventDispatcher = $eventDispatcher;

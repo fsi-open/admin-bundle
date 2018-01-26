@@ -1,7 +1,7 @@
 admin:
     title: Admin
     language:
-        current: Język (%locale%)
+        current: 'Język (%locale%)'
         english: Angielski (en)
         polish: Polski (pl)
     menu:
@@ -42,12 +42,17 @@ crud:
             reset: Wyczyść
             back_to_list: Powrót do listy
     delete:
-        message: Czy na pewno chcesz usunąć %count% z zaznaczonych elementów?
+        message: 'Czy na pewno chcesz usunąć %count% z zaznaczonych elementów?'
         form:
             confirm:
                 label: Tak
             cancel:
                 label: Nie
+        error:
+            foreign_key: >
+                Nie można było usunąć jednego lub więcej elementów. Proszę sprawdzić
+                powiązania zaznaczonych elementów i ewentualnie usunąć blokujące
+                relacje.
     edit:
         title: Edytuj element
         button:

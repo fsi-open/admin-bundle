@@ -12,15 +12,16 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use DateTime;
 use Doctrine\ORM\Tools\SchemaTool;
 use Faker\ORM\Doctrine\Populator;
 use FSi\FixturesBundle\Entity\Category;
 use FSi\FixturesBundle\Entity\News;
+use FSi\FixturesBundle\Entity\Person;
+use FSi\FixturesBundle\Entity\Subscriber;
 use FSi\FixturesBundle\Entity\Tag;
 use InvalidArgumentException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use FSi\FixturesBundle\Entity\Subscriber;
-use FSi\FixturesBundle\Entity\Person;
 
 class DataContext extends AbstractContext
 {
@@ -70,7 +71,7 @@ class DataContext extends AbstractContext
      * @Given there are :count :className
      * @Given there is :count :className
      */
-    public function thereIsNumberOfEntities($count, $className)
+    public function thereIsNumberOfEntities($count, string $className)
     {
         $populator = new Populator($this->getFaker(), $this->getEntityManager());
         $populator->addEntity(
@@ -87,7 +88,7 @@ class DataContext extends AbstractContext
     /**
      * @Given there is a :className with :field :value present in the database
      */
-    public function thereIsAnEntityWithField($className, $field, $value)
+    public function thereIsAnEntityWithField(string $className, string $field, $value)
     {
         $formatters = $this->getColumnFormatters($className);
         $formatters[$field] = $this->parseScenarioValue((string) $value);
@@ -106,7 +107,7 @@ class DataContext extends AbstractContext
     /**
      * @Then there should be a :className with :field :value present in the database
      */
-    public function entityWithFieldShouldExist($className, $field, $value)
+    public function entityWithFieldShouldExist(string $className, string $field, $value)
     {
         expect($this->getRepository($className)->findOneBy([$field => $value]))->toBeAnInstanceOf($className);
     }
@@ -114,7 +115,7 @@ class DataContext extends AbstractContext
     /**
      * @Given :className with :field :value should not exist in database anymore
      */
-    public function entityShouldNotExistInDatabaseAnymore($className, $field, $value)
+    public function entityShouldNotExistInDatabaseAnymore(string $className, string $field, $value)
     {
         expect($this->getRepository($className)->findOneBy([$field => $value]))->toBe(null);
     }
@@ -122,7 +123,7 @@ class DataContext extends AbstractContext
     /**
      * @Then new :className should be created
      */
-    public function newEntityShouldBeCreated($className)
+    public function newEntityShouldBeCreated(string $className)
     {
         $this->thereShouldExistsNumberOfEntities(1, $className);
     }
@@ -130,7 +131,7 @@ class DataContext extends AbstractContext
     /**
      * @Then there should not be any :className present in the database
      */
-    public function thereShouldNotBeAnyEntities($className)
+    public function thereShouldNotBeAnyEntities(string $className)
     {
         $this->thereShouldExistsNumberOfEntities(0, $className);
     }
@@ -138,7 +139,7 @@ class DataContext extends AbstractContext
     /**
      * @Then there should be :count :className present in the database
      */
-    public function thereShouldExistsNumberOfEntities($count, $className)
+    public function thereShouldExistsNumberOfEntities($count, string $className)
     {
         expect(count($this->getRepository($className)->findAll()))->toBe($count);
     }
@@ -150,8 +151,8 @@ class DataContext extends AbstractContext
     {
         $manager = $this->getEntityManager();
         $faker = $this->getFaker();
-        $newsRepository = $this->getRepository('FSi\FixturesBundle\Entity\News');
-        $categoryRepository = $this->getRepository('FSi\FixturesBundle\Entity\Category');
+        $newsRepository = $this->getRepository(News::class);
+        $categoryRepository = $this->getRepository(Category::class);
 
         foreach ($table->getHash() as $newsNode) {
             $news = $newsRepository->findOneByTitle($newsNode['Title']);
@@ -161,7 +162,7 @@ class DataContext extends AbstractContext
 
             $news->setTitle($newsNode['Title']);
             if (isset($newsNode['Date']) && $newsNode['Date']) {
-                $news->setDate(\DateTime::createFromFormat('Y-m-d', $newsNode['Date']));
+                $news->setDate(DateTime::createFromFormat('Y-m-d', $newsNode['Date']));
             }
             if (isset($newsNode['Category']) && $newsNode['Category']) {
                 /** @var Category|null $category */
@@ -189,8 +190,13 @@ class DataContext extends AbstractContext
     /**
      * @Then :className with :field :value should have :expectedCount elements in collection :collectionName
      */
-    public function entityShouldHaveElementsInCollection($className, $field, $value, $expectedCount, $collectionName)
-    {
+    public function entityShouldHaveElementsInCollection(
+        string $className,
+        string $field,
+        $value,
+        $expectedCount,
+        string $collectionName
+    ) {
         $entity = $this->getRepository($className)->findOneBy([$field => $value]);
         $this->getEntityManager()->refresh($entity);
 
@@ -200,7 +206,7 @@ class DataContext extends AbstractContext
     /**
      * @Then :className with id :id should have changed :field to :value
      */
-    public function entityWithIdShouldHaveChangedField($className, $id, $field, $value)
+    public function entityWithIdShouldHaveChangedField(string $className, $id, string $field, $value)
     {
         $entity = $this->getRepository($className)->find($id);
         $this->getEntityManager()->refresh($entity);
@@ -211,7 +217,7 @@ class DataContext extends AbstractContext
     /**
      * @Then :className with id :id should not have his :field changed to :value
      */
-    public function entityWithIdShouldNotHaveChangedFieldValue($className, $id, $field, $value)
+    public function entityWithIdShouldNotHaveChangedFieldValue(string $className, $id, string $field, $value)
     {
         $entity = $this->getRepository($className)->find($id);
         $this->getEntityManager()->refresh($entity);
