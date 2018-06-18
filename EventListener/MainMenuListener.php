@@ -122,7 +122,7 @@ class MainMenuListener
             return new RoutableItem(
                 $itemConfig['name'] ?? $itemConfig['route'],
                 $itemConfig['route'],
-                $itemConfig['parameters'] ?? []
+                $itemConfig['route_parameters'] ?? []
             );
         }
 

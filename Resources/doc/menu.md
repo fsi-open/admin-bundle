@@ -44,7 +44,7 @@ admin:
 
 ## Custom controllers
 
-Additionally main menu can contain link to custom controller:
+The menu can also contain links to actions with a custom controller, for example:
 
 ```yaml
 # app/config/admin_menu.yml
@@ -52,7 +52,7 @@ Additionally main menu can contain link to custom controller:
 menu:
   - name: admin.menu.news
     route: custom_route_name
-    parameters:
+    route_parameters:
       foo: foo_value
       bar: bar_value
 ```
