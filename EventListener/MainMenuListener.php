@@ -10,6 +10,7 @@ use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
+use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use Symfony\Component\Yaml\Yaml;
 
 class MainMenuListener
@@ -106,14 +107,26 @@ class MainMenuListener
             return new Item($itemConfig);
         }
 
-        if (!$this->isSingleItem($itemConfig) || !$this->manager->hasElement($itemConfig['id'])) {
+        if (!$this->isSingleItem($itemConfig)) {
             return null;
         }
 
-        return new ElementItem(
-            $this->hasEntry($itemConfig, 'name') ? $itemConfig['name'] : $itemConfig['id'],
-            $this->manager->getElement($itemConfig['id'])
-        );
+        if ($this->hasEntry($itemConfig, 'id') && $this->manager->hasElement($itemConfig['id'])) {
+            return new ElementItem(
+                $this->hasEntry($itemConfig, 'name') ? $itemConfig['name'] : $itemConfig['id'],
+                $this->manager->getElement($itemConfig['id'])
+            );
+        }
+
+        if ($this->hasEntry($itemConfig, 'route')) {
+            return new RoutableItem(
+                $itemConfig['name'] ?? $itemConfig['route'],
+                $itemConfig['route'],
+                $itemConfig['parameters'] ?? []
+            );
+        }
+
+        return null;
     }
 
     /**
@@ -122,7 +135,7 @@ class MainMenuListener
      */
     private function isSingleItem($itemConfig): bool
     {
-        return $this->hasEntry($itemConfig, 'id');
+        return $this->hasEntry($itemConfig, 'id') || $this->hasEntry($itemConfig, 'route');
     }
 
     /**

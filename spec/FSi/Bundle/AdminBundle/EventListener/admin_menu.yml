@@ -1,6 +1,8 @@
 menu:
   - {id : news, name: "News"}
   - article
+  - {route: fsi_admin, name: "Home"}
+  - {route: custom_route, name: "Something custom", parameters: {foo: 'bar'}}
   - admin.menu.structure:
     - home_page
     - {id: contact, name: "Contact"}

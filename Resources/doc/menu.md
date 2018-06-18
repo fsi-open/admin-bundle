@@ -42,6 +42,21 @@ admin:
       private: Private files
 ```
 
+## Custom controllers
+
+Additionally main menu can contain link to custom controller:
+
+```yaml
+# app/config/admin_menu.yml
+
+menu:
+  - name: admin.menu.news
+    route: custom_route_name
+    parameters:
+      foo: foo_value
+      bar: bar_value
+```
+
 # Troubleshooting
 
 If you add a position to the ``app/config/admin_menu.yml`` and it is not being
