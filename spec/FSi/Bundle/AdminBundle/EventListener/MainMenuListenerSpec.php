@@ -7,6 +7,7 @@ use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
+use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Prophet;
@@ -50,7 +51,9 @@ class MainMenuListenerSpec extends ObjectBehavior
 
         $menu->shouldHaveItem('News', 'news');
         $menu->shouldHaveItem('article', 'article');
-        $menu->shouldHaveItem('admin.menu.structure', false);
+        $menu->shouldHaveItem('admin.menu.structure');
+        $menu->shouldHaveItem('Home', 'fsi_admin');
+        $menu->shouldHaveItem('Something custom', 'custom_route', ['foo' => 'bar']);
         $menu->shouldHaveItemThatHaveChild('admin.menu.structure', 'home_page', 'home_page');
         $menu->shouldHaveItemThatHaveChild ('admin.menu.structure', 'Contact', 'contact');
         $menu->shouldHaveItemThatHaveChild ('admin.menu.structure', 'Offer', 'offer');
@@ -63,16 +66,22 @@ class MainMenuListenerSpec extends ObjectBehavior
     public function getMatchers(): array
     {
         return [
-            'haveItem' => function(Item $menu, $itemName, $elementId = false) {
+            'haveItem' => function(Item $menu, string $itemName, ?string $elementId = null, ?array $parameters = []) {
                 $items = $menu->getChildren();
                 foreach ($items as $item) {
                     if ($item->getName() === $itemName) {
-                        if (!$elementId) {
+                        if (null === $elementId) {
                             return true;
                         }
 
-                        /** @var ElementItem $item */
-                        return $item->getElement()->getId() === $elementId;
+                        if ($item instanceof ElementItem) {
+                            /** @var ElementItem $item */
+                            return $item->getElement()->getId() === $elementId;
+                        }
+
+                        if ($item instanceof RoutableItem) {
+                            return $item->getRoute() === $elementId && $item->getRouteParameters() === $parameters;
+                        }
                     }
                 }
                 return false;
