@@ -17,7 +17,7 @@ use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ElementVoter implements VoterInterface
 {
@@ -27,18 +27,14 @@ class ElementVoter implements VoterInterface
     private $manager;
 
     /**
-     * @var Request
+     * @var RequestStack
      */
-    private $request;
+    private $requestStack;
 
-    public function __construct(ManagerInterface $manager)
+    public function __construct(ManagerInterface $manager, RequestStack $requestStack)
     {
         $this->manager = $manager;
-    }
-
-    public function setRequest(Request $request)
-    {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
     }
 
     public function matchItem(ItemInterface $item)
@@ -74,11 +70,11 @@ class ElementVoter implements VoterInterface
 
     private function validateRequestElement(): bool
     {
-        if (!$this->request->attributes->has('element')) {
+        if (!$this->getRequest()->attributes->has('element')) {
             return false;
         }
 
-        $element = $this->request->attributes->get('element');
+        $element = $this->getRequest()->attributes->get('element');
         if (!($element instanceof Element)) {
             return false;
         }
@@ -88,7 +84,7 @@ class ElementVoter implements VoterInterface
 
     private function getRequestElement(): Element
     {
-        return $this->request->attributes->get('element');
+        return $this->getRequest()->attributes->get('element');
     }
 
     private function isRouteMatchingElement(Element $element, array $testedRouteParameters): bool
@@ -122,5 +118,10 @@ class ElementVoter implements VoterInterface
         }
 
         return $successParameters['element'] === $testedRouteParameters['element'];
+    }
+
+    private function getRequest()
+    {
+        return $this->requestStack->getCurrentRequest();
     }
 }

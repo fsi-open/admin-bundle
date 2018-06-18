@@ -12,15 +12,20 @@ use stdClass;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Menu\Matcher\Voter\VoterInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ElementVoterSpec extends ObjectBehavior
 {
-    function let(ManagerInterface $manager, Request $request, ParameterBag $requestAttributes)
-    {
+    function let(
+        ManagerInterface $manager,
+        Request $request,
+        ParameterBag $requestAttributes,
+        RequestStack $requestStack
+    ) {
         $request->attributes = $requestAttributes;
+        $requestStack->getCurrentRequest()->willReturn($request);
 
-        $this->beConstructedWith($manager);
-        $this->setRequest($request);
+        $this->beConstructedWith($manager, $requestStack);
     }
 
     function it_is_menu_voter()

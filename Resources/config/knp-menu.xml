@@ -56,7 +56,8 @@
 
         <service id="admin.menu.knp.voter.element" class="%admin.menu.knp.voter.element.class%">
             <argument type="service" id="admin.manager" />
-            <tag name="knp_menu.voter" request="true" />
+            <argument type="service" id="request_stack"/>
+            <tag name="knp_menu.voter" />
         </service>
     </services>
 </container>
