@@ -1,0 +1,22 @@
+---
+version: '3'
+
+services:
+    web:
+        build:
+            context: ./docker
+            dockerfile: web
+        container_name: admin-bundle-web
+        ports:
+            - 80:80
+            - 443:443
+        environment:
+            PHP_IDE_CONFIG: 'serverName=localhost'
+            HOST_UID: 1000
+            HOST_GID: 1000
+        volumes:
+            - .:/var/www/application
+            - ~/.composer:/var/www/.composer
+    selenium:
+        image: selenium/standalone-firefox:2.53.1
+        container_name: admin-bundle-selenium
