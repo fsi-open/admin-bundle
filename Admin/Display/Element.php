@@ -11,17 +11,14 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Admin\Display;
 
-use FSi\Bundle\AdminBundle\Admin\Element as BaseElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
 use FSi\Bundle\AdminBundle\Display\Display;
-use FSi\Component\DataIndexer\DataIndexerInterface;
 
-interface Element extends BaseElement
+interface Element extends DataIndexerElement
 {
     /**
      * @param mixed $data
      * @return Display
      */
     public function createDisplay($data): Display;
-
-    public function getDataIndexer(): DataIndexerInterface;
 }
