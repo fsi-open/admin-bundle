@@ -73,6 +73,10 @@
         }
     },
     "autoload-dev": {
+        "psr-4": {
+            "spec\\FSi\\Bundle\\AdminBundle\\": "spec/FSi/Bundle/AdminBundle",
+            "FSi\\Bundle\\AdminBundle\\spec\\fixtures\\": "spec/fixtures"
+        },
         "classmap": ["features/fixtures/project/app/AppKernel.php"]
     },
     "extra": {
