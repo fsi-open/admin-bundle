@@ -34,5 +34,6 @@ before_script:
     - features/fixtures/project/app/console assets:install features/fixtures/project/web --relative --symlink
 
 script:
+    - vendor/bin/phpstan analyse -l 1 -c phpstan.neon .
     - vendor/bin/phpspec run --format=pretty
     - vendor/bin/behat --no-snippets --format=progress --profile=travis -vvv
