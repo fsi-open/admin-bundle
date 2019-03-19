@@ -7,17 +7,21 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\FormHavingTemplateDataElement;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
-use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
-use FSi\Bundle\AdminBundle\Event\FormEvent;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FormElementContextSpec extends ObjectBehavior
@@ -36,15 +40,44 @@ class FormElementContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ContextInterface::class);
     }
 
-    function it_has_array_data(FormInterface $form, Request $request)
-    {
-        $form->createView()->willReturn('form_view');
+    function it_has_array_data(
+        FormElement $element,
+        FormInterface $form,
+        FormView $formView,
+        Request $request
+    ) {
+        $form->createView()->willReturn($formView);
         $form->getData()->willReturn(null);
 
         $this->handleRequest($request)->shouldReturn(null);
-        $this->getData()->shouldBeArray();
-        $this->getData()->shouldHaveKeyInArray('form');
-        $this->getData()->shouldHaveKeyInArray('element');
+
+        $this->getData()->shouldReturn([
+            'form' => $formView,
+            'element' => $element,
+            'additionalData' => []
+        ]);
+    }
+
+    public function it_uses_data_from_element_with_template_data(
+        Request $request,
+        FormInterface $form,
+        FormView $formView,
+        FormHavingTemplateDataElement $elementWithTemplateData
+    ) {
+        $elementWithTemplateData->hasOption('allow_add')->willReturn(true);
+        $elementWithTemplateData->getOption('allow_add')->willReturn(true);
+        $this->setElement($elementWithTemplateData);
+
+        $form->createView()->willReturn($formView);
+        $elementWithTemplateData->createForm(null)->willReturn($form);
+        $elementWithTemplateData->getTemplateData()->willReturn(['parameter' => 'value']);
+
+        $this->handleRequest($request)->shouldReturn(null);
+        $this->getData()->shouldReturn([
+            'form' => $formView,
+            'element' => $elementWithTemplateData,
+            'additionalData' => ['parameter' => 'value']
+        ]);
     }
 
     function it_returns_default_template_if_element_does_not_have_one(FormElement $element)
@@ -86,18 +119,5 @@ class FormElementContextSpec extends ObjectBehavior
         $request->get('id')->willReturn(false);
         $element->getOption('allow_add')->willReturn(false);
         $this->shouldThrow(NotFoundHttpException::class)->during('handleRequest', [$request]);
-    }
-
-    public function getMatchers(): array
-    {
-        return [
-            'haveKeyInArray' => function($subject, $key) {
-                if (!is_array($subject)) {
-                    return false;
-                }
-
-                return array_key_exists($key, $subject);
-            },
-        ];
     }
 }

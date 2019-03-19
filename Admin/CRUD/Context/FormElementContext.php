@@ -13,6 +13,7 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
+use FSi\Bundle\AdminBundle\Admin\CRUD\FormHavingTemplateDataElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
@@ -50,6 +51,9 @@ class FormElementContext extends ContextAbstract
         return [
             'form' => $this->form->createView(),
             'element' => $this->element,
+            'additionalData' => true === $this->element instanceof FormHavingTemplateDataElement
+                ? $this->element->getTemplateData()
+                : []
         ];
     }
 
