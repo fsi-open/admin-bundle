@@ -204,4 +204,4 @@ receive a SQL eror. Now it is caught and an error flash message is displayed.
 If you require additional data to be passed into your form view, you can now
 implement the `FormHavingTemplateDataElement` interface in your form admin element.
 The array returned in `FormHavingTemplateDataElement::getTemplateData()` will be
-passed into the template as `additionalData` variable.
+passed into the template.
