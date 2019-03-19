@@ -51,11 +51,7 @@ class FormElementContextSpec extends ObjectBehavior
 
         $this->handleRequest($request)->shouldReturn(null);
 
-        $this->getData()->shouldReturn([
-            'form' => $formView,
-            'element' => $element,
-            'additionalData' => []
-        ]);
+        $this->getData()->shouldReturn(['form' => $formView, 'element' => $element]);
     }
 
     public function it_uses_data_from_element_with_template_data(
@@ -70,13 +66,17 @@ class FormElementContextSpec extends ObjectBehavior
 
         $form->createView()->willReturn($formView);
         $elementWithTemplateData->createForm(null)->willReturn($form);
-        $elementWithTemplateData->getTemplateData()->willReturn(['parameter' => 'value']);
+        $elementWithTemplateData->getTemplateData()->willReturn([
+            'parameter' => 'value',
+            'form' => 'this should be ignored',
+            'element' => 'this should be ignored'
+        ]);
 
         $this->handleRequest($request)->shouldReturn(null);
         $this->getData()->shouldReturn([
+            'parameter' => 'value',
             'form' => $formView,
-            'element' => $elementWithTemplateData,
-            'additionalData' => ['parameter' => 'value']
+            'element' => $elementWithTemplateData
         ]);
     }
 

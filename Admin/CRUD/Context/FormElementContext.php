@@ -48,13 +48,14 @@ class FormElementContext extends ContextAbstract
 
     public function getData(): array
     {
-        return [
-            'form' => $this->form->createView(),
-            'element' => $this->element,
-            'additionalData' => true === $this->element instanceof FormHavingTemplateDataElement
-                ? $this->element->getTemplateData()
-                : []
-        ];
+        $templateData = true === $this->element instanceof FormHavingTemplateDataElement
+            ? $this->element->getTemplateData()
+            : []
+        ;
+        return array_merge(
+            $templateData,
+            ['form' => $this->form->createView(), 'element' => $this->element]
+        );
     }
 
     public function setElement(Element $element): void
