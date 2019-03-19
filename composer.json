@@ -75,8 +75,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "spec\\FSi\\Bundle\\AdminBundle\\": "spec/FSi/Bundle/AdminBundle",
-            "FSi\\Bundle\\AdminBundle\\spec\\fixtures\\": "spec/fixtures"
+            "FSi\\Bundle\\AdminBundle\\Behat\\": "Behat",
+            "FSi\\Bundle\\AdminBundle\\spec\\fixtures\\": "spec/fixtures",
+            "spec\\FSi\\Bundle\\AdminBundle\\": "spec/FSi/Bundle/AdminBundle"
         },
         "classmap": ["features/fixtures/project/app/AppKernel.php"]
     },
