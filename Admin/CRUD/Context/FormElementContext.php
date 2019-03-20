@@ -47,10 +47,7 @@ class FormElementContext extends ContextAbstract
 
     public function getData(): array
     {
-        return [
-            'form' => $this->form->createView(),
-            'element' => $this->element,
-        ];
+        return ['form' => $this->form->createView(), 'element' => $this->element];
     }
 
     public function setElement(Element $element): void
@@ -82,14 +79,14 @@ class FormElementContext extends ContextAbstract
     private function getObject(Request $request)
     {
         $id = $request->get('id');
-        if (empty($id)) {
+        if (null === $id || '' === $id) {
             $this->checkAllowAddOption();
             return null;
         }
 
         $object = $this->element->getDataIndexer()->getData($id);
-        if (!$object) {
-            throw new NotFoundHttpException(sprintf('Can\'t find object with id %s', $id));
+        if (null === $object) {
+            throw new NotFoundHttpException("Can\'t find object with id \"{$id}\"");
         }
 
         return $object;
@@ -97,8 +94,8 @@ class FormElementContext extends ContextAbstract
 
     private function checkAllowAddOption(): void
     {
-        if ($this->element->hasOption('allow_add')
-            && !$this->element->getOption('allow_add')
+        if (true === $this->element->hasOption('allow_add')
+            && true !== $this->element->getOption('allow_add')
         ) {
             throw new NotFoundHttpException(sprintf(
                 'Cannot add objects through element "%s", because it has option "allow_add" set to false',
