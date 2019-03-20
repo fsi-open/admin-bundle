@@ -1,0 +1,7 @@
+parameters:
+    excludes_analyse:
+        - '%rootDir%/../../../Behat'
+        - '%rootDir%/../../../docker'
+        - '%rootDir%/../../../features'
+        - '%rootDir%/../../../spec'
+        - '%rootDir%/../../../vendor'
