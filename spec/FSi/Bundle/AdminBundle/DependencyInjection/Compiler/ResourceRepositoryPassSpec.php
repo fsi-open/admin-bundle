@@ -38,6 +38,10 @@ class ResourceRepositoryPassSpec extends ObjectBehavior
             ))->shouldBeCalled();
         }
 
+        if (true === method_exists(ContainerBuilder::class, 'removeBindings')) {
+            $container->removeBindings(Argument::type('string'))->shouldBeCalled();
+        }
+
         $container->getParameterBag()->willReturn($bag);
         $container->setDefinition(
             Argument::type('string'),

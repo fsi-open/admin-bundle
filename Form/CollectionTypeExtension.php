@@ -16,6 +16,11 @@ class CollectionTypeExtension extends AbstractTypeExtension
         return [CollectionType::class];
     }
 
+    public function getExtendedType()
+    {
+        return CollectionType::class;
+    }
+
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['attr']['data-allow-add'] = (int) $options['allow_add'];
