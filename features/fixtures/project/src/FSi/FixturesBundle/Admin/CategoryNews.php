@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DependentCRUDElement;
-use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use FSi\FixturesBundle\DataGrid\NewsDataGridBuilder;
 use FSi\FixturesBundle\DataSource\NewsDataSourceBuilder;
+use FSi\FixturesBundle\Entity;
 use FSi\FixturesBundle\Form\NewsType;
 use Symfony\Component\Form\FormFactoryInterface;
-use FSi\FixturesBundle\Entity;
 use Symfony\Component\Form\FormInterface;
 
 class CategoryNews extends DependentCRUDElement
@@ -36,7 +35,6 @@ class CategoryNews extends DependentCRUDElement
 
     protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface
     {
-        /* @var $datagrid \FSi\Component\DataGrid\DataGrid */
         $datagrid = $factory->createDataGrid($this->getId());
 
         NewsDataGridBuilder::buildNewsDataGrid($datagrid);
@@ -68,7 +66,6 @@ class CategoryNews extends DependentCRUDElement
                 ->setParameter('category', $this->getParentObject());
         }
 
-        /* @var $datasource \FSi\Component\DataSource\DataSource */
         $datasource = $factory->createDataSource(
             'doctrine-orm',
             ['qb' => $queryBuilder],
@@ -87,10 +84,6 @@ class CategoryNews extends DependentCRUDElement
             $data->addCategory($this->getParentObject());
         }
 
-        return $factory->createNamed(
-            'news',
-            TypeSolver::getFormType(NewsType::class, new NewsType()),
-            $data
-        );
+        return $factory->createNamed('news', NewsType::class, $data);
     }
 }

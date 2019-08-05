@@ -8,7 +8,6 @@ use FSi\FixturesBundle\Entity\TagElement;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TagElementType extends AbstractType
 {
@@ -17,22 +16,8 @@ class TagElementType extends AbstractType
         $builder->add('name');
     }
 
-    public function getName(): string
-    {
-        return 'tag_element_type';
-    }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => TagElement::class,
-        ]);
-    }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => TagElement::class,
-        ]);
+        $resolver->setDefaults('data_class', TagElement::class);
     }
 }

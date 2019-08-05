@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ListElement;
-use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use FSi\FixturesBundle\Entity;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class Subscriber extends ListElement
 {
@@ -41,7 +41,7 @@ class Subscriber extends ListElement
             'label' => 'admin.subscriber.list.email',
             'editable' => true,
             'form_type' => [
-                'email' => TypeSolver::getFormType('Symfony\Component\Form\Extension\Core\Type\EmailType', 'email')
+                'email' => EmailType::class
             ]
         ]);
         $datagrid->addColumn('active', 'boolean', [

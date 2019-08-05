@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Bundle\AdminBundle\Form\TypeSolver;
+use FSi\Bundle\ResourceRepositoryBundle\Form\Type\ResourceType;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\ResourceInterface;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use FSi\Bundle\ResourceRepositoryBundle\Form\Type\ResourceType;
 
 class ResourceFormBuilder
 {
@@ -39,7 +38,7 @@ class ResourceFormBuilder
         $resources = $this->getResourceGroup($element->getKey());
 
         $builder = $this->formFactory->createBuilder(
-            TypeSolver::getFormType(FormType::class, 'form'),
+            FormType::class,
             $this->createFormData($element, $element->getResourceValueRepository(), $resources),
             $element->getResourceFormOptions()
         );
@@ -98,7 +97,7 @@ class ResourceFormBuilder
 
     /**
      * @param Element $element
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param FormBuilderInterface $builder
      * @param ResourceInterface[] $resources
      */
     private function buildForm(
@@ -110,7 +109,7 @@ class ResourceFormBuilder
             $resourceName = $this->buildResourceName($element, $resourceKey);
             $builder->add(
                 $this->normalizeKey($resourceName),
-                TypeSolver::getFormType(ResourceType::class, 'resource'),
+                ResourceType::class,
                 ['resource_key' => $resourceName]
             );
         }

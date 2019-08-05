@@ -12,14 +12,13 @@ declare(strict_types=1);
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\FormElement;
-use FSi\Bundle\AdminBundle\Form\TypeSolver;
-use Symfony\Component\Form\FormFactoryInterface;
 use FSi\FixturesBundle\Entity;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 class SubscriberForm extends FormElement
 {
@@ -47,20 +46,20 @@ class SubscriberForm extends FormElement
     {
         $builder = $factory->createNamedBuilder(
             'subscriber',
-            TypeSolver::getFormType(FormType::class, 'form'),
+            FormType::class,
             $data,
             ['data_class' => $this->getClassName()]
         );
 
         $builder->add(
             'email',
-            TypeSolver::getFormType(EmailType::class, 'email'),
+            EmailType::class,
             ['label' => 'admin.subscriber.list.email']
         );
 
         $builder->add(
             'created_at',
-            TypeSolver::getFormType(DateType::class, 'date'),
+            DateType::class,
             [
                 'label' => 'admin.subscriber.list.created_at',
                 'widget' => 'single_text'
@@ -69,7 +68,7 @@ class SubscriberForm extends FormElement
 
         $builder->add(
             'active',
-            TypeSolver::getFormType(CheckboxType::class, 'checkbox'),
+            CheckboxType::class,
             ['label' => 'admin.subscriber.list.active']
         );
 
