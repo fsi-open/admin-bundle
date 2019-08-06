@@ -9,41 +9,40 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Event\AdminEvents;
+use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContext;
 use FSi\Bundle\AdminBundle\Admin\Display\Element;
-use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Twig\Environment;
 
 class DisplayControllerSpec extends ObjectBehavior
 {
     function let(
         ContextManager $manager,
-        EngineInterface $templating,
+        Environment $twig,
         DisplayContext $context,
         EventDispatcherInterface $dispatcher
     ) {
         $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('default_display');
 
-        $this->beConstructedWith($templating, $manager, $dispatcher);
+        $this->beConstructedWith($twig, $manager, $dispatcher);
     }
 
     function it_dispatches_event(
         EventDispatcherInterface $dispatcher,
         Request $request,
-        Response $response,
         Element $element,
         ContextManager $manager,
         DisplayContext $context,
-        EngineInterface $templating
+        Environment $twig
     ) {
         $dispatcher->dispatch(
             AdminEvents::CONTEXT_PRE_CREATE,
@@ -54,24 +53,23 @@ class DisplayControllerSpec extends ObjectBehavior
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_display', [], null)->willReturn($response);
-        $this->displayAction($element, $request)->shouldReturn($response);
+        $twig->render('default_display', [], null)->willReturn('response');
+        $this->displayAction($element, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_returns_response(
         Request $request,
-        Response $response,
         Element $element,
         ContextManager $manager,
         DisplayContext $context,
-        EngineInterface $templating
+        Environment $twig
     ) {
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_display', [], null)->willReturn($response);
-        $this->displayAction($element, $request)->shouldReturn($response);
+        $twig->render('default_display', [], null)->willReturn('response');
+        $this->displayAction($element, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(

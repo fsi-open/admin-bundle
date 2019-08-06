@@ -9,42 +9,41 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
+use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\CRUD\Context\ListElementContext;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
-use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\AdminEvents;
+use FSi\Bundle\AdminBundle\Exception\ContextException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FSi\Bundle\AdminBundle\Exception\ContextException;
+use Twig\Environment;
 
 class ListControllerSpec extends ObjectBehavior
 {
     function let(
         ContextManager $manager,
-        EngineInterface $templating,
+        Environment $twig,
         ListElementContext $context,
         EventDispatcherInterface $dispatcher
     ) {
         $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('default_list');
 
-        $this->beConstructedWith($templating, $manager, $dispatcher);
+        $this->beConstructedWith($twig, $manager, $dispatcher);
     }
 
     function it_dispatches_event(
         EventDispatcherInterface $dispatcher,
         Request $request,
-        Response $response,
         ListElement $element,
         ContextManager $manager,
         ListElementContext $context,
-        EngineInterface $templating
+        Environment $twig
     ) {
         $dispatcher->dispatch(
             AdminEvents::CONTEXT_PRE_CREATE,
@@ -55,8 +54,8 @@ class ListControllerSpec extends ObjectBehavior
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_list', [], null)->willReturn($response);
-        $this->listAction($element, $request)->shouldReturn($response);
+        $twig->render('default_list', [], null)->willReturn('response');
+        $this->listAction($element, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_returns_response(
@@ -65,13 +64,13 @@ class ListControllerSpec extends ObjectBehavior
         ListElementContext $context,
         Request $request,
         Response $response,
-        EngineInterface $templating
+        Environment $twig
     ) {
         $manager->createContext('fsi_admin_list', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
-        $templating->renderResponse('custom_template', [], null)->willReturn($response);
+        $twig->render('custom_template', [], null)->willReturn('response');
         $context->handleRequest($request)->willReturn($response);
 
         $this->listAction($element, $request)->shouldReturn($response);

@@ -16,18 +16,18 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Twig\Environment;
 
 abstract class ControllerAbstract
 {
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    protected $templating;
+    protected $twig;
 
     /**
      * @var ContextManager
@@ -40,11 +40,11 @@ abstract class ControllerAbstract
     private $eventDispatcher;
 
     public function __construct(
-        EngineInterface $templating,
+        Environment $twig,
         ContextManager $contextManager,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->templating = $templating;
+        $this->twig = $twig;
         $this->contextManager = $contextManager;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -77,9 +77,8 @@ abstract class ControllerAbstract
             ));
         }
 
-        return $this->templating->renderResponse(
-            $context->getTemplateName(),
-            $context->getData()
+        return new Response(
+            $this->twig->render($context->getTemplateName(), $context->getData())
         );
     }
 }

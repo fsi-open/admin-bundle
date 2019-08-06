@@ -15,7 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext;
 use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,11 +26,11 @@ use FSi\Bundle\AdminBundle\Exception\ContextException;
 class BatchControllerSpec extends ObjectBehavior
 {
     function let(
-        EngineInterface $templating,
+        Environment $twig,
         ContextManager $manager,
         EventDispatcherInterface $dispatcher
     ) {
-        $this->beConstructedWith($templating, $manager, $dispatcher);
+        $this->beConstructedWith($twig, $manager, $dispatcher);
     }
 
     function it_dispatches_event(

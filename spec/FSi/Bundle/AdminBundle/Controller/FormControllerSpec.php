@@ -9,23 +9,23 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
+use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\CRUD\Context\FormElementContext;
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement;
-use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\AdminEvents;
+use FSi\Bundle\AdminBundle\Exception\ContextException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
-use FSi\Bundle\AdminBundle\Exception\ContextException;
+use Twig\Environment;
 
 class FormControllerSpec extends ObjectBehavior
 {
     function let(
-        EngineInterface $templating,
+        Environment $twig,
         ContextManager $manager,
         FormElementContext $context,
         EventDispatcherInterface $dispatcher
@@ -33,17 +33,16 @@ class FormControllerSpec extends ObjectBehavior
         $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('default_form');
 
-        $this->beConstructedWith($templating, $manager, $dispatcher);
+        $this->beConstructedWith($twig, $manager, $dispatcher);
     }
 
     function it_dispatches_event(
         EventDispatcherInterface $dispatcher,
         Request $request,
-        Response $response,
         GenericFormElement $element,
         ContextManager $manager,
         FormElementContext $context,
-        EngineInterface $templating
+        Environment $twig
     ) {
         $dispatcher->dispatch(
             AdminEvents::CONTEXT_PRE_CREATE,
@@ -54,24 +53,23 @@ class FormControllerSpec extends ObjectBehavior
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_form', [], null)->willReturn($response);
-        $this->formAction($element, $request)->shouldReturn($response);
+        $twig->render('default_form', [], null)->willReturn('response');
+        $this->formAction($element, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_returns_response(
         Request $request,
-        Response $response,
         GenericFormElement $element,
         ContextManager $manager,
         FormElementContext $context,
-        EngineInterface $templating
+        Environment $twig
     ) {
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_form', [], null)->willReturn($response);
-        $this->formAction($element, $request)->shouldReturn($response);
+        $twig->render('default_form', [], null)->willReturn('response');
+        $this->formAction($element, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(

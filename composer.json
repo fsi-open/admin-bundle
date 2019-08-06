@@ -33,7 +33,6 @@
         "symfony/intl" : "^3.4|^4.0",
         "symfony/options-resolver": "^3.4|^4.0",
         "symfony/proxy-manager-bridge": "^3.4|^4.0",
-        "symfony/templating": "^3.4|^4.0",
         "symfony/translation": "^3.4|^4.0",
         "symfony/twig-bridge": "^3.4|^4.0",
         "symfony/twig-bundle": "^3.4|^4.0",
