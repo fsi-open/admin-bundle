@@ -17,6 +17,8 @@ use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
+use RuntimeException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class ElementVoter implements VoterInterface
@@ -39,7 +41,7 @@ class ElementVoter implements VoterInterface
 
     public function matchItem(ItemInterface $item)
     {
-        if (!$this->validateRequestElement()) {
+        if (false === $this->validateRequestElement()) {
             return null;
         }
 
@@ -49,16 +51,16 @@ class ElementVoter implements VoterInterface
             /** @var array $routes */
             $routes = $item->getExtra('routes', []);
             foreach ($routes as $testedRoute) {
-                if ($this->isRouteMatchingElement($element, $testedRoute['parameters'])) {
+                if (true === $this->isRouteMatchingElement($element, $testedRoute['parameters'])) {
                     return true;
                 }
             }
 
-            if (!($element instanceof DependentElement)) {
+            if (false === $element instanceof DependentElement) {
                 break;
             }
 
-            if (!$this->manager->hasElement($element->getParentId())) {
+            if (false === $this->manager->hasElement($element->getParentId())) {
                 break;
             }
 
@@ -70,12 +72,12 @@ class ElementVoter implements VoterInterface
 
     private function validateRequestElement(): bool
     {
-        if (!$this->getRequest()->attributes->has('element')) {
+        if (false === $this->getRequest()->attributes->has('element')) {
             return false;
         }
 
         $element = $this->getRequest()->attributes->get('element');
-        if (!($element instanceof Element)) {
+        if (false === $element instanceof Element) {
             return false;
         }
 
@@ -89,8 +91,9 @@ class ElementVoter implements VoterInterface
 
     private function isRouteMatchingElement(Element $element, array $testedRouteParameters): bool
     {
-        return $this->isRouteMatchingElementDirectly($element, $testedRouteParameters) ||
-            $this->isRouteMatchingElementAfterSuccess($element, $testedRouteParameters);
+        return $this->isRouteMatchingElementDirectly($element, $testedRouteParameters)
+            || $this->isRouteMatchingElementAfterSuccess($element, $testedRouteParameters)
+        ;
     }
 
     private function isRouteMatchingElementDirectly(Element $element, array $testedRouteParameters): bool
@@ -104,7 +107,7 @@ class ElementVoter implements VoterInterface
 
     private function isRouteMatchingElementAfterSuccess(Element $element, array $testedRouteParameters): bool
     {
-        if (!($element instanceof RedirectableElement)) {
+        if (false === $element instanceof RedirectableElement) {
             return false;
         }
 
@@ -120,8 +123,13 @@ class ElementVoter implements VoterInterface
         return $successParameters['element'] === $testedRouteParameters['element'];
     }
 
-    private function getRequest()
+    private function getRequest(): Request
     {
-        return $this->requestStack->getCurrentRequest();
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            throw new RuntimeException('No request!');
+        }
+
+        return $request;
     }
 }

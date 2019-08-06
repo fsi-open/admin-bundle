@@ -45,6 +45,11 @@ class Item
         $this->setOptions([]);
     }
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -65,9 +70,17 @@ class Item
         $this->children[$item->getName()] = $item;
     }
 
+    /**
+     * @return Item[]
+     */
+    public function getChildren(): array
+    {
+        return $this->children;
+    }
+
     public function removeChild(string $name): void
     {
-        if (isset($this->children[$name])) {
+        if (true === array_key_exists($name, $this->children)) {
             unset($this->children[$name]);
         }
     }
@@ -77,17 +90,22 @@ class Item
         return (bool) count($this->children);
     }
 
-    /**
-     * @return Item[]
-     */
-    public function getChildren(): array
+    public function getOptions(): array
     {
-        return $this->children;
+        return $this->options;
     }
 
-    public function __toString(): string
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getOption(string $name)
     {
-        return $this->name;
+        if (false === $this->hasOption($name)) {
+            throw new MissingOptionException(sprintf('Option with name: "%s" does\'t exists.', $name));
+        }
+
+        return $this->options[$name];
     }
 
     public function setOptions(array $options): void
@@ -100,24 +118,6 @@ class Item
     public function hasOption(string $name): bool
     {
         return array_key_exists($name, $this->options);
-    }
-
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    public function getOption(string $name)
-    {
-        if (!$this->hasOption($name)) {
-            throw new MissingOptionException(sprintf('Option with name: "%s" does\'t exists.', $name));
-        }
-
-        return $this->options[$name];
-    }
-
-    public function getOptions(): array
-    {
-        return $this->options;
     }
 
     protected function configureOptions(OptionsResolver $optionsResolver): void

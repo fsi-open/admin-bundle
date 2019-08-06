@@ -13,6 +13,7 @@ namespace FSi\Bundle\AdminBundle\Menu\KnpMenu;
 
 use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use FSi\Bundle\AdminBundle\Menu\Item\Item as AdminMenuItem;
+use FSi\Bundle\AdminBundle\Menu\KnpMenu\ItemDecorator;
 use Knp\Menu\ItemInterface as KnpMenuItem;
 
 class ItemDecoratorChain implements ItemDecorator
@@ -25,9 +26,10 @@ class ItemDecoratorChain implements ItemDecorator
     public function __construct(array $decorators)
     {
         foreach ($decorators as $decorator) {
-            if (!($decorator instanceof ItemDecorator)) {
+            if (false === $decorator instanceof ItemDecorator) {
                 throw new InvalidArgumentException(sprintf(
-                    'Expected instance of FSi\Bundle\AdminBundle\Menu\KnpMenu\ItemDecorator but got %s',
+                    'Expected instance of "%s" but got "%s"',
+                    ItemDecorator::class,
                     is_object($decorator) ? get_class($decorator) : gettype($decorator)
                 ));
             }

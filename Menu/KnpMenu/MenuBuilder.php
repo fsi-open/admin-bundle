@@ -62,7 +62,7 @@ class MenuBuilder
         foreach ($children as $item) {
             $knpItem = $menu->addChild($item->getName(), []);
 
-            if ($item->hasChildren()) {
+            if (true === $item->hasChildren()) {
                 $this->populateMenu($knpItem, $item->getChildren());
             }
 

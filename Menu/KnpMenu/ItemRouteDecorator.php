@@ -30,7 +30,7 @@ class ItemRouteDecorator implements ItemDecorator
 
     public function decorate(KnpMenuItem $knpMenuItem, AdminMenuItem $adminMenuItem): void
     {
-        if ($adminMenuItem instanceof RoutableItem && $adminMenuItem->getRoute()) {
+        if (true === $adminMenuItem instanceof RoutableItem && true === $adminMenuItem->getRoute()) {
             $knpMenuItem->setUri($this->router->generate(
                 $adminMenuItem->getRoute(),
                 $adminMenuItem->getRouteParameters()

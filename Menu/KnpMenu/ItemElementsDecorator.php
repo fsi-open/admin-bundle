@@ -20,7 +20,7 @@ class ItemElementsDecorator implements ItemDecorator
 {
     public function decorate(KnpMenuItem $knpMenuItem, AdminMenuItem $adminMenuItem): void
     {
-        if ($adminMenuItem instanceof ElementItem && $adminMenuItem->hasOption('elements')) {
+        if (true === $adminMenuItem instanceof ElementItem && true === $adminMenuItem->hasOption('elements')) {
             $routes = $knpMenuItem->getExtra('routes', []);
 
             /** @var Element[] $elements */
