@@ -2,19 +2,18 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
-use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
+use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Bundle\ResourceRepositoryBundle\Form\Type\ResourceType;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\TextType;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use FSi\Bundle\ResourceRepositoryBundle\Form\Type\ResourceType;
 
 class ResourceFormBuilderSpec extends ObjectBehavior
 {
@@ -60,7 +59,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
 
         $formFactory
             ->createBuilder(
-                TypeSolver::getFormType(FormType::class, 'form'),
+                FormType::class,
                 ['resources_resource_key' => $resourceValue],
                 ['form_options']
             )
@@ -69,7 +68,7 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         $formBuilder
             ->add(
                 'resources_resource_key',
-                TypeSolver::getFormType(ResourceType::class, 'resource'),
+                ResourceType::class,
                 ['resource_key' => 'resources.resource_key']
             )
             ->shouldBeCalled();

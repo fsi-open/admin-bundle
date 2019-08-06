@@ -34,7 +34,7 @@ class AdminController
      */
     private $indexActionTemplate;
 
-    public function __construct(EngineInterface $templating, RouterInterface $router, $indexActionTemplate)
+    public function __construct(EngineInterface $templating, RouterInterface $router, string $indexActionTemplate)
     {
         $this->templating = $templating;
         $this->router = $router;
@@ -46,7 +46,7 @@ class AdminController
         return $this->templating->renderResponse($this->indexActionTemplate);
     }
 
-    public function localeAction($_locale, Request $request): RedirectResponse
+    public function localeAction(string $_locale, Request $request): RedirectResponse
     {
         $request->getSession()->set('admin_locale', $_locale);
 

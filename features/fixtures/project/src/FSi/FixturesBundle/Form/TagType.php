@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace FSi\FixturesBundle\Form;
 
-use FSi\Bundle\AdminBundle\Form\TypeSolver;
+use FSi\FixturesBundle\Entity\Tag;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use FSi\FixturesBundle\Entity\Tag;
 
 class TagType extends AbstractType
 {
@@ -19,10 +17,9 @@ class TagType extends AbstractType
         $builder->add('name');
         $builder->add(
             'elements',
-            TypeSolver::getFormType(CollectionType::class, 'collection'),
+            CollectionType::class,
             [
-                TypeSolver::hasCollectionEntryTypeOption() ? 'entry_type' : 'type' =>
-                    TypeSolver::getFormType(TagElementType::class, new TagElementType()),
+                'entry_type' => TagElementType::class,
                 'label' => 'admin.news.list.tag_elements',
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -32,22 +29,8 @@ class TagType extends AbstractType
         );
     }
 
-    public function getName(): string
-    {
-        return 'tag_type';
-    }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Tag::class,
-        ]);
-    }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => Tag::class,
-        ]);
+        $resolver->setDefault('data_class', Tag::class);
     }
 }

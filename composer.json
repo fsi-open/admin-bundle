@@ -2,7 +2,7 @@
     "name": "fsi/admin-bundle",
     "type": "symfony-bundle",
     "description": "FSi Admin Bundle. Admin generator for Symfony.",
-    "keywords": ["admin", "panel", "symfony2", "symfony3", "bundle", "fsi"],
+    "keywords": ["admin", "panel", "symfony2", "symfony3", "symfony4", "bundle", "fsi", "cms"],
     "license": "MIT",
     "authors": [
         {
