@@ -10,12 +10,15 @@ sudo: required
 addons:
     firefox: "47.0.1"
 
+services:
+    - xvfb
+
 matrix:
     include:
         - php: 7.1
           env:
               - COMPOSER_FLAGS='--prefer-lowest'
-        - php: 7.2
+        - php: 7.3
 
 before_install:
     - phpenv config-rm xdebug.ini
@@ -27,12 +30,11 @@ before_install:
 
 before_script:
     - nohup php -S localhost:8080 -t features/fixtures/project/web > /dev/null 2>&1 &
-    - sh -e /etc/init.d/xvfb start
-    - export DISPLAY=:99.0
     - java -jar vendor/bin/selenium.jar > /dev/null 2>&1 &
     - sleep 5
     - features/fixtures/project/app/console assets:install features/fixtures/project/web --relative --symlink
 
 script:
+    - vendor/bin/phpstan analyse -l 1 -c phpstan.neon .
     - vendor/bin/phpspec run --format=pretty
     - vendor/bin/behat --no-snippets --format=progress --profile=travis -vvv

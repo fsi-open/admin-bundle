@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
-use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use FSi\FixturesBundle\DataGrid\NewsDataGridBuilder;
 use FSi\FixturesBundle\DataSource\NewsDataSourceBuilder;
+use FSi\FixturesBundle\Entity;
 use FSi\FixturesBundle\Form\NewsType;
 use Symfony\Component\Form\FormFactoryInterface;
-use FSi\FixturesBundle\Entity;
 use Symfony\Component\Form\FormInterface;
 
 class News extends CRUDElement
@@ -68,7 +67,7 @@ class News extends CRUDElement
     {
         return $factory->createNamed(
             'news',
-            TypeSolver::getFormType(NewsType::class, new NewsType()),
+            NewsType::class,
             $data
         );
     }

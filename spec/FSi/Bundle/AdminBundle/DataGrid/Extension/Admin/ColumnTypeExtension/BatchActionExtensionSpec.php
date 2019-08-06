@@ -5,11 +5,13 @@ namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtensi
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Bundle\AdminBundle\Form\TypeSolver;
+use FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -18,9 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
-use FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class BatchActionExtensionSpec extends ObjectBehavior
 {
@@ -145,21 +144,14 @@ class BatchActionExtensionSpec extends ObjectBehavior
             ]
         )->willReturn('path_to_batch_action');
 
-        if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
-            $expectedChoices = [
-                'crud.list.batch.empty_choice' => '',
-                'batch_action_label' => 'path_to_batch_action'
-            ];
-        } else {
-            $expectedChoices = [
-                0 => 'crud.list.batch.empty_choice',
-                'path_to_batch_action' => 'batch_action_label'
-            ];
-        }
+        $expectedChoices = [
+            'crud.list.batch.empty_choice' => '',
+            'batch_action_label' => 'path_to_batch_action'
+        ];
 
         $formBuilder->add(
             'action',
-            TypeSolver::getFormType(ChoiceType::class, 'choice'),
+            ChoiceType::class,
             [
                 'choices' => $expectedChoices,
                 'translation_domain' => 'FSiAdminBundle'
@@ -168,7 +160,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
         $formBuilder->add(
             'submit',
-            TypeSolver::getFormType(SubmitType::class, 'submit'),
+            SubmitType::class,
             [
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'
@@ -218,29 +210,20 @@ class BatchActionExtensionSpec extends ObjectBehavior
             ]
         )->willReturn('path_to_batch_action');
 
-        if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
-            $expectedChoices = [
-                'crud.list.batch.empty_choice' => '',
-                'batch_action_label' => 'path_to_batch_action'
-            ];
-        } else {
-            $expectedChoices = [
-                0 => 'crud.list.batch.empty_choice',
-                'path_to_batch_action' => 'batch_action_label'
-            ];
-        }
-
         $formBuilder->add(
             'action',
-            TypeSolver::getFormType(ChoiceType::class, 'choice'),
+            ChoiceType::class,
             [
-                'choices' => $expectedChoices,
+                'choices' => [
+                    'crud.list.batch.empty_choice' => '',
+                    'batch_action_label' => 'path_to_batch_action'
+                ],
                 'translation_domain' => 'FSiAdminBundle'
             ]
         )->willReturn();
         $formBuilder->add(
             'submit',
-            TypeSolver::getFormType(SubmitType::class, 'submit'),
+            SubmitType::class,
             [
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'
@@ -286,29 +269,20 @@ class BatchActionExtensionSpec extends ObjectBehavior
             ]
         )->willReturn('path_to_batch_action');
 
-        if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
-            $expectedChoices = [
-                'crud.list.batch.empty_choice' => '',
-                'batch_action_label' => 'path_to_batch_action'
-            ];
-        } else {
-            $expectedChoices = [
-                0 => 'crud.list.batch.empty_choice',
-                'path_to_batch_action' => 'batch_action_label'
-            ];
-        }
-
         $formBuilder->add(
             'action',
-            TypeSolver::getFormType(ChoiceType::class, 'choice'),
+            ChoiceType::class,
             [
-                'choices' => $expectedChoices,
+                'choices' => [
+                    'crud.list.batch.empty_choice' => '',
+                    'batch_action_label' => 'path_to_batch_action'
+                ],
                 'translation_domain' => 'FSiAdminBundle'
             ]
         )->willReturn();
         $formBuilder->add(
             'submit',
-            TypeSolver::getFormType(SubmitType::class, 'submit'),
+            SubmitType::class,
             [
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'
@@ -349,29 +323,20 @@ class BatchActionExtensionSpec extends ObjectBehavior
             ]
         )->willReturn('path_to_batch_action');
 
-        if (TypeSolver::isChoicesAsValuesOptionTrueByDefault()) {
-            $expectedChoices = [
-                'crud.list.batch.empty_choice' => '',
-                'action_name' => 'path_to_batch_action'
-            ];
-        } else {
-            $expectedChoices = [
-                0 => 'crud.list.batch.empty_choice',
-                'path_to_batch_action' => 'action_name'
-            ];
-        }
-
         $formBuilder->add(
             'action',
-            TypeSolver::getFormType(ChoiceType::class, 'choice'),
+            ChoiceType::class,
             [
-                'choices' => $expectedChoices,
+                'choices' => [
+                    'crud.list.batch.empty_choice' => '',
+                    'action_name' => 'path_to_batch_action'
+                ],
                 'translation_domain' => 'FSiAdminBundle'
             ]
         )->willReturn();
         $formBuilder->add(
             'submit',
-            TypeSolver::getFormType(SubmitType::class, 'submit'),
+            SubmitType::class,
             [
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle'

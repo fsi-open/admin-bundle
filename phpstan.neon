@@ -1,0 +1,12 @@
+parameters:
+    reportUnmatchedIgnoredErrors: false
+    excludes_analyse:
+        - '%rootDir%/../../../Behat'
+        - '%rootDir%/../../../docker'
+        - '%rootDir%/../../../features'
+        - '%rootDir%/../../../spec'
+        - '%rootDir%/../../../vendor'
+    ignoreErrors:
+        -
+            message: '#Class Symfony\\Component\\Config\\Definition\\Builder\\TreeBuilder does not have a constructor and must be instantiated without any parameters\.#'
+            path: %currentWorkingDirectory%/DependencyInjection/Configuration.php

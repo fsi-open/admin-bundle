@@ -12,16 +12,15 @@ declare(strict_types=1);
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
-use FSi\Bundle\AdminBundle\Form\TypeSolver;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use FSi\FixturesBundle\Entity;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 class Person extends CRUDElement
 {
@@ -91,14 +90,14 @@ class Person extends CRUDElement
     {
         $builder = $factory->createNamedBuilder(
             'person',
-            TypeSolver::getFormType(FormType::class, 'form'),
+            FormType::class,
             $data,
             ['data_class' => $this->getClassName()]
         );
 
         $builder->add(
             'email',
-            TypeSolver::getFormType(TextType::class, 'text'),
+            TextType::class,
             ['label' => 'admin.email']
         );
 

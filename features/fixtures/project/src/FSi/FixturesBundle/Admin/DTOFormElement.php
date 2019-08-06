@@ -12,12 +12,11 @@ declare(strict_types=1);
 namespace FSi\FixturesBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Doctrine\Admin\FormElement;
-use FSi\Bundle\AdminBundle\Form\TypeSolver;
-use Symfony\Component\Form\FormFactoryInterface;
 use FSi\FixturesBundle\DTO\Model;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 class DTOFormElement extends FormElement
 {
@@ -39,14 +38,14 @@ class DTOFormElement extends FormElement
     {
         $builder = $factory->createNamedBuilder(
             'dto_form',
-            TypeSolver::getFormType(FormType::class, 'form'),
+            FormType::class,
             $data,
             ['data_class' => $this->getClassName()]
         );
 
         $builder->add(
             'email',
-            TypeSolver::getFormType(EmailType::class, 'email'),
+            EmailType::class,
             ['label' => 'admin.email']
         );
 
