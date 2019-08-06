@@ -51,14 +51,14 @@
         <service id="admin.form.builder.batch" class="%admin.form.builder.batch.class%">
             <factory service="form.factory" method="createNamedBuilder"/>
             <argument type="string">batch_action</argument>
-            <argument type="string">form</argument>
+            <argument type="string">Symfony\Component\Form\Extension\Core\Type\FormType</argument>
             <argument type="collection">
                 <argument key="translation_domain" type="string">FSiAdminBundle</argument>
             </argument>
         </service>
 
         <service id="admin.form.collection_type_extension" class="%admin.form.collection_extension.class%">
-            <tag name="form.type_extension" alias="collection" />
+            <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\CollectionType" />
         </service>
 
         <!-- ProductionLine Workers -->

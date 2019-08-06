@@ -16,16 +16,9 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\HttpKernel\Kernel;
 
-/**
- * @author Norbert Orzechowicz <norbert@fsi.pl>
- */
 class FSIAdminExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
@@ -35,6 +28,7 @@ class FSIAdminExtension extends Extension
         $container->setParameter('admin.default_locale', $config['default_locale']);
         $container->setParameter('admin.menu_config_path', $config['menu_config_path']);
         $container->setParameter('admin.elements.dirs', $config['annotations']['dirs']);
+        $container->registerForAutoconfiguration(Element::class)->addTag('admin.element');
 
         $this->setTemplateParameters($container, $config['templates']);
 
@@ -50,15 +44,6 @@ class FSIAdminExtension extends Extension
         $loader->load('context/form.xml');
         $loader->load('context/batch.xml');
         $loader->load('context/display.xml');
-
-        if (version_compare(Kernel::VERSION, '2.8.0', '>=')) {
-            $loader->load('services-3.0.xml');
-        }
-
-        if (method_exists($container, 'registerForAutoconfiguration')) {
-            $container->registerForAutoconfiguration(Element::class)
-                ->addTag('admin.element');
-        }
     }
 
     protected function setTemplateParameters(ContainerBuilder $container, array $config = []): void
