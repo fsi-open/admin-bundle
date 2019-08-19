@@ -87,7 +87,7 @@ class Item
 
     public function hasChildren(): bool
     {
-        return (bool) count($this->children);
+        return 0 !== count($this->children);
     }
 
     public function getOptions(): array
