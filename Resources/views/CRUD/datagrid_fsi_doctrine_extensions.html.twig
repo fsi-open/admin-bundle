@@ -1,7 +1,7 @@
 {% extends '@FSiAdmin/CRUD/datagrid.html.twig' %}
 
 {% block datagrid_column_type_fsi_file_cell %}
-    {% spaceless %}
+    {% apply spaceless %}
         <td{{ block('datagrid_cell_attributes') }}>
             <div{{ block('datagrid_container_attributes') }}>
                 {{ block('datagrid_column_cell_form_link') }}
@@ -12,11 +12,11 @@
                 {% endfor %}
             </div>
         </td>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block datagrid_column_type_fsi_image_cell %}
-    {% spaceless %}
+    {% apply spaceless %}
         <td{{ block('datagrid_cell_attributes') }}>
             <div{{ block('datagrid_container_attributes') }}>
                 {{ block('datagrid_column_cell_form_link') }}
@@ -29,5 +29,5 @@
                 {% endfor %}
             </div>
         </td>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
