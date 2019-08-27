@@ -1,7 +1,7 @@
 {% extends 'bootstrap_3_layout.html.twig' %}
 
 {% block datasource_field %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if field.hasAttribute('form') is not empty %}
             {% for child in field.getAttribute('form').children %}
                 {% for grandchild in child %}
@@ -10,7 +10,7 @@
                 {% endfor %}
             {% endfor %}
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block datasource_max_results %}
@@ -28,21 +28,21 @@
 {% endblock %}
 
 {% block datasource_between_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         {{ form_widget(form) }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock datasource_between_row %}
 
 {% block datasource_between_widget %}
-{% spaceless %}
+{% apply spaceless %}
     {% for child in form %}
         {{ form_row(child) }}
     {% endfor %}
-{% endspaceless %}
+{% endapply %}
 {% endblock datasource_between_widget %}
 
 {% block datasource_pagination %}
-{% spaceless %}
+{% apply spaceless %}
     <ul class="pagination">
         <li{% if current == first %} class="{{ disabled_class }}"{% endif %}>
             <a href="{% if current != first %}{{ first_url }}{% else %}#{% endif %}">{{ 'datasource.pagination.first'|trans({}, translation_domain) }}</a>
@@ -62,11 +62,11 @@
             <a href="{% if current != last %}{{ last_url }}{% else %}#{% endif %}">{{ 'datasource.pagination.last'|trans({}, translation_domain) }}</a>
         </li>
     </ul>
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 {% block datasource_sort %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if (field.getAttribute('sorted_ascending')) %}
             <button type="button" class="btn btn-default btn-xs sort-asc" disabled="disabled">
                 <span class="glyphicon glyphicon-sort-by-alphabet"></span>
@@ -81,5 +81,5 @@
         {% else %}
             <a href="{{ descending_url }}" class="btn btn-default btn-xs sort-desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
