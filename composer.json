@@ -22,7 +22,7 @@
         "php": ">=7.1",
         "doctrine/annotations": "^1.0",
         "doctrine/orm": "^2.5",
-        "sensio/framework-extra-bundle": "^3.0|^4.0",
+        "sensio/framework-extra-bundle": "^4.0|^5.0",
         "symfony/asset": "^3.4|^4.0",
         "symfony/dependency-injection": "^3.4|^4.0",
         "symfony/doctrine-bridge": "^3.4|^4.0",
@@ -41,7 +41,8 @@
         "fsi/datagrid-bundle" : "^2.0",
         "fsi/datasource-bundle": "^2.0",
         "knplabs/knp-menu-bundle": "^2.0",
-        "ocramius/proxy-manager": "^2.1"
+        "ocramius/proxy-manager": "^2.1",
+        "twig/twig": "^2.11"
     },
     "require-dev": {
         "behat/behat": "^3.3",
