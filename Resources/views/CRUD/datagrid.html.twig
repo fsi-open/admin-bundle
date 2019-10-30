@@ -145,7 +145,7 @@
 
 {%- block datagrid_container_attributes -%}
     {% set id = datagrid_name ~ '_' ~ row_index ~ '_' ~ cell.name %}
-    {% set class = (header.getAttribute('container_attr')['class']|default('') ~ ' ' ~ block('datagrid_container_class'))|trim %}
+    {% set class = (cell.getAttribute('container_attr')['class']|default('') ~ ' ' ~ block('datagrid_container_class'))|trim %}
     {% set attr = {id: id}|merge(cell.getAttribute('container_attr'))|merge({class: class}) %}
     {{ block('datagrid_attributes') }}
 {%- endblock datagrid_container_attributes -%}
