@@ -52,8 +52,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     ): void {
         $event->getElement()->willReturn($element);
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
-        $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
-            ->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_RESPONSE_PRE_RENDER)->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -74,23 +73,20 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
-        $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
-            ->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_PRE_SAVE)->shouldBeCalled();
 
         $form->getData()->willReturn([$resource1, $resource2]);
         $event->getElement()->willReturn($element);
         $element->save(Argument::type(Resource::class))->shouldBeCalledTimes(2);
 
-        $eventDispatcher->dispatch(FormEvents::FORM_DATA_POST_SAVE, $event)
-            ->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_POST_SAVE)->shouldBeCalled();
 
         $element->getSuccessRoute()->willReturn('fsi_admin_resource');
         $element->getSuccessRouteParameters()->willReturn(['element' => 'test-resource']);
         $router->generate('fsi_admin_resource', ['element' => 'test-resource'])
             ->willReturn('/resource/test-resource');
 
-        $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf(RedirectResponse::class);
+        $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(RedirectResponse::class);
     }
 
     public function it_return_response_from_pre_render_event(
@@ -102,16 +98,13 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
         $event->getElement()->willReturn($element);
-        $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
-            ->will(
-                function () use ($event, $response) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn($response);
-                }
-            );
+        $eventDispatcher->dispatch($event, FormEvents::FORM_RESPONSE_PRE_RENDER)
+            ->will(function() use ($event, $response) {
+                $event->hasResponse()->willReturn(true);
+                $event->getResponse()->willReturn($response);
+            });
 
-        $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf(Response::class);
+        $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     public function it_return_response_from_pre_entity_save_event(
@@ -127,16 +120,13 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
         $event->getElement()->willReturn($element);
-        $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
-            ->will(
-                function () use ($event, $response) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn($response);
-                }
-            );
+        $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_PRE_SAVE)
+            ->will(function() use ($event, $response) {
+                $event->hasResponse()->willReturn(true);
+                $event->getResponse()->willReturn($response);
+            });
 
-        $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf(Response::class);
+        $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     public function it_return_response_from_post_entity_save_event(
@@ -153,22 +143,18 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
-        $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
-            ->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_PRE_SAVE)->shouldBeCalled();
 
         $form->getData()->willReturn([$resource1, $resource2]);
         $event->getElement()->willReturn($element);
         $element->save(Argument::type(Resource::class))->shouldBeCalledTimes(2);
 
-        $eventDispatcher->dispatch(FormEvents::FORM_DATA_POST_SAVE, $event)
-            ->will(
-                function () use ($event, $response) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn($response);
-                }
-            );
+        $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_POST_SAVE)
+            ->will(function() use ($event, $response) {
+                $event->hasResponse()->willReturn(true);
+                $event->getResponse()->willReturn($response);
+            });
 
-        $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf(Response::class);
+        $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 }

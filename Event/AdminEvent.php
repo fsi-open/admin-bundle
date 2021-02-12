@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class AdminEvent extends Event
 {

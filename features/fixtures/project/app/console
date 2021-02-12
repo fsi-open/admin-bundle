@@ -14,6 +14,6 @@ use Symfony\Component\Debug\Debug;
 
 Debug::enable();
 
-$kernel = new AppKernel('test', true);
+$kernel = new \FSi\AppKernel('test', true);
 $application = new Application($kernel);
 $application->run(new ArgvInput());

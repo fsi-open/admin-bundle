@@ -50,14 +50,12 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
-        $eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_PRE_SUBMIT, $event)
-            ->shouldBeCalled();
+        $eventDispatcher->dispatch($event, BatchEvents::BATCH_REQUEST_PRE_SUBMIT)->shouldBeCalled();
 
         $event->getForm()->willReturn($form);
         $form->handleRequest($request)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_POST_SUBMIT, $event)
-            ->shouldBeCalled();
+        $eventDispatcher->dispatch($event, BatchEvents::BATCH_REQUEST_POST_SUBMIT)->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -69,13 +67,11 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
-        $eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_PRE_SUBMIT, $event)
-            ->will(
-                function () use ($event) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn(new Response());
-                }
-            );
+        $eventDispatcher->dispatch($event, BatchEvents::BATCH_REQUEST_PRE_SUBMIT)
+            ->will(function() use ($event) {
+                $event->hasResponse()->willReturn(true);
+                $event->getResponse()->willReturn(new Response());
+            });
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);
@@ -89,19 +85,16 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
-        $eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_PRE_SUBMIT, $event)
-            ->shouldBeCalled();
+        $eventDispatcher->dispatch($event, BatchEvents::BATCH_REQUEST_PRE_SUBMIT)->shouldBeCalled();
 
         $event->getForm()->willReturn($form);
         $form->handleRequest($request)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(BatchEvents::BATCH_REQUEST_POST_SUBMIT, $event)
-            ->will(
-                function () use ($event) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn(new Response());
-                }
-            );
+        $eventDispatcher->dispatch($event, BatchEvents::BATCH_REQUEST_POST_SUBMIT)
+            ->will(function() use ($event) {
+                $event->hasResponse()->willReturn(true);
+                $event->getResponse()->willReturn(new Response());
+            });
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);

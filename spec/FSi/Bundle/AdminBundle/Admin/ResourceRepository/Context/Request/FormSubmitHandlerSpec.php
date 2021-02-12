@@ -50,14 +50,12 @@ class FormSubmitHandlerSpec extends ObjectBehavior
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
-        $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
-            ->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_PRE_SUBMIT)->shouldBeCalled();
 
         $event->getForm()->willReturn($form);
         $form->handleRequest($request)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_POST_SUBMIT, $event)
-            ->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_POST_SUBMIT)->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -70,16 +68,13 @@ class FormSubmitHandlerSpec extends ObjectBehavior
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
-        $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
-            ->will(
-                function () use ($event, $response) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn($response);
-                }
-            );
+        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_PRE_SUBMIT)
+            ->will(function() use ($event, $response) {
+                $event->hasResponse()->willReturn(true);
+                $event->getResponse()->willReturn($response);
+            });
 
-        $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf(Response::class);
+        $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     public function it_return_response_from_request_post_submit_event(
@@ -91,21 +86,17 @@ class FormSubmitHandlerSpec extends ObjectBehavior
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
-        $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
-            ->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_PRE_SUBMIT)->shouldBeCalled();
 
         $event->getForm()->willReturn($form);
         $form->handleRequest($request)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_POST_SUBMIT, $event)
-            ->will(
-                function () use ($event, $response) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn($response);
-                }
-            );
+        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_POST_SUBMIT)
+            ->will(function() use ($event, $response) {
+                $event->hasResponse()->willReturn(true);
+                $event->getResponse()->willReturn($response);
+            });
 
-        $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf(Response::class);
+        $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 }

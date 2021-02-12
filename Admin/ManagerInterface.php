@@ -27,6 +27,4 @@ interface ManagerInterface
      * @return array<Element>
      */
     public function getElements(): array;
-
-    public function accept(Visitor $visitor): void;
 }

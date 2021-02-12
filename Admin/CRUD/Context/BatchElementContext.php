@@ -12,15 +12,14 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
-use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\RequestHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class BatchElementContext extends ContextAbstract
@@ -41,10 +40,10 @@ class BatchElementContext extends ContextAbstract
     protected $indexes;
 
     /**
-     * @param array<RequestHandlerInterface> $requestHandlers
+     * @param iterable<HandlerInterface> $requestHandlers
      * @param FormBuilderInterface $formBuilder
      */
-    public function __construct(array $requestHandlers, FormBuilderInterface $formBuilder)
+    public function __construct(iterable $requestHandlers, FormBuilderInterface $formBuilder)
     {
         parent::__construct($requestHandlers);
         $this->form = $formBuilder->getForm();

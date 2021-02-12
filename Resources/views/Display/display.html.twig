@@ -20,7 +20,7 @@
                 {% for property in display %}
                     <tr>
                         <td>
-                            {{ property.label|trans|default(property.path|humanize) }}
+                            {{ property.label|trans }}
                         </td>
                         <td>
                         {% if property.value is iterable %}

@@ -27,13 +27,13 @@ class DataGridBindDataHandler extends AbstractHandler
         $event = $this->validateEvent($event);
 
         if (true === $request->isMethod(Request::METHOD_POST)) {
-            $this->eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND, $event);
+            $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND);
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
 
             $event->getDataGrid()->bindData($request);
-            $this->eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_REQUEST_POST_BIND, $event);
+            $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_POST_BIND);
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
@@ -45,8 +45,8 @@ class DataGridBindDataHandler extends AbstractHandler
             $event->getDataGrid()->setData($event->getDataSource()->getResult());
         }
 
-        $this->eventDispatcher->dispatch(ListEvents::LIST_RESPONSE_PRE_RENDER, $event);
-        if (true === $event->hasResponse()) {
+        $this->eventDispatcher->dispatch($event, ListEvents::LIST_RESPONSE_PRE_RENDER);
+        if ($event->hasResponse()) {
             return $event->getResponse();
         }
 

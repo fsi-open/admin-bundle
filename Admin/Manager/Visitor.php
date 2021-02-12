@@ -15,5 +15,6 @@ use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 
 interface Visitor
 {
+    public static function getPriority(): int;
     public function visitManager(ManagerInterface $manager): void;
 }

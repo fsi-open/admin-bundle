@@ -9,12 +9,12 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use FSi\Bundle\ResourceRepositoryBundle\Doctrine\ResourceRepository;
-use PhpSpec\ObjectBehavior;
 use FSi\Bundle\AdminBundle\spec\fixtures\MyResourceElement;
+use PhpSpec\ObjectBehavior;
 
 class ResourceElementSpec extends ObjectBehavior
 {

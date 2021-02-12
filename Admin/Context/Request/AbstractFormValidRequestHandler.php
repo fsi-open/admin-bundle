@@ -42,14 +42,14 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
             return null;
         }
 
-        $this->eventDispatcher->dispatch($this->getPreSaveEventName(), $event);
+        $this->eventDispatcher->dispatch($event, $this->getPreSaveEventName());
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
 
         $this->action($event, $request);
 
-        $this->eventDispatcher->dispatch($this->getPostSaveEventName(), $event);
+        $this->eventDispatcher->dispatch($event, $this->getPostSaveEventName());
         if ($event->hasResponse()) {
             return $event->getResponse();
         }

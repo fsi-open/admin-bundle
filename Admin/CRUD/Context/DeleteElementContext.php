@@ -16,6 +16,11 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 
 class DeleteElementContext extends BatchElementContext
 {
+    public static function getPriority(): int
+    {
+        return 10;
+    }
+
     protected function supportsElement(Element $element): bool
     {
         return $element instanceof DeleteElement;

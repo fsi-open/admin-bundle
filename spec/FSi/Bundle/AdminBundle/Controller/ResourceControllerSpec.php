@@ -22,18 +22,19 @@ use Symfony\Component\HttpFoundation\Response;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
+use Twig\Environment;
 
 class ResourceControllerSpec extends ObjectBehavior
 {
     public function let(
         ContextManager $manager,
-        EngineInterface $templating,
+        Environment $twig,
         ResourceRepositoryContext $context,
         EventDispatcherInterface $dispatcher
     ): void {
         $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('default_resource');
-        $this->beConstructedWith($templating, $manager, $dispatcher);
+        $this->beConstructedWith($twig, $manager, $dispatcher);
     }
 
     public function it_dispatches_event(
@@ -43,20 +44,20 @@ class ResourceControllerSpec extends ObjectBehavior
         Element $element,
         ContextManager $manager,
         ResourceRepositoryContext $context,
-        EngineInterface $templating
-    ): void {
+        Environment $twig
+    ) {
         $dispatcher->dispatch(
-            AdminEvents::CONTEXT_PRE_CREATE,
-            Argument::type(AdminEvent::class)
+            Argument::type(AdminEvent::class),
+            AdminEvents::CONTEXT_PRE_CREATE
         )->shouldBeCalled();
 
         $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_resource', [], null)->willReturn($response);
+        $twig->render('default_resource', [])->willReturn('response');
 
-        $this->resourceAction($element, $request)->shouldReturn($response);
+        $this->resourceAction($element, $request)->getContent()->shouldBe('response');
     }
 
     public function it_renders_response(
@@ -65,14 +66,14 @@ class ResourceControllerSpec extends ObjectBehavior
         Element $element,
         ContextManager $manager,
         ResourceRepositoryContext $context,
-        EngineInterface $templating
+        Environment $twig
     ): void {
         $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
-        $templating->renderResponse('default_resource', [], null)->willReturn($response);
-        $this->resourceAction($element, $request)->shouldReturn($response);
+        $twig->render('default_resource', [])->willReturn('response');
+        $this->resourceAction($element, $request)->getContent()->shouldBe('response');
     }
 
     public function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(

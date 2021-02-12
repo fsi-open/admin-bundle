@@ -3,7 +3,7 @@ version: '3'
 
 services:
     web:
-        image: fsiopen/docker-php-apache:alpine-7.4
+        image: fsiopen/docker-php-apache:alpine-8.0
         container_name: admin-bundle-web
         ports:
             - 80:80

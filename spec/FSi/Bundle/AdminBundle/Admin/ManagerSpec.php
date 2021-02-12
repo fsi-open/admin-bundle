@@ -15,6 +15,11 @@ use PhpSpec\ObjectBehavior;
 
 class ManagerSpec extends ObjectBehavior
 {
+    public function let(Visitor $visitor): void
+    {
+        $this->beConstructedWith([$visitor]);
+    }
+
     public function it_removes_element_by_id(Element $element): void
     {
         $element->getId()->willReturn('foo');
@@ -23,11 +28,5 @@ class ManagerSpec extends ObjectBehavior
         $this->hasElement('foo')->shouldReturn(true);
         $this->removeElement('foo');
         $this->hasElement('foo')->shouldReturn(false);
-    }
-
-    public function it_accepts_visitors(Visitor $visitor): void
-    {
-        $visitor->visitManager($this)->shouldBeCalled();
-        $this->accept($visitor);
     }
 }

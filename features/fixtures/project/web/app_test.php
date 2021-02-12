@@ -8,7 +8,7 @@ use Symfony\Component\Debug\Debug;
 $loader = require_once __DIR__ . '/../app/bootstrap.php';
 Debug::enable();
 
-$kernel = new AppKernel('test', true);
+$kernel = new \FSi\AppKernel('test', true);
 Request::enableHttpMethodParameterOverride();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);

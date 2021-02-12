@@ -41,12 +41,12 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcherInterface $eventDispatcher
     ): void {
-        $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND, $event)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND)->shouldBeCalled();
 
         $event->getDataSource()->willReturn($dataSource);
         $dataSource->bindParameters($request)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND, $event)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND)->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -57,16 +57,13 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         Response $response
     ): void {
-        $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND, $event)
-            ->will(
-                function () use ($event, $response) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn($response);
-                }
-            );
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND)
+            ->will(function() use ($event, $response) {
+                $event->hasResponse()->willReturn(true);
+                $event->getResponse()->willReturn($response);
+            });
 
-        $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf(Response::class);
+        $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     public function it_returns_response_from_post_datasource_bind_parameters_event(
@@ -76,18 +73,16 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
         DataSourceInterface $dataSource,
         Response $response
     ): void {
-        $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND, $event)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND)->shouldBeCalled();
 
         $event->getDataSource()->willReturn($dataSource);
         $dataSource->bindParameters($request)->shouldBecalled();
 
-        $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND, $event)
-            ->will(
-                function () use ($event, $response) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn($response);
-                }
-            );
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND)
+            ->will(function() use ($event, $response) {
+                $event->hasResponse()->willReturn(true);
+                $event->getResponse()->willReturn($response);
+            });
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);

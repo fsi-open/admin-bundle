@@ -2,7 +2,7 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Factory\Worker;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use PhpSpec\ObjectBehavior;
 

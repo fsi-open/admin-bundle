@@ -15,18 +15,18 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext;
 use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
+use Twig\Environment;
 
 class BatchControllerSpec extends ObjectBehavior
 {
-    public function let(
-        EngineInterface $templating,
+    function let(
+        Environment $twig,
         ContextManager $manager,
         EventDispatcherInterface $dispatcher
     ): void {
@@ -42,8 +42,8 @@ class BatchControllerSpec extends ObjectBehavior
         Response $response
     ): void {
         $dispatcher->dispatch(
-            AdminEvents::CONTEXT_PRE_CREATE,
-            Argument::type(AdminEvent::class)
+            Argument::type(AdminEvent::class),
+            AdminEvents::CONTEXT_PRE_CREATE
         )->shouldBeCalled();
 
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);

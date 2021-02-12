@@ -228,7 +228,7 @@ class ListContext extends AbstractContext
      */
     public function iClickXAtPopover(): void
     {
-        $session = $this->defaultPage->getSession();
+        $session = $this->getSession();
         $session->wait(1000, 'jQuery(".popover").length > 0');
         /** @var NodeElement $popover */
         $popover = $this->defaultPage->getPopover();

@@ -4,17 +4,17 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 
 class AdminControllerSpec extends ObjectBehavior
 {
-    public function let(EngineInterface $templating, RouterInterface $router): void
+    function let(Environment $twig, RouterInterface $router)
     {
-        $this->beConstructedWith($templating, $router, Argument::type('string'));
+        $this->beConstructedWith($twig, $router, Argument::type('string'));
     }
 
     public function it_stores_locale_in_session(
