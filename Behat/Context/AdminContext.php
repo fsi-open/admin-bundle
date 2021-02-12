@@ -36,6 +36,10 @@ class AdminContext extends AbstractContext
     public function resizeWindow()
     {
         if ($this->isSeleniumDriverUsed()) {
+            if (false === $this->getSession()->isStarted()) {
+                $this->getSession()->start();
+            }
+
             $this->getSession()->resizeWindow(1280, 1024);
         }
     }

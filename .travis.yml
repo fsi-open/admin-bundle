@@ -38,3 +38,5 @@ script:
     - vendor/bin/phpstan analyse -l 1 -c phpstan.neon .
     - vendor/bin/phpspec run --format=pretty
     - vendor/bin/behat --no-snippets --format=progress --profile=travis -vvv
+
+after_failure: cat features/fixtures/project/app/logs/test.log

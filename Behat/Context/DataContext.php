@@ -86,8 +86,8 @@ class DataContext extends AbstractContext
         $entityManager = $this->getEntityManager();
         for ($i = 0; $i < $count; $i++) {
             $instance = new $className();
-            $this->applyFieldFormatters($instance);
             $this->applyEntityModifiers($instance);
+            $this->applyFieldFormatters($instance);
             $entityManager->persist($instance);
         }
 
