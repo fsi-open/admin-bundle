@@ -14,25 +14,36 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 use Behat\Gherkin\Node\TableNode;
 use DateTime;
 use Doctrine\ORM\Tools\SchemaTool;
-use Faker\ORM\Doctrine\Populator;
 use FSi\FixturesBundle\Entity\Category;
 use FSi\FixturesBundle\Entity\News;
 use FSi\FixturesBundle\Entity\Person;
 use FSi\FixturesBundle\Entity\Subscriber;
 use FSi\FixturesBundle\Entity\Tag;
 use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use function expect;
+use function file_exists;
 
 class DataContext extends AbstractContext
 {
+    /**
+     * @var PropertyAccessor|null
+     */
+    private $propertyAccessor = null;
+
     /**
      * @BeforeScenario
      */
     public function createDatabase(): void
     {
         $this->deleteDatabaseIfExist();
-        $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
-        $tool = new SchemaTool($this->getEntityManager());
+
+        $entityManager = $this->getEntityManager();
+        $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
+
+        $tool = new SchemaTool($entityManager);
         $tool->createSchema($metadata);
     }
 
@@ -42,8 +53,7 @@ class DataContext extends AbstractContext
     public function deleteDatabaseIfExist(): void
     {
         $dbFilePath = $this->getKernel()->getRootDir() . '/data.sqlite';
-
-        if (file_exists($dbFilePath)) {
+        if (true === file_exists($dbFilePath)) {
             unlink($dbFilePath);
         }
     }
@@ -71,17 +81,18 @@ class DataContext extends AbstractContext
      * @Given there are :count :className
      * @Given there is :count :className
      */
-    public function thereIsNumberOfEntities($count, string $className)
+    public function thereIsNumberOfEntities(int $count, string $className)
     {
-        $populator = new Populator($this->getFaker(), $this->getEntityManager());
-        $populator->addEntity(
-            $className,
-            $count,
-            $this->getColumnFormatters($className),
-            $this->getModifiers($className)
-        );
+        $entityManager = $this->getEntityManager();
+        for ($i = 0; $i < $count; $i++) {
+            $instance = new $className();
+            $this->applyFieldFormatters($instance);
+            $this->applyEntityModifiers($instance);
+            $entityManager->persist($instance);
+        }
 
-        $populator->execute();
+        $entityManager->flush();
+
         expect(count($this->getRepository($className)->findAll()))->toBe($count);
     }
 
@@ -90,17 +101,18 @@ class DataContext extends AbstractContext
      */
     public function thereIsAnEntityWithField(string $className, string $field, $value)
     {
-        $formatters = $this->getColumnFormatters($className);
-        $formatters[$field] = $this->parseScenarioValue((string) $value);
-        $populator = new Populator($this->getFaker(), $this->getEntityManager());
-        $populator->addEntity(
-            $className,
-            1,
-            $formatters,
-            $this->getModifiers($className)
-        );
+        $instance = new $className();
+        $formatters = $this->getFieldFormatters($className);
+        $formatters[$field] = function () use ($value) {
+            return $this->parseScenarioValue((string) $value);
+        };
+        $this->applyEntityModifiers($instance);
+        $this->applyFieldFormatters($instance, $formatters);
 
-        $populator->execute();
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($instance);
+        $entityManager->flush();
+
         expect($this->getRepository($className)->findOneBy([$field => $value]))->toBeAnInstanceOf($className);
     }
 
@@ -225,38 +237,72 @@ class DataContext extends AbstractContext
         expect($this->getEntityField($entity, $field))->notToBe($value);
     }
 
-    private function getColumnFormatters(string $className): array
+    /**
+     * @param object $instance
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    private function applyFieldFormatters($instance, ?array $formatters = null)
     {
-        $faker = $this->getFaker();
-        switch ($className) {
-            case News::class:
-                return [
-                    'creatorEmail' => function() use ($faker) {
-                        return $faker->email();
-                    },
-                    'categories' => function() use ($faker) {
-                        $categories = $this->getRepository(Category::class)->findAll();
+        $className = get_class($instance);
+        if (null === $formatters) {
+            $formatters = $this->getFieldFormatters($className);
+        }
 
-                        if (count($categories)) {
-                            return [$faker->randomElement($categories)];
-                        }
+        switch (true) {
+            case $instance instanceof News:
+                /** @var News $instance */
 
-                        return [];
+                /** @var string title */
+                $title = $formatters['title']();
+                $instance->setTitle($title);
+
+                /** @var string $creatorEmail */
+                $creatorEmail = $formatters['creatorEmail']();
+                $instance->setCreatorEmail($creatorEmail);
+
+                /** @var Category|null $categories */
+                $categories = $formatters['categories']();
+                array_walk(
+                    $categories,
+                    static function (Category $category, int $key, News $news): void {
+                        $news->addCategory($category);
                     },
-                    'photoKey' => null,
-                    'visible' => true
-                ];
-            case Category::class:
-                return [];
-            case Person::class:
-                return [
-                    'email' => function() use ($faker) { return $faker->email(); },
-                ];
-            case Subscriber::class:
-                return [
-                    'email' => function() use ($faker) { return $faker->email(); },
-                    'active' => true
-                ];
+                    $instance
+                );
+
+                /** @var bool $visible */
+                $visible = $formatters['visible']();
+                $instance->setVisible($visible);
+
+                /** @var string|null $photoKey */
+                $photoKey = $formatters['photoKey']();
+                $instance->setPhotoKey($photoKey);
+                break;
+            case $instance instanceof Person:
+                /** @var Person $instance */
+
+                /** @var string $email */
+                $email = $formatters['email']();
+                $instance->setEmail($email);
+                break;
+            case $instance instanceof Subscriber;
+                /** @var Subscriber $instance */
+
+                /** @var string $email */
+                $email = $formatters['email']();
+                $instance->setEmail($email);
+
+                /** @var bool $active */
+                $active = $formatters['active']();
+                $instance->setActive($active);
+                break;
+            case $instance instanceof Category:
+
+                /** @var string title */
+                $title = $formatters['title']();
+                $instance->setTitle($title);
+                break;
             default:
                 throw new InvalidArgumentException(sprintf(
                     'Cannot find any column formatters for class "%s',
@@ -265,27 +311,90 @@ class DataContext extends AbstractContext
         }
     }
 
-    private function getModifiers(string $className): array
+    private function getFieldFormatters(string $className): array
     {
         $faker = $this->getFaker();
-        switch ($className) {
-            case News::class:
-                return [
-                    function(News $news) use ($faker) {
-                        $tag = new Tag();
-                        $tag->setName($faker->sentence());
-                        $tag->setNews($news);
-                        $news->setTags([$tag]);
+        $formatters = [
+            News::class => [
+                'title' => function () use ($faker) {
+                    return $faker->title;
+                },
+                'creatorEmail' => function() use ($faker): string {
+                    return $faker->email();
+                },
+                'categories' => function() use ($faker): array {
+                    /** @var array<Category> $categories */
+                    $categories = $this->getRepository(Category::class)->findAll();
+                    if (0 !== count($categories)) {
+                        /** @var Category $randomCategory */
+                        $randomCategory = $faker->randomElement($categories);
+                        $categories = [$randomCategory];
                     }
-                ];
-            case Person::class:
-            case Subscriber::class:
-            case Category::class:
-                return [];
+
+                    return $categories;
+
+                },
+                'photoKey' => function (): ?string {
+                    return null;
+                },
+                'visible' => function (): bool {
+                    return true;
+                }
+            ],
+            Person::class => [
+                'email' => function() use ($faker): string {
+                    return $faker->email();
+                }
+            ],
+            Subscriber::class => [
+                'email' => function() use ($faker): string {
+                    return $faker->email();
+                },
+                'active' => function (): bool {
+                    return true;
+                }
+            ],
+            Category::class => [
+                'title' => function () use ($faker): string {
+                    return $faker->title;
+                }
+            ]
+        ];
+
+        if (false === array_key_exists($className, $formatters)) {
+            throw new RuntimeException("No formatters for class \"{$className}\"");
+        }
+
+        return $formatters[$className];
+    }
+
+    /**
+     * @param object $instance
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    private function applyEntityModifiers($instance): void
+    {
+        $faker = $this->getFaker();
+        switch (true) {
+            case $instance instanceof News:
+                $instance->setTitle($faker->title);
+                $instance->setCreatedAt(new DateTime());
+                $tag = new Tag();
+                $tag->setName($faker->sentence());
+                $tag->setNews($instance);
+                $instance->setTags([$tag]);
+                break;
+            case $instance instanceof Subscriber:
+                $instance->setCreatedAt(new DateTime());
+                break;
+            case $instance instanceof Person:
+            case $instance instanceof Category:
+                break;
             default:
                 throw new InvalidArgumentException(sprintf(
                     'Cannot find any modifiers for class "%s',
-                    $className
+                    get_class($instance)
                 ));
         }
     }
@@ -297,7 +406,10 @@ class DataContext extends AbstractContext
      */
     private function getEntityField($entity, string $field)
     {
-        $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        return $propertyAccessor->getValue($entity, strtolower($field));
+        if (null === $this->propertyAccessor) {
+            $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        }
+
+        return $this->propertyAccessor->getValue($entity, strtolower($field));
     }
 }
