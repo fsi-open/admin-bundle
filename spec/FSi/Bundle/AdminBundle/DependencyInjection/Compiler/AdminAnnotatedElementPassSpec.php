@@ -77,7 +77,7 @@ class AdminAnnotatedElementPassSpec extends ObjectBehavior
             }
 
             /** @var Definition $definition */
-            $definition = $definitions[0];
+            $definition = $definitions[SimpleAdminElement::class];
             if ($definition->getClass() !== SimpleAdminElement::class) {
                 return false;
             }

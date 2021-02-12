@@ -48,7 +48,7 @@ class AdminAnnotatedElementPass implements CompilerPassInterface
         $annotatedAdminClasses = $this->findAnnotatedAdminClasses($paths);
         $adminElementsDefinitions = [];
         foreach ($annotatedAdminClasses as $adminClass) {
-            $adminElementsDefinitions[] = $this->createAdminElementDefinition($adminClass);
+            $adminElementsDefinitions[$adminClass] = $this->createAdminElementDefinition($adminClass);
         }
 
         $container->addDefinitions($adminElementsDefinitions);
