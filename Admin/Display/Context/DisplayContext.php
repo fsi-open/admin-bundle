@@ -17,8 +17,11 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Display\Display;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\DisplayEvent;
+use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use function get_class;
 
 class DisplayContext extends ContextAbstract
 {
@@ -55,6 +58,9 @@ class DisplayContext extends ContextAbstract
 
     public function setElement(Element $element): void
     {
+        if (false === $element instanceof DisplayElement) {
+            throw InvalidArgumentException::create(self::class, DisplayElement::class, get_class($element));
+        }
         $this->element = $element;
     }
 

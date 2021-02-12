@@ -21,11 +21,6 @@ class MainMenuListener
     private $configFilePath;
 
     /**
-     * @var Yaml
-     */
-    private $yaml;
-
-    /**
      * @var ManagerInterface
      */
     private $manager;
@@ -33,20 +28,15 @@ class MainMenuListener
     public function __construct(ManagerInterface $manager, string $configFilePath)
     {
         $this->configFilePath = $configFilePath;
-        $this->yaml = new Yaml();
         $this->manager = $manager;
     }
 
     public function createMainMenu(MenuEvent $event): Item
     {
-        if (defined('Symfony\Component\Yaml\Yaml::PARSE_OBJECT')) {
-            $config = $this->yaml->parse(
-                file_get_contents($this->configFilePath),
-                Yaml::PARSE_OBJECT | Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE
-            );
-        } else {
-            $config = $this->yaml->parse(file_get_contents($this->configFilePath), true, true);
-        }
+        $config = Yaml::parse(
+            file_get_contents($this->configFilePath),
+            Yaml::PARSE_OBJECT | Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE
+        );
 
         if (!isset($config['menu'])) {
             throw new InvalidYamlStructureException(

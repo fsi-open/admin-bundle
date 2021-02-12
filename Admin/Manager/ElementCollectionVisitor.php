@@ -31,7 +31,7 @@ class ElementCollectionVisitor implements Visitor
      * @param Element[] $elements
      * @param ProductionLine $factoryProductionLine
      */
-    public function __construct(array $elements = [], ProductionLine $factoryProductionLine)
+    public function __construct(array $elements, ProductionLine $factoryProductionLine)
     {
         $this->elements = $elements;
         $this->factoryProductionLine = $factoryProductionLine;

@@ -119,7 +119,8 @@ class ListContext extends AbstractContext
 
         $presentColumns = $this->getListElement()->getColumns();
         foreach ($elements as $expectedColumn) {
-            if (strtolower($expectedColumn) === ListElement::BATCH_COLUMN
+            if (
+                strtolower($expectedColumn) === ListElement::BATCH_COLUMN
                 && $this->getListElement()->hasBatchColumn()
             ) {
                 continue;

@@ -13,5 +13,5 @@ namespace FSi\Bundle\AdminBundle\Event;
 
 final class DisplayEvents
 {
-    const DISPLAY_PRE_RENDER = 'admin.display.pre_render';
+    public const DISPLAY_PRE_RENDER = 'admin.display.pre_render';
 }

@@ -35,7 +35,7 @@ class Tag
     /**
      * @var News
      *
-     * @ORM\ManyToOne(targetEntity="News", inversedBy="tags")
+     * @ORM\ManyToOne(targetEntity="News", inversedBy="tags", cascade={"persist"})
      */
     protected $news;
 

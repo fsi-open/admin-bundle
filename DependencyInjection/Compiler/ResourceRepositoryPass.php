@@ -16,7 +16,7 @@ class ResourceRepositoryPass implements CompilerPassInterface
         if ($container->hasExtension('fsi_resource_repository')) {
             $loader = new XmlFileLoader(
                 $container,
-                new FileLocator(__DIR__.'/../../Resources/config')
+                new FileLocator(__DIR__ . '/../../Resources/config')
             );
             $loader->load('context/resource.xml');
         }

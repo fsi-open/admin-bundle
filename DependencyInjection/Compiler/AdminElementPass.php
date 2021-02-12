@@ -19,7 +19,8 @@ class AdminElementPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('admin.manager')
+        if (
+            !$container->hasDefinition('admin.manager')
             || !$container->hasDefinition('admin.manager.visitor.element_collection')
         ) {
             return;
