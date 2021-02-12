@@ -16,6 +16,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
+use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,11 +38,11 @@ class ListElementContext extends ContextAbstract
      */
     protected $dataGrid;
 
-    /**
-     * @param ListElement $element
-     */
     public function setElement(Element $element): void
     {
+        if (false === $element instanceof ListElement) {
+            throw InvalidArgumentException::create(self::class, ListElement::class, get_class($element));
+        }
         $this->element = $element;
         $this->dataSource = $this->element->createDataSource();
         $this->dataGrid = $this->element->createDataGrid();
