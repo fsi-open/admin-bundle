@@ -37,6 +37,9 @@ class ListElementContext extends ContextAbstract
      */
     protected $dataGrid;
 
+    /**
+     * @param ListElement $element
+     */
     public function setElement(Element $element): void
     {
         $this->element = $element;

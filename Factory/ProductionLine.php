@@ -20,7 +20,7 @@ class ProductionLine
     {
         $this->workers = [];
 
-        foreach((array) $workers as $worker) {
+        foreach ((array) $workers as $worker) {
             $this->addWorker($worker);
         }
     }

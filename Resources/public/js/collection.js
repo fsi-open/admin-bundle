@@ -1,6 +1,6 @@
-define(['jquery'], function($) {
+define(['jquery'], function ($) {
 
-    $.fn.formCollection = function(options) {
+    $.fn.formCollection = function (options) {
 
         options = $.extend({
             addButtonSelector: '> .collection-add',
@@ -10,19 +10,19 @@ define(['jquery'], function($) {
             collectionsSelector: 'div[data-prototype-name]'
         }, options);
 
-        var replacePrototypeName = function(template, prototypeName, index) {
+        var replacePrototypeName = function (template, prototypeName, index) {
             return template
                 .replace(new RegExp(prototypeName + 'label__', 'gm'), index)
                 .replace(new RegExp(prototypeName, 'gm'), index);
         };
 
-        var removeCollectionItem = function(e) {
+        var removeCollectionItem = function (e) {
             e.preventDefault();
             var $removedItem = $(e.target).closest(options.itemSelector);
             $removedItem.trigger('remove.collection-item');
         };
 
-        var addCollectionItem = function(e) {
+        var addCollectionItem = function (e) {
             e.preventDefault();
 
             var $el = $(e.target).closest(options.collectionsSelector);
@@ -38,7 +38,7 @@ define(['jquery'], function($) {
             $el.trigger('add.collection-item', [$newItem]);
         };
 
-        this.each(function(index, element) {
+        this.each(function (index, element) {
             var $el = $(element);
             if (!$el.data('prototype-name') || $el.data('current-index')) {
                 return;

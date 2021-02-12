@@ -32,7 +32,7 @@ class FSIAdminExtension extends Extension
 
         $this->setTemplateParameters($container, $config['templates']);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
         $loader->load('datagrid.xml');
         $loader->load('menu.xml');

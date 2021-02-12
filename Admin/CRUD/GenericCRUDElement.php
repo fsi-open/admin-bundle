@@ -74,7 +74,11 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
         $resolver->setNormalizer('template_crud_create', function (Options $options, $value) {
             if ($value !== $options['template_crud_edit']) {
                 throw new RuntimeException(
-                    'CRUD admin element options "template_crud_create" and "template_crud_edit" have both to have the same value'
+                    sprintf(
+                        'CRUD admin element options "%s" and "%s" have both to have the same value',
+                        'template_crud_create',
+                        'template_crud_edit'
+                    )
                 );
             }
 

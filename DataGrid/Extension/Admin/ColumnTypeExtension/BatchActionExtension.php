@@ -100,7 +100,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
             'element'
         ]);
         $this->actionOptionsResolver->setDefaults([
-            'route_name' => function(Options $options) {
+            'route_name' => function (Options $options) {
                 return $this->getDefaultRouteName($options);
             },
             'additional_parameters' => [],
@@ -109,7 +109,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         ]);
         $this->actionOptionsResolver->setNormalizer(
             'additional_parameters',
-            function(Options $options, $value) {
+            function (Options $options, $value) {
                 return $this->normalizeAdditionalParameters($options, $value);
             }
         );

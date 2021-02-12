@@ -11,12 +11,9 @@ use FSi\Bundle\AdminBundle\Display\Property\Formatter;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DependentDisplayElement;
 use FSi\FixturesBundle\Entity;
 
-/**
- * @Admin\Element
- */
 class CategoryNewsDisplay extends DependentDisplayElement
 {
-    const ID = 'category_news_display';
+    public const ID = 'category_news_display';
 
     public function getId(): string
     {

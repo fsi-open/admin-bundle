@@ -23,6 +23,7 @@ use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+
 use function expect;
 use function file_exists;
 
@@ -286,7 +287,7 @@ class DataContext extends AbstractContext
                 $email = $formatters['email']();
                 $instance->setEmail($email);
                 break;
-            case $instance instanceof Subscriber;
+            case $instance instanceof Subscriber:
                 /** @var Subscriber $instance */
 
                 /** @var string $email */
@@ -298,7 +299,6 @@ class DataContext extends AbstractContext
                 $instance->setActive($active);
                 break;
             case $instance instanceof Category:
-
                 /** @var string title */
                 $title = $formatters['title']();
                 $instance->setTitle($title);
@@ -319,10 +319,10 @@ class DataContext extends AbstractContext
                 'title' => function () use ($faker) {
                     return $faker->title;
                 },
-                'creatorEmail' => function() use ($faker): string {
+                'creatorEmail' => function () use ($faker): string {
                     return $faker->email();
                 },
-                'categories' => function() use ($faker): array {
+                'categories' => function () use ($faker): array {
                     /** @var array<Category> $categories */
                     $categories = $this->getRepository(Category::class)->findAll();
                     if (0 !== count($categories)) {
@@ -332,7 +332,6 @@ class DataContext extends AbstractContext
                     }
 
                     return $categories;
-
                 },
                 'photoKey' => function (): ?string {
                     return null;
@@ -342,12 +341,12 @@ class DataContext extends AbstractContext
                 }
             ],
             Person::class => [
-                'email' => function() use ($faker): string {
+                'email' => function () use ($faker): string {
                     return $faker->email();
                 }
             ],
             Subscriber::class => [
-                'email' => function() use ($faker): string {
+                'email' => function () use ($faker): string {
                     return $faker->email();
                 },
                 'active' => function (): bool {

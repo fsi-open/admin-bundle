@@ -42,7 +42,10 @@ class ResourceContext extends PageObjectContext implements KernelAwareContext
 
             if (isset($resource['Type'])) {
                 expect($this->getResourceMapBuilder()->getResource($resource['Key']))->toBeAnInstanceOf(
-                    sprintf('FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\%sType', ucfirst($resource['Type']))
+                    sprintf(
+                        'FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\%sType',
+                        ucfirst($resource['Type'])
+                    )
                 );
             }
         }

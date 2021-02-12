@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
+use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvents;
@@ -37,7 +38,9 @@ class DataGridBindDataHandler extends AbstractHandler
                 return $event->getResponse();
             }
 
-            $event->getElement()->saveDataGrid();
+            /** @var ListElement $element */
+            $element = $event->getElement();
+            $element->saveDataGrid();
             $event->getDataSource()->bindParameters($request);
             $event->getDataGrid()->setData($event->getDataSource()->getResult());
         }

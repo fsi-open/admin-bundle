@@ -1,12 +1,15 @@
 parameters:
     reportUnmatchedIgnoredErrors: false
+    treatPhpDocTypesAsCertain: false
+    level: 4
+    paths:
+        - .
     excludes_analyse:
+        - DependencyInjection/Configuration
         - '%rootDir%/../../../Behat'
         - '%rootDir%/../../../docker'
         - '%rootDir%/../../../features'
         - '%rootDir%/../../../spec'
         - '%rootDir%/../../../vendor'
     ignoreErrors:
-        -
-            message: '#Class Symfony\\Component\\Config\\Definition\\Builder\\TreeBuilder does not have a constructor and must be instantiated without any parameters\.#'
-            path: %currentWorkingDirectory%/DependencyInjection/Configuration.php
+        - '#Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required\.#'

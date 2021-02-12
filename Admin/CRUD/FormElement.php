@@ -19,7 +19,7 @@ interface FormElement extends DataIndexerElement, RedirectableElement
 {
     /**
      * @param mixed $data
-     * @return FormInterface|null
+     * @return FormInterface
      */
     public function createForm($data = null): FormInterface;
 

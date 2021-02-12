@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractFormValidRequestHandler;
+use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvents;
@@ -22,7 +23,9 @@ class FormValidRequestHandler extends AbstractFormValidRequestHandler
 {
     protected function action(FormEvent $event, Request $request): void
     {
-        $event->getElement()->save($event->getForm()->getData());
+        /** @var FormElement $element */
+        $element = $event->getElement();
+        $element->save($event->getForm()->getData());
     }
 
     protected function getPreSaveEventName(): string

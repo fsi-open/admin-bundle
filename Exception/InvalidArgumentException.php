@@ -13,4 +13,8 @@ namespace FSi\Bundle\AdminBundle\Exception;
 
 class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {
+    public static function create(string $contextClass, string $expectedClass, string $givenClass): self
+    {
+        return new self(sprintf("%s requires %s but instance of %s given", $contextClass, $expectedClass, $givenClass));
+    }
 }

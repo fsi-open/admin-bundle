@@ -3,15 +3,14 @@ version: '3'
 
 services:
     web:
-        build:
-            context: ./docker
-            dockerfile: web
+        image: fsiopen/docker-php-apache:alpine-7.4
         container_name: admin-bundle-web
         ports:
             - 80:80
             - 443:443
         environment:
             PHP_IDE_CONFIG: 'serverName=localhost'
+            DOCROOT: /var/www/application/features/fixtures/project/web
             HOST_UID: 1000
             HOST_GID: 1000
         volumes:

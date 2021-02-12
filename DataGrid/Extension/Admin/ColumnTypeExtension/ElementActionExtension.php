@@ -42,7 +42,6 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
         $actions = $column->getOption('actions');
         $generatedActions = [];
         foreach ($actions as $action => $actionOptions) {
-
             if (!$this->validateActionOptions($column, $action, $actionOptions)) {
                 continue;
             }

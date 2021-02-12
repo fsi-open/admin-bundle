@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
+use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 
@@ -21,7 +22,16 @@ abstract class ResourceElement extends GenericResourceElement implements Element
 
     public function getResourceValueRepository(): ResourceValueRepository
     {
-        return $this->getRepository();
+        $objectRepository = $this->getRepository();
+        if (false === $objectRepository instanceof ResourceValueRepository) {
+            throw InvalidArgumentException::create(
+                self::class,
+                ResourceValueRepository::class,
+                get_class($objectRepository)
+            );
+        }
+
+        return $objectRepository;
     }
 
     public function save(ResourceValue $resource): void

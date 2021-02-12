@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class Subscriber extends ListElement
 {
-    const ID = 'subscriber';
+    public const ID = 'subscriber';
 
     public function getId(): string
     {

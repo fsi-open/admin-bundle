@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class FlashMessages
 {
     /**
-     * @var FlashBagInterface
+     * @var FlashBagInterface|null
      */
     private $flashBag;
 

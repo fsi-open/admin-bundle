@@ -18,9 +18,6 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page as BasePage;
 
 class Page extends BasePage
 {
-    const REDIRECT_URI = '/&redirect_uri=.{1,}/';
-    const QUERY = 'query';
-
     protected $elements = [
         'page header' => '#page-header',
     ];
@@ -32,12 +29,19 @@ class Page extends BasePage
 
     public function getCollection(string $label): ?NodeElement
     {
-        return $this->find('xpath', sprintf('//div[@data-prototype]/ancestor::*[@class = "form-group"]/label[text() = "%s"]/..//div[@data-prototype]', $label));
+        return $this->find('xpath', sprintf(
+            '//div[@data-prototype]/ancestor::*[@class = "form-group"]/label[text() = "%s"]/..//div[@data-prototype]',
+            $label
+        ));
     }
 
     public function getNonEditableCollection(string $label): ?NodeElement
     {
-        return $this->find('xpath', sprintf('//div[@data-prototype-name]/ancestor::*[@class = "form-group"]/label[text() = "%s"]/..//div[@data-prototype-name]', $label));
+        return $this->find('xpath', sprintf(
+            '//div[@data-prototype-name]/ancestor::*[@class = "form-group"]/label[text() = "%s"]/..//'
+                . 'div[@data-prototype-name]',
+            $label
+        ));
     }
 
     public function openWithoutVerifying(array $urlParameters = []): void
@@ -84,7 +88,8 @@ class Page extends BasePage
         $headers = $this->findAll('css', 'th');
         foreach ($headers as $index => $header) {
             /** @var NodeElement $header */
-            if ($header->has('css', 'span')
+            if (
+                $header->has('css', 'span')
                 && $header->find('css', 'span')->getText() === $columnHeader
             ) {
                 return $index + 1;

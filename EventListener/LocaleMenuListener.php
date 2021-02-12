@@ -16,7 +16,10 @@ use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Languages;
 use Symfony\Component\Translation\TranslatorInterface;
+
+use function class_exists;
 
 class LocaleMenuListener
 {
@@ -82,6 +85,10 @@ class LocaleMenuListener
     {
         if (null === $locale) {
             $locale = $this->getCurrentLocale();
+        }
+
+        if (true === class_exists(Languages::class)) {
+            return Languages::getName($locale, $this->getCurrentLocale());
         }
 
         return Intl::getLanguageBundle()

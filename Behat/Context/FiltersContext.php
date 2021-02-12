@@ -105,7 +105,7 @@ class FiltersContext extends AbstractContext
             case 'sort desc':
                 expect($list->isColumnDescSortActive($column))->toBe(false);
                 break;
-            default :
+            default:
                 throw new \LogicException(sprintf('Unknown sorting type %s', $sort));
         }
     }
@@ -124,7 +124,7 @@ class FiltersContext extends AbstractContext
             case 'sort desc':
                 expect($list->isColumnDescSortActive($column))->toBe(true);
                 break;
-            default :
+            default:
                 throw new \LogicException(sprintf('Unknown sorting type %s', $sort));
         }
     }

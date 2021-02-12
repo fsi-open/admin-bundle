@@ -16,16 +16,22 @@ use FSi\Bundle\AdminBundle\Admin\ResourceRepository\GenericResourceElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvents;
+use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function get_class;
 
 class FormValidRequestHandler extends AbstractFormValidRequestHandler
 {
     protected function action(FormEvent $event, Request $request): void
     {
-        /* @var $element GenericResourceElement */
         $element = $event->getElement();
+        if (false === $element instanceof GenericResourceElement) {
+            throw InvalidArgumentException::create(self::class, GenericResourceElement::class, get_class($element));
+        }
+
         /* @var $data ResourceValue[] */
         $data = $event->getForm()->getData();
         foreach ($data as $resource) {

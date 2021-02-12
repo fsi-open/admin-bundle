@@ -16,6 +16,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
+use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -52,6 +53,9 @@ class FormElementContext extends ContextAbstract
 
     public function setElement(Element $element): void
     {
+        if (false === $element instanceof FormElement) {
+            throw InvalidArgumentException::create(self::class, FormElement::class, get_class($element));
+        }
         $this->element = $element;
     }
 
@@ -94,7 +98,8 @@ class FormElementContext extends ContextAbstract
 
     private function checkAllowAddOption(): void
     {
-        if (true === $this->element->hasOption('allow_add')
+        if (
+            true === $this->element->hasOption('allow_add')
             && true !== $this->element->getOption('allow_add')
         ) {
             throw new NotFoundHttpException(sprintf(
