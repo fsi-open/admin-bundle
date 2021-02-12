@@ -41,9 +41,14 @@ abstract class AbstractContext implements KernelAwareContext, MinkAwareContext
     private $minkParameters;
 
     /**
-     * @var Generator
+     * @var Generator|null
      */
     private $faker;
+
+    /**
+     * @var EntityManagerInterface|null
+     */
+    private $entityManager;
 
     public function setMink(Mink $mink): void
     {
@@ -65,14 +70,20 @@ abstract class AbstractContext implements KernelAwareContext, MinkAwareContext
         return $this->getEntityManager()->getRepository($className);
     }
 
-    public function getEntityManager(): EntityManagerInterface
+    protected function getEntityManager(): EntityManagerInterface
     {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
+        if (null === $this->entityManager) {
+            /** @var EntityManagerInterface $manager */
+            $entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
+            $this->entityManager = $entityManager;
+        }
+
+        return $this->entityManager;
     }
 
     protected function getFaker(): Generator
     {
-        if (!$this->faker) {
+        if (null === $this->faker) {
             $this->faker = Factory::create();
         }
 

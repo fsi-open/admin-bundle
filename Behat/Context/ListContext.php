@@ -82,6 +82,10 @@ class ListContext extends AbstractContext
      */
     public function iPerformBatchAction($action)
     {
+        if (false === $this->getSession()->isStarted()) {
+            $this->getSession()->start();
+        }
+
         if ($this->isSeleniumDriverUsed()) {
             $this->defaultPage->find('css', '#batch_action_action')->selectOption($action);
             $this->defaultPage->findButton('Ok')->click();

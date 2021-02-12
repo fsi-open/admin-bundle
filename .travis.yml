@@ -18,7 +18,7 @@ matrix:
         - php: 7.1
           env:
               - COMPOSER_FLAGS='--prefer-lowest'
-        - php: 7.3
+        - php: 7.4
 
 before_install:
     - phpenv config-rm xdebug.ini
@@ -38,3 +38,5 @@ script:
     - vendor/bin/phpstan analyse -l 1 -c phpstan.neon .
     - vendor/bin/phpspec run --format=pretty
     - vendor/bin/behat --no-snippets --format=progress --profile=travis -vvv
+
+after_failure: cat features/fixtures/project/app/logs/test.log

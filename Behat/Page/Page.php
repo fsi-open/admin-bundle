@@ -113,6 +113,15 @@ class Page extends BasePage
         return true;
     }
 
+    public function open(array $urlParameters = [])
+    {
+        if (false === $this->getDriver()->isStarted()) {
+            $this->getDriver()->start();
+        }
+
+        parent::open($urlParameters);
+    }
+
     protected function verifyUrl(array $urlParameters = []): void
     {
         $uriTemplate = new UriTemplate();

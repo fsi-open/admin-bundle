@@ -1,4 +1,4 @@
-FROM fsiopen/docker-php-apache:7.1
+FROM fsiopen/docker-php-apache:alpine-7.1
 
 USER root
 
