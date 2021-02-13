@@ -17,7 +17,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageExce
 
 class ListElement extends Element
 {
-    const BATCH_COLUMN = 'batch';
+    public const BATCH_COLUMN = 'batch';
 
     protected $selector = ['css' => 'body'];
 
@@ -112,7 +112,8 @@ class ListElement extends Element
         $headers = $this->findAll('css', 'th');
         foreach ($headers as $index => $header) {
             /** @var NodeElement $header */
-            if ($header->has('css', 'span')
+            if (
+                $header->has('css', 'span')
                 && $header->find('css', 'span')->getText() === $columnHeader
             ) {
                 return $index + 1;

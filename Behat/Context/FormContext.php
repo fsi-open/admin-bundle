@@ -43,7 +43,7 @@ class FormContext extends AbstractContext
     public function iShouldSeeFormWithFollowingFields(TableNode $table)
     {
         $form = $this->getFormElement();
-        foreach($table->getHash() as $fieldRow) {
+        foreach ($table->getHash() as $fieldRow) {
             expect($form->hasField($fieldRow['Field name']))->toBe(true);
         }
     }
@@ -62,7 +62,7 @@ class FormContext extends AbstractContext
     public function iFillFormFields(TableNode $table)
     {
         $form = $this->getFormElement();
-        foreach($table->getHash() as $fieldRow) {
+        foreach ($table->getHash() as $fieldRow) {
             $fieldName = $fieldRow['Field name'];
             $fieldValue = $fieldRow['Field value'];
             expect($form->hasField($fieldName))->toBe(true);

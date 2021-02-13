@@ -17,11 +17,14 @@ use FSi\Bundle\AdminBundle\Event\BatchEvent;
 use FSi\Bundle\AdminBundle\Event\BatchEvents;
 use FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
+use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+
+use function get_class;
 
 class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
 {
@@ -42,8 +45,11 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
 
     protected function action(FormEvent $event, Request $request): void
     {
-        /* @var $element BatchElement */
         $element = $event->getElement();
+        if (false === $element instanceof BatchElement) {
+            throw InvalidArgumentException::create(self::class, BatchElement::class, get_class($element));
+        }
+
         $objects = $this->getObjects($element, $request);
 
         if (!count($objects)) {

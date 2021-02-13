@@ -20,7 +20,9 @@ class CustomSubscribersList extends Page
     protected function verifyPage(): void
     {
         if (!$this->has('css', 'h1#page-header:contains("Custom subscribers list")')) {
-            throw new UnexpectedPageException(sprintf('%s page is missing "Custom subscribers list" header', $this->path));
+            throw new UnexpectedPageException(
+                sprintf('%s page is missing "Custom subscribers list" header', $this->path)
+            );
         }
     }
 }

@@ -82,6 +82,10 @@ class ListContext extends AbstractContext
      */
     public function iPerformBatchAction($action)
     {
+        if (false === $this->getSession()->isStarted()) {
+            $this->getSession()->start();
+        }
+
         if ($this->isSeleniumDriverUsed()) {
             $this->defaultPage->find('css', '#batch_action_action')->selectOption($action);
             $this->defaultPage->findButton('Ok')->click();
@@ -115,7 +119,8 @@ class ListContext extends AbstractContext
 
         $presentColumns = $this->getListElement()->getColumns();
         foreach ($elements as $expectedColumn) {
-            if (strtolower($expectedColumn) === ListElement::BATCH_COLUMN
+            if (
+                strtolower($expectedColumn) === ListElement::BATCH_COLUMN
                 && $this->getListElement()->hasBatchColumn()
             ) {
                 continue;

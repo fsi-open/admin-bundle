@@ -56,7 +56,7 @@ class AdminPanel extends Page
 
         $linkNodes = $this->findAll('css', 'li#language > ul > li');
 
-        return array_filter(array_map(function(NodeElement $element) {
+        return array_filter(array_map(function (NodeElement $element) {
             return $element->getText();
         }, $linkNodes));
     }

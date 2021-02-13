@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class GenericResourceElement extends AbstractElement implements Element

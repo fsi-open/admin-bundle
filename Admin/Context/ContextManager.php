@@ -27,7 +27,7 @@ class ContextManager
     {
         $this->contexts = [];
 
-        foreach($contexts as $context) {
+        foreach ($contexts as $context) {
             $this->addContext($context);
         }
     }

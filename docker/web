@@ -1,5 +1,0 @@
-FROM fsiopen/docker-php-apache:7.1
-
-USER root
-
-ADD apache-config.conf /etc/apache2/sites-available/application.conf

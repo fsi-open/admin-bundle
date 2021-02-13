@@ -17,6 +17,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
+use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 class BatchElementContext extends ContextAbstract
 {
     /**
-     * @var FormElement
+     * @var BatchElement
      */
     protected $element;
 
@@ -55,6 +56,9 @@ class BatchElementContext extends ContextAbstract
 
     public function setElement(Element $element): void
     {
+        if (false === $element instanceof BatchElement) {
+            throw InvalidArgumentException::create(self::class, BatchElement::class, get_class($element));
+        }
         $this->element = $element;
     }
 

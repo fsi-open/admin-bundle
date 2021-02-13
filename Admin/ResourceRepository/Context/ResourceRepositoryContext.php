@@ -18,8 +18,11 @@ use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\Element as ResourceRepositoryElement;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder;
+use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+
+use function get_class;
 
 class ResourceRepositoryContext extends ContextAbstract
 {
@@ -55,6 +58,9 @@ class ResourceRepositoryContext extends ContextAbstract
 
     public function setElement(Element $element): void
     {
+        if (false === $element instanceof ResourceRepositoryElement) {
+            throw InvalidArgumentException::create(self::class, ResourceRepositoryElement::class, get_class($element));
+        }
         $this->element = $element;
         $this->form = $this->resourceFormBuilder->build($this->element);
     }

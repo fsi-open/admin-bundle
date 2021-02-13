@@ -12,10 +12,10 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Twig;
 
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
-use Twig_Extension;
-use Twig_SimpleFunction;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class MessageTwigExtension extends Twig_Extension
+class MessageTwigExtension extends AbstractExtension
 {
     /**
      * @var FlashMessages
@@ -30,7 +30,7 @@ class MessageTwigExtension extends Twig_Extension
     public function getFunctions(): array
     {
         return [
-            new Twig_SimpleFunction('fsi_admin_messages', [$this, 'getMessages']),
+            new TwigFunction('fsi_admin_messages', [$this, 'getMessages']),
         ];
     }
 

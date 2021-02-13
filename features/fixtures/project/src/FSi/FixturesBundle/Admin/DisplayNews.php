@@ -16,7 +16,7 @@ use FSi\FixturesBundle\Entity;
  */
 class DisplayNews extends DisplayElement
 {
-    const ID = 'news_display';
+    public const ID = 'news_display';
 
     public function getId(): string
     {

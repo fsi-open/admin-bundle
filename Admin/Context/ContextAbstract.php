@@ -31,7 +31,7 @@ abstract class ContextAbstract implements ContextInterface
 
     /**
      * @param HandlerInterface[] $requestHandlers
-     * @param string|null
+     * @param string|null $template
      */
     public function __construct(array $requestHandlers, ?string $template = null)
     {

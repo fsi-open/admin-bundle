@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->validate()
-                ->always(function($v) {
+                ->always(function ($v) {
                     if (!isset($v['templates']['crud_list'])) {
                         $v['templates']['crud_list'] = $v['templates']['list'];
                     }

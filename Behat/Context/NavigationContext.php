@@ -262,8 +262,8 @@ class NavigationContext extends AbstractContext
         foreach ($table->getHash() as $elementRow) {
             expect($this->adminPanelPage->hasMenuElement(
                 $elementRow['Element name'],
-                empty($elementRow['Element group']) ? null : $elementRow['Element group'])
-            )->toBe(true);
+                empty($elementRow['Element group']) ? null : $elementRow['Element group']
+            ))->toBe(true);
         }
     }
 
