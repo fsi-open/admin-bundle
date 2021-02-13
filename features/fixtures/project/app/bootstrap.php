@@ -9,4 +9,3 @@ if (false === file_exists($file)) {
 
 $loader = require $file;
 AnnotationRegistry::registerLoader([$loader, 'loadClass']);
-AnnotationRegistry::registerFile(__DIR__.'/../../../../Annotation/Element.php');

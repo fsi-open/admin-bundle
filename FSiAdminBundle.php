@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle;
 
+use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextPass;
+use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\KnpMenuBuilderPass;
+use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ManagerVisitorPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ResourceRepositoryPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\FSIAdminExtension;
