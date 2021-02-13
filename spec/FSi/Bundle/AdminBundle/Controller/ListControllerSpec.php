@@ -15,7 +15,6 @@ use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,7 +40,6 @@ class ListControllerSpec extends ObjectBehavior
     public function it_dispatches_event(
         EventDispatcherInterface $dispatcher,
         Request $request,
-        Response $response,
         ListElement $element,
         ContextManager $manager,
         ListElementContext $context,

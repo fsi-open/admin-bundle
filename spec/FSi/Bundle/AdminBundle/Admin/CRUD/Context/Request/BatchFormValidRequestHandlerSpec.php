@@ -165,10 +165,12 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher
     ): void {
         $eventDispatcher->dispatch($event, BatchEvents::BATCH_OBJECTS_PRE_APPLY)
-            ->will(function() use ($event) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
-            });
+            ->will(
+                function () use ($event) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn(new Response());
+                }
+            );
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);
@@ -200,10 +202,12 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             BatchEvents::BATCH_OBJECT_POST_APPLY
         )->shouldBeCalled();
         $eventDispatcher->dispatch($event, BatchEvents::BATCH_OBJECTS_POST_APPLY)
-            ->will(function() use ($event) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
-            });
+            ->will(
+                function () use ($event) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn(new Response());
+                }
+            );
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
@@ -227,10 +231,12 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $flashMessage->warning(Argument::type('string'))->shouldBeCalled();
 
         $eventDispatcher->dispatch($event, BatchEvents::BATCH_OBJECTS_POST_APPLY)
-            ->will(function() use ($event) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn(new Response());
-            });
+            ->will(
+                function () use ($event) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn(new Response());
+                }
+            );
 
         $this->handleRequest($event, $request);
     }

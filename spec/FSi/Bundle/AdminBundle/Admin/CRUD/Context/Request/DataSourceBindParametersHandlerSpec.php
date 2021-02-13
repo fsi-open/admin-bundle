@@ -12,6 +12,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\DataSourceBindParametersHandler;
 
 class DataSourceBindParametersHandlerSpec extends ObjectBehavior
 {
@@ -29,9 +30,7 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
     public function it_throws_exception_for_non_list_event(AdminEvent $event, Request $request): void
     {
         $this->shouldThrow(
-            new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\DataSourceBindParametersHandler requires ListEvent"
-            )
+            new RequestHandlerException(sprintf("%s requires ListEvent", DataSourceBindParametersHandler::class))
         )->during('handleRequest', [$event, $request]);
     }
 
@@ -58,10 +57,12 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
         Response $response
     ): void {
         $eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
@@ -79,10 +80,12 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
         $dataSource->bindParameters($request)->shouldBecalled();
 
         $eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);

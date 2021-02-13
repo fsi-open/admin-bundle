@@ -25,12 +25,12 @@ use Twig\Environment;
 
 class BatchControllerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         Environment $twig,
         ContextManager $manager,
         EventDispatcherInterface $dispatcher
     ): void {
-        $this->beConstructedWith($templating, $manager, $dispatcher);
+        $this->beConstructedWith($twig, $manager, $dispatcher);
     }
 
     public function it_dispatches_event(

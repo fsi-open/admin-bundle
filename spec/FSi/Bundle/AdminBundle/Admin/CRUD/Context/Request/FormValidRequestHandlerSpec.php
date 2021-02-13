@@ -146,10 +146,12 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
 
         $eventDispatcher->dispatch($event, FormEvents::FORM_RESPONSE_PRE_RENDER)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
         $event->getElement()->willReturn($element);
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
@@ -168,10 +170,12 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
         $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_PRE_SAVE)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
         $event->getElement()->willReturn($element);
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
@@ -198,10 +202,12 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $element->save(Argument::type('stdClass'))->shouldBeCalled();
 
         $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_POST_SAVE)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }

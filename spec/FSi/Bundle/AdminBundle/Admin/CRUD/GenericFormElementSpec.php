@@ -34,12 +34,11 @@ class GenericFormElementSpec extends ObjectBehavior
         $this->getRoute()->shouldReturn('fsi_admin_form');
     }
 
-    public function it_throws_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory
-    ): void {
+    public function it_throws_exception_when_init_form_does_not_return_form(FormFactoryInterface $factory): void
+    {
         $factory->create(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(\TypeError::class)
-            ->during('createForm');
+        $this->shouldThrow(\TypeError::class)->during('createForm');
     }
 
     public function it_has_default_options_values(): void

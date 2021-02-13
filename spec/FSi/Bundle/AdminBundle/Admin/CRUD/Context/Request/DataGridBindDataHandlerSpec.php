@@ -56,10 +56,12 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
         $eventDispatcher->dispatch($event, ListEvents::LIST_RESPONSE_PRE_RENDER)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
@@ -99,10 +101,12 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
         $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);
@@ -121,10 +125,12 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         $event->getDataGrid()->willReturn($dataGrid);
         $dataGrid->bindData($request)->shouldBeCalled();
         $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_POST_BIND)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }

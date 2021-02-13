@@ -24,7 +24,7 @@ use Twig\Environment;
 
 class FormControllerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         Environment $twig,
         ContextManager $manager,
         FormElementContext $context,

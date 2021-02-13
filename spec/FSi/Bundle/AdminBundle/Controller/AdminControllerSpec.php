@@ -12,7 +12,7 @@ use Twig\Environment;
 
 class AdminControllerSpec extends ObjectBehavior
 {
-    function let(Environment $twig, RouterInterface $router)
+    public function let(Environment $twig, RouterInterface $router): void
     {
         $this->beConstructedWith($twig, $router, Argument::type('string'));
     }

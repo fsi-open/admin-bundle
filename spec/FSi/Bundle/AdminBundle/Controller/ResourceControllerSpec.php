@@ -45,7 +45,7 @@ class ResourceControllerSpec extends ObjectBehavior
         ContextManager $manager,
         ResourceRepositoryContext $context,
         Environment $twig
-    ) {
+    ): void {
         $dispatcher->dispatch(
             Argument::type(AdminEvent::class),
             AdminEvents::CONTEXT_PRE_CREATE

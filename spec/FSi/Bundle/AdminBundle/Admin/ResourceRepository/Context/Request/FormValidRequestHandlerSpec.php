@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request\FormValidRequestHandler;
 
 class FormValidRequestHandlerSpec extends ObjectBehavior
 {
@@ -38,9 +39,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     public function it_throw_exception_for_non_list_event(ListEvent $listEvent, Request $request): void
     {
         $this->shouldThrow(
-            new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\ResourceRepository\\Context\\Request\\FormValidRequestHandler requires FormEvent"
-            )
+            new RequestHandlerException(sprintf("%s requires FormEvent", FormValidRequestHandler::class))
         )->during('handleRequest', [$listEvent, $request]);
     }
 
@@ -99,10 +98,12 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
         $event->getElement()->willReturn($element);
         $eventDispatcher->dispatch($event, FormEvents::FORM_RESPONSE_PRE_RENDER)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
@@ -121,10 +122,12 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $form->isValid()->willReturn(true);
         $event->getElement()->willReturn($element);
         $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_PRE_SAVE)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
@@ -150,10 +153,12 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $element->save(Argument::type(Resource::class))->shouldBeCalledTimes(2);
 
         $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_POST_SAVE)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }

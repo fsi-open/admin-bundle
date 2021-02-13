@@ -67,10 +67,12 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
         Response $response
     ): void {
         $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_PRE_BIND)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);
@@ -93,10 +95,12 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
         $dataGrid->setData([1])->shouldBeCalled();
 
         $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_POST_BIND)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }

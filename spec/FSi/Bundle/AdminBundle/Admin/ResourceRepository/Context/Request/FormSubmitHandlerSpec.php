@@ -12,6 +12,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request\FormSubmitHandler;
 
 class FormSubmitHandlerSpec extends ObjectBehavior
 {
@@ -28,11 +29,8 @@ class FormSubmitHandlerSpec extends ObjectBehavior
 
     public function it_throw_exception_for_non_list_event(ListEvent $listEvent, Request $request): void
     {
-        $this->shouldThrow(
-            new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\ResourceRepository\\Context\\Request\\FormSubmitHandler requires FormEvent"
-            )
-        )->during('handleRequest', [$listEvent, $request]);
+        $this->shouldThrow(new RequestHandlerException(sprintf("%s requires FormEvent", FormSubmitHandler::class)))
+            ->during('handleRequest', [$listEvent, $request]);
     }
 
     public function it_does_nothing_on_non_POST_request(FormEvent $event, Request $request): void
@@ -69,10 +67,12 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_PRE_SUBMIT)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
@@ -92,10 +92,12 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled();
 
         $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_POST_SUBMIT)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }

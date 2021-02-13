@@ -198,7 +198,7 @@ class ElementVoterSpec extends ObjectBehavior
         $this->matchItem($item)->shouldReturn(true);
     }
 
-    public function it_returns_false_if_parent_of_element_in_current_request_redirects_to_different_element_than_in_item(
+    public function it_returns_false_if_parent_of_element_in_current_request_redirects_to_different_element_than_menu(
         ManagerInterface $manager,
         ItemInterface $item,
         ParameterBag $requestAttributes,
@@ -246,7 +246,7 @@ class ElementVoterSpec extends ObjectBehavior
         $this->matchItem($item)->shouldReturn(true);
     }
 
-    public function it_returns_false_if_item_has_element_with_different_id_than_grandparent_of_element_in_current_request(
+    public function it_returns_false_if_item_has_element_with_different_id_than_grandparent_of_element_in_request(
         ManagerInterface $manager,
         ItemInterface $item,
         ParameterBag $requestAttributes,
@@ -302,7 +302,7 @@ class ElementVoterSpec extends ObjectBehavior
         $this->matchItem($item)->shouldReturn(true);
     }
 
-    public function it_returns_false_if_grandparent_of_element_in_current_request_redirects_to_different_element_than_in_item(
+    public function it_returns_false_if_grandparent_of_element_in_request_redirects_to_different_element_than_menu(
         ManagerInterface $manager,
         ItemInterface $item,
         ParameterBag $requestAttributes,
