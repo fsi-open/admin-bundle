@@ -15,6 +15,8 @@ use FSi\Bundle\AdminBundle\Exception\MissingOptionException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function array_key_exists;
+
 class Item
 {
     /**
@@ -28,7 +30,7 @@ class Item
     private $label;
 
     /**
-     * @var Item[]
+     * @var array<Item>
      */
     private $children;
 
@@ -67,7 +69,7 @@ class Item
 
     public function removeChild(string $name): void
     {
-        if (isset($this->children[$name])) {
+        if (true === array_key_exists($name, $this->children)) {
             unset($this->children[$name]);
         }
     }
@@ -78,7 +80,7 @@ class Item
     }
 
     /**
-     * @return Item[]
+     * @return array<Item>
      */
     public function getChildren(): array
     {
@@ -108,7 +110,7 @@ class Item
      */
     public function getOption(string $name)
     {
-        if (!$this->hasOption($name)) {
+        if (false === $this->hasOption($name)) {
             throw new MissingOptionException(sprintf('Option with name: "%s" does\'t exists.', $name));
         }
 

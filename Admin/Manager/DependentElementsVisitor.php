@@ -19,7 +19,7 @@ class DependentElementsVisitor implements Visitor
     public function visitManager(ManagerInterface $manager): void
     {
         foreach ($manager->getElements() as $element) {
-            if (!($element instanceof DependentElement)) {
+            if (false === $element instanceof DependentElement) {
                 continue;
             }
 

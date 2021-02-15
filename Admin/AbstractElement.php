@@ -14,10 +14,12 @@ namespace FSi\Bundle\AdminBundle\Admin;
 use FSi\Bundle\AdminBundle\Exception\MissingOptionException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function array_key_exists;
+
 abstract class AbstractElement implements Element
 {
     /**
-     * @var array
+     * @var array|null
      */
     private $options;
 
@@ -42,7 +44,7 @@ abstract class AbstractElement implements Element
     {
         $this->resolveOptions();
 
-        if (!$this->hasOption($name)) {
+        if (false === $this->hasOption($name)) {
             throw new MissingOptionException(sprintf(
                 'Option with name "%s" does not exist in element "%s"',
                 $name,
@@ -63,12 +65,13 @@ abstract class AbstractElement implements Element
     public function hasOption($name): bool
     {
         $this->resolveOptions();
-        return isset($this->options[$name]);
+
+        return true === array_key_exists($name, $this->options) && null !== $this->options[$name];
     }
 
     private function resolveOptions(): void
     {
-        if (!is_array($this->options)) {
+        if (false === is_array($this->options)) {
             $optionsResolver = new OptionsResolver();
             $this->configureOptions($optionsResolver);
             $this->options = $optionsResolver->resolve($this->unresolvedOptions);

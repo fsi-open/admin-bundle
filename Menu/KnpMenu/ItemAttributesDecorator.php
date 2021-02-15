@@ -20,11 +20,11 @@ class ItemAttributesDecorator implements ItemDecorator
     {
         $knpMenuItem->setUri('#');
 
-        if ($adminMenuItem->hasOption('attr')) {
+        if (true === $adminMenuItem->hasOption('attr')) {
             $knpMenuItem->setAttributes($adminMenuItem->getOption('attr'));
         }
 
-        if ($adminMenuItem->hasChildren()) {
+        if (true === $adminMenuItem->hasChildren()) {
             $knpMenuItem->setAttribute('dropdown', true);
         }
     }

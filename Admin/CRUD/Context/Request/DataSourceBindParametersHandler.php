@@ -46,7 +46,7 @@ class DataSourceBindParametersHandler extends AbstractHandler
 
     private function validateEvent(AdminEvent $event): ListEvent
     {
-        if (!$event instanceof ListEvent) {
+        if (false === $event instanceof ListEvent) {
             throw new RequestHandlerException(sprintf('%s requires ListEvent', get_class($this)));
         }
 

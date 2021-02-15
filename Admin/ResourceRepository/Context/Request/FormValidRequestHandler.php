@@ -32,7 +32,7 @@ class FormValidRequestHandler extends AbstractFormValidRequestHandler
             throw InvalidArgumentException::create(self::class, GenericResourceElement::class, get_class($element));
         }
 
-        /* @var $data ResourceValue[] */
+        /* @var $data array<ResourceValue> */
         $data = $event->getForm()->getData();
         foreach ($data as $resource) {
             $element->save($resource);
@@ -52,12 +52,12 @@ class FormValidRequestHandler extends AbstractFormValidRequestHandler
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
         $response = parent::handleRequest($event, $request);
-        if ($response) {
+        if (null !== $response) {
             return $response;
         }
 
         $this->eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event);
-        if ($event->hasResponse()) {
+        if (true === $event->hasResponse()) {
             return $event->getResponse();
         }
 

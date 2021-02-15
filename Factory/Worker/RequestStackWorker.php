@@ -26,7 +26,7 @@ class RequestStackWorker implements Worker
 
     public function mount(Element $element): void
     {
-        if ($element instanceof RequestStackAware) {
+        if (true === $element instanceof RequestStackAware) {
             $element->setRequestStack($this->requestStack);
         }
     }

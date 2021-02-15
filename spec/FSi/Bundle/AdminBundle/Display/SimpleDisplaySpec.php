@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
 
 class SimpleDisplaySpec extends ObjectBehavior
 {
-    function it_creates_data_for_object()
+    public function it_creates_data_for_object(): void
     {
         $this->add('Piotr', 'First Name');
         $this->add(['ROLE_ADMIN', 'ROLE_USER'], 'Roles');
@@ -24,7 +24,7 @@ class SimpleDisplaySpec extends ObjectBehavior
     public function getMatchers(): array
     {
         return [
-            'haveProperty' => function($subject, $value, $label) {
+            'haveProperty' => function ($subject, $value, $label) {
                 /* @var $property Property */
                 foreach ($subject as $property) {
                     if ($property->getLabel() === $label && $property->getValue() === $value) {

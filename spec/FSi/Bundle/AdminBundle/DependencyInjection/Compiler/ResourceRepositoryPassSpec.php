@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class ResourceRepositoryPassSpec extends ObjectBehavior
 {
-    public function it_does_nothing_when_there_is_no_resource_extension(ContainerBuilder $container)
+    public function it_does_nothing_when_there_is_no_resource_extension(ContainerBuilder $container): void
     {
         $container->hasExtension('fsi_resource_repository')->willReturn(false);
         $this->process($container);
@@ -20,7 +20,7 @@ class ResourceRepositoryPassSpec extends ObjectBehavior
     public function it_loads_resources_config_only_if_resource_repository_extension_exists(
         ContainerBuilder $container,
         ParameterBag $bag
-    ) {
+    ): void {
         $container->hasExtension(Argument::type('string'))->willReturn(false);
         $container->hasExtension('fsi_resource_repository')->willReturn(true);
 

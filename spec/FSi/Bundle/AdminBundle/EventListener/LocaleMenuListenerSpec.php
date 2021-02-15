@@ -11,16 +11,16 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class LocaleMenuListenerSpec extends ObjectBehavior
 {
-    function let(TranslatorInterface $translator, RequestStack $requestStack)
+    public function let(TranslatorInterface $translator, RequestStack $requestStack): void
     {
         $this->beConstructedWith($translator, $requestStack, ['en', 'de']);
     }
 
-    function it_should_build_locale_menu(
+    public function it_should_build_locale_menu(
         MenuEvent $event,
         RequestStack $requestStack,
         Request $request
-    ) {
+    ): void {
         $menu = new Item();
         $event->getMenu()->willReturn($menu);
         $requestStack->getMasterRequest()->willReturn($request);

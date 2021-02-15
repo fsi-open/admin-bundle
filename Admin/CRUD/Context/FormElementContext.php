@@ -35,12 +35,12 @@ class FormElementContext extends ContextAbstract
 
     public function hasTemplateName(): bool
     {
-        return $this->element->hasOption('template_form') || parent::hasTemplateName();
+        return true === $this->element->hasOption('template_form') || true === parent::hasTemplateName();
     }
 
     public function getTemplateName(): ?string
     {
-        return $this->element->hasOption('template_form')
+        return true === $this->element->hasOption('template_form')
             ? $this->element->getOption('template_form')
             : parent::getTemplateName()
         ;

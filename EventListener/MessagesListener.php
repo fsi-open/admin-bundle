@@ -41,7 +41,7 @@ class MessagesListener implements EventSubscriberInterface
 
     public function onFormRequestPostSubmit(FormEvent $event): void
     {
-        if (!$event->getForm()->isValid()) {
+        if (false === $event->getForm()->isValid()) {
             $this->flashMessages->error('messages.form.error');
         }
     }

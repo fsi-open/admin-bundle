@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FormElementContextSpec extends ObjectBehavior
 {
-    function let(FormElement $element, FormInterface $form, HandlerInterface $handler)
+    public function let(FormElement $element, FormInterface $form, HandlerInterface $handler): void
     {
         $this->beConstructedWith([$handler], 'default_form');
         $element->hasOption('allow_add')->willReturn(true);
@@ -34,17 +34,17 @@ class FormElementContextSpec extends ObjectBehavior
         $this->setElement($element);
     }
 
-    function it_is_context()
+    public function it_is_context(): void
     {
         $this->shouldBeAnInstanceOf(ContextInterface::class);
     }
 
-    function it_has_array_data(
+    public function it_has_array_data(
         FormElement $element,
         FormInterface $form,
         FormView $formView,
         Request $request
-    ) {
+    ): void {
         $form->createView()->willReturn($formView);
         $form->getData()->willReturn(null);
 
@@ -53,14 +53,14 @@ class FormElementContextSpec extends ObjectBehavior
         $this->getData()->shouldReturn(['form' => $formView, 'element' => $element]);
     }
 
-    function it_returns_default_template_if_element_does_not_have_one(FormElement $element)
+    public function it_returns_default_template_if_element_does_not_have_one(FormElement $element): void
     {
         $element->hasOption('template_form')->willReturn(false);
         $this->getTemplateName()->shouldReturn('default_form');
         $this->hasTemplateName()->shouldReturn(true);
     }
 
-    function it_returns_template_from_element_if_it_has_one(FormElement $element)
+    public function it_returns_template_from_element_if_it_has_one(FormElement $element): void
     {
         $element->hasOption('template_form')->willReturn(true);
         $element->getOption('template_form')->willReturn('form.html.twig');
@@ -68,7 +68,7 @@ class FormElementContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn('form.html.twig');
     }
 
-    function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request)
+    public function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request): void
     {
         $handler->handleRequest(Argument::type(FormEvent::class), $request)
             ->willReturn(null);
@@ -76,7 +76,7 @@ class FormElementContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_returns_response_from_handler(HandlerInterface $handler, Request $request)
+    public function it_returns_response_from_handler(HandlerInterface $handler, Request $request): void
     {
         $handler->handleRequest(Argument::type(FormEvent::class), $request)
             ->willReturn(new Response());
@@ -85,7 +85,7 @@ class FormElementContextSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf(Response::class);
     }
 
-    function it_throws_exception_when_adding_is_not_allowed(Request $request, FormElement $element)
+    public function it_throws_exception_when_adding_is_not_allowed(Request $request, FormElement $element): void
     {
         $request->get('id')->willReturn(null);
         $element->getOption('allow_add')->willReturn(false);

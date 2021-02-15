@@ -11,12 +11,12 @@ use FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface;
 
 class AttributesExtensionSpec extends ObjectBehavior
 {
-    function it_is_column_extension()
+    public function it_is_column_extension(): void
     {
         $this->shouldBeAnInstanceOf(ColumnTypeExtensionInterface::class);
     }
 
-    function it_adds_actions_options(ColumnTypeInterface $column, OptionsResolver $optionsResolver)
+    public function it_adds_actions_options(ColumnTypeInterface $column, OptionsResolver $optionsResolver): void
     {
         $column->getOptionsResolver()->willReturn($optionsResolver);
 
@@ -26,17 +26,19 @@ class AttributesExtensionSpec extends ObjectBehavior
         $optionsResolver->setAllowedTypes('cell_attr', 'array')->shouldBeCalled();
         $optionsResolver->setAllowedTypes('container_attr', 'array')->shouldBeCalled();
         $optionsResolver->setAllowedTypes('value_attr', 'array')->shouldBeCalled();
-        $optionsResolver->setDefaults([
-            'header_attr' => [],
-            'cell_attr' => [],
-            'container_attr' => [],
-            'value_attr' => []
-        ])->shouldBeCalled();
+        $optionsResolver->setDefaults(
+            [
+                'header_attr' => [],
+                'cell_attr' => [],
+                'container_attr' => [],
+                'value_attr' => [],
+            ]
+        )->shouldBeCalled();
 
         $this->initOptions($column);
     }
 
-    function it_passes_attributes_to_cell_view(ColumnTypeInterface $column, CellViewInterface $view)
+    public function it_passes_attributes_to_cell_view(ColumnTypeInterface $column, CellViewInterface $view): void
     {
         $column->getOption('cell_attr')->willReturn(['cell attributes']);
         $view->setAttribute('cell_attr', ['cell attributes'])->shouldBeCalled();
@@ -48,7 +50,7 @@ class AttributesExtensionSpec extends ObjectBehavior
         $this->buildCellView($column, $view);
     }
 
-    function it_passes_attributes_to_header_view(ColumnTypeInterface $column, HeaderViewInterface $view)
+    public function it_passes_attributes_to_header_view(ColumnTypeInterface $column, HeaderViewInterface $view): void
     {
         $column->getOption('header_attr')->willReturn(['header attributes']);
         $view->setAttribute('header_attr', ['header attributes'])->shouldBeCalled();

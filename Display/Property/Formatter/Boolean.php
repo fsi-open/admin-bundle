@@ -37,7 +37,7 @@ class Boolean implements ValueFormatter
      */
     public function format($value)
     {
-        if (empty($value) && !is_bool($value)) {
+        if (empty($value) && false === is_bool($value)) {
             return $value;
         }
 

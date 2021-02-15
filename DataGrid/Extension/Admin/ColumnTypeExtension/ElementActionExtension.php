@@ -10,6 +10,8 @@ use FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 
+use function array_key_exists;
+
 class ElementActionExtension extends ColumnAbstractTypeExtension
 {
     /**
@@ -42,7 +44,7 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
         $actions = $column->getOption('actions');
         $generatedActions = [];
         foreach ($actions as $action => $actionOptions) {
-            if (!$this->validateActionOptions($column, $action, $actionOptions)) {
+            if (false === $this->validateActionOptions($column, $action, $actionOptions)) {
                 continue;
             }
 
@@ -57,7 +59,7 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
 
     private function validateColumn(ColumnTypeInterface $column): Action
     {
-        if (!($column instanceof Action)) {
+        if (false === $column instanceof Action) {
             throw new RuntimeException(sprintf(
                 '%s can extend only FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action, but got %s',
                 get_class($this),
@@ -70,11 +72,11 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
 
     private function validateActionOptions(ColumnTypeInterface $column, $action, array $actionOptions): bool
     {
-        if (!isset($actionOptions['element'])) {
+        if (false === array_key_exists('element', $actionOptions)) {
             return false;
         }
 
-        if (!$this->manager->hasElement($actionOptions['element'])) {
+        if (false === $this->manager->hasElement($actionOptions['element'])) {
             throw new RuntimeException(sprintf(
                 'Unknown element "%s" specified in action "%s" of datagrid "%s"',
                 $actionOptions['element'],

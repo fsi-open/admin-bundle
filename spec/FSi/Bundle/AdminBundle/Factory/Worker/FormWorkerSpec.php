@@ -8,15 +8,15 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class FormWorkerSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $formFactory)
+    public function let(FormFactoryInterface $formFactory): void
     {
         $this->beConstructedWith($formFactory);
     }
 
-    function it_mount_form_factory_to_elements_that_are_form_aware(
+    public function it_mount_form_factory_to_elements_that_are_form_aware(
         GenericCRUDElement $element,
         FormFactoryInterface $formFactory
-    ) {
+    ): void {
         $element->setFormFactory($formFactory)->shouldBeCalled();
 
         $this->mount($element);

@@ -19,7 +19,7 @@ use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class DependentListElementSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $registry, ObjectManager $om)
+    public function let(ManagerRegistry $registry, ObjectManager $om): void
     {
         $this->beAnInstanceOf(MyDependentListElement::class);
         $this->beConstructedWith([]);
@@ -28,17 +28,17 @@ class DependentListElementSpec extends ObjectBehavior
         $this->setManagerRegistry($registry);
     }
 
-    function it_is_dependent_batch_element()
+    public function it_is_dependent_batch_element(): void
     {
         $this->shouldHaveType(DependentElement::class);
         $this->shouldHaveType(ListElement::class);
     }
 
-    function it_returns_null_if_parent_element_does_not_have_data_indexer(
+    public function it_returns_null_if_parent_element_does_not_have_data_indexer(
         RequestStack $requestStack,
         Request $currentRequest,
         Element $parentElement
-    ) {
+    ): void {
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
 
         $this->setRequestStack($requestStack);
@@ -47,12 +47,12 @@ class DependentListElementSpec extends ObjectBehavior
         $this->getParentObject()->shouldReturn(null);
     }
 
-    function it_returns_null_if_parent_object_id_is_not_available(
+    public function it_returns_null_if_parent_object_id_is_not_available(
         RequestStack $requestStack,
         Request $currentRequest,
         DataIndexerElement $parentElement,
         DataIndexerInterface $parentDataIndexer
-    ) {
+    ): void {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
         $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn(null);
@@ -63,12 +63,12 @@ class DependentListElementSpec extends ObjectBehavior
         $this->getParentObject()->shouldReturn(null);
     }
 
-    function it_returns_parent_object_if_its_available(
+    public function it_returns_parent_object_if_its_available(
         RequestStack $requestStack,
         Request $currentRequest,
         DataIndexerElement $parentElement,
         DataIndexerInterface $parentDataIndexer
-    ) {
+    ): void {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
         $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn('parent_object_id');
@@ -80,12 +80,12 @@ class DependentListElementSpec extends ObjectBehavior
         $this->getParentObject()->shouldReturn('parent_object');
     }
 
-    function its_route_parameters_contain_parent_object_id_if_its_available(
+    public function its_route_parameters_contain_parent_object_id_if_its_available(
         RequestStack $requestStack,
         Request $currentRequest,
         DataIndexerElement $parentElement,
         DataIndexerInterface $parentDataIndexer
-    ) {
+    ): void {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
         $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn('parent_object_id');
@@ -97,12 +97,12 @@ class DependentListElementSpec extends ObjectBehavior
             ->shouldHaveKeyWithValue(DependentElement::PARENT_REQUEST_PARAMETER, 'parent_object_id');
     }
 
-    public function it_should_return_object_manager(ObjectManager $om)
+    public function it_should_return_object_manager(ObjectManager $om): void
     {
         $this->getObjectManager()->shouldReturn($om);
     }
 
-    public function it_should_return_object_repository(ObjectManager $om, ObjectRepository $repository)
+    public function it_should_return_object_repository(ObjectManager $om, ObjectRepository $repository): void
     {
         $om->getRepository('FSiDemoBundle:Entity')->willReturn($repository);
         $this->getRepository()->shouldReturn($repository);
@@ -113,7 +113,7 @@ class DependentListElementSpec extends ObjectBehavior
         ObjectManager $om,
         ObjectRepository $repository,
         ClassMetadata $metadata
-    ) {
+    ): void {
         $registry->getManagerForClass('FSi/Bundle/DemoBundle/Entity/Entity')->willReturn($om);
         $om->getRepository('FSiDemoBundle:Entity')->willReturn($repository);
         $metadata->isMappedSuperclass = false;

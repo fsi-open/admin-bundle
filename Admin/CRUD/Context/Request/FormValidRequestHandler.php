@@ -41,12 +41,12 @@ class FormValidRequestHandler extends AbstractFormValidRequestHandler
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
         $response = parent::handleRequest($event, $request);
-        if ($response) {
+        if (null !== $response) {
             return $response;
         }
 
         $this->eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event);
-        if ($event->hasResponse()) {
+        if (true === $event->hasResponse()) {
             return $event->getResponse();
         }
 

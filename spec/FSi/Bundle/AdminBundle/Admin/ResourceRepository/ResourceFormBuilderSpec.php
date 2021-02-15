@@ -17,18 +17,20 @@ use Symfony\Component\Form\FormInterface;
 
 class ResourceFormBuilderSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         MapBuilder $mapBuilder,
         FormFactoryInterface $formFactory,
         GenericResourceElement $element,
         ResourceValueRepository $valueRepository,
         TextType $resource
-    ) {
-        $mapBuilder->getMap()->willReturn([
-            'resources' => [
-                'resource_key' => $resource
+    ): void {
+        $mapBuilder->getMap()->willReturn(
+            [
+                'resources' => [
+                    'resource_key' => $resource,
+                ],
             ]
-        ]);
+        );
         $resource->getName()->willReturn('resources.resource_key');
 
         $element->getResourceValueRepository()->willReturn($valueRepository);
@@ -37,8 +39,8 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         $this->beConstructedWith($formFactory, $mapBuilder);
     }
 
-    function it_throws_exception_when_resource_key_is_not_resource_group_key(GenericResourceElement $element)
-    {
+    public function it_throws_exception_when_resource_key_is_not_resource_group_key(GenericResourceElement $element
+    ): void {
         $element->getKey()->willReturn('resources.resource_key');
 
         $this->shouldThrow(
@@ -46,14 +48,14 @@ class ResourceFormBuilderSpec extends ObjectBehavior
         )->during('build', [$element]);
     }
 
-    function it_builds_form_for_resource_group(
+    public function it_builds_form_for_resource_group(
         FormFactoryInterface $formFactory,
         FormBuilderInterface $formBuilder,
         GenericResourceElement $element,
         ResourceValueRepository $valueRepository,
         ResourceValue $resourceValue,
         FormInterface $form
-    ) {
+    ): void {
         $element->getKey()->willReturn('resources');
         $valueRepository->get('resources.resource_key')->willReturn($resourceValue);
 

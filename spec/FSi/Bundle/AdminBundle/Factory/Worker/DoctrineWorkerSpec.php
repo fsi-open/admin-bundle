@@ -8,15 +8,15 @@ use PhpSpec\ObjectBehavior;
 
 class DoctrineWorkerSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $managerRegistry)
+    public function let(ManagerRegistry $managerRegistry): void
     {
         $this->beConstructedWith($managerRegistry);
     }
 
-    function it_mount_datagrid_factory_to_elements_that_are_doctrine_elements(
+    public function it_mount_datagrid_factory_to_elements_that_are_doctrine_elements(
         CRUDElement $element,
         ManagerRegistry $managerRegistry
-    ) {
+    ): void {
         $element->setManagerRegistry($managerRegistry)->shouldBeCalled();
 
         $this->mount($element);

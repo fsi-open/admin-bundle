@@ -18,7 +18,7 @@ class TwigGlobalsPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('twig')) {
+        if (false === $container->hasDefinition('twig')) {
             return;
         }
 

@@ -50,7 +50,7 @@ class ListElementContext extends ContextAbstract
 
     public function hasTemplateName(): bool
     {
-        return $this->element->hasOption('template_list') || parent::hasTemplateName();
+        return true === $this->element->hasOption('template_list') || true === parent::hasTemplateName();
     }
 
     public function getTemplateName(): ?string

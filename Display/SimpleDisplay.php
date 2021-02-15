@@ -14,7 +14,7 @@ namespace FSi\Bundle\AdminBundle\Display;
 class SimpleDisplay implements Display
 {
     /**
-     * @var Property[]
+     * @var array<Property>
      */
     private $data = [];
 

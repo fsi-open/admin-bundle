@@ -15,18 +15,18 @@ use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 
 class FormSubmitHandlerSpec extends ObjectBehavior
 {
-    function let(EventDispatcherInterface $eventDispatcher, FormEvent $event)
+    public function let(EventDispatcherInterface $eventDispatcher, FormEvent $event): void
     {
         $event->hasResponse()->willReturn(false);
         $this->beConstructedWith($eventDispatcher);
     }
 
-    function it_is_context_request_handler()
+    public function it_is_context_request_handler(): void
     {
         $this->shouldHaveType(HandlerInterface::class);
     }
 
-    function it_throw_exception_for_non_list_event(ListEvent $listEvent, Request $request)
+    public function it_throw_exception_for_non_list_event(ListEvent $listEvent, Request $request): void
     {
         $this->shouldThrow(
             new RequestHandlerException(
@@ -35,19 +35,19 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         )->during('handleRequest', [$listEvent, $request]);
     }
 
-    function it_does_nothing_on_non_POST_request(FormEvent $event, Request $request)
+    public function it_does_nothing_on_non_POST_request(FormEvent $event, Request $request): void
     {
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
 
-    function it_submits_form_on_POST_request(
+    public function it_submits_form_on_POST_request(
         FormEvent $event,
         Request $request,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
@@ -62,31 +62,33 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
 
-    function it_return_response_from_request_pre_submit_event(
+    public function it_return_response_from_request_pre_submit_event(
         FormEvent $event,
         Request $request,
         EventDispatcherInterface $eventDispatcher,
         Response $response
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);
     }
 
-    function it_return_response_from_request_post_submit_event(
+    public function it_return_response_from_request_post_submit_event(
         FormEvent $event,
         Request $request,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
         Response $response
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_PRE_SUBMIT, $event)
@@ -96,10 +98,12 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled();
 
         $eventDispatcher->dispatch(FormEvents::FORM_REQUEST_POST_SUBMIT, $event)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);

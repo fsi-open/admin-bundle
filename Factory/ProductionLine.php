@@ -9,18 +9,18 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 class ProductionLine
 {
     /**
-     * @var Worker[]
+     * @var array<Worker>
      */
     protected $workers;
 
     /**
-     * @param Worker[] $workers
+     * @param array<Worker> $workers
      */
     public function __construct(array $workers = [])
     {
         $this->workers = [];
 
-        foreach ((array) $workers as $worker) {
+        foreach ($workers as $worker) {
             $this->addWorker($worker);
         }
     }
@@ -36,7 +36,7 @@ class ProductionLine
     }
 
     /**
-     * @return Worker[]
+     * @return array<Worker>
      */
     public function getWorkers(): array
     {

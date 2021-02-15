@@ -23,13 +23,13 @@ use FSi\Bundle\AdminBundle\Event\FormEvent;
 
 class ResourceRepositoryContextSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         HandlerInterface $handler,
         ResourceElement $element,
         MapBuilder $builder,
         ResourceFormBuilder $resourceFormBuilder,
         FormInterface $form
-    ) {
+    ): void {
         $builder->getMap()->willReturn(['resources' => []]);
         $element->getResourceFormOptions()->willReturn([]);
         $element->getKey()->willReturn('resources');
@@ -39,19 +39,19 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         $this->setElement($element);
     }
 
-    function it_is_context()
+    public function it_is_context(): void
     {
         $this->shouldBeAnInstanceOf(ContextInterface::class);
     }
 
-    function it_returns_default_template_if_element_has_none(ResourceElement $element)
+    public function it_returns_default_template_if_element_has_none(ResourceElement $element): void
     {
         $element->hasOption('template')->willReturn(false);
         $this->getTemplateName()->shouldReturn('default_resource');
         $this->hasTemplateName()->shouldReturn(true);
     }
 
-    function it_returns_template_from_element_if_it_has_one(ResourceElement $element)
+    public function it_returns_template_from_element_if_it_has_one(ResourceElement $element): void
     {
         $element->hasOption('template')->willReturn(true);
         $element->getOption('template')->willReturn('resource.html.twig');
@@ -59,14 +59,14 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn('resource.html.twig');
     }
 
-    function it_has_array_data()
+    public function it_has_array_data(): void
     {
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('form');
         $this->getData()->shouldHaveKeyInArray('element');
     }
 
-    function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request)
+    public function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request): void
     {
         $handler->handleRequest(Argument::type(FormEvent::class), $request)
             ->willReturn(null);
@@ -74,11 +74,11 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_return_response_from_handler(
+    public function it_return_response_from_handler(
         HandlerInterface $handler,
         Request $request,
         Response $response
-    ) {
+    ): void {
         $handler->handleRequest(Argument::type(FormEvent::class), $request)
             ->willReturn($response);
 
@@ -89,7 +89,7 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
     public function getMatchers(): array
     {
         return [
-            'haveKeyInArray' => function($subject, $key) {
+            'haveKeyInArray' => function ($subject, $key) {
                 if (!is_array($subject)) {
                     return false;
                 }

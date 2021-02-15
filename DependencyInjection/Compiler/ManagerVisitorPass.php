@@ -18,7 +18,7 @@ class ManagerVisitorPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('admin.manager')) {
+        if (false === $container->hasDefinition('admin.manager')) {
             return;
         }
 

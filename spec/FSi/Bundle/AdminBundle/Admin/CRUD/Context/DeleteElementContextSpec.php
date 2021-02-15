@@ -16,23 +16,23 @@ use FSi\Bundle\AdminBundle\Event\FormEvent;
 
 class DeleteElementContextSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         DeleteElement $element,
         FormBuilderInterface $formBuilder,
         FormInterface $batchForm,
         HandlerInterface $handler
-    ) {
+    ): void {
         $this->beConstructedWith([$handler], $formBuilder);
         $formBuilder->getForm()->willReturn($batchForm);
         $this->setElement($element);
     }
 
-    function it_is_context()
+    public function it_is_context(): void
     {
         $this->shouldBeAnInstanceOf(ContextInterface::class);
     }
 
-    function it_has_array_data()
+    public function it_has_array_data(): void
     {
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('form');
@@ -40,17 +40,17 @@ class DeleteElementContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('indexes');
     }
 
-    function it_does_not_have_template_name()
+    public function it_does_not_have_template_name(): void
     {
         $this->hasTemplateName()->shouldReturn(false);
         $this->getTemplateName()->shouldReturn(null);
     }
 
-    function it_handles_request_with_request_handlers(
+    public function it_handles_request_with_request_handlers(
         HandlerInterface $handler,
         Request $request,
         ParameterBag $requestParameterBag
-    ) {
+    ): void {
         $handler->handleRequest(Argument::type(FormEvent::class), $request)->willReturn(null);
 
         $request->request = $requestParameterBag;
@@ -59,12 +59,12 @@ class DeleteElementContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_return_response_from_handler(
+    public function it_return_response_from_handler(
         HandlerInterface $handler,
         Request $request,
         ParameterBag $requestParameterBag,
         Response $response
-    ) {
+    ): void {
         $handler->handleRequest(Argument::type(FormEvent::class), $request)->willReturn($response);
         $request->request = $requestParameterBag;
         $requestParameterBag->get('indexes', [])->willReturn([]);
@@ -75,7 +75,7 @@ class DeleteElementContextSpec extends ObjectBehavior
     public function getMatchers(): array
     {
         return [
-            'haveKeyInArray' => function($subject, $key) {
+            'haveKeyInArray' => function ($subject, $key) {
                 if (!is_array($subject)) {
                     return false;
                 }

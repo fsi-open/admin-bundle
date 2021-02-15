@@ -21,21 +21,21 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class FormValidRequestHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         EventDispatcherInterface $eventDispatcher,
         FormEvent $event,
         RouterInterface $router
-    ) {
+    ): void {
         $event->hasResponse()->willReturn(false);
         $this->beConstructedWith($eventDispatcher, $router);
     }
 
-    function it_is_context_request_handler()
+    public function it_is_context_request_handler(): void
     {
         $this->shouldHaveType(HandlerInterface::class);
     }
 
-    function it_throw_exception_for_non_list_event(ListEvent $listEvent, Request $request)
+    public function it_throw_exception_for_non_list_event(ListEvent $listEvent, Request $request): void
     {
         $this->shouldThrow(
             new RequestHandlerException(
@@ -44,12 +44,12 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         )->during('handleRequest', [$listEvent, $request]);
     }
 
-    function it_do_nothing_on_non_POST_request(
+    public function it_do_nothing_on_non_POST_request(
         FormEvent $event,
         Request $request,
         ResourceElement $element,
         EventDispatcherInterface $eventDispatcher
-    ) {
+    ): void {
         $event->getElement()->willReturn($element);
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
@@ -58,7 +58,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
 
-    function it_handle_POST_request(
+    public function it_handle_POST_request(
         FormEvent $event,
         Request $request,
         ParameterBag $query,
@@ -68,7 +68,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         RouterInterface $router,
         Resource $resource1,
         Resource $resource2
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
         $request->query = $query;
 
@@ -93,49 +93,53 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf(RedirectResponse::class);
     }
 
-    function it_return_response_from_pre_render_event(
+    public function it_return_response_from_pre_render_event(
         FormEvent $event,
         Request $request,
         ResourceElement $element,
         EventDispatcherInterface $eventDispatcher,
         Response $response
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
         $event->getElement()->willReturn($element);
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);
     }
 
-    function it_return_response_from_pre_entity_save_event(
+    public function it_return_response_from_pre_entity_save_event(
         FormEvent $event,
         Request $request,
         ResourceElement $element,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
         Response $response
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
         $event->getElement()->willReturn($element);
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);
     }
 
-    function it_return_response_from_post_entity_save_event(
+    public function it_return_response_from_post_entity_save_event(
         FormEvent $event,
         Request $request,
         ResourceElement $element,
@@ -144,7 +148,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         Response $response,
         Resource $resource1,
         Resource $resource2
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $event->getForm()->willReturn($form);
@@ -157,10 +161,12 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $element->save(Argument::type(Resource::class))->shouldBeCalledTimes(2);
 
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_POST_SAVE, $event)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);

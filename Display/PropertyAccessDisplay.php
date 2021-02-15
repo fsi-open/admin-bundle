@@ -18,7 +18,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 class PropertyAccessDisplay implements Display
 {
     /**
-     * @var Property[]
+     * @var array<Property>
      */
     private $data = [];
 
@@ -61,7 +61,7 @@ class PropertyAccessDisplay implements Display
 
     private function validateObject($object): void
     {
-        if (!is_object($object) && !is_array($object)) {
+        if (false === is_object($object) && false === is_array($object)) {
             throw new InvalidArgumentException(sprintf(
                 'Argument used to create "%s" must be an object or an array, got "%s" instead.',
                 get_class($this),

@@ -6,19 +6,19 @@ use PhpSpec\ObjectBehavior;
 
 class EmptyValueSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $this->beConstructedWith('-');
     }
 
-    function it_format_empty_values()
+    public function it_format_empty_values(): void
     {
         $this->format(0)->shouldReturn('-');
         $this->format(null)->shouldReturn('-');
         $this->format([])->shouldReturn('-');
     }
 
-    function it_ignore_not_empty_value()
+    public function it_ignore_not_empty_value(): void
     {
         $datetime = new \DateTime();
         $this->format($datetime)->shouldReturn($datetime);

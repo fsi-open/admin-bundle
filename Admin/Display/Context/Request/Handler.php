@@ -29,12 +29,12 @@ class Handler extends AbstractHandler
      */
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
-        if (!$event instanceof DisplayEvent) {
+        if (false === $event instanceof DisplayEvent) {
             throw new RequestHandlerException(sprintf('%s requires DisplayEvent', get_class($this)));
         }
 
         $this->eventDispatcher->dispatch(DisplayEvents::DISPLAY_PRE_RENDER, $event);
-        if ($event->hasResponse()) {
+        if (true === $event->hasResponse()) {
             return $event->getResponse();
         }
 

@@ -26,7 +26,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class DeleteRequestHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         HandlerInterface $batchHandler,
         FlashMessages $flashMessage,
         RouterInterface $router,
@@ -35,7 +35,7 @@ class DeleteRequestHandlerSpec extends ObjectBehavior
         ParameterBag $queryParameterbag,
         Request $request,
         RedirectResponse $response
-    ) {
+    ): void {
         $request->query = $queryParameterbag;
 
         $queryParameterbag->has('redirect_uri')->willReturn(false);
@@ -52,31 +52,31 @@ class DeleteRequestHandlerSpec extends ObjectBehavior
         $this->beConstructedWith($batchHandler, $flashMessage, $router);
     }
 
-    function it_is_context_request_handler()
+    public function it_is_context_request_handler(): void
     {
         $this->shouldHaveType(HandlerInterface::class);
     }
 
-    function it_catches_foreign_key_violation_exception(
+    public function it_catches_foreign_key_violation_exception(
         FormEvent $event,
         Request $request,
         HandlerInterface $batchHandler,
         FlashMessages $flashMessage
-    ) {
+    ): void {
         $batchHandler->handleRequest($event, $request)->willThrow(ForeignKeyConstraintViolationException::class);
         $flashMessage->error(Argument::type('string'))->shouldBeCalled();
 
         $this->handleRequest($event, $request);
     }
 
-    function it_uses_redirect_uri_if_present(
+    public function it_uses_redirect_uri_if_present(
         RouterInterface $router,
         DeleteElement $element,
         FormEvent $event,
         Request $request,
         ParameterBag $queryParameterbag,
         FlashMessages $flashMessage
-    ) {
+    ): void {
         $queryParameterbag->has('redirect_uri')->shouldNotBeCalled();
         $queryParameterbag->get('redirect_uri')->shouldNotBeCalled();
         $element->getSuccessRoute()->shouldNotBeCalled();
@@ -88,12 +88,12 @@ class DeleteRequestHandlerSpec extends ObjectBehavior
         $this->handleRequest($event, $request);
     }
 
-    function it_throws_exception_when_delete_not_allowed(
+    public function it_throws_exception_when_delete_not_allowed(
         FormEvent $event,
         Request $request,
         DeleteElement $element,
         FlashMessages $flashMessage
-    ) {
+    ): void {
         $element->getOption('allow_delete')->willReturn(false);
         $flashMessage->error(Argument::any())->shouldNotBeCalled();
 

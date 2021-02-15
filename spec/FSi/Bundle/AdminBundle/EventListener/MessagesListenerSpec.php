@@ -18,12 +18,12 @@ use Symfony\Component\Form\FormInterface;
 
 class MessagesListenerSpec extends ObjectBehavior
 {
-    public function let(FlashMessages $flashMessages)
+    public function let(FlashMessages $flashMessages): void
     {
         $this->beConstructedWith($flashMessages);
     }
 
-    public function it_listen_events()
+    public function it_listen_events(): void
     {
         $this->getSubscribedEvents()->shouldReturn([
             FormEvents::FORM_REQUEST_POST_SUBMIT => 'onFormRequestPostSubmit',
@@ -36,7 +36,7 @@ class MessagesListenerSpec extends ObjectBehavior
         FormEvent $event,
         FormInterface $form,
         FlashMessages $flashMessages
-    ) {
+    ): void {
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
         $flashMessages->error('messages.form.error')->shouldNotBeCalled();
@@ -48,7 +48,7 @@ class MessagesListenerSpec extends ObjectBehavior
         FormEvent $event,
         FormInterface $form,
         FlashMessages $flashMessages
-    ) {
+    ): void {
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(false);
         $flashMessages->error('messages.form.error')->shouldBeCalled();
@@ -56,13 +56,13 @@ class MessagesListenerSpec extends ObjectBehavior
         $this->onFormRequestPostSubmit($event);
     }
 
-    public function it_add_message_on_post_save(FormEvent $event, FlashMessages $flashMessages)
+    public function it_add_message_on_post_save(FormEvent $event, FlashMessages $flashMessages): void
     {
         $flashMessages->success('messages.form.save')->shouldBeCalled();
         $this->onFormDataPostSave($event);
     }
 
-    public function it_add_message_on_batch_post_apply(FormEvent $event, FlashMessages $flashMessages)
+    public function it_add_message_on_batch_post_apply(FormEvent $event, FlashMessages $flashMessages): void
     {
         $flashMessages->success('messages.batch.success')->shouldBeCalled();
         $this->onBatchObjectsPostApply($event);

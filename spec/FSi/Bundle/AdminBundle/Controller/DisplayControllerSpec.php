@@ -24,19 +24,19 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DisplayControllerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         ContextManager $manager,
         EngineInterface $templating,
         DisplayContext $context,
         EventDispatcherInterface $dispatcher
-    ) {
+    ): void {
         $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('default_display');
 
         $this->beConstructedWith($templating, $manager, $dispatcher);
     }
 
-    function it_dispatches_event(
+    public function it_dispatches_event(
         EventDispatcherInterface $dispatcher,
         Request $request,
         Response $response,
@@ -44,7 +44,7 @@ class DisplayControllerSpec extends ObjectBehavior
         ContextManager $manager,
         DisplayContext $context,
         EngineInterface $templating
-    ) {
+    ): void {
         $dispatcher->dispatch(
             AdminEvents::CONTEXT_PRE_CREATE,
             Argument::type(AdminEvent::class)
@@ -58,14 +58,14 @@ class DisplayControllerSpec extends ObjectBehavior
         $this->displayAction($element, $request)->shouldReturn($response);
     }
 
-    function it_returns_response(
+    public function it_returns_response(
         Request $request,
         Response $response,
         Element $element,
         ContextManager $manager,
         DisplayContext $context,
         EngineInterface $templating
-    ) {
+    ): void {
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
@@ -74,11 +74,11 @@ class DisplayControllerSpec extends ObjectBehavior
         $this->displayAction($element, $request)->shouldReturn($response);
     }
 
-    function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
+    public function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
         Element $element,
         ContextManager $manager,
         Request $request
-    ) {
+    ): void {
         $element->getId()->willReturn('my_awesome_display');
         $manager->createContext(Argument::type('string'), $element)->willReturn(null);
 
@@ -86,11 +86,11 @@ class DisplayControllerSpec extends ObjectBehavior
             ->during('displayAction', [$element, $request]);
     }
 
-    function it_throws_exception_when_no_response_and_no_template_name(
+    public function it_throws_exception_when_no_response_and_no_template_name(
         Element $element,
         ContextManager $manager,
         Request $request
-    ) {
+    ): void {
         $element->getId()->willReturn('my_awesome_display');
         $manager->createContext(Argument::type('string'), $element)->willReturn(null);
 
