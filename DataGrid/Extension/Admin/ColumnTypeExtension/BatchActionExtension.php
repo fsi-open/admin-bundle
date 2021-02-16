@@ -109,7 +109,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         ]);
         $this->actionOptionsResolver->setNormalizer(
             'additional_parameters',
-            function (Options $options, $value) {
+            function (Options $options, $value): array {
                 return $this->normalizeAdditionalParameters($options, $value);
             }
         );
@@ -216,7 +216,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     {
         if (true === is_string($options['redirect_uri'])) {
             $additionalParameters['redirect_uri'] = $options['redirect_uri'];
-        } elseif ($options['redirect_uri'] === false) {
+        } elseif (false === $options['redirect_uri']) {
             return $additionalParameters;
         }
 
