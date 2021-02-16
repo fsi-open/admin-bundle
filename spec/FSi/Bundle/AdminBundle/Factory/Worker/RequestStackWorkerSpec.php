@@ -8,15 +8,15 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestStackWorkerSpec extends ObjectBehavior
 {
-    function let(RequestStack $requestStack)
+    public function let(RequestStack $requestStack): void
     {
         $this->beConstructedWith($requestStack);
     }
 
-    function it_mount_request_stack_to_elements_that_are_request_stack_aware(
+    public function it_mount_request_stack_to_elements_that_are_request_stack_aware(
         RequestStackAwareElement $element,
         RequestStack $requestStack
-    ) {
+    ): void {
         $element->setRequestStack($requestStack)->shouldBeCalled();
 
         $this->mount($element);

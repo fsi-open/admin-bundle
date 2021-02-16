@@ -61,7 +61,7 @@ class AdminAnnotatedElementPass implements CompilerPassInterface
         foreach ($bundleClasses as $bundleClass) {
             $bundleClassReflector = new ReflectionClass($bundleClass);
             $bundleAdminPath = dirname($bundleClassReflector->getFileName()) . '/Admin';
-            if (is_dir($bundleAdminPath)) {
+            if (true === is_dir($bundleAdminPath)) {
                 $container->addResource(new DirectoryResource($bundleAdminPath, '/\.php$/'));
                 $paths[] = $bundleAdminPath;
             }
@@ -87,7 +87,7 @@ class AdminAnnotatedElementPass implements CompilerPassInterface
                 Element::class
             );
 
-            if ($annotation instanceof Element) {
+            if (true === $annotation instanceof Element) {
                 $annotatedAdminClasses[] = $class;
             }
         }

@@ -65,7 +65,7 @@ class FlashMessages
 
     private function add(string $type, string $message, array $params, string $domain): void
     {
-        if ($this->getFlashBag()->has($this->prefix)) {
+        if (true === $this->getFlashBag()->has($this->prefix)) {
             $messages = $this->getFlashBag()->get($this->prefix);
         } else {
             $messages = [];
@@ -78,11 +78,11 @@ class FlashMessages
 
     private function getFlashBag(): FlashBagInterface
     {
-        if ($this->flashBag instanceof FlashBagInterface) {
+        if (true === $this->flashBag instanceof FlashBagInterface) {
             return $this->flashBag;
         }
 
-        $this->flashBag = method_exists($this->session, 'getFlashBag')
+        $this->flashBag = true === method_exists($this->session, 'getFlashBag')
             ? $this->session->getFlashBag()
             : new FlashBag();
 

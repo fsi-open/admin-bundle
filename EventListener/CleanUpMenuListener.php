@@ -24,14 +24,14 @@ class CleanUpMenuListener
 
     private function cleanMenuLevel(MenuItem $menu): void
     {
-        if (!$menu->hasChildren()) {
+        if (false === $menu->hasChildren()) {
             return;
         }
 
         foreach ($menu->getChildren() as $menuItem) {
             $this->cleanMenuLevel($menuItem);
 
-            if (!$menuItem instanceof RoutableItem && !$menuItem->hasChildren()) {
+            if (false === $menuItem instanceof RoutableItem && false === $menuItem->hasChildren()) {
                 $menu->removeChild($menuItem->getName());
             }
         }

@@ -23,13 +23,13 @@ use FSi\Bundle\AdminBundle\Event\ListEvent;
 
 class ListElementContextSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         ListElement $element,
         DataSourceInterface $datasource,
         DataGridInterface $datagrid,
         DataGridViewInterface $datagridView,
         HandlerInterface $handler
-    ) {
+    ): void {
         $this->beConstructedWith([$handler], 'default_list');
         $element->createDataGrid()->willReturn($datagrid);
         $datagrid->createView()->willReturn($datagridView);
@@ -37,12 +37,12 @@ class ListElementContextSpec extends ObjectBehavior
         $this->setElement($element);
     }
 
-    function it_is_context()
+    public function it_is_context(): void
     {
         $this->shouldBeAnInstanceOf(ContextInterface::class);
     }
 
-    function it_has_array_data()
+    public function it_has_array_data(): void
     {
         $this->getData()->shouldBeArray();
         $this->getData()->shouldHaveKeyInArray('datagrid_view');
@@ -50,14 +50,14 @@ class ListElementContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('element');
     }
 
-    function it_returns_default_template_if_element_does_not_have_one(ListElement $element)
+    public function it_returns_default_template_if_element_does_not_have_one(ListElement $element): void
     {
         $element->hasOption('template_list')->willReturn(false);
         $this->getTemplateName()->shouldReturn('default_list');
         $this->hasTemplateName()->shouldReturn(true);
     }
 
-    function it_returns_template_from_element_if_it_has_one(ListElement $element)
+    public function it_returns_template_from_element_if_it_has_one(ListElement $element): void
     {
         $element->hasOption('template_list')->willReturn(true);
         $element->getOption('template_list')->willReturn('list.html.twig');
@@ -65,7 +65,7 @@ class ListElementContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn('list.html.twig');
     }
 
-    function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request)
+    public function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request): void
     {
         $handler->handleRequest(Argument::type(ListEvent::class), $request)
             ->willReturn(null);
@@ -73,11 +73,11 @@ class ListElementContextSpec extends ObjectBehavior
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_return_response_from_handler(
+    public function it_return_response_from_handler(
         HandlerInterface $handler,
         Request $request,
         Response $response
-    ) {
+    ): void {
         $handler->handleRequest(Argument::type(ListEvent::class), $request)
             ->willReturn($response);
 
@@ -88,7 +88,7 @@ class ListElementContextSpec extends ObjectBehavior
     public function getMatchers(): array
     {
         return [
-            'haveKeyInArray' => function($subject, $key) {
+            'haveKeyInArray' => function ($subject, $key) {
                 if (!is_array($subject)) {
                     return false;
                 }

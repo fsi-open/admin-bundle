@@ -19,29 +19,29 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 
 class DependentListElementSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $this->beAnInstanceOf(MyDependentList::class);
         $this->beConstructedWith([]);
     }
 
-    function it_is_admin_element()
+    public function it_is_admin_element(): void
     {
         $this->shouldHaveType(GenericListElement::class);
         $this->shouldHaveType(ListElement::class);
         $this->shouldHaveType(DependentElement::class);
     }
 
-    function it_has_default_route()
+    public function it_has_default_route(): void
     {
         $this->getRoute()->shouldReturn('fsi_admin_list');
     }
 
-    function it_returns_null_if_parent_element_does_not_have_data_indexer(
+    public function it_returns_null_if_parent_element_does_not_have_data_indexer(
         RequestStack $requestStack,
         Request $currentRequest,
         Element $parentElement
-    ) {
+    ): void {
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
 
         $this->setRequestStack($requestStack);
@@ -50,12 +50,12 @@ class DependentListElementSpec extends ObjectBehavior
         $this->getParentObject()->shouldReturn(null);
     }
 
-    function it_returns_null_if_parent_object_id_is_not_available(
+    public function it_returns_null_if_parent_object_id_is_not_available(
         RequestStack $requestStack,
         Request $currentRequest,
         DataIndexerElement $parentElement,
         DataIndexerInterface $parentDataIndexer
-    ) {
+    ): void {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
         $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn(null);
@@ -66,12 +66,12 @@ class DependentListElementSpec extends ObjectBehavior
         $this->getParentObject()->shouldReturn(null);
     }
 
-    function it_returns_parent_object_if_its_available(
+    public function it_returns_parent_object_if_its_available(
         RequestStack $requestStack,
         Request $currentRequest,
         DataIndexerElement $parentElement,
         DataIndexerInterface $parentDataIndexer
-    ) {
+    ): void {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
         $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn('parent_object_id');
@@ -83,12 +83,12 @@ class DependentListElementSpec extends ObjectBehavior
         $this->getParentObject()->shouldReturn('parent_object');
     }
 
-    function its_route_parameters_contain_parent_object_id_if_its_available(
+    public function its_route_parameters_contain_parent_object_id_if_its_available(
         RequestStack $requestStack,
         Request $currentRequest,
         DataIndexerElement $parentElement,
         DataIndexerInterface $parentDataIndexer
-    ) {
+    ): void {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
         $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn('parent_object_id');
@@ -100,28 +100,30 @@ class DependentListElementSpec extends ObjectBehavior
             ->shouldHaveKeyWithValue(DependentElement::PARENT_REQUEST_PARAMETER, 'parent_object_id');
     }
 
-    function it_throws_exception_when_init_datagrid_does_not_return_instance_of_datagrid(
+    public function it_throws_exception_when_init_datagrid_does_not_return_instance_of_datagrid(
         DataGridFactoryInterface $factory
-    ) {
+    ): void {
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
 
         $this->shouldThrow(\TypeError::class)->during('createDataGrid');
     }
 
-    function it_throws_exception_when_init_datasource_does_not_return_instance_of_datasource(
+    public function it_throws_exception_when_init_datasource_does_not_return_instance_of_datasource(
         DataSourceFactoryInterface $factory
-    ) {
+    ): void {
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
 
         $this->shouldThrow(\TypeError::class)->during('createDataSource');
     }
 
-    function it_has_default_options_values()
+    public function it_has_default_options_values(): void
     {
-        $this->getOptions()->shouldReturn([
-            'template_list' => null,
-        ]);
+        $this->getOptions()->shouldReturn(
+            [
+                'template_list' => null,
+            ]
+        );
     }
 }

@@ -10,29 +10,29 @@ use PhpSpec\ObjectBehavior;
 
 class ListWorkerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         DataSourceFactoryInterface $dataSourceFactory,
         DataGridFactoryInterface $dataGridFactory
-    ) {
+    ): void {
         $this->beConstructedWith($dataSourceFactory, $dataGridFactory);
     }
 
-    function it_mount_datasource_factory_and_datagrid_factory_to_elements_that_behave_like_list(
+    public function it_mount_datasource_factory_and_datagrid_factory_to_elements_that_behave_like_list(
         GenericCRUDElement $element,
         DataSourceFactoryInterface $dataSourceFactory,
         DataGridFactoryInterface $dataGridFactory
-    ) {
+    ): void {
         $element->setDataSourceFactory($dataSourceFactory)->shouldBeCalled();
         $element->setDataGridFactory($dataGridFactory)->shouldBeCalled();
 
         $this->mount($element);
     }
 
-    function it_mount_datasource_factory_and_datagrid_factory_to_elements_that_implements_list_element(
+    public function it_mount_datasource_factory_and_datagrid_factory_to_elements_that_implements_list_element(
         ListElement $element,
         DataSourceFactoryInterface $dataSourceFactory,
         DataGridFactoryInterface $dataGridFactory
-    ) {
+    ): void {
         $element->setDataSourceFactory($dataSourceFactory)->shouldBeCalled();
         $element->setDataGridFactory($dataGridFactory)->shouldBeCalled();
 

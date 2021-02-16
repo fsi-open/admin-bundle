@@ -33,11 +33,11 @@ class LocaleListener implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event): void
     {
         $request = $event->getRequest();
-        if (!$request->hasPreviousSession()) {
+        if (false === $request->hasPreviousSession()) {
             return;
         }
 
-        if ($request->attributes->has('_locale')) {
+        if (true === $request->attributes->has('_locale')) {
             return;
         }
 

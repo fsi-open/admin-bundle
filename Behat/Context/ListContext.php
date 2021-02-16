@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
+use Exception;
 use FSi\Bundle\AdminBundle\Behat\Element\ListElement;
 use FSi\Bundle\AdminBundle\Behat\Page\DefaultPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -46,7 +48,7 @@ class ListContext extends AbstractContext
     /**
      * @When I check the row :name
      */
-    public function iCheckTheRow($name)
+    public function iCheckTheRow($name): void
     {
         $this->selectedRows[] = $this->getListElement()->getNamedRowId($name);
     }
@@ -54,7 +56,7 @@ class ListContext extends AbstractContext
     /**
      * @When /^I press checkbox in first column in first row$/
      */
-    public function iPressCheckboxInFirstColumnInFirstRow()
+    public function iPressCheckboxInFirstColumnInFirstRow(): void
     {
         $this->selectedRows[] = $this->getListElement()->getRowId(1);
     }
@@ -62,7 +64,7 @@ class ListContext extends AbstractContext
     /**
      * @When /^I press checkbox in first column header$/
      */
-    public function iPressCheckboxInFirstColumnHeader()
+    public function iPressCheckboxInFirstColumnHeader(): void
     {
         $this->selectedRows = array_unique(
             array_merge($this->selectedRows, $this->getListElement()->getRowsIds())
@@ -72,7 +74,7 @@ class ListContext extends AbstractContext
     /**
      * @Given I press :action link in actions column of first element at list
      */
-    public function iPressLinkInColumnOfFirstElementAtList($link)
+    public function iPressLinkInColumnOfFirstElementAtList($link): void
     {
         $this->getListElement()->clickRowAction(1, $link);
     }
@@ -80,13 +82,13 @@ class ListContext extends AbstractContext
     /**
      * @Given I perform the batch action :action
      */
-    public function iPerformBatchAction($action)
+    public function iPerformBatchAction($action): void
     {
         if (false === $this->getSession()->isStarted()) {
             $this->getSession()->start();
         }
 
-        if ($this->isSeleniumDriverUsed()) {
+        if (true === $this->isSeleniumDriverUsed()) {
             $this->defaultPage->find('css', '#batch_action_action')->selectOption($action);
             $this->defaultPage->findButton('Ok')->click();
         } else {
@@ -112,7 +114,7 @@ class ListContext extends AbstractContext
     /**
      * @Then /^I should see list with following columns$/
      */
-    public function iShouldSeeListWithFollowingColumns(TableNode $table)
+    public function iShouldSeeListWithFollowingColumns(TableNode $table): void
     {
         $elements = $table->getColumn(0);
         array_shift($elements);
@@ -121,12 +123,12 @@ class ListContext extends AbstractContext
         foreach ($elements as $expectedColumn) {
             if (
                 strtolower($expectedColumn) === ListElement::BATCH_COLUMN
-                && $this->getListElement()->hasBatchColumn()
+                && true === $this->getListElement()->hasBatchColumn()
             ) {
                 continue;
             }
-            if (!in_array($expectedColumn, $presentColumns)) {
-                throw new \Exception(sprintf('there is no column with name "%s"', $expectedColumn));
+            if (false === in_array($expectedColumn, $presentColumns, true)) {
+                throw new Exception(sprintf('there is no column with name "%s"', $expectedColumn));
             }
         }
     }
@@ -137,7 +139,7 @@ class ListContext extends AbstractContext
      * @Then /^there should be (\d+) elements at list$/
      * @Then /^there should be (\d+) element at list$/
      */
-    public function thereShouldBeElementsAtList($elemetsCount)
+    public function thereShouldBeElementsAtList($elemetsCount): void
     {
         expect($this->getListElement()->getRowsCount())->toBe($elemetsCount);
     }
@@ -145,7 +147,7 @@ class ListContext extends AbstractContext
     /**
      * @Given /^"([^"]*)" column is editable$/
      */
-    public function columnIsEditable($columnHeader)
+    public function columnIsEditable($columnHeader): void
     {
         expect($this->getListElement()->isColumnEditable($columnHeader))->toBe(true);
     }
@@ -153,7 +155,7 @@ class ListContext extends AbstractContext
     /**
      * @Then I should not see pagination on page :page
      */
-    public function iShouldNotSeePagination(Page $page)
+    public function iShouldNotSeePagination(Page $page): void
     {
         expect($page->find('css', 'ul.pagination'))->toBe(null);
     }
@@ -162,7 +164,7 @@ class ListContext extends AbstractContext
      * @Given /^I clicked "([^"]*)" in "([^"]*)" column in first row$/
      * @When /^I click "([^"]*)" in "([^"]*)" column in first row$/
      */
-    public function iClickInColumnInFirstRow($link, $columnHeader)
+    public function iClickInColumnInFirstRow($link, $columnHeader): void
     {
         $this->getListElement()->getCell($columnHeader, 1)->clickLink($link);
     }
@@ -171,7 +173,7 @@ class ListContext extends AbstractContext
      * @Given /^I clicked edit in "([^"]*)" column in first row$/
      * @When /^I click edit in "([^"]*)" column in first row$/
      */
-    public function iClickEditInColumnInFirstRow($columnHeader)
+    public function iClickEditInColumnInFirstRow($columnHeader): void
     {
         $cell = $this->getListElement()->getCell($columnHeader, 1);
         $this->getListElement()->click($cell->getXPath());
@@ -181,7 +183,7 @@ class ListContext extends AbstractContext
     /**
      * @Then /^popover with "([^"]*)" field in form should appear$/
      */
-    public function popoverWithFieldInFormShouldAppear($newsTitle)
+    public function popoverWithFieldInFormShouldAppear($newsTitle): void
     {
         $popover = $this->defaultPage->getPopover();
         expect($popover->isVisible())->toBe(true);
@@ -191,7 +193,7 @@ class ListContext extends AbstractContext
     /**
      * @Then /^popover with empty date field in form should appear$/
      */
-    public function popoverWithEmptyDateFieldInFormShouldAppear()
+    public function popoverWithEmptyDateFieldInFormShouldAppear(): void
     {
         $popover = $this->defaultPage->getPopover();
         expect($popover->isVisible())->toBe(true);
@@ -200,7 +202,7 @@ class ListContext extends AbstractContext
     /**
      * @Then /^popover should not be visible anymore$/
      */
-    public function popoverShouldNotBeVisibleAnymore()
+    public function popoverShouldNotBeVisibleAnymore(): void
     {
         expect($this->defaultPage->getPopover())->toBe(null);
     }
@@ -208,7 +210,7 @@ class ListContext extends AbstractContext
     /**
      * @When /^I fill "([^"]*)" field at popover with "([^"]*)" value$/
      */
-    public function iFillFieldAtPopoverWithValue($field, $value)
+    public function iFillFieldAtPopoverWithValue($field, $value): void
     {
         $this->defaultPage->getPopover()->fillField($field, $value);
     }
@@ -216,7 +218,7 @@ class ListContext extends AbstractContext
     /**
      * @Given /^I press "([^"]*)" at popover$/
      */
-    public function iPressAtPopover($button)
+    public function iPressAtPopover($button): void
     {
         $this->defaultPage->getPopover()->pressButton($button);
     }
@@ -224,11 +226,11 @@ class ListContext extends AbstractContext
     /**
      * @When /^I click X at popover$/
      */
-    public function iClickXAtPopover()
+    public function iClickXAtPopover(): void
     {
         $session = $this->defaultPage->getSession();
-        /** @var NodeElement $popover */
         $session->wait(1000, 'jQuery(".popover").length > 0');
+        /** @var NodeElement $popover */
         $popover = $this->defaultPage->getPopover();
         $popover->find('css', '.editable-close')->click();
         $session->wait(1000, 'jQuery(".popover").length === 0');

@@ -59,13 +59,13 @@ class DeleteRequestHandler implements HandlerInterface
             $this->flashMessages->error('crud.delete.error.foreign_key');
         }
 
-        return isset($response) ? $response : $this->getRedirectResponse($event, $request);
+        return $response ?? $this->getRedirectResponse($event, $request);
     }
 
     private function validateDeletion(FormEvent $event): void
     {
         $element = $event->getElement();
-        if ($element->hasOption('allow_delete') && false === $element->getOption('allow_delete')) {
+        if (true === $element->hasOption('allow_delete') && true !== $element->getOption('allow_delete')) {
             throw new LogicException(sprintf(
                 'Tried to delete objects through element "%s", which has option "allow_delete" set to false',
                 get_class($element)
@@ -75,12 +75,12 @@ class DeleteRequestHandler implements HandlerInterface
 
     private function getRedirectResponse(FormEvent $event, Request $request): RedirectResponse
     {
-        if ($request->query->has('redirect_uri')) {
+        if (true === $request->query->has('redirect_uri')) {
             return new RedirectResponse($request->query->get('redirect_uri'));
         }
 
         $element = $event->getElement();
-        if (!($element instanceof RedirectableElement)) {
+        if (false === $element instanceof RedirectableElement) {
             throw new LogicException(sprintf(
                 'Cannot generate a redirect response for element of class "%s"',
                 get_class($element)
@@ -88,10 +88,7 @@ class DeleteRequestHandler implements HandlerInterface
         }
 
         return new RedirectResponse(
-            $this->router->generate(
-                $element->getSuccessRoute(),
-                $element->getSuccessRouteParameters()
-            )
+            $this->router->generate($element->getSuccessRoute(), $element->getSuccessRouteParameters())
         );
     }
 }

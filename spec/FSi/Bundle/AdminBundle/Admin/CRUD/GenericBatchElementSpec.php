@@ -10,28 +10,28 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 
 class GenericBatchElementSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $this->beAnInstanceOf(MyBatch::class);
         $this->beConstructedWith([]);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(GenericBatchElement::class);
     }
 
-    function it_is_delete_element()
+    public function it_is_delete_element(): void
     {
         $this->shouldHaveType(BatchElement::class);
     }
 
-    function it_is_admin_element()
+    public function it_is_admin_element(): void
     {
         $this->shouldHaveType(Element::class);
     }
 
-    function it_has_default_route()
+    public function it_has_default_route(): void
     {
         $this->getRoute()->shouldReturn('fsi_admin_batch');
     }

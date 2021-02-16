@@ -7,12 +7,12 @@ use PhpSpec\ObjectBehavior;
 
 class ElementItemSpec extends ObjectBehavior
 {
-    function let(Element $element)
+    public function let(Element $element): void
     {
         $this->beConstructedWith('some name', $element);
     }
 
-    function it_has_default_options()
+    public function it_has_default_options(): void
     {
         $this->getOptions()->shouldReturn(['attr' => ['id' => null, 'class' => null], 'elements' => []]);
     }

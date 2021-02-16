@@ -35,7 +35,7 @@ class ResourceContext extends PageObjectContext implements KernelAwareContext
     /**
      * @Given /^there are following resources added to resource map$/
      */
-    public function thereAreFollowingResourcesAddedToResourceMap(TableNode $resources)
+    public function thereAreFollowingResourcesAddedToResourceMap(TableNode $resources): void
     {
         foreach ($resources->getHash() as $resource) {
             expect($this->getResourceMapBuilder()->hasResource($resource['Key']))->toBe(true);
@@ -54,7 +54,7 @@ class ResourceContext extends PageObjectContext implements KernelAwareContext
     /**
      * @Given /^I fill form "Content" field with "([^"]*)"$/
      */
-    public function iFillFormFieldWith($value)
+    public function iFillFormFieldWith($value): void
     {
         $this->getElement('Form')->fillField('Content', $value);
     }
@@ -62,7 +62,7 @@ class ResourceContext extends PageObjectContext implements KernelAwareContext
     /**
      * @Given /^I should see form "Content" field with value "([^"]*)"$/
      */
-    public function iShouldSeeFormFieldWithValue($value)
+    public function iShouldSeeFormFieldWithValue($value): void
     {
         expect($this->getElement('Form')->findField('Content')->getValue())->toBe($value);
     }

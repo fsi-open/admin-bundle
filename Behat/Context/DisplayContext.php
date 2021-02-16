@@ -31,7 +31,7 @@ class DisplayContext extends PageObjectContext implements KernelAwareContext
     /**
      * @Given /^I should see display with following fields$/
      */
-    public function iShouldSeeDisplayWithFollowingFields(TableNode $table)
+    public function iShouldSeeDisplayWithFollowingFields(TableNode $table): void
     {
         $display = $this->getPage('News display')->getElement('Display');
         foreach ($table->getHash() as $row) {

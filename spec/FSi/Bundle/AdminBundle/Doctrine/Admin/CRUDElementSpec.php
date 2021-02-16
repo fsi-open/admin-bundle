@@ -21,7 +21,7 @@ use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class CRUDElementSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $registry, ObjectManager $om)
+    public function let(ManagerRegistry $registry, ObjectManager $om): void
     {
         $this->beAnInstanceOf(MyCrudElement::class);
         $this->beConstructedWith([]);
@@ -30,7 +30,7 @@ class CRUDElementSpec extends ObjectBehavior
         $this->setManagerRegistry($registry);
     }
 
-    public function it_should_return_object_manager(ObjectManager $om)
+    public function it_should_return_object_manager(ObjectManager $om): void
     {
         $this->getObjectManager()->shouldReturn($om);
     }
@@ -38,7 +38,7 @@ class CRUDElementSpec extends ObjectBehavior
     public function it_should_return_object_repository(
         ObjectManager $om,
         ObjectRepository $repository
-    ) {
+    ): void {
         $om->getRepository('FSiDemoBundle:Entity')->willReturn($repository);
         $this->getRepository()->shouldReturn($repository);
     }
@@ -46,7 +46,7 @@ class CRUDElementSpec extends ObjectBehavior
     public function it_should_save_object_at_object_manager(
         ObjectManager $om,
         stdClass $object
-    ) {
+    ): void {
         $om->persist(Argument::type('stdClass'))->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
@@ -56,14 +56,14 @@ class CRUDElementSpec extends ObjectBehavior
     public function it_should_remove_object_from_object_manager(
         ObjectManager $om,
         stdClass $object
-    ) {
+    ): void {
         $om->remove(Argument::type('stdClass'))->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
         $this->delete($object);
     }
 
-    public function it_should_save_datagrid(ObjectManager $om)
+    public function it_should_save_datagrid(ObjectManager $om): void
     {
         $om->flush()->shouldBeCalled();
 
@@ -75,7 +75,7 @@ class CRUDElementSpec extends ObjectBehavior
         ObjectManager $om,
         ObjectRepository $repository,
         ClassMetadata $metadata
-    ) {
+    ): void {
         $registry->getManagerForClass('FSi/Bundle/DemoBundle/Entity/Entity')->willReturn($om);
         $om->getRepository('FSiDemoBundle:Entity')->willReturn($repository);
         $metadata->isMappedSuperclass = false;

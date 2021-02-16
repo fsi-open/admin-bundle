@@ -11,12 +11,12 @@ use PhpSpec\ObjectBehavior;
 
 class MenuBuilderSpec extends ObjectBehavior
 {
-    function let(FactoryInterface $factory, ItemDecorator $itemDecorator)
+    public function let(FactoryInterface $factory, ItemDecorator $itemDecorator): void
     {
         $this->beConstructedWith($factory, $itemDecorator);
     }
 
-    function it_builds_knp_menu_and_decorates_items(
+    public function it_builds_knp_menu_and_decorates_items(
         FactoryInterface $factory,
         ItemInterface $knpRootItem,
         ItemInterface $knpFirstItem,
@@ -28,7 +28,7 @@ class MenuBuilderSpec extends ObjectBehavior
         Item $firstItem,
         Item $secondItem,
         Item $childOfSecondItem
-    ) {
+    ): void {
         $builder->buildMenu()->willReturn($rootItem);
         $firstItem->getName()->willReturn('first item');
         $firstItem->hasChildren()->willReturn(false);

@@ -18,30 +18,36 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class AdminAnnotatedElementPassSpec extends ObjectBehavior
 {
-    function let(AnnotationReader $annotationReader, AdminClassFinder $adminClassFinder)
+    public function let(AnnotationReader $annotationReader, AdminClassFinder $adminClassFinder): void
     {
         $this->beConstructedWith($annotationReader, $adminClassFinder);
     }
 
-    function it_registers_annotated_admin_classes_as_services(
+    public function it_registers_annotated_admin_classes_as_services(
         ContainerBuilder $container,
         AnnotationReader $annotationReader,
         AdminClassFinder $adminClassFinder
-    ) {
-        $container->getParameter('kernel.bundles')->willReturn([
-            MyBundle::class,
-            FSiAdminBundle::class,
-            FrameworkBundle::class
-        ]);
+    ): void {
+        $container->getParameter('kernel.bundles')->willReturn(
+            [
+                MyBundle::class,
+                FSiAdminBundle::class,
+                FrameworkBundle::class,
+            ]
+        );
 
         $baseDir = __DIR__ . '/../../../../../..';
-        $adminClassFinder->findClasses([
-            realpath($baseDir . '/spec/fixtures/Admin'),
-            realpath($baseDir . '/Admin')
-        ])->willReturn([
-            SimpleAdminElement::class,
-            CRUDElement::class
-        ]);
+        $adminClassFinder->findClasses(
+            [
+                realpath($baseDir . '/spec/fixtures/Admin'),
+                realpath($baseDir . '/Admin'),
+            ]
+        )->willReturn(
+            [
+                SimpleAdminElement::class,
+                CRUDElement::class,
+            ]
+        );
 
         $annotationReader->getClassAnnotation(
             Argument::allOf(
@@ -59,35 +65,43 @@ class AdminAnnotatedElementPassSpec extends ObjectBehavior
             Element::class
         )->willReturn(new Element([]));
 
-        $container->addResource(Argument::allOf(
-            Argument::type(DirectoryResource::class),
-            Argument::which('getResource', realpath($baseDir . '/spec/fixtures/Admin')),
-            Argument::which('getPattern', '/\.php$/')
-        ))->shouldBeCalled();
+        $container->addResource(
+            Argument::allOf(
+                Argument::type(DirectoryResource::class),
+                Argument::which('getResource', realpath($baseDir . '/spec/fixtures/Admin')),
+                Argument::which('getPattern', '/\.php$/')
+            )
+        )->shouldBeCalled();
 
-        $container->addResource(Argument::allOf(
-            Argument::type(DirectoryResource::class),
-            Argument::which('getResource', realpath($baseDir . '/Admin')),
-            Argument::which('getPattern', '/\.php$/')
-        ))->shouldBeCalled();
+        $container->addResource(
+            Argument::allOf(
+                Argument::type(DirectoryResource::class),
+                Argument::which('getResource', realpath($baseDir . '/Admin')),
+                Argument::which('getPattern', '/\.php$/')
+            )
+        )->shouldBeCalled();
 
-        $container->addDefinitions(Argument::that(function ($definitions) {
-            if (count($definitions) !== 1) {
-                return false;
-            }
+        $container->addDefinitions(
+            Argument::that(
+                function ($definitions) {
+                    if (count($definitions) !== 1) {
+                        return false;
+                    }
 
-            /** @var Definition $definition */
-            $definition = $definitions[SimpleAdminElement::class];
-            if ($definition->getClass() !== SimpleAdminElement::class) {
-                return false;
-            }
+                    /** @var Definition $definition */
+                    $definition = $definitions[SimpleAdminElement::class];
+                    if ($definition->getClass() !== SimpleAdminElement::class) {
+                        return false;
+                    }
 
-            if (!$definition->hasTag('admin.element')) {
-                return false;
-            };
+                    if (!$definition->hasTag('admin.element')) {
+                        return false;
+                    };
 
-            return true;
-        }))->shouldBeCalled();
+                    return true;
+                }
+            )
+        )->shouldBeCalled();
 
         $this->process($container);
     }

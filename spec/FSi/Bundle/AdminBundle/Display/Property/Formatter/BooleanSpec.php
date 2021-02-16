@@ -7,19 +7,19 @@ use Prophecy\Argument;
 
 class BooleanSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $this->beConstructedWith('yes', 'no');
     }
 
-    function it_ignore_empty_values()
+    public function it_ignore_empty_values(): void
     {
         $this->format(0)->shouldReturn(0);
         $this->format(null)->shouldReturn(null);
         $this->format([])->shouldReturn([]);
     }
 
-    function it_decorate_value()
+    public function it_decorate_value(): void
     {
         $this->format(true)->shouldReturn('yes');
         $this->format(false)->shouldReturn('no');

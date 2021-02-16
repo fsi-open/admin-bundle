@@ -20,12 +20,12 @@ class DoctrineElement extends SimpleAdminElement
      */
     private $registry;
 
-    public function setManagerRegistry(ManagerRegistry $registry)
+    public function setManagerRegistry(ManagerRegistry $registry): void
     {
         $this->registry = $registry;
     }
 
-    public function isDoctrineAware()
+    public function isDoctrineAware(): bool
     {
         return isset($this->registry);
     }

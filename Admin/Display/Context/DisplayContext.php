@@ -37,12 +37,12 @@ class DisplayContext extends ContextAbstract
 
     public function hasTemplateName(): bool
     {
-        return $this->element->hasOption('template') || parent::hasTemplateName();
+        return true === $this->element->hasOption('template') || true === parent::hasTemplateName();
     }
 
     public function getTemplateName(): ?string
     {
-        return $this->element->hasOption('template')
+        return true === $this->element->hasOption('template')
             ? $this->element->getOption('template')
             : parent::getTemplateName()
         ;
@@ -91,7 +91,7 @@ class DisplayContext extends ContextAbstract
         $id = $request->get('id');
 
         $object = $this->element->getDataIndexer()->getData($id);
-        if (!$object) {
+        if (null === $object) {
             throw new NotFoundHttpException(sprintf('Can\'t find object with id %s', $id));
         }
 

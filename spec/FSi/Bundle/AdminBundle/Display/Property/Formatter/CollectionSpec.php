@@ -8,42 +8,50 @@ use Prophecy\Argument;
 
 class CollectionSpec extends ObjectBehavior
 {
-    function let(ValueFormatter $formatter)
+    public function let(ValueFormatter $formatter): void
     {
         $this->beConstructedWith([$formatter]);
     }
 
-    function it_ignore_empty_values()
+    public function it_ignore_empty_values(): void
     {
         $this->format(0)->shouldReturn(0);
         $this->format(null)->shouldReturn(null);
         $this->format([])->shouldReturn([]);
     }
 
-    function it_throw_exception_when_value_is_not_an_array()
+    public function it_throw_exception_when_value_is_not_an_array(): void
     {
         $this->shouldThrow(
             new \InvalidArgumentException('Collection formatter requires value to be iterable, stdClass given')
         )->during('format', [new \stdClass()]);
     }
 
-    function it_format_each_element_of_collection_using_formatters(ValueFormatter $formatter)
+    public function it_format_each_element_of_collection_using_formatters(ValueFormatter $formatter): void
     {
         $value = [
             'first-date' => new \DateTime(),
-            'second-date' => new \DateTime()
+            'second-date' => new \DateTime(),
         ];
-        $formatter->format(Argument::any())->will(function($argument) {return $argument[0];});
+        $formatter->format(Argument::any())->will(
+            function ($argument) {
+                return $argument[0];
+            }
+        );
         $this->format($value)->shouldReturn($value);
     }
 
-    function it_format_each_element_of_iterator_using_formatters(ValueFormatter $formatter)
+    public function it_format_each_element_of_iterator_using_formatters(ValueFormatter $formatter): void
     {
         $value = [
             'first-date' => new \DateTime(),
-            'second-date' => new \DateTime()
+            'second-date' => new \DateTime(),
         ];
-        $formatter->format(Argument::any())->will(function($argument) {return $argument[0];});
+        $formatter->format(Argument::any())->will(
+            function ($argument) {
+                return $argument[0];
+            }
+        );
         $this->format(new \ArrayIterator($value))->shouldReturn($value);
     }
 }

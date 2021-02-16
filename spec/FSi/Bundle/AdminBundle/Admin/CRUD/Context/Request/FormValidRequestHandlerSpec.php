@@ -2,8 +2,10 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
+use FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\FormValidRequestHandler;
 use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvents;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
@@ -18,21 +20,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 
 class FormValidRequestHandlerSpec extends ObjectBehavior
 {
-    function let(EventDispatcherInterface $eventDispatcher, FormEvent $event, RouterInterface $router)
+    public function let(EventDispatcherInterface $eventDispatcher, FormEvent $event, RouterInterface $router): void
     {
         $event->hasResponse()->willReturn(false);
         $this->beConstructedWith($eventDispatcher, $router);
     }
 
-    function it_is_context_request_handler()
+    public function it_is_context_request_handler(): void
     {
-        $this->shouldHaveType('FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface');
+        $this->shouldHaveType(HandlerInterface::class);
     }
 
-    function it_throw_exception_for_non_form_event(ListEvent $listEvent, Request $request)
+    public function it_throw_exception_for_non_form_event(ListEvent $listEvent, Request $request): void
     {
         $this->shouldThrow(
             new RequestHandlerException(
@@ -41,26 +44,26 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         )->during('handleRequest', [$listEvent, $request]);
     }
 
-    function it_throw_exception_for_non_redirectable_element(
+    public function it_throw_exception_for_non_redirectable_element(
         FormEvent $formEvent,
         Request $request,
         Element $genericElement
-    ) {
+    ): void {
         $formEvent->getElement()->willReturn($genericElement);
 
         $this->shouldThrow(
             new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\FormValidRequestHandler requires RedirectableElement"
+                sprintf("%s requires %s", FormValidRequestHandler::class, RedirectableElement::class)
             )
         )->during('handleRequest', [$formEvent, $request]);
     }
 
-    function it_do_nothing_on_non_POST_request(
+    public function it_do_nothing_on_non_POST_request(
         FormEvent $event,
         FormElement $element,
         Request $request,
         EventDispatcherInterface $eventDispatcher
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
             ->shouldBeCalled();
@@ -69,7 +72,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
 
-    function it_handle_POST_request(
+    public function it_handle_POST_request(
         FormEvent $event,
         Request $request,
         ParameterBag $queryParameterbag,
@@ -78,7 +81,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         FormElement $element,
         RouterInterface $router,
         stdClass $object
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
         $request->query = $queryParameterbag;
 
@@ -104,7 +107,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf(RedirectResponse::class);
     }
 
-    function it_return_redirect_response_with_redirect_uri_passed_by_request(
+    public function it_return_redirect_response_with_redirect_uri_passed_by_request(
         FormEvent $event,
         Request $request,
         ParameterBag $queryParameterbag,
@@ -112,7 +115,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         FormInterface $form,
         FormElement $element,
         stdClass $object
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
         $request->query = $queryParameterbag;
 
@@ -139,50 +142,54 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $response->getTargetUrl()->shouldReturn('some_redirect_uri');
     }
 
-    function it_return_response_from_pre_render_event(
+    public function it_return_response_from_pre_render_event(
         FormEvent $event,
         FormElement $element,
         Request $request,
         EventDispatcherInterface $eventDispatcher,
         Response $response
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
 
         $eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
         $event->getElement()->willReturn($element);
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);
     }
 
-    function it_return_response_from_pre_data_save_event(
+    public function it_return_response_from_pre_data_save_event(
         FormEvent $event,
         FormElement $element,
         Request $request,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
         Response $response
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_PRE_SAVE, $event)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
         $event->getElement()->willReturn($element);
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);
     }
 
-    function it_return_response_from_post_data_save_event(
+    public function it_return_response_from_post_data_save_event(
         FormEvent $event,
         FormElement $element,
         Request $request,
@@ -190,7 +197,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         FormInterface $form,
         stdClass $object,
         Response $response
-    ) {
+    ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
         $event->getForm()->willReturn($form);
@@ -203,10 +210,12 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $element->save(Argument::type('stdClass'))->shouldBeCalled();
 
         $eventDispatcher->dispatch(FormEvents::FORM_DATA_POST_SAVE, $event)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);

@@ -15,37 +15,44 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 
 class MainMenuListenerSpec extends ObjectBehavior
 {
-    function let(ManagerInterface $manager)
+    public function let(ManagerInterface $manager): void
     {
         $prophet = new Prophet();
-        $manager->getElement(Argument::type('string'))->will(function($args) use ($prophet) {
-            if ($args[0] == 'non_existing') {
-                throw new \Exception(sprintf('Element %s does not exist', $args[0]));
-            };
-            $element = $prophet->prophesize(Element::class);
-            $element->getId()->willReturn($args[0]);
-            return $element;
-        });
+        $manager->getElement(Argument::type('string'))->will(
+            function ($args) use ($prophet) {
+                if ($args[0] == 'non_existing') {
+                    throw new \Exception(sprintf('Element %s does not exist', $args[0]));
+                };
+                $element = $prophet->prophesize(Element::class);
+                $element->getId()->willReturn($args[0]);
 
-        $manager->hasElement(Argument::type('string'))->will(function ($args) {
-            return $args[0] != 'non_existing';
-        });
+                return $element;
+            }
+        );
+
+        $manager->hasElement(Argument::type('string'))->will(
+            function ($args) {
+                return $args[0] != 'non_existing';
+            }
+        );
         $this->beConstructedWith($manager, __DIR__ . '/admin_menu.yml');
     }
 
-    function it_throws_exception_when_yaml_definition_of_menu_is_invalid(
+    public function it_throws_exception_when_yaml_definition_of_menu_is_invalid(
         ManagerInterface $manager,
         MenuEvent $event
-    ) {
+    ): void {
         $menuYaml = __DIR__ . '/invalid_admin_menu.yml';
         $this->beConstructedWith($manager, $menuYaml);
 
-        $this->shouldThrow(new InvalidYamlStructureException(
-            sprintf('File "%s" should contain top level "menu:" key', $menuYaml)
-        ))->during('createMainMenu', [$event]);
+        $this->shouldThrow(
+            new InvalidYamlStructureException(
+                sprintf('File "%s" should contain top level "menu:" key', $menuYaml)
+            )
+        )->during('createMainMenu', [$event]);
     }
 
-    function it_build_menu()
+    public function it_build_menu(): void
     {
         $menu = $this->createMainMenu(new MenuEvent(new Item()));
 
@@ -55,8 +62,8 @@ class MainMenuListenerSpec extends ObjectBehavior
         $menu->shouldHaveItem('Home', 'fsi_admin');
         $menu->shouldHaveItem('Something custom', 'custom_route', ['foo' => 'bar']);
         $menu->shouldHaveItemThatHaveChild('admin.menu.structure', 'home_page', 'home_page');
-        $menu->shouldHaveItemThatHaveChild ('admin.menu.structure', 'Contact', 'contact');
-        $menu->shouldHaveItemThatHaveChild ('admin.menu.structure', 'Offer', 'offer');
+        $menu->shouldHaveItemThatHaveChild('admin.menu.structure', 'Contact', 'contact');
+        $menu->shouldHaveItemThatHaveChild('admin.menu.structure', 'Offer', 'offer');
 
         $offerItem = $menu->getChildren()['admin.menu.structure']->getChildren()['Offer'];
         $offerItem->getOption('elements')[0]->getId()->shouldReturn('category');
@@ -66,7 +73,7 @@ class MainMenuListenerSpec extends ObjectBehavior
     public function getMatchers(): array
     {
         return [
-            'haveItem' => function(Item $menu, string $itemName, ?string $elementId = null, ?array $parameters = []) {
+            'haveItem' => function (Item $menu, string $itemName, ?string $elementId = null, ?array $parameters = []) {
                 $items = $menu->getChildren();
                 foreach ($items as $item) {
                     if ($item->getName() === $itemName) {
@@ -84,9 +91,10 @@ class MainMenuListenerSpec extends ObjectBehavior
                         }
                     }
                 }
+
                 return false;
             },
-            'haveItemThatHaveChild' => function(Item $menu, $itemName, $childName, $elementId = false) {
+            'haveItemThatHaveChild' => function (Item $menu, $itemName, $childName, $elementId = false) {
                 foreach ($menu->getChildren() as $item) {
                     if ($item->getName() === $itemName && $item->hasChildren()) {
                         foreach ($item->getChildren() as $child) {
@@ -101,8 +109,9 @@ class MainMenuListenerSpec extends ObjectBehavior
                         }
                     }
                 }
+
                 return false;
-            }
+            },
         ];
     }
 }

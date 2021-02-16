@@ -16,7 +16,7 @@ use FSi\Bundle\AdminBundle\Admin\Manager\Visitor;
 class Manager implements ManagerInterface
 {
     /**
-     * @var Element[]
+     * @var array<Element>
      */
     protected $elements;
 

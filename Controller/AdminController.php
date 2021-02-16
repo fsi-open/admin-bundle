@@ -51,7 +51,7 @@ class AdminController
         $request->getSession()->set('admin_locale', $_locale);
 
         return new RedirectResponse(
-            $request->query->has('redirect_uri')
+            true === $request->query->has('redirect_uri')
                 ? $request->query->get('redirect_uri')
                 : $this->router->generate('fsi_admin')
         );

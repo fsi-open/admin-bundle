@@ -19,7 +19,7 @@ class CustomNewsList extends Page
 
     protected function verifyPage(): void
     {
-        if (!$this->has('css', 'h1#page-header:contains("Custom list")')) {
+        if (false === $this->has('css', 'h1#page-header:contains("Custom list")')) {
             throw new UnexpectedPageException(sprintf('%s page is missing "Custom list" header', $this->path));
         }
     }

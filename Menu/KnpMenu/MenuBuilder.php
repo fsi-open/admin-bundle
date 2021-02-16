@@ -55,14 +55,14 @@ class MenuBuilder
 
     /**
      * @param KnpItemInterface $menu
-     * @param Item[] $children
+     * @param array<Item> $children
      */
     private function populateMenu(KnpItemInterface $menu, array $children): void
     {
         foreach ($children as $item) {
             $knpItem = $menu->addChild($item->getName(), []);
 
-            if ($item->hasChildren()) {
+            if (true === $item->hasChildren()) {
                 $this->populateMenu($knpItem, $item->getChildren());
             }
 

@@ -16,13 +16,13 @@ use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 
 class DataGridSetDataHandlerSpec extends ObjectBehavior
 {
-    function let(EventDispatcherInterface $eventDispatcher, ListEvent $event)
+    public function let(EventDispatcherInterface $eventDispatcher, ListEvent $event): void
     {
         $event->hasResponse()->willReturn(false);
         $this->beConstructedWith($eventDispatcher);
     }
 
-    function it_is_context_request_handler()
+    public function it_is_context_request_handler(): void
     {
         $this->shouldHaveType(HandlerInterface::class);
     }
@@ -31,7 +31,7 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
      * @param \FSi\Bundle\AdminBundle\Event\AdminEvent $event
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    function it_throw_exception_for_non_list_event(AdminEvent $event, Request $request)
+    public function it_throw_exception_for_non_list_event(AdminEvent $event, Request $request): void
     {
         $this->shouldThrow(
             new RequestHandlerException(
@@ -40,13 +40,13 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
         )->during('handleRequest', [$event, $request]);
     }
 
-    function it_set_data_at_datagrid_and_dispatch_events(
+    public function it_set_data_at_datagrid_and_dispatch_events(
         ListEvent $event,
         DataSourceInterface $dataSource,
         DataGridInterface $dataGrid,
         Request $request,
         EventDispatcherInterface $eventDispatcher
-    ) {
+    ): void {
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_PRE_BIND, $event)->shouldBeCalled();
 
         $event->getDataGrid()->willReturn($dataGrid);
@@ -60,30 +60,32 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
 
-    function it_return_response_from_datagrid_pre_bind_data(
+    public function it_return_response_from_datagrid_pre_bind_data(
         EventDispatcherInterface $eventDispatcher,
         ListEvent $event,
         Request $request,
         Response $response
-    ) {
+    ): void {
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_PRE_BIND, $event)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);
     }
 
-    function it_return_response_from_datagrid_post_bind_data(
+    public function it_return_response_from_datagrid_post_bind_data(
         EventDispatcherInterface $eventDispatcher,
         ListEvent $event,
         Request $request,
         DataGridInterface $dataGrid,
         DataSourceInterface $dataSource,
         Response $response
-    ) {
+    ): void {
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_PRE_BIND, $event)->shouldBeCalled();
 
         $event->getDataGrid()->willReturn($dataGrid);
@@ -93,10 +95,12 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
         $dataGrid->setData([1])->shouldBeCalled();
 
         $eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_POST_BIND, $event)
-            ->will(function() use ($event, $response) {
-                $event->hasResponse()->willReturn(true);
-                $event->getResponse()->willReturn($response);
-            });
+            ->will(
+                function () use ($event, $response) {
+                    $event->hasResponse()->willReturn(true);
+                    $event->getResponse()->willReturn($response);
+                }
+            );
 
         $this->handleRequest($event, $request)
             ->shouldReturnAnInstanceOf(Response::class);

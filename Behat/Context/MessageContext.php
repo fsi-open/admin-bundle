@@ -20,7 +20,7 @@ class MessageContext extends PageObjectContext
     /**
      * @Then I should see an error message saying:
      */
-    public function iShouldSeeErrorMessageSaying(PyStringNode $message)
+    public function iShouldSeeErrorMessageSaying(PyStringNode $message): void
     {
         $notifications = $this->getMessagesElement();
 
@@ -30,7 +30,7 @@ class MessageContext extends PageObjectContext
     /**
      * @Then I should see a warning message saying:
      */
-    public function iShouldSeeWarningMessageSaying(PyStringNode $message)
+    public function iShouldSeeWarningMessageSaying(PyStringNode $message): void
     {
         $notifications = $this->getMessagesElement();
 
@@ -40,7 +40,7 @@ class MessageContext extends PageObjectContext
     /**
      * @Then I should see an informational message saying:
      */
-    public function iShouldSeeInformationalMessageSaying(PyStringNode $message)
+    public function iShouldSeeInformationalMessageSaying(PyStringNode $message): void
     {
         $notifications = $this->getMessagesElement();
 
@@ -50,7 +50,7 @@ class MessageContext extends PageObjectContext
     /**
      * @Then I should see a success message saying:
      */
-    public function iShouldSeeSuccessMessageSaying(PyStringNode $message)
+    public function iShouldSeeSuccessMessageSaying(PyStringNode $message): void
     {
         $notifications = $this->getMessagesElement();
 

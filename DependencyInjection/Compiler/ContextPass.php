@@ -18,7 +18,7 @@ class ContextPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('admin.context.manager')) {
+        if (false === $container->hasDefinition('admin.context.manager')) {
             return;
         }
 
@@ -28,7 +28,7 @@ class ContextPass implements CompilerPassInterface
             $contexts[$priority][] = $container->findDefinition($id);
         }
 
-        if (!count($contexts)) {
+        if (0 === count($contexts)) {
             return;
         }
 

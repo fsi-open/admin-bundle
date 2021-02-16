@@ -28,8 +28,8 @@ class Property
 
     /**
      * @param mixed $value
-     * @param string $label
-     * @param ValueFormatter[] $valueFormatters
+     * @param string|null $label
+     * @param array<ValueFormatter> $valueFormatters
      */
     public function __construct($value, ?string $label = null, array $valueFormatters = [])
     {
@@ -54,7 +54,7 @@ class Property
 
     /**
      * @param mixed $value
-     * @param ValueFormatter[] $valueFormatters
+     * @param array<ValueFormatter> $valueFormatters
      * @return mixed
      */
     private function formatValue($value, array $valueFormatters)
@@ -69,11 +69,10 @@ class Property
     private function validateFormatters(array $valueFormatters): void
     {
         foreach ($valueFormatters as $formatter) {
-            if (!$formatter instanceof ValueFormatter) {
+            if (false === $formatter instanceof ValueFormatter) {
                 throw new InvalidArgumentException(sprintf(
-                    'Expected property formatter to be an instance of'
-                    . ' FSi\Bundle\AdminBundle\Display\Property\ValueFormatter,'
-                    . ' got "%s" instead',
+                    'Expected property formatter to be an instance of %s, got "%s" instead',
+                    ValueFormatter::class,
                     is_object($formatter) ? get_class($formatter) : gettype($formatter)
                 ));
             }

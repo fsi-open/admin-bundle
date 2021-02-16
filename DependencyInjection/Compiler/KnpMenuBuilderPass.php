@@ -18,7 +18,7 @@ class KnpMenuBuilderPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('admin.menu.knp.decorator.chain')) {
+        if (false === $container->hasDefinition('admin.menu.knp.decorator.chain')) {
             return;
         }
 

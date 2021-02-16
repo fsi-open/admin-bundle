@@ -33,9 +33,9 @@ class AdminContext extends AbstractContext
     /**
      * @BeforeScenario
      */
-    public function resizeWindow()
+    public function resizeWindow(): void
     {
-        if ($this->isSeleniumDriverUsed()) {
+        if (true === $this->isSeleniumDriverUsed()) {
             if (false === $this->getSession()->isStarted()) {
                 $this->getSession()->start();
             }
@@ -47,14 +47,14 @@ class AdminContext extends AbstractContext
     /**
      * @Given /^the following admin elements were registered$/
      */
-    public function theFollowingAdminElementsWereRegistered(TableNode $table)
+    public function theFollowingAdminElementsWereRegistered(TableNode $table): void
     {
         foreach ($table->getHash() as $serviceRow) {
             $id = $serviceRow['Id'];
             $class = $serviceRow['Class'];
             expect($this->getAdminManager()->hasElement($id))->toBe(true);
             expect($this->getAdminManager()->getElement($id))->toBeAnInstanceOf($class);
-            if (array_key_exists('Parent', $serviceRow) && !empty($serviceRow['Parent'])) {
+            if (true === array_key_exists('Parent', $serviceRow) && '' !== $serviceRow['Parent']) {
                 expect($this->getAdminManager()->getElement($id)->getParentId())->toBe($serviceRow['Parent']);
             }
         }
@@ -63,10 +63,8 @@ class AdminContext extends AbstractContext
     /**
      * @Given /^("[^"]*" element) have following options defined$/
      */
-    public function elementHaveFollowingOptionsDefined(
-        AbstractElement $adminElement,
-        TableNode $options
-    ) {
+    public function elementHaveFollowingOptionsDefined(AbstractElement $adminElement, TableNode $options): void
+    {
         foreach ($options->getHash() as $optionRow) {
             $option = $optionRow['Option'];
             $value = $optionRow['Value'];
@@ -78,7 +76,7 @@ class AdminContext extends AbstractContext
     /**
      * @Given /^there are following admin elements available$/
      */
-    public function thereAreFollowingAdminElementsAvailable(TableNode $table)
+    public function thereAreFollowingAdminElementsAvailable(TableNode $table): void
     {
         foreach ($table->getHash() as $elementRow) {
             $id = $elementRow['Id'];
@@ -91,7 +89,7 @@ class AdminContext extends AbstractContext
     /**
      * @Then /^I should see "([^"]*)" title at top bar$/
      */
-    public function iShouldSeeTitleAtTopBar($navbarBrandText)
+    public function iShouldSeeTitleAtTopBar($navbarBrandText): void
     {
         expect($this->adminPanelPage->getNavbarBrandText())->toBe($navbarBrandText);
     }
@@ -99,7 +97,7 @@ class AdminContext extends AbstractContext
     /**
      * @Given I should see :page page header :headerContent
      */
-    public function iShouldSeePageHeader(Page $page, $headerContent)
+    public function iShouldSeePageHeader(Page $page, $headerContent): void
     {
         expect($page->getHeader())->toBe($headerContent);
     }
@@ -107,7 +105,7 @@ class AdminContext extends AbstractContext
     /**
      * @Given /^translations are enabled in application$/
      */
-    public function translationsAreEnabledInApplication()
+    public function translationsAreEnabledInApplication(): void
     {
         $translator = $this->getContainer()->get('translator');
         expect($translator)->toBeAnInstanceOf('Symfony\Component\Translation\TranslatorInterface');
@@ -117,7 +115,7 @@ class AdminContext extends AbstractContext
      * @Then /^I should see language dropdown button in navigation bar with text "([^"]*)"$/
      * @Then /^I should see language dropdown button with text "([^"]*)"$/
      */
-    public function iShouldSeeLanguageDropdownButtonInNavigationBarWithText($button)
+    public function iShouldSeeLanguageDropdownButtonInNavigationBarWithText($button): void
     {
         expect($this->adminPanelPage->getLanguageDropdown()->hasLink($button))->toBe(true);
     }
@@ -125,7 +123,7 @@ class AdminContext extends AbstractContext
     /**
      * @Given /^language dropdown button should have following links$/
      */
-    public function languageDropdownButtonShouldHaveFollowingLinks(TableNode $dropdownLinks)
+    public function languageDropdownButtonShouldHaveFollowingLinks(TableNode $dropdownLinks): void
     {
         $links = $this->adminPanelPage->getLanguageDropdownOptions();
 
@@ -137,7 +135,7 @@ class AdminContext extends AbstractContext
     /**
      * @When /^I click "([^"]*)" link from language dropdown button$/
      */
-    public function iClickLinkFromLanguageDropdownButton($link)
+    public function iClickLinkFromLanguageDropdownButton($link): void
     {
         $this->adminPanelPage->getLanguageDropdown()->clickLink($link);
     }

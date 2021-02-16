@@ -35,7 +35,7 @@ class AdminElementParamConverter implements ParamConverterInterface
         $param = $configuration->getName();
         $id = $request->attributes->get($param, '');
 
-        if (!$this->manager->hasElement($id)) {
+        if (false === $this->manager->hasElement($id)) {
             throw new NotFoundHttpException(sprintf('Admin element with id %s does not exist.', $id));
         }
 
@@ -46,24 +46,19 @@ class AdminElementParamConverter implements ParamConverterInterface
 
     public function supports(ParamConverter $configuration): bool
     {
-        if (!$configuration instanceof ParamConverter) {
-            return false;
-        }
-
         if (!$configuration->getClass()) {
             return false;
         }
 
-        if (!class_exists($configuration->getClass()) && !interface_exists($configuration->getClass())) {
+        if (
+            false === class_exists($configuration->getClass())
+            && false === interface_exists($configuration->getClass())
+        ) {
             return false;
         }
 
         $implements = class_implements($configuration->getClass());
 
-        if (in_array(Element::class, $implements, true)) {
-            return true;
-        }
-
-        return false;
+        return in_array(Element::class, $implements, true);
     }
 }

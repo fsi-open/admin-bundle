@@ -18,7 +18,7 @@ use FSi\Bundle\AdminBundle\Factory\ProductionLine;
 class ElementCollectionVisitor implements Visitor
 {
     /**
-     * @var Element[]
+     * @var array<Element>
      */
     private $elements;
 
@@ -28,7 +28,7 @@ class ElementCollectionVisitor implements Visitor
     private $factoryProductionLine;
 
     /**
-     * @param Element[] $elements
+     * @param array<Element> $elements
      * @param ProductionLine $factoryProductionLine
      */
     public function __construct(array $elements, ProductionLine $factoryProductionLine)

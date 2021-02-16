@@ -57,9 +57,10 @@ class ElementItem extends RoutableItem
 
         $optionsResolver->setNormalizer('elements', function (Options $options, array $value) {
             foreach ($value as $element) {
-                if (!($element instanceof Element)) {
+                if (false === $element instanceof Element) {
                     throw new InvalidOptionsException(sprintf(
-                        'Instance of FSi\Bundle\AdminBundle\Admin\Element expected but got %s',
+                        'Instance of %s expected but got %s',
+                        Element::class,
                         is_object($element) ? get_class($element) : gettype($element)
                     ));
                 }

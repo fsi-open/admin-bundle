@@ -20,8 +20,8 @@ class AdminElementPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         if (
-            !$container->hasDefinition('admin.manager')
-            || !$container->hasDefinition('admin.manager.visitor.element_collection')
+            false === $container->hasDefinition('admin.manager')
+            || false === $container->hasDefinition('admin.manager.visitor.element_collection')
         ) {
             return;
         }
@@ -32,7 +32,6 @@ class AdminElementPass implements CompilerPassInterface
             $elements[] = new Reference((string) $id);
         }
 
-        $container->findDefinition('admin.manager.visitor.element_collection')
-            ->replaceArgument(0, $elements);
+        $container->findDefinition('admin.manager.visitor.element_collection')->replaceArgument(0, $elements);
     }
 }

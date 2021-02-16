@@ -26,7 +26,7 @@ class FormWorker implements Worker
 
     public function mount(Element $element): void
     {
-        if ($element instanceof FormElement) {
+        if (true === $element instanceof FormElement) {
             $element->setFormFactory($this->formFactory);
         }
     }

@@ -24,12 +24,12 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class FSiAdminBundleSpec extends ObjectBehavior
 {
-    function it_is_bundle()
+    public function it_is_bundle(): void
     {
         $this->shouldBeAnInstanceOf(Bundle::class);
     }
 
-    function it_add_compiler_pass(ContainerBuilder $builder)
+    public function it_add_compiler_pass(ContainerBuilder $builder): void
     {
         $builder->addCompilerPass(Argument::type(AdminAnnotatedElementPass::class))
             ->shouldBeCalled();

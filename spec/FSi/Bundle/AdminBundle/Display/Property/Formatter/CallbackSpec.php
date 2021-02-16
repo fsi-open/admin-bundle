@@ -7,21 +7,23 @@ use Prophecy\Argument;
 
 class CallbackSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
-        $this->beConstructedWith(function($value) {
-            return $value . '+';
-        });
+        $this->beConstructedWith(
+            function ($value) {
+                return $value . '+';
+            }
+        );
     }
 
-    function it_ignore_empty_values()
+    public function it_ignore_empty_values(): void
     {
         $this->format(0)->shouldReturn(0);
         $this->format(null)->shouldReturn(null);
         $this->format([])->shouldReturn([]);
     }
 
-    function it_form_value_using_callback_funciton()
+    public function it_form_value_using_callback_funciton(): void
     {
         $value = 'value';
         $this->format($value)->shouldReturn('value+');
