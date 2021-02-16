@@ -6,12 +6,12 @@ use PhpSpec\ObjectBehavior;
 
 class DateTimeSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $this->beConstructedWith('Y:m:d H:i:s');
     }
 
-    function it_ignore_empty_values_and_values_that_are_not_datetime()
+    public function it_ignore_empty_values_and_values_that_are_not_datetime(): void
     {
         $this->format(0)->shouldReturn(0);
         $this->format(null)->shouldReturn(null);
@@ -19,7 +19,7 @@ class DateTimeSpec extends ObjectBehavior
         $this->format('not_datetime')->shouldReturn('not_datetime');
     }
 
-    function it_decorate_value()
+    public function it_decorate_value(): void
     {
         $datetime = new \DateTime();
         $this->format($datetime)->shouldReturn($datetime->format('Y:m:d H:i:s'));

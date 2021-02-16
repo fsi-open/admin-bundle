@@ -21,24 +21,24 @@ use FSi\Bundle\AdminBundle\Admin\Manager;
 
 class AdminElementParamConverterSpec extends ObjectBehavior
 {
-    function let(ManagerInterface $manager)
+    public function let(ManagerInterface $manager): void
     {
         $this->beConstructedWith($manager);
     }
 
-    function it_handle_only_fully_qualified_class_names(ParamConverter $configuration)
+    public function it_handle_only_fully_qualified_class_names(ParamConverter $configuration): void
     {
         $configuration->getClass()->willReturn('FSiDemoBundle:News');
         $this->supports($configuration)->shouldReturn(false);
     }
 
-    function it_does_not_support_classless_param_converter(ParamConverter $configuration)
+    public function it_does_not_support_classless_param_converter(ParamConverter $configuration): void
     {
         $configuration->getClass()->willReturn(null);
         $this->supports($configuration)->shouldReturn(false);
     }
 
-    function it_supports_any_object_that_implements_element_interface(ParamConverter $configuration)
+    public function it_supports_any_object_that_implements_element_interface(ParamConverter $configuration): void
     {
         $configuration->getClass()->willReturn(CRUDElement::class);
         $this->supports($configuration)->shouldReturn(true);

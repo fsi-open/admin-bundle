@@ -247,7 +247,7 @@ class NavigationContext extends AbstractContext
      * @When /^I follow "([^"]*)" url from top bar$/
      * @Given /^I follow "([^"]*)" menu element$/
      */
-    public function iFollowUrlFromTopBar($menuElement)
+    public function iFollowUrlFromTopBar($menuElement): void
     {
         $this->adminPanelPage->getMenu()->clickLink($menuElement);
     }
@@ -255,7 +255,7 @@ class NavigationContext extends AbstractContext
     /**
      * @Then /^menu with following elements should be visible at the top of the page$/
      */
-    public function menuWithFollowingElementsShouldBeVisibleAtTheTopOfThePage(TableNode $table)
+    public function menuWithFollowingElementsShouldBeVisibleAtTheTopOfThePage(TableNode $table): void
     {
         expect($this->adminPanelPage->getMenuElementsCount())->toBe(count($table->getHash()));
 
@@ -270,7 +270,7 @@ class NavigationContext extends AbstractContext
     /**
      * @Then :link link in the top bar should be highlighted
      */
-    public function linkInTheTopBarShouldBeHighlighted($link)
+    public function linkInTheTopBarShouldBeHighlighted($link): void
     {
         $linkNode = $this->adminPanelPage->getMenu()->findLink($link);
 
@@ -280,7 +280,7 @@ class NavigationContext extends AbstractContext
     /**
      * @Given I am on the :page page
      */
-    public function iAmOnThePage(Page $page)
+    public function iAmOnThePage(Page $page): void
     {
         $page->open();
     }
@@ -288,7 +288,7 @@ class NavigationContext extends AbstractContext
     /**
      * @Given I am on the :page page with id :id
      */
-    public function iAmOnThePageWithId(Page $page, $id)
+    public function iAmOnThePageWithId(Page $page, $id): void
     {
         $page->open(['id' => $id]);
     }
@@ -297,7 +297,7 @@ class NavigationContext extends AbstractContext
      * @Given I should be on the :page page
      * @Given I should be redirected to :page page
      */
-    public function iShouldBeOnThePage(Page $page)
+    public function iShouldBeOnThePage(Page $page): void
     {
         expect($page->isOpen())->toBe(true);
     }
@@ -305,7 +305,7 @@ class NavigationContext extends AbstractContext
     /**
      * @Given I try to open the :page page
      */
-    public function iTryToOpenPage(Page $page)
+    public function iTryToOpenPage(Page $page): void
     {
         $page->openWithoutVerifying();
     }
@@ -313,7 +313,7 @@ class NavigationContext extends AbstractContext
     /**
      * @Given /^I press "New element" link$/
      */
-    public function iPressNewElementLink()
+    public function iPressNewElementLink(): void
     {
         $this->defaultPage->getElement('New Element Link')->click();
     }
@@ -321,7 +321,7 @@ class NavigationContext extends AbstractContext
     /**
      * @When /^I press "([^"]*)" button at pagination$/
      */
-    public function iPressButtonAtPagination($button)
+    public function iPressButtonAtPagination($button): void
     {
         $this->defaultPage->getElement('Pagination')->clickLink($button);
     }
@@ -329,20 +329,20 @@ class NavigationContext extends AbstractContext
     /**
      * @Then /^I should see pagination with following buttons$/
      */
-    public function iShouldSeePaginationWithFollowingButtons(TableNode $table)
+    public function iShouldSeePaginationWithFollowingButtons(TableNode $table): void
     {
         $pagination = $this->defaultPage->getElement('Pagination');
 
         foreach ($table->getHash() as $buttonRow) {
             expect($pagination->hasLink($buttonRow['Button']))->toBe(true);
 
-            if ($buttonRow['Active'] === 'true') {
+            if ('true' === $buttonRow['Active']) {
                 expect($pagination->isDisabled($buttonRow['Button']))->toBe(false);
             } else {
                 expect($pagination->isDisabled($buttonRow['Button']))->toBe(true);
             }
 
-            if ($buttonRow['Current'] === 'true') {
+            if ('true' === $buttonRow['Current']) {
                 expect($pagination->isCurrentPage($buttonRow['Button']))->toBe(true);
             } else {
                 expect($pagination->isCurrentPage($buttonRow['Button']))->toBe(false);
@@ -353,7 +353,7 @@ class NavigationContext extends AbstractContext
     /**
      * @Then page :page should display OK status
      */
-    public function pageShouldDisplayOKStatus(Page $page)
+    public function pageShouldDisplayOKStatus(Page $page): void
     {
         $this->expectPageStatus($page, 200);
     }
@@ -361,7 +361,7 @@ class NavigationContext extends AbstractContext
     /**
      * @Then page :page should display not found exception
      */
-    public function pageShouldDisplayNotFoundException(Page $page)
+    public function pageShouldDisplayNotFoundException(Page $page): void
     {
         $this->expectPageStatus($page, 404);
     }
@@ -369,7 +369,7 @@ class NavigationContext extends AbstractContext
     /**
      * @Then page :page should throw an error exception
      */
-    public function pageShouldThrowAnErrorExceptionException(Page $page)
+    public function pageShouldThrowAnErrorExceptionException(Page $page): void
     {
         $this->expectPageStatus($page, 500);
     }

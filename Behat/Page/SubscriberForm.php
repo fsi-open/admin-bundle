@@ -19,7 +19,7 @@ class SubscriberForm extends Page
 
     protected function verifyPage(): void
     {
-        if (!$this->has('css', '#page-header:contains("New element")')) {
+        if (false === $this->has('css', '#page-header:contains("New element")')) {
             throw new UnexpectedPageException(sprintf('%s page is missing "New element" header', $this->path));
         }
     }

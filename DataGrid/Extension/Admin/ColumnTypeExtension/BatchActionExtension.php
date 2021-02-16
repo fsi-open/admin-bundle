@@ -109,7 +109,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         ]);
         $this->actionOptionsResolver->setNormalizer(
             'additional_parameters',
-            function (Options $options, $value) {
+            function (Options $options, $value): array {
                 return $this->normalizeAdditionalParameters($options, $value);
             }
         );
@@ -127,7 +127,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
             $actionOptions = $this->actionOptionsResolver->resolve($action);
 
             $batchActionUrl = $this->getBatchActionUrl($actionOptions);
-            $batchActionLabel = isset($actionOptions['label']) ? $actionOptions['label'] : $name;
+            $batchActionLabel = $actionOptions['label'] ?? $name;
             $batchActions[$batchActionLabel] = $batchActionUrl;
         }
 
@@ -191,11 +191,8 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
 
     private function validateElementFromOptions(Options $options): void
     {
-        if (!$this->manager->hasElement($options['element'])) {
-            throw new RuntimeException(sprintf(
-                'Unknown element "%s" specified in batch action',
-                $options['element']
-            ));
+        if (false === $this->manager->hasElement($options['element'])) {
+            throw new RuntimeException(sprintf('Unknown element "%s" specified in batch action', $options['element']));
         }
     }
 
@@ -217,9 +214,9 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
 
     private function mergeAdditionalParametersWithRedirectUri(Options $options, array $additionalParameters): array
     {
-        if (is_string($options['redirect_uri'])) {
+        if (true === is_string($options['redirect_uri'])) {
             $additionalParameters['redirect_uri'] = $options['redirect_uri'];
-        } elseif ($options['redirect_uri'] === false) {
+        } elseif (false === $options['redirect_uri']) {
             return $additionalParameters;
         }
 

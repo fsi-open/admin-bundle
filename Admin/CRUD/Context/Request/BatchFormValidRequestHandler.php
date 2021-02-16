@@ -24,6 +24,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
+use function count;
 use function get_class;
 
 class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
@@ -52,7 +53,7 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
 
         $objects = $this->getObjects($element, $request);
 
-        if (!count($objects)) {
+        if (0 === count($objects)) {
             $this->flashMessages->warning('messages.batch.no_elements');
             return;
         }
@@ -61,7 +62,7 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
             $preEvent = new BatchPreApplyEvent($element, $request, $object);
             $this->eventDispatcher->dispatch(BatchEvents::BATCH_OBJECT_PRE_APPLY, $preEvent);
 
-            if ($preEvent->shouldSkip()) {
+            if (true === $preEvent->shouldSkip()) {
                 continue;
             }
 
@@ -79,7 +80,7 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         $objects = [];
         $indexes = $request->request->get('indexes', []);
 
-        if (!is_array($indexes) || !count($indexes)) {
+        if (false === is_array($indexes) || 0 === count($indexes)) {
             return [];
         }
 

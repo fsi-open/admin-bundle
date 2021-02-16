@@ -24,7 +24,7 @@ interface ManagerInterface
     public function removeElement(string $id): void;
 
     /**
-     * @return Element[]
+     * @return array<Element>
      */
     public function getElements(): array;
 

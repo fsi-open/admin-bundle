@@ -12,16 +12,17 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Display\Property\Formatter;
 
 use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
+use InvalidArgumentException;
 
 class Collection implements ValueFormatter
 {
     /**
-     * @var ValueFormatter[]
+     * @var array<ValueFormatter>
      */
     private $formatters;
 
     /**
-     * @param ValueFormatter[] $formatters
+     * @param array<ValueFormatter> $formatters
      */
     public function __construct(array $formatters)
     {
@@ -38,8 +39,8 @@ class Collection implements ValueFormatter
             return $value;
         }
 
-        if (!is_iterable($value)) {
-            throw new \InvalidArgumentException(sprintf(
+        if (false === is_iterable($value)) {
+            throw new InvalidArgumentException(sprintf(
                 'Collection formatter requires value to be iterable, %s given',
                 is_object($value) ? get_class($value) : gettype($value)
             ));

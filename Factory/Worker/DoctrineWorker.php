@@ -26,7 +26,7 @@ class DoctrineWorker implements Worker
 
     public function mount(Element $element): void
     {
-        if ($element instanceof DoctrineElement) {
+        if (true === $element instanceof DoctrineElement) {
             $element->setManagerRegistry($this->managerRegistry);
         }
     }

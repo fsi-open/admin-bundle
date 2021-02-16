@@ -32,7 +32,7 @@ class ListWorker implements Worker
 
     public function mount(Element $element): void
     {
-        if ($element instanceof ListElement) {
+        if (true === $element instanceof ListElement) {
             $element->setDataSourceFactory($this->dataSourceFactory);
             $element->setDataGridFactory($this->dataGridFactory);
         }

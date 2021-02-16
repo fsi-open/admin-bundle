@@ -24,6 +24,7 @@ use RuntimeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
+use function array_key_exists;
 use function expect;
 use function file_exists;
 
@@ -82,7 +83,7 @@ class DataContext extends AbstractContext
      * @Given there are :count :className
      * @Given there is :count :className
      */
-    public function thereIsNumberOfEntities(int $count, string $className)
+    public function thereIsNumberOfEntities(int $count, string $className): void
     {
         $entityManager = $this->getEntityManager();
         for ($i = 0; $i < $count; $i++) {
@@ -100,7 +101,7 @@ class DataContext extends AbstractContext
     /**
      * @Given there is a :className with :field :value present in the database
      */
-    public function thereIsAnEntityWithField(string $className, string $field, $value)
+    public function thereIsAnEntityWithField(string $className, string $field, $value): void
     {
         $instance = new $className();
         $formatters = $this->getFieldFormatters($className);
@@ -120,7 +121,7 @@ class DataContext extends AbstractContext
     /**
      * @Then there should be a :className with :field :value present in the database
      */
-    public function entityWithFieldShouldExist(string $className, string $field, $value)
+    public function entityWithFieldShouldExist(string $className, string $field, $value): void
     {
         expect($this->getRepository($className)->findOneBy([$field => $value]))->toBeAnInstanceOf($className);
     }
@@ -128,7 +129,7 @@ class DataContext extends AbstractContext
     /**
      * @Given :className with :field :value should not exist in database anymore
      */
-    public function entityShouldNotExistInDatabaseAnymore(string $className, string $field, $value)
+    public function entityShouldNotExistInDatabaseAnymore(string $className, string $field, $value): void
     {
         expect($this->getRepository($className)->findOneBy([$field => $value]))->toBe(null);
     }
@@ -136,7 +137,7 @@ class DataContext extends AbstractContext
     /**
      * @Then new :className should be created
      */
-    public function newEntityShouldBeCreated(string $className)
+    public function newEntityShouldBeCreated(string $className): void
     {
         $this->thereShouldExistsNumberOfEntities(1, $className);
     }
@@ -144,7 +145,7 @@ class DataContext extends AbstractContext
     /**
      * @Then there should not be any :className present in the database
      */
-    public function thereShouldNotBeAnyEntities(string $className)
+    public function thereShouldNotBeAnyEntities(string $className): void
     {
         $this->thereShouldExistsNumberOfEntities(0, $className);
     }
@@ -152,7 +153,7 @@ class DataContext extends AbstractContext
     /**
      * @Then there should be :count :className present in the database
      */
-    public function thereShouldExistsNumberOfEntities($count, string $className)
+    public function thereShouldExistsNumberOfEntities($count, string $className): void
     {
         expect(count($this->getRepository($className)->findAll()))->toBe($count);
     }
@@ -160,7 +161,7 @@ class DataContext extends AbstractContext
     /**
      * @Given /^the following news exist in database$/
      */
-    public function followingNewsExistInDatabase(TableNode $table)
+    public function followingNewsExistInDatabase(TableNode $table): void
     {
         $manager = $this->getEntityManager();
         $faker = $this->getFaker();
@@ -169,19 +170,19 @@ class DataContext extends AbstractContext
 
         foreach ($table->getHash() as $newsNode) {
             $news = $newsRepository->findOneByTitle($newsNode['Title']);
-            if (!isset($news)) {
+            if (null === $news) {
                 $news = new News();
             }
 
             $news->setTitle($newsNode['Title']);
-            if (isset($newsNode['Date']) && $newsNode['Date']) {
+            if (true === array_key_exists('Date', $newsNode) && '' !== $newsNode['Date']) {
                 $news->setDate(DateTime::createFromFormat('Y-m-d', $newsNode['Date']));
             }
-            if (isset($newsNode['Category']) && $newsNode['Category']) {
+            if (true === array_key_exists('Category', $newsNode) && '' !== $newsNode['Category']) {
                 /** @var Category|null $category */
                 $category = $categoryRepository->findOneBy(['title' => $newsNode['Category']]);
 
-                if ($category === null) {
+                if (null === $category) {
                     throw new InvalidArgumentException(sprintf(
                         'Can\'t find category by title "%s"',
                         $newsNode['Category']
@@ -209,7 +210,7 @@ class DataContext extends AbstractContext
         $value,
         $expectedCount,
         string $collectionName
-    ) {
+    ): void {
         $entity = $this->getRepository($className)->findOneBy([$field => $value]);
         $this->getEntityManager()->refresh($entity);
 
@@ -219,7 +220,7 @@ class DataContext extends AbstractContext
     /**
      * @Then :className with id :id should have changed :field to :value
      */
-    public function entityWithIdShouldHaveChangedField(string $className, $id, string $field, $value)
+    public function entityWithIdShouldHaveChangedField(string $className, $id, string $field, $value): void
     {
         $entity = $this->getRepository($className)->find($id);
         $this->getEntityManager()->refresh($entity);
@@ -230,7 +231,7 @@ class DataContext extends AbstractContext
     /**
      * @Then :className with id :id should not have his :field changed to :value
      */
-    public function entityWithIdShouldNotHaveChangedFieldValue(string $className, $id, string $field, $value)
+    public function entityWithIdShouldNotHaveChangedFieldValue(string $className, $id, string $field, $value): void
     {
         $entity = $this->getRepository($className)->find($id);
         $this->getEntityManager()->refresh($entity);
@@ -243,7 +244,7 @@ class DataContext extends AbstractContext
      * @return void
      * @throws InvalidArgumentException
      */
-    private function applyFieldFormatters($instance, ?array $formatters = null)
+    private function applyFieldFormatters($instance, ?array $formatters = null): void
     {
         $className = get_class($instance);
         if (null === $formatters) {
@@ -316,7 +317,7 @@ class DataContext extends AbstractContext
         $faker = $this->getFaker();
         $formatters = [
             News::class => [
-                'title' => function () use ($faker) {
+                'title' => function () use ($faker): string {
                     return $faker->title;
                 },
                 'creatorEmail' => function () use ($faker): string {

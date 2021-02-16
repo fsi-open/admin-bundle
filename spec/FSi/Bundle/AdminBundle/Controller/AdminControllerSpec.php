@@ -12,17 +12,17 @@ use Symfony\Component\Routing\RouterInterface;
 
 class AdminControllerSpec extends ObjectBehavior
 {
-    function let(EngineInterface $templating, RouterInterface $router)
+    public function let(EngineInterface $templating, RouterInterface $router): void
     {
         $this->beConstructedWith($templating, $router, Argument::type('string'));
     }
 
-    function it_stores_locale_in_session(
+    public function it_stores_locale_in_session(
         Request $request,
         SessionInterface $session,
         ParameterBag $requestQuery,
         RouterInterface $router
-    ) {
+    ): void {
         $request->getSession()->willReturn($session);
         $request->query = $requestQuery;
         $router->generate('fsi_admin')->willReturn('admin_url');
@@ -33,11 +33,11 @@ class AdminControllerSpec extends ObjectBehavior
         $response->getTargetUrl()->shouldReturn('admin_url');
     }
 
-    function it_redirects_to_passed_redirect_uri(
+    public function it_redirects_to_passed_redirect_uri(
         Request $request,
         SessionInterface $session,
         ParameterBag $requestQuery
-    ) {
+    ): void {
         $request->getSession()->willReturn($session);
         $request->query = $requestQuery;
         $requestQuery->has('redirect_uri')->willReturn(true);

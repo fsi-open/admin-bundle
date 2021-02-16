@@ -8,18 +8,18 @@ use PhpSpec\ObjectBehavior;
 
 class ProductionLineSpec extends ObjectBehavior
 {
-    function it_is_created_with_workers(Worker $workerFoo, Worker $workerBar)
+    public function it_is_created_with_workers(Worker $workerFoo, Worker $workerBar): void
     {
         $this->beConstructedWith([$workerFoo, $workerBar]);
         $this->count()->shouldReturn(2);
         $this->getWorkers()->shouldReturn([$workerFoo, $workerBar]);
     }
 
-    function it_work_on_element_with_workers(
+    public function it_work_on_element_with_workers(
         Worker $workerFoo,
         Worker $workerBar,
         Element $element
-    ) {
+    ): void {
         $this->beConstructedWith([$workerFoo, $workerBar]);
         $workerBar->mount($element)->shouldBeCalled();
         $workerFoo->mount($element)->shouldBeCalled();

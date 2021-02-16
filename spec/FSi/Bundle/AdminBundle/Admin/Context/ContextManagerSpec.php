@@ -15,12 +15,12 @@ use PhpSpec\ObjectBehavior;
 
 class ContextManagerSpec extends ObjectBehavior
 {
-    function let(ContextInterface $context)
+    public function let(ContextInterface $context): void
     {
         $this->beConstructedWith([$context]);
     }
 
-    function it_builds_context_for_element(Element $element, ContextInterface $context)
+    public function it_builds_context_for_element(Element $element, ContextInterface $context): void
     {
         $context->supports('route_name', $element)->willReturn(true);
         $context->setElement($element)->shouldBeCalled();
@@ -28,8 +28,10 @@ class ContextManagerSpec extends ObjectBehavior
         $this->createContext('route_name', $element)->shouldReturn($context);
     }
 
-    function it_return_null_when_context_builders_do_not_support_element(Element $element, ContextInterface $context)
-    {
+    public function it_return_null_when_context_builders_do_not_support_element(
+        Element $element,
+        ContextInterface $context
+    ): void {
         $context->supports('route_name', $element)->willReturn(false);
         $context->setElement($element)->shouldNotBeCalled();
 

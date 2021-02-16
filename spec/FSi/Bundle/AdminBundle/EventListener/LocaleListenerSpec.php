@@ -13,39 +13,39 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LocaleListenerSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $this->beConstructedWith('en');
     }
 
-    function it_is_event_subscriber()
+    public function it_is_event_subscriber(): void
     {
         $this->shouldBeAnInstanceOf(EventSubscriberInterface::class);
     }
 
-    function it_subscribe_kernel_request_event_before_default_locale_listener()
+    public function it_subscribe_kernel_request_event_before_default_locale_listener(): void
     {
         $this->getSubscribedEvents()->shouldReturn(
             [KernelEvents::REQUEST => [['onKernelRequest', 17]]]
         );
     }
 
-    function it_do_nothing_when_request_does_not_have_previous_session(
+    public function it_do_nothing_when_request_does_not_have_previous_session(
         GetResponseEvent $event,
         Request $request
-    ) {
+    ): void {
         $event->getRequest()->shouldBeCalled()->willReturn($request);
         $request->hasPreviousSession()->shouldBeCalled()->willReturn(false);
         $request->getSession()->shouldNotBeCalled();
         $this->onKernelRequest($event);
     }
 
-    function it_set_default_locale_if_request_does_not_have_locale_param(
+    public function it_set_default_locale_if_request_does_not_have_locale_param(
         GetResponseEvent $event,
         Request $request,
         ParameterBag $requestAttributes,
         SessionInterface $session
-    ) {
+    ): void {
         $request->attributes = $requestAttributes;
         $event->getRequest()->willReturn($request);
         $request->hasPreviousSession()->willReturn(true);
@@ -56,12 +56,12 @@ class LocaleListenerSpec extends ObjectBehavior
         $this->onKernelRequest($event);
     }
 
-    function it_does_not_set_locale_if_request_alread_has_locale(
+    public function it_does_not_set_locale_if_request_alread_has_locale(
         GetResponseEvent $event,
         Request $request,
         ParameterBag $requestAttributes,
         SessionInterface $session
-    ) {
+    ): void {
         $request->attributes = $requestAttributes;
         $requestAttributes->has('_locale')->willReturn(true);
         $event->getRequest()->willReturn($request);

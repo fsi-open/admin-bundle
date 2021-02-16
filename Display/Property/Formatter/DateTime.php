@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Display\Property\Formatter;
 
+use DateTimeInterface;
 use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
 
 class DateTime implements ValueFormatter
@@ -34,7 +35,7 @@ class DateTime implements ValueFormatter
      */
     public function format($value)
     {
-        if (empty($value) || !$value instanceof \DateTime) {
+        if (empty($value) || false === $value instanceof DateTimeInterface) {
             return $value;
         }
 

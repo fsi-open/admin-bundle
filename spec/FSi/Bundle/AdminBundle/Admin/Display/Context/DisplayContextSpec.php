@@ -23,14 +23,14 @@ use FSi\Bundle\AdminBundle\Event\DisplayEvent;
 
 class DisplayContextSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         Element $element,
         HandlerInterface $handler,
         DataIndexerInterface $dataIndexer,
         stdClass $displayObject,
         Display $display,
         Request $request
-    ) {
+    ): void {
         $request->get('id', null)->willReturn('index');
         $element->getDataIndexer()->willReturn($dataIndexer);
         $dataIndexer->getData('index')->willReturn($displayObject);
@@ -41,12 +41,12 @@ class DisplayContextSpec extends ObjectBehavior
         $this->setElement($element);
     }
 
-    function it_is_context()
+    public function it_is_context(): void
     {
         $this->shouldBeAnInstanceOf(ContextInterface::class);
     }
 
-    function it_has_array_data(Request $request)
+    public function it_has_array_data(Request $request): void
     {
         $this->handleRequest($request)->shouldReturn(null);
         $this->getData()->shouldBeArray();
@@ -54,14 +54,14 @@ class DisplayContextSpec extends ObjectBehavior
         $this->getData()->shouldHaveKeyInArray('element');
     }
 
-    function it_returns_default_template_if_element_does_not_have_one(Element $element)
+    public function it_returns_default_template_if_element_does_not_have_one(Element $element): void
     {
         $element->hasOption('template')->willReturn(false);
         $this->getTemplateName()->shouldReturn('default_display');
         $this->hasTemplateName()->shouldReturn(true);
     }
 
-    function it_returns_template_from_element_if_it_has_one(Element $element)
+    public function it_returns_template_from_element_if_it_has_one(Element $element): void
     {
         $element->hasOption('template')->willReturn(true);
         $element->getOption('template')->willReturn('display.html.twig');
@@ -69,17 +69,17 @@ class DisplayContextSpec extends ObjectBehavior
         $this->getTemplateName()->shouldReturn('display.html.twig');
     }
 
-    function it_handles_request_with_request_handlers(
+    public function it_handles_request_with_request_handlers(
         HandlerInterface $handler,
         Request $request
-    ) {
+    ): void {
         $handler->handleRequest(Argument::type(DisplayEvent::class), $request)
             ->willReturn(null);
 
         $this->handleRequest($request)->shouldReturn(null);
     }
 
-    function it_returns_response_from_handler(HandlerInterface $handler, Request $request)
+    public function it_returns_response_from_handler(HandlerInterface $handler, Request $request): void
     {
         $handler->handleRequest(Argument::type(DisplayEvent::class), $request)
             ->willReturn(new Response());
@@ -91,7 +91,7 @@ class DisplayContextSpec extends ObjectBehavior
     public function getMatchers(): array
     {
         return [
-            'haveKeyInArray' => function($subject, $key) {
+            'haveKeyInArray' => function ($subject, $key) {
                 if (!is_array($subject)) {
                     return false;
                 }

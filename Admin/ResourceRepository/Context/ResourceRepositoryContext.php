@@ -42,7 +42,7 @@ class ResourceRepositoryContext extends ContextAbstract
     private $form;
 
     /**
-     * @param HandlerInterface[] $requestHandlers
+     * @param array<HandlerInterface> $requestHandlers
      * @param string $template
      * @param ResourceFormBuilder $resourceFormBuilder
      */
@@ -72,7 +72,7 @@ class ResourceRepositoryContext extends ContextAbstract
 
     public function getTemplateName(): string
     {
-        return $this->element->hasOption('template')
+        return true === $this->element->hasOption('template')
             ? $this->element->getOption('template')
             : parent::getTemplateName()
         ;

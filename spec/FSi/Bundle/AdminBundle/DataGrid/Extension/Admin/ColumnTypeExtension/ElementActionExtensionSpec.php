@@ -18,23 +18,23 @@ use FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface;
 
 class ElementActionExtensionSpec extends ObjectBehavior
 {
-    function let(ManagerInterface $manager, Action $column, OptionsResolver $actionOptionsResolver)
+    public function let(ManagerInterface $manager, Action $column, OptionsResolver $actionOptionsResolver): void
     {
         $column->getActionOptionsResolver()->willReturn($actionOptionsResolver);
         $this->beConstructedWith($manager);
     }
 
-    function it_is_datagrid_column_extension()
+    public function it_is_datagrid_column_extension(): void
     {
         $this->shouldBeAnInstanceOf(ColumnTypeExtensionInterface::class);
     }
 
-    function it_extends_action_column_type()
+    public function it_extends_action_column_type(): void
     {
         $this->getExtendedColumnTypes()->shouldReturn(['action']);
     }
 
-    function it_adds_element_id_action_option(Action $column, OptionsResolver $actionOptionsResolver)
+    public function it_adds_element_id_action_option(Action $column, OptionsResolver $actionOptionsResolver): void
     {
         $actionOptionsResolver->setDefined(['element'])->shouldBeCalled();
         $actionOptionsResolver->setAllowedTypes('element', 'string')->shouldBeCalled();
@@ -42,23 +42,25 @@ class ElementActionExtensionSpec extends ObjectBehavior
         $this->initOptions($column);
     }
 
-    function it_initializes_action_route_and_parameters_based_on_element_id(
+    public function it_initializes_action_route_and_parameters_based_on_element_id(
         ManagerInterface $manager,
         Element $element,
         Action $column
-    ) {
+    ): void {
         $actionOptions = [
             'element' => 'some_element_id',
             'additional_parameters' => [
-                'additional_action_parameter' => 'action_parameter_value'
+                'additional_action_parameter' => 'action_parameter_value',
             ],
-            'other_action_option' => 'other_option_value'
+            'other_action_option' => 'other_option_value',
         ];
         $otherAction = ['any_action_option' => 'any_option_value'];
-        $column->getOption('actions')->willReturn([
-            'some_action' => $actionOptions,
-            'other_action' => $otherAction
-        ]);
+        $column->getOption('actions')->willReturn(
+            [
+                'some_action' => $actionOptions,
+                'other_action' => $otherAction,
+            ]
+        );
         $manager->hasElement('some_element_id')->willReturn(true);
         $manager->getElement('some_element_id')->willReturn($element);
         $element->getId()->willReturn('some_element_id');
@@ -73,12 +75,12 @@ class ElementActionExtensionSpec extends ObjectBehavior
                     'additional_parameters' => [
                         'element' => 'some_element_id',
                         'additional_element_parameter' => 'element_parameter_value',
-                        'additional_action_parameter' => 'action_parameter_value'
+                        'additional_action_parameter' => 'action_parameter_value',
                     ],
                     'parameters_field_mapping' => ['id' => 'id'],
-                    'other_action_option' => 'other_option_value'
+                    'other_action_option' => 'other_option_value',
                 ],
-                'other_action' => ['any_action_option' => 'any_option_value']
+                'other_action' => ['any_action_option' => 'any_option_value'],
             ]
         )->shouldBeCalled();
 

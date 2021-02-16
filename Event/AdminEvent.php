@@ -33,10 +33,6 @@ class AdminEvent extends Event
      */
     protected $response;
 
-    /**
-     * @param Element $element
-     * @param Request $request
-     */
     public function __construct(Element $element, Request $request)
     {
         $this->element = $element;

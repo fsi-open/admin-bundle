@@ -13,7 +13,7 @@ class ResourceRepositoryPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if ($container->hasExtension('fsi_resource_repository')) {
+        if (true === $container->hasExtension('fsi_resource_repository')) {
             $loader = new XmlFileLoader(
                 $container,
                 new FileLocator(__DIR__ . '/../../Resources/config')

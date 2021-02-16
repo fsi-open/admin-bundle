@@ -27,7 +27,7 @@ class FiltersContext extends AbstractContext
     private $defaultPage;
 
     /**
-     * @var DataSourceInterface[]
+     * @var array<DataSourceInterface>
      */
     private $datasources = [];
 
@@ -39,7 +39,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^("[^"]*" element) datasource max results is set (\d+)$/
      */
-    public function elementDatasourceMaxResultsIsSet(AdminListElement $adminElement, $maxResults)
+    public function elementDatasourceMaxResultsIsSet(AdminListElement $adminElement, $maxResults): void
     {
         expect($this->getDataSource($adminElement)->getMaxResults())->toBe($maxResults);
         $this->clearDataSource($adminElement);
@@ -48,7 +48,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^("[^"]*" element) has datasource with fields$/
      */
-    public function elementHaveDatasourceWithFields(AdminListElement $adminElement)
+    public function elementHaveDatasourceWithFields(AdminListElement $adminElement): void
     {
         $dataSource = $this->getDataSource($adminElement);
 
@@ -59,7 +59,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^("[^"]*" element) has datasource without filters$/
      */
-    public function elementHaveDatasourceWithoutFilters(AdminListElement $adminElement)
+    public function elementHaveDatasourceWithoutFilters(AdminListElement $adminElement): void
     {
         $dataSource = $this->getDataSource($adminElement);
 
@@ -78,7 +78,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Then /^both sorting buttons in column header "([^"]*)" should be active$/
      */
-    public function bothSortingButtonsInColumnHeaderShouldBeActive($column)
+    public function bothSortingButtonsInColumnHeaderShouldBeActive($column): void
     {
         expect($this->getListElement()->isColumnAscSortActive($column))->toBe(true);
     }
@@ -86,7 +86,7 @@ class FiltersContext extends AbstractContext
     /**
      * @When /^I press "([^"]*)" button in "([^"]*)" column header$/
      */
-    public function iPressButtonInColumnHeader($sort, $column)
+    public function iPressButtonInColumnHeader($sort, $column): void
     {
         $this->getListElement()->pressSortButton($column, $sort);
     }
@@ -94,7 +94,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Then /^"([^"]*)" button in "([^"]*)" column header should be disabled$/
      */
-    public function buttonInColumnHeaderShouldBeDisabled($sort, $column)
+    public function buttonInColumnHeaderShouldBeDisabled($sort, $column): void
     {
         $list = $this->getListElement();
 
@@ -113,7 +113,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^"([^"]*)" button in "([^"]*)" column header should be active$/
      */
-    public function buttonInColumnHeaderShouldBeActive($sort, $column)
+    public function buttonInColumnHeaderShouldBeActive($sort, $column): void
     {
         $list = $this->getListElement();
 
@@ -132,7 +132,7 @@ class FiltersContext extends AbstractContext
     /**
      * @When /^I change elements per page to (\d+)$/
      */
-    public function iChangeElementsPerPageTo($elementsCount)
+    public function iChangeElementsPerPageTo($elementsCount): void
     {
         $this->getListResultsElement()->setElementsPerPage((int) $elementsCount);
     }
@@ -140,7 +140,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Then /^I should not see any filters$/
      */
-    public function iShouldNotSeeAnyFilters()
+    public function iShouldNotSeeAnyFilters(): void
     {
         expect($this->defaultPage->find('css', 'form.filters') === null)->toBe(true);
     }
@@ -148,7 +148,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Then /^I should see simple text filter "([^"]*)"$/
      */
-    public function iShouldSeeSimpleTextFilter($filterName)
+    public function iShouldSeeSimpleTextFilter($filterName): void
     {
         expect($this->getFiltersElement()->hasField($filterName))->toBe(true);
     }
@@ -156,7 +156,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^I should see between filter "([^"]*)" with "([^"]*)" and "([^"]*)" simple text fields$/
      */
-    public function iShouldSeeBetweenFilterWithAndSimpleTextFields($filterName, $fromName, $toName)
+    public function iShouldSeeBetweenFilterWithAndSimpleTextFields($filterName, $fromName, $toName): void
     {
         expect($this->getFiltersElement()->hasBetweenFilter($filterName, $fromName, $toName))->toBe(true);
     }
@@ -164,7 +164,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^I should see choice filter "([^"]*)"$/
      */
-    public function iShouldSeeChoiceFilter($filterName)
+    public function iShouldSeeChoiceFilter($filterName): void
     {
         expect($this->getFiltersElement()->hasChoiceFilter($filterName))->toBe(true);
     }
@@ -172,7 +172,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^I fill simple text filter "([^"]*)" with value "([^"]*)"$/
      */
-    public function iFillSimpleTextFilterWithValue($filterName, $filterValue)
+    public function iFillSimpleTextFilterWithValue($filterName, $filterValue): void
     {
         $this->getFiltersElement()->fillField($filterName, $filterValue);
     }
@@ -180,7 +180,7 @@ class FiltersContext extends AbstractContext
     /**
      * @When /^I select "([^"]*)" in choice filter "([^"]*)"$/
      */
-    public function iSelectInChoiceFilter($filterValue, $filterName)
+    public function iSelectInChoiceFilter($filterValue, $filterName): void
     {
         $this->getFiltersElement()->findField($filterName)->selectOption($filterValue);
     }
@@ -188,7 +188,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^I press "Search" button$/
      */
-    public function iPressSearchButton()
+    public function iPressSearchButton(): void
     {
         $this->getFiltersElement()->pressButton('Search');
     }
@@ -196,7 +196,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^simple text filter "([^"]*)" should be filled with value "([^"]*)"$/
      */
-    public function simpleTextFilterShouldBeFilledWithValue($filterName, $filterValue)
+    public function simpleTextFilterShouldBeFilledWithValue($filterName, $filterValue): void
     {
         expect($this->getFiltersElement()->findField($filterName)->getValue())->toBe($filterValue);
     }
@@ -204,7 +204,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^choice filter "([^"]*)" should have value "([^"]*)" selected$/
      */
-    public function choiceFilterShouldHaveValueSelected($filterName, $choice)
+    public function choiceFilterShouldHaveValueSelected($filterName, $choice): void
     {
         $field = $this->getFiltersElement()->findField($filterName);
         expect($field->find('css', sprintf('option:contains("%s")', $choice))
@@ -214,7 +214,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Then /^I should see actions dropdown with following options$/
      */
-    public function iShouldSeeActionsDropdownWithFollowingOptions(TableNode $actions)
+    public function iShouldSeeActionsDropdownWithFollowingOptions(TableNode $actions): void
     {
         expect($this->defaultPage->hasBatchActionsDropdown())->toBe(true);
 
@@ -226,7 +226,7 @@ class FiltersContext extends AbstractContext
     /**
      * @Given /^I should see confirmation button "([^"]*)"$/
      */
-    public function iShouldSeeConfirmationButton($button)
+    public function iShouldSeeConfirmationButton($button): void
     {
         $this->defaultPage->hasButton($button);
     }
@@ -235,7 +235,7 @@ class FiltersContext extends AbstractContext
      * @param AdminListElement $adminElement
      * @return DataSourceInterface
      */
-    private function getDataSource(AdminListElement $adminElement)
+    private function getDataSource(AdminListElement $adminElement): DataSourceInterface
     {
         if (!isset($this->datasources[$adminElement->getId()])) {
             $this->datasources[$adminElement->getId()] = $adminElement->createDataSource();

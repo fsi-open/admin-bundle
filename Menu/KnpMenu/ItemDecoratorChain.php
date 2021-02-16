@@ -25,10 +25,11 @@ class ItemDecoratorChain implements ItemDecorator
     public function __construct(array $decorators)
     {
         foreach ($decorators as $decorator) {
-            if (!($decorator instanceof ItemDecorator)) {
+            if (false === $decorator instanceof ItemDecorator) {
                 throw new InvalidArgumentException(sprintf(
-                    'Expected instance of FSi\Bundle\AdminBundle\Menu\KnpMenu\ItemDecorator but got %s',
-                    is_object($decorator) ? get_class($decorator) : gettype($decorator)
+                    'Expected instance of %s but got %s',
+                    ItemDecorator::class,
+                    true === is_object($decorator) ? get_class($decorator) : gettype($decorator)
                 ));
             }
         }

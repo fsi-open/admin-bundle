@@ -23,7 +23,7 @@ abstract class AbstractFormSubmitHandler extends AbstractHandler
     {
         $event = $this->validateEvent($event);
 
-        if (!$request->isMethod(Request::METHOD_POST)) {
+        if (false === $request->isMethod(Request::METHOD_POST)) {
             return null;
         }
 
@@ -44,7 +44,7 @@ abstract class AbstractFormSubmitHandler extends AbstractHandler
 
     private function validateEvent(AdminEvent $event): FormEvent
     {
-        if (!$event instanceof FormEvent) {
+        if (false === $event instanceof FormEvent) {
             throw new RequestHandlerException(sprintf('%s requires FormEvent', get_class($this)));
         }
 

@@ -13,6 +13,8 @@ use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use Symfony\Component\Yaml\Yaml;
 
+use function array_key_exists;
+
 class MainMenuListener
 {
     /**
@@ -38,7 +40,7 @@ class MainMenuListener
             Yaml::PARSE_OBJECT | Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE
         );
 
-        if (!isset($config['menu'])) {
+        if (false === array_key_exists('menu', $config)) {
             throw new InvalidYamlStructureException(
                 sprintf('File "%s" should contain top level "menu:" key', $this->configFilePath)
             );
@@ -64,14 +66,14 @@ class MainMenuListener
 
             if (null !== $item) {
                 $options = ['attr' => ['class' => 'admin-element']];
-                if ($item instanceof ElementItem) {
+                if (true === $item instanceof ElementItem) {
                     $options['elements'] = $this->buildItemElements($itemConfig);
                 }
                 $item->setOptions($options);
             }
 
             if (null === $item) {
-                if ($this->isSingleItem($itemConfig)) {
+                if (true === $this->isSingleItem($itemConfig)) {
                     continue;
                 }
                 $item = new Item(key($itemConfig));
@@ -89,26 +91,26 @@ class MainMenuListener
      */
     private function buildSingleItem($itemConfig): ?Item
     {
-        if (is_string($itemConfig)) {
-            if ($this->manager->hasElement($itemConfig)) {
+        if (true === is_string($itemConfig)) {
+            if (true === $this->manager->hasElement($itemConfig)) {
                 return new ElementItem($itemConfig, $this->manager->getElement($itemConfig));
             }
 
             return new Item($itemConfig);
         }
 
-        if (!$this->isSingleItem($itemConfig)) {
+        if (false === $this->isSingleItem($itemConfig)) {
             return null;
         }
 
-        if ($this->hasEntry($itemConfig, 'id') && $this->manager->hasElement($itemConfig['id'])) {
+        if (true === $this->hasEntry($itemConfig, 'id') && true === $this->manager->hasElement($itemConfig['id'])) {
             return new ElementItem(
-                $this->hasEntry($itemConfig, 'name') ? $itemConfig['name'] : $itemConfig['id'],
+                true === $this->hasEntry($itemConfig, 'name') ? $itemConfig['name'] : $itemConfig['id'],
                 $this->manager->getElement($itemConfig['id'])
             );
         }
 
-        if ($this->hasEntry($itemConfig, 'route')) {
+        if (true === $this->hasEntry($itemConfig, 'route')) {
             return new RoutableItem(
                 $itemConfig['name'] ?? $itemConfig['route'],
                 $itemConfig['route'],
@@ -125,7 +127,7 @@ class MainMenuListener
      */
     private function isSingleItem($itemConfig): bool
     {
-        return $this->hasEntry($itemConfig, 'id') || $this->hasEntry($itemConfig, 'route');
+        return true === $this->hasEntry($itemConfig, 'id') || true === $this->hasEntry($itemConfig, 'route');
     }
 
     /**
@@ -135,19 +137,19 @@ class MainMenuListener
      */
     private function hasEntry($itemConfig, string $keyName): bool
     {
-        return is_array($itemConfig) && array_key_exists($keyName, $itemConfig);
+        return true === is_array($itemConfig) && true === array_key_exists($keyName, $itemConfig);
     }
 
     /**
      * @param array|string $itemConfig
-     * @return Element[]
+     * @return array<Element>
      */
     private function buildItemElements($itemConfig): array
     {
         $elements = [];
 
-        if ($this->hasEntry($itemConfig, 'elements')) {
-            $elementIds = (array)$itemConfig['elements'];
+        if (true === $this->hasEntry($itemConfig, 'elements')) {
+            $elementIds = (array) $itemConfig['elements'];
             foreach ($elementIds as $elementId) {
                 $elements[] = $this->manager->getElement($elementId);
             }

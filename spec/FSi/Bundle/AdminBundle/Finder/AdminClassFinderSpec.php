@@ -11,9 +11,9 @@ use FSi\Bundle\AdminBundle\spec\fixtures\Admin\RequestStackAwareElement;
 
 class AdminClassFinderSpec extends ObjectBehavior
 {
-    const FIXTURES_BUNDLE_PATH = '/../../../../../spec/fixtures';
+    public const FIXTURES_BUNDLE_PATH = '/../../../../../spec/fixtures';
 
-    function it_find_admin_classes_in_default_path()
+    public function it_find_admin_classes_in_default_path(): void
     {
         $paths = [__DIR__ . self::FIXTURES_BUNDLE_PATH . '/Admin'];
         /* We can't just check if result is an array with following values because it might be in other order */
@@ -24,11 +24,11 @@ class AdminClassFinderSpec extends ObjectBehavior
         $this->findClasses($paths)->shouldContain(RequestStackAwareElement::class);
     }
 
-    function it_find_admin_classes_in_additional_paths()
+    public function it_find_admin_classes_in_additional_paths(): void
     {
         $paths = [
             __DIR__ . self::FIXTURES_BUNDLE_PATH . '/Admin',
-            __DIR__ . self::FIXTURES_BUNDLE_PATH . '/CustomAdmin'
+            __DIR__ . self::FIXTURES_BUNDLE_PATH . '/CustomAdmin',
         ];
 
         $this->findClasses($paths)->shouldHaveCount(5);

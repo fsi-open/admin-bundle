@@ -12,7 +12,7 @@ use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class BatchElementSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $registry, ObjectManager $om)
+    public function let(ManagerRegistry $registry, ObjectManager $om): void
     {
         $this->beAnInstanceOf(MyBatchElement::class);
         $this->beConstructedWith([]);
@@ -21,12 +21,12 @@ class BatchElementSpec extends ObjectBehavior
         $this->setManagerRegistry($registry);
     }
 
-    public function it_should_return_object_manager(ObjectManager $om)
+    public function it_should_return_object_manager(ObjectManager $om): void
     {
         $this->getObjectManager()->shouldReturn($om);
     }
 
-    public function it_should_return_object_repository(ObjectManager $om, ObjectRepository $repository)
+    public function it_should_return_object_repository(ObjectManager $om, ObjectRepository $repository): void
     {
         $om->getRepository('FSiDemoBundle:Entity')->willReturn($repository);
         $this->getRepository()->shouldReturn($repository);
@@ -37,7 +37,7 @@ class BatchElementSpec extends ObjectBehavior
         ObjectManager $om,
         ObjectRepository $repository,
         ClassMetadata $metadata
-    ) {
+    ): void {
         $registry->getManagerForClass('FSi/Bundle/DemoBundle/Entity/Entity')->willReturn($om);
         $om->getRepository('FSiDemoBundle:Entity')->willReturn($repository);
         $metadata->isMappedSuperclass = false;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Finder;
 
+use ReflectionClass;
+use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 use FSi\Bundle\AdminBundle\Admin\Element;
 
@@ -13,8 +15,8 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 class AdminClassFinder
 {
     /**
-     * @param string[] $paths
-     * @return string[]
+     * @param array<string> $paths
+     * @return array<string>
      */
     public function findClasses(array $paths = []): array
     {
@@ -28,7 +30,7 @@ class AdminClassFinder
         $adminClasses = [];
         foreach ($classes as $className) {
             $classImplements = class_implements($className);
-            if (in_array(Element::class, $classImplements, true)) {
+            if (true === in_array(Element::class, $classImplements, true)) {
                 $adminClasses[] = $className;
             }
         }
@@ -41,7 +43,7 @@ class AdminClassFinder
         $finder = new Finder();
         $includedFiles = [];
         foreach ($searchPaths as $path) {
-            /** @var \SplFileInfo[] $files */
+            /** @var SplFileInfo[] $files */
             $files = $finder->files()->name('*.php')->in($path);
             foreach ($files as $file) {
                 require_once $file->getRealPath();
@@ -53,8 +55,8 @@ class AdminClassFinder
 
         $classes = [];
         foreach ($declared as $className) {
-            $reflection = new \ReflectionClass($className);
-            if (in_array($reflection->getFileName(), $includedFiles, true)) {
+            $reflection = new ReflectionClass($className);
+            if (true === in_array($reflection->getFileName(), $includedFiles, true)) {
                 $classes[] = $className;
             }
         }

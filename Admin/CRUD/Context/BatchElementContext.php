@@ -20,6 +20,7 @@ use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\RequestHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class BatchElementContext extends ContextAbstract
@@ -39,6 +40,10 @@ class BatchElementContext extends ContextAbstract
      */
     protected $indexes;
 
+    /**
+     * @param array<RequestHandlerInterface> $requestHandlers
+     * @param FormBuilderInterface $formBuilder
+     */
     public function __construct(array $requestHandlers, FormBuilderInterface $formBuilder)
     {
         parent::__construct($requestHandlers);

@@ -77,7 +77,7 @@ class ResourceFormBuilder
     /**
      * @param Element $element
      * @param ResourceValueRepository $valueRepository
-     * @param ResourceInterface[] $resources
+     * @param array<ResourceInterface> $resources
      * @return array
      */
     private function createFormData(

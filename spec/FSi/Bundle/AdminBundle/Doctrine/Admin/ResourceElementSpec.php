@@ -18,28 +18,28 @@ use FSi\Bundle\AdminBundle\spec\fixtures\MyResourceElement;
 
 class ResourceElementSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $registry)
+    public function let(ManagerRegistry $registry): void
     {
         $this->beAnInstanceOf(MyResourceElement::class);
         $this->setManagerRegistry($registry);
     }
 
-    function it_return_repository(
+    public function it_return_repository(
         ManagerRegistry $registry,
         ObjectManager $om,
         ResourceRepository $repository
-    ) {
+    ): void {
         $registry->getManagerForClass('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($om);
         $om->getRepository('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($repository);
 
         $this->getRepository()->shouldReturn($repository);
     }
 
-    function it_throws_exception_when_repository_does_not_implement_resource_value_repository(
+    public function it_throws_exception_when_repository_does_not_implement_resource_value_repository(
         ManagerRegistry $registry,
         ObjectManager $om,
         ObjectRepository $repository
-    ) {
+    ): void {
         $registry->getManagerForClass('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($om);
         $registry->getRepository('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($repository);
 

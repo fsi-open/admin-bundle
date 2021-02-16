@@ -9,16 +9,16 @@ use PhpSpec\ObjectBehavior;
 
 class ElementCollectionVisitorSpec extends ObjectBehavior
 {
-    function let(Element $adminElement, ProductionLine $productionLine)
+    public function let(Element $adminElement, ProductionLine $productionLine): void
     {
         $this->beConstructedWith([$adminElement], $productionLine);
     }
 
-    function it_visits_manager_and_add_into_it_elements(
+    public function it_visits_manager_and_add_into_it_elements(
         ManagerInterface $manager,
         ProductionLine $productionLine,
         Element $adminElement
-    ) {
+    ): void {
         $productionLine->workOn($adminElement)->shouldBeCalled();
         $manager->addElement($adminElement)->shouldBeCalled();
 

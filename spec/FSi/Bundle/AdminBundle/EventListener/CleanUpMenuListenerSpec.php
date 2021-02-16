@@ -20,7 +20,7 @@ class CleanUpMenuListenerSpec extends ObjectBehavior
         Item $childItem4,
         Item $childItem41,
         Item $childItem411
-    ) {
+    ): void {
         $event->getMenu()->willReturn($menu);
 
         $menu->hasChildren()->willReturn(true);

@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 
 class ItemSpec extends ObjectBehavior
 {
-    function it_has_default_options()
+    public function it_has_default_options(): void
     {
         $this->getOptions()->shouldReturn(['attr' => ['id' => null, 'class' => null]]);
     }

@@ -8,13 +8,13 @@ use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class PropertyAccessDisplaySpec extends ObjectBehavior
 {
-    function it_throws_exception_when_value_is_not_an_object_or_array()
+    public function it_throws_exception_when_value_is_not_an_object_or_array(): void
     {
         $object = 'wrong_data';
         $this->shouldThrow(\InvalidArgumentException::class)->during('__construct', [$object]);
     }
 
-    function it_throws_exception_when_property_path_is_invalid()
+    public function it_throws_exception_when_property_path_is_invalid(): void
     {
         $object = new \stdClass();
         $object->firstName = 'Norbert';
@@ -25,7 +25,7 @@ class PropertyAccessDisplaySpec extends ObjectBehavior
             ->during('add', ['first_name', 'First Name']);
     }
 
-    function it_creates_data_for_object()
+    public function it_creates_data_for_object(): void
     {
         $object = new \stdClass();
         $object->firstName = 'Norbert';
@@ -39,7 +39,7 @@ class PropertyAccessDisplaySpec extends ObjectBehavior
         $this->getData()->shouldHaveProperty('Norbert', 'First Name');
     }
 
-    function it_creates_display_view_with_decorated_values()
+    public function it_creates_display_view_with_decorated_values(): void
     {
         $now = new \DateTime();
         $object = new \stdClass();
@@ -53,7 +53,7 @@ class PropertyAccessDisplaySpec extends ObjectBehavior
     public function getMatchers(): array
     {
         return [
-            'haveProperty' => function($subject, $value, $label) {
+            'haveProperty' => function ($subject, $value, $label) {
                 /* @var $property Property */
                 foreach ($subject as $property) {
                     if ($property->getLabel() === $label && $property->getValue() === $value) {

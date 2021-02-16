@@ -50,7 +50,7 @@ trait DependentElementImpl
         $dataIndexer = $this->getParentDataIndexer();
         $parentObjectId = $this->getParentObjectId();
 
-        if ($dataIndexer !== null && $parentObjectId !== null) {
+        if (null !== $dataIndexer && null !== $parentObjectId) {
             return $dataIndexer->getData($parentObjectId);
         }
 
@@ -70,7 +70,7 @@ trait DependentElementImpl
 
     protected function getParentDataIndexer(): ?DataIndexerInterface
     {
-        if ($this->parentElement instanceof DataIndexerElement) {
+        if (true === $this->parentElement instanceof DataIndexerElement) {
             return $this->parentElement->getDataIndexer();
         }
 

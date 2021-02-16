@@ -14,17 +14,17 @@ use PhpSpec\ObjectBehavior;
 
 class MessageTwigExtensionSpec extends ObjectBehavior
 {
-    public function let(FlashMessages $flashMessages)
+    public function let(FlashMessages $flashMessages): void
     {
         $this->beConstructedWith($flashMessages);
     }
 
-    public function it_has_name()
+    public function it_has_name(): void
     {
         $this->getName()->shouldReturn('fsi_admin_messages');
     }
 
-    public function it_return_all_messages(FlashMessages $flashMessages)
+    public function it_return_all_messages(FlashMessages $flashMessages): void
     {
         $flashMessages->all()->willReturn([
             'success' => [

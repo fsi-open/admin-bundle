@@ -115,7 +115,7 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
     {
         $datagrid = $this->initDataGrid($this->datagridFactory);
 
-        if ($this->getOption('allow_delete') && !$datagrid->hasColumnType('batch')) {
+        if (true === $this->getOption('allow_delete') && false === $datagrid->hasColumnType('batch')) {
             $datagrid->addColumn('batch', 'batch', [
                 'actions' => [
                     'delete' => [

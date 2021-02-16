@@ -16,12 +16,12 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 class ContextManager
 {
     /**
-     * @var ContextInterface[]
+     * @var array<ContextInterface>
      */
     protected $contexts;
 
     /**
-     * @param ContextInterface[] $contexts
+     * @param array<ContextInterface> $contexts
      */
     public function __construct(array $contexts = [])
     {

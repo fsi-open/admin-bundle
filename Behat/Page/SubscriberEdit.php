@@ -19,7 +19,7 @@ class SubscriberEdit extends Page
 
     protected function verifyPage(): void
     {
-        if (!$this->has('css', '#page-header:contains("Edit element")')) {
+        if (false === $this->has('css', '#page-header:contains("Edit element")')) {
             throw new UnexpectedPageException(sprintf('%s page is missing "Edit element" header', $this->path));
         }
     }

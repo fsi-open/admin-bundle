@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 abstract class ContextAbstract implements ContextInterface
 {
     /**
-     * @var HandlerInterface[]
+     * @var array<HandlerInterface>
      */
     private $requestHandlers;
 
@@ -30,7 +30,7 @@ abstract class ContextAbstract implements ContextInterface
     private $template;
 
     /**
-     * @param HandlerInterface[] $requestHandlers
+     * @param array<HandlerInterface> $requestHandlers
      * @param string|null $template
      */
     public function __construct(array $requestHandlers, ?string $template = null)

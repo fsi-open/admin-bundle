@@ -53,7 +53,7 @@ abstract class ControllerAbstract
     {
         $event = new AdminEvent($element, $request);
         $this->eventDispatcher->dispatch(AdminEvents::CONTEXT_PRE_CREATE, $event);
-        if ($event->hasResponse()) {
+        if (true === $event->hasResponse()) {
             return $event->getResponse();
         }
 
@@ -70,16 +70,13 @@ abstract class ControllerAbstract
             return $response;
         }
 
-        if (!$context->hasTemplateName()) {
+        if (false === $context->hasTemplateName()) {
             throw new ContextException(sprintf(
                 'Context %s neither returned a response nor has a template name',
                 get_class($context)
             ));
         }
 
-        return $this->templating->renderResponse(
-            $context->getTemplateName(),
-            $context->getData()
-        );
+        return $this->templating->renderResponse($context->getTemplateName(), $context->getData());
     }
 }

@@ -25,22 +25,22 @@ use FSi\Bundle\AdminBundle\Exception\ContextException;
 
 class BatchControllerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         EngineInterface $templating,
         ContextManager $manager,
         EventDispatcherInterface $dispatcher
-    ) {
+    ): void {
         $this->beConstructedWith($templating, $manager, $dispatcher);
     }
 
-    function it_dispatches_event(
+    public function it_dispatches_event(
         EventDispatcherInterface $dispatcher,
         ContextManager $manager,
         BatchElement $element,
         BatchElementContext $context,
         Request $request,
         Response $response
-    ) {
+    ): void {
         $dispatcher->dispatch(
             AdminEvents::CONTEXT_PRE_CREATE,
             Argument::type(AdminEvent::class)
@@ -52,11 +52,11 @@ class BatchControllerSpec extends ObjectBehavior
         $this->batchAction($element, $request)->shouldReturn($response);
     }
 
-    function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
+    public function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
         BatchElement $element,
         ContextManager $manager,
         Request $request
-    ) {
+    ): void {
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
@@ -64,12 +64,12 @@ class BatchControllerSpec extends ObjectBehavior
             ->during('batchAction', [$element, $request]);
     }
 
-    function it_throws_exception_when_context_does_not_return_response(
+    public function it_throws_exception_when_context_does_not_return_response(
         ContextManager $manager,
         BatchElement $element,
         BatchElementContext $context,
         Request $request
-    ) {
+    ): void {
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->hasTemplateName()->willReturn(false);
         $context->handleRequest($request)->willReturn(null);
@@ -78,13 +78,13 @@ class BatchControllerSpec extends ObjectBehavior
             ->during('batchAction', [$element, $request]);
     }
 
-    function it_returns_response_from_context_in_batch_action(
+    public function it_returns_response_from_context_in_batch_action(
         ContextManager $manager,
         BatchElement $element,
         BatchElementContext $context,
         Request $request,
         Response $response
-    ) {
+    ): void {
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 

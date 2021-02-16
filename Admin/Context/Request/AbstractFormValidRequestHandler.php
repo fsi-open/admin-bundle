@@ -29,10 +29,8 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
      */
     protected $router;
 
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        RouterInterface $router
-    ) {
+    public function __construct(EventDispatcherInterface $eventDispatcher, RouterInterface $router)
+    {
         parent::__construct($eventDispatcher);
         $this->router = $router;
     }
@@ -40,7 +38,7 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
         $event = $this->validateEvent($event);
-        if (!$this->isValidPostRequest($event, $request)) {
+        if (false === $this->isValidPostRequest($event, $request)) {
             return null;
         }
 
@@ -61,22 +59,19 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
 
     protected function isValidPostRequest(FormEvent $event, Request $request): bool
     {
-        return $request->isMethod(Request::METHOD_POST) && $event->getForm()->isValid();
+        return true === $request->isMethod(Request::METHOD_POST) && true === $event->getForm()->isValid();
     }
 
     protected function getRedirectResponse(FormEvent $event, Request $request): RedirectResponse
     {
-        if ($request->query->has('redirect_uri')) {
+        if (true === $request->query->has('redirect_uri')) {
             return new RedirectResponse($request->query->get('redirect_uri'));
         }
 
         $element = $this->validateElement($event->getElement());
 
         return new RedirectResponse(
-            $this->router->generate(
-                $element->getSuccessRoute(),
-                $element->getSuccessRouteParameters()
-            )
+            $this->router->generate($element->getSuccessRoute(), $element->getSuccessRouteParameters())
         );
     }
 
@@ -88,7 +83,7 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
 
     private function validateEvent(AdminEvent $event): FormEvent
     {
-        if (!$event instanceof FormEvent) {
+        if (false === $event instanceof FormEvent) {
             throw new RequestHandlerException(sprintf('%s requires FormEvent', get_class($this)));
         }
 
@@ -99,8 +94,8 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
 
     private function validateElement(Element $element): RedirectableElement
     {
-        if (!$element instanceof RedirectableElement) {
-            throw new RequestHandlerException(sprintf('%s requires RedirectableElement', get_class($this)));
+        if (false === $element instanceof RedirectableElement) {
+            throw new RequestHandlerException(sprintf('%s requires %s', get_class($this), RedirectableElement::class));
         }
 
         return $element;

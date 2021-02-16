@@ -89,7 +89,7 @@ class Page extends BasePage
         foreach ($headers as $index => $header) {
             /** @var NodeElement $header */
             if (
-                $header->has('css', 'span')
+                true === $header->has('css', 'span')
                 && $header->find('css', 'span')->getText() === $columnHeader
             ) {
                 return $index + 1;
@@ -131,7 +131,7 @@ class Page extends BasePage
     {
         $uriTemplate = new UriTemplate();
         $expectedUri = $uriTemplate->expand($this->path, $urlParameters);
-        if (strpos($this->getDriver()->getCurrentUrl(), $expectedUri) === false) {
+        if (false === strpos($this->getDriver()->getCurrentUrl(), $expectedUri)) {
             throw new UnexpectedPageException(sprintf(
                 'Expected to be on "%s" but found "%s" instead',
                 $expectedUri,

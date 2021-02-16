@@ -22,29 +22,29 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 
 class GenericCRUDElementSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $this->beAnInstanceOf(MyCRUD::class);
         $this->beConstructedWith([]);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(GenericCRUDElement::class);
     }
 
-    function it_is_admin_element()
+    public function it_is_admin_element(): void
     {
         $this->shouldHaveType(Element::class);
     }
 
-    function it_has_default_route()
+    public function it_has_default_route(): void
     {
         $this->getRoute()->shouldReturn('fsi_admin_list');
     }
 
-    function it_throws_exception_when_init_datagrid_does_not_return_instance_of_datagrid(DataGridFactory $factory)
-    {
+    public function it_throws_exception_when_init_datagrid_does_not_return_instance_of_datagrid(DataGridFactory $factory
+    ): void {
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
 
@@ -52,31 +52,35 @@ class GenericCRUDElementSpec extends ObjectBehavior
             ->during('createDataGrid');
     }
 
-    function it_adds_batch_column_to_datagrid_when_element_allow_delete_objects(
+    public function it_adds_batch_column_to_datagrid_when_element_allow_delete_objects(
         DataGridFactory $factory,
         DataGridInterface $datagrid
-    ) {
+    ): void {
         $factory->createDataGrid('my_datagrid')->shouldBeCalled()->willReturn($datagrid);
         $datagrid->hasColumnType('batch')->shouldBeCalled()->willReturn(false);
-        $datagrid->addColumn('batch', 'batch', [
-            'actions' => [
-                'delete' => [
-                    'route_name' => 'fsi_admin_batch',
-                    'additional_parameters' => ['element' => $this->getId()],
-                    'label' => 'crud.list.batch.delete'
-                ]
-            ],
-            'display_order' => -1000
-        ])->shouldBeCalled();
+        $datagrid->addColumn(
+            'batch',
+            'batch',
+            [
+                'actions' => [
+                    'delete' => [
+                        'route_name' => 'fsi_admin_batch',
+                        'additional_parameters' => ['element' => $this->getId()],
+                        'label' => 'crud.list.batch.delete',
+                    ],
+                ],
+                'display_order' => -1000,
+            ]
+        )->shouldBeCalled();
 
         $this->setDataGridFactory($factory);
 
         $this->createDataGrid()->shouldReturn($datagrid);
     }
 
-    function it_throws_exception_when_init_datasource_does_not_return_instance_of_datasource(
+    public function it_throws_exception_when_init_datasource_does_not_return_instance_of_datasource(
         DataSourceFactoryInterface $factory
-    ) {
+    ): void {
         $this->setDataSourceFactory($factory);
         $factory->createDataSource(Argument::cetera())->willReturn(null);
 
@@ -84,8 +88,8 @@ class GenericCRUDElementSpec extends ObjectBehavior
             ->during('createDataSource');
     }
 
-    function it_throws_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory)
-    {
+    public function it_throws_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory
+    ): void {
         $this->setFormFactory($factory);
         $factory->create(Argument::cetera())->willReturn(null);
 
@@ -93,7 +97,7 @@ class GenericCRUDElementSpec extends ObjectBehavior
             ->during('createForm', [null]);
     }
 
-    function it_has_default_options_values()
+    public function it_has_default_options_values(): void
     {
         $options = $this->getOptions();
         $options->shouldHaveKey('allow_delete');
