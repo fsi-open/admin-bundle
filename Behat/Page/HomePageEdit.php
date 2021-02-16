@@ -19,7 +19,7 @@ class HomePageEdit extends Page
 
     protected function verifyPage(): void
     {
-        if (!$this->has('css', '#page-header:contains("Edit resources")')) {
+        if (false === $this->has('css', '#page-header:contains("Edit resources")')) {
             throw new UnexpectedPageException(sprintf('%s page is missing "Resource edit" header', $this->path));
         }
     }

@@ -22,7 +22,7 @@ class ListElement extends Element
     protected $selector = ['css' => 'body'];
 
     /**
-     * @return NodeElement[]
+     * @return array<NodeElement>
      */
     public function getColumns(): array
     {
@@ -45,7 +45,7 @@ class ListElement extends Element
     }
 
     /**
-     * @return NodeElement[]
+     * @return array<NodeElement>
      */
     public function getRows(): array
     {
@@ -53,7 +53,7 @@ class ListElement extends Element
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getRowsIds(): array
     {
@@ -68,7 +68,7 @@ class ListElement extends Element
     public function getRow(int $number): NodeElement
     {
         $row = $this->find('xpath', sprintf('//tbody/tr[%d]', $number));
-        if (!isset($row)) {
+        if (null === $row) {
             throw new UnexpectedPageException(sprintf('Row "%s" does not exist in DataGrid', $number));
         }
 
@@ -113,7 +113,7 @@ class ListElement extends Element
         foreach ($headers as $index => $header) {
             /** @var NodeElement $header */
             if (
-                $header->has('css', 'span')
+                true === $header->has('css', 'span')
                 && $header->find('css', 'span')->getText() === $columnHeader
             ) {
                 return $index + 1;
@@ -139,14 +139,14 @@ class ListElement extends Element
     {
         $sortButton = $this->getColumnHeader($columnHeader)->find('css', '.sort-asc');
 
-        return !$sortButton->hasAttribute('disabled');
+        return false === $sortButton->hasAttribute('disabled');
     }
 
     public function isColumnDescSortActive(string $columnHeader): bool
     {
         $sortButton = $this->getColumnHeader($columnHeader)->find('css', '.sort-desc');
 
-        return !$sortButton->hasAttribute('disabled');
+        return false === $sortButton->hasAttribute('disabled');
     }
 
     public function pressSortButton(string $columnHeader, string $sort): void
@@ -184,8 +184,8 @@ class ListElement extends Element
     }
 
     /**
-     * @param NodeElement[] $elements
-     * @return string[]
+     * @param array<NodeElement> $elements
+     * @return array<string>
      */
     private function getNotEmptyTexts(array $elements): array
     {
@@ -193,7 +193,7 @@ class ListElement extends Element
         /** @var Element $column */
         foreach ($elements as $column) {
             $text = $column->getText();
-            if (!empty($text)) {
+            if ('' !== $text) {
                 $texts[] = $text;
             }
         }

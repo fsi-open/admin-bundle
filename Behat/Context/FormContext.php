@@ -31,7 +31,7 @@ class FormContext extends AbstractContext
     /**
      * @When I change form field :field to value :value
      */
-    public function iChangeFormFieldWithValue($field, $value)
+    public function iChangeFormFieldWithValue($field, $value): void
     {
         expect($this->getFormElement()->findField($field)->getValue())->toNotBe($value);
         $this->getFormElement()->fillField($field, $value);
@@ -40,7 +40,7 @@ class FormContext extends AbstractContext
     /**
      * @Given /^I should see form with following fields$/
      */
-    public function iShouldSeeFormWithFollowingFields(TableNode $table)
+    public function iShouldSeeFormWithFollowingFields(TableNode $table): void
     {
         $form = $this->getFormElement();
         foreach ($table->getHash() as $fieldRow) {
@@ -51,7 +51,7 @@ class FormContext extends AbstractContext
     /**
      * @Given /^I press form "([^"]*)" button$/
      */
-    public function iPressFormButton($button)
+    public function iPressFormButton($button): void
     {
         $this->getFormElement()->pressButton($button);
     }
@@ -59,7 +59,7 @@ class FormContext extends AbstractContext
     /**
      * @Given I fill the form with values:
      */
-    public function iFillFormFields(TableNode $table)
+    public function iFillFormFields(TableNode $table): void
     {
         $form = $this->getFormElement();
         foreach ($table->getHash() as $fieldRow) {
@@ -67,7 +67,7 @@ class FormContext extends AbstractContext
             $fieldValue = $fieldRow['Field value'];
             expect($form->hasField($fieldName))->toBe(true);
             $field = $form->findField($fieldName);
-            if ($field->getAttribute('type') === 'checkbox') {
+            if ('checkbox' === $field->getAttribute('type')) {
                 $this->parseScenarioValue($fieldValue) ? $field->check() : $field->uncheck();
             } else {
                 $field->setValue($fieldValue);
@@ -80,7 +80,7 @@ class FormContext extends AbstractContext
      * @Transform /non-editable collection "([^"]*)"/
      * @Transform /removable-only collection "([^"]*)"/
      */
-    public function transformToNoneditableCollection($collectionNames)
+    public function transformToNonEditableCollection($collectionNames): ?NodeElement
     {
         return $this->defaultPage->getNonEditableCollection($collectionNames);
     }
@@ -89,7 +89,7 @@ class FormContext extends AbstractContext
      * @Transform /^"([^"]*)" collection/
      * @Transform /collection "([^"]*)"/
      */
-    public function transformToCollection($collectionNames)
+    public function transformToCollection($collectionNames): ?NodeElement
     {
         return $this->defaultPage->getCollection($collectionNames);
     }
@@ -101,7 +101,7 @@ class FormContext extends AbstractContext
      * @Then /^(non-editable collection "[^"]*") should have (\d+) (element|elements)$/
      * @Then /^(removable-only collection "[^"]*") should have (\d+) (element|elements)$/
      */
-    public function collectionShouldHaveElements(NodeElement $collection, $elementsCount)
+    public function collectionShouldHaveElements(NodeElement $collection, $elementsCount): void
     {
         $elements = $collection->findAll('xpath', '/*/*[@class = "form-group"]');
         expect(count($elements))->toBe($elementsCount);
@@ -110,7 +110,7 @@ class FormContext extends AbstractContext
     /**
      * @Given /^(collection "[^"]*") should have "([^"]*)" button$/
      */
-    public function collectionShouldHaveButton(NodeElement $collection, $buttonName)
+    public function collectionShouldHaveButton(NodeElement $collection, $buttonName): void
     {
         expect($collection->findButton($buttonName))->toNotBeNull();
     }
@@ -118,7 +118,7 @@ class FormContext extends AbstractContext
     /**
      * @Then /^all buttons for adding and removing items in (non-editable collection "[^"]*") should be disabled$/
      */
-    public function allCollectionButtonsDisabled(NodeElement $collection)
+    public function allCollectionButtonsDisabled(NodeElement $collection): void
     {
         $removeButtons = $collection->findAll('css', '.collection-remove');
         expect(count($removeButtons))->notToBe(0);
@@ -135,7 +135,7 @@ class FormContext extends AbstractContext
     /**
      * @Then /^button for adding item in (removable-only collection "[^"]*") should be disabled$/
      */
-    public function collectionAddButtonIsDisabled(NodeElement $collection)
+    public function collectionAddButtonIsDisabled(NodeElement $collection): void
     {
         $addButtons = $collection->findAll('css', '.collection-add');
         expect(count($addButtons))->notToBe(0);
@@ -147,7 +147,7 @@ class FormContext extends AbstractContext
     /**
      * @Then /^buttons for removing items in (removable-only collection "[^"]*") should be enabled/
      */
-    public function collectionRemoveButtonsAreEnabled(NodeElement $collection)
+    public function collectionRemoveButtonsAreEnabled(NodeElement $collection): void
     {
         $addButtons = $collection->findAll('css', '.collection-remove');
         expect(count($addButtons))->notToBe(0);
@@ -159,7 +159,7 @@ class FormContext extends AbstractContext
     /**
      * @When /^I press "([^"]*)" in (collection "[^"]*")$/
      */
-    public function iPressInCollection($buttonName, NodeElement $collection)
+    public function iPressInCollection($buttonName, NodeElement $collection): void
     {
         $collection
             ->find('xpath', '/*[contains(concat(" ",normalize-space(@class)," ")," collection-add ")]')
@@ -169,7 +169,7 @@ class FormContext extends AbstractContext
     /**
      * @Given /^I fill "([^"]*)" with "([^"]*)" in (collection "[^"]*") at position (\d+)$/
      */
-    public function iFillWithInCollectionAtPosition($fieldName, $fieldValue, NodeElement $collection, $position)
+    public function iFillWithInCollectionAtPosition($fieldName, $fieldValue, NodeElement $collection, $position): void
     {
         $collectionRow = $collection->find('xpath', sprintf('/*/*[@class = "form-group"][%d]', $position));
         $collectionRow->fillField($fieldName, $fieldValue);
@@ -179,7 +179,7 @@ class FormContext extends AbstractContext
      * @Given /^I remove (\w+) element in (collection "[^"]*")$/
      * @Given /^I remove (\w+) element in (removable-only collection "[^"]*")$/
      */
-    public function iRemoveElementInCollection($index, NodeElement $collection)
+    public function iRemoveElementInCollection($index, NodeElement $collection): void
     {
         $collection->find('xpath', sprintf('/*/*[@class = "form-group"][%d]', $index))
              ->find('css', '.collection-remove')->click();

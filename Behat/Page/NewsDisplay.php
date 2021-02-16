@@ -19,7 +19,7 @@ class NewsDisplay extends Page
 
     protected function verifyPage(): void
     {
-        if (!$this->has('css', '#page-header:contains("Display element")')) {
+        if (false === $this->has('css', '#page-header:contains("Display element")')) {
             throw new UnexpectedPageException(sprintf('%s page is missing "Display element" header', $this->path));
         }
     }

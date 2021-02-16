@@ -25,7 +25,7 @@ class Messages extends Element
             throw new Exception(sprintf("Unable to find any alert with type '%s'", $type));
         }
 
-        return implode("\n", array_map(function ($alert) {
+        return implode("\n", array_map(static function ($alert) {
             return $alert->getText();
         }, $alerts));
     }

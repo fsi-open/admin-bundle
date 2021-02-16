@@ -19,13 +19,13 @@ class Filters extends Element
 
     public function hasBetweenFilter($filterName, $fromName, $toName): bool
     {
-        return $this->find('css', sprintf('label:contains("%s")', $filterName))
-            && $this->findField($fromName)
-            && $this->findField($toName);
+        return null !== $this->find('css', sprintf('label:contains("%s")', $filterName))
+            && null !== $this->findField($fromName)
+            && null !== $this->findField($toName);
     }
 
     public function hasChoiceFilter($filterName): bool
     {
-        return $this->hasField($filterName) && ($this->findField($filterName)->getTagName() == 'select');
+        return true === $this->hasField($filterName) && 'select' === $this->findField($filterName)->getTagName();
     }
 }

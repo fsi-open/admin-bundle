@@ -19,7 +19,7 @@ class CustomNewsCreate extends Page
 
     protected function verifyPage(): void
     {
-        if (!$this->has('css', 'h1#page-header:contains("Custom form")')) {
+        if (false === $this->has('css', 'h1#page-header:contains("Custom form")')) {
             throw new UnexpectedPageException(sprintf('%s page is missing "Custom form" header', $this->path));
         }
     }
