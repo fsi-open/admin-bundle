@@ -29,7 +29,7 @@ default: &default
                 debug: true
                 path: features/fixtures/project/src/AppKernel.php
                 class: FSi\AppKernel
-                bootstrap: features/fixtures/project/app/bootstrap.php
+                bootstrap: null
         Caciobanu\Behat\DeprecationExtension: ~
         SensioLabs\Behat\PageObjectExtension:
             namespaces:

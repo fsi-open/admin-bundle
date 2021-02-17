@@ -33,7 +33,7 @@ before_script:
     - nohup php -S localhost:8080 -t features/fixtures/project/web > /dev/null 2>&1 &
     - java -jar vendor/bin/selenium.jar > /dev/null 2>&1 &
     - sleep 5
-    - features/fixtures/project/app/console assets:install features/fixtures/project/web --relative --symlink
+    - features/fixtures/project/bin/console assets:install features/fixtures/project/web --relative --symlink
 
 script:
     - vendor/bin/phpcs

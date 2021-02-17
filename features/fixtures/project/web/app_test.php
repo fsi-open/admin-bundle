@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
-$loader = require_once __DIR__ . '/../app/bootstrap.php';
+$loader = require_once __DIR__ . '/../../../../vendor/autoload.php';
 Debug::enable();
 
 $kernel = new \FSi\AppKernel('test', true);
