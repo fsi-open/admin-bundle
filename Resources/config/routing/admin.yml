@@ -34,3 +34,13 @@ fsi_admin_display:
     path: /display/{element}/{id}
     defaults:
         _controller: FSi\Bundle\AdminBundle\Controller\DisplayController::displayAction
+
+fsi_admin_positionable_increase_position:
+    path: /{element}/{id}/position/increase
+    defaults:
+        _controller: FSi\Bundle\AdminBundle\Controller\PositionableController:increasePositionAction
+
+fsi_admin_positionable_decrease_position:
+    path: /{element}/{id}/position/decrease
+    defaults:
+        _controller: FSi\Bundle\AdminBundle\Controller\PositionableController:decreasePositionAction

@@ -7,6 +7,9 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
+
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\Context\ListElementContext;
