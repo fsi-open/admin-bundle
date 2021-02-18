@@ -44,3 +44,13 @@ fsi_admin_positionable_decrease_position:
     path: /{element}/{id}/position/decrease
     defaults:
         _controller: FSi\Bundle\AdminBundle\Controller\PositionableController:decreasePositionAction
+
+fsi_admin_tree_node_move_up:
+    path: /admin/{element}/{id}/reorder/move-up
+    defaults:
+        _controller: FSi\Bundle\AdminBundle\Controller\ReorderController:moveUpAction
+
+fsi_admin_tree_node_move_down:
+    path: /admin/{element}/{id}/reorder/move-down
+    defaults:
+        _controller: FSi\Bundle\AdminBundle\Controller\ReorderController:moveDownAction

@@ -31,7 +31,8 @@ Documentation:
 - Extension system that allows you to create your own custom column types
 - Sorting, ordering, filtering, pagination, batch actions, custom actions
 - Doctrine ORM\ODM support, with possibility to create data sets from query builder
-- Manually positioning entities on lists
+- Manually positioning entities on lists (based on https://github.com/gedmo/doctrine-extensions)
+- Manipulating tree structures like lists (based on https://github.com/gedmo/doctrine-extensions)
 - Inline editing at list level
 - Fully integrated with Symfony's Form component
 - Fully integrated with FSi's ResourceRepositoryBundle
