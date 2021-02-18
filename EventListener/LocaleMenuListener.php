@@ -12,8 +12,10 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
+use FSi\Bundle\AdminBundle\Event\MenuEvents;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Intl\Languages;
@@ -21,7 +23,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use function class_exists;
 
-class LocaleMenuListener
+class LocaleMenuListener implements EventSubscriberInterface
 {
     /**
      * @var TranslatorInterface
@@ -37,6 +39,13 @@ class LocaleMenuListener
      * @var string[]
      */
     private $locales;
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            MenuEvents::TOOLS => 'createLocaleMenu',
+        ];
+    }
 
     public function __construct(TranslatorInterface $translator, RequestStack $requestStack, array $locales)
     {
@@ -81,22 +90,13 @@ class LocaleMenuListener
         $event->getMenu()->addChild($language);
     }
 
-    private function getLanguageName(?string $locale = null): ?string
+    private function getLanguageName(?string $locale = null): string
     {
         if (null === $locale) {
             $locale = $this->getCurrentLocale();
         }
 
-        if (true === class_exists(Languages::class)) {
-            return Languages::getName($locale, $this->getCurrentLocale());
-        }
-
-        return Intl::getLanguageBundle()
-            ->getLanguageName(
-                $locale,
-                null,
-                $this->getCurrentLocale()
-            );
+        return Languages::getName($locale, $this->getCurrentLocale());
     }
 
     private function getCurrentLocale(): string

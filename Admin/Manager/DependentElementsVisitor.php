@@ -16,6 +16,11 @@ use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 
 class DependentElementsVisitor implements Visitor
 {
+    public static function getPriority(): int
+    {
+        return 0;
+    }
+
     public function visitManager(ManagerInterface $manager): void
     {
         foreach ($manager->getElements() as $element) {

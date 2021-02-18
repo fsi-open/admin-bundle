@@ -1,5 +1,5 @@
-/app/data.sqlite
-/app/cache
-/app/logs
+/bin/data.sqlite
+/bin/cache
+/bin/logs
 /web/bundles
 /web/uploaded/*

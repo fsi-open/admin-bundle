@@ -42,12 +42,12 @@ class ResourceRepositoryContext extends ContextAbstract
     private $form;
 
     /**
-     * @param array<HandlerInterface> $requestHandlers
+     * @param iterable<HandlerInterface> $requestHandlers
      * @param string $template
      * @param ResourceFormBuilder $resourceFormBuilder
      */
     public function __construct(
-        array $requestHandlers,
+        iterable $requestHandlers,
         string $template,
         ResourceFormBuilder $resourceFormBuilder
     ) {

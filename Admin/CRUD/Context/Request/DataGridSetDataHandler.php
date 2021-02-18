@@ -25,13 +25,13 @@ class DataGridSetDataHandler extends AbstractHandler
     {
         $event = $this->validateEvent($event);
 
-        $this->eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_PRE_BIND, $event);
+        $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_PRE_BIND);
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
 
         $event->getDataGrid()->setData($event->getDataSource()->getResult());
-        $this->eventDispatcher->dispatch(ListEvents::LIST_DATAGRID_DATA_POST_BIND, $event);
+        $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_POST_BIND);
 
         if ($event->hasResponse()) {
             return $event->getResponse();

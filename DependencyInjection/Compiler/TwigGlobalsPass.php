@@ -13,6 +13,7 @@ namespace FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Twig\Environment;
 
 class TwigGlobalsPass implements CompilerPassInterface
 {

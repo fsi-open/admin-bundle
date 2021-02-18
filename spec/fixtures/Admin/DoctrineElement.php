@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\spec\fixtures\Admin;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class DoctrineElement extends SimpleAdminElement
 {

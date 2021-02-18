@@ -61,14 +61,6 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('form_theme')->defaultValue('@FSiAdmin/Form/form_theme.html.twig')->end()
                     ->end()
                 ->end()
-                ->arrayNode('annotations')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('dirs')
-                            ->prototype('scalar')->defaultValue([])->end()
-                        ->end()
-                    ->end()
-                ->end()
             ->end()
         ;
 

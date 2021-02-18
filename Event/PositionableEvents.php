@@ -9,15 +9,10 @@
 
 declare(strict_types=1);
 
-namespace FSi\Bundle\AdminBundle\Annotation;
+namespace FSi\Bundle\AdminBundle\Event;
 
-use Doctrine\Common\Annotations\Annotation;
-
-/**
- * @Annotation
- *
- * @deprecated since 3.0
- */
-final class Element extends Annotation
+final class PositionableEvents
 {
+    public const PRE_APPLY = 'admin.positionable.pre_apply';
+    public const POST_APPLY = 'admin.positionable.post_apply';
 }

@@ -60,7 +60,7 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
 
         foreach ($objects as $object) {
             $preEvent = new BatchPreApplyEvent($element, $request, $object);
-            $this->eventDispatcher->dispatch(BatchEvents::BATCH_OBJECT_PRE_APPLY, $preEvent);
+            $this->eventDispatcher->dispatch($preEvent, BatchEvents::BATCH_OBJECT_PRE_APPLY);
 
             if (true === $preEvent->shouldSkip()) {
                 continue;
@@ -69,8 +69,8 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
             $element->apply($object);
 
             $this->eventDispatcher->dispatch(
-                BatchEvents::BATCH_OBJECT_POST_APPLY,
-                new BatchEvent($element, $request, $object)
+                new BatchEvent($element, $request, $object),
+                BatchEvents::BATCH_OBJECT_POST_APPLY
             );
         }
     }

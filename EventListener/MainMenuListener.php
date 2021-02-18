@@ -7,15 +7,17 @@ namespace FSi\Bundle\AdminBundle\EventListener;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
+use FSi\Bundle\AdminBundle\Event\MenuEvents;
 use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Yaml\Yaml;
 
 use function array_key_exists;
 
-class MainMenuListener
+class MainMenuListener implements EventSubscriberInterface
 {
     /**
      * @var string
@@ -26,6 +28,13 @@ class MainMenuListener
      * @var ManagerInterface
      */
     private $manager;
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            MenuEvents::MAIN => 'createMainMenu',
+        ];
+    }
 
     public function __construct(ManagerInterface $manager, string $configFilePath)
     {

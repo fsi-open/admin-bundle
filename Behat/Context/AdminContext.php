@@ -173,6 +173,6 @@ class AdminContext extends AbstractContext
 
     private function getAdminManager(): ManagerInterface
     {
-        return $this->getContainer()->get('test.admin.manager');
+        return $this->getContainer()->get(sprintf('test.%s', ManagerInterface::class));
     }
 }

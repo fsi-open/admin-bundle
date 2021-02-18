@@ -54,7 +54,7 @@ class DataContext extends AbstractContext
      */
     public function deleteDatabaseIfExist(): void
     {
-        $dbFilePath = $this->getKernel()->getRootDir() . '/data.sqlite';
+        $dbFilePath = $this->getKernel()->getProjectDir() . '/var/data.sqlite';
         if (true === file_exists($dbFilePath)) {
             unlink($dbFilePath);
         }

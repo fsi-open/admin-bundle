@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 interface ContextInterface
 {
+    public static function getPriority(): int;
+
     public function supports(string $route, Element $element): bool;
 
     public function setElement(Element $element): void;

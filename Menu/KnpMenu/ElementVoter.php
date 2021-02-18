@@ -40,7 +40,7 @@ class ElementVoter implements VoterInterface
         $this->requestStack = $requestStack;
     }
 
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): ?bool
     {
         if (false === $this->validateRequestElement()) {
             return null;

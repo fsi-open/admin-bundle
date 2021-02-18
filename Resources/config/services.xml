@@ -4,51 +4,24 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="admin.manager.class">FSi\Bundle\AdminBundle\Admin\Manager</parameter>
-        <parameter key="admin.manager.visitor.element_collection.class">FSi\Bundle\AdminBundle\Admin\Manager\ElementCollectionVisitor</parameter>
-        <parameter key="admin.manager.visitor.dependent_elements.class">FSi\Bundle\AdminBundle\Admin\Manager\DependentElementsVisitor</parameter>
-        <parameter key="admin.context.manager.class">FSi\Bundle\AdminBundle\Admin\Context\ContextManager</parameter>
-        <parameter key="admin.form.builder.batch.class">Symfony\Component\Form\FormBuilder</parameter>
-        <parameter key="admin.form.collection_extension.class">FSi\Bundle\AdminBundle\Form\CollectionTypeExtension</parameter>
-        <parameter key="admin.element.param.converter.class">FSi\Bundle\AdminBundle\Request\ParamConverter\AdminElementParamConverter</parameter>
-        <parameter key="admin.element.factory.production_line.class">FSi\Bundle\AdminBundle\Factory\ProductionLine</parameter>
-        <parameter key="admin.element.factory.worker.list.class">FSi\Bundle\AdminBundle\Factory\Worker\ListWorker</parameter>
-        <parameter key="admin.element.factory.worker.form.class">FSi\Bundle\AdminBundle\Factory\Worker\FormWorker</parameter>
-        <parameter key="admin.element.factory.worker.doctrine.class">FSi\Bundle\AdminBundle\Factory\Worker\DoctrineWorker</parameter>
-        <parameter key="admin.element.factory.worker.request_stack.class">FSi\Bundle\AdminBundle\Factory\Worker\RequestStackWorker</parameter>
-        <parameter key="admin.element.factory.worker.dependent.class">FSi\Bundle\AdminBundle\Factory\Worker\DependentElementWorker</parameter>
-        <parameter key="admin.controller.abstract.class">FSi\Bundle\AdminBundle\Controller\ControllerAbstract</parameter>
-        <parameter key="admin.controller.resource.class">FSi\Bundle\AdminBundle\Controller\ResourceController</parameter>
-        <parameter key="admin.controller.display.class">FSi\Bundle\AdminBundle\Controller\DisplayController</parameter>
-        <parameter key="admin.controller.list.class">FSi\Bundle\AdminBundle\Controller\ListController</parameter>
-        <parameter key="admin.controller.form.class">FSi\Bundle\AdminBundle\Controller\FormController</parameter>
-        <parameter key="admin.controller.batch.class">FSi\Bundle\AdminBundle\Controller\BatchController</parameter>
-        <parameter key="admin.controller.admin.class">FSi\Bundle\AdminBundle\Controller\AdminController</parameter>
-    </parameters>
-
     <services>
-        <service id="admin.manager" class="%admin.manager.class%" />
+        <defaults autoconfigure="true" autowire="true" public="false" />
 
-        <service id="admin.element.param.converter" class="%admin.element.param.converter.class%">
-            <argument type="service" id="admin.manager" />
-            <tag name="request.param_converter" converter="admin.element" priority="10" />
+        <prototype namespace="FSi\Bundle\AdminBundle\"
+                   resource="../../{Admin,DataGrid,Doctrine,EventListener,Factory,Form,Menu,Message,Request,Twig}"
+        />
+
+        <service id="FSi\Bundle\AdminBundle\Admin\ManagerInterface" alias="FSi\Bundle\AdminBundle\Admin\Manager" />
+
+        <service id="FSi\Bundle\AdminBundle\Factory\ProductionLine">
+            <argument key="$workers" type="tagged_iterator" tag="admin.worker" />
         </service>
 
-        <service id="admin.element.factory.production_line" class="%admin.element.factory.production_line.class%">
-            <argument type="collection">
-                <argument type="service" id="admin.element.factory.worker.list"/>
-                <argument type="service" id="admin.element.factory.worker.form" />
-                <argument type="service" id="admin.element.factory.worker.doctrine"/>
-                <argument type="service" id="admin.element.factory.worker.request_stack"/>
-            </argument>
+        <service id="FSi\Bundle\AdminBundle\Admin\Context\ContextManager">
+            <argument key="$contexts" type="tagged_iterator" tag="admin.context" default-priority-method="getPriority" />
         </service>
 
-        <service id="admin.context.manager" class="%admin.context.manager.class%">
-            <argument type="collection"></argument>
-        </service>
-
-        <service id="admin.form.builder.batch" class="%admin.form.builder.batch.class%">
+        <service id="admin.form.builder.batch" class="Symfony\Component\Form\FormBuilder">
             <factory service="form.factory" method="createNamedBuilder"/>
             <argument type="string">batch_action</argument>
             <argument type="string">Symfony\Component\Form\Extension\Core\Type\FormType</argument>
@@ -57,83 +30,137 @@
             </argument>
         </service>
 
-        <service id="admin.form.collection_type_extension" class="%admin.form.collection_extension.class%">
-            <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\CollectionType" />
-        </service>
-
-        <!-- ProductionLine Workers -->
-        <service id="admin.element.factory.worker.list" class="%admin.element.factory.worker.list.class%">
-            <argument type="service" id="datasource.factory" />
-            <argument type="service" id="datagrid.factory" />
-        </service>
-        <service id="admin.element.factory.worker.form" class="%admin.element.factory.worker.form.class%">
-            <argument type="service" id="form.factory" />
-        </service>
-        <service id="admin.element.factory.worker.doctrine" class="%admin.element.factory.worker.doctrine.class%">
-            <argument type="service" id="doctrine" />
-        </service>
-        <service id="admin.element.factory.worker.request_stack" class="%admin.element.factory.worker.request_stack.class%">
-            <argument type="service" id="request_stack" />
+        <service id="FSi\Bundle\AdminBundle\Admin\Manager">
+            <argument key="$visitors" type="tagged_iterator" tag="admin.manager.visitor"
+                      default-priority-method="getPriority"/>
         </service>
 
         <!-- Controllers -->
-        <service id="admin.controller.abstract" class="%admin.controller.abstract.class%" abstract="true" public="true">
-            <argument type="service" id="templating"/>
-            <argument type="service" id="admin.context.manager"/>
-            <argument type="service" id="event_dispatcher"/>
-        </service>
+        <prototype namespace="FSi\Bundle\AdminBundle\Controller\" resource="../../Controller/*" public="true" />
 
-        <service id="admin.controller.batch" class="%admin.controller.batch.class%" parent="admin.controller.abstract" />
-
-        <service id="admin.controller.display" class="%admin.controller.display.class%" parent="admin.controller.abstract">
-            <argument>%admin.templates.display%</argument>
-        </service>
-
-        <service id="admin.controller.form" class="%admin.controller.form.class%" parent="admin.controller.abstract">
-            <argument>%admin.templates.form%</argument>
-        </service>
-
-        <service id="admin.controller.list" class="%admin.controller.list.class%" parent="admin.controller.abstract">
-            <argument>%admin.templates.list%</argument>
-        </service>
-
-        <service id="admin.controller.resource" class="%admin.controller.resource.class%" parent="admin.controller.abstract">
-            <argument>%admin.templates.resource%</argument>
-        </service>
-
-        <service id="admin.controller.admin" class="%admin.controller.admin.class%" public="true">
-            <argument type="service" id="templating"/>
-            <argument type="service" id="router"/>
-            <argument>%admin.templates.index_page%</argument>
+        <service id="FSi\Bundle\AdminBundle\Controller\AdminController" public="true">
+            <argument key="$indexActionTemplate" type="string">%admin.templates.index_page%</argument>
         </service>
 
         <!-- Manager Visitors -->
-        <service id="admin.manager.visitor.element_collection" class="%admin.manager.visitor.element_collection.class%">
-            <!-- This collection is replaced in AdminElementPass -->
-            <argument type="collection" />
-            <argument type="service" id="admin.element.factory.production_line" />
-            <tag name="admin.manager.visitor" />
-        </service>
-
-        <service id="admin.manager.visitor.dependent_elements" class="%admin.manager.visitor.dependent_elements.class%">
-            <tag name="admin.manager.visitor" />
+        <service id="FSi\Bundle\AdminBundle\Admin\Manager\ElementCollectionVisitor">
+            <argument key="$elements" type="tagged_iterator" tag="admin.element"/>
         </service>
 
         <!-- Flash messages -->
-        <service id="admin.messages.flash" class="FSi\Bundle\AdminBundle\Message\FlashMessages" lazy="true">
-            <argument type="service" id="session" />
-            <argument type="string">fsi_admin</argument>
+        <service id="FSi\Bundle\AdminBundle\Message\FlashMessages" lazy="true">
+            <argument key="$prefix" type="string">fsi_admin</argument>
         </service>
 
-        <service id="admin.listener.messages" class="FSi\Bundle\AdminBundle\EventListener\MessagesListener">
-            <argument type="service" id="admin.messages.flash"/>
-            <tag name="kernel.event_subscriber"/>
+        <!-- Menu -->
+        <service id="admin.menu.builder.main" class="FSi\Bundle\AdminBundle\Menu\Builder\MenuBuilder">
+            <argument key="$eventName" type="constant">FSi\Bundle\AdminBundle\Event\MenuEvents::MAIN</argument>
         </service>
 
-        <service id="admin.twig.messages_extension" class="FSi\Bundle\AdminBundle\Twig\MessageTwigExtension" public="false">
-            <argument type="service" id="admin.messages.flash"/>
-            <tag name="twig.extension"/>
+        <service id="admin.menu.builder.tools" class="FSi\Bundle\AdminBundle\Menu\Builder\MenuBuilder">
+            <argument key="$eventName" type="constant">FSi\Bundle\AdminBundle\Event\MenuEvents::TOOLS</argument>
         </service>
 
+        <service id="FSi\Bundle\AdminBundle\EventListener\MainMenuListener">
+            <argument key="$configFilePath" type="string">%admin.menu_config_path%</argument>
+        </service>
+
+        <service id="FSi\Bundle\AdminBundle\EventListener\LocaleMenuListener">
+            <argument key="$locales" type="string">%admin.locales%</argument>
+        </service>
+
+        <!-- KnpMenu -->
+        <service id="FSi\Bundle\AdminBundle\Menu\KnpMenu\MenuBuilder">
+            <argument key="$decorators" type="tagged_iterator" tag="admin.menu.knp_decorator" />
+        </service>
+
+        <service id="admin.menu.main" class="Knp\Menu\ItemInterface">
+            <factory service="FSi\Bundle\AdminBundle\Menu\KnpMenu\MenuBuilder" method="createMenu"/>
+            <argument key="$builder" type="service" id="admin.menu.builder.main"/>
+            <tag name="knp_menu.menu" alias="fsi_admin.menu.main"/>
+        </service>
+
+        <service id="admin.menu.tools" class="Knp\Menu\ItemInterface">
+            <factory service="FSi\Bundle\AdminBundle\Menu\KnpMenu\MenuBuilder" method="createMenu"/>
+            <argument key="$builder" type="service" id="admin.menu.builder.tools"/>
+            <tag name="knp_menu.menu" alias="fsi_admin.menu.tools"/>
+        </service>
+
+        <!-- Contexts -->
+        <service id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext">
+            <argument key="$requestHandlers" type="collection">
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormSubmitHandler" />
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler" />
+            </argument>
+            <argument key="$formBuilder" type="service" id="admin.form.builder.batch" />
+        </service>
+
+        <service id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\DeleteElementContext">
+            <argument key="$requestHandlers" type="collection">
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormSubmitHandler" />
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\DeleteRequestHandler" />
+            </argument>
+            <argument key="$formBuilder" type="service" id="admin.form.builder.batch" />
+        </service>
+
+        <service id="FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContext">
+            <argument key="$requestHandlers" type="collection">
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\Display\Context\Request\Handler" />
+            </argument>
+            <argument key="$template">%admin.templates.display%</argument>
+        </service>
+
+        <service id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\CRUDFormElementContext">
+            <argument key="$requestHandlers" type="collection">
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\FormSubmitHandler" />
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\FormValidRequestHandler" />
+            </argument>
+            <argument key="$template" type="string">%admin.templates.crud_form%</argument>
+        </service>
+
+        <service id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\FormElementContext">
+            <argument key="$requestHandlers" type="collection">
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\FormSubmitHandler" />
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\FormValidRequestHandler" />
+            </argument>
+            <argument key="$template" type="string">%admin.templates.form%</argument>
+        </service>
+
+        <service id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\CRUDListElementContext">
+            <argument key="$requestHandlers" type="collection">
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\DataSourceBindParametersHandler" />
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\DataGridSetDataHandler" />
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\DataGridBindDataHandler" />
+            </argument>
+            <argument key="$template" type="string">%admin.templates.crud_list%</argument>
+        </service>
+
+        <service id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\ListElementContext">
+            <argument key="$requestHandlers" type="collection">
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\DataSourceBindParametersHandler" />
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\DataGridSetDataHandler" />
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\DataGridBindDataHandler" />
+            </argument>
+            <argument key="$template">%admin.templates.list%</argument>
+        </service>
+
+        <service id="FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\ResourceRepositoryContext">
+            <argument key="$requestHandlers" type="collection">
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request\FormSubmitHandler" />
+                <argument type="service" id="FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request\FormValidRequestHandler" />
+            </argument>
+            <argument key="$template" type="string">%admin.templates.resource%</argument>
+            <argument key="$resourceFormBuilder" type="service" id="FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder" />
+        </service>
+
+        <!-- DataGrid -->
+        <service id="FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension\BatchActionExtension">
+            <argument key="$formBuilder" type="service" id="admin.form.builder.batch"/>
+        </service>
+
+        <!-- EventListener -->
+        <service id="FSi\Bundle\AdminBundle\EventListener\LocaleListener">
+            <argument key="$defaultLocale" type="string">%admin.default_locale%</argument>
+        </service>
     </services>
 </container>

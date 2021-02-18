@@ -92,7 +92,7 @@
             </argument>
         </service>
 
-        <service id="test.admin.manager" alias="admin.manager" public="true" />
+        <service id="test.FSi\Bundle\AdminBundle\Admin\ManagerInterface" alias="FSi\Bundle\AdminBundle\Admin\ManagerInterface" public="true" />
 
         <service id="test.fsi_resource_repository.map_builder" alias="fsi_resource_repository.map_builder" public="true" />
     </services>

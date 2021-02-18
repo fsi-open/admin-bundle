@@ -33,8 +33,8 @@ class Handler extends AbstractHandler
             throw new RequestHandlerException(sprintf('%s requires DisplayEvent', get_class($this)));
         }
 
-        $this->eventDispatcher->dispatch(DisplayEvents::DISPLAY_PRE_RENDER, $event);
-        if (true === $event->hasResponse()) {
+        $this->eventDispatcher->dispatch($event, DisplayEvents::DISPLAY_PRE_RENDER);
+        if ($event->hasResponse()) {
             return $event->getResponse();
         }
 

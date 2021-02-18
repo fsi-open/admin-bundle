@@ -1,7 +1,7 @@
 parameters:
     reportUnmatchedIgnoredErrors: false
     treatPhpDocTypesAsCertain: false
-    level: 4
+    level: 5
     paths:
         - .
     excludes_analyse:
@@ -10,6 +10,8 @@ parameters:
         - '%rootDir%/../../../docker'
         - '%rootDir%/../../../features'
         - '%rootDir%/../../../spec'
+        - '%rootDir%/../../../var'
         - '%rootDir%/../../../vendor'
     ignoreErrors:
         - '#Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required\.#'
+        - '#Parameter \#1 \$parameters of method FSi\\Component\\DataSource\\DataSourceInterface::bindParameters\(\) expects array, Symfony\\Component\\HttpFoundation\\Request given\.#'

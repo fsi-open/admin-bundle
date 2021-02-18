@@ -21,9 +21,9 @@ class ContextManager
     protected $contexts;
 
     /**
-     * @param array<ContextInterface> $contexts
+     * @param iterable<ContextInterface> $contexts
      */
-    public function __construct(array $contexts = [])
+    public function __construct(iterable $contexts)
     {
         $this->contexts = [];
 

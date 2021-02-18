@@ -29,14 +29,14 @@ class DataSourceBindParametersHandler extends AbstractHandler
             return $event->getResponse();
         }
 
-        $this->eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND, $event);
+        $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND);
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
 
         $event->getDataSource()->bindParameters($request);
 
-        $this->eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND, $event);
+        $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND);
         if ($event->hasResponse()) {
             return $event->getResponse();
         }

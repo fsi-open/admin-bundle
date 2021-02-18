@@ -14,9 +14,9 @@ class ProductionLine
     protected $workers;
 
     /**
-     * @param array<Worker> $workers
+     * @param iterable<Worker> $workers
      */
-    public function __construct(array $workers = [])
+    public function __construct(iterable $workers)
     {
         $this->workers = [];
 

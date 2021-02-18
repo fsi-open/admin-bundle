@@ -2,14 +2,14 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
+use FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDeleteElement;
+use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use PhpSpec\ObjectBehavior;
 use stdClass;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
-use FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDeleteElement;
-use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class DeleteElementSpec extends ObjectBehavior
 {

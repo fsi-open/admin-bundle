@@ -20,9 +20,15 @@ class Manager implements ManagerInterface
      */
     protected $elements;
 
-    public function __construct()
+    /**
+     * @param iterable<Visitor> $visitors
+     */
+    public function __construct(iterable $visitors)
     {
         $this->elements = [];
+        foreach ($visitors as $visitor) {
+            $visitor->visitManager($this);
+        }
     }
 
     public function addElement(Element $element): void
@@ -48,10 +54,5 @@ class Manager implements ManagerInterface
     public function getElements(): array
     {
         return $this->elements;
-    }
-
-    public function accept(Visitor $visitor): void
-    {
-        $visitor->visitManager($this);
     }
 }

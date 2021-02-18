@@ -13,6 +13,7 @@ namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\BatchFormValidRequestHandler;
 use FSi\Bundle\AdminBundle\Admin\CRUD\DeleteElement;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
@@ -27,7 +28,7 @@ use Symfony\Component\Routing\RouterInterface;
 class DeleteRequestHandlerSpec extends ObjectBehavior
 {
     public function let(
-        HandlerInterface $batchHandler,
+        BatchFormValidRequestHandler $batchHandler,
         FlashMessages $flashMessage,
         RouterInterface $router,
         DeleteElement $element,
@@ -60,7 +61,7 @@ class DeleteRequestHandlerSpec extends ObjectBehavior
     public function it_catches_foreign_key_violation_exception(
         FormEvent $event,
         Request $request,
-        HandlerInterface $batchHandler,
+        BatchFormValidRequestHandler $batchHandler,
         FlashMessages $flashMessage
     ): void {
         $batchHandler->handleRequest($event, $request)->willThrow(ForeignKeyConstraintViolationException::class);

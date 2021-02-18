@@ -24,14 +24,18 @@ class MenuBuilder
     protected $factory;
 
     /**
-     * @var ItemDecorator
+     * @var iterable<ItemDecorator>
      */
-    protected $itemDecorator;
+    protected $decorators;
 
-    public function __construct(FactoryInterface $factory, ItemDecorator $itemDecorator)
+    /**
+     * @param FactoryInterface $factory
+     * @param iterable<ItemDecorator> $decorators
+     */
+    public function __construct(FactoryInterface $factory, iterable $decorators)
     {
         $this->factory = $factory;
-        $this->itemDecorator = $itemDecorator;
+        $this->decorators = $decorators;
     }
 
     public function createMenu(Builder $builder): KnpItemInterface
@@ -66,7 +70,9 @@ class MenuBuilder
                 $this->populateMenu($knpItem, $item->getChildren());
             }
 
-            $this->itemDecorator->decorate($knpItem, $item);
+            foreach ($this->decorators as $decorator) {
+                $decorator->decorate($knpItem, $item);
+            }
         }
     }
 }

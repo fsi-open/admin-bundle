@@ -13,7 +13,7 @@ class MenuBuilderSpec extends ObjectBehavior
 {
     public function let(FactoryInterface $factory, ItemDecorator $itemDecorator): void
     {
-        $this->beConstructedWith($factory, $itemDecorator);
+        $this->beConstructedWith($factory, [$itemDecorator]);
     }
 
     public function it_builds_knp_menu_and_decorates_items(

@@ -12,11 +12,20 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
+use FSi\Bundle\AdminBundle\Event\MenuEvents;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item as MenuItem;
+use FSi\Bundle\DataGridBundle\DataGrid\EventSubscriberInterface;
 
-class CleanUpMenuListener
+class CleanUpMenuListener implements EventSubscriberInterface
 {
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            MenuEvents::MAIN => ['cleanUpMenu', -100]
+        ];
+    }
+
     public function cleanUpMenu(MenuEvent $event)
     {
         $this->cleanMenuLevel($event->getMenu());

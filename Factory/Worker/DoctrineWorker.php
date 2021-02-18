@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Factory\Worker;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\Element as DoctrineElement;
 use FSi\Bundle\AdminBundle\Factory\Worker;

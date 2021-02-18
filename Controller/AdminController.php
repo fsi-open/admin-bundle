@@ -11,18 +11,18 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 
 class AdminController
 {
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $templating;
+    private $twig;
 
     /**
      * @var RouterInterface
@@ -34,16 +34,16 @@ class AdminController
      */
     private $indexActionTemplate;
 
-    public function __construct(EngineInterface $templating, RouterInterface $router, string $indexActionTemplate)
+    public function __construct(Environment $twig, RouterInterface $router, string $indexActionTemplate)
     {
-        $this->templating = $templating;
+        $this->twig = $twig;
         $this->router = $router;
         $this->indexActionTemplate = $indexActionTemplate;
     }
 
     public function indexAction(): Response
     {
-        return $this->templating->renderResponse($this->indexActionTemplate);
+        return new Response($this->twig->render($this->indexActionTemplate));
     }
 
     public function localeAction(string $_locale, Request $request): RedirectResponse

@@ -29,11 +29,16 @@ abstract class ContextAbstract implements ContextInterface
      */
     private $template;
 
+    public static function getPriority(): int
+    {
+        return 0;
+    }
+
     /**
-     * @param array<HandlerInterface> $requestHandlers
+     * @param iterable<HandlerInterface> $requestHandlers
      * @param string|null $template
      */
-    public function __construct(array $requestHandlers, ?string $template = null)
+    public function __construct(iterable $requestHandlers, ?string $template = null)
     {
         $this->requestHandlers = $requestHandlers;
         $this->template = $template;

@@ -2,9 +2,9 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyBatchElement;
