@@ -76,6 +76,10 @@
         "symfony/yaml": "^4.4|^5.0",
         "symfony/var-dumper": "^4.4|^5.0"
     },
+    "conflict": {
+        "fsi/admin-positionable-bundle": "*",
+        "fsi/admin-tree-bundle": "*"
+    },
     "config": {
         "bin-dir": "vendor/bin",
         "sort-packages": true
