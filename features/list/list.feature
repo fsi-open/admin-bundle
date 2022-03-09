@@ -16,3 +16,11 @@ Feature: List of elements
       | Active        |
       | Created at    |
     And I should see "Subscribers list" page header "List of elements"
+
+  Scenario: Accessing tree-like list
+    Given I am on the "Admin panel" page
+    And I follow "Tree" url from top bar
+    Then I should see list with following columns
+      | Column name |
+      | Title       |
+      | Actions     |

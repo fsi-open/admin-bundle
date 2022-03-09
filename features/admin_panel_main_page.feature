@@ -18,5 +18,6 @@ Feature: Admin panel main page
       | Categories    |                |
       | News          |                |
       | Subscribers   |                |
+      | Tree          |                |
       | About us page | Site structure |
       | Home page     | Site structure |
