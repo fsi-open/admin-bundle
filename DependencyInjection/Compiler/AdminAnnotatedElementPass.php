@@ -20,6 +20,8 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
+use function is_array;
+
 /**
  * @deprecated since 3.0
  */
@@ -57,6 +59,10 @@ class AdminAnnotatedElementPass implements CompilerPassInterface
     private function getBundlesAdminPaths(ContainerBuilder $container): array
     {
         $bundleClasses = $container->getParameter('kernel.bundles');
+        if (false === is_array($bundleClasses)) {
+            return [];
+        }
+
         $paths = [];
         foreach ($bundleClasses as $bundleClass) {
             $bundleClassReflector = new ReflectionClass($bundleClass);
