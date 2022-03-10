@@ -65,7 +65,13 @@ class ElementVoter implements VoterInterface
                 break;
             }
 
-            $element = $this->manager->getElement($element->getParentId());
+            $parentElement = $this->manager->getElement($element->getParentId());
+
+            if ($parentElement === $element) {
+                break;
+            }
+
+            $element = $parentElement;
         }
 
         return false;

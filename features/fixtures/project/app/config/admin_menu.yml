@@ -2,6 +2,7 @@ menu:
   - { id: category, name: admin.category.name }
   - { id: news, name: admin.news.name }
   - { id: subscriber, name : admin.subscriber.name }
+  - { id: node, name: admin.node.name }
   - admin.menu.structure:
     - { id: home_page, name: admin.home_page.name }
     - { id: about_us_page, name: admin.about_us_page.name }

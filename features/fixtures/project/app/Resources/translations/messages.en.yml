@@ -22,6 +22,12 @@ admin:
       non_editable_tags: Non-editable tags
       removable_comments: Removable-only comments
       actions: Actions
+  node:
+    name: Tree
+    list:
+      title: Title
+      actions: Actions
+      child_nodes: Child nodes
   subscriber:
     name: Subscribers
     list:

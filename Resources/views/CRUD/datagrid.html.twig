@@ -28,7 +28,7 @@
     {% if cell.hasAttribute('form') %}
         <a href="#" class="{{ block('datagrid_column_cell_form_link_class') }}"
            title="{{ 'crud.list.datagrid.editable.title'|trans({}, 'FSiAdminBundle') }}"
-           data-toggle="popover" data-html="true" data-placement="right"
+           data-toggle="popover" data-html="true" data-placement="right" data-animation=""
            data-template="{{ block('datagrid_column_cell_form_popover')|escape }}"
            data-content="{{ datagrid_column_cell_form_widget(cell)|escape }}"></a>
     {% endif %}
