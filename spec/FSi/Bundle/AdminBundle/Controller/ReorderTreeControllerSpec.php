@@ -14,7 +14,7 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
-use FSi\Bundle\AdminBundle\Controller\ReorderController;
+use FSi\Bundle\AdminBundle\Controller\ReorderTreeController;
 use FSi\Bundle\AdminBundle\Event\MovedDownTreeEvent;
 use FSi\Bundle\AdminBundle\Event\MovedUpTreeEvent;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
@@ -30,7 +30,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-final class ReorderControllerSpec extends ObjectBehavior
+final class ReorderTreeControllerSpec extends ObjectBehavior
 {
     public function let(
         RouterInterface $router,
@@ -55,7 +55,7 @@ final class ReorderControllerSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(ReorderController::class);
+        $this->shouldHaveType(ReorderTreeController::class);
     }
 
     public function it_moves_up_item_when_move_up_action_called(

@@ -68,7 +68,7 @@ class BatchElementContext extends ContextAbstract
 
     protected function createEvent(Request $request): AdminEvent
     {
-        $this->indexes = $request->request->get('indexes', []);
+        $this->indexes = $request->request->all()['indexes'] ?? [];
 
         return new FormEvent($this->element, $request, $this->form);
     }

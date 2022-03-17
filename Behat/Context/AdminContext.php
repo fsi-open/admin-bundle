@@ -12,22 +12,33 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Session;
+use Doctrine\ORM\EntityManagerInterface;
+use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Behat\Page\AdminPanel;
 use FSi\Bundle\AdminBundle\Behat\Page\Page;
+use RuntimeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminContext extends AbstractContext
 {
-    /**
-     * @var AdminPanel
-     */
-    private $adminPanelPage;
+    private ManagerInterface $manager;
+    private TranslatorInterface $translator;
 
-    public function __construct(AdminPanel $adminPanelPage)
-    {
-        $this->adminPanelPage = $adminPanelPage;
+    public function __construct(
+        Session $session,
+        MinkParameters $minkParameters,
+        EntityManagerInterface $entityManager,
+        ManagerInterface $manager,
+        TranslatorInterface $translator
+    ) {
+        parent::__construct($session, $minkParameters, $entityManager);
+
+        $this->manager = $manager;
+        $this->translator = $translator;
     }
 
     /**
@@ -52,10 +63,10 @@ class AdminContext extends AbstractContext
         foreach ($table->getHash() as $serviceRow) {
             $id = $serviceRow['Id'];
             $class = $serviceRow['Class'];
-            expect($this->getAdminManager()->hasElement($id))->toBe(true);
-            expect($this->getAdminManager()->getElement($id))->toBeAnInstanceOf($class);
+            expect($this->manager->hasElement($id))->toBe(true);
+            expect($this->manager->getElement($id))->toBeAnInstanceOf($class);
             if (true === array_key_exists('Parent', $serviceRow) && '' !== $serviceRow['Parent']) {
-                expect($this->getAdminManager()->getElement($id)->getParentId())->toBe($serviceRow['Parent']);
+                expect($this->manager->getElement($id)->getParentId())->toBe($serviceRow['Parent']);
             }
         }
     }
@@ -81,8 +92,8 @@ class AdminContext extends AbstractContext
         foreach ($table->getHash() as $elementRow) {
             $id = $elementRow['Id'];
             $name = $elementRow['Name'];
-            expect($this->getAdminManager()->hasElement($id))->toBe(true);
-            expect($this->getAdminManager()->getElement($id)->getName())->toBe($name);
+            expect($this->manager->hasElement($id))->toBe(true);
+            expect($this->manager->getElement($id)->getName())->toBe($name);
         }
     }
 
@@ -91,7 +102,7 @@ class AdminContext extends AbstractContext
      */
     public function iShouldSeeTitleAtTopBar($navbarBrandText): void
     {
-        expect($this->adminPanelPage->getNavbarBrandText())->toBe($navbarBrandText);
+        expect($this->getPage(AdminPanel::class)->getNavbarBrandText())->toBe($navbarBrandText);
     }
 
     /**
@@ -107,8 +118,7 @@ class AdminContext extends AbstractContext
      */
     public function translationsAreEnabledInApplication(): void
     {
-        $translator = $this->getContainer()->get('translator');
-        expect($translator)->toBeAnInstanceOf('Symfony\Component\Translation\TranslatorInterface');
+        expect($this->translator)->toBeAnInstanceOf(TranslatorInterface::class);
     }
 
     /**
@@ -117,7 +127,7 @@ class AdminContext extends AbstractContext
      */
     public function iShouldSeeLanguageDropdownButtonInNavigationBarWithText($button): void
     {
-        expect($this->adminPanelPage->getLanguageDropdown()->hasLink($button))->toBe(true);
+        expect($this->getPage(AdminPanel::class)->getLanguageDropdown()->hasLink($button))->toBe(true);
     }
 
     /**
@@ -125,7 +135,7 @@ class AdminContext extends AbstractContext
      */
     public function languageDropdownButtonShouldHaveFollowingLinks(TableNode $dropdownLinks): void
     {
-        $links = $this->adminPanelPage->getLanguageDropdownOptions();
+        $links = $this->getPage(AdminPanel::class)->getLanguageDropdownOptions();
 
         foreach ($dropdownLinks->getHash() as $link) {
             expect($links)->toContain($link['Link']);
@@ -137,7 +147,7 @@ class AdminContext extends AbstractContext
      */
     public function iClickLinkFromLanguageDropdownButton($link): void
     {
-        $this->adminPanelPage->getLanguageDropdown()->clickLink($link);
+        $this->getPage(AdminPanel::class)->getLanguageDropdown()->clickLink($link);
     }
 
     /**
@@ -145,7 +155,7 @@ class AdminContext extends AbstractContext
      */
     public function transformListNameToAdminElement(string $id): Element
     {
-        return $this->getAdminManager()->getElement($id);
+        return $this->manager->getElement($id);
     }
 
     /**
@@ -169,10 +179,7 @@ class AdminContext extends AbstractContext
             case 'third':
                 return 3;
         }
-    }
 
-    private function getAdminManager(): ManagerInterface
-    {
-        return $this->getContainer()->get(sprintf('test.%s', ManagerInterface::class));
+        throw new RuntimeException("Cannot cast \"{$word}\" to int");
     }
 }

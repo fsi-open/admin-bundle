@@ -13,21 +13,10 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
-use FSi\Bundle\AdminBundle\Behat\Element\Form;
-use FSi\Bundle\AdminBundle\Behat\Page\DefaultPage;
+use FSi\Bundle\AdminBundle\Behat\Page\AdminPanel;
 
 class FormContext extends AbstractContext
 {
-    /**
-     * @var DefaultPage
-     */
-    private $defaultPage;
-
-    public function __construct(DefaultPage $defaultPage)
-    {
-        $this->defaultPage = $defaultPage;
-    }
-
     /**
      * @When I change form field :field to value :value
      */
@@ -82,7 +71,7 @@ class FormContext extends AbstractContext
      */
     public function transformToNonEditableCollection($collectionNames): ?NodeElement
     {
-        return $this->defaultPage->getNonEditableCollection($collectionNames);
+        return $this->getPage(AdminPanel::class)->getNonEditableCollection($collectionNames);
     }
 
     /**
@@ -91,7 +80,7 @@ class FormContext extends AbstractContext
      */
     public function transformToCollection($collectionNames): ?NodeElement
     {
-        return $this->defaultPage->getCollection($collectionNames);
+        return $this->getPage(AdminPanel::class)->getCollection($collectionNames);
     }
 
     /**
@@ -185,8 +174,8 @@ class FormContext extends AbstractContext
              ->find('css', '.collection-remove')->click();
     }
 
-    private function getFormElement(): Form
+    private function getFormElement(): NodeElement
     {
-        return $this->defaultPage->getElement('Form');
+        return $this->getSession()->getPage()->find('css', 'Form');
     }
 }

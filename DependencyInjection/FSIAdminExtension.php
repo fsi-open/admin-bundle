@@ -42,6 +42,9 @@ class FSIAdminExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
+        if ('test' === $container->getParameter('kernel.environment')) {
+            $loader->load('services_test.xml');
+        }
     }
 
     protected function setTemplateParameters(ContainerBuilder $container, array $config = []): void

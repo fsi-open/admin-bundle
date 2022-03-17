@@ -11,14 +11,14 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Element;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+use FriendsOfBehat\PageObjectExtension\Element\Element;
 
 class Display extends Element
 {
-    protected $selector = ['css' => 'table.table.table-bordered'];
-
     public function hasFieldWithName($fieldName): bool
     {
-        return ($this->find('css', sprintf('tr td:first-child:contains("%s")', $fieldName)) !== null);
+        $selector = sprintf('table.table.table-bordered tr td:first-child:contains("%s")', $fieldName);
+
+        return $this->getDocument()->find('css', $selector) !== null;
     }
 }

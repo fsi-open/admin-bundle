@@ -55,7 +55,7 @@ class BatchElementContextSpec extends ObjectBehavior
             ->willReturn(null);
 
         $request->request = $requestParameterBag;
-        $requestParameterBag->get('indexes', [])->willReturn([]);
+        $requestParameterBag->all()->willReturn(['indexes' => []]);
 
         $this->handleRequest($request)->shouldReturn(null);
     }
@@ -70,7 +70,7 @@ class BatchElementContextSpec extends ObjectBehavior
             ->willReturn($response);
 
         $request->request = $requestParameterBag;
-        $requestParameterBag->get('indexes', [])->willReturn([]);
+        $requestParameterBag->all()->willReturn(['indexes' => []]);
 
         $this->handleRequest($request)
             ->shouldReturnAnInstanceOf(Response::class);

@@ -12,8 +12,11 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Session;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 use FSi\FixturesBundle\Entity\Category;
 use FSi\FixturesBundle\Entity\News;
 use FSi\FixturesBundle\Entity\Person;
@@ -21,8 +24,8 @@ use FSi\FixturesBundle\Entity\Subscriber;
 use FSi\FixturesBundle\Entity\Tag;
 use InvalidArgumentException;
 use RuntimeException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 use function array_key_exists;
 use function expect;
@@ -30,10 +33,18 @@ use function file_exists;
 
 class DataContext extends AbstractContext
 {
-    /**
-     * @var PropertyAccessor|null
-     */
-    private $propertyAccessor = null;
+    private PropertyAccessor $propertyAccessor;
+
+    public function __construct(
+        Session $session,
+        MinkParameters $minkParameters,
+        EntityManagerInterface $entityManager,
+        PropertyAccessorInterface $propertyAccessor
+    ) {
+        parent::__construct($session, $minkParameters, $entityManager);
+
+        $this->propertyAccessor = $propertyAccessor;
+    }
 
     /**
      * @BeforeScenario
@@ -54,7 +65,8 @@ class DataContext extends AbstractContext
      */
     public function deleteDatabaseIfExist(): void
     {
-        $dbFilePath = $this->getKernel()->getProjectDir() . '/var/data.sqlite';
+        $dbFilePath = __DIR__ . '/../../features/fixtures/project/var/data.sqlite';
+
         if (true === file_exists($dbFilePath)) {
             unlink($dbFilePath);
         }
@@ -406,10 +418,6 @@ class DataContext extends AbstractContext
      */
     private function getEntityField($entity, string $field)
     {
-        if (null === $this->propertyAccessor) {
-            $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
-        }
-
         return $this->propertyAccessor->getValue($entity, strtolower($field));
     }
 }

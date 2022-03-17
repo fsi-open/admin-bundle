@@ -12,28 +12,34 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Session;
+use Doctrine\ORM\EntityManagerInterface;
+use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement as AdminListElement;
 use FSi\Bundle\AdminBundle\Behat\Element\Filters;
 use FSi\Bundle\AdminBundle\Behat\Element\ListElement;
 use FSi\Bundle\AdminBundle\Behat\Element\ListResultsElement;
-use FSi\Bundle\AdminBundle\Behat\Page\DefaultPage;
+use FSi\Bundle\AdminBundle\Behat\Page\AdminPanel;
 use FSi\Component\DataSource\DataSourceInterface;
+use FSi\FixturesBundle\DataSource\DataSourceFactory;
 
 class FiltersContext extends AbstractContext
 {
-    /**
-     * @var DefaultPage
-     */
-    private $defaultPage;
-
+    private DataSourceFactory $dataSourceFactory;
     /**
      * @var array<DataSourceInterface>
      */
-    private $datasources = [];
+    private array $datasources = [];
 
-    public function __construct(DefaultPage $defaultPage)
-    {
-        $this->defaultPage = $defaultPage;
+    public function __construct(
+        Session $session,
+        MinkParameters $minkParameters,
+        EntityManagerInterface $entityManager,
+        DataSourceFactory $dataSourceFactory
+    ) {
+        parent::__construct($session, $minkParameters, $entityManager);
+
+        $this->dataSourceFactory = $dataSourceFactory;
     }
 
     /**
@@ -142,7 +148,7 @@ class FiltersContext extends AbstractContext
      */
     public function iShouldNotSeeAnyFilters(): void
     {
-        expect($this->defaultPage->find('css', 'form.filters') === null)->toBe(true);
+        expect($this->getSession()->getPage()->find('css', 'form.filters'))->toBe(null);
     }
 
     /**
@@ -150,7 +156,7 @@ class FiltersContext extends AbstractContext
      */
     public function iShouldSeeSimpleTextFilter($filterName): void
     {
-        expect($this->getFiltersElement()->hasField($filterName))->toBe(true);
+        expect($this->getFiltersElement()->hasFilter($filterName))->toBe(true);
     }
 
     /**
@@ -174,7 +180,7 @@ class FiltersContext extends AbstractContext
      */
     public function iFillSimpleTextFilterWithValue($filterName, $filterValue): void
     {
-        $this->getFiltersElement()->fillField($filterName, $filterValue);
+        $this->getFiltersElement()->setFilterValue($filterName, $filterValue);
     }
 
     /**
@@ -182,7 +188,7 @@ class FiltersContext extends AbstractContext
      */
     public function iSelectInChoiceFilter($filterValue, $filterName): void
     {
-        $this->getFiltersElement()->findField($filterName)->selectOption($filterValue);
+        $this->getFiltersElement()->setFilterOption($filterName, $filterValue);
     }
 
     /**
@@ -190,7 +196,7 @@ class FiltersContext extends AbstractContext
      */
     public function iPressSearchButton(): void
     {
-        $this->getFiltersElement()->pressButton('Search');
+        $this->getFiltersElement()->submitFilters();
     }
 
     /**
@@ -198,7 +204,7 @@ class FiltersContext extends AbstractContext
      */
     public function simpleTextFilterShouldBeFilledWithValue($filterName, $filterValue): void
     {
-        expect($this->getFiltersElement()->findField($filterName)->getValue())->toBe($filterValue);
+        expect($this->getFiltersElement()->getFilerValue($filterName))->toBe($filterValue);
     }
 
     /**
@@ -206,9 +212,7 @@ class FiltersContext extends AbstractContext
      */
     public function choiceFilterShouldHaveValueSelected($filterName, $choice): void
     {
-        $field = $this->getFiltersElement()->findField($filterName);
-        expect($field->find('css', sprintf('option:contains("%s")', $choice))
-            ->getAttribute('selected'))->toBe('selected');
+        expect($this->getFiltersElement()->getFilterOption($filterName))->toBe($choice);
     }
 
     /**
@@ -216,10 +220,10 @@ class FiltersContext extends AbstractContext
      */
     public function iShouldSeeActionsDropdownWithFollowingOptions(TableNode $actions): void
     {
-        expect($this->defaultPage->hasBatchActionsDropdown())->toBe(true);
+        expect($this->getPage(AdminPanel::class)->hasBatchActionsDropdown())->toBe(true);
 
         foreach ($actions->getHash() as $actionRow) {
-            expect($this->defaultPage->hasBatchAction($actionRow['Option']))->toBe(true);
+            expect($this->getPage(AdminPanel::class)->hasBatchAction($actionRow['Option']))->toBe(true);
         }
     }
 
@@ -228,7 +232,7 @@ class FiltersContext extends AbstractContext
      */
     public function iShouldSeeConfirmationButton($button): void
     {
-        $this->defaultPage->hasButton($button);
+        $this->getSession()->getPage()->hasButton($button);
     }
 
     /**
@@ -246,21 +250,21 @@ class FiltersContext extends AbstractContext
 
     private function clearDataSource(AdminListElement $element): void
     {
-        $this->getContainer()->get('test.datasource.factory')->clearDataSource($element->getId());
+        $this->dataSourceFactory->clearDataSource($element->getId());
     }
 
     private function getFiltersElement(): Filters
     {
-        return $this->defaultPage->getElement('Filters');
+        return $this->getElement(Filters::class);
     }
 
     private function getListElement(): ListElement
     {
-        return $this->defaultPage->getElement('ListElement');
+        return $this->getElement(ListElement::class);
     }
 
     private function getListResultsElement(): ListResultsElement
     {
-        return $this->defaultPage->getElement('ListResultsElement');
+        return $this->getElement(ListResultsElement::class);
     }
 }

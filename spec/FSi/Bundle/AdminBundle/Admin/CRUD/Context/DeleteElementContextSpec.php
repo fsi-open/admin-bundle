@@ -54,7 +54,7 @@ class DeleteElementContextSpec extends ObjectBehavior
         $handler->handleRequest(Argument::type(FormEvent::class), $request)->willReturn(null);
 
         $request->request = $requestParameterBag;
-        $requestParameterBag->get('indexes', [])->willReturn([]);
+        $requestParameterBag->all()->willReturn(['indexes' > []]);
 
         $this->handleRequest($request)->shouldReturn(null);
     }
@@ -67,7 +67,7 @@ class DeleteElementContextSpec extends ObjectBehavior
     ): void {
         $handler->handleRequest(Argument::type(FormEvent::class), $request)->willReturn($response);
         $request->request = $requestParameterBag;
-        $requestParameterBag->get('indexes', [])->willReturn([]);
+        $requestParameterBag->all()->willReturn(['indexes' => []]);
 
         $this->handleRequest($request)->shouldReturnAnInstanceOf(Response::class);
     }

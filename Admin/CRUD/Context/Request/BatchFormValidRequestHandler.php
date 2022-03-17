@@ -78,9 +78,9 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
     private function getObjects(BatchElement $element, Request $request): array
     {
         $objects = [];
-        $indexes = $request->request->get('indexes', []);
+        $indexes = $request->request->all()['indexes'] ?? [];
 
-        if (false === is_array($indexes) || 0 === count($indexes)) {
+        if (0 === count($indexes)) {
             return [];
         }
 

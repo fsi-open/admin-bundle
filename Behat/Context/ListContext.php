@@ -15,27 +15,14 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Exception;
 use FSi\Bundle\AdminBundle\Behat\Element\ListElement;
-use FSi\Bundle\AdminBundle\Behat\Page\DefaultPage;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Symfony\Component\BrowserKit\Client;
+use FSi\Bundle\AdminBundle\Behat\Page\AdminPanel;
+use FSi\Bundle\AdminBundle\Behat\Page\Page;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Client;
 
 class ListContext extends AbstractContext
 {
-    /**
-     * @var DefaultPage
-     */
-    private $defaultPage;
-
-    /**
-     * @var array
-     */
-    private $selectedRows = [];
-
-    public function __construct(DefaultPage $defaultPage)
-    {
-        $this->defaultPage = $defaultPage;
-    }
+    private array $selectedRows = [];
 
     /**
      * @beforeScenario
@@ -89,15 +76,19 @@ class ListContext extends AbstractContext
         }
 
         if (true === $this->isSeleniumDriverUsed()) {
-            $this->defaultPage->find('css', '#batch_action_action')->selectOption($action);
-            $this->defaultPage->findButton('Ok')->click();
+            $this->getSession()->getPage()->find('css', '#batch_action_action')->selectOption($action);
+            $this->getSession()->getPage()->findButton('Ok')->click();
         } else {
-            $batchActionUrl = $this->defaultPage
+            $batchActionUrl = $this->getSession()
+                ->getPage()
                 ->find('css', sprintf('#batch_action_action option:contains("%s")', $action))
                 ->getAttribute('value');
             $data = [
                 'batch_action' => [
-                    '_token' => $this->defaultPage->find('css', '#batch_action__token')->getAttribute('value')
+                    '_token' => $this->getSession()
+                        ->getPage()
+                        ->find('css', '#batch_action__token')
+                        ->getAttribute('value')
                 ]
             ];
             $i = 0;
@@ -157,7 +148,7 @@ class ListContext extends AbstractContext
      */
     public function iShouldNotSeePagination(Page $page): void
     {
-        expect($page->find('css', 'ul.pagination'))->toBe(null);
+        expect($this->getSession()->getPage()->find('css', 'ul.pagination'))->toBe(null);
     }
 
     /**
@@ -176,8 +167,8 @@ class ListContext extends AbstractContext
     public function iClickEditInColumnInFirstRow($columnHeader): void
     {
         $cell = $this->getListElement()->getCell($columnHeader, 1);
-        $this->getListElement()->click($cell->getXPath());
-        $cell->find('css', 'a')->click();
+        $cell->mouseOver();
+        $cell->find('css', 'a[data-original-title="Edit"]')->click();
     }
 
     /**
@@ -185,7 +176,7 @@ class ListContext extends AbstractContext
      */
     public function popoverWithFieldInFormShouldAppear($newsTitle): void
     {
-        $popover = $this->defaultPage->getPopover();
+        $popover = $this->getPage(AdminPanel::class)->getPopover();
         expect($popover->isVisible())->toBe(true);
         expect($popover->findField('Title')->getValue())->toBe($newsTitle);
     }
@@ -195,7 +186,7 @@ class ListContext extends AbstractContext
      */
     public function popoverWithEmptyDateFieldInFormShouldAppear(): void
     {
-        $popover = $this->defaultPage->getPopover();
+        $popover = $this->getPage(AdminPanel::class)->getPopover();
         expect($popover->isVisible())->toBe(true);
         expect($popover->findField('Date')->getValue())->toBe('');
     }
@@ -204,7 +195,7 @@ class ListContext extends AbstractContext
      */
     public function popoverShouldNotBeVisibleAnymore(): void
     {
-        expect($this->defaultPage->getPopover())->toBe(null);
+        expect($this->getPage(AdminPanel::class)->getPopover())->toBe(null);
     }
 
     /**
@@ -212,7 +203,7 @@ class ListContext extends AbstractContext
      */
     public function iFillFieldAtPopoverWithValue($field, $value): void
     {
-        $this->defaultPage->getPopover()->fillField($field, $value);
+        $this->getPage(AdminPanel::class)->getPopover()->fillField($field, $value);
     }
 
     /**
@@ -220,7 +211,7 @@ class ListContext extends AbstractContext
      */
     public function iPressAtPopover($button): void
     {
-        $this->defaultPage->getPopover()->pressButton($button);
+        $this->getPage(AdminPanel::class)->getPopover()->pressButton($button);
     }
 
     /**
@@ -231,13 +222,13 @@ class ListContext extends AbstractContext
         $session = $this->getSession();
         $session->wait(1000, 'jQuery(".popover").length > 0');
         /** @var NodeElement $popover */
-        $popover = $this->defaultPage->getPopover();
+        $popover = $this->getPage(AdminPanel::class)->getPopover();
         $popover->find('css', '.editable-close')->click();
         $session->wait(1000, 'jQuery(".popover").length === 0');
     }
 
     private function getListElement(): ListElement
     {
-        return $this->defaultPage->getElement('ListElement');
+        return $this->getElement(ListElement::class);
     }
 }

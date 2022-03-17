@@ -11,16 +11,23 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
+use FriendsOfBehat\PageObjectExtension\Page\UnexpectedPageException;
 
 class PersonEditForm extends Page
 {
-    protected $path = '/admin/form/person/{id}';
-
-    protected function verifyPage(): void
+    public function verify(array $urlParameters = []): void
     {
-        if (false === $this->has('css', '#page-header:contains("Edit element")')) {
-            throw new UnexpectedPageException(sprintf('%s page is missing "Edit element" header', $this->path));
+        parent::verify($urlParameters);
+
+        if (false === $this->getDocument()->has('css', '#page-header:contains("Edit element")')) {
+            throw new UnexpectedPageException(
+                sprintf('%s page is missing "Edit element" header', $this->getUrl($urlParameters))
+            );
         }
+    }
+
+    protected function getUrl(array $urlParameters = []): string
+    {
+        return $this->getParameter('base_url') . "/admin/form/person/{$urlParameters['id']}";
     }
 }

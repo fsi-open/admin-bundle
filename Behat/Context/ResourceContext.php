@@ -12,24 +12,24 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Symfony2Extension\Context\KernelAwareContext;
+use Behat\Mink\Session;
+use Doctrine\ORM\EntityManagerInterface;
+use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
-use Symfony\Component\HttpKernel\KernelInterface;
 
-class ResourceContext extends PageObjectContext implements KernelAwareContext
+class ResourceContext extends AbstractContext
 {
-    /**
-     * @var KernelInterface
-     */
-    protected $kernel;
+    private MapBuilder $mapBuilder;
 
-    /**
-     * @param KernelInterface $kernel
-     */
-    public function setKernel(KernelInterface $kernel): void
-    {
-        $this->kernel = $kernel;
+    public function __construct(
+        Session $session,
+        MinkParameters $minkParameters,
+        EntityManagerInterface $entityManager,
+        MapBuilder $mapBuilder
+    ) {
+        parent::__construct($session, $minkParameters, $entityManager);
+
+        $this->mapBuilder = $mapBuilder;
     }
 
     /**
@@ -38,10 +38,10 @@ class ResourceContext extends PageObjectContext implements KernelAwareContext
     public function thereAreFollowingResourcesAddedToResourceMap(TableNode $resources): void
     {
         foreach ($resources->getHash() as $resource) {
-            expect($this->getResourceMapBuilder()->hasResource($resource['Key']))->toBe(true);
+            expect($this->mapBuilder->hasResource($resource['Key']))->toBe(true);
 
             if (isset($resource['Type'])) {
-                expect($this->getResourceMapBuilder()->getResource($resource['Key']))->toBeAnInstanceOf(
+                expect($this->mapBuilder->getResource($resource['Key']))->toBeAnInstanceOf(
                     sprintf(
                         'FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\%sType',
                         ucfirst($resource['Type'])
@@ -56,7 +56,7 @@ class ResourceContext extends PageObjectContext implements KernelAwareContext
      */
     public function iFillFormFieldWith($value): void
     {
-        $this->getElement('Form')->fillField('Content', $value);
+        $this->getSession()->getPage()->find('css', 'form')->fillField('Content', $value);
     }
 
     /**
@@ -64,11 +64,6 @@ class ResourceContext extends PageObjectContext implements KernelAwareContext
      */
     public function iShouldSeeFormFieldWithValue($value): void
     {
-        expect($this->getElement('Form')->findField('Content')->getValue())->toBe($value);
-    }
-
-    private function getResourceMapBuilder(): MapBuilder
-    {
-        return $this->kernel->getContainer()->get('test.fsi_resource_repository.map_builder');
+        expect($this->getSession()->getPage()->findField('Content')->getValue())->toBe($value);
     }
 }

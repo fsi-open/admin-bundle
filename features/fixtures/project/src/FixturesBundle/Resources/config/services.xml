@@ -90,7 +90,7 @@
             <tag name="admin.element" />
         </service>
 
-        <service id="test.datasource.factory" class="FSi\FixturesBundle\DataSource\DataSourceFactory" public="true">
+        <service id="FSi\FixturesBundle\DataSource\DataSourceFactory" public="true">
             <argument type="service" id="datasource.driver.factory.manager" />
             <argument type="collection">
                 <argument type="service" id="datasource.extension" />

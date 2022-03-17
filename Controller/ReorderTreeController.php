@@ -28,7 +28,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use function get_class;
 use function sprintf;
 
-class ReorderController
+class ReorderTreeController
 {
     /**
      * @var RouterInterface

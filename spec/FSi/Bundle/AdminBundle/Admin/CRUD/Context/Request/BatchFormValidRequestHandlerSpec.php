@@ -40,7 +40,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         BatchElement $element,
         FormEvent $event
     ): void {
-        $requestParameterbag->get('indexes', [])->willReturn(['index']);
+        $requestParameterbag->all()->willReturn(['indexes' => ['index']]);
         $request->request = $requestParameterbag;
         $request->query = $queryParameterbag;
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
@@ -221,7 +221,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         FlashMessages $flashMessage,
         stdClass $object
     ): void {
-        $requestParameterbag->get('indexes', [])->willReturn([]);
+        $requestParameterbag->all()->willReturn(['indexes' => []]);
         $event->getElement()->willReturn($deleteEelement);
         $eventDispatcher->dispatch($event, BatchEvents::BATCH_OBJECTS_PRE_APPLY)->shouldBeCalled();
 

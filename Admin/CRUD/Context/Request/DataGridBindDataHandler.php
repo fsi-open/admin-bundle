@@ -34,7 +34,7 @@ class DataGridBindDataHandler extends AbstractHandler
 
             $event->getDataGrid()->bindData($request);
             $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_POST_BIND);
-            if ($event->hasResponse()) {
+            if (true === $event->hasResponse()) {
                 return $event->getResponse();
             }
 

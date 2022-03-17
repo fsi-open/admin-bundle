@@ -13,7 +13,8 @@ namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 class DefaultPage extends Page
 {
-    protected function verifyPage(): void
+    protected function getUrl(array $urlParameters = []): string
     {
+        return $this->getParameter('base_url') . '/';
     }
 }

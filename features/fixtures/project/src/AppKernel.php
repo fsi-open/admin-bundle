@@ -24,7 +24,8 @@ class AppKernel extends Kernel
             new \FSi\Bundle\DataGridBundle\DataGridBundle(),
             new \FSi\Bundle\AdminBundle\FSiAdminBundle(),
             new \FSi\FixturesBundle\FSiFixturesBundle(),
-            new \FSi\Bundle\ResourceRepositoryBundle\FSiResourceRepositoryBundle()
+            new \FSi\Bundle\ResourceRepositoryBundle\FSiResourceRepositoryBundle(),
+            new \FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle(),
         ];
     }
 
@@ -35,11 +36,11 @@ class AppKernel extends Kernel
 
     public function getCacheDir(): string
     {
-        return $this->getProjectDir() . '/var/cache';
+        return $this->getProjectDir() . '/features/fixtures/project/var/cache';
     }
 
     public function getLogDir(): string
     {
-        return $this->getProjectDir() . '/var/logs';
+        return $this->getProjectDir() . '/features/fixtures/project/var/logs';
     }
 }

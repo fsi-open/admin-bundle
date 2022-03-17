@@ -15,8 +15,6 @@ use Behat\Mink\Element\NodeElement;
 
 class AdminPanel extends Page
 {
-    protected $path = '/admin/';
-
     public function hasMenuElement(string $name, ?string $group = null): bool
     {
         if (null === $group) {
@@ -39,12 +37,12 @@ class AdminPanel extends Page
 
     public function getMenu(): ?NodeElement
     {
-        return $this->find('css', '#top-menu');
+        return $this->getDocument()->find('css', '#top-menu');
     }
 
     public function getNavbarBrandText(): string
     {
-        return $this->find('css', 'a.navbar-brand')->getText();
+        return $this->getDocument()->find('css', 'a.navbar-brand')->getText();
     }
 
     public function getLanguageDropdownOptions(): array
@@ -54,7 +52,7 @@ class AdminPanel extends Page
             return [];
         }
 
-        $linkNodes = $this->findAll('css', 'li#language > ul > li');
+        $linkNodes = $this->getDocument()->findAll('css', 'li#language > ul > li');
 
         return array_filter(array_map(static function (NodeElement $element) {
             return $element->getText();
@@ -63,6 +61,11 @@ class AdminPanel extends Page
 
     public function getLanguageDropdown(): ?NodeElement
     {
-        return $this->find('css', 'li#language');
+        return $this->getDocument()->find('css', 'li#language');
+    }
+
+    protected function getUrl(array $urlParameters = []): string
+    {
+        return $this->getParameter('base_url') . '/admin/';
     }
 }
