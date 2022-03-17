@@ -27,9 +27,8 @@ doctrine:
         auto_mapping: true
 
 fsi_resource_repository:
-    map_path: "%kernel.root_dir%/../config/resource_map.yml"
-    resource_class: FSi\FixturesBundle\Entity\Resource
     map_path: "%kernel.project_dir%/features/fixtures/project/app/config/resource_map.yml"
+    resource_class: FSi\FixturesBundle\Entity\Resource
 
 fsi_doctrine_extensions:
     orm:

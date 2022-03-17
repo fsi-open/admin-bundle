@@ -5,7 +5,7 @@ cache:
         - $HOME/.composer/cache
         - vendor
 
-sudo: required
+dist: focal
 
 addons:
     firefox: "47.0.1"
