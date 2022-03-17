@@ -13,6 +13,7 @@
         <parameter key="fixtures_bundle.admin.subscriber.class">FSi\FixturesBundle\Admin\Subscriber</parameter>
         <parameter key="fixtures_bundle.admin.subscriber_form.class">FSi\FixturesBundle\Admin\SubscriberForm</parameter>
         <parameter key="fixtures_bundle.admin.subscriber_delete.class">FSi\FixturesBundle\Admin\SubscriberDelete</parameter>
+        <parameter key="fixtures_bundle.admin.node.class">FSi\FixturesBundle\Admin\Node</parameter>
     </parameters>
     <services>
         <service id="fixtures_bundle.admin.home" class="%fixtures_bundle.admin.home_page.class%">
@@ -51,6 +52,10 @@
             <argument type="collection">
                 <argument key="template_list">@FSiFixtures/Admin/subscriber_list.html.twig</argument>
             </argument>
+            <tag name="admin.element" />
+        </service>
+
+        <service id="fixtures_bundle.admin.node" class="%fixtures_bundle.admin.node.class%">
             <tag name="admin.element" />
         </service>
 
