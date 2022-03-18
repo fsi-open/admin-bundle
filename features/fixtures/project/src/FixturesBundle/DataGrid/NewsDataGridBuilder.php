@@ -22,7 +22,12 @@ class NewsDataGridBuilder
             'label' => 'admin.news.list.title',
             'field_mapping' => ['title', 'subtitle'],
             'value_glue' => '<br/>',
-            'editable' => true
+            'editable' => true,
+            'form_options' => [
+                'subtitle' => [
+                    'required' => false,
+                ]
+            ]
         ]);
 
         $datagrid->addColumn('date', 'datetime', [

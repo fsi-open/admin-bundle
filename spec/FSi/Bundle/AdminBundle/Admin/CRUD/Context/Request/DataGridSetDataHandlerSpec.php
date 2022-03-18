@@ -8,6 +8,7 @@ use FSi\Bundle\AdminBundle\Event\ListEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceInterface;
+use FSi\Component\DataSource\Result;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,19 +44,20 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
     public function it_set_data_at_datagrid_and_dispatch_events(
         ListEvent $event,
         DataSourceInterface $dataSource,
+        Result $result,
         DataGridInterface $dataGrid,
         Request $request,
         EventDispatcherInterface $eventDispatcher
     ): void {
-        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_PRE_BIND)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_PRE_BIND)->willReturn($event);
 
         $event->getDataGrid()->willReturn($dataGrid);
         $event->getDataSource()->willReturn($dataSource);
 
-        $dataSource->getResult()->willReturn([1]);
-        $dataGrid->setData([1])->shouldBeCalled();
+        $dataSource->getResult()->willReturn($result);
+        $dataGrid->setData($result)->shouldBeCalled();
 
-        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_POST_BIND)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_POST_BIND)->willReturn($event);
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -71,6 +73,8 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
                 function () use ($event, $response) {
                     $event->hasResponse()->willReturn(true);
                     $event->getResponse()->willReturn($response);
+
+                    return $event;
                 }
             );
 
@@ -84,21 +88,24 @@ class DataGridSetDataHandlerSpec extends ObjectBehavior
         Request $request,
         DataGridInterface $dataGrid,
         DataSourceInterface $dataSource,
+        Result $result,
         Response $response
     ): void {
-        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_PRE_BIND)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_PRE_BIND)->willReturn($event);
 
         $event->getDataGrid()->willReturn($dataGrid);
         $event->getDataSource()->willReturn($dataSource);
 
-        $dataSource->getResult()->willReturn([1]);
-        $dataGrid->setData([1])->shouldBeCalled();
+        $dataSource->getResult()->willReturn($result);
+        $dataGrid->setData($result)->shouldBeCalled();
 
         $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_POST_BIND)
             ->will(
                 function () use ($event, $response) {
                     $event->hasResponse()->willReturn(true);
                     $event->getResponse()->willReturn($response);
+
+                    return $event;
                 }
             );
 

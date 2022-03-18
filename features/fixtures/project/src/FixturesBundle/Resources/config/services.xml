@@ -89,6 +89,7 @@
             </argument>
             <tag name="admin.element" />
         </service>
+<!--
 
         <service id="FSi\FixturesBundle\DataSource\DataSourceFactory" public="true">
             <argument type="service" id="datasource.driver.factory.manager" />
@@ -96,6 +97,7 @@
                 <argument type="service" id="datasource.extension" />
             </argument>
         </service>
+-->
 
         <service id="fsi.files.local_adapter" class="FSi\Component\Files\UrlAdapter\BaseUrlAdapter">
             <argument key="$uriFactory" type="service">

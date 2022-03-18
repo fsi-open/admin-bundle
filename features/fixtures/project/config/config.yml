@@ -13,6 +13,7 @@ framework:
     validation:      { enable_annotations: true }
     profiler:        { only_exceptions: false }
     test:            ~
+    http_client:     ~
     session:
         storage_id:     session.storage.filesystem
 

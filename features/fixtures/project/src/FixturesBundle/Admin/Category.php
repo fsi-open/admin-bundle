@@ -60,7 +60,8 @@ class Category extends CRUDElement
                 'doctrine-orm',
                 ['entity' => $this->getClassName()],
                 'news'
-            )->addField('title', 'text', 'like', [
+            )->addField('title', 'text', [
+                'comparison' => 'like',
                 'sortable' => false,
                 'form_options' => [
                     'label' => 'admin.category.list.title',

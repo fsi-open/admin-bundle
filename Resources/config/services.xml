@@ -154,7 +154,8 @@
         </service>
 
         <!-- DataGrid -->
-        <service id="FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension\BatchActionExtension">
+        <service id="FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension\ElementActionExtension" lazy="true" />
+        <service id="FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension\BatchActionExtension" lazy="true">
             <argument key="$formBuilder" type="service" id="admin.form.builder.batch"/>
         </service>
 

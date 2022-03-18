@@ -88,12 +88,7 @@ class FormElementContext extends ContextAbstract
             return null;
         }
 
-        $object = $this->element->getDataIndexer()->getData($id);
-        if (null === $object) {
-            throw new NotFoundHttpException("Can\'t find object with id \"{$id}\"");
-        }
-
-        return $object;
+        return $this->element->getDataIndexer()->getData($id);
     }
 
     private function checkAllowAddOption(): void

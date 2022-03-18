@@ -66,13 +66,15 @@ class Subscriber extends ListElement
             ['entity' => $this->getClassName()],
             $this->getId()
         );
-        $datasource->addField('email', 'text', 'like', [
+        $datasource->addField('email', 'text', [
+            'comparison' => 'like',
             'sortable' => true,
             'form_options' => [
                 'label' => 'admin.subscriber.list.email',
             ]
         ]);
-        $datasource->addField('created_at', 'date', 'between', [
+        $datasource->addField('created_at', 'date', [
+            'comparison' => 'between',
             'field' => 'createdAt',
             'sortable' => true,
             'form_from_options' => [
@@ -84,7 +86,8 @@ class Subscriber extends ListElement
                 'label' => 'admin.subscriber.list.created_at_to',
             ]
         ]);
-        $datasource->addField('active', 'boolean', 'eq', [
+        $datasource->addField('active', 'boolean', [
+            'comparison' => 'eq',
             'sortable' => false,
             'form_options' => [
                 'label' => 'admin.subscriber.list.active',

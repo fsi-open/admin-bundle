@@ -42,16 +42,14 @@ class ListControllerSpec extends ObjectBehavior
 
     public function it_dispatches_event(
         EventDispatcherInterface $dispatcher,
+        AdminEvent $event,
         Request $request,
         ListElement $element,
         ContextManager $manager,
         ListElementContext $context,
         Environment $twig
     ): void {
-        $dispatcher->dispatch(
-            Argument::type(AdminEvent::class),
-            AdminEvents::CONTEXT_PRE_CREATE
-        )->shouldBeCalled();
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
 
         $manager->createContext('fsi_admin_list', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -62,12 +60,16 @@ class ListControllerSpec extends ObjectBehavior
     }
 
     public function it_returns_response(
+        EventDispatcherInterface $dispatcher,
+        AdminEvent $event,
         ContextManager $manager,
         ListElement $element,
         ListElementContext $context,
         Request $request,
         Environment $twig
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $manager->createContext('fsi_admin_list', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
@@ -80,10 +82,14 @@ class ListControllerSpec extends ObjectBehavior
     }
 
     public function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
+        EventDispatcherInterface $dispatcher,
+        AdminEvent $event,
         ListElement $element,
         ContextManager $manager,
         Request $request
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $element->getId()->willReturn('my_awesome_list_element');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
@@ -92,11 +98,15 @@ class ListControllerSpec extends ObjectBehavior
     }
 
     public function it_throws_exception_when_no_response_and_no_template_name(
+        EventDispatcherInterface $dispatcher,
+        AdminEvent $event,
         Request $request,
         ListElement $element,
         ContextManager $manager,
         ListElementContext $context
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $context->hasTemplateName()->willReturn(false);
         $manager->createContext('fsi_admin_list', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);

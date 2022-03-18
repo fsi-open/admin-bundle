@@ -42,12 +42,10 @@ class FormControllerSpec extends ObjectBehavior
         GenericFormElement $element,
         ContextManager $manager,
         FormElementContext $context,
+        AdminEvent $event,
         Environment $twig
     ): void {
-        $dispatcher->dispatch(
-            Argument::type(AdminEvent::class),
-            AdminEvents::CONTEXT_PRE_CREATE
-        )->shouldBeCalled();
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
 
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -58,13 +56,16 @@ class FormControllerSpec extends ObjectBehavior
     }
 
     public function it_returns_response(
+        EventDispatcherInterface $dispatcher,
+        AdminEvent $event,
         Request $request,
-        Response $response,
         GenericFormElement $element,
         ContextManager $manager,
         FormElementContext $context,
         Environment $twig
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
@@ -74,10 +75,14 @@ class FormControllerSpec extends ObjectBehavior
     }
 
     public function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
+        EventDispatcherInterface $dispatcher,
+        AdminEvent $event,
         GenericFormElement $element,
         ContextManager $manager,
         Request $request
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
         $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
@@ -85,11 +90,15 @@ class FormControllerSpec extends ObjectBehavior
     }
 
     public function it_throws_exception_when_no_response_and_no_template_name(
+        EventDispatcherInterface $dispatcher,
+        AdminEvent $event,
         Request $request,
         GenericFormElement $element,
         ContextManager $manager,
         FormElementContext $context
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $context->hasTemplateName()->willReturn(false);
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);

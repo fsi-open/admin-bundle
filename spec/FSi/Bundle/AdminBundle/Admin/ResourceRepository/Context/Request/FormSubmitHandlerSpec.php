@@ -48,12 +48,12 @@ class FormSubmitHandlerSpec extends ObjectBehavior
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
-        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_PRE_SUBMIT)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_PRE_SUBMIT)->willReturn($event);
 
         $event->getForm()->willReturn($form);
         $form->handleRequest($request)->shouldBeCalled();
 
-        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_POST_SUBMIT)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_POST_SUBMIT)->willReturn($event);
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -71,6 +71,8 @@ class FormSubmitHandlerSpec extends ObjectBehavior
                 function () use ($event, $response) {
                     $event->hasResponse()->willReturn(true);
                     $event->getResponse()->willReturn($response);
+
+                    return $event;
                 }
             );
 
@@ -86,7 +88,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
-        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_PRE_SUBMIT)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_PRE_SUBMIT)->willReturn($event);
 
         $event->getForm()->willReturn($form);
         $form->handleRequest($request)->shouldBeCalled();
@@ -96,6 +98,8 @@ class FormSubmitHandlerSpec extends ObjectBehavior
                 function () use ($event, $response) {
                     $event->hasResponse()->willReturn(true);
                     $event->getResponse()->willReturn($response);
+
+                    return $event;
                 }
             );
 

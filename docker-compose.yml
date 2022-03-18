@@ -11,6 +11,7 @@ services:
         environment:
             PHP_IDE_CONFIG: 'serverName=localhost'
             DOCROOT: /var/www/application/features/fixtures/project/web
+            XDEBUG_MODE: debug
             HOST_UID: 1000
             HOST_GID: 1000
         volumes:

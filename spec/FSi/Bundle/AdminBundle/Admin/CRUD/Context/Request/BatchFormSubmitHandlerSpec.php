@@ -71,6 +71,8 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
             ->will(function () use ($event) {
                 $event->hasResponse()->willReturn(true);
                 $event->getResponse()->willReturn(new Response());
+
+                return $event;
             });
 
         $this->handleRequest($event, $request)
@@ -85,7 +87,7 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
-        $eventDispatcher->dispatch($event, BatchEvents::BATCH_REQUEST_PRE_SUBMIT)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, BatchEvents::BATCH_REQUEST_PRE_SUBMIT)->shouldBeCalled()->willReturn($event);
 
         $event->getForm()->willReturn($form);
         $form->handleRequest($request)->shouldBeCalled();
@@ -94,6 +96,8 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
             ->will(function () use ($event) {
                 $event->hasResponse()->willReturn(true);
                 $event->getResponse()->willReturn(new Response());
+
+                return $event;
             });
 
         $this->handleRequest($event, $request)

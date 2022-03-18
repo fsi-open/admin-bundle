@@ -39,6 +39,7 @@ class ResourceControllerSpec extends ObjectBehavior
 
     public function it_dispatches_event(
         EventDispatcherInterface $dispatcher,
+        AdminEvent $event,
         Request $request,
         Response $response,
         Element $element,
@@ -46,10 +47,7 @@ class ResourceControllerSpec extends ObjectBehavior
         ResourceRepositoryContext $context,
         Environment $twig
     ): void {
-        $dispatcher->dispatch(
-            Argument::type(AdminEvent::class),
-            AdminEvents::CONTEXT_PRE_CREATE
-        )->shouldBeCalled();
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
 
         $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -61,6 +59,8 @@ class ResourceControllerSpec extends ObjectBehavior
     }
 
     public function it_renders_response(
+        EventDispatcherInterface $dispatcher,
+        AdminEvent $event,
         Request $request,
         Response $response,
         Element $element,
@@ -68,6 +68,8 @@ class ResourceControllerSpec extends ObjectBehavior
         ResourceRepositoryContext $context,
         Environment $twig
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
@@ -77,10 +79,14 @@ class ResourceControllerSpec extends ObjectBehavior
     }
 
     public function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
+        EventDispatcherInterface $dispatcher,
+        AdminEvent $event,
         Element $element,
         ContextManager $manager,
         Request $request
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $element->getId()->willReturn('my_awesome_resource');
         $manager->createContext(Argument::type('string'), $element)->willReturn(null);
 
@@ -89,11 +95,15 @@ class ResourceControllerSpec extends ObjectBehavior
     }
 
     public function it_throws_exception_when_no_response_and_no_template_name(
+        EventDispatcherInterface $dispatcher,
+        AdminEvent $event,
         Request $request,
         Element $element,
         ContextManager $manager,
         ResourceRepositoryContext $context
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $context->hasTemplateName()->willReturn(false);
         $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);

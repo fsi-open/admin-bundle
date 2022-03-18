@@ -25,13 +25,13 @@ use FSi\FixturesBundle\DataSource\DataSourceFactory;
 
 class FiltersContext extends AbstractContext
 {
-    private DataSourceFactory $dataSourceFactory;
+    //private DataSourceFactory $dataSourceFactory;
     /**
      * @var array<DataSourceInterface>
      */
     private array $datasources = [];
 
-    public function __construct(
+/*    public function __construct(
         Session $session,
         MinkParameters $minkParameters,
         EntityManagerInterface $entityManager,
@@ -40,7 +40,7 @@ class FiltersContext extends AbstractContext
         parent::__construct($session, $minkParameters, $entityManager);
 
         $this->dataSourceFactory = $dataSourceFactory;
-    }
+    }*/
 
     /**
      * @Given /^("[^"]*" element) datasource max results is set (\d+)$/
@@ -250,7 +250,7 @@ class FiltersContext extends AbstractContext
 
     private function clearDataSource(AdminListElement $element): void
     {
-        $this->dataSourceFactory->clearDataSource($element->getId());
+        //$this->dataSourceFactory->clearDataSource($element->getId());
     }
 
     private function getFiltersElement(): Filters

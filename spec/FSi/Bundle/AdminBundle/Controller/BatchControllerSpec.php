@@ -38,13 +38,11 @@ class BatchControllerSpec extends ObjectBehavior
         ContextManager $manager,
         BatchElement $element,
         BatchElementContext $context,
+        AdminEvent $event,
         Request $request,
         Response $response
     ): void {
-        $dispatcher->dispatch(
-            Argument::type(AdminEvent::class),
-            AdminEvents::CONTEXT_PRE_CREATE
-        )->shouldBeCalled();
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
 
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
@@ -53,10 +51,14 @@ class BatchControllerSpec extends ObjectBehavior
     }
 
     public function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
+        EventDispatcherInterface $dispatcher,
         BatchElement $element,
         ContextManager $manager,
+        AdminEvent $event,
         Request $request
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
@@ -65,11 +67,15 @@ class BatchControllerSpec extends ObjectBehavior
     }
 
     public function it_throws_exception_when_context_does_not_return_response(
+        EventDispatcherInterface $dispatcher,
         ContextManager $manager,
         BatchElement $element,
         BatchElementContext $context,
+        AdminEvent $event,
         Request $request
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->hasTemplateName()->willReturn(false);
         $context->handleRequest($request)->willReturn(null);
@@ -79,12 +85,16 @@ class BatchControllerSpec extends ObjectBehavior
     }
 
     public function it_returns_response_from_context_in_batch_action(
+        EventDispatcherInterface $dispatcher,
         ContextManager $manager,
         BatchElement $element,
         BatchElementContext $context,
+        AdminEvent $event,
         Request $request,
         Response $response
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 

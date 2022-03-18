@@ -14,6 +14,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataGrid\DataGridViewInterface;
 use FSi\Component\DataSource\DataSourceInterface;
+use FSi\Component\DataSource\DataSourceViewInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +27,7 @@ class ListElementContextSpec extends ObjectBehavior
     public function let(
         ListElement $element,
         DataSourceInterface $datasource,
+        DataSourceViewInterface $dataSourceView,
         DataGridInterface $datagrid,
         DataGridViewInterface $datagridView,
         HandlerInterface $handler
@@ -34,6 +36,7 @@ class ListElementContextSpec extends ObjectBehavior
         $element->createDataGrid()->willReturn($datagrid);
         $datagrid->createView()->willReturn($datagridView);
         $element->createDataSource()->willReturn($datasource);
+        $datasource->createView()->willReturn($dataSourceView);
         $this->setElement($element);
     }
 

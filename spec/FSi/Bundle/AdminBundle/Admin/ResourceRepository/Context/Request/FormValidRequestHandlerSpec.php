@@ -51,7 +51,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     ): void {
         $event->getElement()->willReturn($element);
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
-        $eventDispatcher->dispatch($event, FormEvents::FORM_RESPONSE_PRE_RENDER)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_RESPONSE_PRE_RENDER)->willReturn($event);
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -72,13 +72,13 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
-        $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_PRE_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_PRE_SAVE)->willReturn($event);
 
         $form->getData()->willReturn([$resource1, $resource2]);
         $event->getElement()->willReturn($element);
         $element->save(Argument::type(Resource::class))->shouldBeCalledTimes(2);
 
-        $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_POST_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_POST_SAVE)->willReturn($event);
 
         $element->getSuccessRoute()->willReturn('fsi_admin_resource');
         $element->getSuccessRouteParameters()->willReturn(['element' => 'test-resource']);
@@ -102,6 +102,8 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
                 function () use ($event, $response) {
                     $event->hasResponse()->willReturn(true);
                     $event->getResponse()->willReturn($response);
+
+                    return $event;
                 }
             );
 
@@ -126,6 +128,8 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
                 function () use ($event, $response) {
                     $event->hasResponse()->willReturn(true);
                     $event->getResponse()->willReturn($response);
+
+                    return $event;
                 }
             );
 
@@ -146,7 +150,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
-        $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_PRE_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, FormEvents::FORM_DATA_PRE_SAVE)->willReturn($event);
 
         $form->getData()->willReturn([$resource1, $resource2]);
         $event->getElement()->willReturn($element);
@@ -157,6 +161,8 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
                 function () use ($event, $response) {
                     $event->hasResponse()->willReturn(true);
                     $event->getResponse()->willReturn($response);
+                    
+                    return $event;
                 }
             );
 

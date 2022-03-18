@@ -35,7 +35,7 @@ class CustomNews extends CRUDElement
     {
         return $factory
             ->createDataSource('doctrine-orm', ['entity' => $this->getClassName()], $this->getId())
-            ->addField('title', 'text', 'eq', ['form_filter' => false]);
+            ->addField('title', 'text', ['comparison' => 'eq', 'form_filter' => false]);
     }
 
     protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface

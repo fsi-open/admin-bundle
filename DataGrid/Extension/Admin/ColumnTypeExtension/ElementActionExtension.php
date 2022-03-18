@@ -4,104 +4,91 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
+use Closure;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
-use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action;
+use FSi\Bundle\DataGridBundle\DataGrid\ColumnType\Action;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
-use FSi\Component\DataGrid\Column\ColumnTypeInterface;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-use function array_key_exists;
+use function array_merge;
 
 class ElementActionExtension extends ColumnAbstractTypeExtension
 {
-    /**
-     * @var ManagerInterface
-     */
-    private $manager;
+    private ManagerInterface $manager;
+
+    public static function getExtendedColumnTypes(): array
+    {
+        return [Action::class];
+    }
 
     public function __construct(ManagerInterface $manager)
     {
         $this->manager = $manager;
     }
 
-    public function getExtendedColumnTypes(): array
+    public function initOptions(OptionsResolver $optionsResolver): void
     {
-        return ['action'];
-    }
+        $optionsResolver->setDefault('actions', function (OptionsResolver $actionOptionsResolver): void {
+            $actionOptionsResolver->setPrototype(true);
+            $actionOptionsResolver->setDefaults([
+                'redirect_uri' => true,
+                'absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                'url_attr' => [],
+                'content' => null,
+                'parameters_field_mapping' => [],
+                'additional_parameters' => [],
+                'element' => null,
+            ]);
 
-    public function initOptions(ColumnTypeInterface $column): void
-    {
-        $column = $this->validateColumn($column);
+            $actionOptionsResolver->setAllowedTypes('url_attr', ['array', Closure::class]);
+            $actionOptionsResolver->setAllowedTypes('content', ['null', 'string', Closure::class]);
+            $actionOptionsResolver->setAllowedTypes('element', ['null', 'string']);
+            $actionOptionsResolver->setAllowedTypes('parameters_field_mapping', ['null', 'array']);
+            $actionOptionsResolver->setAllowedTypes('additional_parameters', ['null', 'array']);
 
-        $column->getActionOptionsResolver()->setDefined(['element']);
-        $column->getActionOptionsResolver()->setAllowedTypes('element', 'string');
-    }
+            $actionOptionsResolver->setRequired([
+                'route_name',
+            ]);
+            $actionOptionsResolver->setAllowedTypes('route_name', 'string');
 
-    public function filterValue(ColumnTypeInterface $column, $value)
-    {
-        $this->validateColumn($column);
+            $actionOptionsResolver->setDefault(
+                'route_name',
+                function (Options $options, ?string $previousValue): ?string {
+                    if (null === ($options['element'] ?? null)) {
+                        return $previousValue;
+                    }
 
-        $actions = $column->getOption('actions');
-        $generatedActions = [];
-        foreach ($actions as $action => $actionOptions) {
-            if (false === $this->validateActionOptions($column, $action, $actionOptions)) {
-                continue;
-            }
+                    return $this->manager->getElement($options['element'])->getRoute();
+                }
+            );
+            $actionOptionsResolver->setDefault(
+                'additional_parameters',
+                function (Options $options, ?array $previousValue): ?array {
+                    if (null === ($options['element'] ?? null)) {
+                        return $previousValue;
+                    }
 
-            $generatedActions[$action] = $this->generateActionOptions($actionOptions);
-            unset($actions[$action]['element']);
-        }
+                    $element = $this->manager->getElement($options['element']);
 
-        $column->setOption('actions', array_replace_recursive($actions, $generatedActions));
+                    return array_merge(
+                        ['element' => $element->getId()],
+                        $element->getRouteParameters(),
+                        $previousValue ?? []
+                    );
+                }
+            );
+            $actionOptionsResolver->setDefault(
+                'parameters_field_mapping',
+                function (Options $options, ?array $previousValue): ?array {
+                    if (null === ($options['element'] ?? null)) {
+                        return $previousValue;
+                    }
 
-        return parent::filterValue($column, $value);
-    }
-
-    private function validateColumn(ColumnTypeInterface $column): Action
-    {
-        if (false === $column instanceof Action) {
-            throw new RuntimeException(sprintf(
-                '%s can extend only FSi\Bundle\DataGridBundle\DataGrid\Extension\Symfony\ColumnType\Action, but got %s',
-                get_class($this),
-                get_class($column)
-            ));
-        }
-
-        return $column;
-    }
-
-    private function validateActionOptions(ColumnTypeInterface $column, $action, array $actionOptions): bool
-    {
-        if (false === array_key_exists('element', $actionOptions)) {
-            return false;
-        }
-
-        if (false === $this->manager->hasElement($actionOptions['element'])) {
-            throw new RuntimeException(sprintf(
-                'Unknown element "%s" specified in action "%s" of datagrid "%s"',
-                $actionOptions['element'],
-                $action,
-                $column->getDataGrid()->getName()
-            ));
-        }
-
-        return true;
-    }
-
-    private function generateActionOptions(array $actionOptions): array
-    {
-        $element = $this->manager->getElement($actionOptions['element']);
-
-        $additionalParameters = array_merge(
-            ['element' => $element->getId()],
-            $element->getRouteParameters(),
-            $actionOptions['additional_parameters'] ?? []
-        );
-
-        return [
-            'route_name' => $element->getRoute(),
-            'additional_parameters' => $additionalParameters,
-            'parameters_field_mapping' => ['id' => 'id']
-        ];
+                    return ['id' => 'id'];
+                }
+            );
+        });
     }
 }

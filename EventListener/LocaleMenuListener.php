@@ -17,11 +17,8 @@ use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Intl\Intl;
 use Symfony\Component\Intl\Languages;
-use Symfony\Component\Translation\TranslatorInterface;
-
-use function class_exists;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LocaleMenuListener implements EventSubscriberInterface
 {

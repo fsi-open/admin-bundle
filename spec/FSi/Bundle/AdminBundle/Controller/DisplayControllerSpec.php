@@ -42,12 +42,10 @@ class DisplayControllerSpec extends ObjectBehavior
         Element $element,
         ContextManager $manager,
         DisplayContext $context,
+        AdminEvent $event,
         Environment $twig
     ): void {
-        $dispatcher->dispatch(
-            Argument::type(AdminEvent::class),
-            AdminEvents::CONTEXT_PRE_CREATE
-        )->shouldBeCalled();
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
 
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -58,12 +56,16 @@ class DisplayControllerSpec extends ObjectBehavior
     }
 
     public function it_returns_response(
+        EventDispatcherInterface $dispatcher,
         Request $request,
         Element $element,
         ContextManager $manager,
         DisplayContext $context,
+        AdminEvent $event,
         Environment $twig
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $manager->createContext('fsi_admin_display', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
@@ -73,10 +75,14 @@ class DisplayControllerSpec extends ObjectBehavior
     }
 
     public function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
+        EventDispatcherInterface $dispatcher,
         Element $element,
         ContextManager $manager,
+        AdminEvent $event,
         Request $request
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $element->getId()->willReturn('my_awesome_display');
         $manager->createContext(Argument::type('string'), $element)->willReturn(null);
 
@@ -85,10 +91,14 @@ class DisplayControllerSpec extends ObjectBehavior
     }
 
     public function it_throws_exception_when_no_response_and_no_template_name(
+        EventDispatcherInterface $dispatcher,
         Element $element,
         ContextManager $manager,
+        AdminEvent $event,
         Request $request
     ): void {
+        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+
         $element->getId()->willReturn('my_awesome_display');
         $manager->createContext(Argument::type('string'), $element)->willReturn(null);
 

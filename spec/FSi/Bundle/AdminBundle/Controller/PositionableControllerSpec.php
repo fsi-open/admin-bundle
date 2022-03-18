@@ -134,6 +134,9 @@ class PositionableControllerSpec extends ObjectBehavior
     }
 
     public function it_redirects_to_redirect_uri_parameter_after_operation(
+        EventDispatcherInterface $eventDispatcher,
+        PositionableEvent $preApplyEvent,
+        PositionableEvent $postApplyEvent,
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,
@@ -143,6 +146,10 @@ class PositionableControllerSpec extends ObjectBehavior
         $query->get('redirect_uri')->willReturn('some_redirect_uri');
 
         $indexer->getData('1')->willReturn($positionableEntity);
+        $eventDispatcher->dispatch(Argument::type(PositionableEvent::class), PositionableEvents::PRE_APPLY)
+            ->willReturn($preApplyEvent);
+        $eventDispatcher->dispatch(Argument::type(PositionableEvent::class), PositionableEvents::POST_APPLY)
+            ->willReturn($postApplyEvent);
 
         $response = $this->increasePositionAction($element, '1', $request);
         $response->shouldHaveType(RedirectResponse::class);

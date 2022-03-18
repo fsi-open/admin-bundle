@@ -17,14 +17,16 @@ class NewsDataSourceBuilder
 {
     public static function buildNewsDataSource(DataSourceInterface $datasource): DataSourceInterface
     {
-        $datasource->addField('title', 'text', 'like', [
+        $datasource->addField('title', 'text', [
+            'comparison' => 'like',
             'sortable' => false,
             'form_options' => [
                 'label' => 'admin.news.list.title',
             ]
         ]);
 
-        $datasource->addField('created_at', 'date', 'between', [
+        $datasource->addField('created_at', 'date', [
+            'comparison' => 'between',
             'field' => 'createdAt',
             'sortable' => true,
             'form_from_options' => [
@@ -37,14 +39,16 @@ class NewsDataSourceBuilder
             ]
         ]);
 
-        $datasource->addField('visible', 'boolean', 'eq', [
+        $datasource->addField('visible', 'boolean', [
+            'comparison' => 'eq',
             'sortable' => false,
             'form_options' => [
                 'label' => 'admin.news.list.visible',
             ]
         ]);
 
-        $datasource->addField('creator_email', 'text', 'like', [
+        $datasource->addField('creator_email', 'text', [
+            'comparison' => 'like',
             'field' => 'creatorEmail',
             'sortable' => true,
             'form_options' => [

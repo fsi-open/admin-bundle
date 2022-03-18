@@ -17,11 +17,26 @@ use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
+use FSi\Component\DataGrid\DataGridFormHandlerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function var_dump;
+
 class DataGridBindDataHandler extends AbstractHandler
 {
+    private DataGridFormHandlerInterface $dataGridFormHandler;
+
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        DataGridFormHandlerInterface $dataGridFormHandler
+    ) {
+        parent::__construct($eventDispatcher);
+
+        $this->dataGridFormHandler = $dataGridFormHandler;
+    }
+
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
         $event = $this->validateEvent($event);
@@ -32,15 +47,18 @@ class DataGridBindDataHandler extends AbstractHandler
                 return $event->getResponse();
             }
 
-            $event->getDataGrid()->bindData($request);
+            $this->dataGridFormHandler->submit($event->getDataGrid(), $request);
             $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_POST_BIND);
             if (true === $event->hasResponse()) {
                 return $event->getResponse();
             }
 
-            /** @var ListElement $element */
-            $element = $event->getElement();
-            $element->saveDataGrid();
+            if (true === $this->dataGridFormHandler->isValid($event->getDataGrid())) {
+                /** @var ListElement $element */
+                $element = $event->getElement();
+                $element->saveDataGrid();
+            }
+
             $event->getDataSource()->bindParameters($request);
             $event->getDataGrid()->setData($event->getDataSource()->getResult());
         }

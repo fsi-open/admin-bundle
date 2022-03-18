@@ -90,11 +90,6 @@ class DisplayContext extends ContextAbstract
     {
         $id = $request->get('id');
 
-        $object = $this->element->getDataIndexer()->getData($id);
-        if (null === $object) {
-            throw new NotFoundHttpException(sprintf('Can\'t find object with id %s', $id));
-        }
-
-        return $object;
+        return $this->element->getDataIndexer()->getData($id);
     }
 }

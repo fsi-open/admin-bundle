@@ -21,7 +21,6 @@ use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -54,7 +53,7 @@ class ReorderTreeController
      */
     public function moveUpAction(DataIndexerElement $element, string $id, Request $request): Response
     {
-        $entity = $this->getEntity($element, $id);
+        $entity = $element->getDataIndexer()->getData($id);
 
         $this->getRepository($element)->moveUp($entity);
         $element->getObjectManager()->flush();
@@ -72,7 +71,7 @@ class ReorderTreeController
      */
     public function moveDownAction(DataIndexerElement $element, string $id, Request $request): Response
     {
-        $entity = $this->getEntity($element, $id);
+        $entity = $element->getDataIndexer()->getData($id);
 
         $this->getRepository($element)->moveDown($entity);
         $element->getObjectManager()->flush();
@@ -80,26 +79,6 @@ class ReorderTreeController
         $this->eventDispatcher->dispatch(new MovedDownTreeEvent($element, $request, $entity));
 
         return $this->getRedirectResponse($element, $request);
-    }
-
-    /**
-     * @param DataIndexerElement $element
-     * @param string $id
-     * @throws NotFoundHttpException
-     * @return object
-     */
-    private function getEntity(DataIndexerElement $element, string $id)
-    {
-        $entity = $element->getDataIndexer()->getData($id);
-        if (null === $entity) {
-            throw new NotFoundHttpException(sprintf(
-                'Entity for element "%s" with id "%s" was not found!',
-                $element->getId(),
-                $id
-            ));
-        }
-
-        return $entity;
     }
 
     private function getRepository(AdminDoctrineElement $element): NestedTreeRepository

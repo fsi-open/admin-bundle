@@ -77,24 +77,13 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
 
     private function getObjects(BatchElement $element, Request $request): array
     {
-        $objects = [];
         $indexes = $request->request->all()['indexes'] ?? [];
 
         if (0 === count($indexes)) {
             return [];
         }
 
-        foreach ($indexes as $index) {
-            $object = $element->getDataIndexer()->getData($index);
-
-            if (null === $object) {
-                throw new RequestHandlerException(sprintf("Can't find object with id %s", $index));
-            }
-
-            $objects[] = $object;
-        }
-
-        return $objects;
+        return $element->getDataIndexer()->getDataSlice($indexes);
     }
 
     protected function getPreSaveEventName(): string

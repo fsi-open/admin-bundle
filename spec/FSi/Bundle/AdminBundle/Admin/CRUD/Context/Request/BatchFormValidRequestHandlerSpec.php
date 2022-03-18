@@ -111,7 +111,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $element->getId()->willReturn('element_form_id');
         $element->getDataIndexer()->willReturn($dataIndexer);
 
-        $dataIndexer->getData('index')->willReturn($object);
+        $dataIndexer->getDataSlice(['index'])->willReturn([$object]);
 
         $queryParameterbag->has('redirect_uri')->willReturn(false);
         $router->generate('fsi_admin_list', ['element' => 'element_list_id'])->willReturn('/list/page');
@@ -142,14 +142,14 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
             Argument::type(BatchEvent::class),
             BatchEvents::BATCH_OBJECT_POST_APPLY
         )->shouldBeCalled();
-        $eventDispatcher->dispatch($event, BatchEvents::BATCH_OBJECTS_POST_APPLY)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, BatchEvents::BATCH_OBJECTS_POST_APPLY)->shouldBeCalled()->willReturn($event);
 
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
         $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');
         $element->getDataIndexer()->willReturn($dataIndexer);
 
-        $dataIndexer->getData('index')->willReturn($object);
+        $dataIndexer->getDataSlice(['index'])->willReturn([$object]);
 
         $queryParameterbag->has('redirect_uri')->willReturn(true);
         $queryParameterbag->get('redirect_uri')->willReturn('some_redirect_uri');
@@ -169,6 +169,8 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
                 function () use ($event) {
                     $event->hasResponse()->willReturn(true);
                     $event->getResponse()->willReturn(new Response());
+
+                    return $event;
                 }
             );
 
@@ -185,7 +187,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         DataIndexerInterface $dataIndexer,
         stdClass $object
     ): void {
-        $eventDispatcher->dispatch($event, BatchEvents::BATCH_OBJECTS_PRE_APPLY)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, BatchEvents::BATCH_OBJECTS_PRE_APPLY)->shouldBeCalled()->willReturn($event);
         $eventDispatcher->dispatch(
             Argument::type(BatchPreApplyEvent::class),
             BatchEvents::BATCH_OBJECT_PRE_APPLY
@@ -193,7 +195,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 
         $form->getData()->willReturn($object);
         $element->getDataIndexer()->willReturn($dataIndexer);
-        $dataIndexer->getData('index')->willReturn($object);
+        $dataIndexer->getDataSlice(['index'])->willReturn([$object]);
 
         $element->apply($object)->shouldBeCalled();
 
@@ -206,6 +208,8 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
                 function () use ($event) {
                     $event->hasResponse()->willReturn(true);
                     $event->getResponse()->willReturn(new Response());
+
+                    return $event;
                 }
             );
 
@@ -235,6 +239,8 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
                 function () use ($event) {
                     $event->hasResponse()->willReturn(true);
                     $event->getResponse()->willReturn(new Response());
+
+                    return $event;
                 }
             );
 
