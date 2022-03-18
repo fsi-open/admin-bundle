@@ -6,6 +6,7 @@ namespace FSi\FixturesBundle\Form;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use FSi\Bundle\DoctrineExtensionsBundle\Form\Type\FSi\ImageType;
+use FSi\Component\Files\Integration\Symfony\Form\WebFileType;
 use FSi\FixturesBundle\Entity\News;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -42,7 +43,8 @@ class NewsType extends AbstractType
             'label' => 'admin.news.list.creator_email'
         ]);
 
-        $builder->add('photo', ImageType::class, [
+        $builder->add('photo', WebFileType::class, [
+            'image' => true,
             'label' => 'admin.news.list.photo',
             'required' => false
         ]);

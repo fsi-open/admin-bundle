@@ -47,10 +47,10 @@ class NewsDataGridBuilder
             'label' => 'admin.news.list.creator_email'
         ]);
 
-        $datagrid->addColumn('photo', 'fsi_image', [
+/*        $datagrid->addColumn('photo', 'fsi_image', [
             'label' => 'admin.news.list.photo',
             'width' => 100
-        ]);
+        ]);*/
 
         return $datagrid;
     }

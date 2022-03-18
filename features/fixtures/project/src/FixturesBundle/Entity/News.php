@@ -8,8 +8,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use FSi\Bundle\DoctrineExtensionsBundle\Validator\Constraints as UploadableAssert;
-use FSi\DoctrineExtensions\Uploadable\Mapping\Annotation as Uploadable;
+use FSi\Component\Files\WebFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -57,13 +56,11 @@ class News
 
     /**
      * @ORM\Column(length=255, nullable=true)
-     * @Uploadable\Uploadable(targetField="photo")
      */
-    protected $photoKey;
+    protected $photoPath;
 
     /**
-     * @var \FSi\DoctrineExtensions\Uploadable\File|\SplFileInfo
-     * @UploadableAssert\Image()
+     * @var WebFile
      */
     protected $photo;
 
@@ -154,18 +151,13 @@ class News
         return $this->visible;
     }
 
-    public function getPhotoKey(): ?string
+    public function getPhotoPath(): ?string
     {
-        return $this->photoKey;
-    }
-
-    public function setPhotoKey(?string $photoKey): void
-    {
-        $this->photoKey = $photoKey;
+        return $this->photoPath;
     }
 
     /**
-     * @return \FSi\DoctrineExtensions\Uploadable\File|\SplFileInfo
+     * @return WebFile
      */
     public function getPhoto()
     {

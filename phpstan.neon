@@ -4,7 +4,7 @@ parameters:
     level: 5
     paths:
         - .
-    excludes_analyse:
+    excludePaths:
         - DependencyInjection/Configuration
         - '%rootDir%/../../../Behat'
         - '%rootDir%/../../../docker'
