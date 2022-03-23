@@ -9,7 +9,6 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 
-use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataGrid\DataGridFactory;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
