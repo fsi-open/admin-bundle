@@ -1,36 +1,56 @@
 fsi_admin:
     path: /
     defaults:
-        _controller: admin.controller.admin:indexAction
+        _controller: FSi\Bundle\AdminBundle\Controller\AdminController::indexAction
 
 fsi_admin_locale:
     path: /locale/{_locale}
     defaults:
-        _controller: admin.controller.admin:localeAction
+        _controller: FSi\Bundle\AdminBundle\Controller\AdminController::localeAction
 
 
 fsi_admin_list:
     path: /list/{element}
     defaults:
-        _controller: admin.controller.list:listAction
+        _controller: FSi\Bundle\AdminBundle\Controller\ListController::listAction
 
 fsi_admin_form:
     path: /form/{element}/{id}
     defaults:
-        _controller: admin.controller.form:formAction
+        _controller: FSi\Bundle\AdminBundle\Controller\FormController::formAction
         id: null
 
 fsi_admin_batch:
     path: /batch/{element}
     defaults:
-        _controller: admin.controller.batch:batchAction
+        _controller: FSi\Bundle\AdminBundle\Controller\BatchController::batchAction
 
 fsi_admin_resource:
     path: /resource/{element}
     defaults:
-        _controller: admin.controller.resource:resourceAction
+        _controller: FSi\Bundle\AdminBundle\Controller\ResourceController::resourceAction
 
 fsi_admin_display:
     path: /display/{element}/{id}
     defaults:
-        _controller: admin.controller.display:displayAction
+        _controller: FSi\Bundle\AdminBundle\Controller\DisplayController::displayAction
+
+fsi_admin_positionable_increase_position:
+    path: /{element}/{id}/position/increase
+    defaults:
+        _controller: FSi\Bundle\AdminBundle\Controller\PositionableController:increasePositionAction
+
+fsi_admin_positionable_decrease_position:
+    path: /{element}/{id}/position/decrease
+    defaults:
+        _controller: FSi\Bundle\AdminBundle\Controller\PositionableController:decreasePositionAction
+
+fsi_admin_tree_node_move_up:
+    path: /admin/{element}/{id}/reorder/move-up
+    defaults:
+        _controller: FSi\Bundle\AdminBundle\Controller\ReorderTreeController:moveUpAction
+
+fsi_admin_tree_node_move_down:
+    path: /admin/{element}/{id}/reorder/move-down
+    defaults:
+        _controller: FSi\Bundle\AdminBundle\Controller\ReorderTreeController:moveDownAction

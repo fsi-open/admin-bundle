@@ -9,15 +9,10 @@
 
 declare(strict_types=1);
 
-namespace FSi\Bundle\AdminBundle\Annotation;
+namespace FSi\Bundle\AdminBundle\Model;
 
-use Doctrine\Common\Annotations\Annotation;
-
-/**
- * @Annotation
- *
- * @deprecated since 3.0
- */
-final class Element extends Annotation
+interface PositionableInterface
 {
+    public function increasePosition(): void;
+    public function decreasePosition(): void;
 }

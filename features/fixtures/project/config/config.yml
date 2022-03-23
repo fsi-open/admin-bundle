@@ -4,12 +4,13 @@ parameters:
 framework:
     default_locale:  "en"
     secret:          this_is_secret
-    translator:      { fallback: "en" }
-    router:          { resource: "%kernel.root_dir%/config/routing.yml" }
+    translator:
+        default_path: "%kernel.project_dir%/features/fixtures/project/translations"
+        fallback: "en"
+    router:          { resource: "%kernel.project_dir%/features/fixtures/project/config/routing.yml" }
     form:            true
     csrf_protection: true
     validation:      { enable_annotations: true }
-    templating:      { engines: ['twig'] }
     profiler:        { only_exceptions: false }
     test:            ~
     session:
@@ -20,14 +21,14 @@ doctrine:
         driver:   pdo_sqlite
         user:     admin
         charset:  UTF8
-        path: "%kernel.root_dir%/data.sqlite"
+        path: "%kernel.project_dir%/features/fixtures/project/var/data.sqlite"
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
 
 fsi_resource_repository:
+    map_path: "%kernel.project_dir%/features/fixtures/project/config/resource_map.yml"
     resource_class: FSi\FixturesBundle\Entity\Resource
-    map_path: "%kernel.project_dir%/features/fixtures/project/app/config/resource_map.yml"
 
 fsi_doctrine_extensions:
     orm:
@@ -36,6 +37,7 @@ fsi_doctrine_extensions:
 
 fsi_admin:
     locales: [en, pl]
+    menu_config_path: "%kernel.project_dir%/features/fixtures/project/config/admin_menu.yml"
 
 monolog:
     handlers:

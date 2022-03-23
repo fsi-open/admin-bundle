@@ -12,14 +12,12 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use Behat\Mink\Element\NodeElement;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
+use FriendsOfBehat\PageObjectExtension\Element\Element;
+use FriendsOfBehat\PageObjectExtension\Page\UnexpectedPageException;
 
 class ListElement extends Element
 {
     public const BATCH_COLUMN = 'batch';
-
-    protected $selector = ['css' => 'body'];
 
     /**
      * @return array<NodeElement>
@@ -41,7 +39,7 @@ class ListElement extends Element
 
     public function hasBatchColumn(): bool
     {
-        return $this->has('css', 'th > input[type="checkbox"]');
+        return $this->getDocument()->has('css', 'th > input[type="checkbox"]');
     }
 
     /**
@@ -67,7 +65,7 @@ class ListElement extends Element
 
     public function getRow(int $number): NodeElement
     {
-        $row = $this->find('xpath', sprintf('//tbody/tr[%d]', $number));
+        $row = $this->getDocument()->find('xpath', sprintf('//tbody/tr[%d]', $number));
         if (null === $row) {
             throw new UnexpectedPageException(sprintf('Row "%s" does not exist in DataGrid', $number));
         }
@@ -104,12 +102,13 @@ class ListElement extends Element
     public function getCell($columnHeader, $rowNumber): ?NodeElement
     {
         $columnPos = $this->getColumnPosition($columnHeader);
-        return $this->find('xpath', sprintf('descendant-or-self::table/tbody/tr[%d]/td[%d]', $rowNumber, $columnPos));
+        return $this->getDocument()
+            ->find('xpath', sprintf('descendant-or-self::table/tbody/tr[%d]/td[%d]', $rowNumber, $columnPos));
     }
 
     public function getColumnPosition(string $columnHeader): int
     {
-        $headers = $this->findAll('css', 'th');
+        $headers = $this->getDocument()->findAll('css', 'th');
         foreach ($headers as $index => $header) {
             /** @var NodeElement $header */
             if (
@@ -170,12 +169,12 @@ class ListElement extends Element
 
     private function getColumnHeader(string $columnHeader): ?NodeElement
     {
-        return $this->find('css', sprintf('th span:contains("%s")', $columnHeader))->getParent();
+        return $this->getDocument()->find('css', sprintf('th span:contains("%s")', $columnHeader))->getParent();
     }
 
     private function getTable(): NodeElement
     {
-        $table = $this->find('css', 'table.table-datagrid');
+        $table = $this->getDocument()->find('css', 'table.table-datagrid');
         if (null === $table) {
             throw new UnexpectedPageException('There is no datagrid table on page');
         }

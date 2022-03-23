@@ -17,22 +17,17 @@ default: &default
             base_url: 'http://admin-bundle-web'
             sessions:
                 default:
-                    symfony2: ~
+                    symfony: ~
                 javascript:
                     selenium2:
                         browser: firefox
                         wd_host: http://admin-bundle-selenium:4444/wd/hub
             javascript_session: javascript
-        Behat\Symfony2Extension:
+        FriendsOfBehat\SymfonyExtension:
             kernel:
-                env: test
-                debug: true
-                path: features/fixtures/project/app/AppKernel.php
-                bootstrap: features/fixtures/project/app/bootstrap.php
-        SensioLabs\Behat\PageObjectExtension:
-            namespaces:
-                page: FSi\Bundle\AdminBundle\Behat\Page
-                element: FSi\Bundle\AdminBundle\Behat\Element
+                path: features/fixtures/project/src/AppKernel.php
+                class: FSi\AppKernel
+        Caciobanu\Behat\DeprecationExtension: ~
 travis:
     <<: *default
     extensions:

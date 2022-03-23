@@ -11,14 +11,12 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Element;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+use FriendsOfBehat\PageObjectExtension\Element\Element;
 
 class ListResultsElement extends Element
 {
-    protected $selector = ['css' => 'div#list-results'];
-
     public function setElementsPerPage(int $elementsCount): void
     {
-        $this->find('css', 'ul[role="menu"]')->clickLink($elementsCount);
+        $this->getDocument()->find('css', 'div#list-results ul[role="menu"]')->clickLink((string) $elementsCount);
     }
 }

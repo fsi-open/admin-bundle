@@ -18,7 +18,7 @@ use FSi\Bundle\AdminBundle\Factory\ProductionLine;
 class ElementCollectionVisitor implements Visitor
 {
     /**
-     * @var array<Element>
+     * @var iterable<Element>
      */
     private $elements;
 
@@ -27,11 +27,16 @@ class ElementCollectionVisitor implements Visitor
      */
     private $factoryProductionLine;
 
+    public static function getPriority(): int
+    {
+        return 1024;
+    }
+
     /**
-     * @param array<Element> $elements
+     * @param iterable<Element> $elements
      * @param ProductionLine $factoryProductionLine
      */
-    public function __construct(array $elements, ProductionLine $factoryProductionLine)
+    public function __construct(iterable $elements, ProductionLine $factoryProductionLine)
     {
         $this->elements = $elements;
         $this->factoryProductionLine = $factoryProductionLine;

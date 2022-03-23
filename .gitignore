@@ -1,3 +1,4 @@
+/features/fixtures/project/var
 /vendor
 composer.lock
 .phpcs-cache

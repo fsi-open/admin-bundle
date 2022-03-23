@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace FSi\FixturesBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Annotation as Admin;
 use FSi\Bundle\AdminBundle\Display\Property\Formatter;
 use FSi\Bundle\AdminBundle\Display\SimpleDisplay;
 use FSi\Bundle\AdminBundle\Display\Display;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DisplayElement;
 use FSi\FixturesBundle\Entity;
 
-/**
- * @Admin\Element
- */
 class DisplayNews extends DisplayElement
 {
     public const ID = 'news_display';

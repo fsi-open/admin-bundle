@@ -11,16 +11,24 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
+use FriendsOfBehat\PageObjectExtension\Page\UnexpectedPageException;
 
 class CategoryNewsList extends Page
 {
-    protected $path = '/admin/list/category_news?parent={parent_id}';
-
-    protected function verifyPage(): void
+    public function verify(array $urlParameters = []): void
     {
-        if (false === $this->has('css', '#page-header:contains("List of elements")')) {
-            throw new UnexpectedPageException(sprintf('%s page is missing "List of elements" header', $this->path));
+        parent::verify($urlParameters);
+
+        if (false === $this->getDocument()->has('css', '#page-header:contains("List of elements")')) {
+            throw new UnexpectedPageException(
+                sprintf('%s page is missing "List of elements" header', $this->getUrl($urlParameters))
+            );
         }
+    }
+
+    protected function getUrl(array $urlParameters = []): string
+    {
+        return $this->getParameter('base_url') . '/admin/list/category_news'
+            . (($urlParameters['parent_id'] ?? null) ? "?parent={$urlParameters['parent_id']}" : '');
     }
 }

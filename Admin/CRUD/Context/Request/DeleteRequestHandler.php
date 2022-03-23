@@ -16,6 +16,7 @@ use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
+use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use LogicException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,10 +24,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
+use function get_class;
+
 class DeleteRequestHandler implements HandlerInterface
 {
     /**
-     * @var HandlerInterface
+     * @var BatchFormValidRequestHandler
      */
     private $batchHandler;
 
@@ -41,7 +44,7 @@ class DeleteRequestHandler implements HandlerInterface
     private $router;
 
     public function __construct(
-        HandlerInterface $batchHandler,
+        BatchFormValidRequestHandler $batchHandler,
         FlashMessages $flashMessages,
         RouterInterface $router
     ) {
@@ -52,6 +55,9 @@ class DeleteRequestHandler implements HandlerInterface
 
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
+        if (false === $event instanceof FormEvent) {
+            throw InvalidArgumentException::create(self::class, FormEvent::class, get_class($event));
+        }
         try {
             $this->validateDeletion($event);
             $response = $this->batchHandler->handleRequest($event, $request);

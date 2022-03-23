@@ -11,58 +11,30 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Behat\Behat\Context\Context;
 use Behat\Mink\Driver\Selenium2Driver;
-use Behat\Mink\Mink;
 use Behat\Mink\Session;
-use Behat\MinkExtension\Context\MinkAwareContext;
-use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Faker\Factory;
 use Faker\Generator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
+use FriendsOfBehat\PageObjectExtension\Element\Element;
+use FriendsOfBehat\PageObjectExtension\Page\Page;
+use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 
-abstract class AbstractContext implements KernelAwareContext, MinkAwareContext
+abstract class AbstractContext implements Context
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private Session $session;
+    private MinkParameters $minkParameters;
+    private EntityManagerInterface $entityManager;
+    private Generator $faker;
 
-    /**
-     * @var Mink
-     */
-    private $mink;
-
-    /**
-     * @var array
-     */
-    private $minkParameters;
-
-    /**
-     * @var Generator|null
-     */
-    private $faker;
-
-    /**
-     * @var EntityManagerInterface|null
-     */
-    private $entityManager;
-
-    public function setMink(Mink $mink): void
+    public function __construct(Session $session, MinkParameters $minkParameters, EntityManagerInterface $entityManager)
     {
-        $this->mink = $mink;
-    }
-
-    public function setMinkParameters(array $parameters): void
-    {
-        $this->minkParameters = $parameters;
-    }
-
-    public function setKernel(KernelInterface $kernel): void
-    {
-        $this->kernel = $kernel;
+        $this->session = $session;
+        $this->minkParameters = $minkParameters;
+        $this->entityManager = $entityManager;
+        $this->faker = Factory::create();
     }
 
     protected function getRepository($className): EntityRepository
@@ -72,47 +44,42 @@ abstract class AbstractContext implements KernelAwareContext, MinkAwareContext
 
     protected function getEntityManager(): EntityManagerInterface
     {
-        if (null === $this->entityManager) {
-            /** @var EntityManagerInterface $manager */
-            $entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
-            $this->entityManager = $entityManager;
-        }
-
         return $this->entityManager;
     }
 
     protected function getFaker(): Generator
     {
-        if (null === $this->faker) {
-            $this->faker = Factory::create();
-        }
-
         return $this->faker;
     }
 
-    protected function getMinkParameters(): array
+    protected function getSession(): Session
     {
-        return $this->minkParameters;
+        return $this->session;
     }
 
-    protected function getSession($name = null): Session
+    /**
+     * @template T of Element
+     * @param class-string<T> $elementClass
+     * @return T
+     */
+    protected function getElement(string $elementClass): Element
     {
-        return $this->mink->getSession($name);
+        return new $elementClass($this->session, $this->minkParameters);
     }
 
-    protected function getKernel(): KernelInterface
+    /**
+     * @template T of Page
+     * @param class-string<T> $pageClass
+     * @return T
+     */
+    protected function getPage(string $pageClass): Page
     {
-        return $this->kernel;
-    }
-
-    protected function getContainer(): ContainerInterface
-    {
-        return $this->kernel->getContainer();
+        return new $pageClass($this->session, $this->minkParameters);
     }
 
     protected function isSeleniumDriverUsed(): bool
     {
-        return $this->getSession()->getDriver() instanceof Selenium2Driver;
+        return $this->session->getDriver() instanceof Selenium2Driver;
     }
 
     protected function parseScenarioValue($rawValue)

@@ -27,14 +27,14 @@ abstract class AbstractFormSubmitHandler extends AbstractHandler
             return null;
         }
 
-        $this->eventDispatcher->dispatch($this->getPreSubmitEventName(), $event);
+        $this->eventDispatcher->dispatch($event, $this->getPreSubmitEventName());
         if ($event->hasResponse()) {
             return $event->getResponse();
         }
 
         $event->getForm()->handleRequest($request);
 
-        $this->eventDispatcher->dispatch($this->getPostSubmitEventName(), $event);
+        $this->eventDispatcher->dispatch($event, $this->getPostSubmitEventName());
         if ($event->hasResponse()) {
             return $event->getResponse();
         }

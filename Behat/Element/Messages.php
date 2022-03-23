@@ -12,15 +12,13 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Behat\Element;
 
 use Exception;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+use FriendsOfBehat\PageObjectExtension\Element\Element;
 
 class Messages extends Element
 {
-    protected $selector = '#messages';
-
     public function getMessageText(string $type): string
     {
-        $alerts = $this->findAll('css', sprintf('.alert-%s', $type));
+        $alerts = $this->getElement('messages')->findAll('css', sprintf('.alert-%s', $type));
         if (count($alerts) < 1) {
             throw new Exception(sprintf("Unable to find any alert with type '%s'", $type));
         }
@@ -28,5 +26,12 @@ class Messages extends Element
         return implode("\n", array_map(static function ($alert) {
             return $alert->getText();
         }, $alerts));
+    }
+
+    protected function getDefinedElements(): array
+    {
+        return [
+            'messages' => '#messages',
+        ];
     }
 }

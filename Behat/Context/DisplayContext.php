@@ -12,28 +12,16 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Symfony2Extension\Context\KernelAwareContext;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
-use Symfony\Component\HttpKernel\KernelInterface;
+use FSi\Bundle\AdminBundle\Behat\Element\Display;
 
-class DisplayContext extends PageObjectContext implements KernelAwareContext
+class DisplayContext extends AbstractContext
 {
-    /**
-     * @var KernelInterface
-     */
-    protected $kernel;
-
-    public function setKernel(KernelInterface $kernel): void
-    {
-        $this->kernel = $kernel;
-    }
-
     /**
      * @Given /^I should see display with following fields$/
      */
     public function iShouldSeeDisplayWithFollowingFields(TableNode $table): void
     {
-        $display = $this->getPage('News display')->getElement('Display');
+        $display = $this->getElement(Display::class);
         foreach ($table->getHash() as $row) {
             expect($display->hasFieldWithName($row['Field name']))->toBe(true);
         }

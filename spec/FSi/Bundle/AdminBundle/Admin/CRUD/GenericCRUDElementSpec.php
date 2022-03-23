@@ -9,7 +9,6 @@
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 
-use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataGrid\DataGridFactory;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
@@ -43,13 +42,12 @@ class GenericCRUDElementSpec extends ObjectBehavior
         $this->getRoute()->shouldReturn('fsi_admin_list');
     }
 
-    public function it_throws_exception_when_init_datagrid_does_not_return_instance_of_datagrid(DataGridFactory $factory
-    ): void {
+    public function it_throws_exception_when_init_datagrid_does_not_return_datagrid(DataGridFactory $factory): void
+    {
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
 
-        $this->shouldThrow(\TypeError::class)
-            ->during('createDataGrid');
+        $this->shouldThrow(\TypeError::class)->during('createDataGrid');
     }
 
     public function it_adds_batch_column_to_datagrid_when_element_allow_delete_objects(
@@ -88,8 +86,8 @@ class GenericCRUDElementSpec extends ObjectBehavior
             ->during('createDataSource');
     }
 
-    public function it_throws_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory
-    ): void {
+    public function it_throws_exception_when_init_form_does_not_return_form(FormFactoryInterface $factory): void
+    {
         $this->setFormFactory($factory);
         $factory->create(Argument::cetera())->willReturn(null);
 

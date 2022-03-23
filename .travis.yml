@@ -5,7 +5,7 @@ cache:
         - $HOME/.composer/cache
         - vendor
 
-sudo: required
+dist: focal
 
 addons:
     firefox: "47.0.1"
@@ -15,10 +15,11 @@ services:
 
 matrix:
     include:
-        - php: 7.1
+        - php: 7.4
           env:
               - COMPOSER_FLAGS='--prefer-lowest'
         - php: 7.4
+        - php: 8.0
 
 before_install:
     - phpenv config-rm xdebug.ini
@@ -32,7 +33,7 @@ before_script:
     - nohup php -S localhost:8080 -t features/fixtures/project/web > /dev/null 2>&1 &
     - java -jar vendor/bin/selenium.jar > /dev/null 2>&1 &
     - sleep 5
-    - features/fixtures/project/app/console assets:install features/fixtures/project/web --relative --symlink
+    - features/fixtures/project/bin/console assets:install features/fixtures/project/web --relative --symlink
 
 script:
     - vendor/bin/phpcs
@@ -40,4 +41,4 @@ script:
     - vendor/bin/phpspec run --format=pretty
     - vendor/bin/behat --no-snippets --format=progress --profile=travis -vvv
 
-after_failure: cat features/fixtures/project/app/logs/test.log
+after_failure: cat var/logs/test.log

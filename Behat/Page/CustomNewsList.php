@@ -11,16 +11,23 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
+use FriendsOfBehat\PageObjectExtension\Page\UnexpectedPageException;
 
 class CustomNewsList extends Page
 {
-    protected $path = '/admin/list/custom_news';
-
-    protected function verifyPage(): void
+    public function verify(array $urlParameters = []): void
     {
-        if (false === $this->has('css', 'h1#page-header:contains("Custom list")')) {
-            throw new UnexpectedPageException(sprintf('%s page is missing "Custom list" header', $this->path));
+        parent::verify($urlParameters);
+
+        if (false === $this->getDocument()->has('css', 'h1#page-header:contains("Custom list")')) {
+            throw new UnexpectedPageException(
+                sprintf('%s page is missing "Custom list" header', $this->getUrl($urlParameters))
+            );
         }
+    }
+
+    protected function getUrl(array $urlParameters = []): string
+    {
+        return $this->getParameter('base_url') . '/admin/list/custom_news';
     }
 }

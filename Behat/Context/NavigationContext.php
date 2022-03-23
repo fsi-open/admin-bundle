@@ -13,6 +13,7 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Exception;
+use FSi\Bundle\AdminBundle\Behat\Element\Pagination;
 use FSi\Bundle\AdminBundle\Behat\Page\AdminPanel;
 use FSi\Bundle\AdminBundle\Behat\Page\CategoryList;
 use FSi\Bundle\AdminBundle\Behat\Page\CategoryNewsCreate;
@@ -40,202 +41,51 @@ use InvalidArgumentException;
 class NavigationContext extends AbstractContext
 {
     /**
-     * @var DefaultPage
-     */
-    private $defaultPage;
-
-    /**
-     * @var AdminPanel
-     */
-    private $adminPanelPage;
-
-    /**
-     * @var CustomNewsEdit
-     */
-    private $customNewsEditPage;
-
-    /**
-     * @var CustomNewsList
-     */
-    private $customNewsListPage;
-
-    /**
-     * @var CustomSubscribersList
-     */
-    private $customSubscribersListPage;
-
-    /**
-     * @var DTOForm
-     */
-    private $dtoFormPage;
-
-    /**
-     * @var HomePageEdit
-     */
-    private $homePageEditPage;
-
-    /**
-     * @var NewsCreate
-     */
-    private $newsCreatePage;
-
-    /**
-     * @var NewsDisplay
-     */
-    private $newsDisplayPage;
-
-    /**
-     * @var NewsEdit
-     */
-    private $newsEditPage;
-
-    /**
-     * @var CategoryList
-     */
-    private $categoryListPage;
-
-    /**
-     * @var CategoryNewsList
-     */
-    private $categoryNewsListPage;
-
-    /**
-     * @var CategoryNewsCreate
-     */
-    private $categoryNewsCreatePage;
-
-    /**
-     * @var CategoryNewsEdit
-     */
-    private $categoryNewsEditPage;
-
-    /**
-     * @va NewsList
-     */
-    private $newsListPage;
-
-    /**
-     * @var PersonAddForm
-     */
-    private $personAddFormPage;
-
-    /**
-     * @var PersonEditForm
-     */
-    private $personEditFormPage;
-
-    /**
-     * @var PersonList
-     */
-    private $personListPage;
-
-    /**
-     * @var SubscriberEdit
-     */
-    private $subscriberEditPage;
-
-    /**
-     * @var SubscriberForm
-     */
-    private $subscriberFormPage;
-
-    /**
-     * @var SubscribersList
-     */
-    private $subscribersListPage;
-
-    public function __construct(
-        DefaultPage $defaultPage,
-        AdminPanel $adminPanelPage,
-        CustomNewsEdit $customNewsEditPage,
-        CustomNewsList $customNewsListPage,
-        CustomSubscribersList $customSubscribersListPage,
-        DTOForm $dtoFormPage,
-        HomePageEdit $homePageEditPage,
-        NewsCreate $newsCreatePage,
-        NewsDisplay $newsDisplayPage,
-        NewsEdit $newsEditPage,
-        NewsList $newsListPage,
-        CategoryList $categoryListPage,
-        CategoryNewsList $categoryNewsListPage,
-        CategoryNewsCreate $categoryNewsCreatePage,
-        CategoryNewsEdit $categoryNewsEditPage,
-        PersonAddForm $personAddFormPage,
-        PersonEditForm $personEditFormPage,
-        PersonList $personListPage,
-        SubscriberEdit $subscriberEditPage,
-        SubscriberForm $subscriberFormPage,
-        SubscribersList $subscribersListPage
-    ) {
-        $this->defaultPage = $defaultPage;
-        $this->adminPanelPage = $adminPanelPage;
-        $this->customNewsEditPage = $customNewsEditPage;
-        $this->customNewsListPage = $customNewsListPage;
-        $this->customSubscribersListPage = $customSubscribersListPage;
-        $this->dtoFormPage = $dtoFormPage;
-        $this->homePageEditPage = $homePageEditPage;
-        $this->newsCreatePage = $newsCreatePage;
-        $this->newsDisplayPage = $newsDisplayPage;
-        $this->newsEditPage = $newsEditPage;
-        $this->newsListPage = $newsListPage;
-        $this->categoryListPage = $categoryListPage;
-        $this->categoryNewsListPage = $categoryNewsListPage;
-        $this->categoryNewsCreatePage = $categoryNewsCreatePage;
-        $this->categoryNewsEditPage = $categoryNewsEditPage;
-        $this->personAddFormPage = $personAddFormPage;
-        $this->personEditFormPage = $personEditFormPage;
-        $this->personListPage = $personListPage;
-        $this->subscriberEditPage = $subscriberEditPage;
-        $this->subscriberFormPage = $subscriberFormPage;
-        $this->subscribersListPage = $subscribersListPage;
-    }
-
-    /**
      * @transform :page
      */
     public function transformToPageObject($pageName)
     {
         switch ($pageName) {
             case 'News list':
-                return $this->newsListPage;
+                return $this->getPage(NewsList::class);
             case 'Admin panel':
-                return $this->adminPanelPage;
+                return $this->getPage(AdminPanel::class);
             case 'Custom news edit':
-                return $this->customNewsEditPage;
+                return $this->getPage(CustomNewsEdit::class);
             case 'Custom news list':
-                return $this->customNewsListPage;
+                return $this->getPage(CustomNewsList::class);
             case 'Custom subscribers list':
-                return $this->customSubscribersListPage;
+                return $this->getPage(CustomSubscribersList::class);
             case 'DTO Form':
-                return $this->dtoFormPage;
+                return $this->getPage(DTOForm::class);
             case 'Home page edit':
-                return $this->homePageEditPage;
+                return $this->getPage(HomePageEdit::class);
             case 'News create':
-                return $this->newsCreatePage;
+                return $this->getPage(NewsCreate::class);
             case 'News display':
-                return $this->newsDisplayPage;
+                return $this->getPage(NewsDisplay::class);
             case 'News edit':
-                return $this->newsEditPage;
+                return $this->getPage(NewsEdit::class);
             case 'Category list':
-                return $this->categoryListPage;
+                return $this->getPage(CategoryList::class);
             case 'Category news list':
-                return $this->categoryNewsListPage;
+                return $this->getPage(CategoryNewsList::class);
             case 'Category news edit':
-                return $this->categoryNewsEditPage;
+                return $this->getPage(CategoryNewsEdit::class);
             case 'Category news create':
-                return $this->categoryNewsCreatePage;
+                return $this->getPage(CategoryNewsCreate::class);
             case 'Person add form':
-                return $this->personAddFormPage;
+                return $this->getPage(PersonAddForm::class);
             case 'Person edit form':
-                return $this->personEditFormPage;
+                return $this->getPage(PersonEditForm::class);
             case 'Person list':
-                return $this->personListPage;
+                return $this->getPage(PersonList::class);
             case 'Subscriber edit':
-                return $this->subscriberEditPage;
+                return $this->getPage(SubscriberEdit::class);
             case 'Subscriber form':
-                return $this->subscriberFormPage;
+                return $this->getPage(SubscriberForm::class);
             case 'Subscribers list':
-                return $this->subscribersListPage;
+                return $this->getPage(SubscribersList::class);
             default:
                 throw new InvalidArgumentException(
                     sprintf('Could not transform "%s" to any page object', $pageName)
@@ -249,7 +99,7 @@ class NavigationContext extends AbstractContext
      */
     public function iFollowUrlFromTopBar($menuElement): void
     {
-        $this->adminPanelPage->getMenu()->clickLink($menuElement);
+        $this->getPage(AdminPanel::class)->getMenu()->clickLink($menuElement);
     }
 
     /**
@@ -257,10 +107,10 @@ class NavigationContext extends AbstractContext
      */
     public function menuWithFollowingElementsShouldBeVisibleAtTheTopOfThePage(TableNode $table): void
     {
-        expect($this->adminPanelPage->getMenuElementsCount())->toBe(count($table->getHash()));
+        expect($this->getPage(AdminPanel::class)->getMenuElementsCount())->toBe(count($table->getHash()));
 
         foreach ($table->getHash() as $elementRow) {
-            expect($this->adminPanelPage->hasMenuElement(
+            expect($this->getPage(AdminPanel::class)->hasMenuElement(
                 $elementRow['Element name'],
                 empty($elementRow['Element group']) ? null : $elementRow['Element group']
             ))->toBe(true);
@@ -272,7 +122,7 @@ class NavigationContext extends AbstractContext
      */
     public function linkInTheTopBarShouldBeHighlighted($link): void
     {
-        $linkNode = $this->adminPanelPage->getMenu()->findLink($link);
+        $linkNode = $this->getPage(AdminPanel::class)->getMenu()->findLink($link);
 
         expect($linkNode->getParent()->hasClass('active'))->toBe(true);
     }
@@ -315,15 +165,15 @@ class NavigationContext extends AbstractContext
      */
     public function iPressNewElementLink(): void
     {
-        $this->defaultPage->getElement('New Element Link')->click();
+        $this->getSession()->getPage()->find('css', 'a#create-element')->click();
     }
 
     /**
      * @When /^I press "([^"]*)" button at pagination$/
      */
-    public function iPressButtonAtPagination($button): void
+    public function iPressButtonAtPagination(string $button): void
     {
-        $this->defaultPage->getElement('Pagination')->clickLink($button);
+        $this->getElement(Pagination::class)->clickLink($button);
     }
 
     /**
@@ -331,7 +181,7 @@ class NavigationContext extends AbstractContext
      */
     public function iShouldSeePaginationWithFollowingButtons(TableNode $table): void
     {
-        $pagination = $this->defaultPage->getElement('Pagination');
+        $pagination = $this->getElement(Pagination::class);
 
         foreach ($table->getHash() as $buttonRow) {
             expect($pagination->hasLink($buttonRow['Button']))->toBe(true);

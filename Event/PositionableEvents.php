@@ -9,11 +9,10 @@
 
 declare(strict_types=1);
 
-namespace FSi\Bundle\AdminBundle\Behat\Element;
+namespace FSi\Bundle\AdminBundle\Event;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
-
-class Form extends Element
+final class PositionableEvents
 {
-    protected $selector = ['css' => 'form'];
+    public const PRE_APPLY = 'admin.positionable.pre_apply';
+    public const POST_APPLY = 'admin.positionable.post_apply';
 }

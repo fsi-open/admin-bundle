@@ -13,9 +13,8 @@ namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\PyStringNode;
 use FSi\Bundle\AdminBundle\Behat\Element\Messages;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 
-class MessageContext extends PageObjectContext
+class MessageContext extends AbstractContext
 {
     /**
      * @Then I should see an error message saying:
@@ -59,6 +58,6 @@ class MessageContext extends PageObjectContext
 
     private function getMessagesElement(): Messages
     {
-        return $this->getElement('Messages');
+        return $this->getElement(Messages::class);
     }
 }

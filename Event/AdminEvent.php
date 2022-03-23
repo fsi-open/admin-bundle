@@ -12,26 +12,15 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class AdminEvent extends Event
 {
-    /**
-     * @var Element
-     */
-    protected $element;
-
-    /**
-     * @var Request
-     */
-    protected $request;
-
-    /**
-     * @var Response|null
-     */
-    protected $response;
+    protected Element $element;
+    protected Request $request;
+    protected ?Response $response = null;
 
     public function __construct(Element $element, Request $request)
     {
@@ -49,6 +38,10 @@ class AdminEvent extends Event
         return $this->request;
     }
 
+    /**
+     * @return bool
+     * @phpstan-impure
+     */
     public function hasResponse(): bool
     {
         return null !== $this->response;

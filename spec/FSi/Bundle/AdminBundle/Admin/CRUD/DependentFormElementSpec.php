@@ -100,8 +100,8 @@ class DependentFormElementSpec extends ObjectBehavior
             ->shouldHaveKeyWithValue(DependentElement::PARENT_REQUEST_PARAMETER, 'parent_object_id');
     }
 
-    public function it_throw_exception_when_init_form_does_not_return_instance_of_form(FormFactoryInterface $factory
-    ): void {
+    public function it_throw_exception_when_init_form_does_not_return_form(FormFactoryInterface $factory): void
+    {
         $factory->create(Argument::cetera())->willReturn(null);
 
         $this->shouldThrow(\TypeError::class)->during('createForm');

@@ -8,6 +8,7 @@
     <exclude-pattern>features/fixtures/project/app</exclude-pattern>
     <exclude-pattern>features/fixtures/project/web</exclude-pattern>
     <exclude-pattern>spec</exclude-pattern>
+    <exclude-pattern>var</exclude-pattern>
     <exclude-pattern>vendor</exclude-pattern>
 
     <arg name="cache" value=".phpcs-cache"/>

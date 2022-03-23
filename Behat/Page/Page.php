@@ -12,16 +12,12 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Behat\Page;
 
 use Behat\Mink\Element\NodeElement;
+use FriendsOfBehat\PageObjectExtension\Page\Page as BasePage;
+use FriendsOfBehat\PageObjectExtension\Page\UnexpectedPageException;
 use Rize\UriTemplate;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page as BasePage;
 
-class Page extends BasePage
+abstract class Page extends BasePage
 {
-    protected $elements = [
-        'page header' => '#page-header',
-    ];
-
     public function getHeader(): string
     {
         return $this->getElement('page header')->getText();
@@ -29,7 +25,7 @@ class Page extends BasePage
 
     public function getCollection(string $label): ?NodeElement
     {
-        return $this->find('xpath', sprintf(
+        return $this->getDocument()->find('xpath', sprintf(
             '//div[@data-prototype]/ancestor::*[@class = "form-group"]/label[text() = "%s"]/..//div[@data-prototype]',
             $label
         ));
@@ -37,7 +33,7 @@ class Page extends BasePage
 
     public function getNonEditableCollection(string $label): ?NodeElement
     {
-        return $this->find('xpath', sprintf(
+        return $this->getDocument()->find('xpath', sprintf(
             '//div[@data-prototype-name]/ancestor::*[@class = "form-group"]/label[text() = "%s"]/..//'
                 . 'div[@data-prototype-name]',
             $label
@@ -57,35 +53,36 @@ class Page extends BasePage
 
     public function hasBatchActionsDropdown(): bool
     {
-        return $this->has('css', 'select[data-datagrid-name]');
+        return $this->getDocument()->has('css', 'select[data-datagrid-name]');
     }
 
     public function hasBatchAction(string $value): bool
     {
-        $select = $this->find('css', 'select[data-datagrid-name]');
+        $select = $this->getDocument()->find('css', 'select[data-datagrid-name]');
 
         return $select->has('css', sprintf('option:contains("%s")', $value));
     }
 
     public function pressBatchCheckboxInRow(int $rowIndex): void
     {
-        $tr = $this->find('xpath', sprintf('descendant-or-self::table/tbody/tr[position() = %d]', $rowIndex));
+        $tr = $this->getDocument()
+            ->find('xpath', sprintf('descendant-or-self::table/tbody/tr[position() = %d]', $rowIndex));
         $tr->find('css', 'input[type="checkbox"]')->check();
     }
 
     public function pressBatchActionConfirmationButton()
     {
-        $this->find('css', 'button[data-datagrid-name]')->click();
+        $this->getDocument()->find('css', 'button[data-datagrid-name]')->click();
     }
 
     public function selectBatchAction($action)
     {
-        $this->find('css', 'select[data-datagrid-name]')->selectOption($action);
+        $this->getDocument()->find('css', 'select[data-datagrid-name]')->selectOption($action);
     }
 
     public function getColumnPosition(string $columnHeader): int
     {
-        $headers = $this->findAll('css', 'th');
+        $headers = $this->getDocument()->findAll('css', 'th');
         foreach ($headers as $index => $header) {
             /** @var NodeElement $header */
             if (
@@ -103,12 +100,13 @@ class Page extends BasePage
     {
         $columnPos = $this->getColumnPosition($columnHeader);
 
-        return $this->find('xpath', sprintf('descendant-or-self::table/tbody/tr[%d]/td[%d]', $rowNumber, $columnPos));
+        return $this->getDocument()
+            ->find('xpath', sprintf('descendant-or-self::table/tbody/tr[%d]/td[%d]', $rowNumber, $columnPos));
     }
 
     public function getPopover(): ?NodeElement
     {
-        return $this->find('css', '.popover');
+        return $this->getDocument()->find('css', '.popover');
     }
 
     public function isOpen(array $urlParameters = []): bool
@@ -118,7 +116,7 @@ class Page extends BasePage
         return true;
     }
 
-    public function open(array $urlParameters = [])
+    public function open(array $urlParameters = []): void
     {
         if (false === $this->getDriver()->isStarted()) {
             $this->getDriver()->start();
@@ -130,7 +128,7 @@ class Page extends BasePage
     protected function verifyUrl(array $urlParameters = []): void
     {
         $uriTemplate = new UriTemplate();
-        $expectedUri = $uriTemplate->expand($this->path, $urlParameters);
+        $expectedUri = $uriTemplate->expand($this->getUrl($urlParameters), $urlParameters);
         if (false === strpos($this->getDriver()->getCurrentUrl(), $expectedUri)) {
             throw new UnexpectedPageException(sprintf(
                 'Expected to be on "%s" but found "%s" instead',
@@ -138,5 +136,12 @@ class Page extends BasePage
                 $this->getDriver()->getCurrentUrl()
             ));
         }
+    }
+
+    protected function getDefinedElements(): array
+    {
+        return [
+            'page header' => '#page-header',
+        ];
     }
 }

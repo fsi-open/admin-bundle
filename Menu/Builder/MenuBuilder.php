@@ -37,7 +37,7 @@ class MenuBuilder implements Builder
     {
         $menu = new Item();
 
-        $this->eventDispatcher->dispatch($this->eventName, new MenuEvent($menu));
+        $this->eventDispatcher->dispatch(new MenuEvent($menu), $this->eventName);
 
         return $menu;
     }

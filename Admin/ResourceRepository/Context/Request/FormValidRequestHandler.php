@@ -56,8 +56,8 @@ class FormValidRequestHandler extends AbstractFormValidRequestHandler
             return $response;
         }
 
-        $this->eventDispatcher->dispatch(FormEvents::FORM_RESPONSE_PRE_RENDER, $event);
-        if (true === $event->hasResponse()) {
+        $this->eventDispatcher->dispatch($event, FormEvents::FORM_RESPONSE_PRE_RENDER);
+        if ($event->hasResponse()) {
             return $event->getResponse();
         }
 

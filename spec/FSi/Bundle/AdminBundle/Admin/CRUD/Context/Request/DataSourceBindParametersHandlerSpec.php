@@ -12,6 +12,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request\DataSourceBindParametersHandler;
 
 class DataSourceBindParametersHandlerSpec extends ObjectBehavior
 {
@@ -29,9 +30,7 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
     public function it_throws_exception_for_non_list_event(AdminEvent $event, Request $request): void
     {
         $this->shouldThrow(
-            new RequestHandlerException(
-                "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\DataSourceBindParametersHandler requires ListEvent"
-            )
+            new RequestHandlerException(sprintf("%s requires ListEvent", DataSourceBindParametersHandler::class))
         )->during('handleRequest', [$event, $request]);
     }
 
@@ -41,12 +40,12 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
         Request $request,
         EventDispatcherInterface $eventDispatcher
     ): void {
-        $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND, $event)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND)->shouldBeCalled();
 
         $event->getDataSource()->willReturn($dataSource);
         $dataSource->bindParameters($request)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND, $event)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND)->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -57,7 +56,7 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         Response $response
     ): void {
-        $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND, $event)
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND)
             ->will(
                 function () use ($event, $response) {
                     $event->hasResponse()->willReturn(true);
@@ -65,8 +64,7 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
                 }
             );
 
-        $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf(Response::class);
+        $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     public function it_returns_response_from_post_datasource_bind_parameters_event(
@@ -76,12 +74,12 @@ class DataSourceBindParametersHandlerSpec extends ObjectBehavior
         DataSourceInterface $dataSource,
         Response $response
     ): void {
-        $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND, $event)->shouldBeCalled();
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND)->shouldBeCalled();
 
         $event->getDataSource()->willReturn($dataSource);
         $dataSource->bindParameters($request)->shouldBecalled();
 
-        $eventDispatcher->dispatch(ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND, $event)
+        $eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND)
             ->will(
                 function () use ($event, $response) {
                     $event->hasResponse()->willReturn(true);
