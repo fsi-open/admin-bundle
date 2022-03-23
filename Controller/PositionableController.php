@@ -16,12 +16,16 @@ use FSi\Bundle\AdminBundle\Doctrine\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\PositionableEvent;
 use FSi\Bundle\AdminBundle\Event\PositionableEvents;
 use FSi\Bundle\AdminBundle\Model\PositionableInterface;
+use LogicException;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+
+use function is_string;
+use function sprintf;
 
 class PositionableController
 {
@@ -42,7 +46,7 @@ class PositionableController
     }
 
     /**
-     * @param DataIndexerElement&Element $element
+     * @param DataIndexerElement&Element<object> $element
      * @param string $id
      * @param Request $request
      * @return Response
@@ -67,7 +71,7 @@ class PositionableController
     }
 
     /**
-     * @param DataIndexerElement&Element $element
+     * @param DataIndexerElement&Element<object> $element
      * @param string $id
      * @param Request $request
      * @return Response
@@ -113,6 +117,11 @@ class PositionableController
     {
         if ($request->query->get('redirect_uri')) {
             $uri = $request->query->get('redirect_uri');
+            if (false === is_string($uri)) {
+                throw new LogicException(
+                    sprintf('Query parameter redirect_uri must be a string, "%s" given.', gettype($uri))
+                );
+            }
         } else {
             $uri = $this->router->generate($element->getRoute(), $element->getRouteParameters());
         }
@@ -121,10 +130,10 @@ class PositionableController
     }
 
     /**
-     * @param Element $element
+     * @param Element<object> $element
      * @param object $entity
      */
-    private function persistAndFlush(Element $element, $entity): void
+    private function persistAndFlush(Element $element, object $entity): void
     {
         $om = $element->getObjectManager();
         $om->persist($entity);

@@ -20,14 +20,11 @@ use Symfony\Component\HttpFoundation\Response;
 abstract class ContextAbstract implements ContextInterface
 {
     /**
-     * @var array<HandlerInterface>
+     * @var iterable<HandlerInterface>
      */
-    private $requestHandlers;
+    private iterable $requestHandlers;
 
-    /**
-     * @var string|null
-     */
-    private $template;
+    private ?string $template;
 
     public static function getPriority(): int
     {

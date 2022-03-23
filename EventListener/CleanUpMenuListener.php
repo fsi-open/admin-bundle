@@ -26,7 +26,7 @@ class CleanUpMenuListener implements EventSubscriberInterface
         ];
     }
 
-    public function cleanUpMenu(MenuEvent $event)
+    public function cleanUpMenu(MenuEvent $event): void
     {
         $this->cleanMenuLevel($event->getMenu());
     }

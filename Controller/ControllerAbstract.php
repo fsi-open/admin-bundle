@@ -53,8 +53,9 @@ abstract class ControllerAbstract
     {
         $event = new AdminEvent($element, $request);
         $this->eventDispatcher->dispatch($event, AdminEvents::CONTEXT_PRE_CREATE);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
+        $response = $event->getResponse();
+        if (null !== $response) {
+            return $response;
         }
 
         $context = $this->contextManager->createContext($route, $element);
@@ -66,20 +67,18 @@ abstract class ControllerAbstract
         }
 
         $response = $context->handleRequest($request);
-        if ($response instanceof Response) {
+        if (null !== $response) {
             return $response;
         }
 
-        if (false === $context->hasTemplateName()) {
+        $templateName = $context->getTemplateName();
+        if (null === $templateName) {
             throw new ContextException(sprintf(
                 'Context %s neither returned a response nor has a template name',
                 get_class($context)
             ));
         }
 
-        return new Response($this->twig->render(
-            $context->getTemplateName(),
-            $context->getData()
-        ));
+        return new Response($this->twig->render($templateName, $context->getData()));
     }
 }

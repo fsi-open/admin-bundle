@@ -30,12 +30,12 @@ class Collection implements ValueFormatter
     }
 
     /**
-     * @param iterable $value
-     * @return array|mixed
+     * @param iterable<int|string,mixed>|null $value
+     * @return array<int|string,mixed>|null
      */
     public function format($value)
     {
-        if (empty($value)) {
+        if (null === $value) {
             return $value;
         }
 

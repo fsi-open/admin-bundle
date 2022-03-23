@@ -70,7 +70,7 @@ class ResourceRepositoryContext extends ContextAbstract
         return $this->element->hasOption('template') || parent::hasTemplateName();
     }
 
-    public function getTemplateName(): string
+    public function getTemplateName(): ?string
     {
         return true === $this->element->hasOption('template')
             ? $this->element->getOption('template')

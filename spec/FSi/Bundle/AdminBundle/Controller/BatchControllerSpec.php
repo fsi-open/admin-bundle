@@ -62,8 +62,7 @@ class BatchControllerSpec extends ObjectBehavior
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
-        $this->shouldThrow(NotFoundHttpException::class)
-            ->during('batchAction', [$element, $request]);
+        $this->shouldThrow(NotFoundHttpException::class)->during('batchAction', [$element, $request]);
     }
 
     public function it_throws_exception_when_context_does_not_return_response(
@@ -77,11 +76,10 @@ class BatchControllerSpec extends ObjectBehavior
         $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
 
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
-        $context->hasTemplateName()->willReturn(false);
+        $context->getTemplateName()->willReturn(null);
         $context->handleRequest($request)->willReturn(null);
 
-        $this->shouldThrow(ContextException::class)
-            ->during('batchAction', [$element, $request]);
+        $this->shouldThrow(ContextException::class)->during('batchAction', [$element, $request]);
     }
 
     public function it_returns_response_from_context_in_batch_action(

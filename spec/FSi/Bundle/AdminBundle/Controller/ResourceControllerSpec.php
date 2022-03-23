@@ -15,7 +15,6 @@ use FSi\Bundle\AdminBundle\Admin\ResourceRepository\Element;
 use FSi\Bundle\AdminBundle\Event\AdminEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +31,6 @@ class ResourceControllerSpec extends ObjectBehavior
         ResourceRepositoryContext $context,
         EventDispatcherInterface $dispatcher
     ): void {
-        $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('default_resource');
         $this->beConstructedWith($twig, $manager, $dispatcher);
     }
@@ -89,9 +87,8 @@ class ResourceControllerSpec extends ObjectBehavior
 
         $element->getId()->willReturn('my_awesome_resource');
         $manager->createContext(Argument::type('string'), $element)->willReturn(null);
-
-        $this->shouldThrow(NotFoundHttpException::class)
-            ->during('resourceAction', [$element, $request]);
+        
+        $this->shouldThrow(NotFoundHttpException::class)->during('resourceAction', [$element, $request]);
     }
 
     public function it_throws_exception_when_no_response_and_no_template_name(
@@ -104,11 +101,10 @@ class ResourceControllerSpec extends ObjectBehavior
     ): void {
         $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
 
-        $context->hasTemplateName()->willReturn(false);
+        $context->getTemplateName()->willReturn(null);
         $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
 
-        $this->shouldThrow(ContextException::class)
-            ->during('resourceAction', [$element, $request]);
+        $this->shouldThrow(ContextException::class)->during('resourceAction', [$element, $request]);
     }
 }

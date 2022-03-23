@@ -14,6 +14,10 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 
+/**
+ * @template T
+ * @template-extends DeleteElement<T>
+ */
 abstract class DependentDeleteElement extends DeleteElement implements DependentElement
 {
     use DependentElementImpl;

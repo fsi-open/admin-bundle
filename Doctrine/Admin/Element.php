@@ -15,12 +15,21 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 
+/**
+ * @template T
+ */
 interface Element
 {
+    /**
+     * @return class-string<T>
+     */
     public function getClassName(): string;
 
     public function getObjectManager(): ObjectManager;
 
+    /**
+     * @return ObjectRepository<T>
+     */
     public function getRepository(): ObjectRepository;
 
     public function setManagerRegistry(ManagerRegistry $registry): void;

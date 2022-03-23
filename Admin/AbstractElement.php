@@ -19,15 +19,18 @@ use function array_key_exists;
 abstract class AbstractElement implements Element
 {
     /**
-     * @var array|null
+     * @var array<string,mixed>|null
      */
-    private $options;
+    private ?array $options = null;
 
     /**
-     * @var array
+     * @var array<string,mixed>
      */
-    private $unresolvedOptions;
+    private array $unresolvedOptions;
 
+    /**
+     * @param array<string,mixed> $options
+     */
     public function __construct(array $options = [])
     {
         $this->unresolvedOptions = $options;
@@ -42,7 +45,7 @@ abstract class AbstractElement implements Element
 
     public function getOption(string $name)
     {
-        $this->resolveOptions();
+        $this->options = $this->resolveOptions();
 
         if (false === $this->hasOption($name)) {
             throw new MissingOptionException(sprintf(
@@ -57,25 +60,31 @@ abstract class AbstractElement implements Element
 
     public function getOptions(): array
     {
-        $this->resolveOptions();
+        $this->options = $this->resolveOptions();
 
         return $this->options;
     }
 
-    public function hasOption($name): bool
+    public function hasOption(string $name): bool
     {
-        $this->resolveOptions();
+        $this->options = $this->resolveOptions();
 
         return true === array_key_exists($name, $this->options) && null !== $this->options[$name];
     }
 
-    private function resolveOptions(): void
+    /**
+     * @return array<string,mixed>
+     */
+    private function resolveOptions(): array
     {
-        if (false === is_array($this->options)) {
-            $optionsResolver = new OptionsResolver();
-            $this->configureOptions($optionsResolver);
-            $this->options = $optionsResolver->resolve($this->unresolvedOptions);
-            unset($this->unresolvedOptions);
+        if (null !== $this->options) {
+            return $this->options;
         }
+
+        $optionsResolver = new OptionsResolver();
+        $this->configureOptions($optionsResolver);
+        $this->options = $optionsResolver->resolve($this->unresolvedOptions);
+
+        return $this->options;
     }
 }

@@ -48,6 +48,10 @@ class ResourceFormBuilder
         return $builder->getForm();
     }
 
+    /**
+     * @param string $key
+     * @return array<string,mixed>
+     */
     private function getResourceGroup(string $key): array
     {
         $map = $this->mapBuilder->getMap();
@@ -77,8 +81,8 @@ class ResourceFormBuilder
     /**
      * @param Element $element
      * @param ResourceValueRepository $valueRepository
-     * @param array<ResourceInterface> $resources
-     * @return array
+     * @param array<string,ResourceInterface> $resources
+     * @return array<string,mixed>
      */
     private function createFormData(
         Element $element,

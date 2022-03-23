@@ -11,12 +11,19 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Display;
 
+use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
+
 interface Display
 {
+    /**
+     * @param mixed $value
+     * @param string|null $label
+     * @param array<int,ValueFormatter> $valueFormatters
+     */
     public function add($value, ?string $label = null, array $valueFormatters = []): self;
 
     /**
-     * @return Property[]
+     * @return array<int,Property>
      */
     public function getData(): array;
 }

@@ -13,6 +13,10 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement;
 
+/**
+ * @template T
+ * @template-implements Element<T>
+ */
 abstract class CRUDElement extends GenericCRUDElement implements Element
 {
     use DataIndexerElementImpl;

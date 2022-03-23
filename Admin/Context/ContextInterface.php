@@ -29,5 +29,8 @@ interface ContextInterface
 
     public function getTemplateName(): ?string;
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getData(): array;
 }

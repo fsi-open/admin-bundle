@@ -18,6 +18,7 @@ use FSi\Bundle\AdminBundle\Event\MovedDownTreeEvent;
 use FSi\Bundle\AdminBundle\Event\MovedUpTreeEvent;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use InvalidArgumentException;
+use LogicException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +26,9 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 use function get_class;
+use function gettype;
+use function is_object;
+use function is_string;
 use function sprintf;
 
 class ReorderTreeController
@@ -46,7 +50,7 @@ class ReorderTreeController
     }
 
     /**
-     * @param DataIndexerElement&AdminDoctrineElement $element
+     * @param DataIndexerElement&AdminDoctrineElement<object> $element
      * @param string $id
      * @param Request $request
      * @return Response
@@ -54,6 +58,10 @@ class ReorderTreeController
     public function moveUpAction(DataIndexerElement $element, string $id, Request $request): Response
     {
         $entity = $element->getDataIndexer()->getData($id);
+
+        if (false === is_object($entity)) {
+            throw new LogicException(sprintf('%s supports only objects but %s given', __CLASS__, gettype($entity)));
+        }
 
         $this->getRepository($element)->moveUp($entity);
         $element->getObjectManager()->flush();
@@ -64,7 +72,7 @@ class ReorderTreeController
     }
 
     /**
-     * @param DataIndexerElement&AdminDoctrineElement $element
+     * @param DataIndexerElement&AdminDoctrineElement<object> $element
      * @param string $id
      * @param Request $request
      * @return Response
@@ -72,6 +80,10 @@ class ReorderTreeController
     public function moveDownAction(DataIndexerElement $element, string $id, Request $request): Response
     {
         $entity = $element->getDataIndexer()->getData($id);
+
+        if (false === is_object($entity)) {
+            throw new LogicException(sprintf('%s supports only objects but %s given', __CLASS__, gettype($entity)));
+        }
 
         $this->getRepository($element)->moveDown($entity);
         $element->getObjectManager()->flush();
@@ -81,6 +93,10 @@ class ReorderTreeController
         return $this->getRedirectResponse($element, $request);
     }
 
+    /**
+     * @param AdminDoctrineElement<object> $element
+     * @return NestedTreeRepository
+     */
     private function getRepository(AdminDoctrineElement $element): NestedTreeRepository
     {
         $repository = $element->getRepository();
@@ -99,6 +115,12 @@ class ReorderTreeController
     {
         $redirectUri = $request->query->get('redirect_uri');
         if (null !== $redirectUri && '' !== $redirectUri) {
+            if (false === is_string($redirectUri)) {
+                throw new LogicException(
+                    sprintf('Query parameter redirect_uri must be a string, "%s" given.', gettype($redirectUri))
+                );
+            }
+
             $uri = $redirectUri;
         } else {
             $uri = $this->router->generate($element->getRoute(), $element->getRouteParameters());

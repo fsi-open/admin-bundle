@@ -7,7 +7,6 @@ namespace FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
-use FSi\Component\DataGrid\Column\CellViewInterface;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
 use FSi\Component\DataGrid\Column\ColumnInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
@@ -16,12 +15,11 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
-
-use function var_dump;
 
 class BatchActionExtension extends ColumnAbstractTypeExtension
 {
@@ -105,18 +103,26 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         $view->setAttribute('batch_form', $this->formBuilder->getForm()->createView());
     }
 
+    /**
+     * @param ColumnInterface $column
+     * @return array<string,string>
+     */
     private function buildBatchActions(ColumnInterface $column): array
     {
         $batchActions = ['crud.list.batch.empty_choice' => ''];
         foreach ($column->getOption('actions') as $name => $actionOptions) {
             $batchActionUrl = $this->getBatchActionUrl($actionOptions);
             $batchActionLabel = $actionOptions['label'] ?? $name;
-            $batchActions[$batchActionLabel] = $batchActionUrl;
+            $batchActions[(string) $batchActionLabel] = $batchActionUrl;
         }
 
         return $batchActions;
     }
 
+    /**
+     * @param array<string,mixed> $actionOptions
+     * @return string
+     */
     private function getBatchActionUrl(array $actionOptions): string
     {
         return $this->router->generate(
@@ -125,6 +131,10 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         );
     }
 
+    /**
+     * @param ColumnInterface $column
+     * @param array<string,mixed> $batchActions
+     */
     private function buildBatchForm(ColumnInterface $column, array $batchActions): void
     {
         if (count($batchActions) > 1) {
@@ -158,6 +168,11 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         return null;
     }
 
+    /**
+     * @param Options $options
+     * @param array<string,mixed> $additionalParameters
+     * @return array<string,mixed>
+     */
     private function normalizeAdditionalParameters(Options $options, array $additionalParameters): array
     {
         if (isset($options['element'])) {
@@ -179,6 +194,11 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         }
     }
 
+    /**
+     * @param Options $options
+     * @param array<string,mixed> $additionalParameters
+     * @return array<string,mixed>
+     */
     private function mergeAdditionalParametersWithElementFromOptions(
         Options $options,
         array $additionalParameters
@@ -195,6 +215,11 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
         return $this->manager->getElement($options['element']);
     }
 
+    /**
+     * @param Options $options
+     * @param array<string,mixed> $additionalParameters
+     * @return array<string,mixed>
+     */
     private function mergeAdditionalParametersWithRedirectUri(Options $options, array $additionalParameters): array
     {
         if (true === is_string($options['redirect_uri'])) {
@@ -203,17 +228,23 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
             return $additionalParameters;
         }
 
-        if ($this->getMasterRequestQuery()->has('redirect_uri')) {
-            $additionalParameters['redirect_uri'] = $this->getMasterRequestQuery()->get('redirect_uri');
+        $request = $this->getMasterRequest();
+        if ($request->query->has('redirect_uri')) {
+            $additionalParameters['redirect_uri'] = $this->getMasterRequest()->query->get('redirect_uri');
         } else {
-            $additionalParameters['redirect_uri'] = $this->requestStack->getMasterRequest()->getRequestUri();
+            $additionalParameters['redirect_uri'] = $this->getMasterRequest()->getRequestUri();
         }
 
         return $additionalParameters;
     }
 
-    private function getMasterRequestQuery(): ParameterBag
+    private function getMasterRequest(): Request
     {
-        return $this->requestStack->getMasterRequest()->query;
+        $request = $this->requestStack->getMasterRequest();
+        if (null === $request) {
+            throw new RuntimeException("Batch actions are only available in request context");
+        }
+
+        return $request;
     }
 }

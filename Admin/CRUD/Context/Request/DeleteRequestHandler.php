@@ -25,6 +25,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 use function get_class;
+use function gettype;
+use function is_string;
 
 class DeleteRequestHandler implements HandlerInterface
 {
@@ -82,7 +84,14 @@ class DeleteRequestHandler implements HandlerInterface
     private function getRedirectResponse(FormEvent $event, Request $request): RedirectResponse
     {
         if (true === $request->query->has('redirect_uri')) {
-            return new RedirectResponse($request->query->get('redirect_uri'));
+            $redirectUri = $request->query->get('redirect_uri');
+            if (false === is_string($redirectUri)) {
+                throw new LogicException(
+                    sprintf('Query parameter redirect_uri must be a string, "%s" given.', gettype($redirectUri))
+                );
+            }
+
+            return new RedirectResponse($redirectUri);
         }
 
         $element = $event->getElement();

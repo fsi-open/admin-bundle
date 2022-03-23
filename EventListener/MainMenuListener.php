@@ -12,22 +12,19 @@ use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Yaml\Yaml;
 
 use function array_key_exists;
+use function is_array;
+use function is_string;
 
 class MainMenuListener implements EventSubscriberInterface
 {
-    /**
-     * @var string
-     */
-    private $configFilePath;
+    private string $configFilePath;
 
-    /**
-     * @var ManagerInterface
-     */
-    private $manager;
+    private ManagerInterface $manager;
 
     public static function getSubscribedEvents(): array
     {
@@ -44,10 +41,11 @@ class MainMenuListener implements EventSubscriberInterface
 
     public function createMainMenu(MenuEvent $event): Item
     {
-        $config = Yaml::parse(
-            file_get_contents($this->configFilePath),
-            Yaml::PARSE_OBJECT | Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE
-        );
+        $yamlContent = file_get_contents($this->configFilePath);
+        if (false === is_string($yamlContent)) {
+            throw new RuntimeException("Unable to read contents of {$this->configFilePath}");
+        }
+        $config = Yaml::parse($yamlContent, Yaml::PARSE_OBJECT | Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
 
         if (false === array_key_exists('menu', $config)) {
             throw new InvalidYamlStructureException(
@@ -68,6 +66,10 @@ class MainMenuListener implements EventSubscriberInterface
         return $menu;
     }
 
+    /**
+     * @param Item $menu
+     * @param array<string,mixed> $configs
+     */
     private function populateMenu(Item $menu, array $configs): void
     {
         foreach ($configs as $itemConfig) {
@@ -95,7 +97,7 @@ class MainMenuListener implements EventSubscriberInterface
     }
 
     /**
-     * @param array|string $itemConfig
+     * @param array<string,mixed>|string $itemConfig
      * @return Item|null
      */
     private function buildSingleItem($itemConfig): ?Item
@@ -112,11 +114,10 @@ class MainMenuListener implements EventSubscriberInterface
             return null;
         }
 
-        if (true === $this->hasEntry($itemConfig, 'id') && true === $this->manager->hasElement($itemConfig['id'])) {
-            return new ElementItem(
-                true === $this->hasEntry($itemConfig, 'name') ? $itemConfig['name'] : $itemConfig['id'],
-                $this->manager->getElement($itemConfig['id'])
-            );
+        $id = $this->getEntry($itemConfig, 'id');
+        if (true === is_string($id) && true === $this->manager->hasElement($id)) {
+            $name = $this->getEntry($itemConfig, 'name');
+            return new ElementItem((true === is_string($name)) ? $name : $id, $this->manager->getElement($id));
         }
 
         if (true === $this->hasEntry($itemConfig, 'route')) {
@@ -131,7 +132,7 @@ class MainMenuListener implements EventSubscriberInterface
     }
 
     /**
-     * @param array|string $itemConfig
+     * @param array<string,mixed>|string $itemConfig
      * @return bool
      */
     private function isSingleItem($itemConfig): bool
@@ -140,7 +141,7 @@ class MainMenuListener implements EventSubscriberInterface
     }
 
     /**
-     * @param array|string $itemConfig
+     * @param array<string,mixed>|string $itemConfig
      * @param string $keyName
      * @return bool
      */
@@ -150,15 +151,28 @@ class MainMenuListener implements EventSubscriberInterface
     }
 
     /**
-     * @param array|string $itemConfig
-     * @return array<Element>
+     * @param array<string,mixed>|string$itemConfig
+     * @param string $keyName
+     * @return array<string,mixed>|string|null
+     */
+    private function getEntry($itemConfig, string $keyName)
+    {
+        return (true === is_array($itemConfig) && true === array_key_exists($keyName, $itemConfig))
+            ? $itemConfig[$keyName]
+            : null;
+    }
+
+    /**
+     * @param array<string,mixed>|string $itemConfig
+     * @return array<int,Element>
      */
     private function buildItemElements($itemConfig): array
     {
         $elements = [];
 
-        if (true === $this->hasEntry($itemConfig, 'elements')) {
-            $elementIds = (array) $itemConfig['elements'];
+        $elementIds = $this->getEntry($itemConfig, 'elements');
+        if (null !== $elementIds) {
+            $elementIds = (array) $elementIds;
             foreach ($elementIds as $elementId) {
                 $elements[] = $this->manager->getElement($elementId);
             }

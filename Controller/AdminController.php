@@ -11,11 +11,15 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
+use LogicException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
+
+use function is_string;
+use function sprintf;
 
 class AdminController
 {
@@ -50,10 +54,17 @@ class AdminController
     {
         $request->getSession()->set('admin_locale', $_locale);
 
-        return new RedirectResponse(
-            true === $request->query->has('redirect_uri')
-                ? $request->query->get('redirect_uri')
-                : $this->router->generate('fsi_admin')
-        );
+        if (true === $request->query->has('redirect_uri')) {
+            $redirectUri = $request->query->get('redirect_uri');
+            if (false === is_string($redirectUri)) {
+                throw new LogicException(
+                    sprintf('Query parameter redirect_uri must be a string, "%s" given.', gettype($redirectUri))
+                );
+            }
+
+            return new RedirectResponse($redirectUri);
+        }
+
+        return new RedirectResponse($this->router->generate('fsi_admin'));
     }
 }

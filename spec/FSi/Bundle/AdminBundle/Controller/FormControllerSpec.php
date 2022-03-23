@@ -30,7 +30,6 @@ class FormControllerSpec extends ObjectBehavior
         FormElementContext $context,
         EventDispatcherInterface $dispatcher
     ): void {
-        $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('default_form');
 
         $this->beConstructedWith($twig, $manager, $dispatcher);
@@ -99,11 +98,10 @@ class FormControllerSpec extends ObjectBehavior
     ): void {
         $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
 
-        $context->hasTemplateName()->willReturn(false);
+        $context->getTemplateName()->willReturn(null);
         $manager->createContext('fsi_admin_form', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
 
-        $this->shouldThrow(ContextException::class)
-            ->during('formAction', [$element, $request]);
+        $this->shouldThrow(ContextException::class)->during('formAction', [$element, $request]);
     }
 }

@@ -16,11 +16,15 @@ use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
+use LogicException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+
+use function is_string;
+use function sprintf;
 
 abstract class AbstractFormValidRequestHandler extends AbstractHandler
 {
@@ -65,7 +69,14 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
     protected function getRedirectResponse(FormEvent $event, Request $request): RedirectResponse
     {
         if (true === $request->query->has('redirect_uri')) {
-            return new RedirectResponse($request->query->get('redirect_uri'));
+            $redirectUri = $request->query->get('redirect_uri');
+            if (false === is_string($redirectUri)) {
+                throw new LogicException(
+                    sprintf('Query parameter redirect_uri must be a string, "%s" given.', gettype($redirectUri))
+                );
+            }
+
+            return new RedirectResponse($redirectUri);
         }
 
         $element = $this->validateElement($event->getElement());

@@ -43,7 +43,7 @@ trait DependentElementImpl
     }
 
     /**
-     * @return object|null
+     * @return array<string,mixed>|object|null
      */
     public function getParentObject()
     {

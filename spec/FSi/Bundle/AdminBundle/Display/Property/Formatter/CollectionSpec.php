@@ -15,7 +15,6 @@ class CollectionSpec extends ObjectBehavior
 
     public function it_ignore_empty_values(): void
     {
-        $this->format(0)->shouldReturn(0);
         $this->format(null)->shouldReturn(null);
         $this->format([])->shouldReturn([]);
     }

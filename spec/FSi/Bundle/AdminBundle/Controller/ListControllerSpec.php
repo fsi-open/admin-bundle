@@ -34,7 +34,6 @@ class ListControllerSpec extends ObjectBehavior
         ListElementContext $context,
         EventDispatcherInterface $dispatcher
     ): void {
-        $context->hasTemplateName()->willReturn(true);
         $context->getTemplateName()->willReturn('default_list');
 
         $this->beConstructedWith($twig, $manager, $dispatcher);
@@ -107,7 +106,7 @@ class ListControllerSpec extends ObjectBehavior
     ): void {
         $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
 
-        $context->hasTemplateName()->willReturn(false);
+        $context->getTemplateName()->willReturn(null);
         $manager->createContext('fsi_admin_list', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
 

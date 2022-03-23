@@ -75,6 +75,11 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         }
     }
 
+    /**
+     * @param BatchElement $element
+     * @param Request $request
+     * @return array<int|string,array<string,mixed>|object>
+     */
     private function getObjects(BatchElement $element, Request $request): array
     {
         $indexes = $request->request->all()['indexes'] ?? [];

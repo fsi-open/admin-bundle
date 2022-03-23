@@ -16,6 +16,10 @@ use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 
+/**
+ * @template T
+ * @template-implements Element<T>
+ */
 abstract class ResourceElement extends GenericResourceElement implements Element
 {
     use ElementImpl;

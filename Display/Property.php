@@ -66,6 +66,10 @@ class Property
         return $value;
     }
 
+    /**
+     * @param array<int,ValueFormatter> $valueFormatters
+     * @return void
+     */
     private function validateFormatters(array $valueFormatters): void
     {
         foreach ($valueFormatters as $formatter) {

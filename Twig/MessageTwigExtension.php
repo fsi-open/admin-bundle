@@ -17,10 +17,7 @@ use Twig\TwigFunction;
 
 class MessageTwigExtension extends AbstractExtension
 {
-    /**
-     * @var FlashMessages
-     */
-    private $flashMessages;
+    private FlashMessages $flashMessages;
 
     public function __construct(FlashMessages $flashMessages)
     {
@@ -34,6 +31,9 @@ class MessageTwigExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @return array<string,array{text:string,domain:string,params:array<string,mixed>}>
+     */
     public function getMessages(): array
     {
         return $this->flashMessages->all();

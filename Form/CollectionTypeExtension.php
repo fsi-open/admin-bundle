@@ -16,6 +16,11 @@ class CollectionTypeExtension extends AbstractTypeExtension
         return [CollectionType::class];
     }
 
+    /**
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array<string,mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['attr']['data-allow-add'] = (int) $options['allow_add'];

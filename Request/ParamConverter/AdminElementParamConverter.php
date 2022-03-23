@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Request\ParamConverter;
 
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
+use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,6 +59,9 @@ class AdminElementParamConverter implements ParamConverterInterface
         }
 
         $implements = class_implements($configuration->getClass());
+        if (false === $implements) {
+            throw new RuntimeException("Unable to get interfaces implemented by {$configuration->getClass()}");
+        }
 
         return in_array(Element::class, $implements, true);
     }

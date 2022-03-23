@@ -18,14 +18,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ElementItem extends RoutableItem
 {
-    /**
-     * @var Element
-     */
-    private $element;
+    private Element $element;
 
     public function __construct(string $name, Element $element)
     {
-        parent::__construct($name);
+        parent::__construct($name, $element->getRoute(), $element->getRouteParameters());
 
         $this->element = $element;
     }
@@ -33,16 +30,6 @@ class ElementItem extends RoutableItem
     public function getElement(): Element
     {
         return $this->element;
-    }
-
-    public function getRoute(): string
-    {
-        return $this->element->getRoute();
-    }
-
-    public function getRouteParameters(): array
-    {
-        return $this->element->getRouteParameters();
     }
 
     protected function configureOptions(OptionsResolver $optionsResolver): void

@@ -78,7 +78,7 @@ class FormElementContext extends ContextAbstract
 
     /**
      * @param Request $request
-     * @return object|null
+     * @return array<string,mixed>|object|null
      */
     private function getObject(Request $request)
     {

@@ -25,6 +25,8 @@ class MainMenuListenerSpec extends ObjectBehavior
                 };
                 $element = $prophet->prophesize(Element::class);
                 $element->getId()->willReturn($args[0]);
+                $element->getRoute()->willReturn('route');
+                $element->getRouteParameters()->willReturn([]);
 
                 return $element;
             }
