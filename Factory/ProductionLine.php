@@ -11,7 +11,7 @@ class ProductionLine
     /**
      * @var array<Worker>
      */
-    protected $workers;
+    protected array $workers;
 
     /**
      * @param iterable<Worker> $workers

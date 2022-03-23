@@ -16,9 +16,9 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 class ContextManager
 {
     /**
-     * @var array<ContextInterface>
+     * @var array<int,ContextInterface>
      */
-    protected $contexts;
+    protected array $contexts;
 
     /**
      * @param iterable<ContextInterface> $contexts

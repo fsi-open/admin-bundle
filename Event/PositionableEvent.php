@@ -18,20 +18,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class PositionableEvent extends Event
 {
-    /**
-     * @var Request
-     */
-    private $request;
+    private Request $request;
 
-    /**
-     * @var Element
-     */
-    private $element;
+    private Element $element;
 
-    /**
-     * @var PositionableInterface
-     */
-    private $object;
+    private PositionableInterface $object;
 
     public function __construct(Request $request, Element $element, PositionableInterface $object)
     {

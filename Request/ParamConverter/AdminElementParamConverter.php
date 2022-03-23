@@ -21,10 +21,7 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 
 class AdminElementParamConverter implements ParamConverterInterface
 {
-    /**
-     * @var ManagerInterface
-     */
-    private $manager;
+    private ManagerInterface $manager;
 
     public function __construct(ManagerInterface $manager)
     {

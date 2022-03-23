@@ -18,15 +18,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ListEvent extends AdminEvent
 {
-    /**
-     * @var DataSourceInterface
-     */
-    protected $dataSource;
+    protected DataSourceInterface $dataSource;
 
-    /**
-     * @var DataGridInterface
-     */
-    protected $dataGrid;
+    protected DataGridInterface $dataGrid;
 
     public function __construct(
         Element $element,

@@ -30,20 +30,11 @@ use function is_string;
 
 class DeleteRequestHandler implements HandlerInterface
 {
-    /**
-     * @var BatchFormValidRequestHandler
-     */
-    private $batchHandler;
+    private BatchFormValidRequestHandler $batchHandler;
 
-    /**
-     * @var FlashMessages
-     */
-    private $flashMessages;
+    private FlashMessages $flashMessages;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(
         BatchFormValidRequestHandler $batchHandler,

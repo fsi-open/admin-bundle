@@ -15,15 +15,9 @@ use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
 
 class Boolean implements ValueFormatter
 {
-    /**
-     * @var string
-     */
-    private $true;
+    private string $true;
 
-    /**
-     * @var string
-     */
-    private $false;
+    private string $false;
 
     public function __construct(string $true, string $false)
     {

@@ -17,15 +17,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MenuBuilder implements Builder
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var string
-     */
-    private $eventName;
+    private string $eventName;
 
     public function __construct(EventDispatcherInterface $eventDispatcher, string $eventName)
     {

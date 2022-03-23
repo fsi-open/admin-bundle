@@ -20,12 +20,9 @@ class ElementCollectionVisitor implements Visitor
     /**
      * @var iterable<Element>
      */
-    private $elements;
+    private iterable $elements;
 
-    /**
-     * @var ProductionLine
-     */
-    private $factoryProductionLine;
+    private ProductionLine $factoryProductionLine;
 
     public static function getPriority(): int
     {

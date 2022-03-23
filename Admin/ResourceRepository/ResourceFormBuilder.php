@@ -17,15 +17,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ResourceFormBuilder
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
+    protected FormFactoryInterface $formFactory;
 
-    /**
-     * @var MapBuilder
-     */
-    protected $mapBuilder;
+    protected MapBuilder $mapBuilder;
 
     public function __construct(FormFactoryInterface $formFactory, MapBuilder $mapBuilder)
     {

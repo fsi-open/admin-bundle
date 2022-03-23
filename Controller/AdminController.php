@@ -23,20 +23,11 @@ use function sprintf;
 
 class AdminController
 {
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var string
-     */
-    private $indexActionTemplate;
+    private string $indexActionTemplate;
 
     public function __construct(Environment $twig, RouterInterface $router, string $indexActionTemplate)
     {

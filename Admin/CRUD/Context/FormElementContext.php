@@ -23,15 +23,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FormElementContext extends ContextAbstract
 {
-    /**
-     * @var FormElement
-     */
-    protected $element;
+    protected FormElement $element;
 
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected FormInterface $form;
 
     public function hasTemplateName(): bool
     {

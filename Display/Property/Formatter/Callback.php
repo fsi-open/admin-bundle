@@ -20,9 +20,6 @@ class Callback implements ValueFormatter
      */
     private $callable;
 
-    /**
-     * @param callable $callable
-     */
     public function __construct(callable $callable)
     {
         $this->callable = $callable;

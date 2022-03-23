@@ -33,15 +33,9 @@ use function sprintf;
 
 class ReorderTreeController
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(RouterInterface $router, EventDispatcherInterface $eventDispatcher)
     {

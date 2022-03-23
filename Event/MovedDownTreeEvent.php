@@ -12,42 +12,19 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
-use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
-
-use function gettype;
-use function is_object;
 
 final class MovedDownTreeEvent extends AdminEvent
 {
-    /**
-     * @var object
-     */
-    private $entity;
+    private object $entity;
 
-    /**
-     * @param Element $element
-     * @param Request $request
-     * @param mixed $entity
-     * @throws InvalidArgumentException
-     */
-    public function __construct(Element $element, Request $request, $entity)
+    public function __construct(Element $element, Request $request, object $entity)
     {
-        if (false === is_object($entity)) {
-            throw new InvalidArgumentException(sprintf(
-                'Expected an object, got "%s" instead',
-                gettype($entity)
-            ));
-        }
-
         parent::__construct($element, $request);
         $this->entity = $entity;
     }
 
-    /**
-     * @return object
-     */
-    public function getEntity()
+    public function getEntity(): object
     {
         return $this->entity;
     }

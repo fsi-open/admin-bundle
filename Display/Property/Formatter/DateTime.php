@@ -16,14 +16,8 @@ use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
 
 class DateTime implements ValueFormatter
 {
-    /**
-     * @var string
-     */
-    private $format;
+    private string $format;
 
-    /**
-     * @param string $format
-     */
     public function __construct(string $format = 'Y-m-d H:i:s')
     {
         $this->format = $format;

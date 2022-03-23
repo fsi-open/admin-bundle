@@ -16,7 +16,7 @@ class SimpleDisplay implements Display
     /**
      * @var array<Property>
      */
-    private $data = [];
+    private array $data = [];
 
     /**
      * {@inheritdoc}

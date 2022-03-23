@@ -17,14 +17,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class LocaleListener implements EventSubscriberInterface
 {
-    /**
-     * @var string
-     */
-    private $defaultLocale;
+    private string $defaultLocale;
 
-    /**
-     * @param string $defaultLocale
-     */
     public function __construct(string $defaultLocale)
     {
         $this->defaultLocale = $defaultLocale;

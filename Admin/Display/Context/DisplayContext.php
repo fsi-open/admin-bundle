@@ -19,21 +19,14 @@ use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\DisplayEvent;
 use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use function get_class;
 
 class DisplayContext extends ContextAbstract
 {
-    /**
-     * @var DisplayElement
-     */
-    protected $element;
+    protected DisplayElement $element;
 
-    /**
-     * @var Display
-     */
-    private $display;
+    private Display $display;
 
     public function hasTemplateName(): bool
     {

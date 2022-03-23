@@ -17,10 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FormEvent extends AdminEvent
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected FormInterface $form;
 
     public function __construct(Element $element, Request $request, FormInterface $form)
     {

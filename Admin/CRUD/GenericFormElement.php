@@ -19,10 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class GenericFormElement extends AbstractElement implements FormElement
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
+    protected FormFactoryInterface $formFactory;
 
     public function getRoute(): string
     {

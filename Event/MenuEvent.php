@@ -16,14 +16,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class MenuEvent extends Event
 {
-    /**
-     * @var Item
-     */
-    private $menu;
+    private Item $menu;
 
-    /**
-     * @param Item $menu
-     */
     public function __construct(Item $menu)
     {
         $this->menu = $menu;

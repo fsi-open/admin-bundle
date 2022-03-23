@@ -20,10 +20,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MessagesListener implements EventSubscriberInterface
 {
-    /**
-     * @var FlashMessages
-     */
-    private $flashMessages;
+    private FlashMessages $flashMessages;
 
     public function __construct(FlashMessages $flashMessages)
     {

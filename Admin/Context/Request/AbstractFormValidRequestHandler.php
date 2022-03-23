@@ -28,14 +28,12 @@ use function sprintf;
 
 abstract class AbstractFormValidRequestHandler extends AbstractHandler
 {
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
+    protected RouterInterface $router;
 
     public function __construct(EventDispatcherInterface $eventDispatcher, RouterInterface $router)
     {
         parent::__construct($eventDispatcher);
+
         $this->router = $router;
     }
 

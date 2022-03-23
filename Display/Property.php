@@ -21,10 +21,7 @@ class Property
      */
     private $value;
 
-    /**
-     * @var string|null
-     */
-    private $label;
+    private ?string $label;
 
     /**
      * @param mixed $value

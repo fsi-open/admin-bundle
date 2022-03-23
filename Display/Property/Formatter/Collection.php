@@ -19,7 +19,7 @@ class Collection implements ValueFormatter
     /**
      * @var array<ValueFormatter>
      */
-    private $formatters;
+    private array $formatters;
 
     /**
      * @param array<ValueFormatter> $formatters

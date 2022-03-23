@@ -29,10 +29,7 @@ use function get_class;
 
 class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
 {
-    /**
-     * @var FlashMessages
-     */
-    private $flashMessages;
+    private FlashMessages $flashMessages;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,

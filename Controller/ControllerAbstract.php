@@ -24,20 +24,11 @@ use Twig\Environment;
 
 abstract class ControllerAbstract
 {
-    /**
-     * @var Environment
-     */
-    protected $twig;
+    protected Environment $twig;
 
-    /**
-     * @var ContextManager
-     */
-    protected $contextManager;
+    protected ContextManager $contextManager;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         Environment $twig,

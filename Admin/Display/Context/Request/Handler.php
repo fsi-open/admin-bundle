@@ -21,12 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Handler extends AbstractHandler
 {
-    /**
-     * @param AdminEvent $event
-     * @param Request $request
-     * @return Response|null
-     * @throws RequestHandlerException
-     */
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
         if (false === $event instanceof DisplayEvent) {
