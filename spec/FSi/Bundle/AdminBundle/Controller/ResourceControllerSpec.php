@@ -7,20 +7,22 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\ResourceRepositoryContext;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\Element;
-use FSi\Bundle\AdminBundle\Event\AdminEvents;
+use FSi\Bundle\AdminBundle\Event\AdminContextPreCreateEvent;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use FSi\Bundle\AdminBundle\Exception\ContextException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FSi\Bundle\AdminBundle\Exception\ContextException;
 use Twig\Environment;
 
 class ResourceControllerSpec extends ObjectBehavior
@@ -32,6 +34,7 @@ class ResourceControllerSpec extends ObjectBehavior
         EventDispatcherInterface $dispatcher
     ): void {
         $context->getTemplateName()->willReturn('default_resource');
+
         $this->beConstructedWith($twig, $manager, $dispatcher);
     }
 
@@ -45,7 +48,7 @@ class ResourceControllerSpec extends ObjectBehavior
         ResourceRepositoryContext $context,
         Environment $twig
     ): void {
-        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+        $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
         $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -66,7 +69,7 @@ class ResourceControllerSpec extends ObjectBehavior
         ResourceRepositoryContext $context,
         Environment $twig
     ): void {
-        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+        $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
         $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
@@ -83,11 +86,11 @@ class ResourceControllerSpec extends ObjectBehavior
         ContextManager $manager,
         Request $request
     ): void {
-        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+        $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
         $element->getId()->willReturn('my_awesome_resource');
         $manager->createContext(Argument::type('string'), $element)->willReturn(null);
-        
+
         $this->shouldThrow(NotFoundHttpException::class)->during('resourceAction', [$element, $request]);
     }
 
@@ -99,7 +102,7 @@ class ResourceControllerSpec extends ObjectBehavior
         ContextManager $manager,
         ResourceRepositoryContext $context
     ): void {
-        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+        $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
         $context->getTemplateName()->willReturn(null);
         $manager->createContext('fsi_admin_resource', $element)->willReturn($context);

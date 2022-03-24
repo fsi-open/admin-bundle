@@ -29,6 +29,9 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
 
     protected RequestStack $requestStack;
 
+    /**
+     * @var FormBuilderInterface<string,FormBuilderInterface>
+     */
     protected FormBuilderInterface $formBuilder;
 
     protected OptionsResolver $actionOptionsResolver;
@@ -42,7 +45,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      * @param ManagerInterface $manager
      * @param RequestStack $requestStack
      * @param RouterInterface $router
-     * @param FormBuilderInterface $formBuilder
+     * @param FormBuilderInterface<string,FormBuilderInterface> $formBuilder
      */
     public function __construct(
         ManagerInterface $manager,

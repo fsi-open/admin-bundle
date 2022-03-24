@@ -16,7 +16,7 @@ use FSi\Bundle\AdminBundle\Model\PositionableInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class PositionableEvent extends Event
+abstract class PositionableEvent extends Event
 {
     private Request $request;
 

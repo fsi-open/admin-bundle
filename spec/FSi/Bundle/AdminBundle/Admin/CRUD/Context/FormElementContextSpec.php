@@ -57,14 +57,12 @@ class FormElementContextSpec extends ObjectBehavior
     {
         $element->hasOption('template_form')->willReturn(false);
         $this->getTemplateName()->shouldReturn('default_form');
-        $this->hasTemplateName()->shouldReturn(true);
     }
 
     public function it_returns_template_from_element_if_it_has_one(FormElement $element): void
     {
         $element->hasOption('template_form')->willReturn(true);
         $element->getOption('template_form')->willReturn('form.html.twig');
-        $this->hasTemplateName()->shouldReturn(true);
         $this->getTemplateName()->shouldReturn('form.html.twig');
     }
 

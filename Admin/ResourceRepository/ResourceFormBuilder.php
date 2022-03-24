@@ -27,6 +27,10 @@ class ResourceFormBuilder
         $this->mapBuilder = $mapBuilder;
     }
 
+    /**
+     * @param Element $element
+     * @return FormInterface<string,FormInterface>
+     */
     public function build(Element $element): FormInterface
     {
         $resources = $this->getResourceGroup($element->getKey());
@@ -95,8 +99,8 @@ class ResourceFormBuilder
 
     /**
      * @param Element $element
-     * @param FormBuilderInterface $builder
-     * @param ResourceInterface[] $resources
+     * @param FormBuilderInterface<string,FormBuilderInterface> $builder
+     * @param array<ResourceInterface> $resources
      */
     private function buildForm(
         Element $element,

@@ -25,12 +25,10 @@ class FormElementContext extends ContextAbstract
 {
     protected FormElement $element;
 
+    /**
+     * @var FormInterface<string,FormInterface>
+     */
     protected FormInterface $form;
-
-    public function hasTemplateName(): bool
-    {
-        return true === $this->element->hasOption('template_form') || true === parent::hasTemplateName();
-    }
 
     public function getTemplateName(): ?string
     {

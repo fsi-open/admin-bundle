@@ -11,17 +11,6 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Event;
 
-class BatchPreApplyEvent extends BatchEvent
+final class BatchObjectsPreApplyEvent extends FormEvent
 {
-    private bool $skip = false;
-
-    public function shouldSkip(): bool
-    {
-        return $this->skip;
-    }
-
-    public function skip(bool $skip = true): void
-    {
-        $this->skip = $skip;
-    }
 }

@@ -13,8 +13,9 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use FSi\Bundle\AdminBundle\Event\ListDataSourcePostBindEvent;
+use FSi\Bundle\AdminBundle\Event\ListDataSourcePreBindEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
-use FSi\Bundle\AdminBundle\Event\ListEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,23 +26,19 @@ class DataSourceBindParametersHandler extends AbstractHandler
     {
         $event = $this->validateEvent($event);
 
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_PRE_BIND);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
+        $dataSourcePreBindEvent = ListDataSourcePreBindEvent::fromOtherEvent($event);
+        $this->eventDispatcher->dispatch($dataSourcePreBindEvent);
+        $response = $dataSourcePreBindEvent->getResponse();
+        if (null !== $response) {
+            return $response;
         }
 
         $event->getDataSource()->bindParameters($request);
 
-        $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATASOURCE_REQUEST_POST_BIND);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
+        $dataSourcePostBindEvent = ListDataSourcePostBindEvent::fromOtherEvent($event);
+        $this->eventDispatcher->dispatch($dataSourcePostBindEvent);
 
-        return null;
+        return $dataSourcePostBindEvent->getResponse();
     }
 
     private function validateEvent(AdminEvent $event): ListEvent

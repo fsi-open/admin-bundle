@@ -13,15 +13,15 @@ namespace FSi\Bundle\AdminBundle\Event;
 
 final class BatchEvents
 {
-    public const BATCH_REQUEST_PRE_SUBMIT = 'admin.batch.request.pre_submit';
+    public const BATCH_REQUEST_PRE_SUBMIT = BatchRequestPreSubmitEvent::class;
 
-    public const BATCH_REQUEST_POST_SUBMIT = 'admin.batch.request.post_submit';
+    public const BATCH_REQUEST_POST_SUBMIT = BatchRequestPostSubmitEvent::class;
 
-    public const BATCH_OBJECTS_PRE_APPLY = 'admin.batch.objects.pre_apply';
+    public const BATCH_OBJECTS_PRE_APPLY = BatchObjectsPreApplyEvent::class;
 
-    public const BATCH_OBJECTS_POST_APPLY = 'admin.batch.objects.post_apply';
+    public const BATCH_OBJECTS_POST_APPLY = BatchObjectsPostApplyEvent::class;
 
-    public const BATCH_OBJECT_PRE_APPLY = 'admin.batch.object.pre_apply';
+    public const BATCH_OBJECT_PRE_APPLY = BatchObjectPreApplyEvent::class;
 
-    public const BATCH_OBJECT_POST_APPLY = 'admin.batch.object.post_apply';
+    public const BATCH_OBJECT_POST_APPLY = BatchObjectPostApplyEvent::class;
 }

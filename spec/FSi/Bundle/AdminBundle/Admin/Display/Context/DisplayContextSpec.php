@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\Display\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
@@ -58,14 +60,12 @@ class DisplayContextSpec extends ObjectBehavior
     {
         $element->hasOption('template')->willReturn(false);
         $this->getTemplateName()->shouldReturn('default_display');
-        $this->hasTemplateName()->shouldReturn(true);
     }
 
     public function it_returns_template_from_element_if_it_has_one(Element $element): void
     {
         $element->hasOption('template')->willReturn(true);
         $element->getOption('template')->willReturn('display.html.twig');
-        $this->hasTemplateName()->shouldReturn(true);
         $this->getTemplateName()->shouldReturn('display.html.twig');
     }
 
@@ -73,19 +73,16 @@ class DisplayContextSpec extends ObjectBehavior
         HandlerInterface $handler,
         Request $request
     ): void {
-        $handler->handleRequest(Argument::type(DisplayEvent::class), $request)
-            ->willReturn(null);
+        $handler->handleRequest(Argument::type(DisplayEvent::class), $request)->willReturn(null);
 
         $this->handleRequest($request)->shouldReturn(null);
     }
 
     public function it_returns_response_from_handler(HandlerInterface $handler, Request $request): void
     {
-        $handler->handleRequest(Argument::type(DisplayEvent::class), $request)
-            ->willReturn(new Response());
+        $handler->handleRequest(Argument::type(DisplayEvent::class), $request)->willReturn(new Response());
 
-        $this->handleRequest($request)
-            ->shouldReturnAnInstanceOf(Response::class);
+        $this->handleRequest($request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     public function getMatchers(): array

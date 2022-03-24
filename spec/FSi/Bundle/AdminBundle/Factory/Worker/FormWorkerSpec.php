@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\Factory\Worker;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement;

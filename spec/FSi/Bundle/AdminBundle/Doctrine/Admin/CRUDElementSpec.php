@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * (c) FSi sp. z o.o. <info@fsi.pl>
  *

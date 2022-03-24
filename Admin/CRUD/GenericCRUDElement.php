@@ -141,7 +141,7 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
      *
      * @param FormFactoryInterface $factory
      * @param mixed $data
-     * @return FormInterface
+     * @return FormInterface<string,FormInterface>
      */
     abstract protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface;
 }

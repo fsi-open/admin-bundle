@@ -22,7 +22,15 @@ class ListEvent extends AdminEvent
 
     protected DataGridInterface $dataGrid;
 
-    public function __construct(
+    /**
+     * @return static
+     */
+    public static function fromOtherEvent(self $event): self
+    {
+        return new static($event->getElement(), $event->getRequest(), $event->getDataSource(), $event->getDataGrid());
+    }
+
+    final public function __construct(
         Element $element,
         Request $request,
         DataSourceInterface $dataSource,

@@ -17,7 +17,7 @@ use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use LogicException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,19 +44,20 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
             return null;
         }
 
-        $this->eventDispatcher->dispatch($event, $this->getPreSaveEventName());
-        if ($event->hasResponse()) {
-            return $event->getResponse();
+        $preSaveEvent = $this->getPreSaveEvent($event);
+        $this->eventDispatcher->dispatch($preSaveEvent);
+        $response = $preSaveEvent->getResponse();
+        if (null !== $response) {
+            return $response;
         }
 
         $this->action($event, $request);
 
-        $this->eventDispatcher->dispatch($event, $this->getPostSaveEventName());
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
+        $postSaveEvent = $this->getPostSaveEvent($event);
+        $this->eventDispatcher->dispatch($postSaveEvent);
+        $response = $postSaveEvent->getResponse();
 
-        return $this->getRedirectResponse($event, $request);
+        return $response ?? $this->getRedirectResponse($event, $request);
     }
 
     protected function isValidPostRequest(FormEvent $event, Request $request): bool
@@ -86,9 +87,9 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
 
     abstract protected function action(FormEvent $event, Request $request): void;
 
-    abstract protected function getPreSaveEventName(): string;
+    abstract protected function getPreSaveEvent(FormEvent $event): FormEvent;
 
-    abstract protected function getPostSaveEventName(): string;
+    abstract protected function getPostSaveEvent(FormEvent $event): FormEvent;
 
     private function validateEvent(AdminEvent $event): FormEvent
     {

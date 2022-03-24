@@ -33,13 +33,13 @@ class DeleteRequestHandlerSpec extends ObjectBehavior
         RouterInterface $router,
         DeleteElement $element,
         FormEvent $event,
-        ParameterBag $queryParameterbag,
+        ParameterBag $queryParameterBag,
         Request $request,
         RedirectResponse $response
     ): void {
-        $request->query = $queryParameterbag;
+        $request->query = $queryParameterBag;
 
-        $queryParameterbag->has('redirect_uri')->willReturn(false);
+        $queryParameterBag->has('redirect_uri')->willReturn(false);
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
         $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');
@@ -75,16 +75,16 @@ class DeleteRequestHandlerSpec extends ObjectBehavior
         DeleteElement $element,
         FormEvent $event,
         Request $request,
-        ParameterBag $queryParameterbag,
+        ParameterBag $queryParameterBag,
         FlashMessages $flashMessage
     ): void {
-        $queryParameterbag->has('redirect_uri')->shouldNotBeCalled();
-        $queryParameterbag->get('redirect_uri')->shouldNotBeCalled();
+        $queryParameterBag->has('redirect_uri')->shouldNotBeCalled();
+        $queryParameterBag->get('redirect_uri')->shouldNotBeCalled();
         $element->getSuccessRoute()->shouldNotBeCalled();
         $element->getSuccessRouteParameters()->shouldNotBeCalled();
         $element->getId()->shouldNotBeCalled();
         $router->generate(Argument::any())->shouldNotBeCalled();
-        $flashMessage->error(Argument::any())->shouldNotBeCalled();
+        $flashMessage->error(Argument::type('string'))->shouldNotBeCalled();
 
         $this->handleRequest($event, $request);
     }
@@ -96,7 +96,7 @@ class DeleteRequestHandlerSpec extends ObjectBehavior
         FlashMessages $flashMessage
     ): void {
         $element->getOption('allow_delete')->willReturn(false);
-        $flashMessage->error(Argument::any())->shouldNotBeCalled();
+        $flashMessage->error(Argument::type('string'))->shouldNotBeCalled();
 
         $this->shouldThrow(LogicException::class)->during('handleRequest', [$event, $request]);
     }

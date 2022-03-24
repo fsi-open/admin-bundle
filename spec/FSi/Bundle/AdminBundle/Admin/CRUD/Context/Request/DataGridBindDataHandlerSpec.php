@@ -1,31 +1,43 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use FSi\Bundle\AdminBundle\Event\ListDataGridPostSubmitRequestEvent;
+use FSi\Bundle\AdminBundle\Event\ListDataGridPreSubmitRequestEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
-use FSi\Bundle\AdminBundle\Event\ListEvents;
+use FSi\Bundle\AdminBundle\Event\ListResponsePreRenderEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use FSi\Component\DataGrid\DataGridFormHandlerInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use FSi\Component\DataSource\Result;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
-use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class DataGridBindDataHandlerSpec extends ObjectBehavior
 {
     public function let(
         EventDispatcherInterface $eventDispatcher,
         DataGridFormHandlerInterface $dataGridFormHandler,
-        ListEvent $event
+        DataGridInterface $dataGrid,
+        DataSourceInterface $dataSource,
+        Request $request,
+        ListEvent $event,
+        ListElement $element
     ): void {
-        $event->hasResponse()->willReturn(false);
+        $event->getElement()->willReturn($element);
+        $event->getRequest()->willReturn($request);
+        $event->getDataSource()->willReturn($dataSource);
+        $event->getDataGrid()->willReturn($dataGrid);
+
         $this->beConstructedWith($eventDispatcher, $dataGridFormHandler);
     }
 
@@ -34,13 +46,13 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(HandlerInterface::class);
     }
 
-    public function it_throws_exception_for_non_list_event(AdminEvent $event, Request $request): void
+    public function it_throws_exception_for_non_list_event(AdminEvent $wrongEvent, Request $request): void
     {
         $this->shouldThrow(
             new RequestHandlerException(
                 "FSi\\Bundle\\AdminBundle\\Admin\\CRUD\\Context\\Request\\DataGridBindDataHandler require ListEvent"
             )
-        )->during('handleRequest', [$event, $request]);
+        )->during('handleRequest', [$wrongEvent, $request]);
     }
 
     public function it_does_nothing_when_request_is_not_a_POST(
@@ -49,25 +61,24 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
-        $eventDispatcher->dispatch($event, ListEvents::LIST_RESPONSE_PRE_RENDER)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(ListResponsePreRenderEvent::class))->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
 
-    public function it_does_nothing_when_request_is_not_a_POST_and_return_respone_from_pre_render_event(
+    public function it_does_nothing_when_request_is_not_a_POST_and_return_response_from_pre_render_event(
         ListEvent $event,
         Request $request,
         EventDispatcherInterface $eventDispatcher,
         Response $response
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(false);
-        $eventDispatcher->dispatch($event, ListEvents::LIST_RESPONSE_PRE_RENDER)
+        $eventDispatcher->dispatch(Argument::type(ListResponsePreRenderEvent::class))
             ->will(
-                function () use ($event, $response) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn($response);
+                function (array $args) use ($response) {
+                    $args[0]->setResponse($response->getWrappedObject());
 
-                    return $event;
+                    return $args[0];
                 }
             );
 
@@ -85,11 +96,11 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         ListElement $element
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
-        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(ListDataGridPreSubmitRequestEvent::class))->shouldBeCalled();
 
         $event->getDataGrid()->willReturn($dataGrid);
         $dataGridFormHandler->submit($dataGrid, $request)->shouldBeCalled();
-        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_POST_BIND)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(ListDataGridPostSubmitRequestEvent::class))->shouldBeCalled();
 
         $dataGridFormHandler->isValid($dataGrid)->willReturn(false);
 
@@ -100,7 +111,7 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         $dataSource->getResult()->willReturn($result);
         $dataGrid->setData($result)->shouldBeCalled();
 
-        $eventDispatcher->dispatch($event, ListEvents::LIST_RESPONSE_PRE_RENDER)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(ListResponsePreRenderEvent::class))->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -116,11 +127,11 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         ListElement $element
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
-        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(ListDataGridPreSubmitRequestEvent::class))->shouldBeCalled();
 
         $event->getDataGrid()->willReturn($dataGrid);
         $dataGridFormHandler->submit($dataGrid, $request)->shouldBeCalled();
-        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_POST_BIND)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(ListDataGridPostSubmitRequestEvent::class))->shouldBeCalled();
 
         $dataGridFormHandler->isValid($dataGrid)->willReturn(true);
 
@@ -131,7 +142,7 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         $dataSource->getResult()->willReturn($result);
         $dataGrid->setData($result)->shouldBeCalled();
 
-        $eventDispatcher->dispatch($event, ListEvents::LIST_RESPONSE_PRE_RENDER)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(ListResponsePreRenderEvent::class))->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -143,18 +154,16 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         Response $response
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
-        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND)
+        $eventDispatcher->dispatch(Argument::type(ListDataGridPreSubmitRequestEvent::class))
             ->will(
-                function () use ($event, $response) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn($response);
+                function (array $args) use ($response) {
+                    $args[0]->setResponse($response->getWrappedObject());
 
-                    return $event;
+                    return $args[0];
                 }
             );
 
-        $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf(Response::class);
+        $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     public function it_return_response_from_datagrid_post_bind_request_event(
@@ -166,17 +175,16 @@ class DataGridBindDataHandlerSpec extends ObjectBehavior
         Response $response
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
-        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND)->willReturn($event);
+        $eventDispatcher->dispatch(Argument::type(ListDataGridPreSubmitRequestEvent::class))->willReturn($event);
 
         $event->getDataGrid()->willReturn($dataGrid);
         $dataGridFormHandler->submit($dataGrid, $request)->shouldBeCalled();
-        $eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_POST_BIND)
+        $eventDispatcher->dispatch(Argument::type(ListDataGridPostSubmitRequestEvent::class))
             ->will(
-                function () use ($event, $response) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn($response);
+                function (array $args) use ($response) {
+                    $args[0]->setResponse($response->getWrappedObject());
 
-                    return $event;
+                    return $args[0];
                 }
             );
 

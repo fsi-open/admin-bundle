@@ -12,17 +12,19 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractFormSubmitHandler;
-use FSi\Bundle\AdminBundle\Event\BatchEvents;
+use FSi\Bundle\AdminBundle\Event\BatchRequestPostSubmitEvent;
+use FSi\Bundle\AdminBundle\Event\BatchRequestPreSubmitEvent;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
 
 class BatchFormSubmitHandler extends AbstractFormSubmitHandler
 {
-    protected function getPreSubmitEventName(): string
+    protected function getPreSubmitEvent(FormEvent $event): FormEvent
     {
-        return BatchEvents::BATCH_REQUEST_PRE_SUBMIT;
+        return BatchRequestPreSubmitEvent::fromOtherEvent($event);
     }
 
-    protected function getPostSubmitEventName(): string
+    protected function getPostSubmitEvent(FormEvent $event): FormEvent
     {
-        return BatchEvents::BATCH_REQUEST_POST_SUBMIT;
+        return BatchRequestPostSubmitEvent::fromOtherEvent($event);
     }
 }

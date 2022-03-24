@@ -12,17 +12,19 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractFormSubmitHandler;
-use FSi\Bundle\AdminBundle\Event\FormEvents;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
+use FSi\Bundle\AdminBundle\Event\FormRequestPostSubmitEvent;
+use FSi\Bundle\AdminBundle\Event\FormRequestPreSubmitEvent;
 
 class FormSubmitHandler extends AbstractFormSubmitHandler
 {
-    protected function getPreSubmitEventName(): string
+    protected function getPreSubmitEvent(FormEvent $event): FormEvent
     {
-        return FormEvents::FORM_REQUEST_PRE_SUBMIT;
+        return FormRequestPreSubmitEvent::fromOtherEvent($event);
     }
 
-    protected function getPostSubmitEventName(): string
+    protected function getPostSubmitEvent(FormEvent $event): FormEvent
     {
-        return FormEvents::FORM_REQUEST_POST_SUBMIT;
+        return FormRequestPostSubmitEvent::fromOtherEvent($event);
     }
 }

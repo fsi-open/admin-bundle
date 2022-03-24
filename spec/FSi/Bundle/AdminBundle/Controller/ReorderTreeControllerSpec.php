@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
-use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
+use Doctrine\Persistence\ObjectManager;
 use FSi\Bundle\AdminBundle\Controller\ReorderTreeController;
+use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminBundle\Event\MovedDownTreeEvent;
 use FSi\Bundle\AdminBundle\Event\MovedUpTreeEvent;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
@@ -23,12 +23,12 @@ use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use stdClass;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ReorderTreeControllerSpec extends ObjectBehavior
 {

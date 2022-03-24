@@ -14,7 +14,7 @@ namespace FSi\Bundle\AdminBundle\Event;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class MenuEvent extends Event
+abstract class MenuEvent extends Event
 {
     private Item $menu;
 

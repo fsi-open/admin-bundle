@@ -12,10 +12,10 @@ declare(strict_types=1);
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use Doctrine\Persistence\ObjectManager;
-use FSi\Bundle\AdminBundle\Controller\PositionableController;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminBundle\Event\PositionableEvent;
-use FSi\Bundle\AdminBundle\Event\PositionableEvents;
+use FSi\Bundle\AdminBundle\Event\PositionablePostMoveEvent;
+use FSi\Bundle\AdminBundle\Event\PositionablePreMoveEvent;
 use FSi\Bundle\AdminBundle\Model\PositionableInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use FSi\Component\DataIndexer\Exception\RuntimeException as DataIndexerRuntimeException;
@@ -23,15 +23,12 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use RuntimeException;
 use stdClass;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * @mixin PositionableController
- */
 class PositionableControllerSpec extends ObjectBehavior
 {
     public function let(
@@ -87,15 +84,9 @@ class PositionableControllerSpec extends ObjectBehavior
     ): void {
         $indexer->getData('1')->willReturn($positionableEntity);
 
-        $eventDispatcher->dispatch(
-            Argument::type(PositionableEvent::class),
-            PositionableEvents::PRE_APPLY
-        )->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(PositionablePreMoveEvent::class))->shouldBeCalled();
         $positionableEntity->decreasePosition()->shouldBeCalled();
-        $eventDispatcher->dispatch(
-            Argument::type(PositionableEvent::class),
-            PositionableEvents::POST_APPLY
-        )->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(PositionablePostMoveEvent::class))->shouldBeCalled();
 
         $om->persist($positionableEntity)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
@@ -115,15 +106,9 @@ class PositionableControllerSpec extends ObjectBehavior
     ): void {
         $indexer->getData('1')->willReturn($positionableEntity);
 
-        $eventDispatcher->dispatch(
-            Argument::type(PositionableEvent::class),
-            PositionableEvents::PRE_APPLY
-        )->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(PositionablePreMoveEvent::class))->shouldBeCalled();
         $positionableEntity->increasePosition()->shouldBeCalled();
-        $eventDispatcher->dispatch(
-            Argument::type(PositionableEvent::class),
-            PositionableEvents::POST_APPLY
-        )->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(PositionablePostMoveEvent::class))->shouldBeCalled();
 
         $om->persist($positionableEntity)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
@@ -146,10 +131,8 @@ class PositionableControllerSpec extends ObjectBehavior
         $query->get('redirect_uri')->willReturn('some_redirect_uri');
 
         $indexer->getData('1')->willReturn($positionableEntity);
-        $eventDispatcher->dispatch(Argument::type(PositionableEvent::class), PositionableEvents::PRE_APPLY)
-            ->willReturn($preApplyEvent);
-        $eventDispatcher->dispatch(Argument::type(PositionableEvent::class), PositionableEvents::POST_APPLY)
-            ->willReturn($postApplyEvent);
+        $eventDispatcher->dispatch(Argument::type(PositionablePreMoveEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(PositionablePostMoveEvent::class))->shouldBeCalled();
 
         $response = $this->increasePositionAction($element, '1', $request);
         $response->shouldHaveType(RedirectResponse::class);

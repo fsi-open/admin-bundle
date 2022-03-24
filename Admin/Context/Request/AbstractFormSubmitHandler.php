@@ -27,19 +27,19 @@ abstract class AbstractFormSubmitHandler extends AbstractHandler
             return null;
         }
 
-        $this->eventDispatcher->dispatch($event, $this->getPreSubmitEventName());
-        if ($event->hasResponse()) {
-            return $event->getResponse();
+        $preSubmitEvent = $this->getPreSubmitEvent($event);
+        $this->eventDispatcher->dispatch($preSubmitEvent);
+        $response = $preSubmitEvent->getResponse();
+        if (null !== $response) {
+            return $response;
         }
 
         $event->getForm()->handleRequest($request);
 
-        $this->eventDispatcher->dispatch($event, $this->getPostSubmitEventName());
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
+        $postSubmitEvent = $this->getPostSubmitEvent($event);
+        $this->eventDispatcher->dispatch($postSubmitEvent);
 
-        return null;
+        return $postSubmitEvent->getResponse();
     }
 
     private function validateEvent(AdminEvent $event): FormEvent
@@ -51,7 +51,7 @@ abstract class AbstractFormSubmitHandler extends AbstractHandler
         return $event;
     }
 
-    abstract protected function getPreSubmitEventName(): string;
+    abstract protected function getPreSubmitEvent(FormEvent $event): FormEvent;
 
-    abstract protected function getPostSubmitEventName(): string;
+    abstract protected function getPostSubmitEvent(FormEvent $event): FormEvent;
 }

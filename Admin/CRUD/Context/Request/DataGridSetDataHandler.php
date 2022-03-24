@@ -13,8 +13,9 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use FSi\Bundle\AdminBundle\Event\ListDataGridPostSetDataEvent;
+use FSi\Bundle\AdminBundle\Event\ListDataGridPreSetDataEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
-use FSi\Bundle\AdminBundle\Event\ListEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,21 +24,21 @@ class DataGridSetDataHandler extends AbstractHandler
 {
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
-        $event = $this->validateEvent($event);
+        $listEvent = $this->validateEvent($event);
 
-        $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_PRE_BIND);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
+        $dataGridPreSetDataEvent = ListDataGridPreSetDataEvent::fromOtherEvent($listEvent);
+        $this->eventDispatcher->dispatch($dataGridPreSetDataEvent);
+        $response = $dataGridPreSetDataEvent->getResponse();
+        if (null !== $response) {
+            return $response;
         }
 
-        $event->getDataGrid()->setData($event->getDataSource()->getResult());
-        $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_POST_BIND);
+        $listEvent->getDataGrid()->setData($listEvent->getDataSource()->getResult());
 
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
+        $dataGridPostSetDataEvent = ListDataGridPostSetDataEvent::fromOtherEvent($listEvent);
+        $this->eventDispatcher->dispatch($dataGridPostSetDataEvent);
 
-        return null;
+        return $dataGridPostSetDataEvent->getResponse();
     }
 
     private function validateEvent(AdminEvent $event): ListEvent

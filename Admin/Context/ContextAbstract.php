@@ -64,11 +64,6 @@ abstract class ContextAbstract implements ContextInterface
         return null;
     }
 
-    public function hasTemplateName(): bool
-    {
-        return null !== $this->template;
-    }
-
     public function getTemplateName(): ?string
     {
         return $this->template;

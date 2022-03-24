@@ -39,11 +39,6 @@ class ListElementContext extends ContextAbstract
         $this->dataGrid = $this->element->createDataGrid();
     }
 
-    public function hasTemplateName(): bool
-    {
-        return true === $this->element->hasOption('template_list') || true === parent::hasTemplateName();
-    }
-
     public function getTemplateName(): ?string
     {
         return $this->element->hasOption('template_list')

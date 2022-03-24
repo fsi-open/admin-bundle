@@ -1,23 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
+use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use FSi\Bundle\AdminBundle\Event\FormEvents;
+use FSi\Bundle\AdminBundle\Event\FormRequestPostSubmitEvent;
+use FSi\Bundle\AdminBundle\Event\FormRequestPreSubmitEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class FormSubmitHandlerSpec extends ObjectBehavior
 {
-    public function let(EventDispatcherInterface $eventDispatcher, FormEvent $event): void
-    {
-        $event->hasResponse()->willReturn(false);
+    public function let(
+        EventDispatcherInterface $eventDispatcher,
+        FormEvent $event,
+        FormElement $element,
+        Request $request
+    ): void {
+        $event->getElement()->willReturn($element);
+        $event->getRequest()->willReturn($request);
+
         $this->beConstructedWith($eventDispatcher);
     }
 
@@ -49,12 +60,12 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         FormInterface $form
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
-        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_PRE_SUBMIT)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(FormRequestPreSubmitEvent::class))->shouldBeCalled();
 
         $event->getForm()->willReturn($form);
         $form->handleRequest($request)->shouldBeCalled();
 
-        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_POST_SUBMIT)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(FormRequestPostSubmitEvent::class))->shouldBeCalled();
 
         $this->handleRequest($event, $request)->shouldReturn(null);
     }
@@ -63,16 +74,18 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         FormEvent $event,
         Request $request,
         EventDispatcherInterface $eventDispatcher,
+        FormInterface $form,
         Response $response
     ): void {
-        $request->isMethod(Request::METHOD_POST)->willReturn(true);
-        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_PRE_SUBMIT)
-            ->will(
-                function () use ($event, $response) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn($response);
+        $event->getForm()->willReturn($form);
 
-                    return $event;
+        $request->isMethod(Request::METHOD_POST)->willReturn(true);
+        $eventDispatcher->dispatch(Argument::type(FormRequestPreSubmitEvent::class))
+            ->will(
+                function (array $args) use ($response) {
+                    $args[0]->setResponse($response->getWrappedObject());
+
+                    return $args[0];
                 }
             );
 
@@ -87,22 +100,20 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         Response $response
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
-        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_PRE_SUBMIT)->willReturn($event);
+        $eventDispatcher->dispatch(Argument::type(FormRequestPreSubmitEvent::class))->willReturn($event);
 
         $event->getForm()->willReturn($form);
         $form->handleRequest($request)->shouldBeCalled();
 
-        $eventDispatcher->dispatch($event, FormEvents::FORM_REQUEST_POST_SUBMIT)
+        $eventDispatcher->dispatch(Argument::type(FormRequestPostSubmitEvent::class))
             ->will(
-                function () use ($event, $response) {
-                    $event->hasResponse()->willReturn(true);
-                    $event->getResponse()->willReturn($response);
+                function (array $args) use ($response) {
+                    $args[0]->setResponse($response->getWrappedObject());
 
-                    return $event;
+                    return $args[0];
                 }
             );
 
-        $this->handleRequest($event, $request)
-            ->shouldReturnAnInstanceOf(Response::class);
+        $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(Response::class);
     }
 }

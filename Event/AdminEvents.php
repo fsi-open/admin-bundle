@@ -13,5 +13,5 @@ namespace FSi\Bundle\AdminBundle\Event;
 
 final class AdminEvents
 {
-    public const CONTEXT_PRE_CREATE = 'admin.context.pre_create';
+    public const CONTEXT_PRE_CREATE = AdminContextPreCreateEvent::class;
 }

@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
+use FSi\Bundle\AdminBundle\Event\MenuMainEvent;
 use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
@@ -56,7 +59,7 @@ class MainMenuListenerSpec extends ObjectBehavior
 
     public function it_build_menu(): void
     {
-        $menu = $this->createMainMenu(new MenuEvent(new Item()));
+        $menu = $this->createMainMenu(new MenuMainEvent(new Item()));
 
         $menu->shouldHaveItem('News', 'news');
         $menu->shouldHaveItem('article', 'article');

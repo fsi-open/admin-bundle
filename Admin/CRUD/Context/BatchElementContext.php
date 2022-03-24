@@ -26,6 +26,9 @@ use Symfony\Component\HttpFoundation\Request;
 class BatchElementContext extends ContextAbstract
 {
     protected ?BatchElementAlias $element;
+    /**
+     * @var FormInterface<string,FormInterface>
+     */
     protected FormInterface $form;
     /**
      * @var array<int,int|string>|null
@@ -34,7 +37,7 @@ class BatchElementContext extends ContextAbstract
 
     /**
      * @param iterable<HandlerInterface> $requestHandlers
-     * @param FormBuilderInterface $formBuilder
+     * @param FormBuilderInterface<string,FormBuilderInterface> $formBuilder
      */
     public function __construct(iterable $requestHandlers, FormBuilderInterface $formBuilder)
     {

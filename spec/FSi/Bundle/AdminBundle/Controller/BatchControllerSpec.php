@@ -7,20 +7,22 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext;
-use FSi\Bundle\AdminBundle\Event\AdminEvents;
+use FSi\Bundle\AdminBundle\Event\AdminContextPreCreateEvent;
+use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use FSi\Bundle\AdminBundle\Exception\ContextException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FSi\Bundle\AdminBundle\Exception\ContextException;
 use Twig\Environment;
 
 class BatchControllerSpec extends ObjectBehavior
@@ -38,11 +40,10 @@ class BatchControllerSpec extends ObjectBehavior
         ContextManager $manager,
         BatchElement $element,
         BatchElementContext $context,
-        AdminEvent $event,
         Request $request,
         Response $response
     ): void {
-        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+        $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
@@ -57,7 +58,7 @@ class BatchControllerSpec extends ObjectBehavior
         AdminEvent $event,
         Request $request
     ): void {
-        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+        $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
         $element->getId()->willReturn('admin_element_id');
         $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
@@ -73,7 +74,7 @@ class BatchControllerSpec extends ObjectBehavior
         AdminEvent $event,
         Request $request
     ): void {
-        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+        $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->getTemplateName()->willReturn(null);
@@ -91,7 +92,7 @@ class BatchControllerSpec extends ObjectBehavior
         Request $request,
         Response $response
     ): void {
-        $dispatcher->dispatch(Argument::type(AdminEvent::class), AdminEvents::CONTEXT_PRE_CREATE)->willReturn($event);
+        $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
         $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn($response);

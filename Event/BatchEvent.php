@@ -15,7 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class BatchEvent extends Event
+abstract class BatchEvent extends Event
 {
     private Element $element;
 

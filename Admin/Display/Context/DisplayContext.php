@@ -28,11 +28,6 @@ class DisplayContext extends ContextAbstract
 
     private Display $display;
 
-    public function hasTemplateName(): bool
-    {
-        return true === $this->element->hasOption('template') || true === parent::hasTemplateName();
-    }
-
     public function getTemplateName(): ?string
     {
         return true === $this->element->hasOption('template')

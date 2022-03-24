@@ -30,6 +30,9 @@ class ResourceRepositoryContext extends ContextAbstract
 
     private ResourceFormBuilder $resourceFormBuilder;
 
+    /**
+     * @var FormInterface<string,FormInterface>
+     */
     private FormInterface $form;
 
     /**
@@ -54,11 +57,6 @@ class ResourceRepositoryContext extends ContextAbstract
         }
         $this->element = $element;
         $this->form = $this->resourceFormBuilder->build($this->element);
-    }
-
-    public function hasTemplateName(): bool
-    {
-        return $this->element->hasOption('template') || parent::hasTemplateName();
     }
 
     public function getTemplateName(): ?string

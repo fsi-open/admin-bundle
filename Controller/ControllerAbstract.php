@@ -13,10 +13,9 @@ namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\Element;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
-use FSi\Bundle\AdminBundle\Event\AdminEvents;
+use FSi\Bundle\AdminBundle\Event\AdminContextPreCreateEvent;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -42,8 +41,8 @@ abstract class ControllerAbstract
 
     protected function handleRequest(Element $element, Request $request, string $route): Response
     {
-        $event = new AdminEvent($element, $request);
-        $this->eventDispatcher->dispatch($event, AdminEvents::CONTEXT_PRE_CREATE);
+        $event = new AdminContextPreCreateEvent($element, $request);
+        $this->eventDispatcher->dispatch($event);
         $response = $event->getResponse();
         if (null !== $response) {
             return $response;

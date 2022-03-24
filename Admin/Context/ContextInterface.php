@@ -25,8 +25,6 @@ interface ContextInterface
 
     public function handleRequest(Request $request): ?Response;
 
-    public function hasTemplateName(): bool;
-
     public function getTemplateName(): ?string;
 
     /**

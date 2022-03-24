@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\Manager;
 
 use FSi\Bundle\AdminBundle\Admin\Element;

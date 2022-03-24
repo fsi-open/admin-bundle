@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
@@ -42,7 +44,6 @@ class BatchElementContextSpec extends ObjectBehavior
 
     public function it_does_not_have_template_name(): void
     {
-        $this->hasTemplateName()->shouldReturn(false);
         $this->getTemplateName()->shouldReturn(null);
     }
 
