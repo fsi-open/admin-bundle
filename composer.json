@@ -45,7 +45,7 @@
         "symfony/twig-bridge": "^4.4|^5.4",
         "symfony/twig-bundle": "^4.4|^5.4",
         "symfony/validator": "^4.4|^5.4",
-        "twig/twig": "^2.13"
+        "twig/twig": "^2.13|^3.0"
     },
     "require-dev": {
         "ext-pdo_sqlite": "*",
