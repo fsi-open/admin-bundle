@@ -23,6 +23,10 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class FSIAdminExtension extends Extension
 {
+    /**
+     * @param array<string,mixed> $configs
+     * @param ContainerBuilder $container
+     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
@@ -47,6 +51,10 @@ class FSIAdminExtension extends Extension
         }
     }
 
+    /**
+     * @param ContainerBuilder $container
+     * @param array<string,mixed> $config
+     */
     protected function setTemplateParameters(ContainerBuilder $container, array $config = []): void
     {
         foreach ($config as $key => $value) {

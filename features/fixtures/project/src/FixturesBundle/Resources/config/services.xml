@@ -90,15 +90,16 @@
             <tag name="admin.element" />
         </service>
 
-        <service id="FSi\FixturesBundle\DataSource\DataSourceFactory" public="true">
-            <argument type="service" id="datasource.driver.factory.manager" />
-            <argument type="collection">
-                <argument type="service" id="datasource.extension" />
+        <service id="fsi.files.local_adapter" class="FSi\Component\Files\UrlAdapter\BaseUrlAdapter">
+            <argument key="$uriFactory" type="service">
+                <service class="Nyholm\Psr7\Factory\Psr17Factory" />
             </argument>
+            <argument key="$baseUrl" type="string">/files</argument>
         </service>
 
-        <service id="test.FSi\Bundle\AdminBundle\Admin\ManagerInterface" alias="FSi\Bundle\AdminBundle\Admin\ManagerInterface" public="true" />
-
-        <service id="test.fsi_resource_repository.map_builder" alias="fsi_resource_repository.map_builder" public="true" />
+        <service id="Psr\Http\Message\RequestFactoryInterface" alias="Nyholm\Psr7\Factory\Psr17Factory" />
+        <service id="Psr\Http\Message\ResponseFactoryInterface" alias="Nyholm\Psr7\Factory\Psr17Factory" />
+        <service id="Psr\Http\Message\StreamFactoryInterface" alias="Nyholm\Psr7\Factory\Psr17Factory" />
+        <service id="Nyholm\Psr7\Factory\Psr17Factory" />
     </services>
 </container>

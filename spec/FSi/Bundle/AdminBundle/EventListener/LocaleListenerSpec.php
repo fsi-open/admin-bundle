@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\EventListener;
 
 use PhpSpec\ObjectBehavior;
@@ -7,7 +16,7 @@ use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -31,7 +40,7 @@ class LocaleListenerSpec extends ObjectBehavior
     }
 
     public function it_do_nothing_when_request_does_not_have_previous_session(
-        GetResponseEvent $event,
+        RequestEvent $event,
         Request $request
     ): void {
         $event->getRequest()->shouldBeCalled()->willReturn($request);
@@ -41,7 +50,7 @@ class LocaleListenerSpec extends ObjectBehavior
     }
 
     public function it_set_default_locale_if_request_does_not_have_locale_param(
-        GetResponseEvent $event,
+        RequestEvent $event,
         Request $request,
         ParameterBag $requestAttributes,
         SessionInterface $session
@@ -57,7 +66,7 @@ class LocaleListenerSpec extends ObjectBehavior
     }
 
     public function it_does_not_set_locale_if_request_alread_has_locale(
-        GetResponseEvent $event,
+        RequestEvent $event,
         Request $request,
         ParameterBag $requestAttributes,
         SessionInterface $session

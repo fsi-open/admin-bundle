@@ -18,15 +18,12 @@ use Knp\Menu\ItemInterface as KnpItemInterface;
 
 class MenuBuilder
 {
-    /**
-     * @var FactoryInterface
-     */
-    protected $factory;
+    protected FactoryInterface $factory;
 
     /**
      * @var iterable<ItemDecorator>
      */
-    protected $decorators;
+    protected iterable $decorators;
 
     /**
      * @param FactoryInterface $factory

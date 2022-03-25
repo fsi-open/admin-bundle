@@ -23,20 +23,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FormElementContext extends ContextAbstract
 {
-    /**
-     * @var FormElement
-     */
-    protected $element;
+    protected FormElement $element;
 
     /**
-     * @var FormInterface
+     * @var FormInterface<string,FormInterface>
      */
-    protected $form;
-
-    public function hasTemplateName(): bool
-    {
-        return true === $this->element->hasOption('template_form') || true === parent::hasTemplateName();
-    }
+    protected FormInterface $form;
 
     public function getTemplateName(): ?string
     {
@@ -78,7 +70,7 @@ class FormElementContext extends ContextAbstract
 
     /**
      * @param Request $request
-     * @return object|null
+     * @return array<string,mixed>|object|null
      */
     private function getObject(Request $request)
     {
@@ -88,12 +80,7 @@ class FormElementContext extends ContextAbstract
             return null;
         }
 
-        $object = $this->element->getDataIndexer()->getData($id);
-        if (null === $object) {
-            throw new NotFoundHttpException("Can\'t find object with id \"{$id}\"");
-        }
-
-        return $object;
+        return $this->element->getDataIndexer()->getData($id);
     }
 
     private function checkAllowAddOption(): void

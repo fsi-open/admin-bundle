@@ -13,10 +13,9 @@ namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\Element;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
-use FSi\Bundle\AdminBundle\Event\AdminEvents;
+use FSi\Bundle\AdminBundle\Event\AdminContextPreCreateEvent;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -24,20 +23,11 @@ use Twig\Environment;
 
 abstract class ControllerAbstract
 {
-    /**
-     * @var Environment
-     */
-    protected $twig;
+    protected Environment $twig;
 
-    /**
-     * @var ContextManager
-     */
-    protected $contextManager;
+    protected ContextManager $contextManager;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         Environment $twig,
@@ -51,10 +41,11 @@ abstract class ControllerAbstract
 
     protected function handleRequest(Element $element, Request $request, string $route): Response
     {
-        $event = new AdminEvent($element, $request);
-        $this->eventDispatcher->dispatch($event, AdminEvents::CONTEXT_PRE_CREATE);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
+        $event = new AdminContextPreCreateEvent($element, $request);
+        $this->eventDispatcher->dispatch($event);
+        $response = $event->getResponse();
+        if (null !== $response) {
+            return $response;
         }
 
         $context = $this->contextManager->createContext($route, $element);
@@ -66,20 +57,18 @@ abstract class ControllerAbstract
         }
 
         $response = $context->handleRequest($request);
-        if ($response instanceof Response) {
+        if (null !== $response) {
             return $response;
         }
 
-        if (false === $context->hasTemplateName()) {
+        $templateName = $context->getTemplateName();
+        if (null === $templateName) {
             throw new ContextException(sprintf(
                 'Context %s neither returned a response nor has a template name',
                 get_class($context)
             ));
         }
 
-        return new Response($this->twig->render(
-            $context->getTemplateName(),
-            $context->getData()
-        ));
+        return new Response($this->twig->render($templateName, $context->getData()));
     }
 }

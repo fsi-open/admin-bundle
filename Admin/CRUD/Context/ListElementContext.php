@@ -23,20 +23,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ListElementContext extends ContextAbstract
 {
-    /**
-     * @var ListElement
-     */
-    protected $element;
+    protected ListElement $element;
 
-    /**
-     * @var DataSourceInterface
-     */
-    protected $dataSource;
+    protected DataSourceInterface $dataSource;
 
-    /**
-     * @var DataGridInterface
-     */
-    protected $dataGrid;
+    protected DataGridInterface $dataGrid;
 
     public function setElement(Element $element): void
     {
@@ -46,11 +37,6 @@ class ListElementContext extends ContextAbstract
         $this->element = $element;
         $this->dataSource = $this->element->createDataSource();
         $this->dataGrid = $this->element->createDataGrid();
-    }
-
-    public function hasTemplateName(): bool
-    {
-        return true === $this->element->hasOption('template_list') || true === parent::hasTemplateName();
     }
 
     public function getTemplateName(): ?string

@@ -12,15 +12,9 @@ use FSi\Component\DataSource\DataSourceFactoryInterface;
 
 class ListWorker implements Worker
 {
-    /**
-     * @var DataSourceFactoryInterface
-     */
-    private $dataSourceFactory;
+    private DataSourceFactoryInterface $dataSourceFactory;
 
-    /**
-     * @var DataGridFactoryInterface
-     */
-    private $dataGridFactory;
+    private DataGridFactoryInterface $dataGridFactory;
 
     public function __construct(
         DataSourceFactoryInterface $dataSourceFactory,

@@ -21,10 +21,7 @@ class Property
      */
     private $value;
 
-    /**
-     * @var string|null
-     */
-    private $label;
+    private ?string $label;
 
     /**
      * @param mixed $value
@@ -66,6 +63,10 @@ class Property
         return $value;
     }
 
+    /**
+     * @param array<int,ValueFormatter> $valueFormatters
+     * @return void
+     */
     private function validateFormatters(array $valueFormatters): void
     {
         foreach ($valueFormatters as $formatter) {

@@ -18,22 +18,19 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 class PropertyAccessDisplay implements Display
 {
     /**
-     * @var array<Property>
+     * @var array<int,Property>
      */
-    private $data = [];
+    private array $data = [];
 
     /**
-     * @var object|array
+     * @var object|array<string,mixed>
      */
     private $object;
 
-    /**
-     * @var PropertyAccessorInterface
-     */
-    private $accessor;
+    private PropertyAccessorInterface $accessor;
 
     /**
-     * @param object|array $object
+     * @param object|array<string,mixed> $object
      */
     public function __construct($object)
     {
@@ -59,6 +56,10 @@ class PropertyAccessDisplay implements Display
         return $this->data;
     }
 
+    /**
+     * @param mixed $object
+     * @return void
+     */
     private function validateObject($object): void
     {
         if (false === is_object($object) && false === is_array($object)) {

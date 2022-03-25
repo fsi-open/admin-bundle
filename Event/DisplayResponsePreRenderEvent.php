@@ -9,11 +9,8 @@
 
 declare(strict_types=1);
 
-namespace FSi\Bundle\AdminBundle\Behat\Element;
+namespace FSi\Bundle\AdminBundle\Event;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
-
-class NewElementLink extends Element
+final class DisplayResponsePreRenderEvent extends DisplayEvent
 {
-    protected $selector = ['css' => 'a#create-element'];
 }

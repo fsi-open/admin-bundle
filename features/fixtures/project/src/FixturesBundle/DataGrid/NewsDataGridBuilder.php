@@ -22,7 +22,12 @@ class NewsDataGridBuilder
             'label' => 'admin.news.list.title',
             'field_mapping' => ['title', 'subtitle'],
             'value_glue' => '<br/>',
-            'editable' => true
+            'editable' => true,
+            'form_options' => [
+                'subtitle' => [
+                    'required' => false,
+                ]
+            ]
         ]);
 
         $datagrid->addColumn('date', 'datetime', [
@@ -47,10 +52,10 @@ class NewsDataGridBuilder
             'label' => 'admin.news.list.creator_email'
         ]);
 
-        $datagrid->addColumn('photo', 'fsi_image', [
+/*        $datagrid->addColumn('photo', 'fsi_image', [
             'label' => 'admin.news.list.photo',
             'width' => 100
-        ]);
+        ]);*/
 
         return $datagrid;
     }

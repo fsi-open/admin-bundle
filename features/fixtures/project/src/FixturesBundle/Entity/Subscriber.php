@@ -5,37 +5,20 @@ declare(strict_types=1);
 namespace FSi\FixturesBundle\Entity;
 
 use DateTimeInterface;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="subscriber")
- */
 class Subscriber
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    private ?int $id = null;
 
     /**
      * @Assert\Email()
-     * @ORM\Column(type="string", length=100)
      */
-    protected $email;
+    private ?string $email = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $active = false;
+    private bool $active = false;
 
-    /**
-     * @ORM\Column(type="datetime", name="created_at")
-     */
-    protected $createdAt;
+    private ?DateTimeInterface $createdAt = null;
 
     public function getId(): ?int
     {

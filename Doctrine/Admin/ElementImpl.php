@@ -18,10 +18,7 @@ use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 
 trait ElementImpl
 {
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
+    protected ManagerRegistry $registry;
 
     abstract public function getClassName(): string;
 

@@ -13,13 +13,10 @@ namespace FSi\Bundle\AdminBundle\Admin;
 
 interface RedirectableElement extends Element
 {
-    /**
-     * Return route name that will be used to redirect after successful form handling.
-     */
     public function getSuccessRoute(): string;
 
     /**
-     * Return array of parameters used with route returned from getSuccessRoute().
+     * @return array<string,mixed>
      */
     public function getSuccessRouteParameters(): array;
 }

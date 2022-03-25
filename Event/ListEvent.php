@@ -18,17 +18,19 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ListEvent extends AdminEvent
 {
-    /**
-     * @var DataSourceInterface
-     */
-    protected $dataSource;
+    protected DataSourceInterface $dataSource;
+
+    protected DataGridInterface $dataGrid;
 
     /**
-     * @var DataGridInterface
+     * @return static
      */
-    protected $dataGrid;
+    public static function fromOtherEvent(self $event): self
+    {
+        return new static($event->getElement(), $event->getRequest(), $event->getDataSource(), $event->getDataGrid());
+    }
 
-    public function __construct(
+    final public function __construct(
         Element $element,
         Request $request,
         DataSourceInterface $dataSource,

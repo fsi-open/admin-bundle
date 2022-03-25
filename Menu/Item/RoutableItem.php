@@ -13,17 +13,19 @@ namespace FSi\Bundle\AdminBundle\Menu\Item;
 
 class RoutableItem extends Item
 {
-    /**
-     * @var string
-     */
-    private $route;
+    private string $route;
 
     /**
-     * @var array
+     * @var array<string,mixed>
      */
-    private $routeParameters;
+    private array $routeParameters;
 
-    public function __construct(string $name, ?string $route = null, array $routeParameters = [])
+    /**
+     * @param string $name
+     * @param string $route
+     * @param array<string,mixed> $routeParameters
+     */
+    public function __construct(string $name, string $route, array $routeParameters = [])
     {
         parent::__construct($name);
 
@@ -36,6 +38,9 @@ class RoutableItem extends Item
         return $this->route;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getRouteParameters(): array
     {
         return $this->routeParameters;

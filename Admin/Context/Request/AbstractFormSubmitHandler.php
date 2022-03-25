@@ -17,41 +17,37 @@ use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function get_class;
+use function sprintf;
+
 abstract class AbstractFormSubmitHandler extends AbstractHandler
 {
     public function handleRequest(AdminEvent $event, Request $request): ?Response
-    {
-        $event = $this->validateEvent($event);
-
-        if (false === $request->isMethod(Request::METHOD_POST)) {
-            return null;
-        }
-
-        $this->eventDispatcher->dispatch($event, $this->getPreSubmitEventName());
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        $event->getForm()->handleRequest($request);
-
-        $this->eventDispatcher->dispatch($event, $this->getPostSubmitEventName());
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        return null;
-    }
-
-    private function validateEvent(AdminEvent $event): FormEvent
     {
         if (false === $event instanceof FormEvent) {
             throw new RequestHandlerException(sprintf('%s requires FormEvent', get_class($this)));
         }
 
-        return $event;
+        if (false === $request->isMethod(Request::METHOD_POST)) {
+            return null;
+        }
+
+        $preSubmitEvent = $this->getPreSubmitEvent($event);
+        $this->eventDispatcher->dispatch($preSubmitEvent);
+        $response = $preSubmitEvent->getResponse();
+        if (null !== $response) {
+            return $response;
+        }
+
+        $event->getForm()->handleRequest($request);
+
+        $postSubmitEvent = $this->getPostSubmitEvent($event);
+        $this->eventDispatcher->dispatch($postSubmitEvent);
+
+        return $postSubmitEvent->getResponse();
     }
 
-    abstract protected function getPreSubmitEventName(): string;
+    abstract protected function getPreSubmitEvent(FormEvent $event): FormEvent;
 
-    abstract protected function getPostSubmitEventName(): string;
+    abstract protected function getPostSubmitEvent(FormEvent $event): FormEvent;
 }

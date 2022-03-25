@@ -13,14 +13,14 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractFormValidRequestHandler;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
-use FSi\Bundle\AdminBundle\Event\BatchEvent;
-use FSi\Bundle\AdminBundle\Event\BatchEvents;
-use FSi\Bundle\AdminBundle\Event\BatchPreApplyEvent;
+use FSi\Bundle\AdminBundle\Event\BatchObjectPostApplyEvent;
+use FSi\Bundle\AdminBundle\Event\BatchObjectPreApplyEvent;
+use FSi\Bundle\AdminBundle\Event\BatchObjectsPostApplyEvent;
+use FSi\Bundle\AdminBundle\Event\BatchObjectsPreApplyEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
-use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -29,10 +29,7 @@ use function get_class;
 
 class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
 {
-    /**
-     * @var FlashMessages
-     */
-    private $flashMessages;
+    private FlashMessages $flashMessages;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -59,8 +56,8 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
         }
 
         foreach ($objects as $object) {
-            $preEvent = new BatchPreApplyEvent($element, $request, $object);
-            $this->eventDispatcher->dispatch($preEvent, BatchEvents::BATCH_OBJECT_PRE_APPLY);
+            $preEvent = new BatchObjectPreApplyEvent($element, $request, $object);
+            $this->eventDispatcher->dispatch($preEvent);
 
             if (true === $preEvent->shouldSkip()) {
                 continue;
@@ -68,42 +65,33 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
 
             $element->apply($object);
 
-            $this->eventDispatcher->dispatch(
-                new BatchEvent($element, $request, $object),
-                BatchEvents::BATCH_OBJECT_POST_APPLY
-            );
+            $this->eventDispatcher->dispatch(new BatchObjectPostApplyEvent($element, $request, $object));
         }
     }
 
+    protected function getPreSaveEvent(FormEvent $event): FormEvent
+    {
+        return BatchObjectsPreApplyEvent::fromOtherEvent($event);
+    }
+
+    protected function getPostSaveEvent(FormEvent $event): FormEvent
+    {
+        return BatchObjectsPostApplyEvent::fromOtherEvent($event);
+    }
+
+    /**
+     * @param BatchElement $element
+     * @param Request $request
+     * @return array<int|string,array<string,mixed>|object>
+     */
     private function getObjects(BatchElement $element, Request $request): array
     {
-        $objects = [];
         $indexes = $request->request->all()['indexes'] ?? [];
 
         if (0 === count($indexes)) {
             return [];
         }
 
-        foreach ($indexes as $index) {
-            $object = $element->getDataIndexer()->getData($index);
-
-            if (null === $object) {
-                throw new RequestHandlerException(sprintf("Can't find object with id %s", $index));
-            }
-
-            $objects[] = $object;
-        }
-
-        return $objects;
-    }
-
-    protected function getPreSaveEventName(): string
-    {
-        return BatchEvents::BATCH_OBJECTS_PRE_APPLY;
-    }
-
-    protected function getPostSaveEventName(): string
-    {
-        return BatchEvents::BATCH_OBJECTS_POST_APPLY;
+        return $element->getDataIndexer()->getDataSlice($indexes);
     }
 }

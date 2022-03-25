@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class AdminEvent extends Event
+abstract class AdminEvent extends Event
 {
     protected Element $element;
     protected Request $request;

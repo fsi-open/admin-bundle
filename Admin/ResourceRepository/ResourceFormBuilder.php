@@ -17,15 +17,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ResourceFormBuilder
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
+    protected FormFactoryInterface $formFactory;
 
-    /**
-     * @var MapBuilder
-     */
-    protected $mapBuilder;
+    protected MapBuilder $mapBuilder;
 
     public function __construct(FormFactoryInterface $formFactory, MapBuilder $mapBuilder)
     {
@@ -33,6 +27,10 @@ class ResourceFormBuilder
         $this->mapBuilder = $mapBuilder;
     }
 
+    /**
+     * @param Element $element
+     * @return FormInterface<string,FormInterface>
+     */
     public function build(Element $element): FormInterface
     {
         $resources = $this->getResourceGroup($element->getKey());
@@ -48,6 +46,10 @@ class ResourceFormBuilder
         return $builder->getForm();
     }
 
+    /**
+     * @param string $key
+     * @return array<string,mixed>
+     */
     private function getResourceGroup(string $key): array
     {
         $map = $this->mapBuilder->getMap();
@@ -77,8 +79,8 @@ class ResourceFormBuilder
     /**
      * @param Element $element
      * @param ResourceValueRepository $valueRepository
-     * @param array<ResourceInterface> $resources
-     * @return array
+     * @param array<string,ResourceInterface> $resources
+     * @return array<string,mixed>
      */
     private function createFormData(
         Element $element,
@@ -97,8 +99,8 @@ class ResourceFormBuilder
 
     /**
      * @param Element $element
-     * @param FormBuilderInterface $builder
-     * @param ResourceInterface[] $resources
+     * @param FormBuilderInterface<string,FormBuilderInterface> $builder
+     * @param array<ResourceInterface> $resources
      */
     private function buildForm(
         Element $element,

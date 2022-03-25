@@ -13,6 +13,10 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\Display\GenericDisplayElement;
 
+/**
+ * @template T
+ * @template-implements Element<T>
+ */
 abstract class DisplayElement extends GenericDisplayElement implements Element
 {
     use DataIndexerElementImpl;

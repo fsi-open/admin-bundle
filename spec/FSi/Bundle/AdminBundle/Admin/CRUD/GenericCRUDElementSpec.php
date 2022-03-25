@@ -7,9 +7,11 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 
-use FSi\Component\DataGrid\DataGridFactory;
+use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -42,8 +44,9 @@ class GenericCRUDElementSpec extends ObjectBehavior
         $this->getRoute()->shouldReturn('fsi_admin_list');
     }
 
-    public function it_throws_exception_when_init_datagrid_does_not_return_datagrid(DataGridFactory $factory): void
-    {
+    public function it_throws_exception_when_init_datagrid_does_not_return_datagrid(
+        DataGridFactoryInterface $factory
+    ): void {
         $this->setDataGridFactory($factory);
         $factory->createDataGrid(Argument::cetera())->willReturn(null);
 
@@ -51,7 +54,7 @@ class GenericCRUDElementSpec extends ObjectBehavior
     }
 
     public function it_adds_batch_column_to_datagrid_when_element_allow_delete_objects(
-        DataGridFactory $factory,
+        DataGridFactoryInterface $factory,
         DataGridInterface $datagrid
     ): void {
         $factory->createDataGrid('my_datagrid')->shouldBeCalled()->willReturn($datagrid);

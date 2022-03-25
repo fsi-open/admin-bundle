@@ -17,6 +17,7 @@ use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -24,15 +25,9 @@ use function array_key_exists;
 
 class ElementVoter implements VoterInterface
 {
-    /**
-     * @var ManagerInterface
-     */
-    private $manager;
+    private ManagerInterface $manager;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     public function __construct(ManagerInterface $manager, RequestStack $requestStack)
     {
@@ -49,7 +44,7 @@ class ElementVoter implements VoterInterface
         $element = $this->getRequestElement();
 
         while (true) {
-            /** @var array $routes */
+            /** @var array<int,mixed> $routes */
             $routes = $item->getExtra('routes', []);
             foreach ($routes as $testedRoute) {
                 if (true === $this->isRouteMatchingElement($element, $testedRoute['parameters'])) {
@@ -96,12 +91,22 @@ class ElementVoter implements VoterInterface
         return $this->getRequest()->attributes->get('element');
     }
 
+    /**
+     * @param Element $element
+     * @param array<string,mixed> $testedRouteParameters
+     * @return bool
+     */
     private function isRouteMatchingElement(Element $element, array $testedRouteParameters): bool
     {
         return true === $this->isRouteMatchingElementDirectly($element, $testedRouteParameters)
             || true === $this->isRouteMatchingElementAfterSuccess($element, $testedRouteParameters);
     }
 
+    /**
+     * @param Element $element
+     * @param array<string,mixed> $testedRouteParameters
+     * @return bool
+     */
     private function isRouteMatchingElementDirectly(Element $element, array $testedRouteParameters): bool
     {
         if (false === array_key_exists('element', $testedRouteParameters)) {
@@ -111,6 +116,11 @@ class ElementVoter implements VoterInterface
         return $element->getId() === $testedRouteParameters['element'];
     }
 
+    /**
+     * @param Element $element
+     * @param array<string,mixed> $testedRouteParameters
+     * @return bool
+     */
     private function isRouteMatchingElementAfterSuccess(Element $element, array $testedRouteParameters): bool
     {
         if (false === $element instanceof RedirectableElement) {
@@ -129,8 +139,13 @@ class ElementVoter implements VoterInterface
         return $successParameters['element'] === $testedRouteParameters['element'];
     }
 
-    private function getRequest(): ?Request
+    private function getRequest(): Request
     {
-        return $this->requestStack->getCurrentRequest();
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            throw new RuntimeException("Menu is only available in request context");
+        }
+
+        return $request;
     }
 }

@@ -17,20 +17,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FlashMessages
 {
-    /**
-     * @var FlashBagInterface|null
-     */
-    private $flashBag;
+    private ?FlashBagInterface $flashBag = null;
 
-    /**
-     * @var string
-     */
-    private $prefix;
+    private string $prefix;
 
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(SessionInterface $session, string $prefix)
     {
@@ -38,42 +29,72 @@ class FlashMessages
         $this->session = $session;
     }
 
-    public function success(string $message, array $params = [], string $domain = 'FSiAdminBundle')
+    /**
+     * @param string $message
+     * @param array<string,mixed> $params
+     * @param string $domain
+     */
+    public function success(string $message, array $params = [], string $domain = 'FSiAdminBundle'): void
     {
         $this->add('success', $message, $params, $domain);
     }
 
-    public function error(string $message, array $params = [], string $domain = 'FSiAdminBundle')
+    /**
+     * @param string $message
+     * @param array<string,mixed> $params
+     * @param string $domain
+     */
+    public function error(string $message, array $params = [], string $domain = 'FSiAdminBundle'): void
     {
         $this->add('error', $message, $params, $domain);
     }
 
-    public function warning(string $message, array $params = [], string $domain = 'FSiAdminBundle')
+    /**
+     * @param string $message
+     * @param array<string,mixed> $params
+     * @param string $domain
+     */
+    public function warning(string $message, array $params = [], string $domain = 'FSiAdminBundle'): void
     {
         $this->add('warning', $message, $params, $domain);
     }
 
-    public function info(string $message, array $params = [], string $domain = 'FSiAdminBundle')
+    /**
+     * @param string $message
+     * @param array<string,mixed> $params
+     * @param string $domain
+     */
+    public function info(string $message, array $params = [], string $domain = 'FSiAdminBundle'): void
     {
         $this->add('info', $message, $params, $domain);
     }
 
+    /**
+     * @return array<string,array{text:string,domain:string,params:array<string,mixed>}>
+     */
     public function all(): array
     {
         return $this->getFlashBag()->get($this->prefix);
     }
 
+    /**
+     * @param string $type
+     * @param string $message
+     * @param array<string,mixed> $params
+     * @param string $domain
+     */
     private function add(string $type, string $message, array $params, string $domain): void
     {
-        if (true === $this->getFlashBag()->has($this->prefix)) {
-            $messages = $this->getFlashBag()->get($this->prefix);
+        $flashBag = $this->getFlashBag();
+        if (true === $flashBag->has($this->prefix)) {
+            $messages = $flashBag->get($this->prefix);
         } else {
             $messages = [];
         }
 
         $messages[$type][] = ['text' => $message, 'domain' => $domain, 'params' => $params];
 
-        $this->flashBag->set($this->prefix, $messages);
+        $flashBag->set($this->prefix, $messages);
     }
 
     private function getFlashBag(): FlashBagInterface

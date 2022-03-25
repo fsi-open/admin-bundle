@@ -18,17 +18,33 @@ use Symfony\Component\HttpFoundation\Request;
 class FormEvent extends AdminEvent
 {
     /**
-     * @var FormInterface
+     * @var FormInterface<string,FormInterface>
      */
-    protected $form;
+    protected FormInterface $form;
 
-    public function __construct(Element $element, Request $request, FormInterface $form)
+    /**
+     * @return static
+     */
+    public static function fromOtherEvent(self $event): self
+    {
+        return new static($event->getElement(), $event->getRequest(), $event->getForm());
+    }
+
+    /**
+     * @param Element $element
+     * @param Request $request
+     * @param FormInterface<string,FormInterface> $form
+     */
+    final public function __construct(Element $element, Request $request, FormInterface $form)
     {
         parent::__construct($element, $request);
 
         $this->form = $form;
     }
 
+    /**
+     * @return FormInterface<string,FormInterface>
+     */
     public function getForm(): FormInterface
     {
         return $this->form;

@@ -13,6 +13,7 @@ framework:
     validation:      { enable_annotations: true }
     profiler:        { only_exceptions: false }
     test:            ~
+    http_client:     ~
     session:
         storage_id:     session.storage.filesystem
 
@@ -24,20 +25,42 @@ doctrine:
         path: "%kernel.project_dir%/features/fixtures/project/var/data.sqlite"
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        auto_mapping: true
+        auto_mapping: false
+        mapping:
+            name: Fixtures
+            type: xml
+            dir: "%kernel.project_dir%/features/fixtures/project/config/doctrine"
+            prefix: 'FSi\FixturesBundle\Entity'
+            is_bundle: false
 
 fsi_resource_repository:
     map_path: "%kernel.project_dir%/features/fixtures/project/config/resource_map.yml"
     resource_class: FSi\FixturesBundle\Entity\Resource
 
-fsi_doctrine_extensions:
-    orm:
-        default:
-            uploadable: true
-
 fsi_admin:
     locales: [en, pl]
     menu_config_path: "%kernel.project_dir%/features/fixtures/project/config/admin_menu.yml"
+
+fsi_files:
+    url_adapters:
+        local_fs: fsi.files.local_adapter
+    entities:
+        FSi\FixturesBundle\Entity\News:
+            filesystem: local_fs
+            prefix: news
+            fields:
+                - photo
+
+oneup_flysystem:
+    adapters:
+        local_adapter:
+            local:
+                directory: "%kernel.project_dir%/features/fixtures/project/web/files"
+    filesystems:
+        local_fs:
+            mount: local_fs
+            adapter: local_adapter
+            alias: League\Flysystem\Filesystem
 
 monolog:
     handlers:

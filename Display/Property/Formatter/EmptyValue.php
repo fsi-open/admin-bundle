@@ -15,14 +15,8 @@ use FSi\Bundle\AdminBundle\Display\Property\ValueFormatter;
 
 class EmptyValue implements ValueFormatter
 {
-    /**
-     * @var string
-     */
-    private $emptyValue;
+    private string $emptyValue;
 
-    /**
-     * @param string $emptyValue
-     */
     public function __construct(string $emptyValue = '-')
     {
         $this->emptyValue = $emptyValue;

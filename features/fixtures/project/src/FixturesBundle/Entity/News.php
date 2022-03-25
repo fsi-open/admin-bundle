@@ -4,83 +4,49 @@ declare(strict_types=1);
 
 namespace FSi\FixturesBundle\Entity;
 
+use Comment;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use FSi\Bundle\DoctrineExtensionsBundle\Validator\Constraints as UploadableAssert;
-use FSi\DoctrineExtensions\Uploadable\Mapping\Annotation as Uploadable;
+use FSi\Component\Files\WebFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="news")
- */
 class News
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    private ?int $id = null;
+
+    private ?string $title = null;
+
+    private ?string $subtitle = null;
+
+    private ?DateTimeInterface $date = null;
+
+    private bool $visible = false;
+
+    private ?DateTimeInterface $createdAt = null;
+
+    private ?string $creatorEmail = null;
+
+    private ?string $photoPath = null;
+
+    private ?WebFile $photo = null;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @var Collection<int,Category>
      */
-    protected $title;
+    private Collection $categories;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    protected $subtitle;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    protected $date;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $visible = false;
-
-    /**
-     * @ORM\Column(type="datetime", name="created_at")
-     */
-    protected $createdAt;
-
-    /**
-     * @ORM\Column(type="text", name="creator_email")
-     */
-    protected $creatorEmail;
-
-    /**
-     * @ORM\Column(length=255, nullable=true)
-     * @Uploadable\Uploadable(targetField="photo")
-     */
-    protected $photoKey;
-
-    /**
-     * @var \FSi\DoctrineExtensions\Uploadable\File|\SplFileInfo
-     * @UploadableAssert\Image()
-     */
-    protected $photo;
-
-    /**
-     * @var Category[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Category")
-     */
-    protected $categories;
-
-    /**
-     * @var Tag[]|Collection
+     * @var Collection<int,Tag>
      *
      * @Assert\Valid
-     * @ORM\OneToMany(targetEntity="Tag", mappedBy="news", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $tags;
+    private Collection $tags;
+
+    /**
+     * @var Collection<int,Comment>
+     */
+    private Collection $comments;
 
     public function __construct()
     {
@@ -154,28 +120,17 @@ class News
         return $this->visible;
     }
 
-    public function getPhotoKey(): ?string
+    public function getPhotoPath(): ?string
     {
-        return $this->photoKey;
+        return $this->photoPath;
     }
 
-    public function setPhotoKey(?string $photoKey): void
-    {
-        $this->photoKey = $photoKey;
-    }
-
-    /**
-     * @return \FSi\DoctrineExtensions\Uploadable\File|\SplFileInfo
-     */
-    public function getPhoto()
+    public function getPhoto(): ?WebFile
     {
         return $this->photo;
     }
 
-    /**
-     * @param \FSi\DoctrineExtensions\Uploadable\File|\SplFileInfo $photo
-     */
-    public function setPhoto($photo): void
+    public function setPhoto(?WebFile $photo): void
     {
         $this->photo = $photo;
     }
@@ -191,7 +146,7 @@ class News
     }
 
     /**
-     * @return Category[]
+     * @return array<Category>
      */
     public function getCategories(): array
     {
@@ -199,7 +154,7 @@ class News
     }
 
     /**
-     * @return Tag[]|Collection
+     * @return Collection<int,Tag>
      */
     public function getTags(): Collection
     {
@@ -208,7 +163,7 @@ class News
 
     public function addTag(Tag $tag): void
     {
-        if (!$this->tags->contains($tag)) {
+        if (false === $this->tags->contains($tag)) {
             $tag->setNews($this);
             $this->tags->add($tag);
         }
@@ -220,6 +175,9 @@ class News
         $this->tags->removeElement($tag);
     }
 
+    /**
+     * @param array<int,Tag> $tags
+     */
     public function setTags(array $tags): void
     {
         $this->tags = new ArrayCollection($tags);

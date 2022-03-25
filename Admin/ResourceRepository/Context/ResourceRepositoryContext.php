@@ -26,20 +26,14 @@ use function get_class;
 
 class ResourceRepositoryContext extends ContextAbstract
 {
-    /**
-     * @var ResourceRepositoryElement
-     */
-    protected $element;
+    protected ResourceRepositoryElement $element;
+
+    private ResourceFormBuilder $resourceFormBuilder;
 
     /**
-     * @var ResourceFormBuilder
+     * @var FormInterface<string,FormInterface>
      */
-    private $resourceFormBuilder;
-
-    /**
-     * @var FormInterface
-     */
-    private $form;
+    private FormInterface $form;
 
     /**
      * @param iterable<HandlerInterface> $requestHandlers
@@ -65,12 +59,7 @@ class ResourceRepositoryContext extends ContextAbstract
         $this->form = $this->resourceFormBuilder->build($this->element);
     }
 
-    public function hasTemplateName(): bool
-    {
-        return $this->element->hasOption('template') || parent::hasTemplateName();
-    }
-
-    public function getTemplateName(): string
+    public function getTemplateName(): ?string
     {
         return true === $this->element->hasOption('template')
             ? $this->element->getOption('template')

@@ -12,30 +12,24 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\Event;
 
-class BatchEvent extends Event
+abstract class BatchEvent extends Event
 {
-    /**
-     * @var Element
-     */
-    private $element;
+    private Element $element;
+
+    private Request $request;
 
     /**
-     * @var Request
-     */
-    private $request;
-
-    /**
-     * @var object
+     * @var array<string,mixed>|object
      */
     private $object;
 
     /**
      * @param Element $element
      * @param Request $request
-     * @param object $object
+     * @param array<string,mixed>|object $object
      */
     public function __construct(Element $element, Request $request, $object)
     {
@@ -58,7 +52,7 @@ class BatchEvent extends Event
     }
 
     /**
-     * @return object
+     * @return array<string,mixed>|object
      */
     public function getObject()
     {

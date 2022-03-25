@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Event;
 
-final class AdminEvents
+final class ListResponsePreRenderEvent extends ListEvent
 {
-    public const CONTEXT_PRE_CREATE = 'admin.context.pre_create';
 }

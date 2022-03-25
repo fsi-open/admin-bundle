@@ -19,30 +19,24 @@ use function array_key_exists;
 
 class Item
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string|null
-     */
-    private $label;
+    private ?string $label = null;
 
     /**
      * @var array<Item>
      */
-    private $children;
+    private array $children;
 
     /**
-     * @var array
+     * @var array<string,mixed>
      */
-    private $options;
+    private array $options;
 
     public function __construct(?string $name = null)
     {
         $this->children = [];
-        $this->name = $name;
+        $this->name = $name ?? '';
 
         $this->setOptions([]);
     }
@@ -92,6 +86,9 @@ class Item
         return $this->name;
     }
 
+    /**
+     * @param array<string,mixed> $options
+     */
     public function setOptions(array $options): void
     {
         $optionsResolver = new OptionsResolver();
@@ -117,6 +114,9 @@ class Item
         return $this->options[$name];
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getOptions(): array
     {
         return $this->options;

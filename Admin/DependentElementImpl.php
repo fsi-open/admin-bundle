@@ -17,15 +17,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 trait DependentElementImpl
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private RequestStack $requestStack;
 
-    /**
-     * @var Element
-     */
-    private $parentElement;
+    private Element $parentElement;
 
     public function setParentElement(Element $element): void
     {
@@ -43,7 +37,7 @@ trait DependentElementImpl
     }
 
     /**
-     * @return object|null
+     * @return array<string,mixed>|object|null
      */
     public function getParentObject()
     {

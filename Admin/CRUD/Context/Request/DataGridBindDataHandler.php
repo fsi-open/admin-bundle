@@ -14,51 +14,68 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use FSi\Bundle\AdminBundle\Event\ListDataGridPostSubmitRequestEvent;
+use FSi\Bundle\AdminBundle\Event\ListDataGridPreSubmitRequestEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
-use FSi\Bundle\AdminBundle\Event\ListEvents;
+use FSi\Bundle\AdminBundle\Event\ListResponsePreRenderEvent;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
+use FSi\Component\DataGrid\DataGridFormHandlerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function get_class;
+use function sprintf;
+
 class DataGridBindDataHandler extends AbstractHandler
 {
+    private DataGridFormHandlerInterface $dataGridFormHandler;
+
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        DataGridFormHandlerInterface $dataGridFormHandler
+    ) {
+        parent::__construct($eventDispatcher);
+
+        $this->dataGridFormHandler = $dataGridFormHandler;
+    }
+
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
-        $event = $this->validateEvent($event);
+        if (false === $event instanceof ListEvent) {
+            throw new RequestHandlerException(sprintf('%s require ListEvent', get_class($this)));
+        }
 
         if (true === $request->isMethod(Request::METHOD_POST)) {
-            $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_PRE_BIND);
-            if ($event->hasResponse()) {
-                return $event->getResponse();
+            $dataGridPreSubmitEvent = ListDataGridPreSubmitRequestEvent::fromOtherEvent($event);
+            $this->eventDispatcher->dispatch($dataGridPreSubmitEvent);
+            $response = $dataGridPreSubmitEvent->getResponse();
+            if (null !== $response) {
+                return $response;
             }
 
-            $event->getDataGrid()->bindData($request);
-            $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_REQUEST_POST_BIND);
-            if (true === $event->hasResponse()) {
-                return $event->getResponse();
+            $this->dataGridFormHandler->submit($event->getDataGrid(), $request);
+
+            $dataGridPostSubmitEvent = ListDataGridPostSubmitRequestEvent::fromOtherEvent($event);
+            $this->eventDispatcher->dispatch($dataGridPostSubmitEvent);
+            $response = $dataGridPostSubmitEvent->getResponse();
+            if (null !== $response) {
+                return $response;
             }
 
-            /** @var ListElement $element */
-            $element = $event->getElement();
-            $element->saveDataGrid();
+            if (true === $this->dataGridFormHandler->isValid($event->getDataGrid())) {
+                /** @var ListElement $element */
+                $element = $event->getElement();
+                $element->saveDataGrid();
+            }
+
             $event->getDataSource()->bindParameters($request);
             $event->getDataGrid()->setData($event->getDataSource()->getResult());
         }
 
-        $this->eventDispatcher->dispatch($event, ListEvents::LIST_RESPONSE_PRE_RENDER);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
+        $responsePreRenderEvent = ListResponsePreRenderEvent::fromOtherEvent($event);
+        $this->eventDispatcher->dispatch($responsePreRenderEvent);
 
-        return null;
-    }
-
-    private function validateEvent(AdminEvent $event): ListEvent
-    {
-        if (!$event instanceof ListEvent) {
-            throw new RequestHandlerException(sprintf('%s require ListEvent', get_class($this)));
-        }
-
-        return $event;
+        return $responsePreRenderEvent->getResponse();
     }
 }

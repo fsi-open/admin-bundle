@@ -13,39 +13,36 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context\Request;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\AbstractHandler;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
+use FSi\Bundle\AdminBundle\Event\ListDataGridPostSetDataEvent;
+use FSi\Bundle\AdminBundle\Event\ListDataGridPreSetDataEvent;
 use FSi\Bundle\AdminBundle\Event\ListEvent;
-use FSi\Bundle\AdminBundle\Event\ListEvents;
 use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function get_class;
+use function sprintf;
 
 class DataGridSetDataHandler extends AbstractHandler
 {
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
-        $event = $this->validateEvent($event);
-
-        $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_PRE_BIND);
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        $event->getDataGrid()->setData($event->getDataSource()->getResult());
-        $this->eventDispatcher->dispatch($event, ListEvents::LIST_DATAGRID_DATA_POST_BIND);
-
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
-
-        return null;
-    }
-
-    private function validateEvent(AdminEvent $event): ListEvent
-    {
         if (false === $event instanceof ListEvent) {
             throw new RequestHandlerException(sprintf('%s requires ListEvent', get_class($this)));
         }
 
-        return $event;
+        $dataGridPreSetDataEvent = ListDataGridPreSetDataEvent::fromOtherEvent($event);
+        $this->eventDispatcher->dispatch($dataGridPreSetDataEvent);
+        $response = $dataGridPreSetDataEvent->getResponse();
+        if (null !== $response) {
+            return $response;
+        }
+
+        $event->getDataGrid()->setData($event->getDataSource()->getResult());
+
+        $dataGridPostSetDataEvent = ListDataGridPostSetDataEvent::fromOtherEvent($event);
+        $this->eventDispatcher->dispatch($dataGridPostSetDataEvent);
+
+        return $dataGridPostSetDataEvent->getResponse();
     }
 }

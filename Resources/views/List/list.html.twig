@@ -48,8 +48,8 @@
 {% block under_content %}
     <div class="pull-left form-inline datagrid-actions">
     {% block batch_actions %}
-        {% if datagrid_view.hasColumnType('batch') == true %}
-            {% for column in datagrid_view.getColumns %}
+        {% if datagrid_view.headers['batch'] is defined %}
+            {% for column in datagrid_view.headers %}
                 {% if column.type == 'batch' %}
                     {% set batch_form = column.getAttribute('batch_form') %}
                     {% form_theme batch_form admin_templates_form_theme %}
@@ -65,7 +65,7 @@
                         }
                     }) }}
                     <form class="form hidden" method="POST" data-datagrid-name="{{ datagrid_view.name }}">
-                        {% for index in datagrid_view.indexes %}
+                        {% for index in datagrid_view|keys %}
                             <input type="checkbox" class="hidden" value="{{ index }}" name="indexes[]">
                         {% endfor %}
                         {{ form_rest(batch_form) }}
@@ -78,7 +78,7 @@
     </div>
     {% block results %}
     <div id="list-results" class="pull-right">
-        <strong>{{ 'crud.list.datagrid.result_count'|trans }} {{ datasource_view.result|length }}</strong>
+        <strong>{{ 'crud.list.datagrid.result_count'|trans }} {{ datasource_view|length }}</strong>
         {{ datasource_max_results_widget(datasource_view) }}
     </div>
     {% endblock results %}

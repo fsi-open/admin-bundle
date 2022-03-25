@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
@@ -14,6 +16,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataGrid\DataGridViewInterface;
 use FSi\Component\DataSource\DataSourceInterface;
+use FSi\Component\DataSource\DataSourceViewInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +29,7 @@ class ListElementContextSpec extends ObjectBehavior
     public function let(
         ListElement $element,
         DataSourceInterface $datasource,
+        DataSourceViewInterface $dataSourceView,
         DataGridInterface $datagrid,
         DataGridViewInterface $datagridView,
         HandlerInterface $handler
@@ -34,6 +38,7 @@ class ListElementContextSpec extends ObjectBehavior
         $element->createDataGrid()->willReturn($datagrid);
         $datagrid->createView()->willReturn($datagridView);
         $element->createDataSource()->willReturn($datasource);
+        $datasource->createView()->willReturn($dataSourceView);
         $this->setElement($element);
     }
 
@@ -54,14 +59,12 @@ class ListElementContextSpec extends ObjectBehavior
     {
         $element->hasOption('template_list')->willReturn(false);
         $this->getTemplateName()->shouldReturn('default_list');
-        $this->hasTemplateName()->shouldReturn(true);
     }
 
     public function it_returns_template_from_element_if_it_has_one(ListElement $element): void
     {
         $element->hasOption('template_list')->willReturn(true);
         $element->getOption('template_list')->willReturn('list.html.twig');
-        $this->hasTemplateName()->shouldReturn(true);
         $this->getTemplateName()->shouldReturn('list.html.twig');
     }
 
@@ -81,8 +84,7 @@ class ListElementContextSpec extends ObjectBehavior
         $handler->handleRequest(Argument::type(ListEvent::class), $request)
             ->willReturn($response);
 
-        $this->handleRequest($request)
-            ->shouldReturnAnInstanceOf(Response::class);
+        $this->handleRequest($request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     public function getMatchers(): array

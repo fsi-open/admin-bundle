@@ -1,13 +1,25 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension;
 
+use Closure;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Component\DataGrid\Column\ColumnInterface;
 use FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface;
 use FSi\Component\DataGrid\Column\ColumnTypeInterface;
 use FSi\Component\DataGrid\Column\HeaderViewInterface;
+use FSi\Component\DataGrid\ColumnType\Batch;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -47,25 +59,24 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
     public function it_should_extend_batch_column(): void
     {
-        $this->getExtendedColumnTypes()->shouldReturn(['batch']);
+        $this->getExtendedColumnTypes()->shouldReturn([Batch::class]);
     }
 
     public function it_adds_actions_options(ColumnTypeInterface $column, OptionsResolver $optionsResolver): void
     {
-        $column->getOptionsResolver()->willReturn($optionsResolver);
-
-        $optionsResolver->setDefaults(['actions' => [], 'translation_domain' => 'FSiAdminBundle'])
+        $optionsResolver->setDefaults(['translation_domain' => 'FSiAdminBundle'])
             ->shouldBeCalled();
-        $optionsResolver->setAllowedTypes('actions', ['array', 'null'])->shouldBeCalled();
+        $optionsResolver->setAllowedTypes('actions', ['array'])->shouldBeCalled();
         $optionsResolver->setAllowedTypes('translation_domain', ['string'])->shouldBeCalled();
+        $optionsResolver->setDefault('actions', Argument::type(Closure::class))->shouldBeCalled();
 
-        $this->initOptions($column);
+        $this->initOptions($optionsResolver);
     }
 
     public function it_does_not_add_batch_actions_to_form_when_none_are_defined(
         FormBuilderInterface $formBuilder,
         FormView $formView,
-        ColumnTypeInterface $column,
+        ColumnInterface $column,
         HeaderViewInterface $view
     ): void {
         $column->getOption('actions')->willReturn([]);
@@ -76,7 +87,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
     }
 
     public function it_throws_exception_when_wrong_action_option_is_passed(
-        ColumnTypeInterface $column,
+        ColumnInterface $column,
         HeaderViewInterface $view
     ): void {
         $column->getOption('actions')->willReturn([['wrong_option' => 'value']]);
@@ -85,59 +96,30 @@ class BatchActionExtensionSpec extends ObjectBehavior
             ->during('buildHeaderView', [$column, $view]);
     }
 
-    public function it_throws_exception_when_non_existing_element_is_passed(
-        ManagerInterface $manager,
-        FormBuilderInterface $formBuilder,
-        ColumnTypeInterface $column,
-        HeaderViewInterface $view,
-        FormView $formView
-    ): void {
-        $column->getOption('actions')->willReturn(
-            [
-                [
-                    'element' => 'some_batch_element_id',
-                    'label' => 'batch_action_label',
-                ],
-            ]
-        );
-        $manager->hasElement('some_batch_element_id')->willReturn(false);
-
-        $formBuilder->add(Argument::any())->shouldNotBeCalled();
-        $view->setAttribute('batch_form', $formView)->shouldNotBeCalled();
-
-        $this->shouldThrow(new RuntimeException('Unknown element "some_batch_element_id" specified in batch action'))
-            ->during('buildHeaderView', [$column, $view]);
-    }
-
     public function it_adds_actions_choice_to_form_when_actions_are_defined(
-        ManagerInterface $manager,
-        BatchElement $batchElement,
-        ParameterBag $queryAttributes,
         RouterInterface $router,
         FormBuilderInterface $formBuilder,
         FormView $formView,
-        ColumnTypeInterface $column,
+        ColumnInterface $column,
         HeaderViewInterface $view
     ): void {
         $column->getOption('actions')->willReturn(
             [
                 [
                     'element' => 'some_batch_element_id',
-                    'additional_parameters' => ['some_additional_parameter' => 'some_value'],
+                    'additional_parameters' => [
+                        'element' => 'some_batch_element_id',
+                        'some_additional_parameter' => 'some_value',
+                        'redirect_uri' => 'some_redirect_uri',
+                    ],
                     'label' => 'batch_action_label',
+                    'route_name' => 'fsi_admin_batch',
+                    'redirect_uri' => true,
                 ],
             ]
         );
 
         $column->getOption('translation_domain')->willReturn('FSiAdminBundle');
-
-        $manager->hasElement('some_batch_element_id')->willReturn(true);
-        $manager->getElement('some_batch_element_id')->willReturn($batchElement);
-        $batchElement->getId()->willReturn('some_batch_element_id');
-        $batchElement->getRoute()->willReturn('fsi_admin_batch');
-        $batchElement->getRouteParameters()->willReturn(['element' => 'some_batch_element_id']);
-        $queryAttributes->has('redirect_uri')->willReturn(true);
-        $queryAttributes->get('redirect_uri')->willReturn('some_redirect_uri');
 
         $router->generate(
             'fsi_admin_batch',
@@ -146,7 +128,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
                 'some_additional_parameter' => 'some_value',
                 'redirect_uri' => 'some_redirect_uri',
             ]
-        )->willReturn('path_to_batch_action');
+        )->shouldBeCalled()->willReturn('path_to_batch_action');
 
         $expectedChoices = [
             'crud.list.batch.empty_choice' => '',
@@ -183,7 +165,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
         RouterInterface $router,
         FormBuilderInterface $formBuilder,
         FormView $formView,
-        ColumnTypeInterface $column,
+        ColumnInterface $column,
         HeaderViewInterface $view,
         Request $request
     ): void {
@@ -191,8 +173,13 @@ class BatchActionExtensionSpec extends ObjectBehavior
             [
                 [
                     'element' => 'some_batch_element_id',
-                    'additional_parameters' => ['some_additional_parameter' => 'some_value'],
+                    'additional_parameters' => [
+                        'element' => 'some_batch_element_id',
+                        'some_additional_parameter' => 'some_value',
+                        'redirect_uri' => 'current_request_uri',
+                    ],
                     'label' => 'batch_action_label',
+                    'route_name' => 'fsi_admin_batch',
                 ],
             ]
         );
@@ -247,16 +234,20 @@ class BatchActionExtensionSpec extends ObjectBehavior
         RouterInterface $router,
         FormBuilderInterface $formBuilder,
         FormView $formView,
-        ColumnTypeInterface $column,
+        ColumnInterface $column,
         HeaderViewInterface $view
     ): void {
         $column->getOption('actions')->willReturn(
             [
                 [
                     'element' => 'some_batch_element_id',
-                    'additional_parameters' => ['some_additional_parameter' => 'some_value'],
+                    'additional_parameters' => [
+                        'element' => 'some_batch_element_id',
+                        'some_additional_parameter' => 'some_value',
+                    ],
                     'label' => 'batch_action_label',
                     'redirect_uri' => false,
+                    'route_name' => 'fsi_admin_batch',
                 ],
             ]
         );
@@ -307,14 +298,18 @@ class BatchActionExtensionSpec extends ObjectBehavior
         RouterInterface $router,
         FormBuilderInterface $formBuilder,
         FormView $formView,
-        ColumnTypeInterface $column,
+        ColumnInterface $column,
         HeaderViewInterface $view
     ): void {
         $column->getOption('actions')->willReturn(
             [
                 'action_name' => [
                     'route_name' => 'fsi_admin_custom_batch',
-                    'additional_parameters' => ['element' => 'some_batch_element_id', 'param' => 'value'],
+                    'additional_parameters' => [
+                        'element' => 'some_batch_element_id',
+                        'param' => 'value',
+                        'redirect_uri' => 'some_redirect_uri',
+                    ],
                 ],
             ]
         );

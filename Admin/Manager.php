@@ -18,7 +18,7 @@ class Manager implements ManagerInterface
     /**
      * @var array<Element>
      */
-    protected $elements;
+    protected array $elements;
 
     /**
      * @param iterable<Visitor> $visitors

@@ -19,6 +19,9 @@ interface Element extends RedirectableElement
 {
     public function getKey(): string;
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getResourceFormOptions(): array;
 
     public function save(ResourceValue $resource): void;

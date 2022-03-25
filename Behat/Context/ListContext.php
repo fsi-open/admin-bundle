@@ -17,8 +17,8 @@ use Exception;
 use FSi\Bundle\AdminBundle\Behat\Element\ListElement;
 use FSi\Bundle\AdminBundle\Behat\Page\AdminPanel;
 use FSi\Bundle\AdminBundle\Behat\Page\Page;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Client;
 
 class ListContext extends AbstractContext
 {
@@ -96,7 +96,7 @@ class ListContext extends AbstractContext
                 $data['indexes'][$i] = $id;
                 $i++;
             }
-            /** @var Client $client */
+            /** @var KernelBrowser $client */
             $client = $this->getSession()->getDriver()->getClient();
             $client->request(Request::METHOD_POST, $batchActionUrl, $data);
         }

@@ -11,14 +11,8 @@ use FSi\Bundle\AdminBundle\Factory\Worker;
 
 class DoctrineWorker implements Worker
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $managerRegistry;
+    private ManagerRegistry $managerRegistry;
 
-    /**
-     * @param ManagerRegistry $managerRegistry
-     */
     public function __construct(ManagerRegistry $managerRegistry)
     {
         $this->managerRegistry = $managerRegistry;

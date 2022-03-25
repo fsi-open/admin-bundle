@@ -11,14 +11,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestStackWorker implements Worker
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private RequestStack $requestStack;
 
-    /**
-     * @param RequestStack $requestStack
-     */
     public function __construct(RequestStack $requestStack)
     {
         $this->requestStack = $requestStack;

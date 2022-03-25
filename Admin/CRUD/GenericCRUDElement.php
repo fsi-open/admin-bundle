@@ -25,20 +25,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
 {
-    /**
-     * @var DataSourceFactoryInterface
-     */
-    protected $datasourceFactory;
+    protected DataSourceFactoryInterface $datasourceFactory;
 
-    /**
-     * @var DataGridFactoryInterface
-     */
-    protected $datagridFactory;
+    protected DataGridFactoryInterface $datagridFactory;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
+    protected FormFactoryInterface $formFactory;
 
     public function getRoute(): string
     {
@@ -150,7 +141,7 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
      *
      * @param FormFactoryInterface $factory
      * @param mixed $data
-     * @return FormInterface
+     * @return FormInterface<string,FormInterface>
      */
     abstract protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface;
 }

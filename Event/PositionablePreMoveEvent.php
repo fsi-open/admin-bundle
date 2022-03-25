@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Event;
 
-final class DisplayEvents
+final class PositionablePreMoveEvent extends PositionableEvent
 {
-    public const DISPLAY_PRE_RENDER = 'admin.display.pre_render';
 }

@@ -20,15 +20,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class GenericListElement extends AbstractElement implements ListElement
 {
-    /**
-     * @var DataSourceFactoryInterface
-     */
-    protected $datasourceFactory;
+    protected DataSourceFactoryInterface $datasourceFactory;
 
-    /**
-     * @var DataGridFactoryInterface
-     */
-    protected $datagridFactory;
+    protected DataGridFactoryInterface $datagridFactory;
 
     public function getRoute(): string
     {

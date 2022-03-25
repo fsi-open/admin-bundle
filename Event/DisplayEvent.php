@@ -17,17 +17,28 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DisplayEvent extends AdminEvent
 {
-    /**
-     * @var Display
-     */
-    private $display;
+    private Display $display;
 
     /**
-     * @var mixed
+     * @var array<string,mixed>|object
      */
     private $data;
 
-    public function __construct(Element $element, Request $request, Display $display, $data)
+    /**
+     * @return static
+     */
+    public static function fromOtherEvent(self $event): self
+    {
+        return new static($event->getElement(), $event->getRequest(), $event->getDisplay(), $event->getData());
+    }
+
+    /**
+     * @param Element $element
+     * @param Request $request
+     * @param Display $display
+     * @param array<string,mixed>|object $data
+     */
+    final public function __construct(Element $element, Request $request, Display $display, $data)
     {
         parent::__construct($element, $request);
 
@@ -41,7 +52,7 @@ class DisplayEvent extends AdminEvent
     }
 
     /**
-     * @return mixed
+     * @return array<string,mixed>|object
      */
     public function getData()
     {

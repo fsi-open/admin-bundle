@@ -19,26 +19,14 @@ use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\DisplayEvent;
 use FSi\Bundle\AdminBundle\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use function get_class;
 
 class DisplayContext extends ContextAbstract
 {
-    /**
-     * @var DisplayElement
-     */
-    protected $element;
+    protected DisplayElement $element;
 
-    /**
-     * @var Display
-     */
-    private $display;
-
-    public function hasTemplateName(): bool
-    {
-        return true === $this->element->hasOption('template') || true === parent::hasTemplateName();
-    }
+    private Display $display;
 
     public function getTemplateName(): ?string
     {
@@ -90,11 +78,6 @@ class DisplayContext extends ContextAbstract
     {
         $id = $request->get('id');
 
-        $object = $this->element->getDataIndexer()->getData($id);
-        if (null === $object) {
-            throw new NotFoundHttpException(sprintf('Can\'t find object with id %s', $id));
-        }
-
-        return $object;
+        return $this->element->getDataIndexer()->getData($id);
     }
 }

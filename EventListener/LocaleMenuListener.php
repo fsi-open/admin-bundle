@@ -12,41 +12,39 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
-use FSi\Bundle\AdminBundle\Event\MenuEvents;
+use FSi\Bundle\AdminBundle\Event\MenuToolsEvent;
+use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Intl\Intl;
 use Symfony\Component\Intl\Languages;
-use Symfony\Component\Translation\TranslatorInterface;
-
-use function class_exists;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LocaleMenuListener implements EventSubscriberInterface
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
+
+    private RequestStack $requestStack;
 
     /**
-     * @var RequestStack
+     * @var array<int,string>
      */
-    private $requestStack;
-
-    /**
-     * @var string[]
-     */
-    private $locales;
+    private array $locales;
 
     public static function getSubscribedEvents(): array
     {
         return [
-            MenuEvents::TOOLS => 'createLocaleMenu',
+            MenuToolsEvent::class => 'createLocaleMenu',
         ];
     }
 
+    /**
+     * @param TranslatorInterface $translator
+     * @param RequestStack $requestStack
+     * @param array<int,string> $locales
+     */
     public function __construct(TranslatorInterface $translator, RequestStack $requestStack, array $locales)
     {
         $this->translator = $translator;
@@ -76,7 +74,7 @@ class LocaleMenuListener implements EventSubscriberInterface
                 'fsi_admin_locale',
                 [
                     '_locale' => $locale,
-                    'redirect_uri' => $this->requestStack->getMasterRequest()->getUri()
+                    'redirect_uri' => $this->getCurrentRequest()->getUri()
                 ]
             );
 
@@ -101,6 +99,16 @@ class LocaleMenuListener implements EventSubscriberInterface
 
     private function getCurrentLocale(): string
     {
-        return $this->requestStack->getMasterRequest()->getLocale();
+        return $this->getCurrentRequest()->getLocale();
+    }
+
+    private function getCurrentRequest(): Request
+    {
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            throw new RuntimeException("Batch actions are only available in request context");
+        }
+
+        return $request;
     }
 }

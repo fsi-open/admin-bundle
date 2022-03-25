@@ -288,10 +288,6 @@ class DataContext extends AbstractContext
                 /** @var bool $visible */
                 $visible = $formatters['visible']();
                 $instance->setVisible($visible);
-
-                /** @var string|null $photoKey */
-                $photoKey = $formatters['photoKey']();
-                $instance->setPhotoKey($photoKey);
                 break;
             case $instance instanceof Person:
                 /** @var Person $instance */

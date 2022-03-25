@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * (c) FSi sp. z o.o. <info@fsi.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
@@ -7,7 +16,7 @@ use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LocaleMenuListenerSpec extends ObjectBehavior
 {
@@ -23,7 +32,7 @@ class LocaleMenuListenerSpec extends ObjectBehavior
     ): void {
         $menu = new Item();
         $event->getMenu()->willReturn($menu);
-        $requestStack->getMasterRequest()->willReturn($request);
+        $requestStack->getCurrentRequest()->willReturn($request);
         $request->getLocale()->willReturn('de');
         $request->getUri()->willReturn('uri_to_redirect_to');
 

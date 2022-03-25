@@ -2,6 +2,7 @@ DirectoryIndex app_test.php
 
 SetEnvIf Server_Addr ^10\.0\.0\.200 development=on
 SetEnvIf Server_Addr ^172\. development=on
+SetEnvIf Server_Addr ^192\.168\. development=on
 
 <IfModule mod_php7.c>
     php_value post_max_size 32M

@@ -4,38 +4,18 @@ declare(strict_types=1);
 
 namespace FSi\FixturesBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="tag_element")
- */
 class TagElement
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    private ?int $id = null;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank
-     * @ORM\Column(type="string", length=255)
      */
-    protected $name;
+    private ?string $name;
 
-    /**
-     * @var Tag
-     *
-     * @ORM\ManyToOne(targetEntity="Tag", inversedBy="elements")
-     */
-    protected $tag;
+    private ?Tag $tag = null;
 
     public function getId(): ?int
     {
@@ -47,7 +27,7 @@ class TagElement
         return $this->name;
     }
 
-    public function setName(?string $name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }

@@ -12,18 +12,12 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Event;
 
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
-class MenuEvent extends Event
+abstract class MenuEvent extends Event
 {
-    /**
-     * @var Item
-     */
-    private $menu;
+    private Item $menu;
 
-    /**
-     * @param Item $menu
-     */
     public function __construct(Item $menu)
     {
         $this->menu = $menu;

@@ -14,6 +14,10 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 
+/**
+ * @template T
+ * @template-extends DisplayElement<T>
+ */
 abstract class DependentDisplayElement extends DisplayElement implements DependentElement
 {
     use DependentElementImpl;

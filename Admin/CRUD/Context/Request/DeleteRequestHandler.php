@@ -25,23 +25,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 use function get_class;
+use function gettype;
+use function is_string;
 
 class DeleteRequestHandler implements HandlerInterface
 {
-    /**
-     * @var BatchFormValidRequestHandler
-     */
-    private $batchHandler;
+    private BatchFormValidRequestHandler $batchHandler;
 
-    /**
-     * @var FlashMessages
-     */
-    private $flashMessages;
+    private FlashMessages $flashMessages;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(
         BatchFormValidRequestHandler $batchHandler,
@@ -58,6 +51,7 @@ class DeleteRequestHandler implements HandlerInterface
         if (false === $event instanceof FormEvent) {
             throw InvalidArgumentException::create(self::class, FormEvent::class, get_class($event));
         }
+
         try {
             $this->validateDeletion($event);
             $response = $this->batchHandler->handleRequest($event, $request);
@@ -82,7 +76,14 @@ class DeleteRequestHandler implements HandlerInterface
     private function getRedirectResponse(FormEvent $event, Request $request): RedirectResponse
     {
         if (true === $request->query->has('redirect_uri')) {
-            return new RedirectResponse($request->query->get('redirect_uri'));
+            $redirectUri = $request->query->get('redirect_uri');
+            if (false === is_string($redirectUri)) {
+                throw new LogicException(
+                    sprintf('Query parameter redirect_uri must be a string, "%s" given.', gettype($redirectUri))
+                );
+            }
+
+            return new RedirectResponse($redirectUri);
         }
 
         $element = $event->getElement();

@@ -15,30 +15,27 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 interface Element
 {
-    /**
-     * ID will appear in routes:
-     * - http://example.com/admin/list/{name}
-     * - http://example.com/admin/form/{name}
-     * etc.
-     */
     public function getId(): string;
 
-    /**
-     * Return route name that will be used to generate element url in menu.
-     */
     public function getRoute(): string;
 
     /**
-     * Return array of parameters.
-     * Element id always exists in this array under 'element' key.
+     * @return array<string,mixed>
      */
     public function getRouteParameters(): array;
 
     public function configureOptions(OptionsResolver $resolver): void;
 
+    /**
+     * @param string $name
+     * @return mixed
+     */
     public function getOption(string $name);
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getOptions(): array;
 
-    public function hasOption($name): bool;
+    public function hasOption(string $name): bool;
 }

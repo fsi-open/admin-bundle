@@ -12,25 +12,19 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class LocaleListener implements EventSubscriberInterface
 {
-    /**
-     * @var string
-     */
-    private $defaultLocale;
+    private string $defaultLocale;
 
-    /**
-     * @param string $defaultLocale
-     */
     public function __construct(string $defaultLocale)
     {
         $this->defaultLocale = $defaultLocale;
     }
 
-    public function onKernelRequest(GetResponseEvent $event): void
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
         if (false === $request->hasPreviousSession()) {

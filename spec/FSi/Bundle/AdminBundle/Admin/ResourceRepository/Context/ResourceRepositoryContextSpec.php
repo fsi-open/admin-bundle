@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
@@ -48,14 +50,12 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
     {
         $element->hasOption('template')->willReturn(false);
         $this->getTemplateName()->shouldReturn('default_resource');
-        $this->hasTemplateName()->shouldReturn(true);
     }
 
     public function it_returns_template_from_element_if_it_has_one(ResourceElement $element): void
     {
         $element->hasOption('template')->willReturn(true);
         $element->getOption('template')->willReturn('resource.html.twig');
-        $this->hasTemplateName()->shouldReturn(true);
         $this->getTemplateName()->shouldReturn('resource.html.twig');
     }
 
@@ -68,8 +68,7 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
 
     public function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request): void
     {
-        $handler->handleRequest(Argument::type(FormEvent::class), $request)
-            ->willReturn(null);
+        $handler->handleRequest(Argument::type(FormEvent::class), $request)->willReturn(null);
 
         $this->handleRequest($request)->shouldReturn(null);
     }
@@ -79,11 +78,9 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         Request $request,
         Response $response
     ): void {
-        $handler->handleRequest(Argument::type(FormEvent::class), $request)
-            ->willReturn($response);
+        $handler->handleRequest(Argument::type(FormEvent::class), $request)->willReturn($response);
 
-        $this->handleRequest($request)
-            ->shouldReturnAnInstanceOf(Response::class);
+        $this->handleRequest($request)->shouldReturnAnInstanceOf(Response::class);
     }
 
     public function getMatchers(): array
