@@ -12,9 +12,10 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
-use FSi\Bundle\AdminBundle\Event\BatchEvents;
+use FSi\Bundle\AdminBundle\Event\BatchObjectsPostApplyEvent;
+use FSi\Bundle\AdminBundle\Event\FormDataPostSaveEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use FSi\Bundle\AdminBundle\Event\FormEvents;
+use FSi\Bundle\AdminBundle\Event\FormRequestPostSubmitEvent;
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -30,9 +31,9 @@ class MessagesListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            FormEvents::FORM_REQUEST_POST_SUBMIT => 'onFormRequestPostSubmit',
-            FormEvents::FORM_DATA_POST_SAVE => 'onFormDataPostSave',
-            BatchEvents::BATCH_OBJECTS_POST_APPLY => 'onBatchObjectsPostApply',
+            FormRequestPostSubmitEvent::class => 'onFormRequestPostSubmit',
+            FormDataPostSaveEvent::class => 'onFormDataPostSave',
+            BatchObjectsPostApplyEvent::class => 'onBatchObjectsPostApply',
         ];
     }
 

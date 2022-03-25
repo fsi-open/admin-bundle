@@ -7,7 +7,7 @@ namespace FSi\Bundle\AdminBundle\EventListener;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
-use FSi\Bundle\AdminBundle\Event\MenuEvents;
+use FSi\Bundle\AdminBundle\Event\MenuMainEvent;
 use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
@@ -29,7 +29,7 @@ class MainMenuListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            MenuEvents::MAIN => 'createMainMenu',
+            MenuMainEvent::class => 'createMainMenu',
         ];
     }
 

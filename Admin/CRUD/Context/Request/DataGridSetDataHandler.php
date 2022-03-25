@@ -20,33 +20,29 @@ use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function get_class;
+use function sprintf;
+
 class DataGridSetDataHandler extends AbstractHandler
 {
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
-        $listEvent = $this->validateEvent($event);
+        if (false === $event instanceof ListEvent) {
+            throw new RequestHandlerException(sprintf('%s requires ListEvent', get_class($this)));
+        }
 
-        $dataGridPreSetDataEvent = ListDataGridPreSetDataEvent::fromOtherEvent($listEvent);
+        $dataGridPreSetDataEvent = ListDataGridPreSetDataEvent::fromOtherEvent($event);
         $this->eventDispatcher->dispatch($dataGridPreSetDataEvent);
         $response = $dataGridPreSetDataEvent->getResponse();
         if (null !== $response) {
             return $response;
         }
 
-        $listEvent->getDataGrid()->setData($listEvent->getDataSource()->getResult());
+        $event->getDataGrid()->setData($event->getDataSource()->getResult());
 
-        $dataGridPostSetDataEvent = ListDataGridPostSetDataEvent::fromOtherEvent($listEvent);
+        $dataGridPostSetDataEvent = ListDataGridPostSetDataEvent::fromOtherEvent($event);
         $this->eventDispatcher->dispatch($dataGridPostSetDataEvent);
 
         return $dataGridPostSetDataEvent->getResponse();
-    }
-
-    private function validateEvent(AdminEvent $event): ListEvent
-    {
-        if (false === $event instanceof ListEvent) {
-            throw new RequestHandlerException(sprintf('%s requires ListEvent', get_class($this)));
-        }
-
-        return $event;
     }
 }

@@ -11,28 +11,17 @@ declare(strict_types=1);
 
 namespace FSi\FixturesBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="person")
- */
 class Person
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @Assert\NotBlank
      * @Assert\Email
-     * @ORM\Column(length=100)
      */
-    private $email;
+    private ?string $email = null;
 
     public function getId(): ?int
     {

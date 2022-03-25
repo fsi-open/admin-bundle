@@ -12,35 +12,19 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Session;
-use Doctrine\ORM\EntityManagerInterface;
-use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement as AdminListElement;
 use FSi\Bundle\AdminBundle\Behat\Element\Filters;
 use FSi\Bundle\AdminBundle\Behat\Element\ListElement;
 use FSi\Bundle\AdminBundle\Behat\Element\ListResultsElement;
 use FSi\Bundle\AdminBundle\Behat\Page\AdminPanel;
 use FSi\Component\DataSource\DataSourceInterface;
-use FSi\FixturesBundle\DataSource\DataSourceFactory;
 
 class FiltersContext extends AbstractContext
 {
-    //private DataSourceFactory $dataSourceFactory;
     /**
      * @var array<DataSourceInterface>
      */
     private array $datasources = [];
-
-/*    public function __construct(
-        Session $session,
-        MinkParameters $minkParameters,
-        EntityManagerInterface $entityManager,
-        DataSourceFactory $dataSourceFactory
-    ) {
-        parent::__construct($session, $minkParameters, $entityManager);
-
-        $this->dataSourceFactory = $dataSourceFactory;
-    }*/
 
     /**
      * @Given /^("[^"]*" element) datasource max results is set (\d+)$/
@@ -48,7 +32,6 @@ class FiltersContext extends AbstractContext
     public function elementDatasourceMaxResultsIsSet(AdminListElement $adminElement, $maxResults): void
     {
         expect($this->getDataSource($adminElement)->getMaxResults())->toBe($maxResults);
-        $this->clearDataSource($adminElement);
     }
 
     /**
@@ -59,7 +42,6 @@ class FiltersContext extends AbstractContext
         $dataSource = $this->getDataSource($adminElement);
 
         expect(count($dataSource->getFields()) > 0)->toBe(true);
-        $this->clearDataSource($adminElement);
     }
 
     /**
@@ -77,8 +59,6 @@ class FiltersContext extends AbstractContext
             }
         }
         expect($filters)->toBe(false);
-
-        $this->clearDataSource($adminElement);
     }
 
     /**
@@ -246,11 +226,6 @@ class FiltersContext extends AbstractContext
         }
 
         return $this->datasources[$adminElement->getId()];
-    }
-
-    private function clearDataSource(AdminListElement $element): void
-    {
-        //$this->dataSourceFactory->clearDataSource($element->getId());
     }
 
     private function getFiltersElement(): Filters

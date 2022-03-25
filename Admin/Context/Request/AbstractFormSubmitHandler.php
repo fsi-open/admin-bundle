@@ -17,11 +17,16 @@ use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function get_class;
+use function sprintf;
+
 abstract class AbstractFormSubmitHandler extends AbstractHandler
 {
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
-        $event = $this->validateEvent($event);
+        if (false === $event instanceof FormEvent) {
+            throw new RequestHandlerException(sprintf('%s requires FormEvent', get_class($this)));
+        }
 
         if (false === $request->isMethod(Request::METHOD_POST)) {
             return null;
@@ -40,15 +45,6 @@ abstract class AbstractFormSubmitHandler extends AbstractHandler
         $this->eventDispatcher->dispatch($postSubmitEvent);
 
         return $postSubmitEvent->getResponse();
-    }
-
-    private function validateEvent(AdminEvent $event): FormEvent
-    {
-        if (false === $event instanceof FormEvent) {
-            throw new RequestHandlerException(sprintf('%s requires FormEvent', get_class($this)));
-        }
-
-        return $event;
     }
 
     abstract protected function getPreSubmitEvent(FormEvent $event): FormEvent;

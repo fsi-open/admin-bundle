@@ -6,45 +6,23 @@ namespace FSi\FixturesBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="tag")
- */
 class Tag
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    private ?int $id = null;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank
-     * @ORM\Column(type="string", length=255)
      */
-    protected $name;
+    private ?string $name = null;
+
+    private ?News $news = null;
 
     /**
-     * @var News
-     *
-     * @ORM\ManyToOne(targetEntity="News", inversedBy="tags", cascade={"persist"})
+     * @var Collection<int,TagElement>
      */
-    protected $news;
-
-    /**
-     * @var ArrayCollection|TagElement[]
-     *
-     * @ORM\OneToMany(targetEntity="TagElement", mappedBy="tag", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $elements;
+    private Collection $elements;
 
     public function __construct()
     {
@@ -77,7 +55,7 @@ class Tag
     }
 
     /**
-     * @return TagElement[]|Collection
+     * @return Collection<int,TagElement>
      */
     public function getElements(): Collection
     {
@@ -86,7 +64,7 @@ class Tag
 
     public function addElement(TagElement $element): void
     {
-        if (!$this->elements->contains($element)) {
+        if (false === $this->elements->contains($element)) {
             $element->setTag($this);
             $this->elements->add($element);
         }

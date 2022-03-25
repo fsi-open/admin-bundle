@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\EventListener;
 
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
-use FSi\Bundle\AdminBundle\Event\MenuEvents;
+use FSi\Bundle\AdminBundle\Event\MenuToolsEvent;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
@@ -36,7 +36,7 @@ class LocaleMenuListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            MenuEvents::TOOLS => 'createLocaleMenu',
+            MenuToolsEvent::class => 'createLocaleMenu',
         ];
     }
 
@@ -74,7 +74,7 @@ class LocaleMenuListener implements EventSubscriberInterface
                 'fsi_admin_locale',
                 [
                     '_locale' => $locale,
-                    'redirect_uri' => $this->getMasterRequest()->getUri()
+                    'redirect_uri' => $this->getCurrentRequest()->getUri()
                 ]
             );
 
@@ -99,12 +99,12 @@ class LocaleMenuListener implements EventSubscriberInterface
 
     private function getCurrentLocale(): string
     {
-        return $this->getMasterRequest()->getLocale();
+        return $this->getCurrentRequest()->getLocale();
     }
 
-    private function getMasterRequest(): Request
+    private function getCurrentRequest(): Request
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
             throw new RuntimeException("Batch actions are only available in request context");
         }

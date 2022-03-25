@@ -25,7 +25,13 @@ doctrine:
         path: "%kernel.project_dir%/features/fixtures/project/var/data.sqlite"
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        auto_mapping: true
+        auto_mapping: false
+        mapping:
+            name: Fixtures
+            type: xml
+            dir: "%kernel.project_dir%/features/fixtures/project/config/doctrine"
+            prefix: 'FSi\FixturesBundle\Entity'
+            is_bundle: false
 
 fsi_resource_repository:
     map_path: "%kernel.project_dir%/features/fixtures/project/config/resource_map.yml"

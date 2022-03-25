@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Admin\Context\Request;
 
-use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
@@ -23,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
+use function get_class;
 use function is_string;
 use function sprintf;
 
@@ -39,7 +39,14 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
 
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
-        $event = $this->validateEvent($event);
+        if (false === $event instanceof FormEvent) {
+            throw new RequestHandlerException(sprintf('%s requires FormEvent', get_class($this)));
+        }
+        $element = $event->getElement();
+        if (false === $element instanceof RedirectableElement) {
+            throw new RequestHandlerException(sprintf('%s requires %s', get_class($this), RedirectableElement::class));
+        }
+
         if (false === $this->isValidPostRequest($event, $request)) {
             return null;
         }
@@ -57,7 +64,7 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
         $this->eventDispatcher->dispatch($postSaveEvent);
         $response = $postSaveEvent->getResponse();
 
-        return $response ?? $this->getRedirectResponse($event, $request);
+        return $response ?? $this->getRedirectResponse($element, $request);
     }
 
     protected function isValidPostRequest(FormEvent $event, Request $request): bool
@@ -65,7 +72,7 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
         return true === $request->isMethod(Request::METHOD_POST) && true === $event->getForm()->isValid();
     }
 
-    protected function getRedirectResponse(FormEvent $event, Request $request): RedirectResponse
+    protected function getRedirectResponse(RedirectableElement $element, Request $request): RedirectResponse
     {
         if (true === $request->query->has('redirect_uri')) {
             $redirectUri = $request->query->get('redirect_uri');
@@ -78,8 +85,6 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
             return new RedirectResponse($redirectUri);
         }
 
-        $element = $this->validateElement($event->getElement());
-
         return new RedirectResponse(
             $this->router->generate($element->getSuccessRoute(), $element->getSuccessRouteParameters())
         );
@@ -90,24 +95,4 @@ abstract class AbstractFormValidRequestHandler extends AbstractHandler
     abstract protected function getPreSaveEvent(FormEvent $event): FormEvent;
 
     abstract protected function getPostSaveEvent(FormEvent $event): FormEvent;
-
-    private function validateEvent(AdminEvent $event): FormEvent
-    {
-        if (false === $event instanceof FormEvent) {
-            throw new RequestHandlerException(sprintf('%s requires FormEvent', get_class($this)));
-        }
-
-        $this->validateElement($event->getElement());
-
-        return $event;
-    }
-
-    private function validateElement(Element $element): RedirectableElement
-    {
-        if (false === $element instanceof RedirectableElement) {
-            throw new RequestHandlerException(sprintf('%s requires %s', get_class($this), RedirectableElement::class));
-        }
-
-        return $element;
-    }
 }

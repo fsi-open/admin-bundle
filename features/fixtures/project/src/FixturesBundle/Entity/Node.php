@@ -13,39 +13,19 @@ namespace FSi\FixturesBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="node")
- */
 class Node
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    private ?int $id = null;
+
+    private ?string $title = null;
+
+    private Node $parent;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @var Collection<int,Node>
      */
-    protected $title;
-
-    /**
-     * @var Node
-     *
-     * @ORM\ManyToOne(targetEntity="Node", inversedBy="children", cascade={"persist"})
-     */
-    protected $parent;
-
-    /**
-     * @var Node[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Node")
-     */
-    protected $children;
+    private Collection $children;
 
     public function __construct()
     {
@@ -78,9 +58,9 @@ class Node
     }
 
     /**
-     * @return Collection|Node[]
+     * @return Collection<int,Node>
      */
-    public function getChildren()
+    public function getChildren(): Collection
     {
         return $this->children;
     }

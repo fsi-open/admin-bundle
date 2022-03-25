@@ -32,7 +32,7 @@ class LocaleMenuListenerSpec extends ObjectBehavior
     ): void {
         $menu = new Item();
         $event->getMenu()->willReturn($menu);
-        $requestStack->getMasterRequest()->willReturn($request);
+        $requestStack->getCurrentRequest()->willReturn($request);
         $request->getLocale()->willReturn('de');
         $request->getUri()->willReturn('uri_to_redirect_to');
 

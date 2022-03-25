@@ -11,9 +11,10 @@ declare(strict_types=1);
 
 namespace spec\FSi\Bundle\AdminBundle\EventListener;
 
-use FSi\Bundle\AdminBundle\Event\BatchEvents;
+use FSi\Bundle\AdminBundle\Event\BatchObjectsPostApplyEvent;
+use FSi\Bundle\AdminBundle\Event\FormDataPostSaveEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
-use FSi\Bundle\AdminBundle\Event\FormEvents;
+use FSi\Bundle\AdminBundle\Event\FormRequestPostSubmitEvent;
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormInterface;
@@ -27,10 +28,10 @@ class MessagesListenerSpec extends ObjectBehavior
 
     public function it_listen_events(): void
     {
-        $this->getSubscribedEvents()->shouldReturn([
-            FormEvents::FORM_REQUEST_POST_SUBMIT => 'onFormRequestPostSubmit',
-            FormEvents::FORM_DATA_POST_SAVE => 'onFormDataPostSave',
-            BatchEvents::BATCH_OBJECTS_POST_APPLY => 'onBatchObjectsPostApply',
+        self::getSubscribedEvents()->shouldReturn([
+            FormRequestPostSubmitEvent::class => 'onFormRequestPostSubmit',
+            FormDataPostSaveEvent::class => 'onFormDataPostSave',
+            BatchObjectsPostApplyEvent::class => 'onBatchObjectsPostApply',
         ]);
     }
 

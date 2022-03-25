@@ -51,6 +51,7 @@ class DeleteRequestHandler implements HandlerInterface
         if (false === $event instanceof FormEvent) {
             throw InvalidArgumentException::create(self::class, FormEvent::class, get_class($event));
         }
+
         try {
             $this->validateDeletion($event);
             $response = $this->batchHandler->handleRequest($event, $request);

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                      https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+    <entity name="FSi\FixturesBundle\Entity\Tag" table="tag">
+        <id name="id" type="integer" column="id">
+            <generator strategy="IDENTITY"/>
+        </id>
+        <field name="name" type="string" column="name" length="255" nullable="false"/>
+        <one-to-many field="elements" target-entity="FSi\FixturesBundle\Entity\TagElement" mapped-by="tag"
+                     orphan-removal="true" fetch="LAZY">
+            <cascade>
+                <cascade-remove/>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
+        <many-to-one field="news" target-entity="FSi\FixturesBundle\Entity\News" inversed-by="tags" fetch="LAZY">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+            <join-columns>
+                <join-column name="news_id" referenced-column-name="id"/>
+            </join-columns>
+        </many-to-one>
+    </entity>
+</doctrine-mapping>

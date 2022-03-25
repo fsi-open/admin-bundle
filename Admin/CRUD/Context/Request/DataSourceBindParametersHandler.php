@@ -20,11 +20,16 @@ use FSi\Bundle\AdminBundle\Exception\RequestHandlerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function get_class;
+use function sprintf;
+
 class DataSourceBindParametersHandler extends AbstractHandler
 {
     public function handleRequest(AdminEvent $event, Request $request): ?Response
     {
-        $event = $this->validateEvent($event);
+        if (false === $event instanceof ListEvent) {
+            throw new RequestHandlerException(sprintf('%s requires ListEvent', get_class($this)));
+        }
 
         $dataSourcePreBindEvent = ListDataSourcePreBindEvent::fromOtherEvent($event);
         $this->eventDispatcher->dispatch($dataSourcePreBindEvent);
@@ -39,14 +44,5 @@ class DataSourceBindParametersHandler extends AbstractHandler
         $this->eventDispatcher->dispatch($dataSourcePostBindEvent);
 
         return $dataSourcePostBindEvent->getResponse();
-    }
-
-    private function validateEvent(AdminEvent $event): ListEvent
-    {
-        if (false === $event instanceof ListEvent) {
-            throw new RequestHandlerException(sprintf('%s requires ListEvent', get_class($this)));
-        }
-
-        return $event;
     }
 }

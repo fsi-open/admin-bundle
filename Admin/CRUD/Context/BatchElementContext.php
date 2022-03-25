@@ -13,7 +13,7 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextAbstract;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
-use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement as BatchElementAlias;
+use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\FormEvent;
@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class BatchElementContext extends ContextAbstract
 {
-    protected ?BatchElementAlias $element;
+    protected ?BatchElement $element;
     /**
      * @var FormInterface<string,FormInterface>
      */
@@ -56,8 +56,8 @@ class BatchElementContext extends ContextAbstract
 
     public function setElement(Element $element): void
     {
-        if (false === $element instanceof BatchElementAlias) {
-            throw InvalidArgumentException::create(self::class, BatchElementAlias::class, get_class($element));
+        if (false === $element instanceof BatchElement) {
+            throw InvalidArgumentException::create(self::class, BatchElement::class, get_class($element));
         }
         $this->element = $element;
     }
@@ -79,6 +79,6 @@ class BatchElementContext extends ContextAbstract
 
     protected function supportsElement(Element $element): bool
     {
-        return $element instanceof BatchElementAlias;
+        return $element instanceof BatchElement;
     }
 }

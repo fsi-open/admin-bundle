@@ -54,11 +54,11 @@
 
         <!-- Menu -->
         <service id="admin.menu.builder.main" class="FSi\Bundle\AdminBundle\Menu\Builder\MenuBuilder">
-            <argument key="$eventName" type="constant">FSi\Bundle\AdminBundle\Event\MenuEvents::MAIN</argument>
+            <argument key="$eventName" type="string">FSi\Bundle\AdminBundle\Event\MenuMainEvent</argument>
         </service>
 
         <service id="admin.menu.builder.tools" class="FSi\Bundle\AdminBundle\Menu\Builder\MenuBuilder">
-            <argument key="$eventName" type="constant">FSi\Bundle\AdminBundle\Event\MenuEvents::TOOLS</argument>
+            <argument key="$eventName" type="string">FSi\Bundle\AdminBundle\Event\MenuToolsEvent</argument>
         </service>
 
         <service id="FSi\Bundle\AdminBundle\EventListener\MainMenuListener">
