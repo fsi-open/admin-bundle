@@ -16,6 +16,10 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 
+/**
+ * @template T of object
+ * @template-implements Element<T>
+ */
 trait ElementImpl
 {
     protected ManagerRegistry $registry;

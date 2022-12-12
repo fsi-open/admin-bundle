@@ -14,11 +14,12 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericDeleteElement;
 
 /**
- * @template T
+ * @template T of object
  * @template-implements Element<T>
  */
 abstract class DeleteElement extends GenericDeleteElement implements Element
 {
+    /** @use DataIndexerElementImpl<T> */
     use DataIndexerElementImpl;
 
     public function delete($object): void

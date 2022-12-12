@@ -15,7 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 
 /**
- * @template T
+ * @template T of object
  * @template-extends DisplayElement<T>
  */
 abstract class DependentDisplayElement extends DisplayElement implements DependentElement

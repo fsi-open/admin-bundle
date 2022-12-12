@@ -14,11 +14,12 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement;
 
 /**
- * @template T
+ * @template T of object
  * @template-implements Element<T>
  */
 abstract class ListElement extends GenericListElement implements Element
 {
+    /** @use DataIndexerElementImpl<T> */
     use DataIndexerElementImpl;
 
     public function saveDataGrid(): void

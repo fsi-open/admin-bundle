@@ -14,8 +14,12 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 use FSi\Component\DataIndexer\DataIndexerInterface;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
+/**
+ * @template T of object
+ */
 trait DataIndexerElementImpl
 {
+    /** @use ElementImpl<T> */
     use ElementImpl;
 
     public function getDataIndexer(): DataIndexerInterface

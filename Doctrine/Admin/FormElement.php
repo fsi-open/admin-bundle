@@ -14,11 +14,12 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement;
 
 /**
- * @template T
+ * @template T of object
  * @template-implements Element<T>
  */
 abstract class FormElement extends GenericFormElement implements Element
 {
+    /** @use DataIndexerElementImpl<T> */
     use DataIndexerElementImpl;
 
     public function save($object): void

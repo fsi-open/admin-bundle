@@ -14,10 +14,11 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericBatchElement;
 
 /**
- * @template T
+ * @template T of object
  * @template-implements Element<T>
  */
 abstract class BatchElement extends GenericBatchElement implements Element
 {
+    /** @use DataIndexerElementImpl<T> */
     use DataIndexerElementImpl;
 }
