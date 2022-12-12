@@ -15,7 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 
 /**
- * @template T
+ * @template T of object
  * @template-extends DeleteElement<T>
  */
 abstract class DependentDeleteElement extends DeleteElement implements DependentElement

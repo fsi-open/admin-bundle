@@ -14,11 +14,12 @@ namespace FSi\Bundle\AdminBundle\Doctrine\Admin;
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement;
 
 /**
- * @template T
+ * @template T of object
  * @template-implements Element<T>
  */
 abstract class CRUDElement extends GenericCRUDElement implements Element
 {
+    /** @use DataIndexerElementImpl<T> */
     use DataIndexerElementImpl;
 
     public function save($object): void

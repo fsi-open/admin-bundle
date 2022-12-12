@@ -15,7 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 
 /**
- * @template T
+ * @template T of object
  * @template-extends FormElement<T>
  */
 abstract class DependentFormElement extends FormElement implements DependentElement

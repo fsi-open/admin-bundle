@@ -16,7 +16,7 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
- * @template T
+ * @template T of object
  */
 interface Element
 {

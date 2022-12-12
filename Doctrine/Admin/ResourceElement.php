@@ -17,11 +17,12 @@ use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 
 /**
- * @template T
+ * @template T of object
  * @template-implements Element<T>
  */
 abstract class ResourceElement extends GenericResourceElement implements Element
 {
+    /** @use ElementImpl<T> */
     use ElementImpl;
 
     public function getResourceValueRepository(): ResourceValueRepository
