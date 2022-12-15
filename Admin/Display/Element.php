@@ -14,10 +14,14 @@ namespace FSi\Bundle\AdminBundle\Admin\Display;
 use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
 use FSi\Bundle\AdminBundle\Display\Display;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template-extends DataIndexerElement<T>
+ */
 interface Element extends DataIndexerElement
 {
     /**
-     * @param mixed $data
+     * @param T $data
      * @return Display
      */
     public function createDisplay($data): Display;

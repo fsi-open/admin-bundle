@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ListEvent extends AdminEvent
 {
+    /**
+     * @var DataSourceInterface<mixed>
+     */
     protected DataSourceInterface $dataSource;
 
     protected DataGridInterface $dataGrid;
@@ -30,6 +33,12 @@ class ListEvent extends AdminEvent
         return new static($event->getElement(), $event->getRequest(), $event->getDataSource(), $event->getDataGrid());
     }
 
+    /**
+     * @param Element $element
+     * @param Request $request
+     * @param DataSourceInterface<mixed> $dataSource
+     * @param DataGridInterface $dataGrid
+     */
     final public function __construct(
         Element $element,
         Request $request,
@@ -42,6 +51,9 @@ class ListEvent extends AdminEvent
         $this->dataGrid = $dataGrid;
     }
 
+    /**
+     * @return DataSourceInterface<mixed>
+     */
     public function getDataSource(): DataSourceInterface
     {
         return $this->dataSource;

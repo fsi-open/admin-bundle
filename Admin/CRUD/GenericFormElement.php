@@ -17,6 +17,10 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template-implements FormElement<T>
+ */
 abstract class GenericFormElement extends AbstractElement implements FormElement
 {
     protected FormFactoryInterface $formFactory;
@@ -61,7 +65,7 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
      * Initialize Form. This form will be used in create and update actions.
      *
      * @param FormFactoryInterface $factory
-     * @param mixed $data
+     * @param T $data
      * @return FormInterface<string,FormInterface>
      */
     abstract protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface;

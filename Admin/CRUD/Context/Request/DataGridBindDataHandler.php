@@ -64,7 +64,7 @@ class DataGridBindDataHandler extends AbstractHandler
             }
 
             if (true === $this->dataGridFormHandler->isValid($event->getDataGrid())) {
-                /** @var ListElement $element */
+                /** @var ListElement<array<string, mixed>|object> $element */
                 $element = $event->getElement();
                 $element->saveDataGrid();
             }

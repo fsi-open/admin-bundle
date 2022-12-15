@@ -13,12 +13,14 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template-extends DataIndexerElement<T>
+ */
 interface BatchElement extends DataIndexerElement, RedirectableElement
 {
     /**
-     * This method is called during batch action for every single data item.
-     *
-     * @param mixed $data
+     * @param T $data
      */
     public function apply($data): void;
 }

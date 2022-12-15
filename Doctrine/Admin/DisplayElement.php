@@ -15,6 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\Display\GenericDisplayElement;
 
 /**
  * @template T of object
+ * @template-extends GenericDisplayElement<T>
  * @template-implements Element<T>
  */
 abstract class DisplayElement extends GenericDisplayElement implements Element

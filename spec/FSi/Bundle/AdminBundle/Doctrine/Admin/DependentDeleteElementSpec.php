@@ -43,19 +43,6 @@ class DependentDeleteElementSpec extends ObjectBehavior
         $this->shouldHaveType(DeleteElement::class);
     }
 
-    public function it_returns_null_if_parent_element_does_not_have_data_indexer(
-        RequestStack $requestStack,
-        Request $currentRequest,
-        Element $parentElement
-    ): void {
-        $requestStack->getCurrentRequest()->willReturn($currentRequest);
-
-        $this->setRequestStack($requestStack);
-        $this->setParentElement($parentElement);
-
-        $this->getParentObject()->shouldReturn(null);
-    }
-
     public function it_returns_null_if_parent_object_id_is_not_available(
         RequestStack $requestStack,
         Request $currentRequest,

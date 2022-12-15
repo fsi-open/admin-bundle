@@ -14,6 +14,10 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template-implements BatchElement<T>
+ */
 abstract class GenericBatchElement extends AbstractElement implements BatchElement
 {
     public function getRoute(): string

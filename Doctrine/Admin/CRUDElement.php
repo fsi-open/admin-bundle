@@ -15,6 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\GenericCRUDElement;
 
 /**
  * @template T of object
+ * @template-extends GenericCRUDElement<T>
  * @template-implements Element<T>
  */
 abstract class CRUDElement extends GenericCRUDElement implements Element

@@ -15,6 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\GenericListElement;
 
 /**
  * @template T of object
+ * @template-extends GenericListElement<T>
  * @template-implements Element<T>
  */
 abstract class ListElement extends GenericListElement implements Element

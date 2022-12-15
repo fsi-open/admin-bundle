@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 class FormController extends ControllerAbstract
 {
     /**
+     * @param FormElement<array<string, mixed>|object> $element
+     *
      * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\FormElement")
      */
     public function formAction(FormElement $element, Request $request): Response

@@ -18,6 +18,10 @@ use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template-implements ListElement<T>
+ */
 abstract class GenericListElement extends AbstractElement implements ListElement
 {
     protected DataSourceFactoryInterface $datasourceFactory;
@@ -60,5 +64,9 @@ abstract class GenericListElement extends AbstractElement implements ListElement
 
     abstract protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface;
 
+    /**
+     * @param DataSourceFactoryInterface $factory
+     * @return DataSourceInterface<T>
+     */
     abstract protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface;
 }

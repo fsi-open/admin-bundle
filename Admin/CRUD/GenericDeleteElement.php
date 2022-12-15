@@ -11,6 +11,13 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
+use phpDocumentor\Reflection\DocBlock\Tags\Generic;
+
+/**
+ * @template T of array<string,mixed>|object
+ * @template-extends GenericBatchElement<T>
+ * @template-implements DeleteElement<T>
+ */
 abstract class GenericDeleteElement extends GenericBatchElement implements DeleteElement
 {
     public function apply($object): void

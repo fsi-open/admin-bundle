@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 class DisplayController extends ControllerAbstract
 {
     /**
+     * @param Display\Element<array<string, mixed>|object> $element
+     *
      * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\Display\Element")
      */
     public function displayAction(Display\Element $element, Request $request): Response

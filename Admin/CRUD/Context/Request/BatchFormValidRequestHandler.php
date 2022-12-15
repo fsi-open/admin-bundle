@@ -80,7 +80,7 @@ class BatchFormValidRequestHandler extends AbstractFormValidRequestHandler
     }
 
     /**
-     * @param BatchElement $element
+     * @param BatchElement<array<string, mixed>|object> $element
      * @param Request $request
      * @return array<int|string,array<string,mixed>|object>
      */

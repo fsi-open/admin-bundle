@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Admin\Manager;
 
+use Assert\Assertion;
+use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
 use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 
@@ -28,7 +30,11 @@ class DependentElementsVisitor implements Visitor
                 continue;
             }
 
-            $element->setParentElement($manager->getElement($element->getParentId()));
+            /** @var DataIndexerElement<array<string,mixed>|object> $parentElement */
+            $parentElement = $manager->getElement($element->getParentId());
+            Assertion::isInstanceOf($parentElement, DataIndexerElement::class);
+
+            $element->setParentElement($parentElement);
         }
     }
 }

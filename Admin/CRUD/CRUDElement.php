@@ -11,6 +11,12 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template-extends DeleteElement<T>
+ * @template-extends FormElement<T>
+ * @template-extends ListElement<T>
+ */
 interface CRUDElement extends ListElement, FormElement, DeleteElement
 {
 }

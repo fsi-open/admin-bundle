@@ -15,6 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\GenericDeleteElement;
 
 /**
  * @template T of object
+ * @template-extends GenericDeleteElement<T>
  * @template-implements Element<T>
  */
 abstract class DeleteElement extends GenericDeleteElement implements Element

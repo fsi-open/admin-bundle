@@ -24,6 +24,9 @@ use function get_class;
 
 class DisplayContext extends ContextAbstract
 {
+    /**
+     * @var DisplayElement<array<string, mixed>|object>
+     */
     protected DisplayElement $element;
 
     private Display $display;
@@ -44,11 +47,18 @@ class DisplayContext extends ContextAbstract
         ];
     }
 
+    /**
+     * @param DisplayElement<array<string, mixed>|object> $element
+     */
     public function setElement(Element $element): void
     {
         if (false === $element instanceof DisplayElement) {
-            throw InvalidArgumentException::create(self::class, DisplayElement::class, get_class($element));
+            /** @var class-string $givenClass */
+            $givenClass = get_class($element);
+
+            throw InvalidArgumentException::create(self::class, DisplayElement::class, $givenClass);
         }
+
         $this->element = $element;
     }
 

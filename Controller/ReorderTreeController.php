@@ -44,7 +44,7 @@ class ReorderTreeController
     }
 
     /**
-     * @param DataIndexerElement&AdminDoctrineElement<object> $element
+     * @param DataIndexerElement<array<string, mixed>|object>&AdminDoctrineElement<object> $element
      * @param string $id
      * @param Request $request
      * @return Response
@@ -66,7 +66,7 @@ class ReorderTreeController
     }
 
     /**
-     * @param DataIndexerElement&AdminDoctrineElement<object> $element
+     * @param DataIndexerElement<array<string, mixed>|object>&AdminDoctrineElement<object> $element
      * @param string $id
      * @param Request $request
      * @return Response

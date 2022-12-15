@@ -12,16 +12,24 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
-use FSi\Component\DataIndexer\DataIndexerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * @template TParent of array<string,mixed>|object
+ */
 trait DependentElementImpl
 {
     private RequestStack $requestStack;
 
-    private Element $parentElement;
+    /**
+     * @var DataIndexerElement<TParent>
+     */
+    private DataIndexerElement $parentElement;
 
-    public function setParentElement(Element $element): void
+    /**
+     * @param Element&DataIndexerElement<TParent> $element
+     */
+    public function setParentElement(DataIndexerElement $element): void
     {
         $this->parentElement = $element;
     }
@@ -37,14 +45,14 @@ trait DependentElementImpl
     }
 
     /**
-     * @return array<string,mixed>|object|null
+     * @return TParent|null
      */
     public function getParentObject()
     {
-        $dataIndexer = $this->getParentDataIndexer();
+        $dataIndexer = $this->parentElement->getDataIndexer();
         $parentObjectId = $this->getParentObjectId();
 
-        if (null !== $dataIndexer && null !== $parentObjectId) {
+        if (null !== $parentObjectId) {
             return $dataIndexer->getData($parentObjectId);
         }
 
@@ -60,14 +68,5 @@ trait DependentElementImpl
         }
 
         return $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER);
-    }
-
-    protected function getParentDataIndexer(): ?DataIndexerInterface
-    {
-        if (true === $this->parentElement instanceof DataIndexerElement) {
-            return $this->parentElement->getDataIndexer();
-        }
-
-        return null;
     }
 }
