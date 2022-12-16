@@ -16,8 +16,10 @@ use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 
 /**
  * @template T of array<string,mixed>|object
+ * @template TSaveDTO of array<string,mixed>|object
  * @template TParent of array<string,mixed>|object
- * @template-extends GenericCRUDElement<T>
+ * @template-default TSaveDTO=T
+ * @template-extends GenericCRUDElement<T, TSaveDTO>
  * @template-implements DependentElement<TParent>
  */
 abstract class DependentCRUDElement extends GenericCRUDElement implements DependentElement

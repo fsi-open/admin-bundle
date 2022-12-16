@@ -19,7 +19,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template T of array<string,mixed>|object
- * @template-implements FormElement<T>
+ * @template TSaveDTO of array<string,mixed>|object
+ * @template-default TSaveDTO=T
+ * @template-implements FormElement<T, TSaveDTO>
  */
 abstract class GenericFormElement extends AbstractElement implements FormElement
 {

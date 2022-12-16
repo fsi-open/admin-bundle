@@ -25,7 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @template T of array<string,mixed>|object
- * @template-implements CRUDElement<T>
+ * @template TSaveDTO of array<string,mixed>|object
+ * @template-default TSaveDTO=T
+ * @template-implements CRUDElement<T, TSaveDTO>
  */
 abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
 {

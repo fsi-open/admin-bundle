@@ -43,7 +43,7 @@ class FormValidRequestHandler extends AbstractFormValidRequestHandler
 
     protected function action(FormEvent $event, Request $request): void
     {
-        /** @var FormElement<array<string, mixed>|object> $element */
+        /** @var FormElement<array<string, mixed>|object, array<string, mixed>|object> $element */
         $element = $event->getElement();
         $element->save($event->getForm()->getData());
     }

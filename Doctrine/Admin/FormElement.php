@@ -15,7 +15,9 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\GenericFormElement;
 
 /**
  * @template T of object
- * @template-extends GenericFormElement<T>
+ * @template TSaveDTO of object
+ * @template-default TSaveDTO=T
+ * @template-extends GenericFormElement<T, TSaveDTO>
  * @template-implements Element<T>
  */
 abstract class FormElement extends GenericFormElement implements Element

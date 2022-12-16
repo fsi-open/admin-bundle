@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class FormElementContext extends ContextAbstract
 {
     /**
-     * @var FormElement<array<string, mixed>|object>
+     * @var FormElement<array<string, mixed>|object, array<string, mixed>|object>
      */
     protected FormElement $element;
 
@@ -47,7 +47,7 @@ class FormElementContext extends ContextAbstract
     }
 
     /**
-     * @param FormElement<array<string, mixed>|object> $element
+     * @param FormElement<array<string, mixed>|object, array<string, mixed>|object> $element
      */
     public function setElement(Element $element): void
     {

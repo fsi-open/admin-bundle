@@ -16,8 +16,10 @@ use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 
 /**
  * @template T of object
+ * @template TSaveDTO of object
  * @template TParent of object
- * @template-extends CRUDElement<T>
+ * @template-default TSaveDTO=T
+ * @template-extends CRUDElement<T, TSaveDTO>
  * @template-implements DependentElement<TParent>
  */
 abstract class DependentCRUDElement extends CRUDElement implements DependentElement

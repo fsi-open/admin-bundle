@@ -13,8 +13,10 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 /**
  * @template T of array<string,mixed>|object
+ * @template TSaveDTO of array<string,mixed>|object
+ * @template-default TSaveDTO=T
  * @template-extends DeleteElement<T>
- * @template-extends FormElement<T>
+ * @template-extends FormElement<T, TSaveDTO>
  * @template-extends ListElement<T>
  */
 interface CRUDElement extends ListElement, FormElement, DeleteElement

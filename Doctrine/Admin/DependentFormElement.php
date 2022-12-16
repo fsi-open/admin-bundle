@@ -16,8 +16,10 @@ use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 
 /**
  * @template T of object
+ * @template TSaveDTO of object
  * @template TParent of object
- * @template-extends FormElement<T>
+ * @template-default TSaveDTO=T
+ * @template-extends FormElement<T, TSaveDTO>
  * @template-implements DependentElement<TParent>
  */
 abstract class DependentFormElement extends FormElement implements DependentElement
