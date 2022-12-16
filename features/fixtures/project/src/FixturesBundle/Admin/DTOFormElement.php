@@ -18,6 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * @template-extends FormElement<Model, Model>
+ */
 class DTOFormElement extends FormElement
 {
     public function getClassName(): string

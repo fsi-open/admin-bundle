@@ -11,6 +11,11 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Admin;
 
+use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
+
+/**
+ * @template TParent of array<string,mixed>|object
+ */
 interface DependentElement extends Element, RequestStackAware
 {
     public const PARENT_REQUEST_PARAMETER = 'parent';
@@ -20,10 +25,13 @@ interface DependentElement extends Element, RequestStackAware
      */
     public function getParentId(): string;
 
-    public function setParentElement(Element $element): void;
+    /**
+     * @param DataIndexerElement<TParent> $element
+     */
+    public function setParentElement(DataIndexerElement $element): void;
 
     /**
-     * @return object|null
+     * @return TParent|null
      */
     public function getParentObject();
 }

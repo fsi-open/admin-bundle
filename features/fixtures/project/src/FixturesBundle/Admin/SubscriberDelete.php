@@ -14,6 +14,9 @@ namespace FSi\FixturesBundle\Admin;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DeleteElement;
 use FSi\FixturesBundle\Entity;
 
+/**
+ * @template-extends DeleteElement<Entity\Subscriber>
+ */
 class SubscriberDelete extends DeleteElement
 {
     public function getClassName(): string

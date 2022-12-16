@@ -20,6 +20,9 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * @template-extends FormElement<Entity\Subscriber, Entity\Subscriber>
+ */
 class SubscriberForm extends FormElement
 {
     public function getClassName(): string

@@ -23,6 +23,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FormElementContext extends ContextAbstract
 {
+    /**
+     * @var FormElement<array<string, mixed>|object, array<string, mixed>|object>
+     */
     protected FormElement $element;
 
     /**
@@ -43,11 +46,18 @@ class FormElementContext extends ContextAbstract
         return ['form' => $this->form->createView(), 'element' => $this->element];
     }
 
+    /**
+     * @param FormElement<array<string, mixed>|object, array<string, mixed>|object> $element
+     */
     public function setElement(Element $element): void
     {
         if (false === $element instanceof FormElement) {
-            throw InvalidArgumentException::create(self::class, FormElement::class, get_class($element));
+            /** @var class-string $givenClass */
+            $givenClass = get_class($element);
+
+            throw InvalidArgumentException::create(self::class, FormElement::class, $givenClass);
         }
+
         $this->element = $element;
     }
 

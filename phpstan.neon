@@ -2,12 +2,20 @@ parameters:
     treatPhpDocTypesAsCertain: false
     level: 8
     paths:
-        - .
-    excludePaths:
-        - DependencyInjection/Configuration
-        - '%rootDir%/../../../Behat'
-        - '%rootDir%/../../../docker'
-        - '%rootDir%/../../../features'
-        - '%rootDir%/../../../spec'
-        - '%rootDir%/../../../var'
-        - '%rootDir%/../../../vendor'
+        - '%currentWorkingDirectory%/Admin'
+        - '%currentWorkingDirectory%/Controller'
+        - '%currentWorkingDirectory%/DataGrid'
+        - '%currentWorkingDirectory%/DependencyInjection/Compiler'
+        - '%currentWorkingDirectory%/Display'
+        - '%currentWorkingDirectory%/Doctrine'
+        - '%currentWorkingDirectory%/Event'
+        - '%currentWorkingDirectory%/EventListener'
+        - '%currentWorkingDirectory%/Exception'
+        - '%currentWorkingDirectory%/Factory'
+        - '%currentWorkingDirectory%/features/fixtures/project/src'
+        - '%currentWorkingDirectory%/Form'
+        - '%currentWorkingDirectory%/Menu'
+        - '%currentWorkingDirectory%/Message'
+        - '%currentWorkingDirectory%/Model'
+        - '%currentWorkingDirectory%/Request'
+        - '%currentWorkingDirectory%/Twig'

@@ -11,6 +11,9 @@ use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use FSi\FixturesBundle\Entity;
 
+/**
+ * @template-extends DependentListElement<Entity\Node, Entity\Node>
+ */
 class Node extends DependentListElement
 {
     public function getId(): string

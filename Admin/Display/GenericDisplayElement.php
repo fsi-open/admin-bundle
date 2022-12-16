@@ -15,6 +15,10 @@ use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Display\Display;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template-implements Element<T>
+ */
 abstract class GenericDisplayElement extends AbstractElement implements Element
 {
     public function getRoute(): string
@@ -31,13 +35,17 @@ abstract class GenericDisplayElement extends AbstractElement implements Element
         $resolver->setAllowedTypes('template', ['null', 'string']);
     }
 
+    /**
+     * @param T $data
+     * @return Display
+     */
     public function createDisplay($data): Display
     {
         return $this->initDisplay($data);
     }
 
     /**
-     * @param object $data
+     * @param T $data
      * @return Display
      */
     abstract protected function initDisplay($data): Display;

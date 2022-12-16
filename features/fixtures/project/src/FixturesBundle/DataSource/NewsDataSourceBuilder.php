@@ -12,9 +12,14 @@ declare(strict_types=1);
 namespace FSi\FixturesBundle\DataSource;
 
 use FSi\Component\DataSource\DataSourceInterface;
+use FSi\FixturesBundle\Entity\News;
 
 class NewsDataSourceBuilder
 {
+    /**
+     * @param DataSourceInterface<News> $datasource
+     * @return DataSourceInterface<News>
+     */
     public static function buildNewsDataSource(DataSourceInterface $datasource): DataSourceInterface
     {
         $datasource->addField('title', 'text', [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FSi\FixturesBundle\Admin;
 
+use Doctrine\ORM\EntityRepository;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DependentCRUDElement;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
@@ -16,6 +17,9 @@ use FSi\FixturesBundle\Form\NewsType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * @template-extends DependentCRUDElement<Entity\News, Entity\News, Entity\Category>
+ */
 class CategoryNews extends DependentCRUDElement
 {
     public function getId(): string
@@ -59,7 +63,10 @@ class CategoryNews extends DependentCRUDElement
 
     protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface
     {
-        $queryBuilder = $this->getRepository()->createQueryBuilder('n');
+        /** @var EntityRepository<Entity\News> $repository */
+        $repository = $this->getRepository();
+
+        $queryBuilder = $repository->createQueryBuilder('n');
 
         if ($this->getParentObject()) {
             $queryBuilder->where(':category MEMBER OF n.categories')
@@ -79,9 +86,14 @@ class CategoryNews extends DependentCRUDElement
 
     protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface
     {
-        if ($data === null) {
+        $category = $this->getParentObject();
+
+        if (null === $data) {
             $data = new Entity\News();
-            $data->addCategory($this->getParentObject());
+
+            if (null !== $category) {
+                $data->addCategory($category);
+            }
         }
 
         return $factory->createNamed('news', NewsType::class, $data);

@@ -14,8 +14,15 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template TParent of array<string,mixed>|object
+ * @template-extends GenericListElement<T>
+ * @template-implements DependentElement<TParent>
+ */
 abstract class DependentListElement extends GenericListElement implements DependentElement
 {
+    /** @use DependentElementImpl<TParent> */
     use DependentElementImpl;
 
     public function getRouteParameters(): array

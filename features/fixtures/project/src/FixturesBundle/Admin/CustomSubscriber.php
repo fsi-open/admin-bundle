@@ -11,6 +11,9 @@ use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 use FSi\FixturesBundle\Entity;
 
+/**
+ * @template-extends ListElement<Entity\Subscriber>
+ */
 class CustomSubscriber extends ListElement
 {
     public function getId(): string

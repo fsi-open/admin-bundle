@@ -18,8 +18,8 @@
     <one-to-many field="tags" target-entity="FSi\FixturesBundle\Entity\Tag" mapped-by="news" orphan-removal="true"
                  fetch="LAZY">
       <cascade>
-        <cascade-remove/>
         <cascade-persist/>
+        <cascade-remove/>
       </cascade>
     </one-to-many>
     <many-to-many field="categories" target-entity="FSi\FixturesBundle\Entity\Category" fetch="LAZY">

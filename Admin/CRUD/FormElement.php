@@ -15,10 +15,16 @@ use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template TSaveDTO of array<string,mixed>|object
+ * @template-default TSaveDTO=T
+ * @template-extends DataIndexerElement<T>
+ */
 interface FormElement extends DataIndexerElement, RedirectableElement
 {
     /**
-     * @param mixed $data
+     * @param T $data
      * @return FormInterface<string,FormInterface>
      */
     public function createForm($data = null): FormInterface;
@@ -29,7 +35,7 @@ interface FormElement extends DataIndexerElement, RedirectableElement
      * This method is called after successful form submission and validation in edit and create action.
      * Mostly this method should create or update the object in your persistence layer.
      *
-     * @param mixed $data
+     * @param TSaveDTO $data
      */
     public function save($data): void;
 }

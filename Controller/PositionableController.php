@@ -40,7 +40,7 @@ class PositionableController
     }
 
     /**
-     * @param DataIndexerElement&Element<object> $element
+     * @param DataIndexerElement<object>&Element<object> $element
      * @param string $id
      * @param Request $request
      * @return Response
@@ -59,7 +59,7 @@ class PositionableController
     }
 
     /**
-     * @param DataIndexerElement&Element<object> $element
+     * @param DataIndexerElement<object>&Element<object> $element
      * @param string $id
      * @param Request $request
      * @return Response
@@ -78,7 +78,7 @@ class PositionableController
     }
 
     /**
-     * @param DataIndexerElement $element
+     * @param DataIndexerElement<object>&Element<object> $element
      * @param mixed $id
      * @throws RuntimeException
      * @return PositionableInterface
@@ -95,6 +95,11 @@ class PositionableController
         return $entity;
     }
 
+    /**
+     * @param DataIndexerElement<object>&Element<object> $element
+     * @param Request $request
+     * @return RedirectResponse
+     */
     private function getRedirectResponse(DataIndexerElement $element, Request $request): RedirectResponse
     {
         if ($request->query->get('redirect_uri')) {

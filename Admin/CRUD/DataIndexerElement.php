@@ -14,10 +14,13 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Component\DataIndexer\DataIndexerInterface;
 
+/**
+ * @template T of array<string,mixed>|object
+ */
 interface DataIndexerElement extends Element
 {
     /**
-     * This method should be used inside of admin elements to retrieve DataIndexerInterface.
+     * @return DataIndexerInterface<T>
      */
     public function getDataIndexer(): DataIndexerInterface;
 }

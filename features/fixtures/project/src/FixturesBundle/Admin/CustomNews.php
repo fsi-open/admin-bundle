@@ -14,6 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * @template-extends CRUDElement<Entity\News, Entity\News>
+ */
 class CustomNews extends CRUDElement
 {
     public function getId(): string

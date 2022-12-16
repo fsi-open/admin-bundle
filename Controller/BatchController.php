@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 class BatchController extends ControllerAbstract
 {
     /**
+     * @param BatchElement<array<string, mixed>|object> $element
+     *
      * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement")
      */
     public function batchAction(BatchElement $element, Request $request): Response

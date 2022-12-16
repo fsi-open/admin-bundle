@@ -25,6 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class BatchElementContext extends ContextAbstract
 {
+    /**
+     * @var BatchElement<array<string, mixed>|object>|null
+     */
     protected ?BatchElement $element;
     /**
      * @var FormInterface<string,FormInterface>
@@ -54,11 +57,18 @@ class BatchElementContext extends ContextAbstract
         ];
     }
 
+    /**
+     * @param BatchElement<array<string, mixed>|object> $element
+     */
     public function setElement(Element $element): void
     {
         if (false === $element instanceof BatchElement) {
-            throw InvalidArgumentException::create(self::class, BatchElement::class, get_class($element));
+            /** @var class-string $givenClass */
+            $givenClass = get_class($element);
+
+            throw InvalidArgumentException::create(self::class, BatchElement::class, $givenClass);
         }
+
         $this->element = $element;
     }
 

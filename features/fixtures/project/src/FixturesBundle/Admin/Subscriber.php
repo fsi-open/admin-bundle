@@ -12,6 +12,9 @@ use FSi\Component\DataSource\DataSourceInterface;
 use FSi\FixturesBundle\Entity;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
+/**
+ * @template-extends ListElement<Entity\Subscriber>
+ */
 class Subscriber extends ListElement
 {
     public const ID = 'subscriber';

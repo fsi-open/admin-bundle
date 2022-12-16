@@ -10,6 +10,9 @@ use FSi\Bundle\AdminBundle\Display\Display;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DisplayElement;
 use FSi\FixturesBundle\Entity;
 
+/**
+ * @template-extends DisplayElement<Entity\News>
+ */
 class DisplayNews extends DisplayElement
 {
     public const ID = 'news_display';

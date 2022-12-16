@@ -23,17 +23,30 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ListElementContext extends ContextAbstract
 {
+    /**
+     * @var ListElement<array<string, mixed>|object>
+     */
     protected ListElement $element;
 
+    /**
+     * @var DataSourceInterface<array<string, mixed>|object>
+     */
     protected DataSourceInterface $dataSource;
 
     protected DataGridInterface $dataGrid;
 
+    /**
+     * @param ListElement<array<string, mixed>|object> $element
+     */
     public function setElement(Element $element): void
     {
         if (false === $element instanceof ListElement) {
-            throw InvalidArgumentException::create(self::class, ListElement::class, get_class($element));
+            /** @var class-string $givenClass */
+            $givenClass = get_class($element);
+
+            throw InvalidArgumentException::create(self::class, ListElement::class, $givenClass);
         }
+
         $this->element = $element;
         $this->dataSource = $this->element->createDataSource();
         $this->dataGrid = $this->element->createDataGrid();

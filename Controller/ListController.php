@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 class ListController extends ControllerAbstract
 {
     /**
+     * @param ListElement<array<string, mixed>|object> $element
+     *
      * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\ListElement")
      */
     public function listAction(ListElement $element, Request $request): Response

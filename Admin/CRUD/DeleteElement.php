@@ -11,10 +11,14 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template-extends BatchElement<T>
+ */
 interface DeleteElement extends BatchElement
 {
     /**
-     * @param mixed $data
+     * @param T $data
      */
     public function delete($data): void;
 }

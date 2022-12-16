@@ -16,10 +16,13 @@ use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 
 /**
  * @template T of object
+ * @template TParent of object
  * @template-extends ListElement<T>
+ * @template-implements DependentElement<TParent>
  */
 abstract class DependentListElement extends ListElement implements DependentElement
 {
+    /** @use DependentElementImpl<TParent> */
     use DependentElementImpl;
 
     public function getRouteParameters(): array

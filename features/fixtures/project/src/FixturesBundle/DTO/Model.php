@@ -19,7 +19,7 @@ class Model
      * @Assert\Email
      * @Assert\NotBlank
      */
-    private $email;
+    private ?string $email = null;
 
     public function getEmail(): ?string
     {

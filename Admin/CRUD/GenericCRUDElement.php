@@ -23,6 +23,12 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template TSaveDTO of array<string,mixed>|object
+ * @template-default TSaveDTO=T
+ * @template-implements CRUDElement<T, TSaveDTO>
+ */
 abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
 {
     protected DataSourceFactoryInterface $datasourceFactory;
@@ -122,6 +128,9 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
         return $datagrid;
     }
 
+    /**
+     * @return DataSourceInterface<T>
+     */
     public function createDataSource(): DataSourceInterface
     {
         return $this->initDataSource($this->datasourceFactory);
@@ -134,13 +143,17 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
 
     abstract protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface;
 
+    /**
+     * @param DataSourceFactoryInterface $factory
+     * @return DataSourceInterface<T>
+     */
     abstract protected function initDataSource(DataSourceFactoryInterface $factory): DataSourceInterface;
 
     /**
      * Initialize form. This form will be used in create and update actions.
      *
      * @param FormFactoryInterface $factory
-     * @param mixed $data
+     * @param T $data
      * @return FormInterface<string,FormInterface>
      */
     abstract protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface;

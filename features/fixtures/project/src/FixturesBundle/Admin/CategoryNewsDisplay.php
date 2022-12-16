@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace FSi\FixturesBundle\Admin;
 
-use FSi\Bundle\AdminBundle\Annotation as Admin;
 use FSi\Bundle\AdminBundle\Display\Display;
 use FSi\Bundle\AdminBundle\Display\PropertyAccessDisplay;
 use FSi\Bundle\AdminBundle\Display\Property\Formatter;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DependentDisplayElement;
 use FSi\FixturesBundle\Entity;
 
+/**
+ * @template-extends DependentDisplayElement<Entity\News, Entity\Category>
+ */
 class CategoryNewsDisplay extends DependentDisplayElement
 {
     public const ID = 'category_news_display';
@@ -30,10 +32,6 @@ class CategoryNewsDisplay extends DependentDisplayElement
         return Entity\News::class;
     }
 
-    /**
-     * @param mixed $object
-     * @return Display
-     */
     protected function initDisplay($object): Display
     {
         $display = new PropertyAccessDisplay($object);

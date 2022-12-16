@@ -14,8 +14,17 @@ namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template TSaveDTO of array<string,mixed>|object
+ * @template TParent of array<string,mixed>|object
+ * @template-default TSaveDTO=T
+ * @template-extends GenericCRUDElement<T, TSaveDTO>
+ * @template-implements DependentElement<TParent>
+ */
 abstract class DependentCRUDElement extends GenericCRUDElement implements DependentElement
 {
+    /** @use DependentElementImpl<TParent> */
     use DependentElementImpl;
 
     public function getRouteParameters(): array

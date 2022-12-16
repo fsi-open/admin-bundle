@@ -16,10 +16,15 @@ use FSi\Bundle\AdminBundle\Admin\DependentElementImpl;
 
 /**
  * @template T of object
- * @template-extends CRUDElement<T>
+ * @template TSaveDTO of object
+ * @template TParent of object
+ * @template-default TSaveDTO=T
+ * @template-extends CRUDElement<T, TSaveDTO>
+ * @template-implements DependentElement<TParent>
  */
 abstract class DependentCRUDElement extends CRUDElement implements DependentElement
 {
+    /** @use DependentElementImpl<TParent> */
     use DependentElementImpl;
 
     public function getRouteParameters(): array

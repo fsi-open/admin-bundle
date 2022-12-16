@@ -16,12 +16,19 @@ use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
 
+/**
+ * @template T of array<string,mixed>|object
+ * @template-extends DataIndexerElement<T>
+ */
 interface ListElement extends DataIndexerElement
 {
     public function createDataGrid(): DataGridInterface;
 
     public function setDataGridFactory(DataGridFactoryInterface $factory): void;
 
+    /**
+     * @return DataSourceInterface<T>
+     */
     public function createDataSource(): DataSourceInterface;
 
     public function setDataSourceFactory(DataSourceFactoryInterface $factory): void;
