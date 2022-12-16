@@ -22,6 +22,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * @template-extends CRUDElement<Entity\Person, Entity\Person>
+ */
 class Person extends CRUDElement
 {
     public function getId(): string

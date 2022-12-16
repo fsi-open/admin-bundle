@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FSi\FixturesBundle\Entity;
 
-use Comment;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -44,7 +43,7 @@ class News
     private Collection $tags;
 
     /**
-     * @var Collection<int,Comment>
+     * @var Collection<int,string>
      */
     private Collection $comments;
 
@@ -181,5 +180,13 @@ class News
     public function setTags(array $tags): void
     {
         $this->tags = new ArrayCollection($tags);
+    }
+
+    /**
+     * @return Collection<int,string>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
     }
 }

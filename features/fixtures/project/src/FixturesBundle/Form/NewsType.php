@@ -18,6 +18,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewsType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface<FormBuilderInterface> $builder
+     * @param array<string,mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('title', TextType::class, ['label' => 'admin.news.list.title']);

@@ -7,6 +7,9 @@ namespace FSi\FixturesBundle\Admin\Structure;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
 use FSi\FixturesBundle\Entity;
 
+/**
+ * @template-extends ResourceElement<Entity\Resource>
+ */
 class HomePage extends ResourceElement
 {
     public function getId(): string

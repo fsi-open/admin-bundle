@@ -16,6 +16,9 @@ use FSi\FixturesBundle\Form\NewsType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * @template-extends CRUDElement<Entity\News, Entity\News>
+ */
 class News extends CRUDElement
 {
     public function getId(): string

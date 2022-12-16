@@ -38,7 +38,7 @@ before_script:
 
 script:
     - vendor/bin/phpcs
-    - vendor/bin/phpstan analyse -c phpstan.neon .
+    - vendor/bin/phpstan analyse -c phpstan.neon
     - vendor/bin/phpspec run --format=pretty
     - vendor/bin/behat --no-snippets --format=progress --profile=travis -vvv
 

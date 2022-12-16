@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace FSi;
 
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
+    /**
+     * @return array<BundleInterface>
+     */
     public function registerBundles(): array
     {
         return [

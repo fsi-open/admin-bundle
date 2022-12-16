@@ -7,6 +7,9 @@ namespace FSi\FixturesBundle\CustomAdmin;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
 use FSi\FixturesBundle\Entity;
 
+/**
+ * @template-extends ResourceElement<Entity\Resource>
+ */
 class Contact extends ResourceElement
 {
     public function getClassName(): string
