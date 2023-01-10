@@ -16,6 +16,14 @@
         <parameter key="fixtures_bundle.admin.node.class">FSi\FixturesBundle\Admin\Node</parameter>
     </parameters>
     <services>
+
+        <defaults autoconfigure="true" autowire="true" public="false">
+            <bind key="$session" id="behat.mink.default_session" />
+            <bind key="$minkParameters" id="behat.mink.parameters" />
+        </defaults>
+
+        <prototype namespace="FSi\Bundle\AdminBundle\Behat\" resource="../../../../../../../Behat/{Context}" />
+
         <service id="fixtures_bundle.admin.home" class="%fixtures_bundle.admin.home_page.class%">
             <tag name="admin.element" />
         </service>

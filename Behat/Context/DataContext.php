@@ -326,7 +326,7 @@ class DataContext extends AbstractContext
         $formatters = [
             News::class => [
                 'title' => function () use ($faker): string {
-                    return $faker->title;
+                    return $faker->title();
                 },
                 'creatorEmail' => function () use ($faker): string {
                     return $faker->email();
@@ -364,7 +364,7 @@ class DataContext extends AbstractContext
             ],
             Category::class => [
                 'title' => function () use ($faker): string {
-                    return $faker->title;
+                    return $faker->title();
                 }
             ]
         ];
@@ -386,7 +386,7 @@ class DataContext extends AbstractContext
         $faker = $this->getFaker();
         switch (true) {
             case $instance instanceof News:
-                $instance->setTitle($faker->title);
+                $instance->setTitle($faker->title());
                 $instance->setCreatedAt(new DateTime());
                 $tag = new Tag();
                 $tag->setName($faker->sentence());
