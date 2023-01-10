@@ -95,6 +95,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "FSi\\Bundle\\AdminBundle\\Behat\\": "Behat",
             "FSi\\Bundle\\AdminBundle\\spec\\fixtures\\": "spec/fixtures",
             "FSi\\": "features/fixtures/project/src",
             "spec\\FSi\\Bundle\\AdminBundle\\": "spec/FSi/Bundle/AdminBundle"
