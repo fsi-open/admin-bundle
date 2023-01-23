@@ -28,6 +28,6 @@ class DTOForm extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . '/admin/form/dto_form';
+        return $this->getParameter('base_url') . '/admin/en/form/dto_form';
     }
 }

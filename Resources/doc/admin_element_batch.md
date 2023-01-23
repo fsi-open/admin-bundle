@@ -34,7 +34,7 @@ class SubscriberDeactivateElement extends BatchElement
 ## 2. Add batch column to subscribers grid definition
 
 ```yaml
-# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_subscribers.yml
+# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_subscribers.yaml
 
 columns:
   batch:
@@ -77,7 +77,7 @@ class SubscriberDeleteElement extends DeleteElement
 ```
 
 ```yaml
-# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_subscribers.yml
+# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_subscribers.yaml
 
 columns:
   batch:

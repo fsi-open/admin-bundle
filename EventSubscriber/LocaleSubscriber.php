@@ -19,6 +19,11 @@ class LocaleSubscriber implements EventSubscriberInterface
 {
     private string $defaultLocale;
 
+    public static function getSubscribedEvents(): array
+    {
+        return [KernelEvents::REQUEST => [['onKernelRequest', 17]]];
+    }
+
     public function __construct(string $defaultLocale)
     {
         $this->defaultLocale = $defaultLocale;
@@ -35,11 +40,8 @@ class LocaleSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $request->setLocale($request->getSession()->get('admin_locale', $this->defaultLocale));
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [KernelEvents::REQUEST => [['onKernelRequest', 17]]];
+        $request->setLocale(
+            $request->getSession()->get('admin_locale', $this->defaultLocale)
+        );
     }
 }

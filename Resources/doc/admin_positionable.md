@@ -46,7 +46,7 @@ class Promotion implements PositionableInterface
 
 Sample datagrid definition:
 
-```yml
+```yaml
 columns:
   title:
     type: text

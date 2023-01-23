@@ -6,7 +6,7 @@ Add the following line to your `composer.json` and run update:
 
 ```json
 "require": {
-    "fsi/admin-bundle": "^3.0@dev"
+    "fsi/admin-bundle": "^4.0@dev"
 }
 ```
 
@@ -33,17 +33,17 @@ public function registerBundles()
 ## 3. Import the routing configuraton
 
 ```yaml
-# app/config/routing.yml
+# config/routes.yaml
 
 admin:
-    resource: "@FSiAdminBundle/Resources/config/routing/admin.yml"
+    resource: "@FSiAdminBundle/Resources/config/routing/admin.yaml"
     prefix: /admin
 ```
 
 ## 4. Enable translations
 
 ```yaml
-# app/config/config.yml
+# config/framework.yaml
 
 framework:
     translator:      { fallback: "%locale%" }

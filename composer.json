@@ -25,6 +25,7 @@
         "doctrine/persistence": "^2.3",
         "doctrine/orm": "^2.8",
         "fsi/data": "^1.0@dev",
+        "fsi/translatable": "dev-main",
         "knplabs/knp-menu": "^3.1.3",
         "knplabs/knp-menu-bundle": "^3.1",
         "psr/event-dispatcher": "^1.0",
@@ -61,7 +62,6 @@
         "friends-of-phpspec/phpspec-expect": "^4.0",
         "fsi/files": "^1.0",
         "fsi/resource-repository-bundle": "^2.0",
-        "fsi/translatable": "^0.5.1",
         "gedmo/doctrine-extensions": "^2.4|^3.0",
         "nyholm/psr7": "^1.5",
         "oneup/flysystem-bundle": "^3.7",
@@ -111,8 +111,5 @@
             "2.0": "2.0-dev",
             "1.1": "1.1-dev"
         }
-    },
-    "suggests": {
-        "fsi/translatable": "Adds support for content translation for multiple languages"
     }
 }

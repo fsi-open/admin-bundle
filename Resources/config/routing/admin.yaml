@@ -1,0 +1,66 @@
+fsi_admin:
+    path: /{translatableLocale}
+    controller: FSi\Bundle\AdminBundle\Controller\AdminController::indexAction
+    defaults:
+        translatableLocale: '%admin.default_locale%'
+
+fsi_admin_locale:
+    path: /{translatableLocale}/locale/{_locale}
+    controller: FSi\Bundle\AdminBundle\Controller\AdminController::localeAction
+    defaults:
+        translatableLocale: '%admin.default_locale%'
+
+fsi_admin_list:
+    path: /{translatableLocale}/list/{element}
+    controller: FSi\Bundle\AdminBundle\Controller\ListController::listAction
+    defaults:
+        translatableLocale: '%admin.default_locale%'
+
+fsi_admin_form:
+    path: /{translatableLocale}/form/{element}/{id}
+    controller: FSi\Bundle\AdminBundle\Controller\FormController::formAction
+    defaults:
+        id: null
+        translatableLocale: '%admin.default_locale%'
+
+fsi_admin_batch:
+    path: /{translatableLocale}/batch/{element}
+    controller: FSi\Bundle\AdminBundle\Controller\BatchController::batchAction
+    defaults:
+        translatableLocale: '%admin.default_locale%'
+
+fsi_admin_resource:
+    path: /{translatableLocale}/resource/{element}
+    controller: FSi\Bundle\AdminBundle\Controller\ResourceController::resourceAction
+    defaults:
+        translatableLocale: '%admin.default_locale%'
+
+fsi_admin_display:
+    path: /{translatableLocale}/display/{element}/{id}
+    controller: FSi\Bundle\AdminBundle\Controller\DisplayController::displayAction
+    defaults:
+        translatableLocale: '%admin.default_locale%'
+
+fsi_admin_positionable_increase_position:
+    path: /{translatableLocale}/{element}/{id}/position/increase
+    controller: FSi\Bundle\AdminBundle\Controller\PositionableController:increasePositionAction
+    defaults:
+        translatableLocale: '%admin.default_locale%'
+
+fsi_admin_positionable_decrease_position:
+    path: /{translatableLocale}/{element}/{id}/position/decrease
+    controller: FSi\Bundle\AdminBundle\Controller\PositionableController:decreasePositionAction
+    defaults:
+        translatableLocale: '%admin.default_locale%'
+
+fsi_admin_tree_node_move_up:
+    path: /{translatableLocale}/{element}/{id}/reorder/move-up
+    controller: FSi\Bundle\AdminBundle\Controller\ReorderTreeController:moveUpAction
+    defaults:
+        translatableLocale: '%admin.default_locale%'
+
+fsi_admin_tree_node_move_down:
+    path: /{translatableLocale}/{element}/{id}/reorder/move-down
+    controller: FSi\Bundle\AdminBundle\Controller\ReorderTreeController:moveDownAction
+    defaults:
+        translatableLocale: '%admin.default_locale%'

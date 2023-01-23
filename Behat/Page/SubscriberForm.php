@@ -28,6 +28,6 @@ class SubscriberForm extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . '/admin/form/subscriber_form';
+        return $this->getParameter('base_url') . '/admin/en/form/subscriber_form';
     }
 }

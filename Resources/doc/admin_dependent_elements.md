@@ -10,7 +10,7 @@ Datagrid configuration for parent CRUD element not differ too much from regular 
 The only difference is the action that should lead to dependent CRUD (or any other) element 
 
 ```yaml
-# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/categories.yml
+# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/categories.yaml
 
 columns:
   actions:

@@ -7,10 +7,10 @@ Currently the bundle is available in two languages:
 but you can easily add another language by creating a proper translation file.
 
 To enable the language switcher in the main menu, you need to add following lines
-to the ``app/config/config.yml`` file:
+to the ``config/config.yaml`` file:
 
 ```yaml
-# app/config/config.yml
+# config/config.yaml
 
 fsi_admin:
     display_language_switch: true

@@ -19,7 +19,7 @@ use FSi\Bundle\AdminBundle\Event\FormRequestPostSubmitEvent;
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class MessagesSubscriber implements EventSubscriberInterface
+final class MessagesSubscriber implements EventSubscriberInterface
 {
     private FlashMessages $flashMessages;
 

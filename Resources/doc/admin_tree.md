@@ -30,9 +30,9 @@ public function registerBundles()
 
 ## 3. Enable Tree Doctrine Extension
 
-Add to `config/packages/stof_doctrine_extensions.yml`
+Add to `config/packages/stof_doctrine_extensions.yaml`
 
-```yml
+```yaml
 stof_doctrine_extensions:
     orm:
         default:

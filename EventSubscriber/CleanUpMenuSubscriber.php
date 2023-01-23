@@ -17,13 +17,11 @@ use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item as MenuItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class CleanUpMenuSubscriber implements EventSubscriberInterface
+final class CleanUpMenuSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {
-        return [
-            MenuMainEvent::class => ['cleanUpMenu', -100]
-        ];
+        return [MenuMainEvent::class => ['cleanUpMenu', -100]];
     }
 
     public function cleanUpMenu(MenuEvent $event): void

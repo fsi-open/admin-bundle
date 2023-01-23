@@ -29,6 +29,6 @@ class CategoryNewsEdit extends Page
     protected function getUrl(array $urlParameters = []): string
     {
         return $this->getParameter('base_url')
-            . "/admin/form/category_news/{$urlParameters['id']}?parent={$urlParameters['parent_id']}";
+            . "/admin/en/form/category_news/{$urlParameters['id']}?parent={$urlParameters['parent_id']}";
     }
 }

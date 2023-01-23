@@ -22,12 +22,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Languages;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class LocaleMenuSubscriber implements EventSubscriberInterface
+final class LocaleMenuSubscriber implements EventSubscriberInterface
 {
     private TranslatorInterface $translator;
-
     private RequestStack $requestStack;
-
     /**
      * @var array<int,string>
      */
@@ -35,18 +33,17 @@ class LocaleMenuSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [
-            MenuToolsEvent::class => 'createLocaleMenu',
-        ];
+        return [MenuToolsEvent::class => 'createLocaleMenu'];
     }
 
     /**
-     * @param TranslatorInterface $translator
-     * @param RequestStack $requestStack
-     * @param array<int,string> $locales
+     * @param array<array-key,string> $locales
      */
-    public function __construct(TranslatorInterface $translator, RequestStack $requestStack, array $locales)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        RequestStack $requestStack,
+        array $locales
+    ) {
         $this->translator = $translator;
         $this->requestStack = $requestStack;
         $this->locales = $locales;
@@ -54,23 +51,23 @@ class LocaleMenuSubscriber implements EventSubscriberInterface
 
     public function createLocaleMenu(MenuEvent $event): void
     {
-        if (count($this->locales) < 2) {
+        if (2 > count($this->locales)) {
             return;
         }
 
         $language = new Item('admin-locale');
+        $language->setOptions(['attr' => ['id' => 'language']]);
         $language->setLabel(
             $this->translator->trans(
                 'admin.language.current',
-                ['%locale%' => $this->getLanguageName()],
+                ['%locale%' => $this->getLanguageName($this->getCurrentLocale())],
                 'FSiAdminBundle'
             )
         );
-        $language->setOptions(['attr' => ['id' => 'language']]);
 
         foreach ($this->locales as $locale) {
             $localeItem = new RoutableItem(
-                sprintf('admin-locale.%s', $locale),
+                "admin-locale.{$locale}",
                 'fsi_admin_locale',
                 [
                     '_locale' => $locale,
@@ -88,12 +85,8 @@ class LocaleMenuSubscriber implements EventSubscriberInterface
         $event->getMenu()->addChild($language);
     }
 
-    private function getLanguageName(?string $locale = null): string
+    private function getLanguageName(string $locale): string
     {
-        if (null === $locale) {
-            $locale = $this->getCurrentLocale();
-        }
-
         return Languages::getName($locale, $this->getCurrentLocale());
     }
 
@@ -106,7 +99,7 @@ class LocaleMenuSubscriber implements EventSubscriberInterface
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
-            throw new RuntimeException("Batch actions are only available in request context");
+            throw new RuntimeException("No request present when building menu.");
         }
 
         return $request;

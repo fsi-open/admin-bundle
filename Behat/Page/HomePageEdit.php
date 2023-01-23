@@ -28,6 +28,6 @@ class HomePageEdit extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . '/admin/resource/home_page';
+        return $this->getParameter('base_url') . '/admin/en/resource/home_page';
     }
 }

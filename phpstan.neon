@@ -9,7 +9,7 @@ parameters:
         - '%currentWorkingDirectory%/Display'
         - '%currentWorkingDirectory%/Doctrine'
         - '%currentWorkingDirectory%/Event'
-        - '%currentWorkingDirectory%/EventListener'
+        - '%currentWorkingDirectory%/EventSubscriber'
         - '%currentWorkingDirectory%/Exception'
         - '%currentWorkingDirectory%/Factory'
         - '%currentWorkingDirectory%/features/fixtures/project/src'

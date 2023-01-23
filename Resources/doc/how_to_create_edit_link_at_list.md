@@ -9,7 +9,7 @@ the [datagrid template](/Resources/views/CRUD/datagrid.html.twig).
 Bellow is an example configuration of two actions, editing and displaying:
 
 ```yaml
-# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yml
+# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yaml
 
 columns:
   actions:
@@ -33,7 +33,7 @@ which is a shortcut for creating an action pointing to that element. Following c
 works exactly like the one above:
 
 ```
-# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yml
+# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yaml
 
 columns:
   actions:

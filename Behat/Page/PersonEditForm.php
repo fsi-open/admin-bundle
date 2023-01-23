@@ -28,6 +28,6 @@ class PersonEditForm extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . "/admin/form/person/{$urlParameters['id']}";
+        return $this->getParameter('base_url') . "/admin/en/form/person/{$urlParameters['id']}";
     }
 }

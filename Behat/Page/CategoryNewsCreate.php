@@ -28,6 +28,6 @@ class CategoryNewsCreate extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . "/admin/form/category_news?parent={$urlParameters['parent_id']}";
+        return $this->getParameter('base_url') . "/admin/en/form/category_news?parent={$urlParameters['parent_id']}";
     }
 }

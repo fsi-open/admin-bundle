@@ -28,6 +28,6 @@ class NewsDisplay extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . "/admin/display/news/{$urlParameters['id']}";
+        return $this->getParameter('base_url') . "/admin/en/display/news/{$urlParameters['id']}";
     }
 }
