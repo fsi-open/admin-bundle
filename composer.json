@@ -61,6 +61,7 @@
         "friends-of-phpspec/phpspec-expect": "^4.0",
         "fsi/files": "^1.0",
         "fsi/resource-repository-bundle": "^2.0",
+        "fsi/translatable": "^0.5.1",
         "gedmo/doctrine-extensions": "^2.4|^3.0",
         "nyholm/psr7": "^1.5",
         "oneup/flysystem-bundle": "^3.7",
@@ -110,5 +111,8 @@
             "2.0": "2.0-dev",
             "1.1": "1.1-dev"
         }
+    },
+    "suggests": {
+        "fsi/translatable": "Adds support for content translation for multiple languages"
     }
 }

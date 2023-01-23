@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace FSi\Bundle\AdminBundle\EventListener;
+namespace FSi\Bundle\AdminBundle\EventSubscriber;
 
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Event\MenuMainEvent;
@@ -17,7 +17,7 @@ use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item as MenuItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class CleanUpMenuListener implements EventSubscriberInterface
+class CleanUpMenuSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {

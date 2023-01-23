@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace FSi\Bundle\AdminBundle\EventListener;
+namespace FSi\Bundle\AdminBundle\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class LocaleListener implements EventSubscriberInterface
+class LocaleSubscriber implements EventSubscriberInterface
 {
     private string $defaultLocale;
 

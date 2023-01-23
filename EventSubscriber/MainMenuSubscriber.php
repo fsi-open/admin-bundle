@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FSi\Bundle\AdminBundle\EventListener;
+namespace FSi\Bundle\AdminBundle\EventSubscriber;
 
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
@@ -20,7 +20,7 @@ use function array_key_exists;
 use function is_array;
 use function is_string;
 
-class MainMenuListener implements EventSubscriberInterface
+class MainMenuSubscriber implements EventSubscriberInterface
 {
     private string $configFilePath;
 

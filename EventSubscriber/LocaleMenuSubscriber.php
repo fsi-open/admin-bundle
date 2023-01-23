@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace FSi\Bundle\AdminBundle\EventListener;
+namespace FSi\Bundle\AdminBundle\EventSubscriber;
 
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Event\MenuToolsEvent;
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Languages;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class LocaleMenuListener implements EventSubscriberInterface
+class LocaleMenuSubscriber implements EventSubscriberInterface
 {
     private TranslatorInterface $translator;
 
