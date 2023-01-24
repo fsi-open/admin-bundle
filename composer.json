@@ -67,7 +67,8 @@
         "oneup/flysystem-bundle": "^3.7",
         "phpspec/phpspec": "^6.0|^7.0",
         "phpspec/prophecy": "^1.8",
-        "phpstan/phpstan": "^1.6",
+        "phpstan/phpstan": "^1.9",
+        "phpstan/phpstan-beberlei-assert": "^1.0",
         "rize/uri-template": "^0.3.1",
         "sebastian/comparator": "^3.0",
         "sebastian/exporter": "^3.1",
@@ -88,6 +89,12 @@
     "config": {
         "bin-dir": "vendor/bin",
         "sort-packages": true
+    },
+    "scripts": {
+        "sniffer": "vendor/bin/phpcs --colors",
+        "stan": "vendor/bin/phpstan --ansi analyse -c phpstan.neon",
+        "spec": "vendor/bin/phpspec --ansi run --format=pretty",
+        "behat": "vendor/bin/behat --colors --no-snippets"
     },
     "autoload": {
         "psr-4": {

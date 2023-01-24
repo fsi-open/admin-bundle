@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace spec\FSi\Bundle\AdminBundle\EventListener;
+namespace spec\FSi\Bundle\AdminBundle\EventSubscriber;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class LocaleListenerSpec extends ObjectBehavior
+class LocaleSubscriberSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -32,7 +32,7 @@ class LocaleListenerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(EventSubscriberInterface::class);
     }
 
-    public function it_subscribe_kernel_request_event_before_default_locale_listener(): void
+    public function it_subscribe_kernel_request_event_before_default_locale_Subscriber(): void
     {
         $this->getSubscribedEvents()->shouldReturn(
             [KernelEvents::REQUEST => [['onKernelRequest', 17]]]

@@ -7,7 +7,11 @@ Below is reference for configuration of all bundle parameters, with default valu
 
 fsi_admin:
     default_locale: %locale%
+    # used for interface translation
     locales:
+        - %locale%
+    # used for integration with fsi/translatable
+    translatable_locales:
         - %locale%
     menu_config_path: %kernel.root_dir%/config/admin_menu.yaml
     templates:

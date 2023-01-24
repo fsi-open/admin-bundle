@@ -196,8 +196,9 @@ class MainMenuSubscriber implements EventSubscriberInterface
     private function getRequest(): Request
     {
         if (null === $this->request) {
-            $this->request = $this->requestStack->getCurrentRequest();
-            Assertion::notNull($this->request);
+            $request = $this->requestStack->getCurrentRequest();
+            Assertion::notNull($request);
+            $this->request = $request;
         }
 
         return $this->request;

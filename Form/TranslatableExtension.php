@@ -15,22 +15,22 @@ use FSi\Component\Translatable\ConfigurationResolver;
 use FSi\Component\Translatable\PropertyConfiguration;
 use FSi\Component\Translatable\TranslatableConfiguration;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 
 final class TranslatableExtension extends AbstractTypeExtension
 {
     private ConfigurationResolver $configurationResolver;
 
+    /**
+     * @return iterable<class-string<FormTypeInterface>>
+     */
     public static function getExtendedTypes(): iterable
     {
-        return [TextType::class];
-    }
-
-    public function getExtendType(): string
-    {
-        return TextType::class;
+        return [TextType::class, CollectionType::class];
     }
 
     public function __construct(ConfigurationResolver $configurationResolver)
@@ -38,6 +38,12 @@ final class TranslatableExtension extends AbstractTypeExtension
         $this->configurationResolver = $configurationResolver;
     }
 
+    /**
+     * @param FormView<FormView> $view
+     * @param FormInterface<FormInterface> $form
+     * @param array<string, mixed> $options
+     * @return void
+     */
     public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         $translatableConfiguration = $this->extractFirstTranslatableParentConfiguration($form);
@@ -50,6 +56,10 @@ final class TranslatableExtension extends AbstractTypeExtension
         $view->vars['translatable'] = $isTranslatable;
     }
 
+    /**
+     * @param FormInterface<FormInterface> $form
+     * @return TranslatableConfiguration|null
+     */
     private function extractFirstTranslatableParentConfiguration(
         FormInterface $form
     ): ?TranslatableConfiguration {
@@ -59,6 +69,7 @@ final class TranslatableExtension extends AbstractTypeExtension
                 continue;
             }
 
+            /** @var class-string<object>|null $dataClass */
             $dataClass = $parent->getConfig()->getDataClass();
             if (null === $dataClass) {
                 continue;
@@ -93,8 +104,7 @@ final class TranslatableExtension extends AbstractTypeExtension
         return array_reduce(
             $translatableConfiguration->getPropertyConfigurations(),
             fn(bool $accumulator, PropertyConfiguration $configuration): bool
-                => true === $accumulator || $configuration->getPropertyName() === $propertyPath
-            ,
+                => true === $accumulator || $configuration->getPropertyName() === $propertyPath,
             false
         );
     }

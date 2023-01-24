@@ -9,8 +9,9 @@
 
 declare(strict_types=1);
 
-namespace spec\FSi\Bundle\AdminBundle\EventListener;
+namespace spec\FSi\Bundle\AdminBundle\EventSubscriber;
 
+use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Event\MenuMainEvent;
@@ -21,12 +22,17 @@ use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Prophet;
-use FSi\Bundle\AdminBundle\Admin\Element;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-class MainMenuListenerSpec extends ObjectBehavior
+class MainMenuSubscriberSpec extends ObjectBehavior
 {
-    public function let(ManagerInterface $manager): void
-    {
+    public function let(
+        ManagerInterface $manager,
+        RequestStack $requestStack,
+        Request $request
+    ): void {
         $prophet = new Prophet();
         $manager->getElement(Argument::type('string'))->will(
             function ($args) use ($prophet) {
@@ -47,15 +53,24 @@ class MainMenuListenerSpec extends ObjectBehavior
                 return $args[0] != 'non_existing';
             }
         );
-        $this->beConstructedWith($manager, __DIR__ . '/admin_menu.yml');
+
+        $request->attributes = new ParameterBag(['translatableLocale' => 'en']);
+        $requestStack->getCurrentRequest()->willReturn($request);
+
+        $this->beConstructedWith(
+            $manager,
+            $requestStack,
+            __DIR__ . '/admin_menu.yml'
+        );
     }
 
     public function it_throws_exception_when_yaml_definition_of_menu_is_invalid(
         ManagerInterface $manager,
+        RequestStack $requestStack,
         MenuEvent $event
     ): void {
         $menuYaml = __DIR__ . '/invalid_admin_menu.yml';
-        $this->beConstructedWith($manager, $menuYaml);
+        $this->beConstructedWith($manager, $requestStack, $menuYaml);
 
         $this->shouldThrow(
             new InvalidYamlStructureException(
@@ -86,6 +101,7 @@ class MainMenuListenerSpec extends ObjectBehavior
     {
         return [
             'haveItem' => function (Item $menu, string $itemName, ?string $elementId = null, ?array $parameters = []) {
+                $parameters['translatableLocale'] = 'en';
                 $items = $menu->getChildren();
                 foreach ($items as $item) {
                     if ($item->getName() === $itemName) {

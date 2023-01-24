@@ -1,3 +1,5 @@
+includes:
+    - vendor/phpstan/phpstan-beberlei-assert/extension.neon
 parameters:
     treatPhpDocTypesAsCertain: false
     level: 8
