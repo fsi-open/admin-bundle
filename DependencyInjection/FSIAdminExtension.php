@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class FSIAdminExtension extends Extension
+final class FSIAdminExtension extends Extension
 {
     /**
      * @param array<string,mixed> $configs
@@ -33,6 +33,7 @@ class FSIAdminExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('admin.locales', $config['locales']);
+        $container->setParameter('admin.translatable_locales', $config['translatable_locales']);
         $container->setParameter('admin.default_locale', $config['default_locale']);
         $container->setParameter('admin.menu_config_path', $config['menu_config_path']);
 
@@ -52,10 +53,10 @@ class FSIAdminExtension extends Extension
      * @param ContainerBuilder $container
      * @param array<string,mixed> $config
      */
-    protected function setTemplateParameters(ContainerBuilder $container, array $config = []): void
+    private function setTemplateParameters(ContainerBuilder $container, array $config): void
     {
         foreach ($config as $key => $value) {
-            $container->setParameter(sprintf('admin.templates.%s', $key), $value);
+            $container->setParameter("admin.templates.{$key}", $value);
         }
     }
 }
