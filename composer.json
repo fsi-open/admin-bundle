@@ -25,7 +25,7 @@
         "doctrine/persistence": "^2.3",
         "doctrine/orm": "^2.8",
         "fsi/data": "^1.0@dev",
-        "fsi/translatable": "dev-main",
+        "fsi/translatable": "^1.0@dev",
         "knplabs/knp-menu": "^3.1.3",
         "knplabs/knp-menu-bundle": "^3.1",
         "psr/event-dispatcher": "^1.0",

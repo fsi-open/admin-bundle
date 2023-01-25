@@ -70,5 +70,3 @@ monolog:
             level: debug
             channels: ["!event"]
 
-fsi_translatable:
-    entities: []

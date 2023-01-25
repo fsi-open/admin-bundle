@@ -11,23 +11,25 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle;
 
-use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ContextPass;
-use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\KnpMenuBuilderPass;
-use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ManagerVisitorPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ResourceRepositoryPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\FSIAdminExtension;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class FSiAdminBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {
-        parent::build($container);
-
         $container->addCompilerPass(new ResourceRepositoryPass());
         $container->addCompilerPass(new TwigGlobalsPass());
+
+        if (true === $container->hasExtension('fsi_translatable')) {
+            $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/Resources/config'));
+            $loader->load('translatable.xml');
+        }
     }
 
     public function getContainerExtension(): FSIAdminExtension

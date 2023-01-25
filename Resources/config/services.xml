@@ -11,7 +11,20 @@
                    resource="../../{Admin,DataGrid,Doctrine,EventSubscriber,Factory,Form,Menu,Message,Request,Twig}"
         />
 
+        <!-- Manager -->
         <service id="FSi\Bundle\AdminBundle\Admin\ManagerInterface" alias="FSi\Bundle\AdminBundle\Admin\Manager" />
+        <service id="FSi\Bundle\AdminBundle\Admin\Manager">
+            <argument key="$visitors"
+                      type="tagged_iterator"
+                      tag="admin.manager.visitor"
+                      default-priority-method="getPriority"
+            />
+        </service>
+
+        <!-- Manager Visitors -->
+        <service id="FSi\Bundle\AdminBundle\Admin\Manager\ElementCollectionVisitor">
+            <argument key="$elements" type="tagged_iterator" tag="admin.element"/>
+        </service>
 
         <service id="FSi\Bundle\AdminBundle\Factory\ProductionLine">
             <argument key="$workers" type="tagged_iterator" tag="admin.worker" />
@@ -30,24 +43,11 @@
             </argument>
         </service>
 
-        <service id="FSi\Bundle\AdminBundle\Admin\Manager">
-            <argument key="$visitors"
-                      type="tagged_iterator"
-                      tag="admin.manager.visitor"
-                      default-priority-method="getPriority"
-            />
-        </service>
-
         <!-- Controllers -->
         <prototype namespace="FSi\Bundle\AdminBundle\Controller\" resource="../../Controller/*" public="true" />
 
         <service id="FSi\Bundle\AdminBundle\Controller\AdminController" public="true">
             <argument key="$indexActionTemplate" type="string">%admin.templates.index_page%</argument>
-        </service>
-
-        <!-- Manager Visitors -->
-        <service id="FSi\Bundle\AdminBundle\Admin\Manager\ElementCollectionVisitor">
-            <argument key="$elements" type="tagged_iterator" tag="admin.element"/>
         </service>
 
         <!-- Flash messages -->
