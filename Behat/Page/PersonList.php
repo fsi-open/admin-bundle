@@ -28,6 +28,6 @@ class PersonList extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . '/admin/list/person';
+        return $this->getParameter('base_url') . '/admin/en/list/person';
     }
 }

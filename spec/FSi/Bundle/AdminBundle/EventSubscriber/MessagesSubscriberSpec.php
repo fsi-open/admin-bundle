@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace spec\FSi\Bundle\AdminBundle\EventListener;
+namespace spec\FSi\Bundle\AdminBundle\EventSubscriber;
 
 use FSi\Bundle\AdminBundle\Event\BatchObjectsPostApplyEvent;
 use FSi\Bundle\AdminBundle\Event\FormDataPostSaveEvent;
@@ -19,7 +19,7 @@ use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormInterface;
 
-class MessagesListenerSpec extends ObjectBehavior
+class MessagesSubscriberSpec extends ObjectBehavior
 {
     public function let(FlashMessages $flashMessages): void
     {

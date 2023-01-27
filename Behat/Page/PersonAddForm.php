@@ -28,6 +28,6 @@ class PersonAddForm extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . '/admin/form/person';
+        return $this->getParameter('base_url') . '/admin/en/form/person';
     }
 }

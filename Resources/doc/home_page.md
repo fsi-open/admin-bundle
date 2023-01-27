@@ -9,11 +9,11 @@ If you don't need any extra logic, you can just override the home page template
 file with your own.
 
 ```yaml
-#app/config/config.yml
+#config/fsi_admin.yaml
 
 fsi_admin:
     templates:
-        index_page: @YourAdmin/Admin/index.html.twig
+        index_page: '@YourAdmin/Admin/index.html.twig'
 ```
 
 It is a good idea to have your custom template file extend the FSi Admin Bundle base template file.
@@ -31,15 +31,14 @@ It is a good idea to have your custom template file extend the FSi Admin Bundle 
 ## Override the route
 
 If you want to have your own controller with custom logic, you can override the
-home page route (just like any other route in Symfony 2).
+home page route (just like any other route in Symfony).
 
 ```yaml
-# app/config/routing.yml
+# config/routes.yaml
 
 fsi_admin:
     path: /
-    defaults:
-        _controller: YourAdminBundle:Admin:index
+    controller: YourAdminBundle\Controller\IndexController
 ```
 
 [Back to index](index.md)

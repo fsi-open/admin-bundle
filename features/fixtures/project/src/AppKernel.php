@@ -30,6 +30,7 @@ class AppKernel extends Kernel
             new \FSi\FixturesBundle\FSiFixturesBundle(),
             new \FSi\Bundle\ResourceRepositoryBundle\FSiResourceRepositoryBundle(),
             new \FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle(),
+            new \FSi\Component\Translatable\Integration\Symfony\TranslatableBundle(),
         ];
     }
 

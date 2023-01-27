@@ -28,6 +28,6 @@ class NewsCreate extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . '/admin/form/news';
+        return $this->getParameter('base_url') . '/admin/en/form/news';
     }
 }

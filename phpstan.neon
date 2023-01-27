@@ -1,3 +1,5 @@
+includes:
+    - vendor/phpstan/phpstan-beberlei-assert/extension.neon
 parameters:
     treatPhpDocTypesAsCertain: false
     level: 8
@@ -9,7 +11,7 @@ parameters:
         - '%currentWorkingDirectory%/Display'
         - '%currentWorkingDirectory%/Doctrine'
         - '%currentWorkingDirectory%/Event'
-        - '%currentWorkingDirectory%/EventListener'
+        - '%currentWorkingDirectory%/EventSubscriber'
         - '%currentWorkingDirectory%/Exception'
         - '%currentWorkingDirectory%/Factory'
         - '%currentWorkingDirectory%/features/fixtures/project/src'

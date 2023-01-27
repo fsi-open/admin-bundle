@@ -18,16 +18,22 @@ class AdminPanel extends Page
     public function hasMenuElement(string $name, ?string $group = null): bool
     {
         if (null === $group) {
-            return $this->getMenu()->has('css', sprintf('li > a:contains("%s")', $name));
+            return $this->getMenu()->has('css', "li > a:contains(\"{$name}\")");
         }
 
-        $groupExpandButton = $this->getMenu()->find('css', sprintf('li.dropdown > a:contains("%s")', $group));
+        $groupExpandButton = $this->getMenu()->find(
+            'css',
+            "li.dropdown > a:contains(\"{$group}\")"
+        );
 
-        if (null !== $groupExpandButton) {
-            return $groupExpandButton->getParent()->has('css', sprintf('ul > li > a:contains("%s")', $name));
+        if (null === $groupExpandButton) {
+            return false;
         }
 
-        return false;
+        return $groupExpandButton->getParent()->has(
+            'css',
+            "ul > li > a:contains(\"{$name}\")"
+        );
     }
 
     public function getMenuElementsCount(): int
@@ -53,10 +59,12 @@ class AdminPanel extends Page
         }
 
         $linkNodes = $this->getDocument()->findAll('css', 'li#language > ul > li');
-
-        return array_filter(array_map(static function (NodeElement $element) {
-            return $element->getText();
-        }, $linkNodes));
+        return array_filter(
+            array_map(
+                static fn(NodeElement $element): ?string => $element->getText(),
+                $linkNodes
+            )
+        );
     }
 
     public function getLanguageDropdown(): ?NodeElement
@@ -66,6 +74,6 @@ class AdminPanel extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . '/admin/';
+        return $this->getParameter('base_url') . '/admin/en';
     }
 }

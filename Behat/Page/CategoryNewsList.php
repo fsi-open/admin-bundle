@@ -28,7 +28,7 @@ class CategoryNewsList extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . '/admin/list/category_news'
+        return $this->getParameter('base_url') . '/admin/en/list/category_news'
             . (($urlParameters['parent_id'] ?? null) ? "?parent={$urlParameters['parent_id']}" : '');
     }
 }

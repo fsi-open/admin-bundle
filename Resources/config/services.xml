@@ -8,10 +8,23 @@
         <defaults autoconfigure="true" autowire="true" public="false" />
 
         <prototype namespace="FSi\Bundle\AdminBundle\"
-                   resource="../../{Admin,DataGrid,Doctrine,EventListener,Factory,Form,Menu,Message,Request,Twig}"
+                   resource="../../{Admin,DataGrid,Doctrine,EventSubscriber,Factory,Form,Menu,Message,Request,Twig}"
         />
 
+        <!-- Manager -->
         <service id="FSi\Bundle\AdminBundle\Admin\ManagerInterface" alias="FSi\Bundle\AdminBundle\Admin\Manager" />
+        <service id="FSi\Bundle\AdminBundle\Admin\Manager">
+            <argument key="$visitors"
+                      type="tagged_iterator"
+                      tag="admin.manager.visitor"
+                      default-priority-method="getPriority"
+            />
+        </service>
+
+        <!-- Manager Visitors -->
+        <service id="FSi\Bundle\AdminBundle\Admin\Manager\ElementCollectionVisitor">
+            <argument key="$elements" type="tagged_iterator" tag="admin.element"/>
+        </service>
 
         <service id="FSi\Bundle\AdminBundle\Factory\ProductionLine">
             <argument key="$workers" type="tagged_iterator" tag="admin.worker" />
@@ -30,21 +43,11 @@
             </argument>
         </service>
 
-        <service id="FSi\Bundle\AdminBundle\Admin\Manager">
-            <argument key="$visitors" type="tagged_iterator" tag="admin.manager.visitor"
-                      default-priority-method="getPriority"/>
-        </service>
-
         <!-- Controllers -->
         <prototype namespace="FSi\Bundle\AdminBundle\Controller\" resource="../../Controller/*" public="true" />
 
         <service id="FSi\Bundle\AdminBundle\Controller\AdminController" public="true">
             <argument key="$indexActionTemplate" type="string">%admin.templates.index_page%</argument>
-        </service>
-
-        <!-- Manager Visitors -->
-        <service id="FSi\Bundle\AdminBundle\Admin\Manager\ElementCollectionVisitor">
-            <argument key="$elements" type="tagged_iterator" tag="admin.element"/>
         </service>
 
         <!-- Flash messages -->
@@ -61,11 +64,16 @@
             <argument key="$eventName" type="string">FSi\Bundle\AdminBundle\Event\MenuToolsEvent</argument>
         </service>
 
-        <service id="FSi\Bundle\AdminBundle\EventListener\MainMenuListener">
+        <service id="FSi\Bundle\AdminBundle\EventSubscriber\MainMenuSubscriber">
             <argument key="$configFilePath" type="string">%admin.menu_config_path%</argument>
         </service>
 
-        <service id="FSi\Bundle\AdminBundle\EventListener\LocaleMenuListener">
+        <service id="FSi\Bundle\AdminBundle\EventSubscriber\LocaleMenuSubscriber">
+            <argument key="$locales" type="string">%admin.locales%</argument>
+        </service>
+
+        <service id="FSi\Bundle\AdminBundle\EventSubscriber\TranslationLocaleMenuSubscriber">
+            <argument key="$requestMatcher" type="service" id="router" />
             <argument key="$locales" type="string">%admin.locales%</argument>
         </service>
 
@@ -159,8 +167,8 @@
             <argument key="$formBuilder" type="service" id="admin.form.builder.batch"/>
         </service>
 
-        <!-- EventListener -->
-        <service id="FSi\Bundle\AdminBundle\EventListener\LocaleListener">
+        <!-- EventSubscriber -->
+        <service id="FSi\Bundle\AdminBundle\EventSubscriber\LocaleSubscriber">
             <argument key="$defaultLocale" type="string">%admin.default_locale%</argument>
         </service>
     </services>

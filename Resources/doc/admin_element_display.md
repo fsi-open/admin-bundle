@@ -179,7 +179,7 @@ class DisplayNewsElement extends DisplayElement
 ## 3. Add display action to news datagrid definition
 
 ```yaml
-# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/news.yml
+# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/news.yaml
 
 columns:
 

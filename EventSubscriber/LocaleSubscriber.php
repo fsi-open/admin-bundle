@@ -9,15 +9,20 @@
 
 declare(strict_types=1);
 
-namespace FSi\Bundle\AdminBundle\EventListener;
+namespace FSi\Bundle\AdminBundle\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class LocaleListener implements EventSubscriberInterface
+class LocaleSubscriber implements EventSubscriberInterface
 {
     private string $defaultLocale;
+
+    public static function getSubscribedEvents(): array
+    {
+        return [KernelEvents::REQUEST => [['onKernelRequest', 17]]];
+    }
 
     public function __construct(string $defaultLocale)
     {
@@ -35,11 +40,8 @@ class LocaleListener implements EventSubscriberInterface
             return;
         }
 
-        $request->setLocale($request->getSession()->get('admin_locale', $this->defaultLocale));
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [KernelEvents::REQUEST => [['onKernelRequest', 17]]];
+        $request->setLocale(
+            $request->getSession()->get('admin_locale', $this->defaultLocale)
+        );
     }
 }

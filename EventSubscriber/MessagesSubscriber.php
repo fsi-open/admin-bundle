@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace FSi\Bundle\AdminBundle\EventListener;
+namespace FSi\Bundle\AdminBundle\EventSubscriber;
 
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Event\BatchObjectsPostApplyEvent;
@@ -19,7 +19,7 @@ use FSi\Bundle\AdminBundle\Event\FormRequestPostSubmitEvent;
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class MessagesListener implements EventSubscriberInterface
+final class MessagesSubscriber implements EventSubscriberInterface
 {
     private FlashMessages $flashMessages;
 

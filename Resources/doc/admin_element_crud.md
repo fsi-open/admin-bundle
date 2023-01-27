@@ -77,7 +77,7 @@ whose name needs to correspond to the value passed as the datagrid's ID in the
 `initDataGrid` method.
 
 ```yaml
-# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yml
+# src/FSi/Bundle/DemoBundle/Resources/config/datagrid/admin_users.yaml
 
 columns:
   email:
@@ -107,7 +107,7 @@ The configuration is almost identical to datagrid's. Files are read from `Resour
 directory and their names need to correspond to the ID passed in the `initDataSource` method.
 
 ```yaml
-# src/FSi/Bundle/DemoBundle/Resources/config/datasource/admin_users.yml
+# src/FSi/Bundle/DemoBundle/Resources/config/datasource/admin_users.yaml
 
 fields:
   email:
@@ -122,10 +122,10 @@ fields:
 
 ## 4. Add element to the main menu
 
-By default elements are not visible in menu. You need to add them manually in the `admin_menu.yml` file:
+By default elements are not visible in menu. You need to add them manually in the `admin_menu.yaml` file:
 
 ```yaml
-# app/config/admin_menu.yml
+# config/admin_menu.yaml
 
 menu:
   - users # This will use the element's ID as the label

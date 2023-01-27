@@ -49,10 +49,10 @@ class Resource extends BaseResource
 }
 ```
 
-### Modify app/config/config.yml
+### Modify config/config.yaml
 
 ```yaml
-# app/config/config.yml
+# config/config.yaml
 
 fsi_resource_repository:
     resource_class: FSi\Bundle\DemoBundle\Entity\Resource
@@ -66,10 +66,10 @@ $ php app/console doctrine:schema:update --force
 
 ## 2. Resources configuration
 
-Let's assume we have the following configuration in ``resource_map.yml``
+Let's assume we have the following configuration in ``resource_map.yaml``
 
-```yml
-# app/config/resource_map.yml
+```yaml
+# config/resource_map.yaml
 
 resources:
     type: group
@@ -97,7 +97,7 @@ class MainPage extends ResourceElement
 {
     public function getKey(): string
     {
-        return 'resources.main_page'; // must be a group type key, defined in the `resource_map.yml`
+        return 'resources.main_page'; // must be a group type key, defined in the `resource_map.yaml`
     }
 
     public function getId(): string
@@ -114,10 +114,10 @@ class MainPage extends ResourceElement
 
 ## 4. Add element to the main menu
 
-By default elements are not visible in menu. You need to add them manually in the `admin_menu.yml` file:
+By default elements are not visible in menu. You need to add them manually in the `admin_menu.yaml` file:
 
 ```yaml
-# app/config/admin_menu.yml
+# config/admin_menu.yaml
 
 menu:
   - main_page # This will use the element's ID as the label

@@ -11,24 +11,26 @@ declare(strict_types=1);
 
 namespace spec\FSi\Bundle\AdminBundle;
 
+use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ResourceRepositoryPass;
+use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ResourceRepositoryPass;
-use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class FSiAdminBundleSpec extends ObjectBehavior
 {
-    public function it_is_bundle(): void
+    public function it_is_a_bundle(): void
     {
         $this->shouldBeAnInstanceOf(Bundle::class);
     }
 
-    public function it_add_compiler_pass(ContainerBuilder $builder): void
+    public function it_adds_compiler_passes(ContainerBuilder $builder): void
     {
         $builder->addCompilerPass(Argument::type(ResourceRepositoryPass::class))->shouldBeCalled();
         $builder->addCompilerPass(Argument::type(TwigGlobalsPass::class))->shouldBeCalled();
+        $builder->hasExtension('fsi_translatable')->willReturn(false);
 
         $this->build($builder);
     }

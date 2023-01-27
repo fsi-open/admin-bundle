@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace spec\FSi\Bundle\AdminBundle\EventListener;
+namespace spec\FSi\Bundle\AdminBundle\EventSubscriber;
 
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
@@ -17,7 +17,7 @@ use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use PhpSpec\ObjectBehavior;
 
-class CleanUpMenuListenerSpec extends ObjectBehavior
+class CleanUpMenuSubscriberSpec extends ObjectBehavior
 {
     public function it_remove_empty_menus(
         MenuEvent $event,

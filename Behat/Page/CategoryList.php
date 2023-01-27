@@ -21,13 +21,13 @@ class CategoryList extends Page
 
         if (false === $this->getDocument()->has('css', '#page-header:contains("List of elements")')) {
             throw new UnexpectedPageException(
-                sprintf("%s page is missing \"List of elements\" header", $this->getUrl($urlParameters))
+                "{$this->getUrl($urlParameters)} page is missing \"List of elements\" header"
             );
         }
     }
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . '/admin/list/category';
+        return $this->getParameter('base_url') . '/admin/en/list/category';
     }
 }

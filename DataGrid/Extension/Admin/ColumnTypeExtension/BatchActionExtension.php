@@ -21,19 +21,17 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
+use function is_string;
+
 class BatchActionExtension extends ColumnAbstractTypeExtension
 {
     protected ManagerInterface $manager;
-
     protected RouterInterface $router;
-
     protected RequestStack $requestStack;
-
     /**
      * @var FormBuilderInterface<string,FormBuilderInterface>
      */
     protected FormBuilderInterface $formBuilder;
-
     protected OptionsResolver $actionOptionsResolver;
 
     public static function getExtendedColumnTypes(): array
@@ -233,9 +231,9 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
 
         $request = $this->getMasterRequest();
         if ($request->query->has('redirect_uri')) {
-            $additionalParameters['redirect_uri'] = $this->getMasterRequest()->query->get('redirect_uri');
+            $additionalParameters['redirect_uri'] = $request->query->get('redirect_uri');
         } else {
-            $additionalParameters['redirect_uri'] = $this->getMasterRequest()->getRequestUri();
+            $additionalParameters['redirect_uri'] = $request->getRequestUri();
         }
 
         return $additionalParameters;

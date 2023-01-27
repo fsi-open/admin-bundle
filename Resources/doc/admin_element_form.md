@@ -62,7 +62,7 @@ Assuming you already defined a list element (more [here](admin_element_list.md))
 you can easily attach your new form element to the datagrid actions column:
 
 ```yaml
-# src/FSi/Bundle/DemoBundle/Resources/config/datasource/admin_subscribers.yml
+# src/FSi/Bundle/DemoBundle/Resources/config/datasource/admin_subscribers.yaml
 
 columns:
   # ... other columns

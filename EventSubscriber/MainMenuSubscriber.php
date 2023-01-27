@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace FSi\Bundle\AdminBundle\EventListener;
+namespace FSi\Bundle\AdminBundle\EventSubscriber;
 
+use Assert\Assertion;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
@@ -14,29 +15,35 @@ use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Yaml\Yaml;
 
 use function array_key_exists;
 use function is_array;
 use function is_string;
 
-class MainMenuListener implements EventSubscriberInterface
+class MainMenuSubscriber implements EventSubscriberInterface
 {
-    private string $configFilePath;
-
     private ManagerInterface $manager;
+    private RequestStack $requestStack;
+    private ?Request $request;
+    private string $configFilePath;
 
     public static function getSubscribedEvents(): array
     {
-        return [
-            MenuMainEvent::class => 'createMainMenu',
-        ];
+        return [MenuMainEvent::class => 'createMainMenu'];
     }
 
-    public function __construct(ManagerInterface $manager, string $configFilePath)
-    {
-        $this->configFilePath = $configFilePath;
+    public function __construct(
+        ManagerInterface $manager,
+        RequestStack $requestStack,
+        string $configFilePath
+    ) {
         $this->manager = $manager;
+        $this->requestStack = $requestStack;
+        $this->request = null;
+        $this->configFilePath = $configFilePath;
     }
 
     public function createMainMenu(MenuEvent $event): Item
@@ -45,11 +52,11 @@ class MainMenuListener implements EventSubscriberInterface
         if (false === is_string($yamlContent)) {
             throw new RuntimeException("Unable to read contents of {$this->configFilePath}");
         }
-        $config = Yaml::parse($yamlContent, Yaml::PARSE_OBJECT | Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
 
+        $config = Yaml::parse($yamlContent, Yaml::PARSE_OBJECT | Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
         if (false === array_key_exists('menu', $config)) {
             throw new InvalidYamlStructureException(
-                sprintf('File "%s" should contain top level "menu:" key', $this->configFilePath)
+                "File \"{$this->configFilePath}\" should contain top level \"menu:\" key"
             );
         }
 
@@ -62,28 +69,23 @@ class MainMenuListener implements EventSubscriberInterface
         ]);
 
         $this->populateMenu($menu, $config['menu']);
-
         return $menu;
     }
 
     /**
-     * @param Item $menu
      * @param array<string,mixed> $configs
      */
     private function populateMenu(Item $menu, array $configs): void
     {
         foreach ($configs as $itemConfig) {
             $item = $this->buildSingleItem($itemConfig);
-
             if (null !== $item) {
                 $options = ['attr' => ['class' => 'admin-element']];
                 if (true === $item instanceof ElementItem) {
                     $options['elements'] = $this->buildItemElements($itemConfig);
                 }
                 $item->setOptions($options);
-            }
-
-            if (null === $item) {
+            } else {
                 if (true === $this->isSingleItem($itemConfig)) {
                     continue;
                 }
@@ -98,13 +100,18 @@ class MainMenuListener implements EventSubscriberInterface
 
     /**
      * @param array<string,mixed>|string $itemConfig
-     * @return Item|null
      */
     private function buildSingleItem($itemConfig): ?Item
     {
+        $locale = $this->getRequest()->attributes->get('translatableLocale');
+
         if (true === is_string($itemConfig)) {
             if (true === $this->manager->hasElement($itemConfig)) {
-                return new ElementItem($itemConfig, $this->manager->getElement($itemConfig));
+                return new ElementItem(
+                    $itemConfig,
+                    $this->manager->getElement($itemConfig),
+                    ['translatableLocale' => $locale]
+                );
             }
 
             return new Item($itemConfig);
@@ -117,14 +124,20 @@ class MainMenuListener implements EventSubscriberInterface
         $id = $this->getEntry($itemConfig, 'id');
         if (true === is_string($id) && true === $this->manager->hasElement($id)) {
             $name = $this->getEntry($itemConfig, 'name');
-            return new ElementItem((true === is_string($name)) ? $name : $id, $this->manager->getElement($id));
+            return new ElementItem(
+                true === is_string($name) ? $name : $id,
+                $this->manager->getElement($id),
+                ['translatableLocale' => $locale]
+            );
         }
 
         if (true === $this->hasEntry($itemConfig, 'route')) {
+            $routeParameters = $itemConfig['route_parameters'] ?? [];
+            $routeParameters['translatableLocale'] = $locale;
             return new RoutableItem(
                 $itemConfig['name'] ?? $itemConfig['route'],
                 $itemConfig['route'],
-                $itemConfig['route_parameters'] ?? []
+                $routeParameters
             );
         }
 
@@ -169,7 +182,6 @@ class MainMenuListener implements EventSubscriberInterface
     private function buildItemElements($itemConfig): array
     {
         $elements = [];
-
         $elementIds = $this->getEntry($itemConfig, 'elements');
         if (null !== $elementIds) {
             $elementIds = (array) $elementIds;
@@ -179,5 +191,16 @@ class MainMenuListener implements EventSubscriberInterface
         }
 
         return $elements;
+    }
+
+    private function getRequest(): Request
+    {
+        if (null === $this->request) {
+            $request = $this->requestStack->getCurrentRequest();
+            Assertion::notNull($request);
+            $this->request = $request;
+        }
+
+        return $this->request;
     }
 }

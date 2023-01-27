@@ -7,6 +7,8 @@ admin:
     menu:
         header: Menu
         toggle: Przełącz nawigację
+    translation_locale:
+        title: 'Język tłumaczeń (%locale%)'
 resource:
     title: Edytuj zasoby
     button:

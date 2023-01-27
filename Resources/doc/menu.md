@@ -1,10 +1,10 @@
 # Admin panel menu
 
 By default, the menu is displayed on the top navigation bar and has no elements.
-You can add these through the ``app/config/admin_menu.yml`` file:
+You can add these through the ``config/admin_menu.yaml`` file:
 
 ```yaml
-# app/config/admin_menu.yml
+# config/admin_menu.yaml
 
 menu:
   - news
@@ -20,7 +20,7 @@ the latter, more verbose method.
 Group names are translated, so you can also use translations keys:
 
 ```yaml
-# app/config/admin_menu.yml
+# config/admin_menu.yaml
 
 menu:
   - { "id": news, "name": admin.menu.news }
@@ -32,7 +32,7 @@ menu:
 ```
 
 ```yaml
-# app/Resources/translations/messages.en.yml
+# app/Resources/translations/messages.en.yaml
 
 admin:
   menu:
@@ -47,7 +47,7 @@ admin:
 The menu can also contain links to actions with a custom controller, for example:
 
 ```yaml
-# app/config/admin_menu.yml
+# config/admin_menu.yaml
 
 menu:
   - name: admin.menu.news
@@ -59,7 +59,7 @@ menu:
 
 # Troubleshooting
 
-If you add a position to the ``app/config/admin_menu.yml`` and it is not being
+If you add a position to the ``config/admin_menu.yaml`` and it is not being
 displayed, make sure you've given the proper ID and the element is actually registered.
 All values which do not correspond to IDs of properly registered elements are removed during
 the creation of the menu - with the exception of roots of submenus.

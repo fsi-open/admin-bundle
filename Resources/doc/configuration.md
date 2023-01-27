@@ -2,14 +2,18 @@
 
 Below is reference for configuration of all bundle parameters, with default values:
 
-```yml
-# app/config/config.yml
+```yaml
+# config/config.yaml
 
 fsi_admin:
     default_locale: %locale%
+    # used for interface translation
     locales:
         - %locale%
-    menu_config_path: %kernel.root_dir%/config/admin_menu.yml
+    # used for integration with fsi/translatable
+    translatable_locales:
+        - %locale%
+    menu_config_path: %kernel.root_dir%/config/admin_menu.yaml
     templates:
         base: @FSiAdmin/base.html.twig
         index_page: @FSiAdmin/Admin/index.html.twig
@@ -29,8 +33,8 @@ fsi_admin:
 There is a separate [theme](../views/CRUD/datagrid_fsi_doctrine_extensions.html.twig) for datagrids you can use if
 you register the [fsi/doctrine-extensions-bundle](https://github.com/fsi-open/doctrine-extensions-bundle).
 
-```yml
-# app/config/config.yml
+```yaml
+# config/config.yaml
 
 fsi_admin:
     templates:

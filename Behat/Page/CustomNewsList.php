@@ -28,6 +28,6 @@ class CustomNewsList extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . '/admin/list/custom_news';
+        return $this->getParameter('base_url') . '/admin/en/list/custom_news';
     }
 }

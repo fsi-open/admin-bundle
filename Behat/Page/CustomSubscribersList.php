@@ -28,6 +28,6 @@ class CustomSubscribersList extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . '/admin/list/custom_subscriber';
+        return $this->getParameter('base_url') . '/admin/en/list/custom_subscriber';
     }
 }

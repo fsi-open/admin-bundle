@@ -28,6 +28,6 @@ class SubscriberEdit extends Page
 
     protected function getUrl(array $urlParameters = []): string
     {
-        return $this->getParameter('base_url') . "/admin/form/subscriber_form/{$urlParameters['id']}";
+        return $this->getParameter('base_url') . "/admin/en/form/subscriber_form/{$urlParameters['id']}";
     }
 }

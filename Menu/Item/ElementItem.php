@@ -16,13 +16,22 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function array_merge;
+
 class ElementItem extends RoutableItem
 {
     private Element $element;
 
-    public function __construct(string $name, Element $element)
+    /**
+     * @param array<string, mixed> $routeParameters
+     */
+    public function __construct(string $name, Element $element, array $routeParameters = [])
     {
-        parent::__construct($name, $element->getRoute(), $element->getRouteParameters());
+        parent::__construct(
+            $name,
+            $element->getRoute(),
+            array_merge($element->getRouteParameters(), $routeParameters)
+        );
 
         $this->element = $element;
     }
@@ -36,13 +45,9 @@ class ElementItem extends RoutableItem
     {
         parent::configureOptions($optionsResolver);
 
-        $optionsResolver->setDefaults([
-            'elements' => [],
-        ]);
-
+        $optionsResolver->setDefault('elements', []);
         $optionsResolver->setAllowedTypes('elements', ['array']);
-
-        $optionsResolver->setNormalizer('elements', function (Options $options, array $value) {
+        $optionsResolver->setNormalizer('elements', function (Options $options, array $value): array {
             foreach ($value as $element) {
                 if (false === $element instanceof Element) {
                     throw new InvalidOptionsException(sprintf(
