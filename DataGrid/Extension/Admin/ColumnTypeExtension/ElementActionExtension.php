@@ -55,7 +55,7 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
             $actionOptionsResolver->setAllowedTypes('additional_parameters', ['null', 'array']);
             $actionOptionsResolver->setAllowedTypes('route_name', 'string');
 
-            $actionOptionsResolver->setNormalizer(
+            $actionOptionsResolver->setDefault(
                 'route_name',
                 function (Options $options, ?string $previousValue): ?string {
                     if (null === ($options['element'] ?? null)) {
@@ -90,7 +90,7 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
                 }
             );
 
-            $actionOptionsResolver->setNormalizer(
+            $actionOptionsResolver->setDefault(
                 'parameters_field_mapping',
                 function (Options $options, ?array $previousValue): ?array {
                     if (null === ($options['element'] ?? null)) {

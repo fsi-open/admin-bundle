@@ -46,13 +46,16 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         Request $request,
         ParameterBag $requestParameterBag,
         ParameterBag $queryParameterBag,
+        ParameterBag $attributesParameterBag,
         FormInterface $form,
         BatchElement $element,
         FormEvent $event
     ): void {
         $requestParameterBag->all()->willReturn(['indexes' => ['index']]);
+        $attributesParameterBag->has('translatableLocale')->willReturn(false);
         $request->request = $requestParameterBag;
         $request->query = $queryParameterBag;
+        $request->attributes = $attributesParameterBag;
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
         $event->getForm()->willReturn($form);
         $event->getElement()->willReturn($element);

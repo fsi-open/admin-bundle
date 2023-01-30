@@ -76,7 +76,8 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     public function it_handle_POST_request(
         FormEvent $event,
         Request $request,
-        ParameterBag $query,
+        ParameterBag $queryParameterBag,
+        ParameterBag $attributesParameterBag,
         ResourceElement $element,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
@@ -84,8 +85,10 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         Resource $resource1,
         Resource $resource2
     ): void {
+        $attributesParameterBag->has('translatableLocale')->willReturn(false);
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
-        $request->query = $query;
+        $request->query = $queryParameterBag;
+        $request->attributes = $attributesParameterBag;
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
