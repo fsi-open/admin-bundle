@@ -125,6 +125,7 @@ class DependentCRUDElementSpec extends ObjectBehavior
                     ],
                 ],
                 'display_order' => -1000,
+                'translation_domain' => 'FSiAdminBundle'
             ]
         )->shouldBeCalled();
 
