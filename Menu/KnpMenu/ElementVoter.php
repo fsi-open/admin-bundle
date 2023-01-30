@@ -23,10 +23,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 use function array_key_exists;
 
-class ElementVoter implements VoterInterface
+final class ElementVoter implements VoterInterface
 {
     private ManagerInterface $manager;
-
     private RequestStack $requestStack;
 
     public function __construct(ManagerInterface $manager, RequestStack $requestStack)
@@ -37,12 +36,13 @@ class ElementVoter implements VoterInterface
 
     public function matchItem(ItemInterface $item): ?bool
     {
-        if (false === $this->validateRequestElement()) {
+        $request = $this->getRequest();
+        if (false === $this->validateRequestElement($request)) {
             return null;
         }
 
-        $element = $this->getRequestElement();
-
+        /** @var Element $element */
+        $element = $request->attributes->get('element');
         while (true) {
             /** @var array<int,mixed> $routes */
             $routes = $item->getExtra('routes', []);
@@ -61,7 +61,6 @@ class ElementVoter implements VoterInterface
             }
 
             $parentElement = $this->manager->getElement($element->getParentId());
-
             if ($parentElement === $element) {
                 break;
             }
@@ -72,13 +71,13 @@ class ElementVoter implements VoterInterface
         return false;
     }
 
-    private function validateRequestElement(): bool
+    private function validateRequestElement(Request $request): bool
     {
-        if (false === $this->getRequest()->attributes->has('element')) {
+        if (false === $request->attributes->has('element')) {
             return false;
         }
 
-        $element = $this->getRequest()->attributes->get('element');
+        $element = $request->attributes->get('element');
         if (false === $element instanceof Element) {
             return false;
         }
@@ -86,15 +85,8 @@ class ElementVoter implements VoterInterface
         return true;
     }
 
-    private function getRequestElement(): Element
-    {
-        return $this->getRequest()->attributes->get('element');
-    }
-
     /**
-     * @param Element $element
      * @param array<string,mixed> $testedRouteParameters
-     * @return bool
      */
     private function isRouteMatchingElement(Element $element, array $testedRouteParameters): bool
     {
@@ -103,9 +95,7 @@ class ElementVoter implements VoterInterface
     }
 
     /**
-     * @param Element $element
      * @param array<string,mixed> $testedRouteParameters
-     * @return bool
      */
     private function isRouteMatchingElementDirectly(Element $element, array $testedRouteParameters): bool
     {
@@ -117,9 +107,7 @@ class ElementVoter implements VoterInterface
     }
 
     /**
-     * @param Element $element
      * @param array<string,mixed> $testedRouteParameters
-     * @return bool
      */
     private function isRouteMatchingElementAfterSuccess(Element $element, array $testedRouteParameters): bool
     {
@@ -143,7 +131,7 @@ class ElementVoter implements VoterInterface
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
-            throw new RuntimeException("Menu is only available in request context");
+            throw new RuntimeException('Menu is only available in request context');
         }
 
         return $request;
