@@ -21,6 +21,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
+use function count;
 use function is_string;
 
 class BatchActionExtension extends ColumnAbstractTypeExtension
@@ -40,9 +41,6 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     }
 
     /**
-     * @param ManagerInterface $manager
-     * @param RequestStack $requestStack
-     * @param RouterInterface $router
      * @param FormBuilderInterface<string,FormBuilderInterface> $formBuilder
      */
     public function __construct(
@@ -81,9 +79,8 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
             ]);
             $actionOptionsResolver->setNormalizer(
                 'additional_parameters',
-                function (Options $options, $value): array {
-                    return $this->normalizeAdditionalParameters($options, $value);
-                }
+                fn(Options $options, $value): array
+                    => $this->normalizeAdditionalParameters($options, $value)
             );
             $actionOptionsResolver->setAllowedTypes('element', 'string');
             $actionOptionsResolver->setAllowedTypes('route_name', 'string');
@@ -96,10 +93,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
 
     public function buildHeaderView(ColumnInterface $column, HeaderViewInterface $view): void
     {
-        $this->buildBatchForm(
-            $column,
-            $this->buildBatchActions($column)
-        );
+        $this->buildBatchForm($column, $this->buildBatchActions($column));
 
         $view->setAttribute('batch_form', $this->formBuilder->getForm()->createView());
     }
@@ -138,7 +132,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      */
     private function buildBatchForm(ColumnInterface $column, array $batchActions): void
     {
-        if (count($batchActions) > 1) {
+        if (1 < count($batchActions)) {
             $this->formBuilder->add(
                 'action',
                 ChoiceType::class,
@@ -160,13 +154,12 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
 
     private function getDefaultRouteName(Options $options): ?string
     {
-        if (isset($options['element'])) {
-            $this->validateElementFromOptions($options);
-
-            return $this->getElementFromOption($options)->getRoute();
+        if (false === isset($options['element'])) {
+            return null;
         }
 
-        return null;
+        $this->validateElementFromOptions($options);
+        return $this->getElementFromOption($options)->getRoute();
     }
 
     /**
@@ -176,7 +169,7 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
      */
     private function normalizeAdditionalParameters(Options $options, array $additionalParameters): array
     {
-        if (isset($options['element'])) {
+        if (true === isset($options['element'])) {
             $this->validateElementFromOptions($options);
 
             $additionalParameters = $this->mergeAdditionalParametersWithElementFromOptions(
@@ -191,7 +184,12 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
     private function validateElementFromOptions(Options $options): void
     {
         if (false === $this->manager->hasElement($options['element'])) {
-            throw new RuntimeException(sprintf('Unknown element "%s" specified in batch action', $options['element']));
+            throw new RuntimeException(
+                sprintf(
+                    'Unknown element "%s" specified in batch action',
+                    $options['element']
+                )
+            );
         }
     }
 
