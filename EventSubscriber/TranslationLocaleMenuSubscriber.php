@@ -18,6 +18,7 @@ use FSi\Bundle\AdminBundle\Event\MenuToolsEvent;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
 use FSi\Component\Translatable\ConfigurationResolver;
+use FSi\Component\Translatable\LocaleProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -39,6 +40,7 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
     private TranslatorInterface $translator;
     private UrlGeneratorInterface $urlGenerator;
     private RequestMatcherInterface $requestMatcher;
+    private LocaleProvider $localeProvider;
     private RequestStack $requestStack;
     private ?Request $request;
     /**
@@ -55,6 +57,7 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
         RequestMatcherInterface $requestMatcher,
+        LocaleProvider $localeProvider,
         RequestStack $requestStack,
         array $locales
     ) {
@@ -63,6 +66,7 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
         $this->translator = $translator;
         $this->urlGenerator = $urlGenerator;
         $this->requestMatcher = $requestMatcher;
+        $this->localeProvider = $localeProvider;
         $this->requestStack = $requestStack;
         $this->locales = $locales;
         $this->request = null;
@@ -99,7 +103,7 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
         $translation->setLabel(
             $this->translator->trans(
                 'admin.translation_locale.title',
-                ['%locale%' => $this->getRequest()->attributes->get('translatableLocale')],
+                ['%locale%' => $this->localeProvider->getLocale()],
                 'FSiAdminBundle'
             )
         );

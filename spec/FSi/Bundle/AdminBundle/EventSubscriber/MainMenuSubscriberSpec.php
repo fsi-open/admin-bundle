@@ -19,19 +19,17 @@ use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Prophet;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class MainMenuSubscriberSpec extends ObjectBehavior
 {
     public function let(
         ManagerInterface $manager,
-        RequestStack $requestStack,
-        Request $request
+        LocaleProvider $localeProvider
     ): void {
         $prophet = new Prophet();
         $manager->getElement(Argument::type('string'))->will(
@@ -54,23 +52,22 @@ class MainMenuSubscriberSpec extends ObjectBehavior
             }
         );
 
-        $request->attributes = new ParameterBag(['translatableLocale' => 'en']);
-        $requestStack->getCurrentRequest()->willReturn($request);
+        $localeProvider->getLocale()->willReturn('en');
 
         $this->beConstructedWith(
             $manager,
-            $requestStack,
+            $localeProvider,
             __DIR__ . '/admin_menu.yml'
         );
     }
 
     public function it_throws_exception_when_yaml_definition_of_menu_is_invalid(
         ManagerInterface $manager,
-        RequestStack $requestStack,
+        LocaleProvider $localeProvider,
         MenuEvent $event
     ): void {
         $menuYaml = __DIR__ . '/invalid_admin_menu.yml';
-        $this->beConstructedWith($manager, $requestStack, $menuYaml);
+        $this->beConstructedWith($manager, $localeProvider, $menuYaml);
 
         $this->shouldThrow(
             new InvalidYamlStructureException(
