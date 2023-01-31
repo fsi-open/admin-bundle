@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\EventSubscriber;
 
-use Assert\Assertion;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
@@ -13,10 +12,9 @@ use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
+use FSi\Component\Translatable\LocaleProvider;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Yaml\Yaml;
 
 use function array_key_exists;
@@ -26,8 +24,7 @@ use function is_string;
 class MainMenuSubscriber implements EventSubscriberInterface
 {
     private ManagerInterface $manager;
-    private RequestStack $requestStack;
-    private ?Request $request;
+    private LocaleProvider $localeProvider;
     private string $configFilePath;
 
     public static function getSubscribedEvents(): array
@@ -37,12 +34,11 @@ class MainMenuSubscriber implements EventSubscriberInterface
 
     public function __construct(
         ManagerInterface $manager,
-        RequestStack $requestStack,
+        LocaleProvider $localeProvider,
         string $configFilePath
     ) {
         $this->manager = $manager;
-        $this->requestStack = $requestStack;
-        $this->request = null;
+        $this->localeProvider = $localeProvider;
         $this->configFilePath = $configFilePath;
     }
 
@@ -103,8 +99,7 @@ class MainMenuSubscriber implements EventSubscriberInterface
      */
     private function buildSingleItem($itemConfig): ?Item
     {
-        $locale = $this->getRequest()->attributes->get('translatableLocale');
-
+        $locale = $this->localeProvider->getLocale();
         if (true === is_string($itemConfig)) {
             if (true === $this->manager->hasElement($itemConfig)) {
                 return new ElementItem(
@@ -191,16 +186,5 @@ class MainMenuSubscriber implements EventSubscriberInterface
         }
 
         return $elements;
-    }
-
-    private function getRequest(): Request
-    {
-        if (null === $this->request) {
-            $request = $this->requestStack->getCurrentRequest();
-            Assertion::notNull($request);
-            $this->request = $request;
-        }
-
-        return $this->request;
     }
 }
