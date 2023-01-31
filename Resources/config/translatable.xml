@@ -14,5 +14,11 @@
             <argument key="$resourceTypes">%fsi_resource_repository.resource.types%</argument>
         </service>
 
+        <service id="FSi\Bundle\AdminBundle\Menu\KnpMenu\TranslationMenuElementVoter"
+                 decorates="FSi\Bundle\AdminBundle\Menu\KnpMenu\ElementVoter"
+        >
+            <argument type="service" id="FSi\Bundle\AdminBundle\Menu\KnpMenu\TranslationMenuElementVoter.inner" />
+        </service>
+
     </services>
 </container>

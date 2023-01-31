@@ -121,6 +121,7 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
                         'label' => 'crud.list.batch.delete'
                     ]
                 ],
+                'translation_domain' => 'FSiAdminBundle',
                 'display_order' => -1000
             ]);
         }

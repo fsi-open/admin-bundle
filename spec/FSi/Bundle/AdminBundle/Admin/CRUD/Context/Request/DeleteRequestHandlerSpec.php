@@ -34,12 +34,15 @@ class DeleteRequestHandlerSpec extends ObjectBehavior
         DeleteElement $element,
         FormEvent $event,
         ParameterBag $queryParameterBag,
+        ParameterBag $attributesParameterBag,
         Request $request,
         RedirectResponse $response
     ): void {
         $request->query = $queryParameterBag;
+        $request->attributes = $attributesParameterBag;
 
         $queryParameterBag->has('redirect_uri')->willReturn(false);
+        $attributesParameterBag->has('translatableLocale')->willReturn(false);
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
         $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');

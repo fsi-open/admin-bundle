@@ -15,26 +15,29 @@ use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
+use FSi\Component\Translatable\LocaleProvider;
 use Knp\Menu\ItemInterface;
+use Knp\Menu\Matcher\Voter\VoterInterface;
 use PhpSpec\ObjectBehavior;
 use stdClass;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use Knp\Menu\Matcher\Voter\VoterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class ElementVoterSpec extends ObjectBehavior
 {
     public function let(
         ManagerInterface $manager,
+        LocaleProvider $localeProvider,
         Request $request,
         ParameterBag $requestAttributes,
         RequestStack $requestStack
     ): void {
         $request->attributes = $requestAttributes;
         $requestStack->getCurrentRequest()->willReturn($request);
+        $localeProvider->getLocale()->willReturn('en');
 
-        $this->beConstructedWith($manager, $requestStack);
+        $this->beConstructedWith($manager, $requestStack, $localeProvider);
     }
 
     public function it_is_menu_voter(): void
@@ -76,7 +79,7 @@ class ElementVoterSpec extends ObjectBehavior
         $item->getExtra('routes', [])->willReturn(
             [
                 [
-                    'parameters' => [],
+                    'parameters' => ['translatableLocale' => 'en'],
                 ],
             ]
         );
@@ -95,7 +98,7 @@ class ElementVoterSpec extends ObjectBehavior
         $item->getExtra('routes', [])->willReturn(
             [
                 [
-                    'parameters' => ['element' => 'some_element'],
+                    'parameters' => ['element' => 'some_element', 'translatableLocale' => 'en'],
                 ],
             ]
         );
@@ -114,7 +117,7 @@ class ElementVoterSpec extends ObjectBehavior
         $item->getExtra('routes', [])->willReturn(
             [
                 [
-                    'parameters' => ['element' => 'element_id'],
+                    'parameters' => ['element' => 'element_id', 'translatableLocale' => 'en'],
                 ],
             ]
         );
@@ -134,7 +137,7 @@ class ElementVoterSpec extends ObjectBehavior
         $item->getExtra('routes', [])->willReturn(
             [
                 [
-                    'parameters' => ['element' => 'some_element'],
+                    'parameters' => ['element' => 'some_element', 'translatableLocale' => 'en'],
                 ],
             ]
         );
@@ -154,7 +157,7 @@ class ElementVoterSpec extends ObjectBehavior
         $item->getExtra('routes', [])->willReturn(
             [
                 [
-                    'parameters' => ['element' => 'element_after_success'],
+                    'parameters' => ['element' => 'element_after_success', 'translatableLocale' => 'en'],
                 ],
             ]
         );
@@ -178,7 +181,7 @@ class ElementVoterSpec extends ObjectBehavior
 
         $item->getExtra('routes', [])->willReturn(
             [
-                ['parameters' => ['element' => 'some_element']],
+                ['parameters' => ['element' => 'some_element', 'translatableLocale' => 'en']],
             ]
         );
         $this->matchItem($item)->shouldReturn(false);
@@ -201,7 +204,7 @@ class ElementVoterSpec extends ObjectBehavior
 
         $item->getExtra('routes', [])->willReturn(
             [
-                ['parameters' => ['element' => 'parent_element_id']],
+                ['parameters' => ['element' => 'parent_element_id', 'translatableLocale' => 'en']],
             ]
         );
         $this->matchItem($item)->shouldReturn(true);
@@ -225,7 +228,7 @@ class ElementVoterSpec extends ObjectBehavior
 
         $item->getExtra('routes', [])->willReturn(
             [
-                ['parameters' => ['element' => 'some_element']],
+                ['parameters' => ['element' => 'some_element', 'translatableLocale' => 'en']],
             ]
         );
         $this->matchItem($item)->shouldReturn(false);
@@ -249,7 +252,7 @@ class ElementVoterSpec extends ObjectBehavior
 
         $item->getExtra('routes', [])->willReturn(
             [
-                ['parameters' => ['element' => 'parent_element_after_success']],
+                ['parameters' => ['element' => 'parent_element_after_success', 'translatableLocale' => 'en']],
             ]
         );
         $this->matchItem($item)->shouldReturn(true);
@@ -277,7 +280,7 @@ class ElementVoterSpec extends ObjectBehavior
 
         $item->getExtra('routes', [])->willReturn(
             [
-                ['parameters' => ['element' => 'some_element']],
+                ['parameters' => ['element' => 'some_element', 'translatableLocale' => 'en']],
             ]
         );
         $this->matchItem($item)->shouldReturn(false);
@@ -305,7 +308,7 @@ class ElementVoterSpec extends ObjectBehavior
 
         $item->getExtra('routes', [])->willReturn(
             [
-                ['parameters' => ['element' => 'grandparent_element_id']],
+                ['parameters' => ['element' => 'grandparent_element_id', 'translatableLocale' => 'en']],
             ]
         );
         $this->matchItem($item)->shouldReturn(true);
@@ -335,7 +338,7 @@ class ElementVoterSpec extends ObjectBehavior
 
         $item->getExtra('routes', [])->willReturn(
             [
-                ['parameters' => ['element' => 'some_element']],
+                ['parameters' => ['element' => 'some_element', 'translatableLocale' => 'en']],
             ]
         );
         $this->matchItem($item)->shouldReturn(false);
@@ -365,7 +368,7 @@ class ElementVoterSpec extends ObjectBehavior
 
         $item->getExtra('routes', [])->willReturn(
             [
-                ['parameters' => ['element' => 'grandparent_element_after_success']],
+                ['parameters' => ['element' => 'grandparent_element_after_success', 'translatableLocale' => 'en']],
             ]
         );
         $this->matchItem($item)->shouldReturn(true);

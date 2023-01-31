@@ -94,15 +94,18 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     public function it_handle_POST_request(
         FormEvent $event,
         Request $request,
-        ParameterBag $queryParameterbag,
+        ParameterBag $queryParameterBag,
+        ParameterBag $attributesParameterBag,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
         FormElement $element,
         RouterInterface $router,
         stdClass $object
     ): void {
+        $attributesParameterBag->has('translatableLocale')->willReturn(false);
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
-        $request->query = $queryParameterbag;
+        $request->query = $queryParameterBag;
+        $request->attributes = $attributesParameterBag;
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
@@ -117,7 +120,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
         $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');
-        $queryParameterbag->has('redirect_uri')->willReturn(false);
+        $queryParameterBag->has('redirect_uri')->willReturn(false);
         $router->generate('fsi_admin_list', ['element' => 'element_list_id'])->willReturn('/list/page');
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(RedirectResponse::class);

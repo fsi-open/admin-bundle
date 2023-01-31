@@ -43,4 +43,4 @@ script:
     - composer spec
     - vendor/bin/behat --no-snippets --format=progress --profile=travis -vvv
 
-after_failure: cat var/logs/test.log
+after_failure: cat features/fixtures/project/var/logs/test.log

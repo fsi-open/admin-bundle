@@ -14,16 +14,20 @@ namespace spec\FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtensi
 use Closure;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\DataGridBundle\DataGrid\ColumnType\Action;
+use FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use FSi\Component\DataGrid\Column\ColumnTypeExtensionInterface;
 
 class ElementActionExtensionSpec extends ObjectBehavior
 {
-    public function let(ManagerInterface $manager): void
-    {
-        $this->beConstructedWith($manager);
+    public function let(
+        ManagerInterface $manager,
+        LocaleProvider $localeProvider
+    ): void {
+        $localeProvider->getLocale()->willReturn('en');
+        $this->beConstructedWith($manager, $localeProvider);
     }
 
     public function it_is_datagrid_column_extension(): void
