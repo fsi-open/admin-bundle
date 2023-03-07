@@ -12,10 +12,12 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
-use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Component\Translatable\LocaleProvider;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use function array_merge;
 
 /**
  * @template T of array<string,mixed>|object
@@ -27,9 +29,16 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
 {
     protected FormFactoryInterface $formFactory;
 
+    private LocaleProvider $localeProvider;
+
     public function getRoute(): string
     {
         return 'fsi_admin_form';
+    }
+
+    public function getRouteParameters(): array
+    {
+        return array_merge(parent::getRouteParameters(), ['translatableLocale' => $this->localeProvider->getLocale()]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -41,6 +50,11 @@ abstract class GenericFormElement extends AbstractElement implements FormElement
 
         $resolver->setAllowedTypes('template_form', ['null', 'string']);
         $resolver->setAllowedTypes('allow_add', 'bool');
+    }
+
+    public function setLocaleProvider(LocaleProvider $localeProvider): void
+    {
+        $this->localeProvider = $localeProvider;
     }
 
     public function setFormFactory(FormFactoryInterface $factory): void

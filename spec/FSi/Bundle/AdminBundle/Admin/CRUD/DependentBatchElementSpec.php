@@ -15,6 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
 use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Component\DataIndexer\DataIndexerInterface;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -24,10 +25,12 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 
 class DependentBatchElementSpec extends ObjectBehavior
 {
-    public function let(): void
+    public function let(LocaleProvider $localeProvider): void
     {
+        $localeProvider->getLocale()->willReturn('en');
         $this->beAnInstanceOf(MyDependentBatch::class);
         $this->beConstructedWith([]);
+        $this->setLocaleProvider($localeProvider);
     }
 
     public function it_is_admin_element(): void

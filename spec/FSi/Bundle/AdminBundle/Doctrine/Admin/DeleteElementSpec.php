@@ -16,16 +16,20 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDeleteElement;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use stdClass;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class DeleteElementSpec extends ObjectBehavior
 {
-    public function let(ManagerRegistry $registry, ObjectManager $om): void
+    public function let(LocaleProvider $localeProvider, ManagerRegistry $registry, ObjectManager $om): void
     {
         $this->beAnInstanceOf(MyDeleteElement::class);
         $this->beConstructedWith([]);
+
+        $localeProvider->getLocale()->willReturn('en');
+        $this->setLocaleProvider($localeProvider);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
         $this->setManagerRegistry($registry);

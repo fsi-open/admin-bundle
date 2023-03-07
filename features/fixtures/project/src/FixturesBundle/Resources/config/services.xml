@@ -49,7 +49,7 @@
         </service>
 
         <service id="fixtures_bundle.admin.custom_news" class="FSi\FixturesBundle\Admin\CustomNews">
-            <argument type="collection">
+            <argument key="$options" type="collection">
                 <argument key="template_list">@FSiFixtures/Admin/custom_list.html.twig</argument>
                 <argument key="template_form">@FSiFixtures/Admin/custom_form.html.twig</argument>
             </argument>
@@ -57,7 +57,7 @@
         </service>
 
         <service id="fixtures_bundle.admin.subscriber" class="%fixtures_bundle.admin.subscriber.class%">
-            <argument type="collection">
+            <argument key="$options" type="collection">
                 <argument key="template_list">@FSiFixtures/Admin/subscriber_list.html.twig</argument>
             </argument>
             <tag name="admin.element" />
@@ -77,7 +77,7 @@
 
         <service id="fixtures_bundle.admin.custom_subscriber" class="FSi\FixturesBundle\Admin\CustomSubscriber">
             <tag name="admin.element" />
-            <argument type="collection">
+            <argument key="$options" type="collection">
                 <argument key="template_list">@FSiFixtures/Admin/subscriber_custom_list.html.twig</argument>
             </argument>
         </service>
@@ -91,7 +91,7 @@
         </service>
 
         <service id="fixtures_bundle.admin.person" class="FSi\FixturesBundle\Admin\Person">
-            <argument type="collection">
+            <argument key="$options" type="collection">
                 <argument key="allow_add">false</argument>
                 <argument key="allow_delete">false</argument>
             </argument>

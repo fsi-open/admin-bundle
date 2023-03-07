@@ -19,6 +19,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
 use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Component\DataIndexer\DataIndexerInterface;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -28,10 +29,12 @@ use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class DependentDeleteElementSpec extends ObjectBehavior
 {
-    public function let(ManagerRegistry $registry, ObjectManager $om): void
+    public function let(LocaleProvider $localeProvider, ManagerRegistry $registry, ObjectManager $om): void
     {
+        $localeProvider->getLocale()->willReturn('en');
         $this->beAnInstanceOf(MyDependentDeleteElement::class);
         $this->beConstructedWith([]);
+        $this->setLocaleProvider($localeProvider);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
         $this->setManagerRegistry($registry);

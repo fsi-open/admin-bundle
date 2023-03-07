@@ -27,10 +27,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class MainMenuSubscriberSpec extends ObjectBehavior
 {
-    public function let(
-        ManagerInterface $manager,
-        LocaleProvider $localeProvider
-    ): void {
+    public function let(ManagerInterface $manager): void
+    {
         $prophet = new Prophet();
         $manager->getElement(Argument::type('string'))->will(
             function ($args) use ($prophet) {
@@ -52,22 +50,15 @@ class MainMenuSubscriberSpec extends ObjectBehavior
             }
         );
 
-        $localeProvider->getLocale()->willReturn('en');
-
-        $this->beConstructedWith(
-            $manager,
-            $localeProvider,
-            __DIR__ . '/admin_menu.yml'
-        );
+        $this->beConstructedWith($manager, __DIR__ . '/admin_menu.yml');
     }
 
     public function it_throws_exception_when_yaml_definition_of_menu_is_invalid(
         ManagerInterface $manager,
-        LocaleProvider $localeProvider,
         MenuEvent $event
     ): void {
         $menuYaml = __DIR__ . '/invalid_admin_menu.yml';
-        $this->beConstructedWith($manager, $localeProvider, $menuYaml);
+        $this->beConstructedWith($manager, $menuYaml);
 
         $this->shouldThrow(
             new InvalidYamlStructureException(
@@ -98,7 +89,6 @@ class MainMenuSubscriberSpec extends ObjectBehavior
     {
         return [
             'haveItem' => function (Item $menu, string $itemName, ?string $elementId = null, ?array $parameters = []) {
-                $parameters['translatableLocale'] = 'en';
                 $items = $menu->getChildren();
                 foreach ($items as $item) {
                     if ($item->getName() === $itemName) {

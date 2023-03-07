@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
+use FSi\Bundle\AdminBundle\Admin\LocaleProviderAware;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -21,7 +22,7 @@ use Symfony\Component\Form\FormInterface;
  * @template-default TSaveDTO=T
  * @template-extends DataIndexerElement<T>
  */
-interface FormElement extends DataIndexerElement, RedirectableElement
+interface FormElement extends DataIndexerElement, LocaleProviderAware, RedirectableElement
 {
     /**
      * @param T $data

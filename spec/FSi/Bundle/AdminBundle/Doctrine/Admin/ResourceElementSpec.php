@@ -16,14 +16,18 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use FSi\Bundle\ResourceRepositoryBundle\Doctrine\ResourceRepository;
 use FSi\Bundle\AdminBundle\spec\fixtures\MyResourceElement;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 
 class ResourceElementSpec extends ObjectBehavior
 {
-    public function let(ManagerRegistry $registry): void
+    public function let(LocaleProvider $localeProvider, ManagerRegistry $registry): void
     {
+        $localeProvider->getLocale()->willReturn('en');
         $this->beAnInstanceOf(MyResourceElement::class);
+        $this->beConstructedWith([]);
         $this->setManagerRegistry($registry);
+        $this->setLocaleProvider($localeProvider);
     }
 
     public function it_return_repository(

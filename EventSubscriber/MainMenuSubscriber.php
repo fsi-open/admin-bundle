@@ -12,7 +12,6 @@ use FSi\Bundle\AdminBundle\Menu\Builder\Exception\InvalidYamlStructureException;
 use FSi\Bundle\AdminBundle\Menu\Item\ElementItem;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
-use FSi\Component\Translatable\LocaleProvider;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -24,7 +23,6 @@ use function is_string;
 class MainMenuSubscriber implements EventSubscriberInterface
 {
     private ManagerInterface $manager;
-    private LocaleProvider $localeProvider;
     private string $configFilePath;
 
     public static function getSubscribedEvents(): array
@@ -32,13 +30,9 @@ class MainMenuSubscriber implements EventSubscriberInterface
         return [MenuMainEvent::class => 'createMainMenu'];
     }
 
-    public function __construct(
-        ManagerInterface $manager,
-        LocaleProvider $localeProvider,
-        string $configFilePath
-    ) {
+    public function __construct(ManagerInterface $manager, string $configFilePath)
+    {
         $this->manager = $manager;
-        $this->localeProvider = $localeProvider;
         $this->configFilePath = $configFilePath;
     }
 
@@ -99,14 +93,9 @@ class MainMenuSubscriber implements EventSubscriberInterface
      */
     private function buildSingleItem($itemConfig): ?Item
     {
-        $locale = $this->localeProvider->getLocale();
         if (true === is_string($itemConfig)) {
             if (true === $this->manager->hasElement($itemConfig)) {
-                return new ElementItem(
-                    $itemConfig,
-                    $this->manager->getElement($itemConfig),
-                    ['translatableLocale' => $locale]
-                );
+                return new ElementItem($itemConfig, $this->manager->getElement($itemConfig));
             }
 
             return new Item($itemConfig);
@@ -119,16 +108,11 @@ class MainMenuSubscriber implements EventSubscriberInterface
         $id = $this->getEntry($itemConfig, 'id');
         if (true === is_string($id) && true === $this->manager->hasElement($id)) {
             $name = $this->getEntry($itemConfig, 'name');
-            return new ElementItem(
-                true === is_string($name) ? $name : $id,
-                $this->manager->getElement($id),
-                ['translatableLocale' => $locale]
-            );
+            return new ElementItem(true === is_string($name) ? $name : $id, $this->manager->getElement($id));
         }
 
         if (true === $this->hasEntry($itemConfig, 'route')) {
             $routeParameters = $itemConfig['route_parameters'] ?? [];
-            $routeParameters['translatableLocale'] = $locale;
             return new RoutableItem(
                 $itemConfig['name'] ?? $itemConfig['route'],
                 $itemConfig['route'],

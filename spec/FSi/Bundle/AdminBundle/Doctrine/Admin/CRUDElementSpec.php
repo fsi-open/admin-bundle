@@ -14,6 +14,7 @@ namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use stdClass;
@@ -23,10 +24,13 @@ use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class CRUDElementSpec extends ObjectBehavior
 {
-    public function let(ManagerRegistry $registry, ObjectManager $om): void
+    public function let(LocaleProvider $localeProvider, ManagerRegistry $registry, ObjectManager $om): void
     {
         $this->beAnInstanceOf(MyCrudElement::class);
         $this->beConstructedWith([]);
+
+        $localeProvider->getLocale()->willReturn('en');
+        $this->setLocaleProvider($localeProvider);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
         $this->setManagerRegistry($registry);

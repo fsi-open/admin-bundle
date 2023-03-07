@@ -12,13 +12,14 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\Display;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
+use FSi\Bundle\AdminBundle\Admin\LocaleProviderAware;
 use FSi\Bundle\AdminBundle\Display\Display;
 
 /**
  * @template T of array<string,mixed>|object
  * @template-extends DataIndexerElement<T>
  */
-interface Element extends DataIndexerElement
+interface Element extends DataIndexerElement, LocaleProviderAware
 {
     /**
      * @param T $data

@@ -19,6 +19,7 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
 use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Component\DataIndexer\DataIndexerInterface;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,10 +30,13 @@ use FSi\Component\DataIndexer\DoctrineDataIndexer;
 
 class DependentCRUDElementSpec extends ObjectBehavior
 {
-    public function let(ManagerRegistry $registry, ObjectManager $om): void
+    public function let(LocaleProvider $localeProvider, ManagerRegistry $registry, ObjectManager $om): void
     {
         $this->beAnInstanceOf(MyDependentCrudElement::class);
         $this->beConstructedWith([]);
+
+        $localeProvider->getLocale()->willReturn('en');
+        $this->setLocaleProvider($localeProvider);
 
         $registry->getManagerForClass('FSiDemoBundle:Entity')->willReturn($om);
         $this->setManagerRegistry($registry);

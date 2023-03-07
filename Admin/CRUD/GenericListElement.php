@@ -16,7 +16,10 @@ use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
+use FSi\Component\Translatable\LocaleProvider;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use function array_merge;
 
 /**
  * @template T of array<string,mixed>|object
@@ -27,6 +30,8 @@ abstract class GenericListElement extends AbstractElement implements ListElement
     protected DataSourceFactoryInterface $datasourceFactory;
 
     protected DataGridFactoryInterface $datagridFactory;
+
+    private LocaleProvider $localeProvider;
 
     public function getRoute(): string
     {
@@ -40,6 +45,11 @@ abstract class GenericListElement extends AbstractElement implements ListElement
         ]);
 
         $resolver->setAllowedTypes('template_list', ['null', 'string']);
+    }
+
+    public function setLocaleProvider(LocaleProvider $localeProvider): void
+    {
+        $this->localeProvider = $localeProvider;
     }
 
     public function setDataGridFactory(DataGridFactoryInterface $factory): void
@@ -60,6 +70,11 @@ abstract class GenericListElement extends AbstractElement implements ListElement
     public function createDataSource(): DataSourceInterface
     {
         return $this->initDataSource($this->datasourceFactory);
+    }
+
+    public function getRouteParameters(): array
+    {
+        return array_merge(parent::getRouteParameters(), ['translatableLocale' => $this->localeProvider->getLocale()]);
     }
 
     abstract protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface;

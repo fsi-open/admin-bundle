@@ -14,6 +14,7 @@ namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -23,10 +24,12 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 
 class GenericCRUDElementSpec extends ObjectBehavior
 {
-    public function let(): void
+    public function let(LocaleProvider $localeProvider): void
     {
+        $localeProvider->getLocale()->willReturn('en');
         $this->beAnInstanceOf(MyCRUD::class);
         $this->beConstructedWith([]);
+        $this->setLocaleProvider($localeProvider);
     }
 
     public function it_is_initializable(): void

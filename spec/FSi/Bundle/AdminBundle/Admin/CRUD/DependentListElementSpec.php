@@ -18,6 +18,7 @@ use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataIndexer\DataIndexerInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,10 +29,12 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement;
 
 class DependentListElementSpec extends ObjectBehavior
 {
-    public function let(): void
+    public function let(LocaleProvider $localeProvider): void
     {
+        $localeProvider->getLocale()->willReturn('en');
         $this->beAnInstanceOf(MyDependentList::class);
         $this->beConstructedWith([]);
+        $this->setLocaleProvider($localeProvider);
     }
 
     public function it_is_admin_element(): void
