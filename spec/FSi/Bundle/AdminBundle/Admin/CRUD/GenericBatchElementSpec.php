@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use FSi\Bundle\AdminBundle\spec\fixtures\MyBatch;
 use FSi\Bundle\AdminBundle\Admin\CRUD\GenericBatchElement;
@@ -19,10 +20,12 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 
 class GenericBatchElementSpec extends ObjectBehavior
 {
-    public function let(): void
+    public function let(LocaleProvider $localeProvider): void
     {
+        $localeProvider->getLocale()->willReturn('en');
         $this->beAnInstanceOf(MyBatch::class);
         $this->beConstructedWith([]);
+        $this->setLocaleProvider($localeProvider);
     }
 
     public function it_is_initializable(): void

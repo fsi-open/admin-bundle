@@ -11,13 +11,14 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
+use FSi\Bundle\AdminBundle\Admin\LocaleProviderAware;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 
 /**
  * @template T of array<string,mixed>|object
  * @template-extends DataIndexerElement<T>
  */
-interface BatchElement extends DataIndexerElement, RedirectableElement
+interface BatchElement extends DataIndexerElement, LocaleProviderAware, RedirectableElement
 {
     /**
      * @param T $data

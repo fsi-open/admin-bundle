@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 
-use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use FSi\Bundle\AdminBundle\spec\fixtures\MyList;
@@ -23,10 +23,12 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 
 class GenericListElementSpec extends ObjectBehavior
 {
-    public function let(): void
+    public function let(LocaleProvider $localeProvider): void
     {
+        $localeProvider->getLocale()->willReturn('en');
         $this->beAnInstanceOf(MyList::class);
         $this->beConstructedWith([]);
+        $this->setLocaleProvider($localeProvider);
     }
 
     public function it_is_initializable(): void

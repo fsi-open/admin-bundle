@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -21,11 +22,13 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 
 class GenericFormElementSpec extends ObjectBehavior
 {
-    public function let(FormFactoryInterface $factory): void
+    public function let(LocaleProvider $localeProvider, FormFactoryInterface $factory): void
     {
+        $localeProvider->getLocale()->willReturn('en');
         $this->beAnInstanceOf(MyForm::class);
         $this->beConstructedWith([]);
         $this->setFormFactory($factory);
+        $this->setLocaleProvider($localeProvider);
     }
 
     public function it_is_form_element(): void

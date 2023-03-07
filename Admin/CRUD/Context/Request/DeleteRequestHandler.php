@@ -94,13 +94,8 @@ class DeleteRequestHandler implements HandlerInterface
             ));
         }
 
-        $routeParameters = $element->getSuccessRouteParameters();
-        if (true === $request->attributes->has('translatableLocale')) {
-            $routeParameters['translatableLocale'] = $request->attributes->get('translatableLocale');
-        }
-
         return new RedirectResponse(
-            $this->router->generate($element->getSuccessRoute(), $routeParameters)
+            $this->router->generate($element->getSuccessRoute(), $element->getSuccessRouteParameters())
         );
     }
 }

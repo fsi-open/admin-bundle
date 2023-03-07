@@ -16,6 +16,7 @@ use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataIndexer\DataIndexerInterface;
+use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -27,11 +28,13 @@ use FSi\Bundle\AdminBundle\Admin\CRUD\FormElement;
 
 class DependentFormElementSpec extends ObjectBehavior
 {
-    public function let(FormFactoryInterface $factory): void
+    public function let(LocaleProvider $localeProvider, FormFactoryInterface $factory): void
     {
+        $localeProvider->getLocale()->willReturn('en');
         $this->beAnInstanceOf(MyDependentForm::class);
         $this->beConstructedWith([]);
         $this->setFormFactory($factory);
+        $this->setLocaleProvider($localeProvider);
     }
 
     public function it_is_admin_element(): void

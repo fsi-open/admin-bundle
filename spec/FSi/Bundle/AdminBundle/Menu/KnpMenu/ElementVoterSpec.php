@@ -15,7 +15,6 @@ use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
-use FSi\Component\Translatable\LocaleProvider;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use PhpSpec\ObjectBehavior;
@@ -28,16 +27,14 @@ class ElementVoterSpec extends ObjectBehavior
 {
     public function let(
         ManagerInterface $manager,
-        LocaleProvider $localeProvider,
         Request $request,
         ParameterBag $requestAttributes,
         RequestStack $requestStack
     ): void {
         $request->attributes = $requestAttributes;
         $requestStack->getCurrentRequest()->willReturn($request);
-        $localeProvider->getLocale()->willReturn('en');
 
-        $this->beConstructedWith($manager, $requestStack, $localeProvider);
+        $this->beConstructedWith($manager, $requestStack);
     }
 
     public function it_is_menu_voter(): void

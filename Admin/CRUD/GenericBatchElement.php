@@ -12,7 +12,10 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
+use FSi\Component\Translatable\LocaleProvider;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use function array_merge;
 
 /**
  * @template T of array<string,mixed>|object
@@ -20,9 +23,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 abstract class GenericBatchElement extends AbstractElement implements BatchElement
 {
+    private LocaleProvider $localeProvider;
+
     public function getRoute(): string
     {
         return 'fsi_admin_batch';
+    }
+
+    public function getRouteParameters(): array
+    {
+        return array_merge(parent::getRouteParameters(), ['translatableLocale' => $this->localeProvider->getLocale()]);
+    }
+
+    public function setLocaleProvider(LocaleProvider $localeProvider): void
+    {
+        $this->localeProvider = $localeProvider;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -13,7 +13,10 @@ namespace FSi\Bundle\AdminBundle\Admin\Display;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Display\Display;
+use FSi\Component\Translatable\LocaleProvider;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use function array_merge;
 
 /**
  * @template T of array<string,mixed>|object
@@ -21,9 +24,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 abstract class GenericDisplayElement extends AbstractElement implements Element
 {
+    private LocaleProvider $localeProvider;
+
     public function getRoute(): string
     {
         return 'fsi_admin_display';
+    }
+
+    public function getRouteParameters(): array
+    {
+        return array_merge(parent::getRouteParameters(), ['translatableLocale' => $this->localeProvider->getLocale()]);
+    }
+
+    public function setLocaleProvider(LocaleProvider $localeProvider): void
+    {
+        $this->localeProvider = $localeProvider;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

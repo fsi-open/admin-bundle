@@ -15,13 +15,15 @@ use FSi\Bundle\AdminBundle\Admin\AbstractElement;
 use FSi\Bundle\AdminBundle\Exception\RuntimeException;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
-use FSi\Component\DataGrid\Exception\DataGridColumnException;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
 use FSi\Component\DataSource\DataSourceInterface;
+use FSi\Component\Translatable\LocaleProvider;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use function array_merge;
 
 /**
  * @template T of array<string,mixed>|object
@@ -37,9 +39,16 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
 
     protected FormFactoryInterface $formFactory;
 
+    private LocaleProvider $localeProvider;
+
     public function getRoute(): string
     {
         return 'fsi_admin_list';
+    }
+
+    public function getRouteParameters(): array
+    {
+        return array_merge(parent::getRouteParameters(), ['translatableLocale' => $this->localeProvider->getLocale()]);
     }
 
     public function getSuccessRoute(): string
@@ -91,6 +100,11 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
     public function apply($object): void
     {
         $this->delete($object);
+    }
+
+    public function setLocaleProvider(LocaleProvider $localeProvider): void
+    {
+        $this->localeProvider = $localeProvider;
     }
 
     public function setDataGridFactory(DataGridFactoryInterface $factory): void

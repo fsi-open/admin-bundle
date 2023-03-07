@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
+use FSi\Bundle\AdminBundle\Admin\LocaleProviderAware;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
@@ -20,7 +21,7 @@ use FSi\Component\DataSource\DataSourceInterface;
  * @template T of array<string,mixed>|object
  * @template-extends DataIndexerElement<T>
  */
-interface ListElement extends DataIndexerElement
+interface ListElement extends DataIndexerElement, LocaleProviderAware
 {
     public function createDataGrid(): DataGridInterface;
 

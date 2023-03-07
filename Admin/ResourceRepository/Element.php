@@ -11,11 +11,12 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
+use FSi\Bundle\AdminBundle\Admin\LocaleProviderAware;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 
-interface Element extends RedirectableElement
+interface Element extends LocaleProviderAware, RedirectableElement
 {
     public function getKey(): string;
 

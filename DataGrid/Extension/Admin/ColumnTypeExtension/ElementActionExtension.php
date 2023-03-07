@@ -8,7 +8,6 @@ use Closure;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\DataGridBundle\DataGrid\ColumnType\Action;
 use FSi\Component\DataGrid\Column\ColumnAbstractTypeExtension;
-use FSi\Component\Translatable\LocaleProvider;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -18,17 +17,15 @@ use function array_merge;
 class ElementActionExtension extends ColumnAbstractTypeExtension
 {
     private ManagerInterface $manager;
-    private LocaleProvider $localeProvider;
 
     public static function getExtendedColumnTypes(): array
     {
         return [Action::class];
     }
 
-    public function __construct(ManagerInterface $manager, LocaleProvider $localeProvider)
+    public function __construct(ManagerInterface $manager)
     {
         $this->manager = $manager;
-        $this->localeProvider = $localeProvider;
     }
 
     public function initOptions(OptionsResolver $optionsResolver): void
@@ -75,7 +72,6 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
                         $routeParameters = $element->getRouteParameters();
 
                         $additionalParameters = array_merge(
-                            ['element' => $element->getId()],
                             $routeParameters,
                             $previousValue ?? []
                         );
@@ -83,10 +79,7 @@ class ElementActionExtension extends ColumnAbstractTypeExtension
                         $additionalParameters = $previousValue ?? [];
                     }
 
-                    return array_merge(
-                        $additionalParameters,
-                        ['translatableLocale' => $this->localeProvider->getLocale()]
-                    );
+                    return $additionalParameters;
                 }
             );
 

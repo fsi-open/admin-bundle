@@ -12,30 +12,28 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Twig;
 
 use FSi\Bundle\AdminBundle\Message\FlashMessages;
+use FSi\Component\Translatable\LocaleProvider;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class MessageTwigExtension extends AbstractExtension
+class TranslatableExtension extends AbstractExtension
 {
-    private FlashMessages $flashMessages;
+    private LocaleProvider $localeProvider;
 
-    public function __construct(FlashMessages $flashMessages)
+    public function __construct(LocaleProvider $localeProvider)
     {
-        $this->flashMessages = $flashMessages;
+        $this->localeProvider = $localeProvider;
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('fsi_admin_messages', [$this, 'getMessages']),
+            new TwigFunction('translatable_locale', [$this, 'getTranslatableLocale']),
         ];
     }
 
-    /**
-     * @return array<string,array{text:string,domain:string,params:array<string,mixed>}>
-     */
-    public function getMessages(): array
+    public function getTranslatableLocale(): string
     {
-        return $this->flashMessages->all();
+        return $this->localeProvider->getLocale();
     }
 }
