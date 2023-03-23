@@ -48,7 +48,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                     ->defaultValue([])
                 ->end()
-                ->scalarNode('menu_config_path')->defaultValue("%kernel.root_dir%/config/admin_menu.yml")->end()
+                ->scalarNode('menu_config_path')->defaultValue("%kernel.project_dir%/config/admin_menu.yaml")->end()
                 ->arrayNode('templates')
                     ->addDefaultsIfNotSet()
                     ->children()
