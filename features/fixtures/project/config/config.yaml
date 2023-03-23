@@ -7,7 +7,7 @@ framework:
     translator:
         default_path: "%kernel.project_dir%/features/fixtures/project/translations"
         fallback: "en"
-    router:          { resource: "%kernel.project_dir%/features/fixtures/project/config/routing.yml" }
+    router:          { resource: "%kernel.project_dir%/features/fixtures/project/config/routing.yaml" }
     form:            true
     csrf_protection: true
     validation:      { enable_annotations: true }
@@ -34,12 +34,12 @@ doctrine:
             is_bundle: false
 
 fsi_resource_repository:
-    map_path: "%kernel.project_dir%/features/fixtures/project/config/resource_map.yml"
+    map_path: "%kernel.project_dir%/features/fixtures/project/config/resource_map.yaml"
     resource_class: FSi\FixturesBundle\Entity\Resource
 
 fsi_admin:
     locales: [en, pl]
-    menu_config_path: "%kernel.project_dir%/features/fixtures/project/config/admin_menu.yml"
+    menu_config_path: "%kernel.project_dir%/features/fixtures/project/config/admin_menu.yaml"
 
 fsi_files:
     url_adapters:

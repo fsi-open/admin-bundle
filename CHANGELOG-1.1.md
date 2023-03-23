@@ -2,7 +2,7 @@
 
 This document describes all the significant changes made between 1.0 and 1.1 branches.
 It also covers transition to 2.0 branch, since 1.1 and 2.0 are backwards compatibile.
- 
+
 ## Admin elements' changes
 
 ### Architectural changes
@@ -45,7 +45,7 @@ interfaces with several different forms and/or displays for one type of item/ent
 displays can be i.e. separately secured for different user roles.
 
 Creation and editing of an item was previously handled by two different actions and their templates, but since one
-admin list element can be linked to more than one form, such a separation is no longer necessary. The "add" button 
+admin list element can be linked to more than one form, such a separation is no longer necessary. The "add" button
 can simply link to different form element than "edit" button.
 
 ### Functional changes
@@ -77,7 +77,7 @@ The following options were removed from [``FSi\Bundle\AdminBundle\Admin\CRUD\Abs
 - ``crud_list_title`` - removed in favour of ``header`` block in [list template](Resources/views/List/list.html.twig)
 - ``crud_create_title`` - removed in favour of ``header`` block in [form template](Resources/views/Form/form.html.twig)
 - ``crud_edit_title`` - removed in favour of ``header`` block in [form template](Resources/views/Form/form.html.twig)
-- ``template_crud_delete`` - removed because delete action has no longer any intermediate confirmation action 
+- ``template_crud_delete`` - removed because delete action has no longer any intermediate confirmation action
 
 #### Added options
 
@@ -109,7 +109,7 @@ to have the same value since there are no longer different contexts handling cre
 
 - ``Resources/views/CRUD/list.html.twig`` - it extends ``Resources/views/List/list.html.twig``. Since batch actions are
   added thought datagrid batch column's options, there are no longer ``batch_action`` and ``batch_form`` blocks to
-  overwrite. There is a new block ``batch_actions`` containing the whole batch action selection form. 
+  overwrite. There is a new block ``batch_actions`` containing the whole batch action selection form.
 - ``Resources/views/CRUD/edit.html.twig`` - was removed in favour of ``Resources/views/CRUD/form.html.twig`` and
   overwriting it in ``app/Resources`` has no longer any effect.
 - ``Resources/views/CRUD/create.html.twig`` - was removed in favour of ``Resources/views/CRUD/form.html.twig`` and
@@ -122,7 +122,7 @@ to have the same value since there are no longer different contexts handling cre
 
 All contexts and handlers classes which previously existed in ``FSi\Bundle\AdminBundle\Doctrine\Context`` namespace have
 been removed in favour of new generic (non doctrine-dependent) contexts and handlers in
-``FSi\Bundle\AdminBundle\Admin\CRUD\Context`` namespace. 
+``FSi\Bundle\AdminBundle\Admin\CRUD\Context`` namespace.
 
 ### Event names changes
 
@@ -236,7 +236,7 @@ Additional notes:
 
 ### Configuring admin menu
 
-Admin menu is read from %kernel.root_dir%/config/admin_menu.yml by default but the path to menu file can be changed by
+Admin menu is read from %kernel.project_dir%/config/admin_menu.yml by default but the path to menu file can be changed by
 setting ``fsi_admin.menu_config_path`` configuration option.
 
 ### Configuring language switch

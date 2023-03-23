@@ -13,7 +13,7 @@ fsi_admin:
     # used for integration with fsi/translatable
     translatable_locales:
         - %locale%
-    menu_config_path: %kernel.root_dir%/config/admin_menu.yaml
+    menu_config_path: %kernel.project_dir%/config/admin_menu.yaml
     templates:
         base: @FSiAdmin/base.html.twig
         index_page: @FSiAdmin/Admin/index.html.twig
