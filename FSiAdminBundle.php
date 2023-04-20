@@ -26,9 +26,12 @@ class FSiAdminBundle extends Bundle
         $container->addCompilerPass(new ResourceRepositoryPass());
         $container->addCompilerPass(new TwigGlobalsPass());
 
-        if (true === $container->hasExtension('fsi_translatable')) {
+        if (
+            true === $container->hasExtension('fsi_translatable')
+            && true === $container->hasExtension('fsi_resource_repository')
+        ) {
             $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/Resources/config'));
-            $loader->load('translatable.xml');
+            $loader->load('resource_repository_translatable.xml');
         }
     }
 
