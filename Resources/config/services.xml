@@ -5,10 +5,12 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <defaults autoconfigure="true" autowire="true" public="false" />
+        <defaults autoconfigure="true" autowire="true" public="false">
+            <bind key="$defaultLocale" type="string">%admin.default_locale%</bind>
+        </defaults>
 
         <prototype namespace="FSi\Bundle\AdminBundle\"
-                   resource="../../{Admin,DataGrid,Doctrine,EventSubscriber,Factory,Form,Menu,Message,Request,Twig}"
+                   resource="../../{Admin,DataGrid,Doctrine,EventSubscriber,Factory,Form,Menu,Message,Request,Translatable,Twig}"
         />
 
         <!-- Manager -->
@@ -179,6 +181,10 @@
         >
             <argument key="$menuElementVoter" id="FSi\Bundle\AdminBundle\Translatable\Menu\Voter\TranslatableElementVoter.inner" />
         </service>
+
+        <service id="FSi\Bundle\AdminBundle\Translatable\Form\Extractor\FormDataExtractor"
+                 alias="FSi\Bundle\AdminBundle\Translatable\Form\Extractor\FormDataClassExtractor"
+        />
 
     </services>
 </container>
