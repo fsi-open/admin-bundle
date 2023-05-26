@@ -17,6 +17,7 @@ use FSi\Bundle\AdminBundle\Doctrine\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\MenuToolsEvent;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 use FSi\Component\Translatable\ConfigurationResolver;
 use FSi\Component\Translatable\LocaleProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -44,11 +45,16 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
     private RequestStack $requestStack;
     private ?Request $request;
     /**
+     * @var class-string<ResourceValue>|null
+     */
+    private ?string $resourceRepositoryClass;
+    /**
      * @var array<string>
      */
     private array $locales;
 
     /**
+     * @param class-string<ResourceValue>|null $resourceRepositoryClass
      * @param array<string> $locales
      */
     public function __construct(
@@ -59,6 +65,7 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
         RequestMatcherInterface $requestMatcher,
         LocaleProvider $localeProvider,
         RequestStack $requestStack,
+        ?string $resourceRepositoryClass,
         array $locales
     ) {
         $this->elementManager = $elementManager;
@@ -68,6 +75,7 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
         $this->requestMatcher = $requestMatcher;
         $this->localeProvider = $localeProvider;
         $this->requestStack = $requestStack;
+        $this->resourceRepositoryClass = $resourceRepositoryClass;
         $this->locales = $locales;
         $this->request = null;
     }
@@ -213,7 +221,12 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
             return false;
         }
 
-        return $this->translatableConfigurationResolver->isTranslatable($element->getClassName());
+        $elementClass = $element->getClassName();
+        if (null !== $this->resourceRepositoryClass && $this->resourceRepositoryClass === $elementClass) {
+            return true;
+        }
+
+        return $this->translatableConfigurationResolver->isTranslatable($elementClass);
     }
 
     private function localeToLangaugeName(string $locale): string
