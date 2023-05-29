@@ -74,6 +74,7 @@
 
         <service id="FSi\Bundle\AdminBundle\EventSubscriber\TranslationLocaleMenuSubscriber">
             <argument key="$requestMatcher" type="service" id="router" />
+            <argument key="$resourceRepositoryClass" on-invalid="null">%fsi_resource_repository.resource.value.class%</argument>
             <argument key="$locales" type="string">%admin.locales%</argument>
         </service>
 
@@ -171,5 +172,13 @@
         <service id="FSi\Bundle\AdminBundle\EventSubscriber\LocaleSubscriber">
             <argument key="$defaultLocale" type="string">%admin.default_locale%</argument>
         </service>
+
+        <!-- Translatable -->
+        <service id="FSi\Bundle\AdminBundle\Translatable\Menu\Voter\TranslatableElementVoter"
+                 decorates="FSi\Bundle\AdminBundle\Menu\KnpMenu\ElementVoter"
+        >
+            <argument key="$menuElementVoter" id="FSi\Bundle\AdminBundle\Translatable\Menu\Voter\TranslatableElementVoter.inner" />
+        </service>
+
     </services>
 </container>
