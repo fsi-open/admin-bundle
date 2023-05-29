@@ -13,17 +13,34 @@ namespace spec\FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\ResourceRepositoryContext;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder;
+use FSi\Bundle\AdminBundle\EventSubscriber\TranslationLocaleMenuSubscriber;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 class ResourceRepositoryPassSpec extends ObjectBehavior
 {
-    public function it_does_nothing_when_there_is_no_resource_extension(ContainerBuilder $container): void
-    {
+    public function it_does_nothing_when_there_is_no_resource_extension(
+        ContainerBuilder $container,
+        Definition $translationLocaleMenuSubscriberDefinition
+    ): void {
+        $translationLocaleMenuSubscriberDefinition
+            ->setArgument(
+                '$resourceRepositoryClass',
+                '%fsi_resource_repository.resource.value.class%'
+            )
+            ->shouldBeCalled()
+        ;
         $container->hasExtension('fsi_resource_repository')->willReturn(true);
         $container->removeDefinition(Argument::any())->shouldNotBeCalled();
+        $container
+            ->getDefinition(TranslationLocaleMenuSubscriber::class)
+            ->shouldBeCalled()
+            ->willReturn($translationLocaleMenuSubscriberDefinition)
+        ;
+
         $this->process($container);
     }
 

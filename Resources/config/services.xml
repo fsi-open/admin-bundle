@@ -74,7 +74,7 @@
 
         <service id="FSi\Bundle\AdminBundle\EventSubscriber\TranslationLocaleMenuSubscriber">
             <argument key="$requestMatcher" type="service" id="router" />
-            <argument key="$resourceRepositoryClass" on-invalid="null">%fsi_resource_repository.resource.value.class%</argument>
+            <argument key="$resourceRepositoryClass" />
             <argument key="$locales" type="string">%admin.locales%</argument>
         </service>
 
