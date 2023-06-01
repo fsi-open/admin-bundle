@@ -53,8 +53,38 @@
                     .on('add.collection-item', function(event, item) {
                         initForms($(item));
                     });
+                $context.find('.translatable-collapsible').each(function(index, element) {
+                    initTranslatableToggle($(element));
+                });
+                $context.find('.translatable-copyable').each(function(index, label) {
+                    addCopyTranslationButton($(label));
+                });
             }
+
+            function addCopyTranslationButton($label) {
+                var $copyButton = $('<button>Copy</button>');
+                var content = $label.attr('data-default-translation');
+                $copyButton.insertAfter($label);
+                $copyButton.on('click', function (event) {
+                    event.preventDefault();
+                    navigator.clipboard.writeText(content);
+                });
+            }
+
+            function initTranslatableToggle($element) {
+                $element.parent().find('.translatable-collapsible-content').slideToggle();
+            }
+
+            $('.translatable-collapsible').on('click', function () {
+                initTranslatableToggle($(this));
+            });
+
+            $('.translatable-copyable').each(function(index, label) {
+                addCopyTranslationButton($(label));
+            });
+
             initForms($('body'));
         });
+
     </script>
 {% endblock javascripts %}

@@ -13,7 +13,6 @@ namespace FSi\Bundle\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Twig\Environment;
 
 class TwigGlobalsPass implements CompilerPassInterface
 {
@@ -28,6 +27,7 @@ class TwigGlobalsPass implements CompilerPassInterface
             'admin_templates_form_theme' => $container->getParameter('admin.templates.form_theme'),
             'admin_templates_datagrid_theme' => $container->getParameter('admin.templates.datagrid_theme'),
             'admin_templates_datasource_theme' => $container->getParameter('admin.templates.datasource_theme'),
+            'admin_default_locale' => $container->getParameter('admin.default_locale'),
         ];
 
         $twig = $container->findDefinition('twig');

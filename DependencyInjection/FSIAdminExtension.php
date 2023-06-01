@@ -25,7 +25,6 @@ final class FSIAdminExtension extends Extension
 {
     /**
      * @param array<string,mixed> $configs
-     * @param ContainerBuilder $container
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
