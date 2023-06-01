@@ -77,7 +77,7 @@
         <service id="FSi\Bundle\AdminBundle\EventSubscriber\TranslationLocaleMenuSubscriber">
             <argument key="$requestMatcher" type="service" id="router" />
             <argument key="$resourceRepositoryClass" />
-            <argument key="$locales" type="string">%admin.locales%</argument>
+            <argument key="$locales" type="string">%admin.translatable_locales%</argument>
         </service>
 
         <!-- KnpMenu -->
