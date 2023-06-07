@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Translatable\Menu\Voter;
 
+use FSi\Bundle\AdminBundle\Request\Parameters;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Symfony\Component\Routing\RequestContext;
@@ -35,7 +36,7 @@ final class TranslatableElementVoter implements VoterInterface
             return $elementMatch;
         }
 
-        $currentLocale = $this->requestContext->getParameter('translatableLocale');
+        $currentLocale = $this->requestContext->getParameter(Parameters::TRANSLATABLE_LOCALE);
         if (null === $currentLocale) {
             return $elementMatch;
         }
@@ -43,11 +44,11 @@ final class TranslatableElementVoter implements VoterInterface
         $routes = (array) $item->getExtra('routes', []);
         foreach ($routes as $testedRoute) {
             $routeParameters = $testedRoute['parameters'];
-            if (false === array_key_exists('translatableLocale', $routeParameters)) {
+            if (false === array_key_exists(Parameters::TRANSLATABLE_LOCALE, $routeParameters)) {
                 continue;
             }
 
-            return $routeParameters['translatableLocale'] === $currentLocale;
+            return $routeParameters[Parameters::TRANSLATABLE_LOCALE] === $currentLocale;
         }
 
         return $elementMatch;

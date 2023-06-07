@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Translatable\EventSubscriber;
 
-use FSi\Component\Translatable\LocaleProvider;
+use FSi\Bundle\AdminBundle\Request\Parameters;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -19,7 +19,6 @@ use Symfony\Component\Routing\RequestContext;
 
 final class RequestContextLocaleListener implements EventSubscriberInterface
 {
-    private LocaleProvider $localeProvider;
     private RequestContext $requestContext;
 
     public static function getSubscribedEvents(): array
@@ -27,9 +26,8 @@ final class RequestContextLocaleListener implements EventSubscriberInterface
         return [KernelEvents::REQUEST => [['onKernelRequest', 17]]];
     }
 
-    public function __construct(LocaleProvider $localeProvider, RequestContext $requestContext)
+    public function __construct(RequestContext $requestContext)
     {
-        $this->localeProvider = $localeProvider;
         $this->requestContext = $requestContext;
     }
 
@@ -40,9 +38,13 @@ final class RequestContextLocaleListener implements EventSubscriberInterface
             return;
         }
 
+        if (false === $request->attributes->has(Parameters::TRANSLATABLE_LOCALE)) {
+            return;
+        }
+
         $this->requestContext->setParameter(
-            'translatableLocale',
-            $request->attributes->get('translatableLocale')
+            Parameters::TRANSLATABLE_LOCALE,
+            $request->attributes->get(Parameters::TRANSLATABLE_LOCALE)
         );
     }
 }

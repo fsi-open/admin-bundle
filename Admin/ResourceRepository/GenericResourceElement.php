@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\ResourceRepository;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
+use FSi\Bundle\AdminBundle\Request\Parameters;
 use FSi\Component\Translatable\LocaleProvider;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,7 +29,10 @@ abstract class GenericResourceElement extends AbstractElement implements Element
 
     public function getRouteParameters(): array
     {
-        return array_merge(parent::getRouteParameters(), ['translatableLocale' => $this->localeProvider->getLocale()]);
+        return array_merge(
+            parent::getRouteParameters(),
+            [Parameters::TRANSLATABLE_LOCALE => $this->localeProvider->getLocale()]
+        );
     }
 
     public function getSuccessRoute(): string
