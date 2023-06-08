@@ -55,7 +55,7 @@ oneup_flysystem:
     adapters:
         local_adapter:
             local:
-                directory: "%kernel.project_dir%/features/fixtures/project/web/files"
+                location: "%kernel.project_dir%/features/fixtures/project/web/files"
     filesystems:
         local_fs:
             mount: local_fs
