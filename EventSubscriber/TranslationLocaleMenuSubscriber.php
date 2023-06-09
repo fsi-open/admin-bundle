@@ -205,11 +205,11 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
     private function isCurrentElementTranslatable(): bool
     {
         $request = $this->getRequest();
-        if (false === $request->attributes->has('element')) {
+        if (false === $request->attributes->has(Parameters::ELEMENT)) {
             return false;
         }
 
-        $element = $request->attributes->get('element');
+        $element = $request->attributes->get(Parameters::ELEMENT);
         if (true === is_string($element)) {
             if (false === $this->elementManager->hasElement($element)) {
                 return false;

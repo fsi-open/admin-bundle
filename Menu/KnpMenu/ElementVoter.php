@@ -15,6 +15,7 @@ use FSi\Bundle\AdminBundle\Admin\DependentElement;
 use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Admin\RedirectableElement;
+use FSi\Bundle\AdminBundle\Request\Parameters;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use RuntimeException;
@@ -42,7 +43,7 @@ final class ElementVoter implements VoterInterface
         }
 
         /** @var Element $element */
-        $element = $request->attributes->get('element');
+        $element = $request->attributes->get(Parameters::ELEMENT);
         while (true) {
             /** @var array<int,mixed> $routes */
             $routes = $item->getExtra('routes', []);
@@ -73,11 +74,11 @@ final class ElementVoter implements VoterInterface
 
     private function validateRequestElement(Request $request): bool
     {
-        if (false === $request->attributes->has('element')) {
+        if (false === $request->attributes->has(Parameters::ELEMENT)) {
             return false;
         }
 
-        $element = $request->attributes->get('element');
+        $element = $request->attributes->get(Parameters::ELEMENT);
         if (false === $element instanceof Element) {
             return false;
         }
@@ -99,11 +100,11 @@ final class ElementVoter implements VoterInterface
      */
     private function isRouteMatchingElementDirectly(Element $element, array $testedRouteParameters): bool
     {
-        if (false === array_key_exists('element', $testedRouteParameters)) {
+        if (false === array_key_exists(Parameters::ELEMENT, $testedRouteParameters)) {
             return false;
         }
 
-        return $element->getId() === $testedRouteParameters['element'];
+        return $element->getId() === $testedRouteParameters[Parameters::ELEMENT];
     }
 
     /**
@@ -115,16 +116,16 @@ final class ElementVoter implements VoterInterface
             return false;
         }
 
-        if (false === array_key_exists('element', $testedRouteParameters)) {
+        if (false === array_key_exists(Parameters::ELEMENT, $testedRouteParameters)) {
             return false;
         }
 
         $successParameters = $element->getSuccessRouteParameters();
-        if (false === array_key_exists('element', $successParameters)) {
+        if (false === array_key_exists(Parameters::ELEMENT, $successParameters)) {
             return false;
         }
 
-        return $successParameters['element'] === $testedRouteParameters['element'];
+        return $successParameters[Parameters::ELEMENT] === $testedRouteParameters[Parameters::ELEMENT];
     }
 
     private function getRequest(): Request
