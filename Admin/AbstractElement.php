@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin;
 
 use FSi\Bundle\AdminBundle\Exception\MissingOptionException;
+use FSi\Bundle\AdminBundle\Request\Parameters;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use function array_key_exists;
@@ -39,7 +40,7 @@ abstract class AbstractElement implements Element
     public function getRouteParameters(): array
     {
         return [
-            'element' => $this->getId(),
+            Parameters::ELEMENT => $this->getId(),
         ];
     }
 

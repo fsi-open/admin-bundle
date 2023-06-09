@@ -135,7 +135,7 @@ abstract class GenericCRUDElement extends AbstractElement implements CRUDElement
                 'actions' => [
                     'delete' => [
                         'route_name' => 'fsi_admin_batch',
-                        'additional_parameters' => ['element' => $this->getId()],
+                        'additional_parameters' => [Parameters::ELEMENT => $this->getId()],
                         'label' => 'crud.list.batch.delete'
                     ]
                 ],

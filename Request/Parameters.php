@@ -13,5 +13,6 @@ namespace FSi\Bundle\AdminBundle\Request;
 
 final class Parameters
 {
+    public const ELEMENT = 'element';
     public const TRANSLATABLE_LOCALE = 'translatableLocale';
 }
