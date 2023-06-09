@@ -17,6 +17,7 @@ use FSi\Bundle\AdminBundle\Doctrine\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\MenuToolsEvent;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use FSi\Bundle\AdminBundle\Menu\Item\RoutableItem;
+use FSi\Bundle\AdminBundle\Request\Parameters;
 use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValue;
 use FSi\Component\Translatable\ConfigurationResolver;
 use FSi\Component\Translatable\LocaleProvider;
@@ -148,7 +149,7 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
                 }
             }
 
-            $requestParameters['translatableLocale'] = $locale;
+            $requestParameters[Parameters::TRANSLATABLE_LOCALE] = $locale;
             $localeItem = new RoutableItem(
                 "translation-locale.{$locale}",
                 $route,
@@ -184,8 +185,8 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
     private function generateRequestUriForLocale(Request $redirectRequest, string $locale): string
     {
         $parameters = $this->requestMatcher->matchRequest($redirectRequest);
-        if (true === array_key_exists('translatableLocale', $parameters)) {
-            $parameters['translatableLocale'] = $locale;
+        if (true === array_key_exists(Parameters::TRANSLATABLE_LOCALE, $parameters)) {
+            $parameters[Parameters::TRANSLATABLE_LOCALE] = $locale;
         }
 
         $route = $parameters['_route'];

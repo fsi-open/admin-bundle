@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Admin\CRUD;
 
 use FSi\Bundle\AdminBundle\Admin\AbstractElement;
+use FSi\Bundle\AdminBundle\Request\Parameters;
 use FSi\Component\DataGrid\DataGridFactoryInterface;
 use FSi\Component\DataGrid\DataGridInterface;
 use FSi\Component\DataSource\DataSourceFactoryInterface;
@@ -74,7 +75,10 @@ abstract class GenericListElement extends AbstractElement implements ListElement
 
     public function getRouteParameters(): array
     {
-        return array_merge(parent::getRouteParameters(), ['translatableLocale' => $this->localeProvider->getLocale()]);
+        return array_merge(
+            parent::getRouteParameters(),
+            [Parameters::TRANSLATABLE_LOCALE => $this->localeProvider->getLocale()]
+        );
     }
 
     abstract protected function initDataGrid(DataGridFactoryInterface $factory): DataGridInterface;

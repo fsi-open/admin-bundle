@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\EventSubscriber;
 
 use FSi\Bundle\AdminBundle\Event\AdminContextPreCreateEvent;
+use FSi\Bundle\AdminBundle\Request\Parameters;
 use FSi\Component\Translatable\LocaleProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -31,7 +32,7 @@ final class TranslationLocaleSubscriber implements EventSubscriberInterface
 
     public function setLocale(AdminContextPreCreateEvent $event): void
     {
-        $locale = $event->getRequest()->attributes->get('translatableLocale');
+        $locale = $event->getRequest()->attributes->get(Parameters::TRANSLATABLE_LOCALE);
         if (null === $locale) {
             return;
         }
