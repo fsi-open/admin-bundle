@@ -30,13 +30,3 @@ fsi_admin:
         form_theme: @FSiAdmin/Form/form_div_layout.html.twig
 ```
 
-There is a separate [theme](../views/CRUD/datagrid_fsi_doctrine_extensions.html.twig) for datagrids you can use if
-you register the [fsi/doctrine-extensions-bundle](https://github.com/fsi-open/doctrine-extensions-bundle).
-
-```yaml
-# config/config.yaml
-
-fsi_admin:
-    templates:
-        datagrid_theme: @FSiAdmin/CRUD/datagrid_fsi_doctrine_extensions.html.twig
-```
