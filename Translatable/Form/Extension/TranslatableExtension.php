@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 
 final class TranslatableExtension extends AbstractTypeExtension
@@ -38,7 +39,7 @@ final class TranslatableExtension extends AbstractTypeExtension
     }
 
     /**
-     * @return iterable<int, class-string<FormTypeInterface>>
+     * @return iterable<int, string>
      */
     public static function getExtendedTypes(): iterable
     {
@@ -53,6 +54,10 @@ final class TranslatableExtension extends AbstractTypeExtension
         ];
     }
 
+    /**
+     * @param FormInterface<FormInterface> $form
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $propertyData = $this->propertyBuilder->buildIfTranslatable(

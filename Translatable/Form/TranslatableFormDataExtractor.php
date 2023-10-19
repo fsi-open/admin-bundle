@@ -23,6 +23,9 @@ final class TranslatableFormDataExtractor
         $this->dataExtractor = $dataExtractor;
     }
 
+    /**
+     * @param FormInterface<FormInterface> $form
+     */
     public function extract(FormInterface $form): FormTranslatableData
     {
         $result = new FormTranslatableData(false, null);

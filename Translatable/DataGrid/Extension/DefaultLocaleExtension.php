@@ -105,6 +105,17 @@ final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
         $view->setAttribute('default_translation', true);
     }
 
+    /**
+     * @param array<
+     *  array{
+     *      field: string,
+     *      translatable: bool,
+     *      empty: bool,
+     *      currentValue: mixed
+     *  }
+     * > $currentValuesTranslations
+     * @return array<string, mixed>
+     */
     private function createDefaultValues(
         TranslationConfiguration $configuration,
         object $defaultTranslation,
@@ -127,7 +138,7 @@ final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
                 if (true === $information['translatable']) {
                     $defaultValue = $configuration->getValueForProperty($defaultTranslation, $field);
                 } else {
-                    $defaultValue = $information['value'];
+                    $defaultValue = $information['currentValue'];
                 }
 
                 if (false === $this->isValueEmpty($defaultValue)) {
@@ -157,7 +168,7 @@ final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
     /**
      * @param list<string> $fieldMapping
      * @param array<string, mixed> $currentValues
-     * @return array<array{ field: string, translatable: bool, empty: bool }>
+     * @return array<array{ field: string, translatable: bool, empty: bool, currentValue: mixed }>
      */
     private function extractCurrentValuesTranslationInformation(
         array $fieldMapping,
@@ -181,6 +192,7 @@ final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
     /**
      * @param mixed $currentValues
      * @param list<string> $fieldMapping
+     * @return array<string, mixed>
      */
     private function normalizeCurrentValues($currentValues, array $fieldMapping): array
     {

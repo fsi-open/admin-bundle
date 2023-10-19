@@ -27,7 +27,7 @@ final class ResourceTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * @return iterable<class-string<FormTypeInterface>>
+     * @return list<string>
      */
     public static function getExtendedTypes(): iterable
     {
