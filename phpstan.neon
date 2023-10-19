@@ -20,4 +20,6 @@ parameters:
         - '%currentWorkingDirectory%/Message'
         - '%currentWorkingDirectory%/Model'
         - '%currentWorkingDirectory%/Request'
+        - '%currentWorkingDirectory%/ResourceRepository'
+        - '%currentWorkingDirectory%/Translatable'
         - '%currentWorkingDirectory%/Twig'

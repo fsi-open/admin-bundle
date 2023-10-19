@@ -16,5 +16,8 @@ use Symfony\Component\Form\FormInterface;
 
 interface FormDataExtractor
 {
+    /**
+     * @param FormInterface<FormInterface> $form
+     */
     public function extract(FormInterface $form): ?FormTranslatableData;
 }

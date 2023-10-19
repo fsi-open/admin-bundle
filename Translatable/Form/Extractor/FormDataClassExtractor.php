@@ -26,6 +26,9 @@ final class FormDataClassExtractor implements FormDataExtractor
         $this->configurationResolver = $configurationResolver;
     }
 
+    /**
+     * @param FormInterface<FormInterface> $form
+     */
     public function extract(FormInterface $form): ?FormTranslatableData
     {
         /** @var class-string<object>|null $class */

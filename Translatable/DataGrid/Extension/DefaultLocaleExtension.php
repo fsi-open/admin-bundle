@@ -16,6 +16,7 @@ use FSi\Bundle\DataGridBundle\DataGrid\ColumnType\Files\Image;
 use FSi\Component\DataGrid\Column\CellViewInterface;
 use FSi\Component\DataGrid\Column\ColumnInterface;
 use FSi\Component\DataGrid\ColumnType\Text;
+use FSi\Component\DataGrid\ColumnTypeExtension\ValueFormatColumnOptionsExtension;
 use FSi\Component\DataGrid\ColumnTypeExtension\ValueFormatter;
 use FSi\Component\Translatable\ConfigurationResolver;
 use FSi\Component\Translatable\TranslatableConfiguration;
@@ -31,9 +32,10 @@ use function reset;
 
 final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
 {
+    protected ValueFormatter $valueFormatter;
+
     private ConfigurationResolver $configurationResolver;
     private TranslationProvider $translationProvider;
-    private ValueFormatter $valueFormatter;
     private string $defaultLocale;
 
     public static function getExtendedColumnTypes(): array
@@ -47,6 +49,7 @@ final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
         ValueFormatter $valueFormatter,
         string $defaultLocale
     ) {
+        parent::__construct($valueFormatter);
         $this->configurationResolver = $configurationResolver;
         $this->translationProvider = $translationProvider;
         $this->valueFormatter = $valueFormatter;
@@ -98,10 +101,21 @@ final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
             return;
         }
 
-        $view->setValue($this->formatValue($column, $defaultValues, $fieldMapping));
+        $view->setValue($this->formatValue($column, $defaultValues));
         $view->setAttribute('default_translation', true);
     }
 
+    /**
+     * @param array<
+     *  array{
+     *      field: string,
+     *      translatable: bool,
+     *      empty: bool,
+     *      currentValue: mixed
+     *  }
+     * > $currentValuesTranslations
+     * @return array<string, mixed>
+     */
     private function createDefaultValues(
         TranslationConfiguration $configuration,
         object $defaultTranslation,
@@ -124,7 +138,7 @@ final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
                 if (true === $information['translatable']) {
                     $defaultValue = $configuration->getValueForProperty($defaultTranslation, $field);
                 } else {
-                    $defaultValue = $information['value'];
+                    $defaultValue = $information['currentValue'];
                 }
 
                 if (false === $this->isValueEmpty($defaultValue)) {
@@ -154,7 +168,7 @@ final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
     /**
      * @param list<string> $fieldMapping
      * @param array<string, mixed> $currentValues
-     * @return array<array{ field: string, translatable: bool, empty: bool }>
+     * @return array<array{ field: string, translatable: bool, empty: bool, currentValue: mixed }>
      */
     private function extractCurrentValuesTranslationInformation(
         array $fieldMapping,
@@ -178,6 +192,7 @@ final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
     /**
      * @param mixed $currentValues
      * @param list<string> $fieldMapping
+     * @return array<string, mixed>
      */
     private function normalizeCurrentValues($currentValues, array $fieldMapping): array
     {
@@ -197,10 +212,9 @@ final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
 
     /**
      * @param mixed $defaultValues
-     * @param list<string> $fieldMapping
      * @return mixed
      */
-    private function formatValue(ColumnInterface $column, $defaultValues, $fieldMapping)
+    private function formatValue(ColumnInterface $column, $defaultValues)
     {
         /** @var string|null $glue */
         $glue = $column->getOption('value_glue');
@@ -209,14 +223,7 @@ final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
         /** @var mixed $emptyValue */
         $emptyValue = $column->getOption('empty_value');
 
-        return $this->valueFormatter->format(
-            $defaultValues,
-            $fieldMapping,
-            $column->getName(),
-            $glue,
-            $format,
-            $emptyValue
-        );
+        return $this->valueFormatter->format($defaultValues, $glue, $format, $emptyValue);
     }
 
     /**

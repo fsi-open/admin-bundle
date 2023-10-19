@@ -19,18 +19,15 @@ use function is_string;
 
 final class TranslatablePropertyBuilder
 {
-    private TranslatableFormDataExtractor $parentFormDataExtractor;
     private ConfigurationResolver $configurationResolver;
     private TranslationProvider $translationProvider;
     private string $defaultLocale;
 
     public function __construct(
-        TranslatableFormDataExtractor $parentFormDataExtractor,
         ConfigurationResolver $configurationResolver,
         TranslationProvider $translationProvider,
         string $defaultLocale
     ) {
-        $this->parentFormDataExtractor = $parentFormDataExtractor;
         $this->configurationResolver = $configurationResolver;
         $this->translationProvider = $translationProvider;
         $this->defaultLocale = $defaultLocale;
