@@ -4,17 +4,10 @@ declare(strict_types=1);
 
 namespace FSi\FixturesBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 class TagElement
 {
     private ?int $id = null;
-
-    /**
-     * @Assert\NotBlank
-     */
     private ?string $name;
-
     private ?Tag $tag = null;
 
     public function getId(): ?int

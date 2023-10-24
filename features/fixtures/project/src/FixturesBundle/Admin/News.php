@@ -68,10 +68,6 @@ class News extends CRUDElement
 
     protected function initForm(FormFactoryInterface $factory, $data = null): FormInterface
     {
-        return $factory->createNamed(
-            'news',
-            NewsType::class,
-            $data
-        );
+        return $factory->createNamed('news', NewsType::class, $data);
     }
 }

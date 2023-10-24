@@ -82,7 +82,9 @@ class ResourceFormBuilderSpec extends ObjectBehavior
                 ResourceType::class,
                 ['resource_key' => 'resources.resource_key']
             )
-            ->shouldBeCalled();
+            ->shouldBeCalled()
+            ->willReturn($formBuilder)
+        ;
 
         $formBuilder->getForm()->willReturn($form);
 

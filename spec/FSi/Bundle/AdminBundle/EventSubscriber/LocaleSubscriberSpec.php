@@ -56,6 +56,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
         SessionInterface $session
     ): void {
         $request->attributes = $requestAttributes;
+        $requestAttributes->has('_locale')->willReturn(false);
         $event->getRequest()->willReturn($request);
         $request->hasPreviousSession()->willReturn(true);
         $request->getSession()->willReturn($session);

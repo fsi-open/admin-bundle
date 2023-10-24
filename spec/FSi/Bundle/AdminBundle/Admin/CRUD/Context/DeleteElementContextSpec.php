@@ -11,17 +11,18 @@ declare(strict_types=1);
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\CRUD\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\DeleteElement;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
-use FSi\Bundle\AdminBundle\Event\FormEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 class DeleteElementContextSpec extends ObjectBehavior
 {
@@ -33,6 +34,7 @@ class DeleteElementContextSpec extends ObjectBehavior
     ): void {
         $this->beConstructedWith([$handler], $formBuilder);
         $formBuilder->getForm()->willReturn($batchForm);
+        $batchForm->createView()->willReturn(new FormView());
         $this->setElement($element);
     }
 

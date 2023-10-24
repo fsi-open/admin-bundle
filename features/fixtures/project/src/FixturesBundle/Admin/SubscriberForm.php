@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Constraints\Email;
 
 /**
  * @template-extends FormElement<Entity\Subscriber, Entity\Subscriber>
@@ -57,7 +58,7 @@ class SubscriberForm extends FormElement
         $builder->add(
             'email',
             EmailType::class,
-            ['label' => 'admin.subscriber.list.email']
+            ['label' => 'admin.subscriber.list.email', 'constraints' => [new Email()]]
         );
 
         $builder->add(

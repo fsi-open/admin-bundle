@@ -14,15 +14,12 @@ namespace FSi\Bundle\AdminBundle\Menu\Item;
 class RoutableItem extends Item
 {
     private string $route;
-
     /**
      * @var array<string,mixed>
      */
     private array $routeParameters;
 
     /**
-     * @param string $name
-     * @param string $route
      * @param array<string,mixed> $routeParameters
      */
     public function __construct(string $name, string $route, array $routeParameters = [])

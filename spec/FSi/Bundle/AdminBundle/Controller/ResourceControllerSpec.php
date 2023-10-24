@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context\ResourceRepositoryContext;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\Element;
 use FSi\Bundle\AdminBundle\Event\AdminContextPreCreateEvent;
@@ -28,35 +29,37 @@ use Twig\Environment;
 class ResourceControllerSpec extends ObjectBehavior
 {
     public function let(
-        ContextManager $manager,
+        ManagerInterface $elementManager,
+        ContextManager $contextManager,
         Environment $twig,
         ResourceRepositoryContext $context,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        Element $element
     ): void {
+        $elementManager->hasElement('admin_element_id')->willReturn(true);
+        $elementManager->getElement('admin_element_id')->willReturn($element);
         $context->getTemplateName()->willReturn('default_resource');
 
-        $this->beConstructedWith($twig, $manager, $dispatcher);
+        $this->beConstructedWith($elementManager, $twig, $contextManager, $dispatcher);
     }
 
     public function it_dispatches_event(
         EventDispatcherInterface $dispatcher,
-        AdminEvent $event,
         Request $request,
-        Response $response,
         Element $element,
-        ContextManager $manager,
+        ContextManager $contextManager,
         ResourceRepositoryContext $context,
         Environment $twig
     ): void {
         $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
-        $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
+        $contextManager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
         $twig->render('default_resource', [])->willReturn('response');
 
-        $this->resourceAction($element, $request)->getContent()->shouldBe('response');
+        $this->resourceAction('admin_element_id', $request)->getContent()->shouldBe('response');
     }
 
     public function it_renders_response(
@@ -65,33 +68,33 @@ class ResourceControllerSpec extends ObjectBehavior
         Request $request,
         Response $response,
         Element $element,
-        ContextManager $manager,
+        ContextManager $contextManager,
         ResourceRepositoryContext $context,
         Environment $twig
     ): void {
         $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
-        $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
+        $contextManager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
         $twig->render('default_resource', [])->willReturn('response');
-        $this->resourceAction($element, $request)->getContent()->shouldBe('response');
+        $this->resourceAction('admin_element_id', $request)->getContent()->shouldBe('response');
     }
 
     public function it_throw_exception_when_cant_find_context_builder_that_supports_admin_element(
         EventDispatcherInterface $dispatcher,
         AdminEvent $event,
         Element $element,
-        ContextManager $manager,
+        ContextManager $contextManager,
         Request $request
     ): void {
         $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
         $element->getId()->willReturn('my_awesome_resource');
-        $manager->createContext(Argument::type('string'), $element)->willReturn(null);
+        $contextManager->createContext(Argument::type('string'), $element)->willReturn(null);
 
-        $this->shouldThrow(NotFoundHttpException::class)->during('resourceAction', [$element, $request]);
+        $this->shouldThrow(NotFoundHttpException::class)->during('resourceAction', ['admin_element_id', $request]);
     }
 
     public function it_throws_exception_when_no_response_and_no_template_name(
@@ -99,15 +102,15 @@ class ResourceControllerSpec extends ObjectBehavior
         AdminEvent $event,
         Request $request,
         Element $element,
-        ContextManager $manager,
+        ContextManager $contextManager,
         ResourceRepositoryContext $context
     ): void {
         $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
         $context->getTemplateName()->willReturn(null);
-        $manager->createContext('fsi_admin_resource', $element)->willReturn($context);
+        $contextManager->createContext('fsi_admin_resource', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
 
-        $this->shouldThrow(ContextException::class)->during('resourceAction', [$element, $request]);
+        $this->shouldThrow(ContextException::class)->during('resourceAction', ['admin_element_id', $request]);
     }
 }

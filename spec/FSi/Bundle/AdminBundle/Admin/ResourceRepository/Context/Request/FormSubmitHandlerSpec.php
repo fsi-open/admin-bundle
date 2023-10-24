@@ -71,7 +71,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(Argument::type(FormRequestPreSubmitEvent::class))->shouldBeCalled();
 
         $event->getForm()->willReturn($form);
-        $form->handleRequest($request)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
 
         $eventDispatcher->dispatch(Argument::type(FormRequestPostSubmitEvent::class))->shouldBeCalled();
 
@@ -110,7 +110,7 @@ class FormSubmitHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(Argument::type(FormRequestPreSubmitEvent::class))->shouldBeCalled();
 
         $event->getForm()->willReturn($form);
-        $form->handleRequest($request)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
 
         $eventDispatcher->dispatch(Argument::type(FormRequestPostSubmitEvent::class))
             ->will(

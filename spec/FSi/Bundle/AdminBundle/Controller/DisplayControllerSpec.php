@@ -14,8 +14,8 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\Display\Context\DisplayContext;
 use FSi\Bundle\AdminBundle\Admin\Display\Element;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\AdminContextPreCreateEvent;
-use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -26,78 +26,81 @@ use Twig\Environment;
 class DisplayControllerSpec extends ObjectBehavior
 {
     public function let(
-        ContextManager $manager,
+        ManagerInterface $elementManager,
+        ContextManager $contextManager,
         Environment $twig,
         DisplayContext $context,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        Element $element
     ): void {
+        $elementManager->hasElement('admin_element_id')->willReturn(true);
+        $elementManager->getElement('admin_element_id')->willReturn($element);
         $context->getTemplateName()->willReturn('default_display');
 
-        $this->beConstructedWith($twig, $manager, $dispatcher);
+        $this->beConstructedWith($elementManager, $twig, $contextManager, $dispatcher);
     }
 
     public function it_dispatches_event(
         EventDispatcherInterface $dispatcher,
         Request $request,
         Element $element,
-        ContextManager $manager,
+        ContextManager $contextManager,
         DisplayContext $context,
-        AdminEvent $event,
         Environment $twig
     ): void {
         $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
-        $manager->createContext('fsi_admin_display', $element)->willReturn($context);
+        $contextManager->createContext('fsi_admin_display', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
         $twig->render('default_display', [])->willReturn('response');
-        $this->displayAction($element, $request)->getContent()->shouldBe('response');
+        $this->displayAction('admin_element_id', $request)->getContent()->shouldBe('response');
     }
 
     public function it_returns_response(
         EventDispatcherInterface $dispatcher,
         Request $request,
         Element $element,
-        ContextManager $manager,
+        ContextManager $contextManager,
         DisplayContext $context,
         Environment $twig
     ): void {
         $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
-        $manager->createContext('fsi_admin_display', $element)->willReturn($context);
+        $contextManager->createContext('fsi_admin_display', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn(null);
         $context->getData()->willReturn([]);
 
         $twig->render('default_display', [])->willReturn('response');
-        $this->displayAction($element, $request)->getContent()->shouldBe('response');
+        $this->displayAction('admin_element_id', $request)->getContent()->shouldBe('response');
     }
 
     public function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
         EventDispatcherInterface $dispatcher,
         Element $element,
-        ContextManager $manager,
+        ContextManager $contextManager,
         Request $request
     ): void {
         $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
-        $element->getId()->willReturn('my_awesome_display');
-        $manager->createContext(Argument::type('string'), $element)->willReturn(null);
+        $element->getId()->willReturn('admin_element_id');
+        $contextManager->createContext(Argument::type('string'), $element)->willReturn(null);
 
-        $this->shouldThrow(NotFoundHttpException::class)->during('displayAction', [$element, $request]);
+        $this->shouldThrow(NotFoundHttpException::class)->during('displayAction', ['admin_element_id', $request]);
     }
 
     public function it_throws_exception_when_no_response_and_no_template_name(
         EventDispatcherInterface $dispatcher,
         Element $element,
-        ContextManager $manager,
+        ContextManager $contextManager,
         Request $request
     ): void {
         $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
-        $element->getId()->willReturn('my_awesome_display');
-        $manager->createContext(Argument::type('string'), $element)->willReturn(null);
+        $element->getId()->willReturn('admin_element_id');
+        $contextManager->createContext(Argument::type('string'), $element)->willReturn(null);
 
-        $this->shouldThrow(NotFoundHttpException::class)->during('displayAction', [$element, $request]);
+        $this->shouldThrow(NotFoundHttpException::class)->during('displayAction', ['admin_element_id', $request]);
     }
 }

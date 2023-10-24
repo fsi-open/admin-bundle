@@ -24,9 +24,7 @@ use function sprintf;
 class AdminController
 {
     private Environment $twig;
-
     private RouterInterface $router;
-
     private string $indexActionTemplate;
 
     public function __construct(Environment $twig, RouterInterface $router, string $indexActionTemplate)

@@ -19,14 +19,12 @@ use Knp\Menu\ItemInterface as KnpItemInterface;
 class MenuBuilder
 {
     protected FactoryInterface $factory;
-
     /**
      * @var iterable<ItemDecorator>
      */
     protected iterable $decorators;
 
     /**
-     * @param FactoryInterface $factory
      * @param iterable<ItemDecorator> $decorators
      */
     public function __construct(FactoryInterface $factory, iterable $decorators)
@@ -55,7 +53,6 @@ class MenuBuilder
     }
 
     /**
-     * @param KnpItemInterface $menu
      * @param array<Item> $children
      */
     private function populateMenu(KnpItemInterface $menu, array $children): void

@@ -27,15 +27,7 @@ class MessageTwigExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('fsi_admin_messages', [$this, 'getMessages']),
+            new TwigFunction('fsi_admin_messages', fn(): array => $this->flashMessages->all()),
         ];
-    }
-
-    /**
-     * @return array<string,array{text:string,domain:string,params:array<string,mixed>}>
-     */
-    public function getMessages(): array
-    {
-        return $this->flashMessages->all();
     }
 }

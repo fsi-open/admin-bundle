@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace FSi;
 
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageFactoryInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
@@ -17,7 +18,6 @@ class AppKernel extends Kernel
     {
         return [
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new \Symfony\Bundle\MonologBundle\MonologBundle(),
@@ -37,6 +37,16 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(sprintf('%s/../config/config.yaml', __DIR__));
+
+        $loader->load(
+            sprintf(
+                '%s/../config/%s.yaml',
+                __DIR__,
+                interface_exists(SessionStorageFactoryInterface::class)
+                    ? 'framework_54'
+                    : 'framework_44'
+            )
+        );
     }
 
     public function getCacheDir(): string

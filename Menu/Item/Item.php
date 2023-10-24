@@ -20,14 +20,11 @@ use function array_key_exists;
 class Item
 {
     private string $name;
-
     private ?string $label = null;
-
     /**
-     * @var array<Item>
+     * @var array<string,Item>
      */
     private array $children;
-
     /**
      * @var array<string,mixed>
      */
@@ -74,7 +71,7 @@ class Item
     }
 
     /**
-     * @return array<Item>
+     * @return array<string, Item>
      */
     public function getChildren(): array
     {
@@ -102,7 +99,6 @@ class Item
     }
 
     /**
-     * @param string $name
      * @return mixed
      */
     public function getOption(string $name)

@@ -13,6 +13,7 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectManager;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Controller\ReorderTreeController;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
 use FSi\Bundle\AdminBundle\Event\MovedDownTreeEvent;
@@ -33,6 +34,7 @@ use Symfony\Component\Routing\RouterInterface;
 final class ReorderTreeControllerSpec extends ObjectBehavior
 {
     public function let(
+        ManagerInterface $elementManager,
         RouterInterface $router,
         EventDispatcherInterface $eventDispatcher,
         CRUDElement $element,
@@ -50,7 +52,10 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
         $element->getRoute()->willReturn('fsi_admin_crud_list');
         $element->getRouteParameters()->willReturn(['element' => 'category']);
 
-        $this->beConstructedWith($router, $eventDispatcher);
+        $elementManager->hasElement('admin_element_id')->willReturn(true);
+        $elementManager->getElement('admin_element_id')->willReturn($element);
+
+        $this->beConstructedWith($elementManager, $router, $eventDispatcher);
     }
 
     public function it_is_initializable(): void
@@ -81,7 +86,7 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
             Argument::withEntry('element', 'category')
         )->willReturn('sample-path');
 
-        $response = $this->moveUpAction($element, '1', $request);
+        $response = $this->moveUpAction('admin_element_id', '1', $request);
         $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('sample-path');
     }
@@ -109,20 +114,25 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
             Argument::withEntry('element', 'category')
         )->willReturn('sample-path');
 
-        $response = $this->moveDownAction($element, '1', $request);
+        $response = $this->moveDownAction('admin_element_id', '1', $request);
         $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('sample-path');
     }
 
     public function it_throws_runtime_exception_when_specified_entity_doesnt_exist(
-        CRUDElement $element,
         DoctrineDataIndexer $indexer,
         Request $request
     ): void {
         $indexer->getData('666')->willThrow(RuntimeException::class);
 
-        $this->shouldThrow(RuntimeException::class)->duringMoveUpAction($element, '666', $request);
-        $this->shouldThrow(RuntimeException::class)->duringMoveDownAction($element, '666', $request);
+        $this
+            ->shouldThrow(RuntimeException::class)
+            ->duringMoveUpAction('admin_element_id', '666', $request)
+        ;
+        $this
+            ->shouldThrow(RuntimeException::class)
+            ->duringMoveDownAction('admin_element_id', '666', $request)
+        ;
     }
 
     public function it_throws_exception_when_entity_doesnt_have_correct_repository(
@@ -135,8 +145,14 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
         $indexer->getData('666')->willReturn($category);
         $element->getRepository()->willReturn($repository);
 
-        $this->shouldThrow(InvalidArgumentException::class)->duringMoveUpAction($element, '666', $request);
-        $this->shouldThrow(InvalidArgumentException::class)->duringMoveDownAction($element, '666', $request);
+        $this
+            ->shouldThrow(InvalidArgumentException::class)
+            ->duringMoveUpAction('admin_element_id', '666', $request)
+        ;
+        $this
+            ->shouldThrow(InvalidArgumentException::class)
+            ->duringMoveDownAction('admin_element_id', '666', $request)
+        ;
     }
 
     public function it_redirects_to_redirect_uri_parameter_after_operation(
@@ -152,13 +168,13 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(Argument::type(MovedUpTreeEvent::class))->shouldBeCalled();
 
-        $response = $this->moveUpAction($element, '1', $request);
+        $response = $this->moveUpAction('admin_element_id', '1', $request);
         $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('some_redirect_uri');
 
         $eventDispatcher->dispatch(Argument::type(MovedDownTreeEvent::class))->shouldBeCalled();
 
-        $response = $this->moveDownAction($element, '1', $request);
+        $response = $this->moveDownAction('admin_element_id', '1', $request);
         $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('some_redirect_uri');
     }

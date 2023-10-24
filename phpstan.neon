@@ -2,6 +2,7 @@ includes:
     - vendor/phpstan/phpstan-beberlei-assert/extension.neon
 parameters:
     treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: false
     level: 8
     paths:
         - '%currentWorkingDirectory%/Admin'
@@ -23,3 +24,6 @@ parameters:
         - '%currentWorkingDirectory%/ResourceRepository'
         - '%currentWorkingDirectory%/Translatable'
         - '%currentWorkingDirectory%/Twig'
+    ignoreErrors:
+        - message: '#Call to an undefined method Symfony\\Component\\HttpFoundation\\RequestStack\:\:get(Main|Master)Request\(\)\.#'
+          path: DataGrid/Extension/Admin/ColumnTypeExtension/BatchActionExtension.php

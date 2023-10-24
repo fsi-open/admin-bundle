@@ -13,6 +13,7 @@ namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
 use FSi\Bundle\AdminBundle\Admin\Element as AdminElement;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\Element as AdminDoctrineElement;
 use FSi\Bundle\AdminBundle\Event\MovedDownTreeEvent;
 use FSi\Bundle\AdminBundle\Event\MovedUpTreeEvent;
@@ -33,29 +34,26 @@ use function sprintf;
 
 class ReorderTreeController
 {
-    private RouterInterface $router;
+    use DataIndexerElementFinder;
 
+    private ManagerInterface $manager;
+    private RouterInterface $router;
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(RouterInterface $router, EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        ManagerInterface $manager,
+        RouterInterface $router,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->router = $router;
         $this->eventDispatcher = $eventDispatcher;
+        $this->manager = $manager;
     }
 
-    /**
-     * @param DataIndexerElement<array<string, mixed>|object>&AdminDoctrineElement<object> $element
-     * @param string $id
-     * @param Request $request
-     * @return Response
-     */
-    public function moveUpAction(DataIndexerElement $element, string $id, Request $request): Response
+    public function moveUpAction(string $element, string $id, Request $request): Response
     {
-        $entity = $element->getDataIndexer()->getData($id);
-
-        if (false === is_object($entity)) {
-            throw new LogicException(sprintf('%s supports only objects but %s given', __CLASS__, gettype($entity)));
-        }
+        $element = $this->getElement($element);
+        $entity = $this->getEntity($element, $id);
 
         $this->getRepository($element)->moveUp($entity);
         $element->getObjectManager()->flush();
@@ -65,19 +63,10 @@ class ReorderTreeController
         return $this->getRedirectResponse($element, $request);
     }
 
-    /**
-     * @param DataIndexerElement<array<string, mixed>|object>&AdminDoctrineElement<object> $element
-     * @param string $id
-     * @param Request $request
-     * @return Response
-     */
-    public function moveDownAction(DataIndexerElement $element, string $id, Request $request): Response
+    public function moveDownAction(string $element, string $id, Request $request): Response
     {
-        $entity = $element->getDataIndexer()->getData($id);
-
-        if (false === is_object($entity)) {
-            throw new LogicException(sprintf('%s supports only objects but %s given', __CLASS__, gettype($entity)));
-        }
+        $element = $this->getElement($element);
+        $entity = $this->getEntity($element, $id);
 
         $this->getRepository($element)->moveDown($entity);
         $element->getObjectManager()->flush();
@@ -88,8 +77,22 @@ class ReorderTreeController
     }
 
     /**
+     * @param DataIndexerElement<object>&AdminDoctrineElement<object> $element
+     */
+    private function getEntity(DataIndexerElement $element, string $id): object
+    {
+        $entity = $element->getDataIndexer()->getData($id);
+        if (false === is_object($entity)) {
+            throw new LogicException(
+                sprintf('%s supports only objects but %s given', __CLASS__, gettype($entity))
+            );
+        }
+
+        return $entity;
+    }
+
+    /**
      * @param AdminDoctrineElement<object> $element
-     * @return NestedTreeRepository
      */
     private function getRepository(AdminDoctrineElement $element): NestedTreeRepository
     {

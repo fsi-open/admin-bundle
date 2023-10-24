@@ -15,6 +15,11 @@ use Behat\Mink\Element\NodeElement;
 
 class AdminPanel extends Page
 {
+    public function getHtml(): string
+    {
+        return $this->getDocument()->getHtml();
+    }
+
     public function hasMenuElement(string $name, ?string $group = null): bool
     {
         if (null === $group) {

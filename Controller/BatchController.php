@@ -12,19 +12,27 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use function get_class;
+use function sprintf;
 
 class BatchController extends ControllerAbstract
 {
-    /**
-     * @param BatchElement<array<string, mixed>|object> $element
-     *
-     * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement")
-     */
-    public function batchAction(BatchElement $element, Request $request): Response
+    public function batchAction(string $element, Request $request): Response
     {
-        return $this->handleRequest($element, $request, 'fsi_admin_batch');
+        $elementObject = $this->getElement($element);
+        if (false === $elementObject instanceof BatchElement) {
+            throw new NotFoundHttpException(sprintf(
+                'Admin element with id "%s" should be of class "%s", but it is "%s".',
+                $element,
+                BatchElement::class,
+                get_class($elementObject)
+            ));
+        }
+
+        return $this->handleRequest($elementObject, $request, 'fsi_admin_batch');
     }
 }
