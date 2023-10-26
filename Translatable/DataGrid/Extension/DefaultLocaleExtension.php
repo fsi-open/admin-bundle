@@ -11,11 +11,8 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Translatable\DataGrid\Extension;
 
-use FSi\Bundle\DataGridBundle\DataGrid\ColumnType\Files\File;
-use FSi\Bundle\DataGridBundle\DataGrid\ColumnType\Files\Image;
 use FSi\Component\DataGrid\Column\CellViewInterface;
 use FSi\Component\DataGrid\Column\ColumnInterface;
-use FSi\Component\DataGrid\ColumnType\Text;
 use FSi\Component\DataGrid\ColumnTypeExtension\ValueFormatColumnOptionsExtension;
 use FSi\Component\DataGrid\ColumnTypeExtension\ValueFormatter;
 use FSi\Component\Translatable\ConfigurationResolver;
@@ -37,11 +34,6 @@ final class DefaultLocaleExtension extends ValueFormatColumnOptionsExtension
     private ConfigurationResolver $configurationResolver;
     private TranslationProvider $translationProvider;
     private string $defaultLocale;
-
-    public static function getExtendedColumnTypes(): array
-    {
-        return [File::class, Image::class, Text::class];
-    }
 
     public function __construct(
         ConfigurationResolver $configurationResolver,
