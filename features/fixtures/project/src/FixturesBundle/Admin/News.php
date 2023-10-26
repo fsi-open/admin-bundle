@@ -37,6 +37,17 @@ class News extends CRUDElement
 
         NewsDataGridBuilder::buildNewsDataGrid($datagrid);
 
+        $datagrid->addColumn('subtitle', 'text', [
+            'label' => 'admin.news.list.subtitle',
+            'field_mapping' => ['title', 'subtitle'],
+            'value_format' => '%s %s',
+            'form_options' => [
+                'subtitle' => [
+                    'required' => false,
+                ]
+            ]
+        ]);
+
         $datagrid->addColumn('actions', 'action', [
             'label' => 'admin.news.list.actions',
             'field_mapping' => ['id'],

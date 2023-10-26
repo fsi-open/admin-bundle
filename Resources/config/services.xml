@@ -169,6 +169,9 @@
         <service id="FSi\Bundle\AdminBundle\DataGrid\Extension\Admin\ColumnTypeExtension\BatchActionExtension" lazy="true">
             <argument key="$formBuilder" type="service" id="admin.form.builder.batch"/>
         </service>
+        <service id="FSi\Bundle\AdminBundle\Translatable\DataGrid\Extension\DefaultLocaleExtension"
+                 decorates="FSi\Component\DataGrid\ColumnTypeExtension\ValueFormatColumnOptionsExtension"
+        />
 
         <!-- EventSubscriber -->
         <service id="FSi\Bundle\AdminBundle\EventSubscriber\LocaleSubscriber">
