@@ -8,40 +8,26 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use FSi\Component\Files\WebFile;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class News
 {
     private ?int $id = null;
-
     private ?string $title = null;
-
     private ?string $subtitle = null;
-
     private ?DateTimeInterface $date = null;
-
     private bool $visible = false;
-
     private ?DateTimeInterface $createdAt = null;
-
     private ?string $creatorEmail = null;
-
     private ?string $photoPath = null;
-
     private ?WebFile $photo = null;
-
     /**
      * @var Collection<int,Category>
      */
     private Collection $categories;
-
     /**
      * @var Collection<int,Tag>
-     *
-     * @Assert\Valid
      */
     private Collection $tags;
-
     /**
      * @var Collection<int,string>
      */

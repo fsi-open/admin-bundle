@@ -21,6 +21,8 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @template-extends CRUDElement<Entity\Person, Entity\Person>
@@ -101,7 +103,7 @@ class Person extends CRUDElement
         $builder->add(
             'email',
             TextType::class,
-            ['label' => 'admin.email']
+            ['label' => 'admin.email', 'constraints' => [new Email(), new NotBlank()]]
         );
 
         return $builder->getForm();

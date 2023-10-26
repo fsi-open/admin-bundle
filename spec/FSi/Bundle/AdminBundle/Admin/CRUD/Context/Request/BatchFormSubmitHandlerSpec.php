@@ -72,7 +72,7 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(Argument::type(BatchRequestPreSubmitEvent::class))->shouldBeCalled();
 
         $event->getForm()->willReturn($form);
-        $form->handleRequest($request)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
 
         $eventDispatcher->dispatch(Argument::type(BatchRequestPostSubmitEvent::class))->shouldBeCalled();
 
@@ -110,7 +110,7 @@ class BatchFormSubmitHandlerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(Argument::type(BatchRequestPreSubmitEvent::class))->shouldBeCalled();
 
         $event->getForm()->willReturn($form);
-        $form->handleRequest($request)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled()->willReturn($form);
 
         $eventDispatcher->dispatch(Argument::type(BatchRequestPostSubmitEvent::class))
             ->will(function (array $args): object {

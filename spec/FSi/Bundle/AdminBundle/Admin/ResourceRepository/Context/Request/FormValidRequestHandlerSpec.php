@@ -86,6 +86,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         Resource $resource2
     ): void {
         $attributesParameterBag->has('translatableLocale')->willReturn(false);
+        $queryParameterBag->has('redirect_uri')->willReturn(false);
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
         $request->query = $queryParameterBag;
         $request->attributes = $attributesParameterBag;

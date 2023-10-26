@@ -32,6 +32,7 @@ class ResourceRepositoryPassSpec extends ObjectBehavior
                 '%fsi_resource_repository.resource.value.class%'
             )
             ->shouldBeCalled()
+            ->willReturn($translationLocaleMenuSubscriberDefinition)
         ;
         $container->hasExtension('fsi_resource_repository')->willReturn(true);
         $container->removeDefinition(Argument::any())->shouldNotBeCalled();

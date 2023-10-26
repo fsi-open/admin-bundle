@@ -52,23 +52,27 @@ class ElementVoterSpec extends ObjectBehavior
     }
 
     public function it_returns_null_if_route_parameters_contain_element_that_is_not_admin_element(
+        ManagerInterface $manager,
         ItemInterface $item,
-        ParameterBag $requestAttributes,
-        stdClass $object
+        ParameterBag $requestAttributes
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($object);
+        $requestAttributes->get('element')->willReturn('not_an_element_id');
+        $manager->hasElement('not_an_element_id')->willReturn(false);
 
         $this->matchItem($item)->shouldReturn(null);
     }
 
     public function it_returns_false_if_item_has_no_element(
+        ManagerInterface $manager,
         ItemInterface $item,
         ParameterBag $requestAttributes,
         Element $element
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
 
         $item->getExtra('routes', [])->willReturn([]);
         $this->matchItem($item)->shouldReturn(false);
@@ -84,12 +88,15 @@ class ElementVoterSpec extends ObjectBehavior
     }
 
     public function it_returns_false_if_item_has_element_with_different_id_than_in_current_request(
+        ManagerInterface $manager,
         ItemInterface $item,
         ParameterBag $requestAttributes,
         Element $element
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
         $element->getId()->willReturn('element_id');
 
         $item->getExtra('routes', [])->willReturn(
@@ -103,12 +110,15 @@ class ElementVoterSpec extends ObjectBehavior
     }
 
     public function it_returns_true_if_item_has_element_with_the_same_id_as_in_current_request(
+        ManagerInterface $manager,
         ItemInterface $item,
         ParameterBag $requestAttributes,
         Element $element
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
         $element->getId()->willReturn('element_id');
 
         $item->getExtra('routes', [])->willReturn(
@@ -122,12 +132,15 @@ class ElementVoterSpec extends ObjectBehavior
     }
 
     public function it_returns_false_if_element_in_current_request_redirects_to_different_element_than_in_item(
+        ManagerInterface $manager,
         ItemInterface $item,
         ParameterBag $requestAttributes,
         RedirectableElement $element
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
         $element->getId()->willReturn('element_id');
         $element->getSuccessRouteParameters()->willReturn(['element' => 'element_after_success']);
 
@@ -142,12 +155,15 @@ class ElementVoterSpec extends ObjectBehavior
     }
 
     public function it_returns_true_if_element_in_current_request_redirects_to_the_element_in_item(
+        ManagerInterface $manager,
         ItemInterface $item,
         ParameterBag $requestAttributes,
         RedirectableElement $element
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
         $element->getId()->willReturn('element_id');
         $element->getSuccessRouteParameters()->willReturn(['element' => 'element_after_success']);
 
@@ -169,7 +185,9 @@ class ElementVoterSpec extends ObjectBehavior
         Element $parentElement
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
         $element->getId()->willReturn('element_id');
         $element->getParentId()->willReturn('parent_element_id');
         $manager->hasElement('parent_element_id')->willReturn(true);
@@ -192,7 +210,9 @@ class ElementVoterSpec extends ObjectBehavior
         Element $parentElement
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
         $element->getId()->willReturn('element_id');
         $element->getParentId()->willReturn('parent_element_id');
         $manager->hasElement('parent_element_id')->willReturn(true);
@@ -215,7 +235,9 @@ class ElementVoterSpec extends ObjectBehavior
         RedirectableElement $parentElement
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
         $element->getId()->willReturn('element_id');
         $element->getParentId()->willReturn('parent_element_id');
         $manager->hasElement('parent_element_id')->willReturn(true);
@@ -239,7 +261,9 @@ class ElementVoterSpec extends ObjectBehavior
         RedirectableElement $parentElement
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
         $element->getId()->willReturn('element_id');
         $element->getParentId()->willReturn('parent_element_id');
         $manager->hasElement('parent_element_id')->willReturn(true);
@@ -264,7 +288,9 @@ class ElementVoterSpec extends ObjectBehavior
         Element $grandparentElement
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
         $element->getId()->willReturn('element_id');
         $element->getParentId()->willReturn('parent_element_id');
         $manager->hasElement('parent_element_id')->willReturn(true);
@@ -292,7 +318,9 @@ class ElementVoterSpec extends ObjectBehavior
         Element $grandparentElement
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
         $element->getId()->willReturn('element_id');
         $element->getParentId()->willReturn('parent_element_id');
         $manager->hasElement('parent_element_id')->willReturn(true);
@@ -320,7 +348,9 @@ class ElementVoterSpec extends ObjectBehavior
         RedirectableElement $grandparentElement
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
         $element->getId()->willReturn('element_id');
         $element->getParentId()->willReturn('parent_element_id');
         $manager->hasElement('parent_element_id')->willReturn(true);
@@ -350,7 +380,10 @@ class ElementVoterSpec extends ObjectBehavior
         RedirectableElement $grandparentElement
     ): void {
         $requestAttributes->has('element')->willReturn(true);
-        $requestAttributes->get('element')->willReturn($element);
+        $requestAttributes->get('element')->willReturn('element_id');
+        $manager->hasElement('element_id')->willReturn(true);
+        $manager->getElement('element_id')->willReturn($element);
+
         $element->getId()->willReturn('element_id');
         $element->getParentId()->willReturn('parent_element_id');
         $manager->hasElement('parent_element_id')->willReturn(true);

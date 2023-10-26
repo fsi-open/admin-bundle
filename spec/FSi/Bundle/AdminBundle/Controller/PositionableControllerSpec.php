@@ -12,8 +12,8 @@ declare(strict_types=1);
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use Doctrine\Persistence\ObjectManager;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
-use FSi\Bundle\AdminBundle\Event\PositionableEvent;
 use FSi\Bundle\AdminBundle\Event\PositionablePostMoveEvent;
 use FSi\Bundle\AdminBundle\Event\PositionablePreMoveEvent;
 use FSi\Bundle\AdminBundle\Model\PositionableInterface;
@@ -21,9 +21,9 @@ use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use FSi\Component\DataIndexer\Exception\RuntimeException as DataIndexerRuntimeException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
 use stdClass;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +32,7 @@ use Symfony\Component\Routing\RouterInterface;
 class PositionableControllerSpec extends ObjectBehavior
 {
     public function let(
+        ManagerInterface $elementManager,
         EventDispatcherInterface $eventDispatcher,
         RouterInterface $router,
         CRUDElement $element,
@@ -48,34 +49,48 @@ class PositionableControllerSpec extends ObjectBehavior
         $element->getRouteParameters()->willReturn(['element' => 'slides']);
         $router->generate('fsi_admin_list', ['element' => 'slides'])->willReturn('sample-path');
 
-        $this->beConstructedWith($eventDispatcher, $router);
+        $elementManager->hasElement('admin_element_id')->willReturn(true);
+        $elementManager->getElement('admin_element_id')->willReturn($element);
+
+        $this->beConstructedWith($elementManager, $eventDispatcher, $router);
     }
 
     public function it_throws_runtime_exception_when_entity_doesnt_implement_proper_interface(
-        CRUDElement $element,
         DoctrineDataIndexer $indexer,
         Request $request,
         stdClass $entity
     ): void {
         $indexer->getData('666')->willReturn($entity);
 
-        $this->shouldThrow(RuntimeException::class)->duringIncreasePositionAction($element, '666', $request);
-        $this->shouldThrow(RuntimeException::class)->duringDecreasePositionAction($element, '666', $request);
+        $this
+            ->shouldThrow(RuntimeException::class)
+            ->duringIncreasePositionAction('admin_element_id', '666', $request)
+        ;
+
+        $this
+            ->shouldThrow(RuntimeException::class)
+            ->duringDecreasePositionAction('admin_element_id', '666', $request)
+        ;
     }
 
     public function it_throws_runtime_exception_when_specified_entity_doesnt_exist(
-        CRUDElement $element,
         DoctrineDataIndexer $indexer,
         Request $request
     ): void {
         $indexer->getData('666')->willThrow(DataIndexerRuntimeException::class);
 
-        $this->shouldThrow(DataIndexerRuntimeException::class)->duringIncreasePositionAction($element, '666', $request);
-        $this->shouldThrow(DataIndexerRuntimeException::class)->duringDecreasePositionAction($element, '666', $request);
+        $this
+            ->shouldThrow(DataIndexerRuntimeException::class)
+            ->duringIncreasePositionAction('admin_element_id', '666', $request)
+        ;
+
+        $this
+            ->shouldThrow(DataIndexerRuntimeException::class)
+            ->duringDecreasePositionAction('admin_element_id', '666', $request)
+        ;
     }
 
     public function it_decreases_position_when_decrease_position_action_called(
-        CRUDElement $element,
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,
         ObjectManager $om,
@@ -91,7 +106,7 @@ class PositionableControllerSpec extends ObjectBehavior
         $om->persist($positionableEntity)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
-        $response = $this->decreasePositionAction($element, '1', $request);
+        $response = $this->decreasePositionAction('admin_element_id', '1', $request);
         $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('sample-path');
     }
@@ -113,16 +128,13 @@ class PositionableControllerSpec extends ObjectBehavior
         $om->persist($positionableEntity)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
-        $response = $this->increasePositionAction($element, '1', $request);
+        $response = $this->increasePositionAction('admin_element_id', '1', $request);
         $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('sample-path');
     }
 
     public function it_redirects_to_redirect_uri_parameter_after_operation(
         EventDispatcherInterface $eventDispatcher,
-        PositionableEvent $preApplyEvent,
-        PositionableEvent $postApplyEvent,
-        CRUDElement $element,
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,
         Request $request,
@@ -134,11 +146,11 @@ class PositionableControllerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(Argument::type(PositionablePreMoveEvent::class))->shouldBeCalled();
         $eventDispatcher->dispatch(Argument::type(PositionablePostMoveEvent::class))->shouldBeCalled();
 
-        $response = $this->increasePositionAction($element, '1', $request);
+        $response = $this->increasePositionAction('admin_element_id', '1', $request);
         $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('some_redirect_uri');
 
-        $response = $this->decreasePositionAction($element, '1', $request);
+        $response = $this->decreasePositionAction('admin_element_id', '1', $request);
         $response->shouldHaveType(RedirectResponse::class);
         $response->getTargetUrl()->shouldReturn('some_redirect_uri');
     }

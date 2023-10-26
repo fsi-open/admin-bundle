@@ -43,7 +43,7 @@ class ElementActionExtensionSpec extends ObjectBehavior
     public function it_adds_element_id_action_option(
         OptionsResolver $optionsResolver
     ): void {
-        $optionsResolver->setDefault('actions', Argument::type(Closure::class))->shouldBeCalled();
+        $optionsResolver->setDefault('actions', Argument::type(Closure::class))->shouldBeCalled()->willReturn($optionsResolver);
 
         $this->initOptions($optionsResolver);
     }

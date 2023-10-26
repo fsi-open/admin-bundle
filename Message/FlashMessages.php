@@ -11,66 +11,63 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Message;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+use function method_exists;
+
 class FlashMessages
 {
+    private const DOMAIN = 'FSiAdminBundle';
+
     private ?FlashBagInterface $flashBag = null;
-
     private string $prefix;
-
     private SessionInterface $session;
+    private RequestStack $requestStack;
 
-    public function __construct(SessionInterface $session, string $prefix)
+    public function __construct(SessionInterface $session, RequestStack $requestStack, string $prefix)
     {
         $this->prefix = $prefix;
         $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     /**
-     * @param string $message
      * @param array<string,mixed> $params
-     * @param string $domain
      */
-    public function success(string $message, array $params = [], string $domain = 'FSiAdminBundle'): void
+    public function success(string $message, array $params = [], string $domain = self::DOMAIN): void
     {
         $this->add('success', $message, $params, $domain);
     }
 
     /**
-     * @param string $message
      * @param array<string,mixed> $params
-     * @param string $domain
      */
-    public function error(string $message, array $params = [], string $domain = 'FSiAdminBundle'): void
+    public function error(string $message, array $params = [], string $domain = self::DOMAIN): void
     {
         $this->add('error', $message, $params, $domain);
     }
 
     /**
-     * @param string $message
      * @param array<string,mixed> $params
-     * @param string $domain
      */
-    public function warning(string $message, array $params = [], string $domain = 'FSiAdminBundle'): void
+    public function warning(string $message, array $params = [], string $domain = self::DOMAIN): void
     {
         $this->add('warning', $message, $params, $domain);
     }
 
     /**
-     * @param string $message
      * @param array<string,mixed> $params
-     * @param string $domain
      */
-    public function info(string $message, array $params = [], string $domain = 'FSiAdminBundle'): void
+    public function info(string $message, array $params = [], string $domain = self::DOMAIN): void
     {
         $this->add('info', $message, $params, $domain);
     }
 
     /**
-     * @return array<string,array{text:string,domain:string,params:array<string,mixed>}>
+     * @return array<string, array{ text: string, domain: string, params: array<string,mixed> }>
      */
     public function all(): array
     {
@@ -78,34 +75,34 @@ class FlashMessages
     }
 
     /**
-     * @param string $type
-     * @param string $message
      * @param array<string,mixed> $params
-     * @param string $domain
      */
     private function add(string $type, string $message, array $params, string $domain): void
     {
         $flashBag = $this->getFlashBag();
-        if (true === $flashBag->has($this->prefix)) {
-            $messages = $flashBag->get($this->prefix);
-        } else {
-            $messages = [];
-        }
+        $messages = true === $flashBag->has($this->prefix)
+            ? $flashBag->get($this->prefix)
+            : []
+        ;
 
         $messages[$type][] = ['text' => $message, 'domain' => $domain, 'params' => $params];
-
         $flashBag->set($this->prefix, $messages);
     }
 
     private function getFlashBag(): FlashBagInterface
     {
-        if (true === $this->flashBag instanceof FlashBagInterface) {
-            return $this->flashBag;
-        }
+        if (false === $this->flashBag instanceof FlashBagInterface) {
+            if (true === method_exists($this->requestStack, 'getSession')) {
+                $session = $this->requestStack->getSession();
+            } else {
+                $session = $this->session;
+            }
 
-        $this->flashBag = true === method_exists($this->session, 'getFlashBag')
-            ? $this->session->getFlashBag()
-            : new FlashBag();
+            $this->flashBag = true === method_exists($session, 'getFlashBag')
+                ? $session->getFlashBag()
+                : new FlashBag()
+            ;
+        }
 
         return $this->flashBag;
     }

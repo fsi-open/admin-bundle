@@ -18,16 +18,25 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class TwigGlobalsPassSpec extends ObjectBehavior
 {
-    public function let(ContainerBuilder $container, Definition $def): void
+    public function let(ContainerBuilder $container, Definition $definition): void
     {
         $container->hasDefinition('twig')->willReturn(true);
-        $container->findDefinition('twig')->willReturn($def);
+        $container->findDefinition('twig')->willReturn($definition);
+        $definition
+            ->addMethodCall(Argument::type('string'), Argument::type('array'))
+            ->shouldBeCalled()
+            ->willReturn($definition)
+        ;
     }
 
-    public function it_adds_globals(ContainerBuilder $container, Definition $def): void
+    public function it_adds_globals(ContainerBuilder $container, Definition $definition): void
     {
         $container->getParameter(Argument::any())->willReturn('test');
-        $def->addMethodCall('addGlobal', Argument::containing('test'))->shouldBeCalled();
+        $definition
+            ->addMethodCall('addGlobal', Argument::containing('test'))
+            ->shouldBeCalled()
+            ->willReturn($definition)
+        ;
 
         $this->process($container);
     }

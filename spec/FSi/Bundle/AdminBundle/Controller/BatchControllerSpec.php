@@ -14,6 +14,7 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\CRUD\BatchElement;
 use FSi\Bundle\AdminBundle\Admin\CRUD\Context\BatchElementContext;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\AdminContextPreCreateEvent;
 use FSi\Bundle\AdminBundle\Event\AdminEvent;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
@@ -28,16 +29,20 @@ use Twig\Environment;
 class BatchControllerSpec extends ObjectBehavior
 {
     public function let(
+        ManagerInterface $elementManager,
         Environment $twig,
-        ContextManager $manager,
-        EventDispatcherInterface $dispatcher
+        ContextManager $contextManager,
+        EventDispatcherInterface $dispatcher,
+        BatchElement $element
     ): void {
-        $this->beConstructedWith($twig, $manager, $dispatcher);
+        $elementManager->hasElement('admin_element_id')->willReturn(true);
+        $elementManager->getElement('admin_element_id')->willReturn($element);
+        $this->beConstructedWith($elementManager, $twig, $contextManager, $dispatcher);
     }
 
     public function it_dispatches_event(
         EventDispatcherInterface $dispatcher,
-        ContextManager $manager,
+        ContextManager $contextManager,
         BatchElement $element,
         BatchElementContext $context,
         Request $request,
@@ -45,30 +50,29 @@ class BatchControllerSpec extends ObjectBehavior
     ): void {
         $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
-        $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
+        $contextManager->createContext('fsi_admin_batch', $element)->shouldBeCalled()->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
-        $this->batchAction($element, $request)->shouldReturn($response);
+        $this->batchAction('admin_element_id', $request)->shouldReturn($response);
     }
 
     public function it_throws_exception_when_cant_find_context_builder_that_supports_admin_element(
         EventDispatcherInterface $dispatcher,
         BatchElement $element,
-        ContextManager $manager,
-        AdminEvent $event,
+        ContextManager $contextManager,
         Request $request
     ): void {
         $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
         $element->getId()->willReturn('admin_element_id');
-        $manager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
+        $contextManager->createContext(Argument::type('string'), $element)->shouldBeCalled()->willReturn(null);
 
-        $this->shouldThrow(NotFoundHttpException::class)->during('batchAction', [$element, $request]);
+        $this->shouldThrow(NotFoundHttpException::class)->during('batchAction', ['admin_element_id', $request]);
     }
 
     public function it_throws_exception_when_context_does_not_return_response(
         EventDispatcherInterface $dispatcher,
-        ContextManager $manager,
+        ContextManager $contextManager,
         BatchElement $element,
         BatchElementContext $context,
         AdminEvent $event,
@@ -76,16 +80,16 @@ class BatchControllerSpec extends ObjectBehavior
     ): void {
         $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
-        $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
+        $contextManager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->getTemplateName()->willReturn(null);
         $context->handleRequest($request)->willReturn(null);
 
-        $this->shouldThrow(ContextException::class)->during('batchAction', [$element, $request]);
+        $this->shouldThrow(ContextException::class)->during('batchAction', ['admin_element_id', $request]);
     }
 
     public function it_returns_response_from_context_in_batch_action(
         EventDispatcherInterface $dispatcher,
-        ContextManager $manager,
+        ContextManager $contextManager,
         BatchElement $element,
         BatchElementContext $context,
         AdminEvent $event,
@@ -94,9 +98,9 @@ class BatchControllerSpec extends ObjectBehavior
     ): void {
         $dispatcher->dispatch(Argument::type(AdminContextPreCreateEvent::class))->shouldBeCalled();
 
-        $manager->createContext('fsi_admin_batch', $element)->willReturn($context);
+        $contextManager->createContext('fsi_admin_batch', $element)->willReturn($context);
         $context->handleRequest($request)->willReturn($response);
 
-        $this->batchAction($element, $request)->shouldReturn($response);
+        $this->batchAction('admin_element_id', $request)->shouldReturn($response);
     }
 }

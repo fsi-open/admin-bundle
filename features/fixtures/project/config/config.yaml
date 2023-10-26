@@ -10,12 +10,10 @@ framework:
     router:          { resource: "%kernel.project_dir%/features/fixtures/project/config/routing.yaml" }
     form:            true
     csrf_protection: true
-    validation:      { enable_annotations: true }
+    validation:      ~
     profiler:        { only_exceptions: false }
     test:            ~
     http_client:     ~
-    session:
-        storage_id:     session.storage.filesystem
 
 doctrine:
     dbal:

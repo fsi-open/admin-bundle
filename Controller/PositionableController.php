@@ -12,13 +12,14 @@ declare(strict_types=1);
 namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\CRUD\DataIndexerElement;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\Element;
 use FSi\Bundle\AdminBundle\Event\PositionablePostMoveEvent;
 use FSi\Bundle\AdminBundle\Event\PositionablePreMoveEvent;
 use FSi\Bundle\AdminBundle\Model\PositionableInterface;
 use LogicException;
-use RuntimeException;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,24 +30,25 @@ use function sprintf;
 
 class PositionableController
 {
-    private RouterInterface $router;
+    use DataIndexerElementFinder;
 
+    private ManagerInterface $manager;
+    private RouterInterface $router;
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, RouterInterface $router)
-    {
+    public function __construct(
+        ManagerInterface $manager,
+        EventDispatcherInterface $eventDispatcher,
+        RouterInterface $router
+    ) {
         $this->router = $router;
         $this->eventDispatcher = $eventDispatcher;
+        $this->manager = $manager;
     }
 
-    /**
-     * @param DataIndexerElement<object>&Element<object> $element
-     * @param string $id
-     * @param Request $request
-     * @return Response
-     */
-    public function increasePositionAction(DataIndexerElement $element, string $id, Request $request): Response
+    public function increasePositionAction(string $element, string $id, Request $request): Response
     {
+        $element = $this->getElement($element);
         $entity = $this->getEntity($element, $id);
 
         $this->eventDispatcher->dispatch(new PositionablePreMoveEvent($request, $element, $entity));
@@ -58,14 +60,9 @@ class PositionableController
         return $this->getRedirectResponse($element, $request);
     }
 
-    /**
-     * @param DataIndexerElement<object>&Element<object> $element
-     * @param string $id
-     * @param Request $request
-     * @return Response
-     */
-    public function decreasePositionAction(DataIndexerElement $element, string $id, Request $request): Response
+    public function decreasePositionAction(string $element, string $id, Request $request): Response
     {
+        $element = $this->getElement($element);
         $entity = $this->getEntity($element, $id);
 
         $this->eventDispatcher->dispatch(new PositionablePreMoveEvent($request, $element, $entity));
@@ -80,8 +77,6 @@ class PositionableController
     /**
      * @param DataIndexerElement<object>&Element<object> $element
      * @param mixed $id
-     * @throws RuntimeException
-     * @return PositionableInterface
      */
     private function getEntity(DataIndexerElement $element, $id): PositionableInterface
     {
@@ -97,12 +92,10 @@ class PositionableController
 
     /**
      * @param DataIndexerElement<object>&Element<object> $element
-     * @param Request $request
-     * @return RedirectResponse
      */
     private function getRedirectResponse(DataIndexerElement $element, Request $request): RedirectResponse
     {
-        if ($request->query->get('redirect_uri')) {
+        if (null !== $request->query->get('redirect_uri')) {
             $uri = $request->query->get('redirect_uri');
             if (false === is_string($uri)) {
                 throw new LogicException(
@@ -118,7 +111,6 @@ class PositionableController
 
     /**
      * @param Element<object> $element
-     * @param object $entity
      */
     private function persistAndFlush(Element $element, object $entity): void
     {

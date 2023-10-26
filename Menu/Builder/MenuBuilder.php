@@ -18,11 +18,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 class MenuBuilder implements Builder
 {
     private EventDispatcherInterface $eventDispatcher;
-
     private string $eventName;
 
     /**
-     * @param EventDispatcherInterface $eventDispatcher
      * @param class-string<MenuEvent> $eventName
      */
     public function __construct(EventDispatcherInterface $eventDispatcher, string $eventName)

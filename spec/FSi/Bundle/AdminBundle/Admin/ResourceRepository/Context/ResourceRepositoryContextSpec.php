@@ -11,17 +11,18 @@ declare(strict_types=1);
 
 namespace spec\FSi\Bundle\AdminBundle\Admin\ResourceRepository\Context;
 
+use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
 use FSi\Bundle\AdminBundle\Admin\Context\Request\HandlerInterface;
 use FSi\Bundle\AdminBundle\Admin\ResourceRepository\ResourceFormBuilder;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\ResourceElement;
+use FSi\Bundle\AdminBundle\Event\FormEvent;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
-use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
-use FSi\Bundle\AdminBundle\Event\FormEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResourceRepositoryContextSpec extends ObjectBehavior
 {
@@ -36,6 +37,7 @@ class ResourceRepositoryContextSpec extends ObjectBehavior
         $element->getResourceFormOptions()->willReturn([]);
         $element->getKey()->willReturn('resources');
         $resourceFormBuilder->build($element)->willReturn($form);
+        $form->createView()->willReturn(new FormView());
 
         $this->beConstructedWith([$handler], 'default_resource', $resourceFormBuilder);
         $this->setElement($element);

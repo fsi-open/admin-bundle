@@ -11,16 +11,9 @@ declare(strict_types=1);
 
 namespace FSi\FixturesBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 class Person
 {
     private ?int $id = null;
-
-    /**
-     * @Assert\NotBlank
-     * @Assert\Email
-     */
     private ?string $email = null;
 
     public function getId(): ?int

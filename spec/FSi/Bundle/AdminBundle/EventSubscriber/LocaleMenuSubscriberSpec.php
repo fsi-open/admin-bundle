@@ -14,14 +14,23 @@ namespace spec\FSi\Bundle\AdminBundle\EventSubscriber;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
+
+use function expect;
 
 class LocaleMenuSubscriberSpec extends ObjectBehavior
 {
     public function let(TranslatorInterface $translator, RequestStack $requestStack): void
     {
+        $translator->trans(
+            'admin.language.current',
+            ['%locale%' => 'Deutsch'],
+            'FSiAdminBundle'
+        )->willReturn('translated');
+
         $this->beConstructedWith($translator, $requestStack, ['en', 'de']);
     }
 

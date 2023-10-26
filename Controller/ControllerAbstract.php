@@ -13,6 +13,7 @@ namespace FSi\Bundle\AdminBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Context\ContextManager;
 use FSi\Bundle\AdminBundle\Admin\Element;
+use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Event\AdminContextPreCreateEvent;
 use FSi\Bundle\AdminBundle\Exception\ContextException;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -21,24 +22,32 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
 
+use function get_class;
+use function sprintf;
+
 abstract class ControllerAbstract
 {
     protected Environment $twig;
-
     protected ContextManager $contextManager;
-
+    private ManagerInterface $manager;
     private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
+        ManagerInterface $manager,
         Environment $twig,
         ContextManager $contextManager,
         EventDispatcherInterface $eventDispatcher
     ) {
+        $this->manager = $manager;
         $this->twig = $twig;
         $this->contextManager = $contextManager;
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * @throws NotFoundHttpException
+     * @throws ContextException
+     */
     protected function handleRequest(Element $element, Request $request, string $route): Response
     {
         $event = new AdminContextPreCreateEvent($element, $request);
@@ -70,5 +79,17 @@ abstract class ControllerAbstract
         }
 
         return new Response($this->twig->render($templateName, $context->getData()));
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     */
+    protected function getElement(string $elementId): Element
+    {
+        if (false === $this->manager->hasElement($elementId)) {
+            throw new NotFoundHttpException("Admin element with id {$elementId} does not exist.");
+        }
+
+        return $this->manager->getElement($elementId);
     }
 }

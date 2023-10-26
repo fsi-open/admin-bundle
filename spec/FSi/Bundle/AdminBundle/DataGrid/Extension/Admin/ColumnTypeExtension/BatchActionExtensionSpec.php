@@ -47,7 +47,12 @@ class BatchActionExtensionSpec extends ObjectBehavior
     ): void {
         $this->beConstructedWith($manager, $requestStack, $router, $formBuilder);
         $formBuilder->getForm()->willReturn($form);
-        $requestStack->getMasterRequest()->willReturn($request);
+        if (true === method_exists(RequestStack::class, 'getMainRequest')) {
+            $requestStack->getMainRequest()->willReturn($request);
+        } else {
+            $requestStack->getMasterRequest()->willReturn($request);
+        }
+
         $request->query = $queryAttributes;
         $form->createView()->willReturn($formView);
     }
@@ -64,11 +69,18 @@ class BatchActionExtensionSpec extends ObjectBehavior
 
     public function it_adds_actions_options(ColumnTypeInterface $column, OptionsResolver $optionsResolver): void
     {
-        $optionsResolver->setDefaults(['translation_domain' => 'FSiAdminBundle'])
-            ->shouldBeCalled();
+        $optionsResolver
+            ->setDefaults(['translation_domain' => 'FSiAdminBundle'])
+            ->shouldBeCalled()
+            ->willReturn($optionsResolver)
+        ;
         $optionsResolver->setAllowedTypes('actions', ['array'])->shouldBeCalled();
         $optionsResolver->setAllowedTypes('translation_domain', ['string'])->shouldBeCalled();
-        $optionsResolver->setDefault('actions', Argument::type(Closure::class))->shouldBeCalled();
+        $optionsResolver
+            ->setDefault('actions', Argument::type(Closure::class))
+            ->shouldBeCalled()
+            ->willReturn($optionsResolver)
+        ;
 
         $this->initOptions($optionsResolver);
     }
@@ -142,7 +154,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
                 'choices' => $expectedChoices,
                 'translation_domain' => 'FSiAdminBundle',
             ]
-        )->willReturn();
+        )->willReturn($formBuilder);
 
         $formBuilder->add(
             'submit',
@@ -151,7 +163,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle',
             ]
-        )->willReturn();
+        )->willReturn($formBuilder);
 
         $view->setAttribute('batch_form', $formView)->shouldBeCalled();
 
@@ -213,7 +225,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
                 ],
                 'translation_domain' => 'FSiAdminBundle',
             ]
-        )->willReturn();
+        )->willReturn($formBuilder);
         $formBuilder->add(
             'submit',
             SubmitType::class,
@@ -221,7 +233,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle',
             ]
-        )->willReturn();
+        )->willReturn($formBuilder);
 
         $view->setAttribute('batch_form', $formView)->shouldBeCalled();
 
@@ -278,7 +290,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
                 ],
                 'translation_domain' => 'FSiAdminBundle',
             ]
-        )->willReturn();
+        )->willReturn($formBuilder);
         $formBuilder->add(
             'submit',
             SubmitType::class,
@@ -286,7 +298,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle',
             ]
-        )->willReturn();
+        )->willReturn($formBuilder);
 
         $view->setAttribute('batch_form', $formView)->shouldBeCalled();
 
@@ -338,7 +350,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
                 ],
                 'translation_domain' => 'FSiAdminBundle',
             ]
-        )->willReturn();
+        )->willReturn($formBuilder);
         $formBuilder->add(
             'submit',
             SubmitType::class,
@@ -346,7 +358,7 @@ class BatchActionExtensionSpec extends ObjectBehavior
                 'label' => 'crud.list.batch.confirm',
                 'translation_domain' => 'FSiAdminBundle',
             ]
-        )->willReturn();
+        )->willReturn($formBuilder);
 
         $view->setAttribute('batch_form', $formView)->shouldBeCalled();
 

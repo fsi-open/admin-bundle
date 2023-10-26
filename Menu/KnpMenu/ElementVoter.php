@@ -42,8 +42,12 @@ final class ElementVoter implements VoterInterface
             return null;
         }
 
-        /** @var Element $element */
-        $element = $request->attributes->get(Parameters::ELEMENT);
+        $elementId = $request->attributes->get(Parameters::ELEMENT);
+        if (false === is_string($elementId)) {
+            return false;
+        }
+
+        $element = $this->manager->getElement($elementId);
         while (true) {
             /** @var array<int,mixed> $routes */
             $routes = $item->getExtra('routes', []);
@@ -78,12 +82,8 @@ final class ElementVoter implements VoterInterface
             return false;
         }
 
-        $element = $request->attributes->get(Parameters::ELEMENT);
-        if (false === $element instanceof Element) {
-            return false;
-        }
-
-        return true;
+        $elementId = $request->attributes->get(Parameters::ELEMENT);
+        return $this->manager->hasElement($elementId);
     }
 
     /**

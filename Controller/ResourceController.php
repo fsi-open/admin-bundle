@@ -11,18 +11,28 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Controller;
 
-use FSi\Bundle\AdminBundle\Admin\ResourceRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use FSi\Bundle\AdminBundle\Admin\ResourceRepository\Element;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use function get_class;
+use function sprintf;
 
 class ResourceController extends ControllerAbstract
 {
-    /**
-     * @ParamConverter("element", class="\FSi\Bundle\AdminBundle\Admin\ResourceRepository\Element")
-     */
-    public function resourceAction(ResourceRepository\Element $element, Request $request): Response
+    public function resourceAction(string $element, Request $request): Response
     {
-        return $this->handleRequest($element, $request, 'fsi_admin_resource');
+        $elementObject = $this->getElement($element);
+        if (false === $elementObject instanceof Element) {
+            throw new NotFoundHttpException(sprintf(
+                'Admin element with id "%s" should be of class "%s", but it is "%s".',
+                $element,
+                Element::class,
+                get_class($elementObject)
+            ));
+        }
+
+        return $this->handleRequest($elementObject, $request, 'fsi_admin_resource');
     }
 }

@@ -28,6 +28,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 use function array_key_exists;
+use function count;
 use function expect;
 use function file_exists;
 
@@ -36,12 +37,12 @@ class DataContext extends AbstractContext
     private PropertyAccessor $propertyAccessor;
 
     public function __construct(
-        Session $session,
+        Session $minkSession,
         MinkParameters $minkParameters,
         EntityManagerInterface $entityManager,
         PropertyAccessorInterface $propertyAccessor
     ) {
-        parent::__construct($session, $minkParameters, $entityManager);
+        parent::__construct($minkSession, $minkParameters, $entityManager);
 
         $this->propertyAccessor = $propertyAccessor;
     }
@@ -49,9 +50,22 @@ class DataContext extends AbstractContext
     /**
      * @BeforeScenario
      */
-    public function createDatabase(): void
+    public function before(): void
     {
         $this->deleteDatabaseIfExist();
+        $this->createDatabase();
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function after(): void
+    {
+        $this->deleteDatabaseIfExist();
+    }
+
+    public function createDatabase(): void
+    {
 
         $entityManager = $this->getEntityManager();
         $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
@@ -60,9 +74,6 @@ class DataContext extends AbstractContext
         $tool->createSchema($metadata);
     }
 
-    /**
-     * @AfterScenario
-     */
     public function deleteDatabaseIfExist(): void
     {
         $dbFilePath = __DIR__ . '/../../features/fixtures/project/var/data.sqlite';

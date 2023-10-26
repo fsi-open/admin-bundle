@@ -93,7 +93,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     public function it_handles_POST_request(
         FormEvent $event,
         Request $request,
-        ParameterBag $queryParameterbag,
+        ParameterBag $queryParameterBag,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
         BatchElement $element,
@@ -117,7 +117,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 
         $dataIndexer->getDataSlice(['index'])->willReturn([$object]);
 
-        $queryParameterbag->has('redirect_uri')->willReturn(false);
+        $queryParameterBag->has('redirect_uri')->willReturn(false);
         $router->generate('fsi_admin_list', ['element' => 'element_list_id'])->willReturn('/list/page');
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(RedirectResponse::class);

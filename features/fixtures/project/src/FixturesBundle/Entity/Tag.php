@@ -6,19 +6,12 @@ namespace FSi\FixturesBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class Tag
 {
     private ?int $id = null;
-
-    /**
-     * @Assert\NotBlank
-     */
     private ?string $name = null;
-
     private ?News $news = null;
-
     /**
      * @var Collection<int,TagElement>
      */

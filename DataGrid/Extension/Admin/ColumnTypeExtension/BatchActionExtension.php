@@ -239,7 +239,11 @@ class BatchActionExtension extends ColumnAbstractTypeExtension
 
     private function getMasterRequest(): Request
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = true === method_exists($this->requestStack, 'getMainRequest')
+            ? $this->requestStack->getMainRequest()
+            : $this->requestStack->getMasterRequest()
+        ;
+
         if (null === $request) {
             throw new RuntimeException("Batch actions are only available in request context");
         }
