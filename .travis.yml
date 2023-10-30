@@ -9,6 +9,9 @@ dist: focal
 
 addons:
     firefox: "47.0.1"
+    apt:
+        packages:
+            - "libonig5"
 
 services:
     - xvfb
