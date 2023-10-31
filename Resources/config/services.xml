@@ -52,11 +52,6 @@
             <argument key="$indexActionTemplate" type="string">%admin.templates.index_page%</argument>
         </service>
 
-        <!-- Flash messages -->
-        <service id="FSi\Bundle\AdminBundle\Message\FlashMessages" lazy="true">
-            <argument key="$prefix" type="string">fsi_admin</argument>
-        </service>
-
         <!-- Menu -->
         <service id="admin.menu.builder.main" class="FSi\Bundle\AdminBundle\Menu\Builder\MenuBuilder">
             <argument key="$eventName" type="string">FSi\Bundle\AdminBundle\Event\MenuMainEvent</argument>
