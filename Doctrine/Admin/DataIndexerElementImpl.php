@@ -24,6 +24,8 @@ trait DataIndexerElementImpl
 
     public function getDataIndexer(): DataIndexerInterface
     {
-        return new DoctrineDataIndexer($this->registry, $this->getRepository()->getClassName());
+        /** @var class-string<T> $className */
+        $className = $this->getRepository()->getClassName();
+        return new DoctrineDataIndexer($this->registry, $className);
     }
 }
