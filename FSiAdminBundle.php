@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle;
 
+use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\FlashMessagesPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ResourceRepositoryPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\FSIAdminExtension;
@@ -23,6 +24,7 @@ class FSiAdminBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {
+        $container->addCompilerPass(new FlashMessagesPass());
         $container->addCompilerPass(new ResourceRepositoryPass());
         $container->addCompilerPass(new TwigGlobalsPass());
 

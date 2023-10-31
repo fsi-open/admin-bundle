@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace spec\FSi\Bundle\AdminBundle;
 
+use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\FlashMessagesPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\ResourceRepositoryPass;
 use FSi\Bundle\AdminBundle\DependencyInjection\Compiler\TwigGlobalsPass;
 use PhpSpec\ObjectBehavior;
@@ -27,6 +28,11 @@ class FSiAdminBundleSpec extends ObjectBehavior
 
     public function it_adds_compiler_passes(ContainerBuilder $builder): void
     {
+        $builder
+            ->addCompilerPass(Argument::type(FlashMessagesPass::class))
+            ->shouldBeCalled()
+            ->willReturn($builder)
+        ;
         $builder
             ->addCompilerPass(Argument::type(ResourceRepositoryPass::class))
             ->shouldBeCalled()
