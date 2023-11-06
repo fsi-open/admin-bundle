@@ -57,6 +57,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         $event->getForm()->willReturn($form);
         $event->getElement()->willReturn($element);
         $event->getRequest()->willReturn($request);
+        $event->getResponse()->willReturn(null);
         $form->isValid()->willReturn(true);
 
         $this->beConstructedWith($eventDispatcher, $router, $flashMessage);
