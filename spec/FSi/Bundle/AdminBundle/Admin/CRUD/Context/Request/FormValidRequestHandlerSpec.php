@@ -46,6 +46,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $event->getElement()->willReturn($element);
         $event->getRequest()->willReturn($request);
         $event->getForm()->willReturn($form);
+        $event->getResponse()->willReturn(null);
 
         $this->beConstructedWith($eventDispatcher, $router);
     }
