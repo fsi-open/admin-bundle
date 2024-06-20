@@ -92,7 +92,9 @@ class ReorderTreeController
     }
 
     /**
-     * @param AdminDoctrineElement<object> $element
+     * @template T of object
+     * @param AdminDoctrineElement<T> $element
+     * @return NestedTreeRepository<T>
      */
     private function getRepository(AdminDoctrineElement $element): NestedTreeRepository
     {

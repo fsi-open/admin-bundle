@@ -14,9 +14,10 @@ namespace spec\FSi\Bundle\AdminBundle\Doctrine\Admin;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
-use FSi\Bundle\ResourceRepositoryBundle\Doctrine\ResourceRepository;
 use FSi\Bundle\AdminBundle\spec\fixtures\MyResourceElement;
+use FSi\Bundle\ResourceRepositoryBundle\Model\ResourceValueRepository;
 use FSi\Component\Translatable\LocaleProvider;
+use Mockery;
 use PhpSpec\ObjectBehavior;
 
 class ResourceElementSpec extends ObjectBehavior
@@ -32,9 +33,9 @@ class ResourceElementSpec extends ObjectBehavior
 
     public function it_return_repository(
         ManagerRegistry $registry,
-        ObjectManager $om,
-        ResourceRepository $repository
+        ObjectManager $om
     ): void {
+        $repository = Mockery::mock(ObjectRepository::class, ResourceValueRepository::class);
         $registry->getManagerForClass('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($om);
         $om->getRepository('FSi\Bundle\DemoBundle\Entity\Resource')->willReturn($repository);
 
