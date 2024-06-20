@@ -13,6 +13,7 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
 use FSi\Bundle\AdminBundle\Controller\ReorderTreeController;
 use FSi\Bundle\AdminBundle\Doctrine\Admin\CRUDElement;
@@ -20,8 +21,9 @@ use FSi\Bundle\AdminBundle\Event\MovedDownTreeEvent;
 use FSi\Bundle\AdminBundle\Event\MovedUpTreeEvent;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use FSi\Component\DataIndexer\Exception\RuntimeException;
-use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
+use Gedmo\Tree;
 use InvalidArgumentException;
+use Mockery;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -40,7 +42,6 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
         ObjectManager $om,
-        NestedTreeRepository $repository,
         Request $request,
         ParameterBag $query
     ): void {
@@ -48,6 +49,7 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
         $element->getId()->willReturn('category');
         $element->getDataIndexer()->willReturn($indexer);
         $element->getObjectManager()->willReturn($om);
+        $repository = Mockery::mock(Tree\Entity\Repository\NestedTreeRepository::class);
         $element->getRepository()->willReturn($repository);
         $element->getRoute()->willReturn('fsi_admin_crud_list');
         $element->getRouteParameters()->willReturn(['element' => 'category']);
@@ -65,7 +67,6 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
 
     public function it_moves_up_item_when_move_up_action_called(
         CRUDElement $element,
-        NestedTreeRepository $repository,
         stdClass $category,
         ObjectManager $om,
         RouterInterface $router,
@@ -73,9 +74,11 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         Request $request
     ): void {
-        $indexer->getData('1')->willReturn($category);
+        $repository = Mockery::mock(Tree\Entity\Repository\NestedTreeRepository::class);
+        $repository->allows('moveUp');
+        $element->getRepository()->willReturn($repository);
 
-        $repository->moveUp($category)->shouldBeCalled();
+        $indexer->getData('1')->willReturn($category);
 
         $om->flush()->shouldBeCalled();
 
@@ -93,7 +96,6 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
 
     public function it_moves_down_item_when_move_down_action_called(
         CRUDElement $element,
-        NestedTreeRepository $repository,
         stdClass $category,
         ObjectManager $om,
         RouterInterface $router,
@@ -101,9 +103,11 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         Request $request
     ): void {
-        $indexer->getData('1')->willReturn($category);
+        $repository = Mockery::mock(Tree\Entity\Repository\NestedTreeRepository::class);
+        $repository->allows('moveDown');
+        $element->getRepository()->willReturn($repository);
 
-        $repository->moveDown($category)->shouldBeCalled();
+        $indexer->getData('1')->willReturn($category);
 
         $om->flush()->shouldBeCalled();
 
@@ -137,7 +141,7 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
 
     public function it_throws_exception_when_entity_doesnt_have_correct_repository(
         CRUDElement $element,
-        EntityRepository $repository,
+        ObjectRepository $repository,
         DoctrineDataIndexer $indexer,
         stdClass $category,
         Request $request
@@ -163,6 +167,11 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
         Request $request,
         ParameterBag $query
     ): void {
+        $repository = Mockery::mock(Tree\Entity\Repository\NestedTreeRepository::class);
+        $repository->allows('moveUp');
+        $repository->allows('moveDown');
+        $element->getRepository()->willReturn($repository);
+
         $query->get('redirect_uri')->willReturn('some_redirect_uri');
         $indexer->getData('1')->willReturn($category);
 

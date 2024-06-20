@@ -27,3 +27,5 @@ parameters:
     ignoreErrors:
         - message: '#Call to an undefined method Symfony\\Component\\HttpFoundation\\RequestStack\:\:get(Main|Master)Request\(\)\.#'
           path: DataGrid/Extension/Admin/ColumnTypeExtension/BatchActionExtension.php
+        - message: '#PHPDoc tag @return contains generic type Gedmo\\Tree\\Entity\\Repository\\NestedTreeRepository<object> but class Gedmo\\Tree\\Entity\\Repository\\NestedTreeRepository is not generic\.#'
+          path: Controller/ReorderTreeController.php
