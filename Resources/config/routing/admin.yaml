@@ -43,24 +43,24 @@ fsi_admin_display:
 
 fsi_admin_positionable_increase_position:
     path: /{translatableLocale}/{element}/{id}/position/increase
-    controller: FSi\Bundle\AdminBundle\Controller\PositionableController:increasePositionAction
+    controller: FSi\Bundle\AdminBundle\Controller\PositionableController::increasePositionAction
     defaults:
         translatableLocale: '%admin.default_locale%'
 
 fsi_admin_positionable_decrease_position:
     path: /{translatableLocale}/{element}/{id}/position/decrease
-    controller: FSi\Bundle\AdminBundle\Controller\PositionableController:decreasePositionAction
+    controller: FSi\Bundle\AdminBundle\Controller\PositionableController::decreasePositionAction
     defaults:
         translatableLocale: '%admin.default_locale%'
 
 fsi_admin_tree_node_move_up:
     path: /{translatableLocale}/{element}/{id}/reorder/move-up
-    controller: FSi\Bundle\AdminBundle\Controller\ReorderTreeController:moveUpAction
+    controller: FSi\Bundle\AdminBundle\Controller\ReorderTreeController::moveUpAction
     defaults:
         translatableLocale: '%admin.default_locale%'
 
 fsi_admin_tree_node_move_down:
     path: /{translatableLocale}/{element}/{id}/reorder/move-down
-    controller: FSi\Bundle\AdminBundle\Controller\ReorderTreeController:moveDownAction
+    controller: FSi\Bundle\AdminBundle\Controller\ReorderTreeController::moveDownAction
     defaults:
         translatableLocale: '%admin.default_locale%'
