@@ -20,9 +20,9 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/doctrine-bundle": "^2.10",
         "doctrine/persistence": "^2.0|^3.0",
-        "doctrine/orm": "^2.11|^3.0",
+        "doctrine/orm": "^2.8|^3.0",
         "fsi/data": "^1.0.2",
         "fsi/translatable": "^1.0.2",
         "knplabs/knp-menu": "^3.3",
