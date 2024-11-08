@@ -14,10 +14,11 @@ namespace FSi\Bundle\AdminBundle\Admin;
 use FSi\Bundle\AdminBundle\Exception\MissingOptionException;
 use FSi\Bundle\AdminBundle\Request\Parameters;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Service\ResetInterface;
 
 use function array_key_exists;
 
-abstract class AbstractElement implements Element
+abstract class AbstractElement implements Element, ResetInterface
 {
     /**
      * @var array<string,mixed>|null
@@ -71,6 +72,11 @@ abstract class AbstractElement implements Element
         $this->options = $this->resolveOptions();
 
         return true === array_key_exists($name, $this->options) && null !== $this->options[$name];
+    }
+
+    public function reset(): void
+    {
+        $this->options = null;
     }
 
     /**
