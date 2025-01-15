@@ -28,10 +28,16 @@ matrix:
         - php: 7.4
         - php: 8.0
         - php: 8.1
+          before_install:
+            - composer require --dev symfony/clock
         - php: 8.2
+          before_install:
+            - composer require --dev symfony/clock
         - php: 8.3
+          before_install:
+            - composer require --dev symfony/clock
 
-before_install:
+install:
     - phpenv config-rm xdebug.ini
     - composer update $COMPOSER_FLAGS
     - wget --no-clobber -O vendor/bin/selenium.jar http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar || true

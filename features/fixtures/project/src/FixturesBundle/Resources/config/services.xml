@@ -105,6 +105,8 @@
             <argument key="$baseUrl" type="string">/files</argument>
         </service>
 
+        <service id="Psr\Clock\ClockInterface" class="Symfony\Component\Clock\NativeClock" />
+
         <service id="Psr\Http\Message\RequestFactoryInterface" alias="Nyholm\Psr7\Factory\Psr17Factory" />
         <service id="Psr\Http\Message\ResponseFactoryInterface" alias="Nyholm\Psr7\Factory\Psr17Factory" />
         <service id="Psr\Http\Message\StreamFactoryInterface" alias="Nyholm\Psr7\Factory\Psr17Factory" />
