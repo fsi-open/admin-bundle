@@ -11,12 +11,15 @@ services:
         environment:
             PHP_IDE_CONFIG: 'serverName=localhost'
             DOCROOT: /var/www/application/features/fixtures/project/web
+            XDEBUG_CONFIG: 'idekey=PHPSTORM discover_client_host=false client_host=host.docker.internal'
             XDEBUG_MODE: debug
             HOST_UID: 1000
             HOST_GID: 1000
         volumes:
             - .:/var/www/application
             - ~/.composer:/var/www/.composer
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
     selenium:
         image: selenium/standalone-firefox:2.53.1
         container_name: admin-bundle-selenium
