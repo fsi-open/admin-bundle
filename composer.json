@@ -58,7 +58,7 @@
         "friends-of-behat/page-object-extension": "^0.3.2",
         "friends-of-behat/symfony-extension": "^2.3",
         "fsi/files": "^2.0.4|^3.0@dev",
-        "fsi/resource-repository-bundle": "^3.0.3",
+        "fsi/resource-repository-bundle": "^3.0.3@dev",
         "gedmo/doctrine-extensions": "^3.13",
         "mockery/mockery": "^1.6",
         "nyholm/psr7": "^1.8",
