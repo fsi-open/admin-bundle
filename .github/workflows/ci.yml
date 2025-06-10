@@ -33,6 +33,9 @@ jobs:
         steps:
             - name: Checkout source
               uses: actions/checkout@v1
+            - name: Install symfony/clock
+              run: composer require --dev symfony/clock
+              if: ${{ matrix.php-version != '7.4' && matrix.php-version != '8.0' }}
             - name: Validate composer config
               run: composer validate
             - name: Install dependencies
@@ -50,7 +53,7 @@ jobs:
                 nohup php -S 0.0.0.0:8080 -t features/fixtures/project/web > features/fixtures/project/var/logs/server.log 2>&1 &
                 sleep 5
             - name: Functional tests
-              run: vendor/bin/behat --no-snippets --format=progress --profile=travis -vvv
+              run: vendor/bin/behat --no-snippets --format=progress --profile=actions -vvv
             - name: Upload logs
               uses: actions/upload-artifact@master
               with:

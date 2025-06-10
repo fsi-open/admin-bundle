@@ -64,7 +64,7 @@
         "nyholm/psr7": "^1.8",
         "ocramius/proxy-manager": "^2.5",
         "oneup/flysystem-bundle": "^4.4",
-        "phpspec/phpspec": "^7.4",
+        "phpspec/phpspec": "^7.4|^8.0@dev",
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-beberlei-assert": "^1.0",
         "rize/uri-template": "^0.3.5",
