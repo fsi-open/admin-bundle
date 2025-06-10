@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
 use FSi\Bundle\AdminBundle\Behat\Element\Display;
 
@@ -23,7 +24,7 @@ class DisplayContext extends AbstractContext
     {
         $display = $this->getElement(Display::class);
         foreach ($table->getHash() as $row) {
-            expect($display->hasFieldWithName($row['Field name']))->toBe(true);
+            Assertion::true($display->hasFieldWithName($row['Field name']), true);
         }
     }
 }

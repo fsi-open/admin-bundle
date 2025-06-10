@@ -11,11 +11,13 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManagerInterface;
 use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 use FSi\Bundle\ResourceRepositoryBundle\Repository\MapBuilder;
+use FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\AbstractType;
 
 class ResourceContext extends AbstractContext
 {
@@ -38,15 +40,15 @@ class ResourceContext extends AbstractContext
     public function thereAreFollowingResourcesAddedToResourceMap(TableNode $resources): void
     {
         foreach ($resources->getHash() as $resource) {
-            expect($this->mapBuilder->hasResource($resource['Key']))->toBe(true);
+            Assertion::true($this->mapBuilder->hasResource($resource['Key']));
 
             if (isset($resource['Type'])) {
-                expect($this->mapBuilder->getResource($resource['Key']))->toBeAnInstanceOf(
-                    sprintf(
-                        'FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\%sType',
-                        ucfirst($resource['Type'])
-                    )
+                /** @var class-string<AbstractType> $className */
+                $className = sprintf(
+                    'FSi\Bundle\ResourceRepositoryBundle\Repository\Resource\Type\%sType',
+                    ucfirst($resource['Type'])
                 );
+                Assertion::isInstanceOf($this->mapBuilder->getResource($resource['Key']), $className);
             }
         }
     }
@@ -64,6 +66,6 @@ class ResourceContext extends AbstractContext
      */
     public function iShouldSeeFormFieldWithValue($value): void
     {
-        expect($this->getSession()->getPage()->findField('Content')->getValue())->toBe($value);
+        Assertion::eq($this->getSession()->getPage()->findField('Content')->getValue(), $value);
     }
 }

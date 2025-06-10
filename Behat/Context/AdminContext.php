@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManagerInterface;
@@ -63,10 +64,10 @@ class AdminContext extends AbstractContext
         foreach ($table->getHash() as $serviceRow) {
             $id = $serviceRow['Id'];
             $class = $serviceRow['Class'];
-            expect($this->manager->hasElement($id))->toBe(true);
-            expect($this->manager->getElement($id))->toBeAnInstanceOf($class);
+            Assertion::true($this->manager->hasElement($id));
+            Assertion::isInstanceOf($this->manager->getElement($id), $class);
             if (true === array_key_exists('Parent', $serviceRow) && '' !== $serviceRow['Parent']) {
-                expect($this->manager->getElement($id)->getParentId())->toBe($serviceRow['Parent']);
+                Assertion::same($this->manager->getElement($id)->getParentId(), $serviceRow['Parent']);
             }
         }
     }
@@ -79,8 +80,8 @@ class AdminContext extends AbstractContext
         foreach ($options->getHash() as $optionRow) {
             $option = $optionRow['Option'];
             $value = $optionRow['Value'];
-            expect($adminElement->hasOption($option))->toBe(true);
-            expect($adminElement->getOption($option))->toBe($value);
+            Assertion::true($adminElement->hasOption($option));
+            Assertion::eq($adminElement->getOption($option), $value);
         }
     }
 
@@ -92,8 +93,8 @@ class AdminContext extends AbstractContext
         foreach ($table->getHash() as $elementRow) {
             $id = $elementRow['Id'];
             $name = $elementRow['Name'];
-            expect($this->manager->hasElement($id))->toBe(true);
-            expect($this->manager->getElement($id)->getName())->toBe($name);
+            Assertion::true($this->manager->hasElement($id));
+            Assertion::same($this->manager->getElement($id)->getName(), $name);
         }
     }
 
@@ -102,7 +103,7 @@ class AdminContext extends AbstractContext
      */
     public function iShouldSeeTitleAtTopBar($navbarBrandText): void
     {
-        expect($this->getPage(AdminPanel::class)->getNavbarBrandText())->toBe($navbarBrandText);
+        Assertion::eq($this->getPage(AdminPanel::class)->getNavbarBrandText(), $navbarBrandText);
     }
 
     /**
@@ -110,7 +111,7 @@ class AdminContext extends AbstractContext
      */
     public function iShouldSeePageHeader(Page $page, $headerContent): void
     {
-        expect($page->getHeader())->toBe($headerContent);
+        Assertion::eq($page->getHeader(), $headerContent);
     }
 
     /**
@@ -118,7 +119,7 @@ class AdminContext extends AbstractContext
      */
     public function translationsAreEnabledInApplication(): void
     {
-        expect($this->translator)->toBeAnInstanceOf(TranslatorInterface::class);
+        Assertion::isInstanceOf($this->translator, TranslatorInterface::class);
     }
 
     /**
@@ -127,7 +128,7 @@ class AdminContext extends AbstractContext
      */
     public function iShouldSeeLanguageDropdownButtonInNavigationBarWithText($button): void
     {
-        expect($this->getPage(AdminPanel::class)->getLanguageDropdown()->hasLink($button))->toBe(true);
+        Assertion::true($this->getPage(AdminPanel::class)->getLanguageDropdown()->hasLink($button));
     }
 
     /**
@@ -138,7 +139,7 @@ class AdminContext extends AbstractContext
         $links = $this->getPage(AdminPanel::class)->getLanguageDropdownOptions();
 
         foreach ($dropdownLinks->getHash() as $link) {
-            expect($links)->toContain($link['Link']);
+            Assertion::inArray($link['Link'], $links);
         }
     }
 

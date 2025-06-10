@@ -28,12 +28,12 @@ default: &default
                 path: features/fixtures/project/src/AppKernel.php
                 class: FSi\AppKernel
         Caciobanu\Behat\DeprecationExtension: ~
-travis:
+actions:
     <<: *default
     extensions:
         Behat\MinkExtension:
-            base_url: "http://localhost:8080/app_test.php"
+            base_url: "http://test-container:8080/app_test.php"
             sessions:
                 javascript:
                     selenium2:
-                        wd_host: http://localhost:4444/wd/hub
+                        wd_host: http://firefox:4444/wd/hub

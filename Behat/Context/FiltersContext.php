@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
 use FSi\Bundle\AdminBundle\Admin\CRUD\ListElement as AdminListElement;
 use FSi\Bundle\AdminBundle\Behat\Element\Filters;
@@ -31,7 +32,7 @@ class FiltersContext extends AbstractContext
      */
     public function elementDatasourceMaxResultsIsSet(AdminListElement $adminElement, $maxResults): void
     {
-        expect($this->getDataSource($adminElement)->getMaxResults())->toBe($maxResults);
+        Assertion::eq($this->getDataSource($adminElement)->getMaxResults(), $maxResults);
     }
 
     /**
@@ -41,7 +42,7 @@ class FiltersContext extends AbstractContext
     {
         $dataSource = $this->getDataSource($adminElement);
 
-        expect(count($dataSource->getFields()) > 0)->toBe(true);
+        Assertion::true(count($dataSource->getFields()) > 0);
     }
 
     /**
@@ -58,7 +59,7 @@ class FiltersContext extends AbstractContext
                 break;
             }
         }
-        expect($filters)->toBe(false);
+        Assertion::false($filters);
     }
 
     /**
@@ -66,7 +67,7 @@ class FiltersContext extends AbstractContext
      */
     public function bothSortingButtonsInColumnHeaderShouldBeActive($column): void
     {
-        expect($this->getListElement()->isColumnAscSortActive($column))->toBe(true);
+        Assertion::true($this->getListElement()->isColumnAscSortActive($column));
     }
 
     /**
@@ -86,10 +87,10 @@ class FiltersContext extends AbstractContext
 
         switch (strtolower($sort)) {
             case 'sort asc':
-                expect($list->isColumnAscSortActive($column))->toBe(false);
+                Assertion::false($list->isColumnAscSortActive($column));
                 break;
             case 'sort desc':
-                expect($list->isColumnDescSortActive($column))->toBe(false);
+                Assertion::false($list->isColumnDescSortActive($column));
                 break;
             default:
                 throw new \LogicException(sprintf('Unknown sorting type %s', $sort));
@@ -105,10 +106,10 @@ class FiltersContext extends AbstractContext
 
         switch (strtolower($sort)) {
             case 'sort asc':
-                expect($list->isColumnAscSortActive($column))->toBe(true);
+                Assertion::true($list->isColumnAscSortActive($column));
                 break;
             case 'sort desc':
-                expect($list->isColumnDescSortActive($column))->toBe(true);
+                Assertion::true($list->isColumnDescSortActive($column));
                 break;
             default:
                 throw new \LogicException(sprintf('Unknown sorting type %s', $sort));
@@ -128,7 +129,7 @@ class FiltersContext extends AbstractContext
      */
     public function iShouldNotSeeAnyFilters(): void
     {
-        expect($this->getSession()->getPage()->find('css', 'form.filters'))->toBe(null);
+        Assertion::null($this->getSession()->getPage()->find('css', 'form.filters'));
     }
 
     /**
@@ -136,7 +137,7 @@ class FiltersContext extends AbstractContext
      */
     public function iShouldSeeSimpleTextFilter($filterName): void
     {
-        expect($this->getFiltersElement()->hasFilter($filterName))->toBe(true);
+        Assertion::true($this->getFiltersElement()->hasFilter($filterName));
     }
 
     /**
@@ -144,7 +145,7 @@ class FiltersContext extends AbstractContext
      */
     public function iShouldSeeBetweenFilterWithAndSimpleTextFields($filterName, $fromName, $toName): void
     {
-        expect($this->getFiltersElement()->hasBetweenFilter($filterName, $fromName, $toName))->toBe(true);
+        Assertion::true($this->getFiltersElement()->hasBetweenFilter($filterName, $fromName, $toName));
     }
 
     /**
@@ -152,7 +153,7 @@ class FiltersContext extends AbstractContext
      */
     public function iShouldSeeChoiceFilter($filterName): void
     {
-        expect($this->getFiltersElement()->hasChoiceFilter($filterName))->toBe(true);
+        Assertion::true($this->getFiltersElement()->hasChoiceFilter($filterName));
     }
 
     /**
@@ -184,7 +185,7 @@ class FiltersContext extends AbstractContext
      */
     public function simpleTextFilterShouldBeFilledWithValue($filterName, $filterValue): void
     {
-        expect($this->getFiltersElement()->getFilerValue($filterName))->toBe($filterValue);
+        Assertion::eq($this->getFiltersElement()->getFilerValue($filterName), $filterValue);
     }
 
     /**
@@ -192,7 +193,7 @@ class FiltersContext extends AbstractContext
      */
     public function choiceFilterShouldHaveValueSelected($filterName, $choice): void
     {
-        expect($this->getFiltersElement()->getFilterOption($filterName))->toBe($choice);
+        Assertion::eq($this->getFiltersElement()->getFilterOption($filterName), $choice);
     }
 
     /**
@@ -200,10 +201,10 @@ class FiltersContext extends AbstractContext
      */
     public function iShouldSeeActionsDropdownWithFollowingOptions(TableNode $actions): void
     {
-        expect($this->getPage(AdminPanel::class)->hasBatchActionsDropdown())->toBe(true);
+        Assertion::true($this->getPage(AdminPanel::class)->hasBatchActionsDropdown());
 
         foreach ($actions->getHash() as $actionRow) {
-            expect($this->getPage(AdminPanel::class)->hasBatchAction($actionRow['Option']))->toBe(true);
+            Assertion::true($this->getPage(AdminPanel::class)->hasBatchAction($actionRow['Option']));
         }
     }
 

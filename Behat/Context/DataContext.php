@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use DateTime;
@@ -29,7 +30,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 use function array_key_exists;
 use function count;
-use function expect;
 use function file_exists;
 
 class DataContext extends AbstractContext
@@ -99,6 +99,8 @@ class DataContext extends AbstractContext
                 return Subscriber::class;
             case 'person':
                 return Person::class;
+            default:
+                throw new InvalidArgumentException(sprintf('Unknown entity name "%s"', $entityName));
         }
     }
 
@@ -118,7 +120,7 @@ class DataContext extends AbstractContext
 
         $entityManager->flush();
 
-        expect(count($this->getRepository($className)->findAll()))->toBe($count);
+        Assertion::count($this->getRepository($className)->findAll(), $count);
     }
 
     /**
@@ -138,7 +140,7 @@ class DataContext extends AbstractContext
         $entityManager->persist($instance);
         $entityManager->flush();
 
-        expect($this->getRepository($className)->findOneBy([$field => $value]))->toBeAnInstanceOf($className);
+        Assertion::isInstanceOf($this->getRepository($className)->findOneBy([$field => $value]), $className);
     }
 
     /**
@@ -146,7 +148,7 @@ class DataContext extends AbstractContext
      */
     public function entityWithFieldShouldExist(string $className, string $field, $value): void
     {
-        expect($this->getRepository($className)->findOneBy([$field => $value]))->toBeAnInstanceOf($className);
+        Assertion::isInstanceOf($this->getRepository($className)->findOneBy([$field => $value]), $className);
     }
 
     /**
@@ -154,7 +156,7 @@ class DataContext extends AbstractContext
      */
     public function entityShouldNotExistInDatabaseAnymore(string $className, string $field, $value): void
     {
-        expect($this->getRepository($className)->findOneBy([$field => $value]))->toBe(null);
+        Assertion::null($this->getRepository($className)->findOneBy([$field => $value]));
     }
 
     /**
@@ -178,7 +180,7 @@ class DataContext extends AbstractContext
      */
     public function thereShouldExistsNumberOfEntities($count, string $className): void
     {
-        expect(count($this->getRepository($className)->findAll()))->toBe($count);
+        Assertion::count($this->getRepository($className)->findAll(), $count);
     }
 
     /**
@@ -237,7 +239,7 @@ class DataContext extends AbstractContext
         $entity = $this->getRepository($className)->findOneBy([$field => $value]);
         $this->getEntityManager()->refresh($entity);
 
-        expect(count($this->getEntityField($entity, $collectionName)))->toBe($expectedCount);
+        Assertion::count($this->getEntityField($entity, $collectionName), $expectedCount);
     }
 
     /**
@@ -248,7 +250,7 @@ class DataContext extends AbstractContext
         $entity = $this->getRepository($className)->find($id);
         $this->getEntityManager()->refresh($entity);
 
-        expect($this->getEntityField($entity, $field))->toBe($value);
+        Assertion::eq($this->getEntityField($entity, $field), $value);
     }
 
     /**
@@ -259,7 +261,7 @@ class DataContext extends AbstractContext
         $entity = $this->getRepository($className)->find($id);
         $this->getEntityManager()->refresh($entity);
 
-        expect($this->getEntityField($entity, $field))->notToBe($value);
+        Assertion::notEq($this->getEntityField($entity, $field), $value);
     }
 
     /**

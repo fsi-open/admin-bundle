@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Exception;
@@ -132,7 +133,7 @@ class ListContext extends AbstractContext
      */
     public function thereShouldBeElementsAtList($elemetsCount): void
     {
-        expect($this->getListElement()->getRowsCount())->toBe($elemetsCount);
+        Assertion::eq($this->getListElement()->getRowsCount(), $elemetsCount);
     }
 
     /**
@@ -140,7 +141,7 @@ class ListContext extends AbstractContext
      */
     public function columnIsEditable($columnHeader): void
     {
-        expect($this->getListElement()->isColumnEditable($columnHeader))->toBe(true);
+        Assertion::true($this->getListElement()->isColumnEditable($columnHeader));
     }
 
     /**
@@ -148,7 +149,7 @@ class ListContext extends AbstractContext
      */
     public function iShouldNotSeePagination(Page $page): void
     {
-        expect($this->getSession()->getPage()->find('css', 'ul.pagination'))->toBe(null);
+        Assertion::null($this->getSession()->getPage()->find('css', 'ul.pagination'));
     }
 
     /**
@@ -177,8 +178,8 @@ class ListContext extends AbstractContext
     public function popoverWithFieldInFormShouldAppear($newsTitle): void
     {
         $popover = $this->getPage(AdminPanel::class)->getPopover();
-        expect($popover->isVisible())->toBe(true);
-        expect($popover->findField('Title')->getValue())->toBe($newsTitle);
+        Assertion::true($popover->isVisible());
+        Assertion::eq($popover->findField('Title')->getValue(), $newsTitle);
     }
 
     /**
@@ -187,15 +188,15 @@ class ListContext extends AbstractContext
     public function popoverWithEmptyDateFieldInFormShouldAppear(): void
     {
         $popover = $this->getPage(AdminPanel::class)->getPopover();
-        expect($popover->isVisible())->toBe(true);
-        expect($popover->findField('Date')->getValue())->toBe('');
+        Assertion::true($popover->isVisible());
+        Assertion::eq($popover->findField('Date')->getValue(), '');
     }
     /**
      * @Then /^popover should not be visible anymore$/
      */
     public function popoverShouldNotBeVisibleAnymore(): void
     {
-        expect($this->getPage(AdminPanel::class)->getPopover())->toBe(null);
+        Assertion::null($this->getPage(AdminPanel::class)->getPopover());
     }
 
     /**

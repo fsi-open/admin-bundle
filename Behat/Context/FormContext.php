@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use FSi\Bundle\AdminBundle\Behat\Page\AdminPanel;
@@ -22,7 +23,7 @@ class FormContext extends AbstractContext
      */
     public function iChangeFormFieldWithValue($field, $value): void
     {
-        expect($this->getFormElement()->findField($field)->getValue())->toNotBe($value);
+        Assertion::notEq($this->getFormElement()->findField($field)->getValue(), $value);
         $this->getFormElement()->fillField($field, $value);
     }
 
@@ -33,7 +34,7 @@ class FormContext extends AbstractContext
     {
         $form = $this->getFormElement();
         foreach ($table->getHash() as $fieldRow) {
-            expect($form->hasField($fieldRow['Field name']))->toBe(true);
+            Assertion::true($form->hasField($fieldRow['Field name']));
         }
     }
 
@@ -54,7 +55,7 @@ class FormContext extends AbstractContext
         foreach ($table->getHash() as $fieldRow) {
             $fieldName = $fieldRow['Field name'];
             $fieldValue = $fieldRow['Field value'];
-            expect($form->hasField($fieldName))->toBe(true);
+            Assertion::true($form->hasField($fieldName));
             $field = $form->findField($fieldName);
             if ('checkbox' === $field->getAttribute('type')) {
                 $this->parseScenarioValue($fieldValue) ? $field->check() : $field->uncheck();
@@ -93,7 +94,7 @@ class FormContext extends AbstractContext
     public function collectionShouldHaveElements(NodeElement $collection, $elementsCount): void
     {
         $elements = $collection->findAll('xpath', '/*/*[@class = "form-group"]');
-        expect(count($elements))->toBe($elementsCount);
+        Assertion::eq(count($elements), $elementsCount);
     }
 
     /**
@@ -101,7 +102,7 @@ class FormContext extends AbstractContext
      */
     public function collectionShouldHaveButton(NodeElement $collection, $buttonName): void
     {
-        expect($collection->findButton($buttonName))->toNotBeNull();
+        Assertion::notNull($collection->findButton($buttonName));
     }
 
     /**
@@ -110,14 +111,14 @@ class FormContext extends AbstractContext
     public function allCollectionButtonsDisabled(NodeElement $collection): void
     {
         $removeButtons = $collection->findAll('css', '.collection-remove');
-        expect(count($removeButtons))->notToBe(0);
+        Assertion::notEq(count($removeButtons), 0);
         foreach ($removeButtons as $removeButton) {
-            expect($removeButton->hasClass('disabled'))->toBe(true);
+            Assertion::true($removeButton->hasClass('disabled'));
         }
         $addButtons = $collection->findAll('css', '.collection-add');
-        expect(count($addButtons))->notToBe(0);
+        Assertion::notEq(count($addButtons), 0);
         foreach ($addButtons as $addButton) {
-            expect($addButton->hasClass('disabled'))->toBe(true);
+            Assertion::true($addButton->hasClass('disabled'));
         }
     }
 
@@ -127,9 +128,9 @@ class FormContext extends AbstractContext
     public function collectionAddButtonIsDisabled(NodeElement $collection): void
     {
         $addButtons = $collection->findAll('css', '.collection-add');
-        expect(count($addButtons))->notToBe(0);
+        Assertion::notEq(count($addButtons), 0);
         foreach ($addButtons as $addButton) {
-            expect($addButton->hasClass('disabled'))->toBe(true);
+            Assertion::true($addButton->hasClass('disabled'));
         }
     }
 
@@ -139,9 +140,9 @@ class FormContext extends AbstractContext
     public function collectionRemoveButtonsAreEnabled(NodeElement $collection): void
     {
         $addButtons = $collection->findAll('css', '.collection-remove');
-        expect(count($addButtons))->notToBe(0);
+        Assertion::notEq(count($addButtons), 0);
         foreach ($addButtons as $addButton) {
-            expect($addButton->hasClass('disabled'))->toBe(false);
+            Assertion::false($addButton->hasClass('disabled'));
         }
     }
 

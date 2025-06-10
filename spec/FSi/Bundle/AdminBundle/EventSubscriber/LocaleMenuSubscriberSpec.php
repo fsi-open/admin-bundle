@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace spec\FSi\Bundle\AdminBundle\EventSubscriber;
 
+use Assert\Assertion;
 use FSi\Bundle\AdminBundle\Event\MenuEvent;
 use FSi\Bundle\AdminBundle\Menu\Item\Item;
 use PhpSpec\ObjectBehavior;
@@ -54,14 +55,14 @@ class LocaleMenuSubscriberSpec extends ObjectBehavior
         $enItem = $localeItems['admin-locale.en'];
         $deItem = $localeItems['admin-locale.de'];
 
-        expect($enItem->getLabel())->toBe('Englisch');
-        expect($enItem->getRoute())->toBe('fsi_admin_locale');
-        expect($enItem->getRouteParameters())->toBe(['_locale' => 'en', 'redirect_uri' => 'uri_to_redirect_to']);
-        expect($enItem->getOptions())->toBe(['attr' => ['id' => null, 'class' => null]]);
+        Assertion::same($enItem->getLabel(), 'Englisch');
+        Assertion::same($enItem->getRoute(), 'fsi_admin_locale');
+        Assertion::same($enItem->getRouteParameters(), ['_locale' => 'en', 'redirect_uri' => 'uri_to_redirect_to']);
+        Assertion::same($enItem->getOptions(), ['attr' => ['id' => null, 'class' => null]]);
 
-        expect($deItem->getLabel())->toBe('Deutsch');
-        expect($deItem->getRoute())->toBe('fsi_admin_locale');
-        expect($deItem->getRouteParameters())->toBe(['_locale' => 'de', 'redirect_uri' => 'uri_to_redirect_to']);
-        expect($deItem->getOptions())->toBe(['attr' => ['id' => null, 'class' => 'active']]);
+        Assertion::same($deItem->getLabel(), 'Deutsch');
+        Assertion::same($deItem->getRoute(), 'fsi_admin_locale');
+        Assertion::same($deItem->getRouteParameters(), ['_locale' => 'de', 'redirect_uri' => 'uri_to_redirect_to']);
+        Assertion::same($deItem->getOptions(), ['attr' => ['id' => null, 'class' => 'active']]);
     }
 }
