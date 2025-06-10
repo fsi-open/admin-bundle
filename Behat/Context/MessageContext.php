@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Assert\Assertion;
 use Behat\Gherkin\Node\PyStringNode;
 use FSi\Bundle\AdminBundle\Behat\Element\Messages;
 
@@ -23,7 +24,7 @@ class MessageContext extends AbstractContext
     {
         $notifications = $this->getMessagesElement();
 
-        expect($notifications->getMessageText('danger'))->toBe($message->getRaw());
+        Assertion::eq($notifications->getMessageText('danger'), $message->getRaw());
     }
 
     /**
@@ -33,7 +34,7 @@ class MessageContext extends AbstractContext
     {
         $notifications = $this->getMessagesElement();
 
-        expect($notifications->getMessageText('warning'))->toBe($message->getRaw());
+        Assertion::eq($notifications->getMessageText('warning'), $message->getRaw());
     }
 
     /**
@@ -43,7 +44,7 @@ class MessageContext extends AbstractContext
     {
         $notifications = $this->getMessagesElement();
 
-        expect($notifications->getMessageText('info'))->toBe($message->getRaw());
+        Assertion::eq($notifications->getMessageText('info'), $message->getRaw());
     }
 
     /**
@@ -53,7 +54,7 @@ class MessageContext extends AbstractContext
     {
         $notifications = $this->getMessagesElement();
 
-        expect($notifications->getMessageText('success'))->toBe($message->getRaw());
+        Assertion::eq($notifications->getMessageText('success'), $message->getRaw());
     }
 
     private function getMessagesElement(): Messages

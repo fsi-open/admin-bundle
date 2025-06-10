@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace FSi\Bundle\AdminBundle\Behat\Context;
 
+use Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
 use Exception;
 use FSi\Bundle\AdminBundle\Behat\Element\Pagination;
@@ -107,13 +108,13 @@ class NavigationContext extends AbstractContext
      */
     public function menuWithFollowingElementsShouldBeVisibleAtTheTopOfThePage(TableNode $table): void
     {
-        expect($this->getPage(AdminPanel::class)->getMenuElementsCount())->toBe(count($table->getHash()));
+        Assertion::eq($this->getPage(AdminPanel::class)->getMenuElementsCount(), count($table->getHash()));
 
         foreach ($table->getHash() as $elementRow) {
-            expect($this->getPage(AdminPanel::class)->hasMenuElement(
+            Assertion::true($this->getPage(AdminPanel::class)->hasMenuElement(
                 $elementRow['Element name'],
                 empty($elementRow['Element group']) ? null : $elementRow['Element group']
-            ))->toBe(true);
+            ));
         }
     }
 
@@ -124,7 +125,7 @@ class NavigationContext extends AbstractContext
     {
         $linkNode = $this->getPage(AdminPanel::class)->getMenu()->findLink($link);
 
-        expect($linkNode->getParent()->hasClass('active'))->toBe(true);
+        Assertion::true($linkNode->getParent()->hasClass('active'));
     }
 
     /**
@@ -149,7 +150,7 @@ class NavigationContext extends AbstractContext
      */
     public function iShouldBeOnThePage(Page $page): void
     {
-        expect($page->isOpen())->toBe(true);
+        Assertion::true($page->isOpen());
     }
 
     /**
@@ -184,18 +185,18 @@ class NavigationContext extends AbstractContext
         $pagination = $this->getElement(Pagination::class);
 
         foreach ($table->getHash() as $buttonRow) {
-            expect($pagination->hasLink($buttonRow['Button']))->toBe(true);
+            Assertion::true($pagination->hasLink($buttonRow['Button']));
 
             if ('true' === $buttonRow['Active']) {
-                expect($pagination->isDisabled($buttonRow['Button']))->toBe(false);
+                Assertion::false($pagination->isDisabled($buttonRow['Button']));
             } else {
-                expect($pagination->isDisabled($buttonRow['Button']))->toBe(true);
+                Assertion::true($pagination->isDisabled($buttonRow['Button']));
             }
 
             if ('true' === $buttonRow['Current']) {
-                expect($pagination->isCurrentPage($buttonRow['Button']))->toBe(true);
+                Assertion::true($pagination->isCurrentPage($buttonRow['Button']));
             } else {
-                expect($pagination->isCurrentPage($buttonRow['Button']))->toBe(false);
+                Assertion::false($pagination->isCurrentPage($buttonRow['Button']));
             }
         }
     }
