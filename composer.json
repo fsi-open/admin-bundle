@@ -18,6 +18,12 @@
             "email": "piotr.szymaszek@fsi.pl"
         }
     ],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/fsi-open/phpspec.git"
+        }
+    ],
     "require": {
         "php": "^7.4|^8.0",
         "doctrine/doctrine-bundle": "^2.10",
