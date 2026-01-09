@@ -53,7 +53,7 @@ jobs:
                 nohup php -S 0.0.0.0:8080 -t features/fixtures/project/web > features/fixtures/project/var/logs/server.log 2>&1 &
                 sleep 5
             - name: Functional tests
-              run: vendor/bin/behat --no-snippets --format=progress --profile=actions -vvv
+              run: php -d error_reporting=6143 vendor/bin/behat --no-snippets --format=progress --profile=actions -vvv
             - name: Upload logs
               uses: actions/upload-artifact@master
               with:
