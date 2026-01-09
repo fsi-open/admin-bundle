@@ -14,10 +14,13 @@ namespace spec\FSi\Bundle\AdminBundle\Controller;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
+
+use function class_exists;
 
 class AdminControllerSpec extends ObjectBehavior
 {
@@ -33,8 +36,12 @@ class AdminControllerSpec extends ObjectBehavior
         RouterInterface $router
     ): void {
         $request->getSession()->willReturn($session);
-        $request->query = $requestQuery;
-        $requestQuery->has('redirect_uri')->willReturn(false);
+        if (class_exists(InputBag::class)) {
+            $queryParameterBag = new InputBag();
+        } else {
+            $queryParameterBag = new \Symfony\Component\HttpFoundation\ParameterBag();
+        }
+        $request->query = $queryParameterBag;
         $router->generate('fsi_admin')->willReturn('admin_url');
 
         $session->set('admin_locale', 'qw')->shouldBeCalled();
@@ -49,9 +56,13 @@ class AdminControllerSpec extends ObjectBehavior
         ParameterBag $requestQuery
     ): void {
         $request->getSession()->willReturn($session);
-        $request->query = $requestQuery;
-        $requestQuery->has('redirect_uri')->willReturn(true);
-        $requestQuery->get('redirect_uri')->willReturn('uri_to_redirect_to');
+        if (class_exists(InputBag::class)) {
+            $queryParameterBag = new InputBag();
+        } else {
+            $queryParameterBag = new \Symfony\Component\HttpFoundation\ParameterBag();
+        }
+        $request->query = $queryParameterBag;
+        $queryParameterBag->set('redirect_uri', 'uri_to_redirect_to');
 
         $response = $this->localeAction('qw', $request);
         $response->getTargetUrl()->shouldReturn('uri_to_redirect_to');

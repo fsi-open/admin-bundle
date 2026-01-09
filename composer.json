@@ -21,11 +21,11 @@
     "repositories": [
         {
             "type": "git",
-            "url": "https://github.com/fsi-open/phpspec.git"
+            "url": "https://github.com/chives/resource-repository-bundle.git"
         },
         {
             "type": "git",
-            "url": "https://github.com/chives/files.git"
+            "url": "https://github.com/fsi-open/phpspec.git"
         }
     ],
     "require": {
@@ -38,21 +38,21 @@
         "knplabs/knp-menu": "^3.3",
         "knplabs/knp-menu-bundle": "^3.2",
         "psr/event-dispatcher": "^1.0",
-        "symfony/asset": "^4.4|^5.4|^6.0",
-        "symfony/config": "^4.4.12|^5.4|^6.0",
-        "symfony/dependency-injection": "^4.4.12|^5.4|^6.0",
-        "symfony/doctrine-bridge": "^4.4|^5.4|^6.0",
-        "symfony/form" : "^4.4|^5.4|^6.0",
-        "symfony/framework-bundle" : "^4.4|^5.4|^6.0",
-        "symfony/http-foundation": "^4.4|^5.4|^6.0",
-        "symfony/http-kernel": "^4.4|^5.4|^6.0",
-        "symfony/intl" : "^4.4|^5.4|^6.0",
-        "symfony/options-resolver": "^4.4|^5.4|^6.0",
-        "symfony/proxy-manager-bridge": "^4.4|^5.4|^6.0",
-        "symfony/security-csrf": "^4.4|^5.4|^6.0",
-        "symfony/translation": "^4.4.12|^5.4|^6.0",
-        "symfony/twig-bundle": "^4.4|^5.4|^6.0",
-        "symfony/validator": "^4.4|^5.4|^6.0",
+        "symfony/asset": "^4.4|^5.4|^6.0|^7.0",
+        "symfony/config": "^4.4.12|^5.4|^6.0|^7.0",
+        "symfony/dependency-injection": "^4.4.12|^5.4|^6.0|^7.0",
+        "symfony/doctrine-bridge": "^4.4|^5.4|^6.0|^7.0",
+        "symfony/form" : "^4.4|^5.4|^6.0|^7.0",
+        "symfony/framework-bundle" : "^4.4|^5.4|^6.0|^7.0",
+        "symfony/http-foundation": "^4.4|^5.4|^6.0|^7.0",
+        "symfony/http-kernel": "^4.4|^5.4|^6.0|^7.0",
+        "symfony/intl" : "^4.4|^5.4|^6.0|^7.0",
+        "symfony/options-resolver": "^4.4|^5.4|^6.0|^7.0",
+        "symfony/proxy-manager-bridge": "^4.4|^5.4|^6.0|^7.0",
+        "symfony/security-csrf": "^4.4|^5.4|^6.0|^7.0",
+        "symfony/translation": "^4.4.12|^5.4|^6.0|^7.0",
+        "symfony/twig-bundle": "^4.4|^5.4|^6.0|^7.0",
+        "symfony/validator": "^4.4|^5.4|^6.0|^7.0",
         "twig/twig": "^3.7"
     },
     "require-dev": {
@@ -67,8 +67,8 @@
         "friends-of-behat/mink-extension": "^2.6",
         "friends-of-behat/page-object-extension": "^0.3.2",
         "friends-of-behat/symfony-extension": "^2.3",
-        "fsi/files": "^2.0.4|^3.0@dev",
-        "fsi/resource-repository-bundle": "^3.0.3@dev",
+        "fsi/files": "^2.0.4|^3.0",
+        "fsi/resource-repository-bundle": "^3.0.3|dev-dev as 4.0",
         "gedmo/doctrine-extensions": "^3.13",
         "mockery/mockery": "^1.6",
         "nyholm/psr7": "^1.8",
@@ -81,14 +81,15 @@
         "sebastian/comparator": "^4.0|^5.0",
         "sebastian/exporter": "^4.0|^5.0",
         "squizlabs/php_codesniffer": "^3.7",
-        "symfony/dom-crawler": "^4.4.12|^5.4|^6.0",
-        "symfony/error-handler": "^4.4|^5.4|^6.0",
-        "symfony/event-dispatcher": "^4.4.27|^5.4|^6.0",
-        "symfony/http-client": "^4.4|^5.4|^6.0",
-        "symfony/monolog-bridge": "^4.4|^5.4|^6.0",
+        "symfony/dom-crawler": "^4.4.12|^5.4|^6.0|^7.0",
+        "symfony/error-handler": "^4.4|^5.4|^6.0|^7.0",
+        "symfony/event-dispatcher": "^4.4.27|^5.4|^6.0|^7.0",
+        "symfony/http-client": "^4.4|^5.4|^6.0|^7.0",
+        "symfony/monolog-bridge": "^4.4|^5.4|^6.0|^7.0",
         "symfony/monolog-bundle": "^3.7",
-        "symfony/var-dumper": "^4.4|^5.4|^6.0",
-        "symfony/yaml": "^4.4|^5.4|^6.0"
+        "symfony/var-dumper": "^4.4|^5.4|^6.0|^7.0",
+        "symfony/var-exporter": "^4.4|^5.4|^6.0|^7.0",
+        "symfony/yaml": "^4.4|^5.4|^6.0|^7.0"
     },
     "conflict": {
         "fsi/admin-positionable-bundle": "*",

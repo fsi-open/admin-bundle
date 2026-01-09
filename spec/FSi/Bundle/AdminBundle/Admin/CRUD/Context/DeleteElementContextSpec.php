@@ -20,9 +20,12 @@ use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function class_exists;
 
 class DeleteElementContextSpec extends ObjectBehavior
 {
@@ -58,13 +61,17 @@ class DeleteElementContextSpec extends ObjectBehavior
 
     public function it_handles_request_with_request_handlers(
         HandlerInterface $handler,
-        Request $request,
-        ParameterBag $requestParameterBag
+        Request $request
     ): void {
         $handler->handleRequest(Argument::type(FormEvent::class), $request)->willReturn(null);
 
+        if (class_exists(InputBag::class)) {
+            $requestParameterBag = new InputBag();
+        } else {
+            $requestParameterBag = new ParameterBag();
+        }
+        $requestParameterBag->set('indexes', []);
         $request->request = $requestParameterBag;
-        $requestParameterBag->all()->willReturn(['indexes' > []]);
 
         $this->handleRequest($request)->shouldReturn(null);
     }
@@ -72,12 +79,17 @@ class DeleteElementContextSpec extends ObjectBehavior
     public function it_return_response_from_handler(
         HandlerInterface $handler,
         Request $request,
-        ParameterBag $requestParameterBag,
         Response $response
     ): void {
         $handler->handleRequest(Argument::type(FormEvent::class), $request)->willReturn($response);
+
+        if (class_exists(InputBag::class)) {
+            $requestParameterBag = new InputBag();
+        } else {
+            $requestParameterBag = new ParameterBag();
+        }
+        $requestParameterBag->set('indexes', []);
         $request->request = $requestParameterBag;
-        $requestParameterBag->all()->willReturn(['indexes' => []]);
 
         $this->handleRequest($request)->shouldReturnAnInstanceOf(Response::class);
     }

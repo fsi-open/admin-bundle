@@ -27,11 +27,14 @@ use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use stdClass;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+
+use function class_exists;
 
 class FormValidRequestHandlerSpec extends ObjectBehavior
 {
@@ -95,7 +98,6 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     public function it_handle_POST_request(
         FormEvent $event,
         Request $request,
-        ParameterBag $queryParameterBag,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
         FormElement $element,
@@ -103,6 +105,11 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         stdClass $object
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
+        if (class_exists(InputBag::class)) {
+            $queryParameterBag = new InputBag();
+        } else {
+            $queryParameterBag = new ParameterBag();
+        }
         $request->query = $queryParameterBag;
 
         $event->getForm()->willReturn($form);
@@ -118,7 +125,6 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
         $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');
-        $queryParameterBag->has('redirect_uri')->willReturn(false);
         $router->generate('fsi_admin_list', ['element' => 'element_list_id'])->willReturn('/list/page');
 
         $this->handleRequest($event, $request)->shouldReturnAnInstanceOf(RedirectResponse::class);
@@ -127,13 +133,17 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     public function it_return_redirect_response_with_redirect_uri_passed_by_request(
         FormEvent $event,
         Request $request,
-        ParameterBag $queryParameterBag,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
         FormElement $element,
         stdClass $object
     ): void {
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
+        if (class_exists(InputBag::class)) {
+            $queryParameterBag = new InputBag();
+        } else {
+            $queryParameterBag = new ParameterBag();
+        }
         $request->query = $queryParameterBag;
 
         $event->getForm()->willReturn($form);
@@ -149,8 +159,7 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
         $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');
-        $queryParameterBag->has('redirect_uri')->willReturn(true);
-        $queryParameterBag->get('redirect_uri')->willReturn('some_redirect_uri');
+        $queryParameterBag->set('redirect_uri', 'some_redirect_uri');
 
         $response = $this->handleRequest($event, $request);
         $response->shouldBeAnInstanceOf(RedirectResponse::class);

@@ -25,11 +25,14 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+
+use function class_exists;
 
 class FormValidRequestHandlerSpec extends ObjectBehavior
 {
@@ -77,7 +80,6 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
     public function it_handle_POST_request(
         FormEvent $event,
         Request $request,
-        ParameterBag $queryParameterBag,
         ParameterBag $attributesParameterBag,
         ResourceElement $element,
         EventDispatcherInterface $eventDispatcher,
@@ -86,8 +88,13 @@ class FormValidRequestHandlerSpec extends ObjectBehavior
         Resource $resource1,
         Resource $resource2
     ): void {
+        if (class_exists(InputBag::class)) {
+            $queryParameterBag = new InputBag();
+        } else {
+            $queryParameterBag = new ParameterBag();
+        }
+        $request->query = $queryParameterBag;
         $attributesParameterBag->has('translatableLocale')->willReturn(false);
-        $queryParameterBag->has('redirect_uri')->willReturn(false);
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
         $request->query = $queryParameterBag;
         $request->attributes = $attributesParameterBag;

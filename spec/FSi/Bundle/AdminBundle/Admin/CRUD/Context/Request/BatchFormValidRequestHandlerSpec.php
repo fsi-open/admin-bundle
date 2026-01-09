@@ -31,11 +31,14 @@ use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use stdClass;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+
+use function class_exists;
 
 class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 {
@@ -44,13 +47,18 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         RouterInterface $router,
         FlashMessages $flashMessage,
         Request $request,
-        ParameterBag $requestParameterBag,
-        ParameterBag $queryParameterBag,
         FormInterface $form,
         BatchElement $element,
         FormEvent $event
     ): void {
-        $requestParameterBag->all()->willReturn(['indexes' => ['index']]);
+        if (class_exists(InputBag::class)) {
+            $requestParameterBag = new InputBag();
+            $queryParameterBag = new InputBag();
+        } else {
+            $requestParameterBag = new ParameterBag();
+            $queryParameterBag = new ParameterBag();
+        }
+        $requestParameterBag->set('indexes', ['index']);
         $request->request = $requestParameterBag;
         $request->query = $queryParameterBag;
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
@@ -127,7 +135,6 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
     public function it_returns_redirect_response_with_redirect_uri_passed_by_request(
         FormEvent $event,
         Request $request,
-        ParameterBag $queryParameterBag,
         EventDispatcherInterface $eventDispatcher,
         FormInterface $form,
         BatchElement $element,
@@ -150,8 +157,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
 
         $dataIndexer->getDataSlice(['index'])->willReturn([$object]);
 
-        $queryParameterBag->has('redirect_uri')->willReturn(true);
-        $queryParameterBag->get('redirect_uri')->willReturn('some_redirect_uri');
+        $request->query->set('redirect_uri', 'some_redirect_uri');
 
         $response = $this->handleRequest($event, $request);
         $response->shouldBeAnInstanceOf(RedirectResponse::class);
@@ -215,7 +221,7 @@ class BatchFormValidRequestHandlerSpec extends ObjectBehavior
         FlashMessages $flashMessage,
         DataIndexerInterface $dataIndexer
     ): void {
-        $requestParameterBag->all()->willReturn(['indexes' => []]);
+        $request->request->set('indexes', []);
         $event->getElement()->willReturn($deleteElement);
         $eventDispatcher->dispatch(Argument::type(BatchObjectsPreApplyEvent::class))->shouldBeCalled();
 
