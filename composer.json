@@ -18,16 +18,6 @@
             "email": "piotr.szymaszek@fsi.pl"
         }
     ],
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/chives/resource-repository-bundle.git"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/fsi-open/phpspec.git"
-        }
-    ],
     "require": {
         "php": "^7.4|^8.0",
         "doctrine/doctrine-bundle": "^2.10",
@@ -68,13 +58,13 @@
         "friends-of-behat/page-object-extension": "^0.3.2",
         "friends-of-behat/symfony-extension": "^2.3",
         "fsi/files": "^2.0.4|^3.0",
-        "fsi/resource-repository-bundle": "^3.0.3|dev-dev as 4.0",
+        "fsi/resource-repository-bundle": "^3.0.3|^4.0",
         "gedmo/doctrine-extensions": "^3.13",
         "mockery/mockery": "^1.6",
         "nyholm/psr7": "^1.8",
         "ocramius/proxy-manager": "^2.5",
         "oneup/flysystem-bundle": "^4.4",
-        "phpspec/phpspec": "^7.4|^8.0@dev",
+        "phpspec/phpspec": "^7.4|^8.0",
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-beberlei-assert": "^1.0",
         "rize/uri-template": "^0.3.5|^0.4.0",
