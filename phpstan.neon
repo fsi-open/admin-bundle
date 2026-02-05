@@ -27,5 +27,10 @@ parameters:
     ignoreErrors:
         - message: '#Call to an undefined method Symfony\\Component\\HttpFoundation\\RequestStack\:\:get(Main|Master)Request\(\)\.#'
           path: DataGrid/Extension/Admin/ColumnTypeExtension/BatchActionExtension.php
+        - message: '#Call to function method_exists\(\) with Symfony\\Component\\HttpFoundation\\RequestStack and ''get(Main|Master)Request'' will always evaluate to true\.#'
+          path: DataGrid/Extension/Admin/ColumnTypeExtension/BatchActionExtension.php
+        - message: '#Call to function method_exists\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RequestStack'' and ''getSession'' will always evaluate to true\.#'
         - message: '#PHPDoc tag @return contains generic type Gedmo\\Tree\\Entity\\Repository\\NestedTreeRepository<object> but class Gedmo\\Tree\\Entity\\Repository\\NestedTreeRepository is not generic\.#'
           path: Controller/ReorderTreeController.php
+        - message: '#Property [\w\\]+::\$\w+ \(\w+\|null\) is never assigned \w+ so it can be removed from the property type\.#'
+          path: features/fixtures/project/src/FixturesBundle/Entity/*.php

@@ -34,10 +34,12 @@ class RequestStackFlashMessages extends FlashMessages
         if (false === $this->flashBag instanceof FlashBagInterface) {
             $request = $this->requestStack->getCurrentRequest();
             $session = (null !== $request) ? $request->getSession() : null;
-            $this->flashBag = (null !== $session) && (true === method_exists($session, 'getFlashBag'))
+            /** @var FlashBagInterface $flashBag */
+            $flashBag = (null !== $session) && (true === method_exists($session, 'getFlashBag'))
                 ? $session->getFlashBag()
                 : new FlashBag()
             ;
+            $this->flashBag = $flashBag;
         }
 
         return $this->flashBag;

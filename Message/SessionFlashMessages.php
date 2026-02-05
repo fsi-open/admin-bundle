@@ -32,10 +32,12 @@ class SessionFlashMessages extends FlashMessages
     protected function getFlashBag(): FlashBagInterface
     {
         if (false === $this->flashBag instanceof FlashBagInterface) {
-            $this->flashBag = true === method_exists($this->session, 'getFlashBag')
+            /** @var FlashBagInterface $flashBag */
+            $flashBag = true === method_exists($this->session, 'getFlashBag')
                 ? $this->session->getFlashBag()
                 : new FlashBag()
             ;
+            $this->flashBag = $flashBag;
         }
 
         return $this->flashBag;

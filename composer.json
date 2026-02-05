@@ -20,6 +20,7 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
+        "beberlei/assert": "^3.3",
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/persistence": "^2.0|^3.0",
         "doctrine/orm": "^2.8|^3.0",
@@ -47,7 +48,6 @@
     },
     "require-dev": {
         "ext-pdo_sqlite": "*",
-        "beberlei/assert": "^3.3",
         "behat/behat": "^3.10",
         "behat/mink": "^1.10",
         "behat/mink-selenium2-driver": "^1.3",
@@ -65,8 +65,8 @@
         "ocramius/proxy-manager": "^2.5",
         "oneup/flysystem-bundle": "^4.4",
         "phpspec/phpspec": "^7.4|^8.0",
-        "phpstan/phpstan": "^1.10",
-        "phpstan/phpstan-beberlei-assert": "^1.0",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-beberlei-assert": "^2.0",
         "rize/uri-template": "^0.3.5|^0.4.0",
         "sebastian/comparator": "^4.0|^5.0",
         "sebastian/exporter": "^4.0|^5.0",
