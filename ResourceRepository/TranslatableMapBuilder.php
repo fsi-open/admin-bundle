@@ -194,7 +194,7 @@ final class TranslatableMapBuilder extends MapBuilder
             throw new RuntimeException("Resource map file at path \"{$mapPath}\" does not exist!");
         }
 
-        /** @var mixed $map */
+        /** @var array<string, mixed> $map */
         $map = $this->recursiveParseRawMap(Yaml::parse($fileContents));
         return $map;
     }

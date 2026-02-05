@@ -20,10 +20,13 @@ use FSi\Bundle\AdminBundle\Message\FlashMessages;
 use LogicException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+
+use function class_exists;
 
 class DeleteRequestHandlerSpec extends ObjectBehavior
 {
@@ -33,13 +36,16 @@ class DeleteRequestHandlerSpec extends ObjectBehavior
         RouterInterface $router,
         DeleteElement $element,
         FormEvent $event,
-        ParameterBag $queryParameterBag,
         Request $request,
         RedirectResponse $response
     ): void {
+        if (class_exists(InputBag::class)) {
+            $queryParameterBag = new InputBag();
+        } else {
+            $queryParameterBag = new ParameterBag();
+        }
         $request->query = $queryParameterBag;
 
-        $queryParameterBag->has('redirect_uri')->willReturn(false);
         $element->getSuccessRoute()->willReturn('fsi_admin_list');
         $element->getSuccessRouteParameters()->willReturn(['element' => 'element_list_id']);
         $element->getId()->willReturn('element_form_id');
@@ -75,11 +81,8 @@ class DeleteRequestHandlerSpec extends ObjectBehavior
         DeleteElement $element,
         FormEvent $event,
         Request $request,
-        ParameterBag $queryParameterBag,
         FlashMessages $flashMessage
     ): void {
-        $queryParameterBag->has('redirect_uri')->shouldNotBeCalled();
-        $queryParameterBag->get('redirect_uri')->shouldNotBeCalled();
         $element->getSuccessRoute()->shouldNotBeCalled();
         $element->getSuccessRouteParameters()->shouldNotBeCalled();
         $element->getId()->shouldNotBeCalled();

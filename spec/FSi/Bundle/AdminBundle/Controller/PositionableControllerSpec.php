@@ -24,10 +24,13 @@ use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
 use stdClass;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+
+use function class_exists;
 
 class PositionableControllerSpec extends ObjectBehavior
 {
@@ -38,9 +41,13 @@ class PositionableControllerSpec extends ObjectBehavior
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
         ObjectManager $om,
-        Request $request,
-        ParameterBag $query
+        Request $request
     ): void {
+        if (class_exists(InputBag::class)) {
+            $query = new InputBag();
+        } else {
+            $query = new ParameterBag();
+        }
         $request->query = $query;
         $element->getId()->willReturn('slides');
         $element->getDataIndexer()->willReturn($indexer);
@@ -137,10 +144,9 @@ class PositionableControllerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         DoctrineDataIndexer $indexer,
         PositionableInterface $positionableEntity,
-        Request $request,
-        ParameterBag $query
+        Request $request
     ): void {
-        $query->get('redirect_uri')->willReturn('some_redirect_uri');
+        $request->query->set('redirect_uri', 'some_redirect_uri');
 
         $indexer->getData('1')->willReturn($positionableEntity);
         $eventDispatcher->dispatch(Argument::type(PositionablePreMoveEvent::class))->shouldBeCalled();

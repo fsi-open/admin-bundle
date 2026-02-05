@@ -38,10 +38,6 @@ abstract class AdminEvent extends Event
         return $this->request;
     }
 
-    /**
-     * @return bool
-     * @phpstan-impure
-     */
     public function hasResponse(): bool
     {
         return null !== $this->response;

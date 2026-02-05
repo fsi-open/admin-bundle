@@ -27,11 +27,14 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
+
+use function class_exists;
 
 class BatchActionExtensionSpec extends ObjectBehavior
 {
@@ -41,7 +44,6 @@ class BatchActionExtensionSpec extends ObjectBehavior
         FormBuilderInterface $formBuilder,
         RequestStack $requestStack,
         Request $request,
-        ParameterBag $queryAttributes,
         FormInterface $form,
         FormView $formView
     ): void {
@@ -53,7 +55,13 @@ class BatchActionExtensionSpec extends ObjectBehavior
             $requestStack->getMasterRequest()->willReturn($request);
         }
 
-        $request->query = $queryAttributes;
+        if (class_exists(InputBag::class)) {
+            $query = new InputBag();
+        } else {
+            $query = new ParameterBag();
+        }
+        $request->query = $query;
+
         $form->createView()->willReturn($formView);
     }
 
@@ -74,8 +82,9 @@ class BatchActionExtensionSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($optionsResolver)
         ;
-        $optionsResolver->setAllowedTypes('actions', ['array'])->shouldBeCalled();
-        $optionsResolver->setAllowedTypes('translation_domain', ['string'])->shouldBeCalled();
+        $optionsResolver->setAllowedTypes('actions', ['array'])->shouldBeCalled()->willReturn($optionsResolver);
+        $optionsResolver->setAllowedTypes('translation_domain', ['string'])->shouldBeCalled()
+            ->willReturn($optionsResolver);
         $optionsResolver
             ->setDefault('actions', Argument::type(Closure::class))
             ->shouldBeCalled()

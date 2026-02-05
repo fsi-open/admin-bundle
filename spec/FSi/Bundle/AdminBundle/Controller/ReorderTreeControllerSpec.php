@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace spec\FSi\Bundle\AdminBundle\Controller;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use FSi\Bundle\AdminBundle\Admin\ManagerInterface;
@@ -28,10 +27,13 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use stdClass;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+
+use function class_exists;
 
 final class ReorderTreeControllerSpec extends ObjectBehavior
 {
@@ -42,9 +44,13 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
         ObjectManager $om,
-        Request $request,
-        ParameterBag $query
+        Request $request
     ): void {
+        if (class_exists(InputBag::class)) {
+            $query = new InputBag();
+        } else {
+            $query = new ParameterBag();
+        }
         $request->query = $query;
         $element->getId()->willReturn('category');
         $element->getDataIndexer()->willReturn($indexer);
@@ -164,15 +170,14 @@ final class ReorderTreeControllerSpec extends ObjectBehavior
         CRUDElement $element,
         DoctrineDataIndexer $indexer,
         stdClass $category,
-        Request $request,
-        ParameterBag $query
+        Request $request
     ): void {
         $repository = Mockery::mock(Tree\Entity\Repository\NestedTreeRepository::class);
         $repository->allows('moveUp');
         $repository->allows('moveDown');
         $element->getRepository()->willReturn($repository);
 
-        $query->get('redirect_uri')->willReturn('some_redirect_uri');
+        $request->query->set('redirect_uri', 'some_redirect_uri');
         $indexer->getData('1')->willReturn($category);
 
         $eventDispatcher->dispatch(Argument::type(MovedUpTreeEvent::class))->shouldBeCalled();
