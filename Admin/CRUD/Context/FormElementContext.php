@@ -84,7 +84,7 @@ class FormElementContext extends ContextAbstract
      */
     private function getObject(Request $request)
     {
-        $id = $request->get('id');
+        $id = $request->attributes->get('id');
         if (null === $id || '' === $id) {
             $this->checkAllowAddOption();
             return null;

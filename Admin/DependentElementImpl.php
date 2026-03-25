@@ -67,6 +67,11 @@ trait DependentElementImpl
             return null;
         }
 
-        return $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER);
+        $parentObjectId = $currentRequest->query->get(DependentElement::PARENT_REQUEST_PARAMETER);
+        if (null === $parentObjectId) {
+            return null;
+        }
+
+        return (string) $parentObjectId;
     }
 }

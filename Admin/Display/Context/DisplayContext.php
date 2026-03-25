@@ -86,7 +86,7 @@ class DisplayContext extends ContextAbstract
      */
     private function getObject(Request $request)
     {
-        $id = $request->get('id');
+        $id = $request->attributes->get('id');
 
         return $this->element->getDataIndexer()->getData($id);
     }

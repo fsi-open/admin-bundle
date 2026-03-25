@@ -428,7 +428,7 @@ class UserListener
     public function userEditPostCreate(FormEvent $event)
     {
         if ($event->getElement()->getId() === 'users') {
-            $this->invoicesDatasource = $event->getRequest()->get('invoices_datasource', array());
+            $this->invoicesDatasource = $event->getRequest()->query->all('invoices_datasource', array());
         }
     }
 

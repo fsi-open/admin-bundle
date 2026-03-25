@@ -19,6 +19,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -45,6 +47,7 @@ class FormElementContextSpec extends ObjectBehavior
         FormView $formView,
         Request $request
     ): void {
+        $request->attributes = new ParameterBag();
         $form->createView()->willReturn($formView);
         $form->getData()->willReturn(null);
 
@@ -68,6 +71,8 @@ class FormElementContextSpec extends ObjectBehavior
 
     public function it_handles_request_with_request_handlers(HandlerInterface $handler, Request $request): void
     {
+        $request->attributes = new ParameterBag();
+
         $handler->handleRequest(Argument::type(FormEvent::class), $request)
             ->willReturn(null);
 
@@ -76,6 +81,8 @@ class FormElementContextSpec extends ObjectBehavior
 
     public function it_returns_response_from_handler(HandlerInterface $handler, Request $request): void
     {
+        $request->attributes = new ParameterBag();
+
         $handler->handleRequest(Argument::type(FormEvent::class), $request)
             ->willReturn(new Response());
 
@@ -85,7 +92,7 @@ class FormElementContextSpec extends ObjectBehavior
 
     public function it_throws_exception_when_adding_is_not_allowed(Request $request, FormElement $element): void
     {
-        $request->get('id')->willReturn(null);
+        $request->attributes = new ParameterBag(['id' => null]);
         $element->getOption('allow_add')->willReturn(false);
         $this->shouldThrow(NotFoundHttpException::class)->during('handleRequest', [$request]);
     }
