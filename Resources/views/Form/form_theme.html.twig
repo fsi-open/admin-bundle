@@ -20,10 +20,8 @@
 {% endblock %}
 
 {% block collection_prototype -%}
-    {% apply spaceless %}
-        {% set form = prototype %}
-        {{ block('collection_item') }}
-    {% endapply %}
+    {% set form = prototype %}
+    {{ block('collection_item') }}
 {%- endblock %}
 
 {% block collection_item %}
