@@ -18,6 +18,7 @@ use FSi\Component\DataIndexer\DataIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use stdClass;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use FSi\Bundle\AdminBundle\Admin\Context\ContextInterface;
@@ -33,7 +34,7 @@ class DisplayContextSpec extends ObjectBehavior
         Display $display,
         Request $request
     ): void {
-        $request->get('id', null)->willReturn('index');
+        $request->attributes = new ParameterBag(['id' => 'index']);
         $element->getDataIndexer()->willReturn($dataIndexer);
         $dataIndexer->getData('index')->willReturn($displayObject);
         $element->createDisplay($displayObject)->willReturn($display);

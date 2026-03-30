@@ -1,16 +1,14 @@
 {% extends 'bootstrap_3_layout.html.twig' %}
 
 {% block datasource_field %}
-    {% apply spaceless %}
-        {% if field.hasAttribute('form') is not empty %}
-            {% for child in field.getAttribute('form').children %}
-                {% for grandchild in child %}
-                    {% form_theme grandchild _self %}
-                    {{ form_row(grandchild) }}
-                {% endfor %}
+    {% if field.hasAttribute('form') is not empty %}
+        {% for child in field.getAttribute('form').children %}
+            {% for grandchild in child %}
+                {% form_theme grandchild _self %}
+                {{ form_row(grandchild) }}
             {% endfor %}
-        {% endif %}
-    {% endapply %}
+        {% endfor %}
+    {% endif %}
 {% endblock %}
 
 {% block datasource_max_results %}
@@ -28,21 +26,16 @@
 {% endblock %}
 
 {% block datasource_between_row %}
-    {% apply spaceless %}
-        {{ form_widget(form) }}
-    {% endapply %}
+    {{ form_widget(form) }}
 {% endblock datasource_between_row %}
 
 {% block datasource_between_widget %}
-{% apply spaceless %}
     {% for child in form %}
         {{ form_row(child) }}
     {% endfor %}
-{% endapply %}
 {% endblock datasource_between_widget %}
 
 {% block datasource_pagination %}
-{% apply spaceless %}
     <ul class="pagination">
         <li{% if current == first %} class="{{ disabled_class }}"{% endif %}>
             <a href="{% if current != first %}{{ first_url }}{% else %}#{% endif %}">{{ 'datasource.pagination.first'|trans({}, translation_domain) }}</a>
@@ -62,24 +55,21 @@
             <a href="{% if current != last %}{{ last_url }}{% else %}#{% endif %}">{{ 'datasource.pagination.last'|trans({}, translation_domain) }}</a>
         </li>
     </ul>
-{% endapply %}
 {% endblock %}
 
 {% block datasource_sort %}
-    {% apply spaceless %}
-        {% if (field.getAttribute('sorted_ascending')) %}
-            <button type="button" class="btn btn-default btn-xs sort-asc" disabled="disabled">
-                <span class="glyphicon glyphicon-sort-by-alphabet"></span>
-            </button>
-        {% else %}
-            <a href="{{ ascending_url }}" class="btn btn-default btn-xs sort-asc"><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
-        {% endif %}
-        {% if (field.getAttribute('sorted_descending')) %}
-            <button type="button" class="btn btn-default btn-xs sort-desc" disabled="disabled">
-                <span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
-            </button>
-        {% else %}
-            <a href="{{ descending_url }}" class="btn btn-default btn-xs sort-desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
-        {% endif %}
-    {% endapply %}
+    {% if (field.getAttribute('sorted_ascending')) %}
+        <button type="button" class="btn btn-default btn-xs sort-asc" disabled="disabled">
+            <span class="glyphicon glyphicon-sort-by-alphabet"></span>
+        </button>
+    {% else %}
+        <a href="{{ ascending_url }}" class="btn btn-default btn-xs sort-asc"><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+    {% endif %}
+    {% if (field.getAttribute('sorted_descending')) %}
+        <button type="button" class="btn btn-default btn-xs sort-desc" disabled="disabled">
+            <span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
+        </button>
+    {% else %}
+        <a href="{{ descending_url }}" class="btn btn-default btn-xs sort-desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+    {% endif %}
 {% endblock %}

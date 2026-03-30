@@ -130,7 +130,7 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
     private function populateTranslationLocaleMenu(Item $menu): void
     {
         $requestParameters = $this->getRequestParameters();
-        $route = $this->getRequest()->get('_route');
+        $route = $this->getRequest()->attributes->get('_route');
 
         if (true === array_key_exists('redirect_uri', $requestParameters)) {
             $redirectRequest = $this->createRedirectRequest($requestParameters['redirect_uri']);
@@ -241,7 +241,7 @@ final class TranslationLocaleMenuSubscriber implements EventSubscriberInterface
     private function getRequestParameters(): array
     {
         return array_merge(
-            $this->getRequest()->get('_route_params'),
+            $this->getRequest()->attributes->get('_route_params'),
             $this->getRequest()->query->all()
         );
     }

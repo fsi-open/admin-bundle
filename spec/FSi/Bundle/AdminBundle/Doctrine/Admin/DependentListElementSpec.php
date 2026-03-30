@@ -21,6 +21,8 @@ use FSi\Bundle\AdminBundle\Admin\Element;
 use FSi\Component\DataIndexer\DataIndexerInterface;
 use FSi\Component\Translatable\LocaleProvider;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use FSi\Bundle\AdminBundle\spec\fixtures\Doctrine\MyDependentListElement;
@@ -55,7 +57,13 @@ class DependentListElementSpec extends ObjectBehavior
     ): void {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
-        $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn(null);
+        if (class_exists(InputBag::class)) {
+            $requestQueryBag = new InputBag();
+        } else {
+            $requestQueryBag = new ParameterBag();
+        }
+        $requestQueryBag->set(DependentElement::PARENT_REQUEST_PARAMETER, null);
+        $currentRequest->query = $requestQueryBag;
 
         $this->setRequestStack($requestStack);
         $this->setParentElement($parentElement);
@@ -71,7 +79,13 @@ class DependentListElementSpec extends ObjectBehavior
     ): void {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
-        $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn('parent_object_id');
+        if (class_exists(InputBag::class)) {
+            $requestQueryBag = new InputBag();
+        } else {
+            $requestQueryBag = new ParameterBag();
+        }
+        $requestQueryBag->set(DependentElement::PARENT_REQUEST_PARAMETER, 'parent_object_id');
+        $currentRequest->query = $requestQueryBag;
         $parentDataIndexer->getData('parent_object_id')->willReturn('parent_object');
 
         $this->setRequestStack($requestStack);
@@ -88,7 +102,13 @@ class DependentListElementSpec extends ObjectBehavior
     ): void {
         $parentElement->getDataIndexer()->willReturn($parentDataIndexer);
         $requestStack->getCurrentRequest()->willReturn($currentRequest);
-        $currentRequest->get(DependentElement::PARENT_REQUEST_PARAMETER)->willReturn('parent_object_id');
+        if (class_exists(InputBag::class)) {
+            $requestQueryBag = new InputBag();
+        } else {
+            $requestQueryBag = new ParameterBag();
+        }
+        $requestQueryBag->set(DependentElement::PARENT_REQUEST_PARAMETER, 'parent_object_id');
+        $currentRequest->query = $requestQueryBag;
 
         $this->setRequestStack($requestStack);
         $this->setParentElement($parentElement);
