@@ -22,7 +22,6 @@ doctrine:
         charset:  UTF8
         path: "%kernel.project_dir%/features/fixtures/project/var/data.sqlite"
     orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: false
         mapping:
             name: Fixtures
